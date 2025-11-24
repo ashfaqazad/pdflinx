@@ -7,21 +7,21 @@ export default function Blog() {
     {
       title: "Convert PDF to Word Online Without Losing Formatting",
       description:
-        "Easily convert PDF to editable Word documents online. Keep your formatting, fonts, and layout perfectly preserved — fast, free, and secure.",
+        "Easily convert PDF to editable Word documents online. Keep your formatting, fonts, and layout perfectly preserved fast, free, and secure.",
       date: "Aug 24, 2025",
       slug: "pdf-to-word",
     },
     {
       title: "Convert Word to PDF Instantly (No Software Needed)",
       description:
-        "Turn your Word (DOC or DOCX) files into professional, high-quality PDFs in seconds. 100% free and secure — ideal for resumes and reports.",
+        "Turn your Word (DOC or DOCX) files into professional, high-quality PDFs in seconds. 100% free and secure ideal for resumes and reports.",
       date: "Aug 26, 2025",
       slug: "word-to-pdf",
     },
     {
       title: "Convert Images (JPG, PNG) to PDF in Seconds",
       description:
-        "Combine multiple images into a single PDF effortlessly. Works with JPG, PNG, and more — no watermark, no signup required.",
+        "Combine multiple images into a single PDF effortlessly. Works with JPG, PNG, and more no watermark, no signup required.",
       date: "Aug 28, 2025",
       slug: "image-to-pdf",
     },
@@ -49,7 +49,7 @@ export default function Blog() {
     {
       title: "Convert Excel to PDF Without Losing Formatting",
       description:
-        "Convert Excel spreadsheets to PDF quickly and maintain your cell styles, charts, and formulas intact — secure and free.",
+        "Convert Excel spreadsheets to PDF quickly and maintain your cell styles, charts, and formulas intact secure and free.",
       date: "Sep 5, 2025",
       slug: "excel-to-pdf",
     },

@@ -20,9 +20,9 @@ const pages = [
   { name: "Home", path: "/" },
   { name: "PDF to Word", path: "/pdf-to-word" },
   { name: "Word to PDF", path: "/word-to-pdf" },
-    { name: "Image to PDF", path: "/image-to-pdf" },
+  { name: "Image to PDF", path: "/image-to-pdf" },
   { name: "Merge PDF", path: "/merge-pdf" },
-    { name: "Split PDF", path: "/split-pdf" },
+  { name: "Split PDF", path: "/split-pdf" },
   { name: "Compress PDF", path: "/compress-pdf" },
   { name: "Excel PDF", path: "/excel-pdf" },
 
@@ -42,78 +42,84 @@ export default function Navbar() {
 
 
     <AppBar position="static" style={{ backgroundColor: "black" }}>
-  <Container maxWidth="xl">
-    <Toolbar style={{ display: "flex", justifyContent: "space-between" }}>
-      
-      {/* ✅ Left Side Brand Logo */}
-      <Link href="/">
-        <img 
-          src="/Pdflinx.png"  // apna logo yahan path do
-          alt="Logo" 
-          style={{ height: "100px", objectFit: "contain" }} 
-        />
-      </Link>
+      <Container maxWidth="xl">
+        <Toolbar style={{ display: "flex", justifyContent: "space-between" }}>
 
-      {/* ✅ Desktop Menu */}
-      <Box sx={{ display: { xs: "none", md: "flex" }, gap: "10px" }}>
-        {pages.map((page) => (
-          <Button
-            key={page.name}
-            component={Link}
-            href={page.path}
-            style={{
-              my: 2,
-              color: "white",
-              textTransform: "none",
-              padding: "6px 12px",
-              fontFamily: "unset",
-              fontSize: "14px",
-            }}
-          >
-            <span className="nav-item-span">{page.name}</span>
-          </Button>
-        ))}
-      </Box>
+          {/* ✅ Left Side Brand Logo */}
+          <Link href="/">
+            <img
+              src="/pdflinx-logo.svg"
+              alt="pdflinx"
+              width={200}
+              height={30}
+              style={{
+                margin: 0,
+                padding: 0,
+                marginBottom: "12px", // 👈 yahan top margin di gayi
+              }}
+            />
+          </Link>
 
-      {/* ✅ Mobile Hamburger */}
-      <Box sx={{ display: { xs: "flex", md: "none" } }}>
-        <IconButton
-          size="large"
-          aria-label="menu"
-          onClick={toggleDrawer(true)}
-          style={{ color: "white" }}
-        >
-          <MenuIcon />
-        </IconButton>
-      </Box>
-    </Toolbar>
-  </Container>
+          {/* ✅ Desktop Menu */}
+          <Box sx={{ display: { xs: "none", md: "flex" }, gap: "5px" }}>
+            {pages.map((page) => (
+              <Button
+                key={page.name}
+                component={Link}
+                href={page.path}
+                style={{
+                  my: 2,
+                  color: "white",
+                  textTransform: "none",
+                  padding: "6px 12px",
+                  fontFamily: "unset",
+                  fontSize: "14px",
+                }}
+              >
+                <span className="nav-item-span">{page.name}</span>
+              </Button>
+            ))}
+          </Box>
 
-  {/* ✅ Drawer (Top) */}
-  <Drawer
-    anchor="left"
-    open={drawerOpen}
-    onClose={toggleDrawer(false)}
-    PaperProps={{
-      style: { backgroundColor: "black", color: "white", width:200 },
-    }}
-  >
-    <List>
-      {pages.map((page) => (
-        <ListItem
-          button
-          key={page.name}
-          component={Link}
-          href={page.path}
-          onClick={toggleDrawer(false)}
-          style={{ textAlign: "left" }}
-        >
-          <ListItemText primary={page.name} />
-        </ListItem>
-      ))}
-    </List>
-  </Drawer>
-</AppBar>
+          {/* ✅ Mobile Hamburger */}
+          <Box sx={{ display: { xs: "flex", md: "none" } }}>
+            <IconButton
+              size="large"
+              aria-label="menu"
+              onClick={toggleDrawer(true)}
+              style={{ color: "white" }}
+            >
+              <MenuIcon />
+            </IconButton>
+          </Box>
+        </Toolbar>
+      </Container>
+
+      {/* ✅ Drawer (Top) */}
+      <Drawer
+        anchor="left"
+        open={drawerOpen}
+        onClose={toggleDrawer(false)}
+        PaperProps={{
+          style: { backgroundColor: "black", color: "white", width: 200 },
+        }}
+      >
+        <List>
+          {pages.map((page) => (
+            <ListItem
+              button
+              key={page.name}
+              component={Link}
+              href={page.path}
+              onClick={toggleDrawer(false)}
+              style={{ textAlign: "left" }}
+            >
+              <ListItemText primary={page.name} />
+            </ListItem>
+          ))}
+        </List>
+      </Drawer>
+    </AppBar>
 
     // <AppBar position="static" style={{ backgroundColor: "black" }}>
     //   <Container maxWidth="xl">

@@ -15,24 +15,13 @@ const geistMono = Geist_Mono({
 
 
 
-
-// export const metadata = {
-//   title: "PDF Converter Online – PDF to Word, Word to PDF, Image to PDF",
-//   description:
-//     "Free online PDF conversion tools: PDF to Word, Word to PDF, Image to PDF, Merge, Split, Compress PDF. Fast, secure, no registration required.",
-// icons: {
-//   icon: "/pdficon.svg",
-//     shortcut: "/pdficon-64.png", // clarity ke liye
-// }
-
-
-// };
-
-
-
 export const metadata = {
-  title: "PDFLinx - PDF Tools",
-  description: "Convert PDF files easily online.",
+  title: {
+    default: "PDFLinx - Free PDF Tools",
+    template: "%s | PDFLinx",
+  },
+  description:
+    "Free online tools to convert, merge, split, and compress PDF files easily.",
   icons: {
     icon: "/favicon.svg",
     shortcut: "/favicon.svg",
@@ -40,27 +29,26 @@ export const metadata = {
   },
 };
 
+// export const metadata = {
+//   title: "PDFLinx - PDF Tools",
+//   description: "Convert PDF files easily online.",
+//   icons: {
+//     icon: "/favicon.svg",
+//     shortcut: "/favicon.svg",
+//     apple: "/favicon.svg",
+//   },
+// };
 
 
 // export const metadata = {
-//   title: "PDF Converter Online – PDF to Word, Word to PDF, Image to PDF",
-//   description:
-//     "Free online PDF conversion tools: PDF to Word, Word to PDF, Image to PDF, Merge, Split, Compress PDF. Fast, secure, no registration required.",
 //   icons: {
-//     icon: [
-//       { url: "/pdficon.svg", type: "image/svg+xml" }, // SVG for modern browsers
-//       { url: "/pdficon-32.png", sizes: "32x32", type: "image/png" }, // Standard favicon
-//       { url: "/pdficon-64.png", sizes: "64x64", type: "image/png" }, // Higher resolution
-//     ],
-//     shortcut: "/pdficon-64.png",
-//     apple: [
-//       { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }, // iOS home screen
-//     ],
-//     other: [
-//       { rel: "icon", url: "/pdficon-192.png", sizes: "192x192", type: "image/png" }, // Android Chrome
-//     ],
+//     icon: "/favicon.svg",
+//     shortcut: "/favicon.svg",
+//     apple: "/favicon.svg",
 //   },
 // };
+
+
 
 export default function RootLayout({ children }) {
   return (
