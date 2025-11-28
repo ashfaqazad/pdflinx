@@ -67,9 +67,8 @@ export default function Navbar() {
           </button>
           <div
             id="pdf-dropdown"
-            className={`absolute top-10 left-0 bg-white text-black shadow-lg rounded-lg p-4 w-64 transition-all duration-200 ${
-              openMenu === "pdf" ? "block" : "hidden"
-            }`}
+            className={`absolute top-10 left-0 bg-white text-black shadow-lg rounded-lg p-4 w-64 transition-all duration-200 ${openMenu === "pdf" ? "block" : "hidden"
+              }`}
             onMouseEnter={() => setOpenMenu("pdf")}
             onMouseLeave={() => setOpenMenu(null)}
           >
@@ -102,15 +101,14 @@ export default function Navbar() {
           </button>
           <div
             id="tools-dropdown"
-            className={`absolute top-10 left-0 bg-white text-black shadow-lg rounded-lg p-4 w-64 transition-all duration-200 ${
-              openMenu === "tools" ? "block" : "hidden"
-            }`}
+            className={`absolute top-10 left-0 bg-white text-black shadow-lg rounded-lg p-4 w-64 transition-all duration-200 ${openMenu === "tools" ? "block" : "hidden"
+              }`}
             onMouseEnter={() => setOpenMenu("tools")}
             onMouseLeave={() => setOpenMenu(null)}
           >
             <ul className="space-y-2 text-sm">
               <li><Link href="/qr-generator" className="flex items-center gap-2 hover:text-red-600"><QrCode size={16} color="#0EA5E9" /> QR Generator</Link></li>
-              <li><Link href="/password-generator" className="flex items-center gap-2 hover:text-red-600"><Lock size={16} color="#F59E0B" /> Password Generator</Link></li>
+              <li><Link href="/password-gen" className="flex items-center gap-2 hover:text-red-600"><Lock size={16} color="#F59E0B" /> Password Generator</Link></li>
               <li><Link href="/unit-converter" className="flex items-center gap-2 hover:text-red-600"><Ruler size={16} color="#84CC16" /> Unit Converter</Link></li>
               <li><Link href="/youtube-thumbnail" className="flex items-center gap-2 hover:text-red-600"><Youtube size={16} color="#EF4444" /> YouTube Thumbnail</Link></li>
               <li><Link href="/image-compressor" className="flex items-center gap-2 hover:text-red-600"><ImageIcon size={16} color="#06B6D4" /> Image Compressor</Link></li>
@@ -134,12 +132,13 @@ export default function Navbar() {
       >
         ☰
       </button>
-
       {/* ✅ Mobile Drawer */}
       {mobileOpen && (
         <div className="absolute top-16 left-0 w-full bg-black border-t border-gray-700 p-4 md:hidden">
           <ul className="flex flex-col gap-3">
-            <li><Link href="/" onClick={() => setMobileOpen(false)}>🏠 Home</Link></li>
+            <li>
+              <Link href="/" onClick={() => setMobileOpen(false)}>🏠 Home</Link>
+            </li>
 
             {/* PDF Tools Accordion */}
             <li>
@@ -152,18 +151,18 @@ export default function Navbar() {
               </button>
               {openMenu === "pdf" && (
                 <ul className="pl-4 mt-2 space-y-1 text-sm">
-                  <li><Link href="/pdf-to-word"><FileText size={14} color="#E63946" /> PDF to Word</Link></li>
-                  <li><Link href="/word-to-pdf"><FileType size={14} color="#457B9D" /> Word to PDF</Link></li>
-                  <li><Link href="/image-to-pdf"><FileImage size={14} color="#F4A261" /> Image to PDF</Link></li>
-                  <li><Link href="/merge-pdf"><FilePlus size={14} color="#2A9D8F" /> Merge PDF</Link></li>
-                  <li><Link href="/split-pdf"><Scissors size={14} color="#E76F51" /> Split PDF</Link></li>
-                  <li><Link href="/compress-pdf"><FileMinus size={14} color="#6A4C93" /> Compress PDF</Link></li>
-                  <li><Link href="/excel-to-pdf"><FileSpreadsheet size={14} color="#2D6A4F" /> Excel to PDF</Link></li>
+                  <li><Link href="/pdf-to-word" onClick={() => setMobileOpen(false)}><FileText size={14} color="#E63946" /> PDF to Word</Link></li>
+                  <li><Link href="/word-to-pdf" onClick={() => setMobileOpen(false)}><FileType size={14} color="#457B9D" /> Word to PDF</Link></li>
+                  <li><Link href="/image-to-pdf" onClick={() => setMobileOpen(false)}><FileImage size={14} color="#F4A261" /> Image to PDF</Link></li>
+                  <li><Link href="/merge-pdf" onClick={() => setMobileOpen(false)}><FilePlus size={14} color="#2A9D8F" /> Merge PDF</Link></li>
+                  <li><Link href="/split-pdf" onClick={() => setMobileOpen(false)}><Scissors size={14} color="#E76F51" /> Split PDF</Link></li>
+                  <li><Link href="/compress-pdf" onClick={() => setMobileOpen(false)}><FileMinus size={14} color="#6A4C93" /> Compress PDF</Link></li>
+                  <li><Link href="/excel-to-pdf" onClick={() => setMobileOpen(false)}><FileSpreadsheet size={14} color="#2D6A4F" /> Excel to PDF</Link></li>
                 </ul>
               )}
             </li>
 
-            {/* ✅ All Tools Accordion (with new 3 tools added) */}
+            {/* ✅ All Tools Accordion */}
             <li>
               <button
                 className="flex justify-between w-full items-center"
@@ -174,25 +173,28 @@ export default function Navbar() {
               </button>
               {openMenu === "tools" && (
                 <ul className="pl-4 mt-2 space-y-1 text-sm">
-                  <li><Link href="/qr-generator"><QrCode size={14} color="#0EA5E9" /> QR Generator</Link></li>
-                  <li><Link href="/password-generator"><Lock size={14} color="#F59E0B" /> Password Generator</Link></li>
-                  <li><Link href="/unit-converter"><Ruler size={14} color="#84CC16" /> Unit Converter</Link></li>
-                  <li><Link href="/youtube-thumbnail"><Youtube size={14} color="#EF4444" /> YouTube Thumbnail</Link></li>
-                  <li><Link href="/image-compressor"><ImageIcon size={14} color="#06B6D4" /> Image Compressor</Link></li>
-                  <li><Link href="/image-to-text"><ImageIcon size={14} color="#3B82F6" /> Image to Text</Link></li>
-                  <li><Link href="/signature-maker"><PenTool size={14} color="#10B981" /> Signature Maker</Link></li>
-                  <li><Link href="/heic-to-jpg"><FileImage size={14} color="#F59E0B" /> HEIC to JPG</Link></li>
-                  <li><Link href="/text-to-pdf"><FileText size={14} color="#9333EA" /> Text to PDF</Link></li>
+                  <li><Link href="/qr-generator" onClick={() => setMobileOpen(false)}><QrCode size={14} color="#0EA5E9" /> QR Generator</Link></li>
+                  <li><Link href="/password-gen" onClick={() => setMobileOpen(false)}><Lock size={14} color="#F59E0B" /> Password Generator</Link></li>
+                  <li><Link href="/unit-converter" onClick={() => setMobileOpen(false)}><Ruler size={14} color="#84CC16" /> Unit Converter</Link></li>
+                  <li><Link href="/youtube-thumbnail" onClick={() => setMobileOpen(false)}><Youtube size={14} color="#EF4444" /> YouTube Thumbnail</Link></li>
+                  <li><Link href="/image-compressor" onClick={() => setMobileOpen(false)}><ImageIcon size={14} color="#06B6D4" /> Image Compressor</Link></li>
+                  <li><Link href="/image-to-text" onClick={() => setMobileOpen(false)}><ImageIcon size={14} color="#3B82F6" /> Image to Text</Link></li>
+                  <li><Link href="/signature-maker" onClick={() => setMobileOpen(false)}><PenTool size={14} color="#10B981" /> Signature Maker</Link></li>
+                  <li><Link href="/heic-to-jpg" onClick={() => setMobileOpen(false)}><FileImage size={14} color="#F59E0B" /> HEIC to JPG</Link></li>
+                  <li><Link href="/text-to-pdf" onClick={() => setMobileOpen(false)}><FileText size={14} color="#9333EA" /> Text to PDF</Link></li>
                 </ul>
               )}
             </li>
 
+            {/* ✅ Bottom Navigation Links */}
             <li><Link href="/blog" onClick={() => setMobileOpen(false)}>📰 Blog</Link></li>
             <li><Link href="/about" onClick={() => setMobileOpen(false)}>ℹ️ About</Link></li>
             <li><Link href="/contact" onClick={() => setMobileOpen(false)}>📩 Contact</Link></li>
           </ul>
         </div>
       )}
+
+
     </nav>
   );
 }
