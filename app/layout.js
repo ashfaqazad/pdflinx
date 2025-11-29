@@ -33,6 +33,7 @@ export const metadata = {
     "PDF to Word",
     "online PDF tools",
     "Text to PDF",
+    "excel pdf",
     // 🔹 Utility tools
     "Password Generator",
     "QR Code Generator",
