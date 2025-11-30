@@ -1,4 +1,3 @@
-// app/qr-generator/page.jsx
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
