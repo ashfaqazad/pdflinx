@@ -9,19 +9,38 @@ export default function SignatureMakerClient() {
   const [bgColor, setBgColor] = useState("#ffffff");
 
   useEffect(() => {
-    if (typeof window === "undefined") return;
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
     ctx.fillStyle = bgColor;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
   }, [bgColor]);
 
-  const startDrawing = (e) => {
+  const getCoordinates = (e) => {
     const canvas = canvasRef.current;
-    const ctx = canvas.getContext("2d");
     const rect = canvas.getBoundingClientRect();
-    const x = (e.touches ? e.touches[0].clientX : e.nativeEvent.offsetX) - rect.left;
-    const y = (e.touches ? e.touches[0].clientY : e.nativeEvent.offsetY) - rect.top;
+    let x, y;
+
+    if (e.touches && e.touches.length > 0) {
+      x = e.touches[0].clientX - rect.left;
+      y = e.touches[0].clientY - rect.top;
+    } else {
+      x = e.clientX - rect.left;
+      y = e.clientY - rect.top;
+    }
+
+    // Scaling fix (for responsive canvas)
+    const scaleX = canvas.width / rect.width;
+    const scaleY = canvas.height / rect.height;
+
+    return {
+      x: x * scaleX,
+      y: y * scaleY,
+    };
+  };
+
+  const startDrawing = (e) => {
+    const { x, y } = getCoordinates(e);
+    const ctx = canvasRef.current.getContext("2d");
     ctx.beginPath();
     ctx.moveTo(x, y);
     setDrawing(true);
@@ -29,11 +48,8 @@ export default function SignatureMakerClient() {
 
   const draw = (e) => {
     if (!drawing) return;
-    const canvas = canvasRef.current;
-    const ctx = canvas.getContext("2d");
-    const rect = canvas.getBoundingClientRect();
-    const x = (e.touches ? e.touches[0].clientX : e.nativeEvent.offsetX) - rect.left;
-    const y = (e.touches ? e.touches[0].clientY : e.nativeEvent.offsetY) - rect.top;
+    const { x, y } = getCoordinates(e);
+    const ctx = canvasRef.current.getContext("2d");
     ctx.lineWidth = 2;
     ctx.lineCap = "round";
     ctx.strokeStyle = color;
@@ -41,7 +57,9 @@ export default function SignatureMakerClient() {
     ctx.stroke();
   };
 
-  const stopDrawing = () => setDrawing(false);
+  const stopDrawing = () => {
+    setDrawing(false);
+  };
 
   const clear = () => {
     const canvas = canvasRef.current;
@@ -62,7 +80,7 @@ export default function SignatureMakerClient() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-50 to-purple-50 py-12 px-4">
       <div className="max-w-4xl mx-auto bg-white rounded-3xl shadow-2xl p-10 text-center">
-        <h1 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+        <h1 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent leading-tight pb-2">
           Free Signature Maker
         </h1>
         <p className="text-lg md:text-xl text-gray-600 mb-10">
@@ -90,7 +108,6 @@ export default function SignatureMakerClient() {
           </button>
         </div>
 
-        {/* ✅ Responsive Signature Canvas */}
         <div className="w-full max-w-[800px] mx-auto">
           <canvas
             ref={canvasRef}
@@ -114,7 +131,6 @@ export default function SignatureMakerClient() {
     </div>
   );
 }
-
 
 
 

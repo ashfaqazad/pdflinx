@@ -39,9 +39,15 @@ export default function ImageToText() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-teal-50 to-cyan-50 py-12 px-4">
       <div className="max-w-5xl mx-auto bg-white rounded-3xl shadow-2xl p-10 text-center">
-        <h1 className="text-5xl font-bold mb-8 bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent">
+        {/* <h1 className="text-5xl font-bold mb-8 bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent">
+          Image to Text (Offline OCR)
+        </h1> */}
+        <h1
+          className="text-5xl sm:text-5xl font-bold mb-8 bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent leading-[1.2] pb-2"
+        >
           Image to Text (Offline OCR)
         </h1>
+
         <p className="text-xl text-gray-600 mb-10">
           Upload any image and extract text using!
         </p>
