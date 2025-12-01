@@ -53,6 +53,74 @@ export default function Blog() {
       date: "Sep 5, 2025",
       slug: "excel-to-pdf",
     },
+
+
+    {
+  title: "Generate QR Codes Instantly for Links, Text & Contacts",
+  description:
+    "Create custom QR codes for websites, Wi-Fi, business cards, or text messages instantly. Fast, free, and secure online QR code generator for 2025.",
+  date: "Dec 2, 2025",
+  slug: "qr-generator",
+},
+{
+  title: "Create Strong Passwords Instantly with Our Password Generator",
+  description:
+    "Generate ultra-secure random passwords instantly online. Protect your accounts with strong, unique passwords for emails, social media, and logins.",
+  date: "Dec 3, 2025",
+  slug: "password-gen",
+},
+{
+  title: "Convert Units Easily with Our Free Online Unit Converter",
+  description:
+    "Convert length, weight, area, temperature, and more with our smart online unit converter. Fast, accurate, and essential for students and professionals.",
+  date: "Dec 4, 2025",
+  slug: "unit-converter",
+},
+{
+  title: "Download HD YouTube Thumbnails Instantly in One Click",
+  description:
+    "Download YouTube video thumbnails in HD, Full HD, or 4K quality instantly. Perfect for creators, editors, and designers — free, fast, and watermark-free.",
+  date: "Dec 5, 2025",
+  slug: "youtube-thumbnail",
+},
+{
+  title: "Compress Images Online Without Losing Quality",
+  description:
+    "Reduce image file size instantly while keeping full resolution. Free online image compressor for JPG, PNG, and WebP — ideal for websites and social media.",
+  date: "Dec 6, 2025",
+  slug: "image-compressor",
+},
+{
+  title: "Convert Images to Text Using AI (Image to Text Extractor)",
+  description:
+    "Extract readable text from images or scanned documents using our AI-powered OCR image to text tool. Perfect for notes, receipts, and books.",
+  date: "Dec 7, 2025",
+  slug: "image-to-text",
+},
+{
+  title: "Draw & Download Signatures Online with Signature Maker",
+  description:
+    "Create a professional digital signature online instantly. Draw, type, or upload your signature and download it in PNG for documents or forms.",
+  date: "Dec 8, 2025",
+  slug: "signature-maker",
+},
+{
+  title: "Convert HEIC to JPG Instantly Online",
+  description:
+    "Convert Apple HEIC photos to JPG online in seconds. Keep original quality and metadata intact — no software or signup required.",
+  date: "Dec 9, 2025",
+  slug: "heic-to-jpg",
+},
+{
+  title: "Convert Text to PDF Instantly Online (Free & Secure)",
+  description:
+    "Turn plain text, notes, or reports into professional PDF documents in one click. Free online text to PDF converter with formatting support.",
+  date: "Dec 10, 2025",
+  slug: "text-to-pdf",
+},
+
+
+
   ];
 
   return (

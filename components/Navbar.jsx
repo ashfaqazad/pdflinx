@@ -28,8 +28,11 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="bg-black text-white px-3 py-2 flex justify-between items-center relative z-50">
-      {/* ✅ Brand Logo */}
+    // <nav className="bg-black text-white px-3 py-2 flex justify-between items-center relative z-50">
+    // <nav className="bg-black text-white px-3 py-2 flex justify-between items-center relative z-50 font-[Nunito] font-bold tracking-wide">
+  <nav className="bg-black text-white px-3 py-2 flex justify-between items-center relative z-50 font-[Poppins] font-semibold tracking-wide">
+
+    {/* ✅ Brand Logo */}
       <Link href="/">
         <img
           src="/pdflinx-logo.svg"

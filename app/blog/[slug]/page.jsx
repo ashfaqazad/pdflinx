@@ -129,6 +129,195 @@ const blogs = [
       All conversions are done online, with privacy and accuracy guaranteed.
     `,
   },
+
+{
+  slug: "qr-generator",
+  title: "Generate QR Codes Instantly for Links, Text & Contacts",
+  date: "Dec 2, 2025",
+  content: `
+    QR codes are everywhere in 2025 — from restaurant menus to business cards and marketing flyers. 
+    Our free QR Generator helps you create professional QR codes in seconds for links, Wi-Fi, or custom text.
+
+    💡 Use Cases:
+    - Create QR codes for websites, contact cards, and social profiles.
+    - Print codes on posters, brochures, or packaging for better reach.
+
+    How to Use:
+    1. Enter your URL or text.
+    2. Choose your color or style.
+    3. Click “Generate” and download your code in PNG or SVG.
+
+    Quick Tip:
+    Add a logo in the center or use your brand color for better recognition.
+  `,
+},
+{
+  slug: "password-gen",
+  title: "Create Strong Passwords Instantly with Our Password Generator",
+  date: "Dec 3, 2025",
+  content: `
+    Weak passwords are the top cause of hacked accounts. 
+    Our free Password Generator creates strong, secure, and unique passwords instantly to protect your online identity.
+
+    💡 Use Cases:
+    - Generate passwords for emails, banking, or cloud logins.
+    - Ideal for freelancers and developers managing multiple accounts.
+
+    How to Use:
+    1. Set the desired password length.
+    2. Select uppercase, lowercase, numbers, or symbols.
+    3. Click “Generate” and copy securely.
+
+    Pro Tip:
+    Always store passwords in a password manager for easy and safe access.
+  `,
+},
+{
+  slug: "unit-converter",
+  title: "Convert Units Easily with Our Free Online Unit Converter",
+  date: "Dec 4, 2025",
+  content: `
+    Convert values quickly between measurement systems — like meters to feet or Celsius to Fahrenheit — with our smart online Unit Converter.
+
+    💡 Use Cases:
+    - Students, engineers, or cooks who need instant conversions.
+    - Perfect for travel, construction, and science projects.
+
+    How to Use:
+    1. Choose a conversion type (Length, Weight, Area, etc.).
+    2. Enter a value in one unit.
+    3. Instantly see the equivalent in all other formats.
+
+    Quick Tip:
+    Save time by bookmarking the converter for daily use.
+  `,
+},
+{
+  slug: "youtube-thumbnail",
+  title: "Download HD YouTube Thumbnails Instantly in One Click",
+  date: "Dec 5, 2025",
+  content: `
+    Save high-quality YouTube thumbnails directly from any video link — no software or login required. 
+    Our downloader supports HD, Full HD, and even 4K thumbnails.
+
+    💡 Use Cases:
+    - Ideal for video editors, bloggers, and content creators.
+    - Download cover images for your own YouTube videos.
+
+    How to Use:
+    1. Copy the YouTube video URL.
+    2. Paste it into the downloader field.
+    3. Click “Download” and choose your image quality.
+
+    Tip:
+    Always credit the creator if using thumbnails for public use.
+  `,
+},
+{
+  slug: "image-compressor",
+  title: "Compress Images Online Without Losing Quality",
+  date: "Dec 6, 2025",
+  content: `
+    Large image files slow down websites and uploads. 
+    Our free Image Compressor reduces file size while keeping visual quality intact — no installation needed.
+
+    💡 Use Cases:
+    - Compress JPG, PNG, or WebP for web and social media.
+    - Optimize images for better website speed and SEO.
+
+    How to Use:
+    1. Upload your image files.
+    2. Choose compression strength.
+    3. Download your smaller, high-quality image.
+
+    Pro Tip:
+    Use medium compression to balance size and clarity perfectly.
+  `,
+},
+{
+  slug: "image-to-text",
+  title: "Convert Images to Text Using AI (Image to Text Extractor)",
+  date: "Dec 7, 2025",
+  content: `
+    Extract editable text from images or scanned papers with our AI-powered Image to Text converter — fast, accurate, and 100% free.
+
+    💡 Use Cases:
+    - Turn handwritten notes, printed docs, or receipts into text.
+    - Ideal for students, researchers, and office users.
+
+    How to Use:
+    1. Upload your image or screenshot.
+    2. Click “Extract Text.”
+    3. Copy or download your converted text instantly.
+
+    Pro Tip:
+    Use clear, bright images for the best recognition accuracy.
+  `,
+},
+{
+  slug: "signature-maker",
+  title: "Draw & Download Signatures Online with Signature Maker",
+  date: "Dec 8, 2025",
+  content: `
+    Create a professional digital signature instantly. 
+    Our Signature Maker lets you draw, type, or upload your signature and download it in transparent PNG format.
+
+    💡 Use Cases:
+    - Sign contracts, NDAs, or forms online.
+    - Ideal for freelancers and business professionals.
+
+    How to Use:
+    1. Draw or type your signature.
+    2. Adjust color and thickness.
+    3. Click “Download” and save your PNG file.
+
+    Tip:
+    Keep your digital signature safe for future use on official documents.
+  `,
+},
+{
+  slug: "heic-to-jpg",
+  title: "Convert HEIC to JPG Instantly Online",
+  date: "Dec 9, 2025",
+  content: `
+    Apple’s HEIC photos often can’t open on Windows or Android. 
+    Our HEIC to JPG converter solves that by changing them to a universal JPG format instantly.
+
+    💡 Use Cases:
+    - Convert iPhone photos before sharing online.
+    - Upload HEIC files easily to websites or email.
+
+    How to Use:
+    1. Upload your HEIC files.
+    2. Click “Convert.”
+    3. Download your JPGs in seconds.
+
+    Pro Tip:
+    Batch convert multiple photos to save time and maintain quality.
+  `,
+},
+{
+  slug: "text-to-pdf",
+  title: "Convert Text to PDF Instantly Online (Free & Secure)",
+  date: "Dec 10, 2025",
+  content: `
+    Turn simple text into a clean, professional PDF in seconds. 
+    Our Text to PDF converter helps students, writers, and professionals format their notes or reports easily.
+
+    💡 Use Cases:
+    - Create resumes, letters, or documents.
+    - Save notes and essays in shareable PDF format.
+
+    How to Use:
+    1. Paste or type your text into the editor.
+    2. Click “Convert.”
+    3. Download your PDF instantly.
+
+    Pro Tip:
+    Combine multiple text files using our Merge PDF tool for organized documents.
+  `,
+},
+
 ];
 
 // ✅ Metadata
