@@ -2,9 +2,9 @@ import { ShieldCheck, Zap, Globe } from "lucide-react";
 
 // ✅ SEO Metadata
 export const metadata = {
-  title: "About PDF Linx | Free Online PDF & Utility Tools for Everyone",
+  title: "About PDF Linx | Free Online PDF & File Tools",
   description:
-    "Learn more about PDF Linx — your all-in-one online platform for free PDF conversions, merging, splitting, compressing, and essential tools like QR Generator, Image to Text, and Password Generator. Secure, fast, and accessible for all.",
+    "Discover PDF Linx — your free platform for PDF conversions, merging, compressing, and tools like QR Generator, Image to Text, and Password Creator.",
   keywords: [
     "PDF Linx",
     "PDF tools",
@@ -17,16 +17,14 @@ export const metadata = {
     "Excel to PDF",
     "Text to PDF",
     "Image to PDF",
-    "QR code generator",
-    "Password generator",
-    "Unit converter",
-    "YouTube thumbnail downloader",
-    "Image compressor",
-    "Image to text",
+    "QR generator",
+    "password generator",
+    "unit converter",
+    "image compressor",
+    "image to text",
     "HEIC to JPG",
-    "free online tools",
-    "secure PDF tools",
-    "document converter",
+    "PDF tools online",
+    "free document converter",
   ],
 };
 
