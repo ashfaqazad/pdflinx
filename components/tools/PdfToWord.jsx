@@ -5,8 +5,8 @@ export default function PdfToWord() {
   const [file, setFile] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  // ← Tera Vercel .env se aayega – GitHub par IP nahi dikhega
-  const API_URL = process.env.NEXT_PUBLIC_BACKEND_URL
+  // Local aur live dono par chalega
+  const API_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://72.60.78.58:4000";
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -32,7 +32,6 @@ export default function PdfToWord() {
       a.click();
       window.URL.revokeObjectURL(url);
 
-      // alert("BHAI HO GAYA – Downloaded Successfully!");
     } catch (err) {
       alert("Error: " + err.message);
     } finally {
@@ -51,7 +50,7 @@ export default function PdfToWord() {
       </div>
 
       <form onSubmit={handleSubmit} className="flex flex-col items-center space-y-6">
-        <label className="bg-red-600 text-white px-8 py-4 rounded-lg shadow-lg cursor-pointer hover:bg-red-700 transition">
+        <label className="bg-red-600 text-white px-8 py-4 rounded-lg shadow-lg cursor-pointer hover:bg-red-700 transition text-lg font-medium">
           {file ? file.name : "Select PDF file"}
           <input
             type="file"
@@ -65,20 +64,118 @@ export default function PdfToWord() {
         <button
           type="submit"
           disabled={loading}
-          className="bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 disabled:opacity-50 transition"
+          className="bg-blue-600 text-white px-8 py-4 rounded-lg font-bold text-xl hover:bg-blue-700 disabled:opacity-60 transition shadow-lg"
         >
-          {loading ? "Converting..." : "Convert to Word"}
+          {loading ? "Converting... Please wait" : "Convert to Word"}
         </button>
       </form>
 
       {loading && (
-        <p className="mt-6 text-blue-600 animate-pulse">
+        <p className="mt-8 text-blue-600 text-lg font-medium animate-pulse">
           Converting your PDF... (takes 5-15 seconds)
         </p>
       )}
     </main>
   );
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// "use client";
+// import { useState } from "react";
+
+// export default function PdfToWord() {
+//   const [file, setFile] = useState(null);
+//   const [loading, setLoading] = useState(false);
+
+//   // ← Tera Vercel .env se aayega – GitHub par IP nahi dikhega
+//   const API_URL = process.env.NEXT_PUBLIC_BACKEND_URL
+
+//   const handleSubmit = async (e) => {
+//     e.preventDefault();
+//     if (!file) return alert("Please select a PDF file");
+
+//     setLoading(true);
+//     const formData = new FormData();
+//     formData.append("file", file);
+
+//     try {
+//       const res = await fetch(`${API_URL}/convert/pdf-to-word`, {
+//         method: "POST",
+//         body: formData,
+//       });
+
+//       if (!res.ok) throw new Error("Conversion failed");
+
+//       const blob = await res.blob();
+//       const url = window.URL.createObjectURL(blob);
+//       const a = document.createElement("a");
+//       a.href = url;
+//       a.download = file.name.replace(/\.pdf$/i, ".docx");
+//       a.click();
+//       window.URL.revokeObjectURL(url);
+
+//       // alert("BHAI HO GAYA – Downloaded Successfully!");
+//     } catch (err) {
+//       alert("Error: " + err.message);
+//     } finally {
+//       setLoading(false);
+//       setFile(null);
+//     }
+//   };
+
+//   return (
+//     <main className="min-h-screen flex flex-col items-center justify-center bg-gray-50 p-6">
+//       <div className="text-center max-w-2xl">
+//         <h1 className="text-3xl font-bold mb-2">PDF to WORD Converter</h1>
+//         <p className="text-gray-600 mb-8">
+//           Convert your PDF to Word documents with incredible accuracy.
+//         </p>
+//       </div>
+
+//       <form onSubmit={handleSubmit} className="flex flex-col items-center space-y-6">
+//         <label className="bg-red-600 text-white px-8 py-4 rounded-lg shadow-lg cursor-pointer hover:bg-red-700 transition">
+//           {file ? file.name : "Select PDF file"}
+//           <input
+//             type="file"
+//             accept="application/pdf"
+//             onChange={(e) => setFile(e.target.files?.[0] || null)}
+//             className="hidden"
+//             required
+//           />
+//         </label>
+
+//         <button
+//           type="submit"
+//           disabled={loading}
+//           className="bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 disabled:opacity-50 transition"
+//         >
+//           {loading ? "Converting..." : "Convert to Word"}
+//         </button>
+//       </form>
+
+//       {loading && (
+//         <p className="mt-6 text-blue-600 animate-pulse">
+//           Converting your PDF... (takes 5-15 seconds)
+//         </p>
+//       )}
+//     </main>
+//   );
+// }
 
 
 
