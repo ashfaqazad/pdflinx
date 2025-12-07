@@ -6,40 +6,74 @@ export default function PdfToWord() {
   const [loading, setLoading] = useState(false);
 
   // Local aur live dono par chalega
-  const API_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://72.60.78.58:4000";
+  // const API_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://72.60.78.58:4000";
+const API_URL = "";
+
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   if (!file) return alert("Please select a PDF file");
+
+  //   setLoading(true);
+  //   const formData = new FormData();
+  //   formData.append("file", file);
+
+  //   try {
+  //     const res = await fetch(`${API_URL}/convert/pdf-to-word`, {
+  //       method: "POST",
+  //       body: formData,
+  //     });
+
+  //     if (!res.ok) throw new Error("Conversion failed");
+
+  //     const blob = await res.blob();
+  //     const url = window.URL.createObjectURL(blob);
+  //     const a = document.createElement("a");
+  //     a.href = url;
+  //     a.download = file.name.replace(/\.pdf$/i, ".docx");
+  //     a.click();
+  //     window.URL.revokeObjectURL(url);
+
+  //   } catch (err) {
+  //     alert("Error: " + err.message);
+  //   } finally {
+  //     setLoading(false);
+  //     setFile(null);
+  //   }
+  // };
+
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!file) return alert("Please select a PDF file");
+  e.preventDefault();
+  if (!file) return alert("Please select a PDF file");
 
-    setLoading(true);
-    const formData = new FormData();
-    formData.append("file", file);
+  setLoading(true);
+  const formData = new FormData();
+  formData.append("file", file);
 
-    try {
-      const res = await fetch(`${API_URL}/convert/pdf-to-word`, {
-        method: "POST",
-        body: formData,
-      });
+  try {
+    // ← YEHI LINE HAI JO SAB THEEK KAREGI
+    const res = await fetch("/convert/pdf-to-word", {
+      method: "POST",
+      body: formData,
+    });
 
-      if (!res.ok) throw new Error("Conversion failed");
+    if (!res.ok) throw new Error("Conversion failed");
 
-      const blob = await res.blob();
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = file.name.replace(/\.pdf$/i, ".docx");
-      a.click();
-      window.URL.revokeObjectURL(url);
+    const blob = await res.blob();
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = file.name.replace(/\.pdf$/i, ".docx");
+    a.click();
+    window.URL.revokeObjectURL(url);
 
-    } catch (err) {
-      alert("Error: " + err.message);
-    } finally {
-      setLoading(false);
-      setFile(null);
-    }
-  };
-
+  } catch (err) {
+    alert("Error: " + err.message);
+  } finally {
+    setLoading(false);
+    setFile(null);
+  }
+};
   return (
     <main className="min-h-screen flex flex-col items-center justify-center bg-gray-50 p-6">
       <div className="text-center max-w-2xl">

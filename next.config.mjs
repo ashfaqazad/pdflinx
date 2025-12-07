@@ -3,14 +3,40 @@ const nextConfig = {
   async rewrites() {
     return [
       {
-        source: "/api/:path*",
-        destination: "http://72.60.78.58:4000/:path*", // Proxy to VPS backend
+        source: "/convert/:path*",                          // ← YEHI CHANGE KI HAI
+        destination: "http://72.60.78.58:4000/convert/:path*", // ← YEHI DESTINATION
       },
     ];
   },
 };
 
 export default nextConfig;
+
+
+
+
+
+
+
+
+
+
+
+
+
+// /** @type {import('next').NextConfig} */
+// const nextConfig = {
+//   async rewrites() {
+//     return [
+//       {
+//         source: "/api/:path*",
+//         destination: "http://72.60.78.58:4000/:path*", // Proxy to VPS backend
+//       },
+//     ];
+//   },
+// };
+
+// export default nextConfig;
 
 
 
