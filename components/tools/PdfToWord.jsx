@@ -6,7 +6,7 @@ export default function PdfToWord() {
   const [loading, setLoading] = useState(false);
 
   // ← Tera Vercel .env se aayega – GitHub par IP nahi dikhega
-  const API_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://72.60.78.58:4000";
+  const API_URL = process.env.NEXT_PUBLIC_BACKEND_URL
 
   const handleSubmit = async (e) => {
     e.preventDefault();
