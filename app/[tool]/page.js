@@ -22,33 +22,8 @@ const componentMap = {
 };
 
 // 🔹 Dynamic Metadata
-// export async function generateMetadata({ params }) {
-//   const { tool } = params;
-//   const pageData = seoData[tool];
-//   if (!pageData) notFound();
-
-//   return {
-//     title: pageData.title,
-//     description: pageData.description,
-//     keywords: pageData.keywords.join(", "),
-//   };
-// }
-
-// // 🔹 Dynamic Page Loader
-// export default async function ToolPage({ params }) {
-//   const { tool } = params;
-//   const ComponentImport = componentMap[tool];
-//   if (!ComponentImport) notFound();
-
-//   const Component = (await ComponentImport()).default;
-//   return <Component />;
-// }
-
-
-// Dynamic Metadata – 100 % warning free
 export async function generateMetadata({ params }) {
-  const paramsResolved = await params;
-  const tool = paramsResolved.tool;
+  const { tool } = params;
   const pageData = seoData[tool];
   if (!pageData) notFound();
 
@@ -59,10 +34,9 @@ export async function generateMetadata({ params }) {
   };
 }
 
-// Dynamic Page Loader – 100 % warning free
+// 🔹 Dynamic Page Loader
 export default async function ToolPage({ params }) {
-  const paramsResolved = await params;
-  const tool = paramsResolved.tool;
+  const { tool } = params;
   const ComponentImport = componentMap[tool];
   if (!ComponentImport) notFound();
 
