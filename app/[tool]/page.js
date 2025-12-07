@@ -21,9 +21,9 @@ const componentMap = {
   "text-to-pdf": () => import("@/components/tools/TextToPdf"),
 };
 
-// // Dynamic Metadata – FIXED
+// 🔹 Dynamic Metadata
 // export async function generateMetadata({ params }) {
-//   const { tool } = await params;    // ← YEHI CHANGE KI HAI
+//   const { tool } = params;
 //   const pageData = seoData[tool];
 //   if (!pageData) notFound();
 
@@ -34,9 +34,9 @@ const componentMap = {
 //   };
 // }
 
-// // Dynamic Page Loader – FIXED
+// // 🔹 Dynamic Page Loader
 // export default async function ToolPage({ params }) {
-//   const { tool } = await params;    // ← YEHI CHANGE KI HAI
+//   const { tool } = params;
 //   const ComponentImport = componentMap[tool];
 //   if (!ComponentImport) notFound();
 
@@ -47,7 +47,8 @@ const componentMap = {
 
 // Dynamic Metadata – 100 % warning free
 export async function generateMetadata({ params }) {
-  const tool = (await params).tool;    // ← YEHI LINE CHANGE KI HAI
+  const paramsResolved = await params;
+  const tool = paramsResolved.tool;
   const pageData = seoData[tool];
   if (!pageData) notFound();
 
@@ -60,7 +61,8 @@ export async function generateMetadata({ params }) {
 
 // Dynamic Page Loader – 100 % warning free
 export default async function ToolPage({ params }) {
-  const tool = (await params).tool;    // ← YEHI LINE CHANGE KI HAI
+  const paramsResolved = await params;
+  const tool = paramsResolved.tool;
   const ComponentImport = componentMap[tool];
   if (!ComponentImport) notFound();
 
