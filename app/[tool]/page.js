@@ -21,9 +21,9 @@ const componentMap = {
   "text-to-pdf": () => import("@/components/tools/TextToPdf"),
 };
 
-// 🔹 Dynamic Metadata
+// Dynamic Metadata – FIXED
 export async function generateMetadata({ params }) {
-  const { tool } = params;
+  const { tool } = await params;    // ← YEHI CHANGE KI HAI
   const pageData = seoData[tool];
   if (!pageData) notFound();
 
@@ -34,9 +34,9 @@ export async function generateMetadata({ params }) {
   };
 }
 
-// 🔹 Dynamic Page Loader
+// Dynamic Page Loader – FIXED
 export default async function ToolPage({ params }) {
-  const { tool } = params;
+  const { tool } = await params;    // ← YEHI CHANGE KI HAI
   const ComponentImport = componentMap[tool];
   if (!ComponentImport) notFound();
 

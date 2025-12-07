@@ -3,50 +3,90 @@ import { useState } from "react";
 
 export default function PdfToWord() {
   const [file, setFile] = useState(null);
-  const [fileUrl, setFileUrl] = useState("");  // Agar URL chahiye toh uncomment kar lena
+  const [fileUrl, setFileUrl] = useState("");  
   const [downloadUrl, setDownloadUrl] = useState(null);
   const [loading, setLoading] = useState(false);
 
+  // ← YEHI SAHI API HAI TERE LIVE SITE KA
+  const API_URL = "http://72.60.78.58:4000/convert/pdf-to-word";
+
+
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    setDownloadUrl(null);
+  e.preventDefault();
+  if (!file) return alert("Please select a PDF file");
 
-    try {
-      const formData = new FormData();
+  setLoading(true);
+  const formData = new FormData();
+  formData.append("file", file);
 
-      if (file) {
-        formData.append("file", file);
-      } else if (fileUrl) {
-        formData.append("fileUrl", fileUrl);
-      } else {
-        alert("Please select a file or enter a file URL");
-        setLoading(false);
-        return;
-      }
+  try {
+    const res = await fetch("http://72.60.78.58:5050/convert/pdf-to-word", {
+      method: "POST",
+      body: formData,
+    });
 
-      // ✅ Replace with your VPS API route
-      const res = await fetch("/api/convert/pdf-to-word", {
-        method: "POST",
-        body: formData,
-      });
+    if (!res.ok) throw new Error("Server error");
 
-      const data = await res.json();
+    // ← YEHI CHANGE KI HAI – ab JSON nahi, direct DOCX blob le raha hai
+    const blob = await res.blob();
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = file.name.replace(/\.pdf$/i, ".docx");
+    a.click();
+    window.URL.revokeObjectURL(url);
 
-      if (data.success) {
-        // ✅ Use full download link from VPS
-        setDownloadUrl(`/api${data.download}`);
-      } else {
-        alert("Conversion failed: " + data.error);
-        console.error("API Error:", data);
-      }
-    } catch (err) {
-      alert("Something went wrong!");
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
-  };
+    // alert("BHAI HO GAYA – Downloaded!");
+  } catch (err) {
+    alert("Error: " + err.message);
+  } finally {
+    setLoading(false);
+    setFile(null);
+  }
+};
+
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   setLoading(true);
+  //   setDownloadUrl(null);
+
+  //   try {
+  //     const formData = new FormData();
+
+  //     if (file) {
+  //       formData.append("file", file);
+  //     } else if (fileUrl) {
+  //       formData.append("fileUrl", fileUrl);
+  //     } else {
+  //       alert("Please select a file or enter a file URL");
+  //       setLoading(false);
+  //       return;
+  //     }
+
+  //     const res = await fetch(API_URL, {
+  //       method: "POST",
+  //       body: formData,
+  //     });
+
+  //     const data = await res.json();
+
+  //     if (data.success) {
+  //       // Direct download (tera purana style)
+  //       const fullDownloadUrl = `  http://72.60.78.58:4000${data.download}`;
+  //       setDownloadUrl(fullDownloadUrl);
+  //     } else {
+  //       alert("Conversion failed: " + (data.error || "Unknown error"));
+  //       console.error("API Error:", data);
+  //     }
+  //   } catch (err) {
+  //     alert("Something went wrong! Check internet or try again.");
+  //     console.error(err);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+
+
 
   const handleDownload = async () => {
     if (downloadUrl) {
@@ -57,7 +97,7 @@ export default function PdfToWord() {
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement("a");
         a.href = url;
-        a.download = file ? file.name.replace(/\.[^.]+$/, ".docx") : "converted.docx";  // File name derive, ya fixed
+        a.download = file ? file.name.replace(/\.[^.]+$/, ".docx") : "converted.docx";
         document.body.appendChild(a);
         a.click();
         a.remove();
@@ -71,7 +111,6 @@ export default function PdfToWord() {
 
   return (
     <main className="min-h-screen flex flex-col items-center justify-center bg-gray-50 p-6">
-      {/* Heading */}
       <div className="text-center max-w-2xl">
         <h1 className="text-3xl font-bold mb-2">PDF to WORD Converter</h1>
         <p className="text-gray-600 mb-8">
@@ -79,13 +118,8 @@ export default function PdfToWord() {
         </p>
       </div>
 
-      {/* Upload / URL Form */}
       {!downloadUrl && (
-        <form
-          onSubmit={handleSubmit}
-          className="flex flex-col items-center space-y-6"
-        >
-          {/* Big Upload Button */}
+        <form onSubmit={handleSubmit} className="flex flex-col items-center space-y-6">
           <label className="bg-red-600 text-white px-8 py-4 rounded-lg shadow-lg cursor-pointer hover:bg-red-700 transition">
             {file ? file.name : "Select PDF file"}
             <input
@@ -96,16 +130,6 @@ export default function PdfToWord() {
             />
           </label>
 
-          {/* URL Input (commented jaise tune diya tha) */}
-          {/* <input
-            type="text"
-            value={fileUrl}
-            onChange={(e) => setFileUrl(e.target.value)}
-            placeholder="Or enter PDF file URL"
-            className="border border-gray-300 p-3 w-80 rounded-lg focus:ring focus:ring-blue-300"
-          /> */}
-
-          {/* Convert Button */}
           <button
             type="submit"
             className="bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 disabled:opacity-50 transition"
@@ -116,7 +140,6 @@ export default function PdfToWord() {
         </form>
       )}
 
-      {/* Download Section */}
       {downloadUrl && (
         <div className="mt-6 flex flex-col items-center space-y-2">
           <p className="text-green-600">Conversion successful! Download your file:</p>
@@ -131,6 +154,150 @@ export default function PdfToWord() {
     </main>
   );
 }
+
+
+
+
+
+
+
+
+
+
+
+// "use client";
+// import { useState } from "react";
+
+// export default function PdfToWord() {
+//   const [file, setFile] = useState(null);
+//   const [fileUrl, setFileUrl] = useState("");  // Agar URL chahiye toh uncomment kar lena
+//   const [downloadUrl, setDownloadUrl] = useState(null);
+//   const [loading, setLoading] = useState(false);
+
+//   const handleSubmit = async (e) => {
+//     e.preventDefault();
+//     setLoading(true);
+//     setDownloadUrl(null);
+
+//     try {
+//       const formData = new FormData();
+
+//       if (file) {
+//         formData.append("file", file);
+//       } else if (fileUrl) {
+//         formData.append("fileUrl", fileUrl);
+//       } else {
+//         alert("Please select a file or enter a file URL");
+//         setLoading(false);
+//         return;
+//       }
+
+//       // ✅ Replace with your VPS API route
+//       const res = await fetch("/api/convert/pdf-to-word", {
+//         method: "POST",
+//         body: formData,
+//       });
+
+//       const data = await res.json();
+
+//       if (data.success) {
+//         // ✅ Use full download link from VPS
+//         setDownloadUrl(`/api${data.download}`);
+//       } else {
+//         alert("Conversion failed: " + data.error);
+//         console.error("API Error:", data);
+//       }
+//     } catch (err) {
+//       alert("Something went wrong!");
+//       console.error(err);
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
+
+//   const handleDownload = async () => {
+//     if (downloadUrl) {
+//       try {
+//         const response = await fetch(downloadUrl);
+//         if (!response.ok) throw new Error("Download failed");
+//         const blob = await response.blob();
+//         const url = window.URL.createObjectURL(blob);
+//         const a = document.createElement("a");
+//         a.href = url;
+//         a.download = file ? file.name.replace(/\.[^.]+$/, ".docx") : "converted.docx";  // File name derive, ya fixed
+//         document.body.appendChild(a);
+//         a.click();
+//         a.remove();
+//         window.URL.revokeObjectURL(url);
+//       } catch (err) {
+//         console.error("Download error:", err);
+//         alert("Failed to download file");
+//       }
+//     }
+//   };
+
+//   return (
+//     <main className="min-h-screen flex flex-col items-center justify-center bg-gray-50 p-6">
+//       {/* Heading */}
+//       <div className="text-center max-w-2xl">
+//         <h1 className="text-3xl font-bold mb-2">PDF to WORD Converter</h1>
+//         <p className="text-gray-600 mb-8">
+//           Convert your PDF to Word documents with incredible accuracy.
+//         </p>
+//       </div>
+
+//       {/* Upload / URL Form */}
+//       {!downloadUrl && (
+//         <form
+//           onSubmit={handleSubmit}
+//           className="flex flex-col items-center space-y-6"
+//         >
+//           {/* Big Upload Button */}
+//           <label className="bg-red-600 text-white px-8 py-4 rounded-lg shadow-lg cursor-pointer hover:bg-red-700 transition">
+//             {file ? file.name : "Select PDF file"}
+//             <input
+//               type="file"
+//               accept="application/pdf"
+//               onChange={(e) => setFile(e.target.files[0])}
+//               className="hidden"
+//             />
+//           </label>
+
+//           {/* URL Input (commented jaise tune diya tha) */}
+//           {/* <input
+//             type="text"
+//             value={fileUrl}
+//             onChange={(e) => setFileUrl(e.target.value)}
+//             placeholder="Or enter PDF file URL"
+//             className="border border-gray-300 p-3 w-80 rounded-lg focus:ring focus:ring-blue-300"
+//           /> */}
+
+//           {/* Convert Button */}
+//           <button
+//             type="submit"
+//             className="bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 disabled:opacity-50 transition"
+//             disabled={loading}
+//           >
+//             {loading ? "Converting..." : "Convert to Word"}
+//           </button>
+//         </form>
+//       )}
+
+//       {/* Download Section */}
+//       {downloadUrl && (
+//         <div className="mt-6 flex flex-col items-center space-y-2">
+//           <p className="text-green-600">Conversion successful! Download your file:</p>
+//           <button
+//             onClick={handleDownload}
+//             className="bg-red-500 text-white px-6 py-2 rounded-lg hover:bg-red-600 transition"
+//           >
+//             Download DOCX
+//           </button>
+//         </div>
+//       )}
+//     </main>
+//   );
+// }
 
 
 
