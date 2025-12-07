@@ -21,9 +21,33 @@ const componentMap = {
   "text-to-pdf": () => import("@/components/tools/TextToPdf"),
 };
 
-// Dynamic Metadata – FIXED
+// // Dynamic Metadata – FIXED
+// export async function generateMetadata({ params }) {
+//   const { tool } = await params;    // ← YEHI CHANGE KI HAI
+//   const pageData = seoData[tool];
+//   if (!pageData) notFound();
+
+//   return {
+//     title: pageData.title,
+//     description: pageData.description,
+//     keywords: pageData.keywords.join(", "),
+//   };
+// }
+
+// // Dynamic Page Loader – FIXED
+// export default async function ToolPage({ params }) {
+//   const { tool } = await params;    // ← YEHI CHANGE KI HAI
+//   const ComponentImport = componentMap[tool];
+//   if (!ComponentImport) notFound();
+
+//   const Component = (await ComponentImport()).default;
+//   return <Component />;
+// }
+
+
+// Dynamic Metadata – 100 % warning free
 export async function generateMetadata({ params }) {
-  const { tool } = await params;    // ← YEHI CHANGE KI HAI
+  const tool = (await params).tool;    // ← YEHI LINE CHANGE KI HAI
   const pageData = seoData[tool];
   if (!pageData) notFound();
 
@@ -34,9 +58,9 @@ export async function generateMetadata({ params }) {
   };
 }
 
-// Dynamic Page Loader – FIXED
+// Dynamic Page Loader – 100 % warning free
 export default async function ToolPage({ params }) {
-  const { tool } = await params;    // ← YEHI CHANGE KI HAI
+  const tool = (await params).tool;    // ← YEHI LINE CHANGE KI HAI
   const ComponentImport = componentMap[tool];
   if (!ComponentImport) notFound();
 
