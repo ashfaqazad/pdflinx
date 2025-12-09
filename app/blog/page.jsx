@@ -119,6 +119,15 @@ export default function Blog() {
   slug: "text-to-pdf",
 },
 
+{
+  title: "Best Tools for Students to Study Smarter in 2025",
+  description:
+    "Discover the best free online tools every student needs in 2025 — from note-taking and task management to file conversion and study aids. Boost productivity, stay organized, and make learning easier with these powerful digital tools designed for students.",
+  date: "Dec 11, 2025",
+  slug: "best-tools-for-students",
+},
+
+
 
 
   ];
