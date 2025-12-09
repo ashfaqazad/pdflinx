@@ -141,6 +141,69 @@ export default function HomeContent() {
         </button>
       </section>
 
+
+
+{/* Features Section */}
+<section className="py-20 bg-[#f9fafb] text-center">
+  <h2 className="text-3xl md:text-4xl font-bold mb-10 text-gray-900">
+    Why Choose PDF Linx
+  </h2>
+
+  <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10">
+    <div className="p-8 bg-white rounded-2xl shadow hover:shadow-md transition">
+      <h3 className="text-xl font-semibold text-red-600 mb-3">🔒 Encrypted & Secure</h3>
+      <p className="text-gray-600">
+        Every file is SSL-encrypted and automatically deleted from our servers
+        after completion.
+      </p>
+    </div>
+
+    <div className="p-8 bg-white rounded-2xl shadow hover:shadow-md transition">
+      <h3 className="text-xl font-semibold text-red-600 mb-3">⚡ Super-Fast Processing</h3>
+      <p className="text-gray-600">
+        Cloud-based conversion ensures lightning speed — without compromising
+        quality or accuracy.
+      </p>
+    </div>
+
+    <div className="p-8 bg-white rounded-2xl shadow hover:shadow-md transition">
+      <h3 className="text-xl font-semibold text-red-600 mb-3">🌍 Works on All Devices</h3>
+      <p className="text-gray-600">
+        Use PDF Linx on desktop, tablet, or mobile — no installation, just open
+        and convert.
+      </p>
+    </div>
+
+    <div className="p-8 bg-white rounded-2xl shadow hover:shadow-md transition">
+      <h3 className="text-xl font-semibold text-red-600 mb-3">🧰 All-in-One PDF Toolset</h3>
+      <p className="text-gray-600">
+        Convert, merge, compress, split, or edit PDFs easily — everything you
+        need in one place.
+      </p>
+    </div>
+
+    <div className="p-8 bg-white rounded-2xl shadow hover:shadow-md transition">
+      <h3 className="text-xl font-semibold text-red-600 mb-3">🆓 100% Free Forever</h3>
+      <p className="text-gray-600">
+        No limits, no paywalls — PDF Linx is completely free for personal and
+        professional use.
+      </p>
+    </div>
+
+    <div className="p-8 bg-white rounded-2xl shadow hover:shadow-md transition">
+      <h3 className="text-xl font-semibold text-red-600 mb-3">💬 Easy & User-Friendly</h3>
+      <p className="text-gray-600">
+        Minimal design and fast workflow — anyone can convert files in seconds,
+        no tech skills required.
+      </p>
+    </div>
+  </div>
+</section>
+
+
+
+
+
       {/* Tools Section */}
       <section id="tools" className="py-16 px-6 max-w-6xl mx-auto">
         <h2 className="text-3xl font-bold text-center mb-10">
@@ -167,32 +230,8 @@ export default function HomeContent() {
         </div>
       </section>
 
-      {/* Why Choose Us */}
-      <section className="bg-gray-100 py-16 px-6">
-        <h2 className="text-3xl font-bold text-center mb-10">
-          Why Choose Our PDF Converter?
-        </h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto text-center">
-          <div className="p-6 bg-white shadow rounded-lg">
-            <h3 className="text-xl font-semibold mb-2">Completely Free</h3>
-            <p className="text-gray-600">
-              All tools are 100% free — no subscriptions or hidden costs.
-            </p>
-          </div>
-          <div className="p-6 bg-white shadow rounded-lg">
-            <h3 className="text-xl font-semibold mb-2">Fast & Secure</h3>
-            <p className="text-gray-600">
-              Process files quickly with full data security and privacy.
-            </p>
-          </div>
-          <div className="p-6 bg-white shadow rounded-lg">
-            <h3 className="text-xl font-semibold mb-2">No Signup Needed</h3>
-            <p className="text-gray-600">
-              Use all tools instantly — no login or account required.
-            </p>
-          </div>
-        </div>
-      </section>
+
+
     </main>
   );
 }
