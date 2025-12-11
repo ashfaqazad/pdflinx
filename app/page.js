@@ -130,7 +130,7 @@ export default function HomeContent() {
           Free Online PDF Converter & Tools
         </h1>
         <p className="text-lg md:text-xl mb-6 max-w-2xl mx-auto">
-          Convert, merge, split, and compress your PDF files easily — 100% free,
+          Convert, merge, split, and compress your PDF files easily, 100% free,
           secure, and fast. No signup required.
         </p>
         <button
@@ -144,6 +144,7 @@ export default function HomeContent() {
 
 
 {/* Features Section */}
+
 <section className="py-20 bg-[#f9fafb] text-center">
   <h2 className="text-3xl md:text-4xl font-bold mb-10 text-gray-900">
     Why Choose PDF Linx
@@ -151,7 +152,7 @@ export default function HomeContent() {
 
   <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10">
     <div className="p-8 bg-white rounded-2xl shadow hover:shadow-md transition">
-      <h3 className="text-xl font-semibold text-red-600 mb-3">🔒 Encrypted & Secure</h3>
+      <h3 className="text-xl font-semibold mb-3">🔒 Encrypted & Secure</h3>
       <p className="text-gray-600">
         Every file is SSL-encrypted and automatically deleted from our servers
         after completion.
@@ -159,47 +160,46 @@ export default function HomeContent() {
     </div>
 
     <div className="p-8 bg-white rounded-2xl shadow hover:shadow-md transition">
-      <h3 className="text-xl font-semibold text-red-600 mb-3">⚡ Super-Fast Processing</h3>
+      <h3 className="text-xl font-semibold mb-3">⚡ Super-Fast Processing</h3>
       <p className="text-gray-600">
-        Cloud-based conversion ensures lightning speed — without compromising
+        Cloud-based conversion ensures lightning speed without compromising
         quality or accuracy.
       </p>
     </div>
 
     <div className="p-8 bg-white rounded-2xl shadow hover:shadow-md transition">
-      <h3 className="text-xl font-semibold text-red-600 mb-3">🌍 Works on All Devices</h3>
+      <h3 className="text-xl font-semibold mb-3">🌍 Works on All Devices</h3>
       <p className="text-gray-600">
-        Use PDF Linx on desktop, tablet, or mobile — no installation, just open
+        Use PDF Linx on desktop, tablet, or mobile, no installation, just open
         and convert.
       </p>
     </div>
 
     <div className="p-8 bg-white rounded-2xl shadow hover:shadow-md transition">
-      <h3 className="text-xl font-semibold text-red-600 mb-3">🧰 All-in-One PDF Toolset</h3>
+      <h3 className="text-xl font-semibold mb-3">🧰 All-in-One PDF Toolset</h3>
       <p className="text-gray-600">
-        Convert, merge, compress, split, or edit PDFs easily — everything you
+        Convert, merge, compress, split, or edit PDFs easily, everything you
         need in one place.
       </p>
     </div>
 
     <div className="p-8 bg-white rounded-2xl shadow hover:shadow-md transition">
-      <h3 className="text-xl font-semibold text-red-600 mb-3">🆓 100% Free Forever</h3>
+      <h3 className="text-xl font-semibold mb-3">🆓 100% Free Forever</h3>
       <p className="text-gray-600">
-        No limits, no paywalls — PDF Linx is completely free for personal and
+        No limits, no paywalls, PDF Linx is completely free for personal and
         professional use.
       </p>
     </div>
 
     <div className="p-8 bg-white rounded-2xl shadow hover:shadow-md transition">
-      <h3 className="text-xl font-semibold text-red-600 mb-3">💬 Easy & User-Friendly</h3>
+      <h3 className="text-xl font-semibold mb-3">💬 Easy & User-Friendly</h3>
       <p className="text-gray-600">
-        Minimal design and fast workflow — anyone can convert files in seconds,
+        Minimal design and fast workflow, anyone can convert files in seconds,
         no tech skills required.
       </p>
     </div>
   </div>
 </section>
-
 
 
 
@@ -229,6 +229,8 @@ export default function HomeContent() {
           ))}
         </div>
       </section>
+
+
 
 
 

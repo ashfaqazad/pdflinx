@@ -7,35 +7,35 @@ export default function Blog() {
     {
       title: "Convert PDF to Word Online Without Losing Formatting",
       description:
-        "Struggling with locked PDFs? Learn how to easily convert PDF files into editable Word documents while keeping formatting, fonts, and images intact. Our free online PDF to Word converter ensures accuracy, security, and speed — perfect for students, professionals, and businesses.",
+        "Struggling with locked PDFs? Learn how to easily convert PDF files into editable Word documents while keeping formatting, fonts, and images intact. Our free online PDF to Word converter ensures accuracy, security, and speed perfect for students, professionals, and businesses.",
       date: "Aug 24, 2025",
       slug: "pdf-to-word",
     },
     {
       title: "Convert Word to PDF Instantly (No Software Needed)",
       description:
-        "Need to send polished, professional documents? Convert your Word files (DOC/DOCX) into high-quality PDFs online in seconds. 100% free, secure, and watermark-free — ideal for resumes, business reports, and official submissions.",
+        "Need to send polished, professional documents? Convert your Word files (DOC/DOCX) into high-quality PDFs online in seconds. 100% free, secure, and watermark-free ideal for resumes, business reports, and official submissions.",
       date: "Aug 26, 2025",
       slug: "word-to-pdf",
     },
     {
       title: "Convert Images (JPG, PNG) to PDF in Seconds",
       description:
-        "Combine multiple images into one clear, professional PDF document. Perfect for photos, scanned documents, receipts, or portfolios. Supports JPG, PNG, and more — no signup, no watermark, just fast and secure image to PDF conversion.",
+        "Combine multiple images into one clear, professional PDF document. Perfect for photos, scanned documents, receipts, or portfolios. Supports JPG, PNG, and more no signup, no watermark, just fast and secure image to PDF conversion.",
       date: "Aug 28, 2025",
       slug: "image-to-pdf",
     },
     {
       title: "Merge Multiple PDF Files into One Online",
       description:
-        "Tired of juggling multiple PDF files? Merge them into one organized document with our free online PDF merger. Preserve layout, order, and quality — the simplest way to manage reports, contracts, or study materials securely.",
+        "Tired of juggling multiple PDF files? Merge them into one organized document with our free online PDF merger. Preserve layout, order, and quality the simplest way to manage reports, contracts, or study materials securely.",
       date: "Aug 30, 2025",
       slug: "merge-pdf",
     },
     {
       title: "Split PDF Files Online (Extract Specific Pages Easily)",
       description:
-        "Need to extract specific pages from a large PDF? Our free PDF Splitter tool makes it simple to divide, separate, or organize documents — fast, private, and secure. Perfect for teachers, legal professionals, or students.",
+        "Need to extract specific pages from a large PDF? Our free PDF Splitter tool makes it simple to divide, separate, or organize documents fast, private, and secure. Perfect for teachers, legal professionals, or students.",
       date: "Sep 1, 2025",
       slug: "split-pdf",
     },
@@ -49,7 +49,7 @@ export default function Blog() {
     {
       title: "Convert Excel to PDF Without Losing Formatting",
       description:
-        "Turn Excel spreadsheets into high-quality PDFs that keep your tables, charts, and cell formatting intact. Great for business reports, budgets, or analytics — quick, secure, and completely free to use online.",
+        "Turn Excel spreadsheets into high-quality PDFs that keep your tables, charts, and cell formatting intact. Great for business reports, budgets, or analytics quick, secure, and completely free to use online.",
       date: "Sep 5, 2025",
       slug: "excel-to-pdf",
     },
@@ -79,14 +79,14 @@ export default function Blog() {
 {
   title: "Download HD YouTube Thumbnails Instantly in One Click",
   description:
-    "Download YouTube video thumbnails in HD, Full HD, or 4K quality instantly. Perfect for creators, editors, and designers — free, fast, and watermark-free.",
+    "Download YouTube video thumbnails in HD, Full HD, or 4K quality instantly. Perfect for creators, editors, and designers free, fast, and watermark-free.",
   date: "Dec 5, 2025",
   slug: "youtube-thumbnail",
 },
 {
   title: "Compress Images Online Without Losing Quality",
   description:
-    "Reduce image file size instantly while keeping full resolution. Free online image compressor for JPG, PNG, and WebP — ideal for websites and social media.",
+    "Reduce image file size instantly while keeping full resolution. Free online image compressor for JPG, PNG, and WebP ideal for websites and social media.",
   date: "Dec 6, 2025",
   slug: "image-compressor",
 },
@@ -107,7 +107,7 @@ export default function Blog() {
 {
   title: "Convert HEIC to JPG Instantly Online",
   description:
-    "Convert Apple HEIC photos to JPG online in seconds. Keep original quality and metadata intact — no software or signup required.",
+    "Convert Apple HEIC photos to JPG online in seconds. Keep original quality and metadata intact no software or signup required.",
   date: "Dec 9, 2025",
   slug: "heic-to-jpg",
 },
@@ -122,7 +122,7 @@ export default function Blog() {
 {
   title: "Best Tools for Students to Study Smarter in 2025",
   description:
-    "Discover the best free online tools every student needs in 2025 — from note-taking and task management to file conversion and study aids. Boost productivity, stay organized, and make learning easier with these powerful digital tools designed for students.",
+    "Discover the best free online tools every student needs in 2025 from note-taking and task management to file conversion and study aids. Boost productivity, stay organized, and make learning easier with these powerful digital tools designed for students.",
   date: "Dec 11, 2025",
   slug: "best-tools-for-students",
 },
@@ -142,9 +142,8 @@ export default function Blog() {
       </h1>
 
       <p className="text-center text-gray-600 max-w-2xl mx-auto mb-12 text-lg">
-        Explore expert tips, tutorials, and how-to guides to master all our free PDF and document tools —
-        from file conversions and compression to merging, splitting, and more.
-        Stay productive with <strong>PDF Linx</strong> — your all-in-one online toolkit.
+        Explore expert tips, tutorials, and how-to guides to master all our free PDF and document tools from file conversions and compression to merging, splitting, and more.
+        Stay productive with <strong>PDF Linx</strong> your all-in-one online toolkit.
       </p>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">

@@ -11,17 +11,17 @@ const blogs = [
       Converting PDF files to Word format is one of the most common tasks for students, professionals, and freelancers.
       Whether you're editing a contract, fixing a resume, or reusing text from a PDF, this simple online process can save you hours.
       
-      Our free PDF to Word converter helps you transform locked PDF files into fully editable DOCX files — 
+      Our free PDF to Word converter helps you transform locked PDF files into fully editable DOCX files  
       without losing formatting, fonts, or images. Just upload, convert, and download.
       
       ✅ Steps:
       1. Upload your PDF file.
       2. Wait a few seconds while our system converts it into Word format.
-      3. Download your fully editable Word file — no signup, no watermark.
+      3. Download your fully editable Word file no signup, no watermark.
       
       Bonus Tip: For scanned documents, use the OCR (Optical Character Recognition) feature to extract text accurately.
       
-      Tools like PDF Linx make this process 100% secure and private — your files are auto-deleted after conversion.
+      Tools like PDF Linx make this process 100% secure and private your files are auto-deleted after conversion.
     `,
   },
   {
@@ -30,14 +30,14 @@ const blogs = [
     date: "Aug 23, 2025",
     content: `
       Want to make your Word document look more professional? Converting it to a PDF ensures it looks the same on every device.
-      Perfect for resumes, reports, or contracts — this method keeps formatting, images, and fonts consistent.
+      Perfect for resumes, reports, or contracts this method keeps formatting, images, and fonts consistent.
       
       With PDF Linx, you can convert DOC or DOCX files to PDF in just one click:
       1. Upload your Word file.
       2. Click Convert.
       3. Download your clean, polished PDF instantly.
       
-      Unlike other tools, ours doesn’t add watermarks or require installation — completely online, free, and secure.
+      Unlike other tools, ours doesn’t add watermarks or require installation completely online, free, and secure.
       
       💡 Pro Tip: Use our “Compress PDF” tool afterward to shrink file size before emailing or uploading.
     `,
@@ -48,14 +48,14 @@ const blogs = [
     date: "Aug 22, 2025",
     content: `
       If you’ve ever needed to share multiple images in one file, converting them into a single PDF is the best solution.
-      Whether it’s scanned receipts, ID photos, or design samples — a PDF keeps everything neatly packed.
+      Whether it’s scanned receipts, ID photos, or design samples a PDF keeps everything neatly packed.
       
       Using our Image to PDF tool:
       - Upload your images (JPG, PNG, or JPEG supported).
       - Reorder them if needed.
       - Click “Convert” to generate one organized PDF.
       
-      It’s that easy — no signup, no watermark, and full privacy.
+      It’s that easy no signup, no watermark, and full privacy.
       Bonus: Use “Compress PDF” for smaller files or “Merge PDF” to combine multiple PDFs later.
     `,
   },
@@ -64,13 +64,13 @@ const blogs = [
     title: "Merge Multiple PDFs into One (Fast & Free)",
     date: "Aug 21, 2025",
     content: `
-      Managing multiple PDF files can be messy — merging them makes your workflow seamless.
+      Managing multiple PDF files can be messy merging them makes your workflow seamless.
       Whether you’re compiling invoices, reports, or eBooks, our free online PDF merger keeps everything in one place.
       
       Steps:
       1. Upload your PDF files.
       2. Arrange the order by dragging.
-      3. Click “Merge” — and download your single, neat file.
+      3. Click “Merge” and download your single, neat file.
       
       No software needed, no size limits. Secure and quick.
       Tip: Once merged, use our “Compress PDF” feature to reduce the file size before sharing.
@@ -89,7 +89,7 @@ const blogs = [
       - Select the page range you want (e.g. 3–10).
       - Click “Split” and download your new file instantly.
       
-      Everything runs online — no downloads, no logins. Perfect for quick document handling.
+      Everything runs online no downloads, no logins. Perfect for quick document handling.
     `,
   },
   {
@@ -114,7 +114,7 @@ const blogs = [
     title: "Convert Excel Sheets to PDF Without Losing Formatting",
     date: "Aug 18, 2025",
     content: `
-      Turning your Excel sheets into PDF helps preserve formulas, charts, and table formatting — 
+      Turning your Excel sheets into PDF helps preserve formulas, charts, and table formatting
       ensuring your data looks professional on any device.
       
       💡 Use Cases:
@@ -135,7 +135,7 @@ const blogs = [
   title: "Generate QR Codes Instantly for Links, Text & Contacts",
   date: "Dec 2, 2025",
   content: `
-    QR codes are everywhere in 2025 — from restaurant menus to business cards and marketing flyers. 
+    QR codes are everywhere in 2025 from restaurant menus to business cards and marketing flyers. 
     Our free QR Generator helps you create professional QR codes in seconds for links, Wi-Fi, or custom text.
 
     💡 Use Cases:
@@ -177,7 +177,7 @@ const blogs = [
   title: "Convert Units Easily with Our Free Online Unit Converter",
   date: "Dec 4, 2025",
   content: `
-    Convert values quickly between measurement systems — like meters to feet or Celsius to Fahrenheit — with our smart online Unit Converter.
+    Convert values quickly between measurement systems like meters to feet or Celsius to Fahrenheit with our smart online Unit Converter.
 
     💡 Use Cases:
     - Students, engineers, or cooks who need instant conversions.
@@ -197,7 +197,7 @@ const blogs = [
   title: "Download HD YouTube Thumbnails Instantly in One Click",
   date: "Dec 5, 2025",
   content: `
-    Save high-quality YouTube thumbnails directly from any video link — no software or login required. 
+    Save high-quality YouTube thumbnails directly from any video link no software or login required. 
     Our downloader supports HD, Full HD, and even 4K thumbnails.
 
     💡 Use Cases:
@@ -219,7 +219,7 @@ const blogs = [
   date: "Dec 6, 2025",
   content: `
     Large image files slow down websites and uploads. 
-    Our free Image Compressor reduces file size while keeping visual quality intact — no installation needed.
+    Our free Image Compressor reduces file size while keeping visual quality intact no installation needed.
 
     💡 Use Cases:
     - Compress JPG, PNG, or WebP for web and social media.
@@ -239,7 +239,7 @@ const blogs = [
   title: "Convert Images to Text Using AI (Image to Text Extractor)",
   date: "Dec 7, 2025",
   content: `
-    Extract editable text from images or scanned papers with our AI-powered Image to Text converter — fast, accurate, and 100% free.
+    Extract editable text from images or scanned papers with our AI-powered Image to Text converter fast, accurate, and 100% free.
 
     💡 Use Cases:
     - Turn handwritten notes, printed docs, or receipts into text.
@@ -325,21 +325,21 @@ const blogs = [
   date: "Dec 11, 2025",
   content: `
     In today’s digital age, students have access to hundreds of free tools that can make learning smarter, faster, and more efficient. 
-    From managing notes to converting assignments into PDFs — the right set of online tools can save you hours every week.
+    From managing notes to converting assignments into PDFs the right set of online tools can save you hours every week.
 
-    This guide lists some of the "best online tools for students in 2025" that help with studying, productivity, and creativity — 
+    This guide lists some of the "best online tools for students in 2025" that help with studying, productivity, and creativity
     whether you’re in school, college, or university.
 
     ✨ Here’s our curated list of top tools every student should try:
 
     1️⃣ "PDF Linx" – The All-in-One File Helper  
-    Students often deal with tons of PDFs — assignments, forms, scanned notes, etc.  
+    Students often deal with tons of PDFs assignments, forms, scanned notes, etc.  
     With PDF Linx, you can:
     - Convert PDF to Word for easy editing.  
     - Merge or split PDFs for assignments.  
     - Compress PDFs before submitting them online.  
     - Create professional PDFs from Word or Text files.  
-    All tools are "free, secure, and browser-based" — no software needed.
+    All tools are "free, secure, and browser-based" no software needed.
 
     2️⃣ "Notion" – Stay Organized & Plan Smarter  
     Notion is the ultimate note-taking and task management app for students.  
@@ -377,7 +377,7 @@ const blogs = [
     - Prepare for exams efficiently
 
     🎓 "Final Thoughts"
-    In 2025, studying isn’t about working harder — it’s about working smarter.  
+    In 2025, studying isn’t about working harder it’s about working smarter.  
     Tools like "PDF Linx", "Notion", and "Google Docs" empower students to stay ahead, manage time better, and achieve more with less effort.  
     So next time you open your laptop to study, make sure you’ve got these smart companions by your side. 🚀
   `,
