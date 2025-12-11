@@ -39,7 +39,7 @@ const Footer = () => {
 
         {/* Copyright */}
         <p className="text-gray-400">
-          © {year} PDF Converter NSky. All Rights Reserved.
+          © {year} PDF Converter www.pdflinx.com All Rights Reserved.
         </p>
 
         {/* Disclaimer */}
