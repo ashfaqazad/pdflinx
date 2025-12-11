@@ -23,10 +23,11 @@
 
   <!-- Brand text -->
   <text x="65" y="28"
-        font-size="20"
+        font-size="30"
+      font-style="italic"
         font-family="Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, 'Noto Sans', sans-serif"
         font-weight="700"
-        fill="#ffffff"
+        fill="#000000"
         letter-spacing="0.5">
     pdflinx
   </text>

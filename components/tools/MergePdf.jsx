@@ -1,14 +1,26 @@
+// app/merge-pdf/page.js
+
 "use client";
 import { useState, useRef } from "react";
+import { Upload, FileText, Download, CheckCircle, X, Files } from "lucide-react";
+
+export const metadata = {
+  title: "Merge PDF Online - Combine Multiple PDFs for Free | PDF Linx",
+  description: "Merge multiple PDF files into one online for free. Fast, secure, no signup, perfect order preservation.",
+};
 
 export default function MergePDF() {
   const [files, setFiles] = useState([]);
   const [loading, setLoading] = useState(false);
   const [downloadUrl, setDownloadUrl] = useState("");
+  const [success, setSuccess] = useState(false);
   const fileInputRef = useRef(null);
 
   const handleFileChange = (e) => {
-    setFiles([...e.target.files]);
+    const selectedFiles = Array.from(e.target.files);
+    if (selectedFiles.length > 0) {
+      setFiles(selectedFiles);
+    }
   };
 
   const handleMerge = async (e) => {
@@ -18,11 +30,12 @@ export default function MergePDF() {
       return;
     }
 
-    const formData = new FormData();
-    files.forEach((file) => formData.append("files", file));
-
     setLoading(true);
     setDownloadUrl("");
+    setSuccess(false);
+
+    const formData = new FormData();
+    files.forEach((file) => formData.append("files", file));
 
     try {
       const res = await fetch("/api/convert/merge-pdf", {
@@ -30,111 +43,346 @@ export default function MergePDF() {
         body: formData,
       });
 
-      if (!res.ok) {
-        const text = await res.text();
-        throw new Error(`HTTP ${res.status}: ${text}`);
-      }
-
       const data = await res.json();
 
       if (data.success) {
         setDownloadUrl(`/api${data.download}`);
+        setSuccess(true);
       } else {
-        alert("Merge failed: " + data.error);
-        console.error("API Error:", data);
+        alert("Merge failed: " + (data.error || "Unknown error"));
       }
     } catch (error) {
-      console.error("Error merging PDFs:", error);
-      alert("Error merging PDFs: " + error.message);
+      alert("Error merging PDFs. Please try again.");
+      console.error(error);
     } finally {
       setLoading(false);
     }
   };
 
   const handleDownload = async () => {
-    if (downloadUrl) {
-      try {
-        const response = await fetch(downloadUrl);
-        if (!response.ok) throw new Error("Download failed");
-        const blob = await response.blob();
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = "merged.pdf"; // Fixed name, ya files[0]?.name se derive kar sakte ho
-        document.body.appendChild(a);
-        a.click();
-        a.remove();
-        window.URL.revokeObjectURL(url);
-      } catch (err) {
-        console.error("Download error:", err);
-        alert("Failed to download file");
-      }
+    if (!downloadUrl) return;
+    try {
+      const response = await fetch(downloadUrl);
+      if (!response.ok) throw new Error("Download failed");
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "merged-pdf.pdf";
+      a.click();
+      window.URL.revokeObjectURL(url);
+    } catch (err) {
+      alert("Failed to download merged PDF");
     }
   };
 
-  return (
-    <main className="min-h-screen flex flex-col items-center justify-center bg-gray-50 p-6">
-      {/* Heading */}
-      <div className="text-center max-w-2xl">
-        <h1 className="text-3xl font-bold mb-2">Merge PDF Files</h1>
-        <p className="text-gray-600 mb-8">
-          Combine multiple PDF files into a single document easily.
-        </p>
-      </div>
+  const removeFile = (index) => {
+    setFiles(files.filter((_, i) => i !== index));
+  };
 
-      {/* Upload / Merge Form */}
-      <div className="bg-white p-8 shadow-lg rounded-lg flex flex-col items-center space-y-6 w-full max-w-md">
-        {/* Hidden File Input */}
-        <input
-          type="file"
-          multiple
-          accept="application/pdf"
-          onChange={handleFileChange}
-          ref={fileInputRef}
-          className="hidden"
+  return (
+    <>
+      {/* ==================== SEO SCHEMAS ==================== */}
+      <head>
+        {/* HowTo Schema - Google Rich Results */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "HowTo",
+              name: "How to Merge Multiple PDF Files Online for Free",
+              description: "Combine 2 or more PDF files into one single document in seconds - 100% free, no registration required.",
+              url: "https://www.pdflinx.com/merge-pdf",
+              step: [
+                {
+                  "@type": "HowToStep",
+                  name: "Select PDF Files",
+                  text: "Click 'Select Files' and choose 2 or more PDF files from your device. You can select multiple files at once."
+                },
+                {
+                  "@type": "HowToStep",
+                  name: "Click Merge PDFs",
+                  text: "Press the 'Merge PDFs' button and wait a few seconds while we combine your files."
+                },
+                {
+                  "@type": "HowToStep",
+                  name: "Download Merged PDF",
+                  text: "Your merged PDF will be ready instantly - click download to save the combined file."
+                }
+              ],
+              totalTime: "PT45S",
+              estimatedCost: { "@type": "MonetaryAmount", value: "0", currency: "USD" },
+              tool: [{ "@type": "HowToTool", name: "PDF Linx Merge Tool" }],
+              image: "https://www.pdflinx.com/og-image.png"
+            }, null, 2)
+          }}
         />
 
-        {/* Select Files Button */}
-        <button
-          onClick={() => fileInputRef.current.click()}
-          className="bg-blue-700 text-white px-8 py-4 rounded-lg shadow-lg hover:bg-blue-600 transition"
-        >
-          Select Files
-        </button>
+        {/* Breadcrumb */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "BreadcrumbList",
+              itemListElement: [
+                { "@type": "ListItem", position: 1, name: "Home", item: "https://www.pdflinx.com" },
+                { "@type": "ListItem", position: 2, name: "Merge PDF", item: "https://www.pdflinx.com/merge-pdf" }
+              ]
+            }, null, 2)
+          }}
+        />
+      </head>
 
-        {/* Info */}
-        <p className="text-gray-600">
-          {files.length > 0
-            ? `${files.length} file(s) selected`
-            : "Select 2 or more PDF files to merge."}
-        </p>
-
-        {/* Merge Button */}
-        <button
-          className="bg-red-700 text-white px-6 py-3 rounded-lg font-semibold hover:bg-red-600 transition disabled:opacity-50"
-          onClick={handleMerge}
-          disabled={loading}
-        >
-          {loading ? "Merging..." : "Merge PDFs"}
-        </button>
-
-        {/* Download Section */}
-        {downloadUrl && (
-          <div className="flex flex-col items-center space-y-4 mt-6">
-            <p className="text-lg font-semibold text-green-600">
-              ✅ Merge Complete!
+      {/* ==================== MODERN UI (Same as Word/Image to PDF) ==================== */}
+      <main className="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 flex items-center justify-center p-6">
+        <div className="max-w-4xl w-full">
+          {/* Header */}
+          <div className="text-center mb-12">
+            <h1 className="text-6xl font-extrabold bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent mb-4">
+              Merge PDF Files
+            </h1>
+            <p className="text-2xl text-gray-700">
+              Combine multiple PDFs into one — fast, easy & completely free!
             </p>
-            <button
-              onClick={handleDownload}
-              className="bg-green-600 text-white px-6 py-3 rounded-lg shadow-lg font-bold hover:bg-green-700 transition"
-            >
-              Download Merged PDF
-            </button>
           </div>
-        )}
-      </div>
-    </main>
+
+          {/* Main Card */}
+          <div className="bg-white rounded-3xl shadow-2xl p-12 border border-gray-100">
+            <div className="space-y-10">
+              {/* Upload Area */}
+              <div>
+                <input
+                  type="file"
+                  multiple
+                  accept="application/pdf"
+                  onChange={handleFileChange}
+                  ref={fileInputRef}
+                  className="hidden"
+                />
+
+                <div
+                  onClick={() => fileInputRef.current?.click()}
+                  className={`border-4 border-dashed rounded-3xl p-20 text-center cursor-pointer transition-all ${
+                    files.length > 0 ? 'border-green-500 bg-green-50' : 'border-gray-300 hover:border-indigo-500 hover:bg-indigo-50'
+                  }`}
+                >
+                  <Files className="w-24 h-24 mx-auto mb-6 text-indigo-600" />
+                  <p className="text-2xl font-bold text-gray-800">
+                    {files.length > 0 ? `${files.length} PDF files selected` : "Click to select PDF files"}
+                  </p>
+                  <p className="text-gray-600 mt-3">Select 2 or more PDFs to merge • Drag & drop also supported</p>
+                </div>
+
+                {/* Selected Files Preview */}
+                {files.length > 0 && (
+                  <div className="mt-8 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 max-h-80 overflow-y-auto p-6 bg-gray-50 rounded-2xl">
+                    {files.map((file, index) => (
+                      <div key={index} className="relative group bg-white p-4 rounded-xl shadow hover:shadow-lg transition">
+                        <FileText className="w-12 h-12 text-indigo-600 mx-auto mb-2" />
+                        <p className="text-xs text-center font-medium truncate">{file.name}</p>
+                        <button
+                          onClick={() => removeFile(index)}
+                          className="absolute top-2 right-2 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition"
+                        >
+                          <X size={16} />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Merge Button */}
+              <button
+                onClick={handleMerge}
+                disabled={loading || files.length < 2}
+                className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-bold text-2xl py-6 rounded-2xl hover:from-indigo-700 hover:to-purple-700 disabled:opacity-50 disabled:cursor-not-allowed transition shadow-xl flex items-center justify-center gap-4"
+              >
+                {loading ? (
+                  "Merging your PDFs..."
+                ) : (
+                  <>
+                    <Upload size={32} />
+                    Merge PDFs Now
+                  </>
+                )}
+              </button>
+            </div>
+
+            {/* Success State */}
+            {success && (
+              <div className="mt-12 p-10 bg-gradient-to-r from-green-50 to-emerald-50 border-2 border-green-300 rounded-3xl text-center animate-pulse">
+                <CheckCircle className="w-24 h-24 text-green-600 mx-auto mb-6" />
+                <p className="text-3xl font-bold text-green-700 mb-6">All PDFs merged successfully!</p>
+                <button
+                  onClick={handleDownload}
+                  className="bg-green-600 text-white px-12 py-6 rounded-2xl font-bold text-2xl hover:bg-green-700 transition shadow-2xl flex items-center gap-4 mx-auto"
+                >
+                  <Download size={36} />
+                  Download Merged PDF
+                </button>
+              </div>
+            )}
+          </div>
+
+          {/* Trust Footer */}
+          <div className="text-center mt-12 text-gray-600 space-y-2">
+            <p className="font-semibold text-lg">No signup • No limits • Files deleted after 1 hour</p>
+            <p className="text-sm">100% Free • Secure • Works on all devices</p>
+          </div>
+        </div>
+      </main>
+    </>
   );
 }
+
+
+
+
+
+
+
+
+
+// "use client";
+// import { useState, useRef } from "react";
+
+// export default function MergePDF() {
+//   const [files, setFiles] = useState([]);
+//   const [loading, setLoading] = useState(false);
+//   const [downloadUrl, setDownloadUrl] = useState("");
+//   const fileInputRef = useRef(null);
+
+//   const handleFileChange = (e) => {
+//     setFiles([...e.target.files]);
+//   };
+
+//   const handleMerge = async (e) => {
+//     e.preventDefault();
+//     if (files.length < 2) {
+//       alert("Please select at least 2 PDF files to merge.");
+//       return;
+//     }
+
+//     const formData = new FormData();
+//     files.forEach((file) => formData.append("files", file));
+
+//     setLoading(true);
+//     setDownloadUrl("");
+
+//     try {
+//       const res = await fetch("/api/convert/merge-pdf", {
+//         method: "POST",
+//         body: formData,
+//       });
+
+//       if (!res.ok) {
+//         const text = await res.text();
+//         throw new Error(`HTTP ${res.status}: ${text}`);
+//       }
+
+//       const data = await res.json();
+
+//       if (data.success) {
+//         setDownloadUrl(`/api${data.download}`);
+//       } else {
+//         alert("Merge failed: " + data.error);
+//         console.error("API Error:", data);
+//       }
+//     } catch (error) {
+//       console.error("Error merging PDFs:", error);
+//       alert("Error merging PDFs: " + error.message);
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
+
+//   const handleDownload = async () => {
+//     if (downloadUrl) {
+//       try {
+//         const response = await fetch(downloadUrl);
+//         if (!response.ok) throw new Error("Download failed");
+//         const blob = await response.blob();
+//         const url = window.URL.createObjectURL(blob);
+//         const a = document.createElement("a");
+//         a.href = url;
+//         a.download = "merged.pdf"; // Fixed name, ya files[0]?.name se derive kar sakte ho
+//         document.body.appendChild(a);
+//         a.click();
+//         a.remove();
+//         window.URL.revokeObjectURL(url);
+//       } catch (err) {
+//         console.error("Download error:", err);
+//         alert("Failed to download file");
+//       }
+//     }
+//   };
+
+//   return (
+//     <main className="min-h-screen flex flex-col items-center justify-center bg-gray-50 p-6">
+//       {/* Heading */}
+//       <div className="text-center max-w-2xl">
+//         <h1 className="text-3xl font-bold mb-2">Merge PDF Files</h1>
+//         <p className="text-gray-600 mb-8">
+//           Combine multiple PDF files into a single document easily.
+//         </p>
+//       </div>
+
+//       {/* Upload / Merge Form */}
+//       <div className="bg-white p-8 shadow-lg rounded-lg flex flex-col items-center space-y-6 w-full max-w-md">
+//         {/* Hidden File Input */}
+//         <input
+//           type="file"
+//           multiple
+//           accept="application/pdf"
+//           onChange={handleFileChange}
+//           ref={fileInputRef}
+//           className="hidden"
+//         />
+
+//         {/* Select Files Button */}
+//         <button
+//           onClick={() => fileInputRef.current.click()}
+//           className="bg-blue-700 text-white px-8 py-4 rounded-lg shadow-lg hover:bg-blue-600 transition"
+//         >
+//           Select Files
+//         </button>
+
+//         {/* Info */}
+//         <p className="text-gray-600">
+//           {files.length > 0
+//             ? `${files.length} file(s) selected`
+//             : "Select 2 or more PDF files to merge."}
+//         </p>
+
+//         {/* Merge Button */}
+//         <button
+//           className="bg-red-700 text-white px-6 py-3 rounded-lg font-semibold hover:bg-red-600 transition disabled:opacity-50"
+//           onClick={handleMerge}
+//           disabled={loading}
+//         >
+//           {loading ? "Merging..." : "Merge PDFs"}
+//         </button>
+
+//         {/* Download Section */}
+//         {downloadUrl && (
+//           <div className="flex flex-col items-center space-y-4 mt-6">
+//             <p className="text-lg font-semibold text-green-600">
+//               ✅ Merge Complete!
+//             </p>
+//             <button
+//               onClick={handleDownload}
+//               className="bg-green-600 text-white px-6 py-3 rounded-lg shadow-lg font-bold hover:bg-green-700 transition"
+//             >
+//               Download Merged PDF
+//             </button>
+//           </div>
+//         )}
+//       </div>
+//     </main>
+//   );
+// }
 
 
