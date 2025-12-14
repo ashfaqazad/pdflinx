@@ -40,15 +40,41 @@ export default function Navbar() {
                   <div>
                     <h3 className="font-bold text-lg text-gray-800 mb-5">Convert TO PDF</h3>
                     <div className="space-y-3">
-                      <Link href="/word-to-pdf" className="flex items-center gap-4 hover:bg-indigo-50 px-4 py-2.5 rounded-xl transition">
+
+                      {/* <Link href="/word-to-pdf"
+                      onClick={(e) => {
+    e.preventDefault();                    // pehle default behavior rok do
+    window.location.href = '/word-to-pdf'; // turant navigate kar do
+
+
+                      
+                      className="flex items-center gap-4 hover:bg-indigo-50 px-4 py-2.5 rounded-xl transition">
+                        <FileType size={26} className="text-blue-600" />
+                        <span className="font-medium text-gray-700 hover:text-indigo-600">WORD to PDF</span>
+                      </Link> */}
+
+                      <Link 
+                        href="/word-to-pdf"
+                        onClick={(e) => { e.preventDefault(); window.location.href = '/word-to-pdf'; }}
+                        className="flex items-center gap-4 hover:bg-indigo-50 px-4 py-2.5 rounded-xl transition"
+                      >
                         <FileType size={26} className="text-blue-600" />
                         <span className="font-medium text-gray-700 hover:text-indigo-600">WORD to PDF</span>
                       </Link>
-                      <Link href="/excel-pdf" className="flex items-center gap-4 hover:bg-indigo-50 px-4 py-2.5 rounded-xl transition">
+
+
+
+                      <Link href="/excel-pdf" 
+                      onClick={(e) => { e.preventDefault(); window.location.href = '/excel-pdf'; }}
+
+                      className="flex items-center gap-4 hover:bg-indigo-50 px-4 py-2.5 rounded-xl transition">
                         <FileSpreadsheet size={26} className="text-green-600" />
                         <span className="font-medium text-gray-700 hover:text-indigo-600">EXCEL to PDF</span>
                       </Link>
-                      <Link href="/image-to-pdf" className="flex items-center gap-4 hover:bg-indigo-50 px-4 py-2.5 rounded-xl transition">
+                      <Link href="/image-to-pdf" 
+                      onClick={(e) => { e.preventDefault(); window.location.href = '/image-to-pdf'; }}
+
+                      className="flex items-center gap-4 hover:bg-indigo-50 px-4 py-2.5 rounded-xl transition">
                         <FileImage size={26} className="text-orange-600" />
                         <span className="font-medium text-gray-700 hover:text-indigo-600">JPG to PDF</span>
                       </Link>
@@ -59,19 +85,31 @@ export default function Navbar() {
                   <div>
                     <h3 className="font-bold text-lg text-gray-800 mb-5">Convert FROM PDF</h3>
                     <div className="space-y-3">
-                      <Link href="/pdf-to-word" className="flex items-center gap-4 hover:bg-indigo-50 px-4 py-2.5 rounded-xl transition">
+                      <Link href="/pdf-to-word" 
+                      onClick={(e) => { e.preventDefault(); window.location.href = '/pdf-to-word'; }}
+
+                      className="flex items-center gap-4 hover:bg-indigo-50 px-4 py-2.5 rounded-xl transition">
                         <FileText size={26} className="text-red-600" />
                         <span className="font-medium text-gray-700 hover:text-indigo-600">PDF to WORD</span>
                       </Link>
-                      <Link href="/compress-pdf" className="flex items-center gap-4 hover:bg-indigo-50 px-4 py-2.5 rounded-xl transition">
+                      <Link href="/compress-pdf" 
+                      onClick={(e) => { e.preventDefault(); window.location.href = '/compress-pdf'; }}
+
+                      className="flex items-center gap-4 hover:bg-indigo-50 px-4 py-2.5 rounded-xl transition">
                         <FileMinus size={26} className="text-purple-600" />
                         <span className="font-medium text-gray-700 hover:text-indigo-600">Compress PDF</span>
                       </Link>
-                      <Link href="/merge-pdf" className="flex items-center gap-4 hover:bg-indigo-50 px-4 py-2.5 rounded-xl transition">
+                      <Link href="/merge-pdf" 
+                      onClick={(e) => { e.preventDefault(); window.location.href = '/merge-pdf'; }}
+
+                      className="flex items-center gap-4 hover:bg-indigo-50 px-4 py-2.5 rounded-xl transition">
                         <FilePlus size={26} className="text-emerald-600" />
                         <span className="font-medium text-gray-700 hover:text-indigo-600">Merge PDF</span>
                       </Link>
-                      <Link href="/split-pdf" className="flex items-center gap-4 hover:bg-indigo-50 px-4 py-2.5 rounded-xl transition">
+                      <Link href="/split-pdf" 
+                      onClick={(e) => { e.preventDefault(); window.location.href = '/split-pdf'; }}
+
+                      className="flex items-center gap-4 hover:bg-indigo-50 px-4 py-2.5 rounded-xl transition">
                         <Scissors size={26} className="text-amber-600" />
                         <span className="font-medium text-gray-700 hover:text-indigo-600">Split PDF</span>
                       </Link>
@@ -81,8 +119,11 @@ export default function Navbar() {
               </div>
             </div>
 
+
+
+
             {/* === ALL TOOLS Dropdown (9 Tools including Text to PDF) === */}
-            <div className="relative group">
+            {/* <div className="relative group">
               <button className="flex items-center gap-2 text-gray-700 hover:text-indigo-600 font-semibold transition">
                 All Tools <ChevronDown size={18} className="group-hover:rotate-180 transition" />
               </button>
@@ -116,7 +157,70 @@ export default function Navbar() {
                   </div>
                 </div>
               </div>
-            </div>
+            </div> */}
+
+
+<div
+  className="relative group"
+  onMouseEnter={(e) => {
+    const dropdown = e.currentTarget.querySelector('.dropdown-content');
+    dropdown.classList.remove('invisible', 'opacity-0');
+  }}
+  onMouseLeave={(e) => {
+    const dropdown = e.currentTarget.querySelector('.dropdown-content');
+    dropdown.classList.add('invisible', 'opacity-0');
+  }}
+>
+  <button className="flex items-center gap-2 text-gray-700 hover:text-indigo-600 font-semibold transition">
+    All Tools <ChevronDown size={18} className="group-hover:rotate-180 transition" />
+  </button>
+
+  {/* DropDown Content */}
+  <div
+    className="dropdown-content absolute top-16 left-1/2 -translate-x-1/2 w-[620px] 
+               bg-white rounded-2xl shadow-2xl border border-gray-100 
+               opacity-0 invisible transition-all duration-300"
+  >
+    <div className="p-7">
+      <h3 className="font-bold text-lg text-gray-800 mb-5 text-center">
+        All Utility Tools
+      </h3>
+      <div className="grid grid-cols-3 gap-5">
+        {[
+          { href: "/qr-generator", icon: QrCode, color: "text-sky-600", label: "QR Generator" },
+          { href: "/password-gen", icon: Lock, color: "text-amber-600", label: "Password Gen" },
+          { href: "/unit-converter", icon: Ruler, color: "text-lime-600", label: "Unit Converter" },
+          { href: "/youtube-thumbnail", icon: Youtube, color: "text-red-600", label: "YT Thumbnail" },
+          { href: "/image-compressor", icon: ImageIcon, color: "text-cyan-600", label: "Image Compress" },
+          { href: "/image-to-text", icon: ImageIcon, color: "text-indigo-600", label: "Image to Text" },
+          { href: "/signature-maker", icon: PenTool, color: "text-emerald-600", label: "Signature Maker" },
+          { href: "/text-to-pdf", icon: FileText, color: "text-purple-600", label: "Text to PDF" },
+          { href: "/heic-to-jpg", icon: FileImage, color: "text-orange-600", label: "HEIC to JPG" },
+        ].map((item) => (
+          <button
+            key={item.href}
+            onClick={(e) => {
+              e.preventDefault();
+              window.location.href = item.href; // ✅ navigate
+              // ✅ dropdown close manually:
+              const dropdown = e.currentTarget.closest('.dropdown-content');
+              dropdown.classList.add('invisible', 'opacity-0');
+            }}
+            className="flex flex-col items-center gap-3 hover:bg-indigo-50 p-4 rounded-2xl transition group w-full"
+          >
+            <item.icon size={34} className={item.color} />
+            <span className="text-sm font-medium text-gray-700 group-hover:text-indigo-600 text-center leading-tight">
+              {item.label}
+            </span>
+          </button>
+        ))}
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
 
             <Link href="/blog" className="text-gray-700 hover:text-indigo-600 font-semibold transition">Blog</Link>
             <Link href="/about" className="text-gray-700 hover:text-indigo-600 font-semibold transition">About</Link>
@@ -143,13 +247,27 @@ export default function Navbar() {
                 PDF Tools <ChevronDown className="group-open:rotate-180 transition" />
               </summary>
               <div className="pl-6 mt-2 space-y-2">
-                <Link href="/pdf-to-word" className="block text-gray-600 hover:text-indigo-600 py-1">PDF to Word</Link>
-                <Link href="/word-to-pdf" className="block text-gray-600 hover:text-indigo-600 py-1">Word to PDF</Link>
-                <Link href="/image-to-pdf" className="block text-gray-600 hover:text-indigo-600 py-1">Image to PDF</Link>
-                <Link href="/merge-pdf" className="block text-gray-600 hover:text-indigo-600 py-1">Merge PDF</Link>
-                <Link href="/split-pdf" className="block text-gray-600 hover:text-indigo-600 py-1">Split PDF</Link>
-                <Link href="/compress-pdf" className="block text-gray-600 hover:text-indigo-600 py-1">Compress PDF</Link>
-                <Link href="/excel-pdf" className="block text-gray-600 hover:text-indigo-600 py-1">Excel to PDF</Link>
+                <Link href="/pdf-to-word"
+                onClick={(e) => { e.preventDefault(); window.location.href = '/pdf-to-word'; }}
+                className="block text-gray-600 hover:text-indigo-600 py-1">PDF to Word</Link>
+                <Link href="/word-to-pdf" 
+                onClick={(e) => { e.preventDefault(); window.location.href = '/word-to-pdf'; }}
+                className="block text-gray-600 hover:text-indigo-600 py-1">Word to PDF</Link>
+                <Link href="/image-to-pdf" 
+                onClick={(e) => { e.preventDefault(); window.location.href = '/image-to-pdf'; }}
+                className="block text-gray-600 hover:text-indigo-600 py-1">Image to PDF</Link>
+                <Link href="/merge-pdf" 
+                onClick={(e) => { e.preventDefault(); window.location.href = '/merge-pdf'; }}
+                className="block text-gray-600 hover:text-indigo-600 py-1">Merge PDF</Link>
+                <Link href="/split-pdf" 
+                onClick={(e) => { e.preventDefault(); window.location.href = '/split-pdf'; }}
+                className="block text-gray-600 hover:text-indigo-600 py-1">Split PDF</Link>
+                <Link href="/compress-pdf" 
+                onClick={(e) => { e.preventDefault(); window.location.href = '/compress-pdf'; }}
+                className="block text-gray-600 hover:text-indigo-600 py-1">Compress PDF</Link>
+                <Link href="/excel-pdf" 
+                onClick={(e) => { e.preventDefault(); window.location.href = '/excel-pdf'; }}
+                className="block text-gray-600 hover:text-indigo-600 py-1">Excel to PDF</Link>
               </div>
             </details>
             <details className="group">
@@ -157,15 +275,42 @@ export default function Navbar() {
                 All Tools <ChevronDown className="group-open:rotate-180 transition" />
               </summary>
               <div className="pl-6 mt-2 space-y-2 text-sm">
-                <Link href="/qr-generator" className="block text-gray-600 hover:text-indigo-600 py-1">QR Generator</Link>
-                <Link href="/password-gen" className="block text-gray-600 hover:text-indigo-600 py-1">Password Generator</Link>
-                <Link href="/unit-converter" className="block text-gray-600 hover:text-indigo-600 py-1">Unit Converter</Link>
-                <Link href="/youtube-thumbnail" className="block text-gray-600 hover:text-indigo-600 py-1">YouTube Thumbnail</Link>
-                <Link href="/image-compressor" className="block text-gray-600 hover:text-indigo-600 py-1">Image Compressor</Link>
-                <Link href="/image-to-text" className="block text-gray-600 hover:text-indigo-600 py-1">Image to Text</Link>
-                <Link href="/signature-maker" className="block text-gray-600 hover:text-indigo-600 py-1">Signature Maker</Link>
-                <Link href="/text-to-pdf" className="block text-gray-600 hover:text-indigo-600 py-1">Text to PDF</Link>
-                <Link href="/heic-to-jpg" className="block text-gray-600 hover:text-indigo-600 py-1">HEIC to JPG</Link>
+                <Link href="/qr-generator" 
+                onClick={(e) => { e.preventDefault(); window.location.href = '/qr-generator'; }}
+
+                className="block text-gray-600 hover:text-indigo-600 py-1">QR Generator</Link>
+                <Link href="/password-gen" 
+                onClick={(e) => { e.preventDefault(); window.location.href = '/password-gen'; }}
+
+                className="block text-gray-600 hover:text-indigo-600 py-1">Password Generator</Link>
+                <Link href="/unit-converter" 
+                onClick={(e) => { e.preventDefault(); window.location.href = '/unit-converter'; }}
+
+                className="block text-gray-600 hover:text-indigo-600 py-1">Unit Converter</Link>
+                <Link href="/youtube-thumbnail" 
+                onClick={(e) => { e.preventDefault(); window.location.href = '/youtube-thumbnail'; }}
+
+                className="block text-gray-600 hover:text-indigo-600 py-1">YouTube Thumbnail</Link>
+                <Link href="/image-compressor" 
+                onClick={(e) => { e.preventDefault(); window.location.href = '/image-compressor'; }}
+
+                className="block text-gray-600 hover:text-indigo-600 py-1">Image Compressor</Link>
+                <Link href="/image-to-text" 
+                onClick={(e) => { e.preventDefault(); window.location.href = '/image-to-text'; }}
+
+                className="block text-gray-600 hover:text-indigo-600 py-1">Image to Text</Link>
+                <Link href="/signature-maker" 
+                onClick={(e) => { e.preventDefault(); window.location.href = '/signature-maker'; }}
+
+                className="block text-gray-600 hover:text-indigo-600 py-1">Signature Maker</Link>
+                <Link href="/text-to-pdf" 
+                onClick={(e) => { e.preventDefault(); window.location.href = '/text-to-pdf'; }}
+
+                className="block text-gray-600 hover:text-indigo-600 py-1">Text to PDF</Link>
+                <Link href="/heic-to-jpg" 
+                onClick={(e) => { e.preventDefault(); window.location.href = '/heic-to-jpg'; }}
+
+                className="block text-gray-600 hover:text-indigo-600 py-1">HEIC to JPG</Link>
               </div>
             </details>
             <Link href="/blog" className="block font-semibold text-gray-800 py-2">Blog</Link>

@@ -12,7 +12,7 @@ export const metadata = {
   keywords: [
     "PDF Linx", "pdflinx", "PDF converter", "merge PDF", "split PDF",
     "compress PDF", "Word to PDF", "PDF to Word", "online PDF tools",
-    "Password Generator", "QR Code Generator", "Image Compressor",
+    "Password Generator", "QR Code Generator", "Image Compressor", 
     "Unit Converter", "YouTube Thumbnail Downloader", "Free Online Tools"
   ],
   authors: [{ name: "PDF Linx", url: "https://www.pdflinx.com" }],
@@ -38,7 +38,6 @@ export const metadata = {
   icons: { icon: "/favicon.svg" },
 };
 
-// JavaScript mein type nahi likhte → bilkul safe
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
@@ -62,9 +61,7 @@ export default function RootLayout({ children }) {
                 width: 512,
                 height: 512,
               },
-              sameAs: [
-                // Yahan apne social links daal dena agar hain
-              ],
+              sameAs: [],
             }, null, 2),
           }}
         />
@@ -110,19 +107,21 @@ export default function RootLayout({ children }) {
           }}
         />
 
-        {/* Breadcrumb */}
+        {/* Breadcrumb Schema */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "BreadcrumbList",
-              itemListElement: [{
-                "@type": "ListItem",
-                position: 1,
-                name: "Home",
-                item: "https://www.pdflinx.com"
-              }],
+              itemListElement: [
+                {
+                  "@type": "ListItem",
+                  position: 1,
+                  name: "Home",
+                  item: "https://www.pdflinx.com",
+                },
+              ],
             }, null, 2),
           }}
         />
@@ -132,10 +131,206 @@ export default function RootLayout({ children }) {
         <Navbar />
         <main className="flex-grow">{children}</main>
         <Footer />
+
+        {/* ✅ Histats Tracking Code (for traffic stats) */}
+        <div id="histats_counter"></div>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              var _Hasync= _Hasync|| [];
+              _Hasync.push(['Histats.start', '1,4996996,4,511,95,18,00000000']);
+              _Hasync.push(['Histats.fasi', '1']);
+              _Hasync.push(['Histats.track_hits', '']);
+              (function() {
+                var hs = document.createElement('script'); 
+                hs.type = 'text/javascript'; 
+                hs.async = true;
+                hs.src = ('//s10.histats.com/js15_as.js');
+                (document.getElementsByTagName('head')[0] || 
+                 document.getElementsByTagName('body')[0]).appendChild(hs);
+              })();
+            `,
+          }}
+        />
+        <noscript>
+          <a href="/" target="_blank">
+            <img
+              src="//sstatic1.histats.com/0.gif?4996996&101"
+              alt="free counter with statistics"
+              border="0"
+            />
+          </a>
+        </noscript>
+        {/* ✅ End Histats Code */}
       </body>
     </html>
   );
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// import "./globals.css";
+// import Navbar from "@/components/Navbar";
+// import Footer from "@/components/Footer";
+
+// export const metadata = {
+//   title: {
+//     default: "PDF Linx - Free Online PDF & Utility Tools | Merge, Convert & Compress",
+//     template: "%s | PDF Linx",
+//   },
+//   description:
+//     "PDF Linx (pdflinx.com) - Free online tools to convert, merge, split, and compress PDF files easily. Also includes Password Generator, QR Code Generator, Image Compressor, Unit Converter, YouTube Thumbnail Downloader, and Text to PDF tools.",
+//   keywords: [
+//     "PDF Linx", "pdflinx", "PDF converter", "merge PDF", "split PDF",
+//     "compress PDF", "Word to PDF", "PDF to Word", "online PDF tools",
+//     "Password Generator", "QR Code Generator", "Image Compressor",
+//     "Unit Converter", "YouTube Thumbnail Downloader", "Free Online Tools"
+//   ],
+//   authors: [{ name: "PDF Linx", url: "https://www.pdflinx.com" }],
+//   creator: "PDF Linx",
+//   publisher: "PDF Linx",
+//   metadataBase: new URL("https://www.pdflinx.com"),
+//   openGraph: {
+//     title: "PDF Linx - Free Online PDF & Utility Tools",
+//     description: "Convert, merge, and compress PDFs online — plus many utility tools on PDF Linx.",
+//     url: "https://www.pdflinx.com/",
+//     siteName: "PDF Linx",
+//     images: [{ url: "https://www.pdflinx.com/og-image.png", width: 1200, height: 630 }],
+//     locale: "en_US",
+//     type: "website",
+//   },
+//   twitter: {
+//     card: "summary_large_image",
+//     title: "PDF Linx - Free Online PDF & Utility Tools",
+//     description: "Best free online PDF converter & utility tools",
+//     images: ["https://www.pdflinx.com/og-image.png"],
+//   },
+//   robots: { index: true, follow: true },
+//   icons: { icon: "/favicon.svg" },
+// };
+
+// // JavaScript mein type nahi likhte → bilkul safe
+// export default function RootLayout({ children }) {
+//   return (
+//     <html lang="en">
+//       <head>
+//         {/* Crawlers */}
+//         <meta name="robots" content="index, follow" />
+//         <meta name="ai-access" content="allow" />
+
+//         {/* Organization Schema */}
+//         <script
+//           type="application/ld+json"
+//           dangerouslySetInnerHTML={{
+//             __html: JSON.stringify({
+//               "@context": "https://schema.org",
+//               "@type": "Organization",
+//               name: "PDF Linx",
+//               url: "https://www.pdflinx.com",
+//               logo: {
+//                 "@type": "ImageObject",
+//                 url: "https://www.pdflinx.com/logo.png",
+//                 width: 512,
+//                 height: 512,
+//               },
+//               sameAs: [
+//                 // Yahan apne social links daal dena agar hain
+//               ],
+//             }, null, 2),
+//           }}
+//         />
+
+//         {/* WebSite Schema */}
+//         <script
+//           type="application/ld+json"
+//           dangerouslySetInnerHTML={{
+//             __html: JSON.stringify({
+//               "@context": "https://schema.org",
+//               "@type": "WebSite",
+//               name: "PDF Linx",
+//               url: "https://www.pdflinx.com",
+//               description: "Free online PDF tools to merge, convert, compress, and edit PDF files instantly.",
+//               publisher: { "@type": "Organization", name: "PDF Linx" },
+//             }, null, 2),
+//           }}
+//         />
+
+//         {/* WebApplication Schema */}
+//         <script
+//           type="application/ld+json"
+//           dangerouslySetInnerHTML={{
+//             __html: JSON.stringify({
+//               "@context": "https://schema.org",
+//               "@type": "WebApplication",
+//               name: "PDF Linx - Free PDF & Utility Tools",
+//               url: "https://www.pdflinx.com",
+//               applicationCategory: "UtilityApplication",
+//               operatingSystem: "All",
+//               browserRequirements: "Requires JavaScript and a modern browser",
+//               offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+//               description: "100% free online PDF converter, merger, splitter, compressor + many utility tools.",
+//               featureList: [
+//                 "Merge PDF", "Split PDF", "Compress PDF",
+//                 "Word to PDF", "PDF to Word", "Image to PDF",
+//                 "Password Generator", "QR Code Generator",
+//                 "Image Compressor", "YouTube Thumbnail Downloader",
+//                 "Unit Converter", "Text to PDF"
+//               ],
+//               creator: { "@type": "Organization", name: "PDF Linx" },
+//             }, null, 2),
+//           }}
+//         />
+
+//         {/* Breadcrumb */}
+//         <script
+//           type="application/ld+json"
+//           dangerouslySetInnerHTML={{
+//             __html: JSON.stringify({
+//               "@context": "https://schema.org",
+//               "@type": "BreadcrumbList",
+//               itemListElement: [{
+//                 "@type": "ListItem",
+//                 position: 1,
+//                 name: "Home",
+//                 item: "https://www.pdflinx.com"
+//               }],
+//             }, null, 2),
+//           }}
+//         />
+//       </head>
+
+//       <body className="flex flex-col min-h-screen bg-gray-50 font-sans">
+//         <Navbar />
+//         <main className="flex-grow">{children}</main>
+//         <Footer />
+//       </body>
+//     </html>
+//   );
+// }
 
 
 
