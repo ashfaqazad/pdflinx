@@ -1,6 +1,8 @@
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import Script from "next/script";
+
 
 export const metadata = {
   title: {
@@ -12,7 +14,7 @@ export const metadata = {
   keywords: [
     "PDF Linx", "pdflinx", "PDF converter", "merge PDF", "split PDF",
     "compress PDF", "Word to PDF", "PDF to Word", "online PDF tools",
-    "Password Generator", "QR Code Generator", "Image Compressor", 
+    "Password Generator", "QR Code Generator", "Image Compressor",
     "Unit Converter", "YouTube Thumbnail Downloader", "Free Online Tools"
   ],
   authors: [{ name: "PDF Linx", url: "https://www.pdflinx.com" }],
@@ -42,6 +44,25 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
+
+
+        {/* ================= Google Analytics (GA4) ================= */}
+        <Script
+          strategy="afterInteractive"
+          src="https://www.googletagmanager.com/gtag/js?id=G-3PSZFQJYJ8"
+        />
+        <Script strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-3PSZFQJYJ8');
+          `}
+        </Script>
+        {/* ========================================================== */}
+
+
+
         {/* Crawlers */}
         <meta name="robots" content="index, follow" />
         <meta name="ai-access" content="allow" />
