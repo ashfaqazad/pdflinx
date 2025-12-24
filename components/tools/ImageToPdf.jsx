@@ -127,10 +127,10 @@ export default function ImageToPdf() {
 
       {/* ==================== MODERN & BEAUTIFUL UI ==================== */}
       <main className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-blue-50 flex items-center justify-center p-6">
-        <div className="max-w-3xl w-full">
+        <div className="max-w-2xl w-full">
           {/* Header */}
           <div className="text-center mb-10">
-            <h1 className="text-5xl font-extrabold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mb-4">
+            <h1 className="text-3xl md:text-4xl font-extrabold bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent mb-6 leading-[1.2] md:leading-[1.1]">
               Image to PDF Converter
             </h1>
             <p className="text-xl text-gray-700">
@@ -223,6 +223,94 @@ export default function ImageToPdf() {
           </div>
         </div>
       </main>
+
+
+
+
+      {/* ==================== UNIQUE SEO CONTENT SECTION - JPG TO PDF ==================== */}
+      <section className="mt-20 max-w-5xl mx-auto px-6 pb-16">
+        {/* Main Heading */}
+        <div className="text-center mb-16">
+          <h2 className="text-2xl md:text-4xl font-extrabold bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent mb-6 leading-[1.2] md:leading-[1.1]">
+            JPG to PDF Online Free - Convert Images Instantly
+          </h2>
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            Convert JPG, PNG, GIF, or any image to PDF in seconds. Combine multiple photos into one professional PDF document – perfect for portfolios, reports, or sharing.
+          </p>
+        </div>
+
+        {/* Benefits Grid - 3 Cards with Icons */}
+        <div className="grid md:grid-cols-3 gap-8 mb-20">
+          <div className="bg-gradient-to-br from-blue-50 to-white p-8 rounded-2xl shadow-lg border border-blue-100 text-center hover:shadow-xl transition">
+            <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-6">
+              <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
+            </div>
+            <h3 className="text-2xl font-bold text-gray-800 mb-4">Any Image Format</h3>
+            <p className="text-gray-600">
+              Convert JPG to PDF, PNG to PDF, GIF, BMP, or any image format – single or multiple files.
+            </p>
+          </div>
+
+          <div className="bg-gradient-to-br from-green-50 to-white p-8 rounded-2xl shadow-lg border border-green-100 text-center hover:shadow-xl transition">
+            <div className="w-16 h-16 bg-green-600 rounded-full flex items-center justify-center mx-auto mb-6">
+              <CheckCircle className="w-8 h-8 text-white" />
+            </div>
+            <h3 className="text-2xl font-bold text-gray-800 mb-4">Perfect Quality & Layout</h3>
+            <p className="text-gray-600">
+              Images converted to PDF with full resolution preserved. Each photo on its own page – professional look.
+            </p>
+          </div>
+
+          <div className="bg-gradient-to-br from-purple-50 to-white p-8 rounded-2xl shadow-lg border border-purple-100 text-center hover:shadow-xl transition">
+            <div className="w-16 h-16 bg-purple-600 rounded-full flex items-center justify-center mx-auto mb-6">
+              <Download className="w-8 h-8 text-white" />
+            </div>
+            <h3 className="text-2xl font-bold text-gray-800 mb-4">Fast, Free & Secure</h3>
+            <p className="text-gray-600">
+              Convert images to PDF instantly on any device. No signup, no watermark – files deleted after 1 hour.
+            </p>
+          </div>
+        </div>
+
+        {/* How To Steps */}
+        <div className="bg-white rounded-3xl shadow-xl p-10 md:p-16 border border-gray-100">
+          <h3 className="text-3xl md:text-4xl font-bold text-center mb-12 text-gray-800">
+            How to Convert JPG to PDF in 3 Simple Steps
+          </h3>
+          <div className="grid md:grid-cols-3 gap-10">
+            <div className="text-center">
+              <div className="w-20 h-20 bg-gradient-to-r from-blue-600 to-blue-700 rounded-full flex items-center justify-center mx-auto mb-6 text-3xl font-bold text-white shadow-lg">
+                1
+              </div>
+              <h4 className="text-xl font-semibold mb-3">Upload Images</h4>
+              <p className="text-gray-600">Drag & drop JPG, PNG, or multiple photos</p>
+            </div>
+
+            <div className="text-center">
+              <div className="w-20 h-20 bg-gradient-to-r from-green-600 to-green-700 rounded-full flex items-center justify-center mx-auto mb-6 text-3xl font-bold text-white shadow-lg">
+                2
+              </div>
+              <h4 className="text-xl font-semibold mb-3">Arrange Order</h4>
+              <p className="text-gray-600">Reorder images easily with drag & drop</p>
+            </div>
+
+            <div className="text-center">
+              <div className="w-20 h-20 bg-gradient-to-r from-purple-600 to-purple-700 rounded-full flex items-center justify-center mx-auto mb-6 text-3xl font-bold text-white shadow-lg">
+                3
+              </div>
+              <h4 className="text-xl font-semibold mb-3">Convert to PDF</h4>
+              <p className="text-gray-600">Download your professional PDF instantly!</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Final CTA */}
+        <p className="text-center mt-12 text-lg text-gray-500 italic">
+          Turn your photos and images into beautiful PDFs every day – trusted by thousands at PDF Linx.
+        </p>
+      </section>
     </>
   );
 }

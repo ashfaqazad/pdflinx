@@ -91,24 +91,24 @@ export default function About() {
         <section className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
           <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl border border-gray-200 transition-all duration-300 hover:-translate-y-2">
             <Globe className="w-16 h-16 mx-auto text-indigo-700 mb-6 shadow-md p-3 rounded-xl bg-indigo-50" />
-            <h3 className="text-2xl font-bold mb-4 text-gray-900">Free & Accessible</h3>
-            <p className="text-gray-600 leading-relaxed">
+            <h3 className="text-2xl text-center font-bold mb-4 text-gray-900">Free & Accessible</h3>
+            <p className="text-gray-600 text-center leading-relaxed">
               All tools like PDF Converters, QR Generators, and Unit Converters are free to use, anytime and anywhere.
             </p>
           </div>
 
           <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl border border-gray-200 transition-all duration-300 hover:-translate-y-2">
             <Zap className="w-16 h-16 mx-auto text-amber-600 mb-6 shadow-md p-3 rounded-xl bg-amber-50" />
-            <h3 className="text-2xl font-bold mb-4 text-gray-900">Fast & Reliable</h3>
-            <p className="text-gray-600 leading-relaxed">
+            <h3 className="text-2xl text-center font-bold mb-4 text-gray-900">Fast & Reliable</h3>
+            <p className="text-gray-600 text-center leading-relaxed">
               Enjoy high-speed processing for merging, splitting, or converting PDFs optimized for performance and accuracy.
             </p>
           </div>
 
           <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl border border-gray-200 transition-all duration-300 hover:-translate-y-2">
             <ShieldCheck className="w-16 h-16 mx-auto text-emerald-600 mb-6 shadow-md p-3 rounded-xl bg-emerald-50" />
-            <h3 className="text-2xl font-bold mb-4 text-gray-900">Secure & Private</h3>
-            <p className="text-gray-600 leading-relaxed">
+            <h3 className="text-2xl text-center font-bold mb-4 text-gray-900">Secure & Private</h3>
+            <p className="text-gray-600 text-center leading-relaxed">
               Your files are processed securely and deleted after completion your privacy is our top priority.
             </p>
           </div>

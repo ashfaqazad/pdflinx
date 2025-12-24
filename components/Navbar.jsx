@@ -41,18 +41,6 @@ export default function Navbar() {
                     <h3 className="font-bold text-lg text-gray-800 mb-5">Convert TO PDF</h3>
                     <div className="space-y-3">
 
-                      {/* <Link href="/word-to-pdf"
-                      onClick={(e) => {
-    e.preventDefault();                    // pehle default behavior rok do
-    window.location.href = '/word-to-pdf'; // turant navigate kar do
-
-
-                      
-                      className="flex items-center gap-4 hover:bg-indigo-50 px-4 py-2.5 rounded-xl transition">
-                        <FileType size={26} className="text-blue-600" />
-                        <span className="font-medium text-gray-700 hover:text-indigo-600">WORD to PDF</span>
-                      </Link> */}
-
                       <Link 
                         href="/word-to-pdf"
                         onClick={(e) => { e.preventDefault(); window.location.href = '/word-to-pdf'; }}
@@ -118,47 +106,6 @@ export default function Navbar() {
                 </div>
               </div>
             </div>
-
-
-
-
-            {/* === ALL TOOLS Dropdown (9 Tools including Text to PDF) === */}
-            {/* <div className="relative group">
-              <button className="flex items-center gap-2 text-gray-700 hover:text-indigo-600 font-semibold transition">
-                All Tools <ChevronDown size={18} className="group-hover:rotate-180 transition" />
-              </button>
-
-              <div className="absolute top-16 left-1/2 -translate-x-1/2 w-[620px] bg-white rounded-2xl shadow-2xl border border-gray-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
-                <div className="p-7">
-                  <h3 className="font-bold text-lg text-gray-800 mb-5 text-center">All Utility Tools</h3>
-                  <div className="grid grid-cols-3 gap-5">
-                    {[
-                      { href: "/qr-generator", icon: QrCode, color: "text-sky-600", label: "QR Generator" },
-                      { href: "/password-gen", icon: Lock, color: "text-amber-600", label: "Password Gen" },
-                      { href: "/unit-converter", icon: Ruler, color: "text-lime-600", label: "Unit Converter" },
-                      { href: "/youtube-thumbnail", icon: Youtube, color: "text-red-600", label: "YT Thumbnail" },
-                      { href: "/image-compressor", icon: ImageIcon, color: "text-cyan-600", label: "Image Compress" },
-                      { href: "/image-to-text", icon: ImageIcon, color: "text-indigo-600", label: "Image to Text" },
-                      { href: "/signature-maker", icon: PenTool, color: "text-emerald-600", label: "Signature Maker" },
-                      { href: "/text-to-pdf", icon: FileText, color: "text-purple-600", label: "Text to PDF" },
-                      { href: "/heic-to-jpg", icon: FileImage, color: "text-orange-600", label: "HEIC to JPG" },
-                    ].map((item) => (
-                      <Link
-                        key={item.href}
-                        href={item.href}
-                        className="flex flex-col items-center gap-3 hover:bg-indigo-50 p-4 rounded-2xl transition group"
-                      >
-                        <item.icon size={34} className={item.color} />
-                        <span className="text-sm font-medium text-gray-700 group-hover:text-indigo-600 text-center leading-tight">
-                          {item.label}
-                        </span>
-                      </Link>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div> */}
-
 
 <div
   className="relative group"
@@ -241,7 +188,9 @@ export default function Navbar() {
       {mobileOpen && (
         <div className="lg:hidden bg-white border-t border-gray-100">
           <div className="px-6 py-6 space-y-4">
-            <Link href="/" className="block font-semibold text-gray-800 py-2">Home</Link>
+            <Link href="/" 
+          onClick={(e) => { e.preventDefault(); window.location.href = '/'; }}
+            className="block font-semibold text-gray-800 py-2">Home</Link>
             <details className="group">
               <summary className="flex justify-between items-center font-semibold text-gray-800 cursor-pointer py-2">
                 PDF Tools <ChevronDown className="group-open:rotate-180 transition" />
@@ -313,9 +262,15 @@ export default function Navbar() {
                 className="block text-gray-600 hover:text-indigo-600 py-1">HEIC to JPG</Link>
               </div>
             </details>
-            <Link href="/blog" className="block font-semibold text-gray-800 py-2">Blog</Link>
-            <Link href="/about" className="block font-semibold text-gray-800 py-2">About</Link>
-            <Link href="/contact" className="block font-semibold text-gray-800 py-2">Contact</Link>
+            <Link href="/blog" 
+          onClick={(e) => { e.preventDefault(); window.location.href = '/blog'; }}
+            className="block font-semibold text-gray-800 py-2">Blog</Link>
+            <Link href="/about" 
+          onClick={(e) => { e.preventDefault(); window.location.href = '/about'; }}
+            className="block font-semibold text-gray-800 py-2">About</Link>
+            <Link href="/contact" 
+          onClick={(e) => { e.preventDefault(); window.location.href = '/contact'; }}
+            className="block font-semibold text-gray-800 py-2">Contact</Link>
           </div>
         </div>
       )}

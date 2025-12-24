@@ -111,11 +111,12 @@ export default function PdfToWord() {
         <div className="max-w-2xl w-full">
           {/* Header */}
           <div className="text-center mb-10">
-            <h1 className="text-5xl font-extrabold bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent mb-4">
-              PDF to Word Converter
+            <h1 className="text-3xl md:text-4xl font-extrabold bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent mb-6 leading-[1.2] md:leading-[1.1]">
+              PDF to Word Converter <br/>(Free & Online)
             </h1>
             <p className="text-xl text-gray-600">
-              Convert PDF to editable Word (DOCX) — fast, accurate & 100% free!
+              Convert PDF to Word online for free. Our PDF to Word converter
+              creates editable DOCX files fast, secure and without signup.
             </p>
           </div>
 
@@ -128,9 +129,9 @@ export default function PdfToWord() {
                   <div className={`border-3 border-dashed rounded-2xl p-12 text-center cursor-pointer transition-all ${file ? 'border-green-500 bg-green-50' : 'border-gray-300 hover:border-blue-500 hover:bg-blue-50'}`}>
                     <FileText className="w-16 h-16 mx-auto mb-4 text-blue-600" />
                     <p className="text-xl font-semibold text-gray-700">
-                      {file ? file.name : "Drop PDF here or click to upload"}
+                      {file ? file.name : "Drop your PDF file here or click to upload"}
                     </p>
-                    <p className="text-sm text-gray-500 mt-2">Your text will be fully editable in Word</p>
+                    <p className="text-sm text-gray-500 mt-2">Convert PDF to fully editable Word (DOCX)</p>
                   </div>
                   <input
                     type="file"
@@ -177,6 +178,93 @@ export default function PdfToWord() {
           </div>
         </div>
       </main>
+
+
+
+      {/* ==================== UNIQUE SEO CONTENT SECTION - PDF TO WORD ==================== */}
+      <section className="mt-20 max-w-5xl mx-auto px-6 pb-16">
+        {/* Main Heading */}
+        <div className="text-center mb-16">
+          <h2 className="text-2xl md:text-4xl font-extrabold bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent mb-6 leading-[1.2] md:leading-[1.1]">
+            PDF to Word Online Free - Convert to Editable DOCX
+          </h2>
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            Convert PDF to Word (DOCX) instantly while keeping text, tables, images, and formatting intact. Edit your documents easily – perfect for reports, contracts, or resumes.
+          </p>
+        </div>
+
+        {/* Benefits Grid - 3 Cards with Icons */}
+        <div className="grid md:grid-cols-3 gap-8 mb-20">
+          <div className="bg-gradient-to-br from-blue-50 to-white p-8 rounded-2xl shadow-lg border border-blue-100 text-center hover:shadow-xl transition">
+            <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-6">
+              <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
+            </div>
+            <h3 className="text-2xl font-bold text-gray-800 mb-4">Accurate & Editable</h3>
+            <p className="text-gray-600">
+              Convert PDF to Word with high accuracy. Text, tables, and layout preserved for easy editing.
+            </p>
+          </div>
+
+          <div className="bg-gradient-to-br from-green-50 to-white p-8 rounded-2xl shadow-lg border border-green-100 text-center hover:shadow-xl transition">
+            <div className="w-16 h-16 bg-green-600 rounded-full flex items-center justify-center mx-auto mb-6">
+              <CheckCircle className="w-8 h-8 text-white" />
+            </div>
+            <h3 className="text-2xl font-bold text-gray-800 mb-4">Supports Complex PDFs</h3>
+            <p className="text-gray-600">
+              Handles scanned PDFs, images, tables, and multi-column layouts – converts to editable DOCX.
+            </p>
+          </div>
+
+          <div className="bg-gradient-to-br from-purple-50 to-white p-8 rounded-2xl shadow-lg border border-purple-100 text-center hover:shadow-xl transition">
+            <div className="w-16 h-16 bg-purple-600 rounded-full flex items-center justify-center mx-auto mb-6">
+              <Download className="w-8 h-8 text-white" />
+            </div>
+            <h3 className="text-2xl font-bold text-gray-800 mb-4">Fast, Free & Secure</h3>
+            <p className="text-gray-600">
+              Convert PDF to Word online instantly. No signup, no watermark – files deleted after 1 hour.
+            </p>
+          </div>
+        </div>
+
+        {/* How To Steps */}
+        <div className="bg-white rounded-3xl shadow-xl p-10 md:p-16 border border-gray-100">
+          <h3 className="text-3xl md:text-4xl font-bold text-center mb-12 text-gray-800">
+            How to Convert PDF to Word in 3 Simple Steps
+          </h3>
+          <div className="grid md:grid-cols-3 gap-10">
+            <div className="text-center">
+              <div className="w-20 h-20 bg-gradient-to-r from-blue-600 to-blue-700 rounded-full flex items-center justify-center mx-auto mb-6 text-3xl font-bold text-white shadow-lg">
+                1
+              </div>
+              <h4 className="text-xl font-semibold mb-3">Upload PDF</h4>
+              <p className="text-gray-600">Drag & drop your PDF file (even scanned)</p>
+            </div>
+
+            <div className="text-center">
+              <div className="w-20 h-20 bg-gradient-to-r from-green-600 to-green-700 rounded-full flex items-center justify-center mx-auto mb-6 text-3xl font-bold text-white shadow-lg">
+                2
+              </div>
+              <h4 className="text-xl font-semibold mb-3">Click Convert</h4>
+              <p className="text-gray-600">We extract text and formatting accurately</p>
+            </div>
+
+            <div className="text-center">
+              <div className="w-20 h-20 bg-gradient-to-r from-purple-600 to-purple-700 rounded-full flex items-center justify-center mx-auto mb-6 text-3xl font-bold text-white shadow-lg">
+                3
+              </div>
+              <h4 className="text-xl font-semibold mb-3">Download Word File</h4>
+              <p className="text-gray-600">Get your editable DOCX instantly!</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Final CTA */}
+        <p className="text-center mt-12 text-lg text-gray-500 italic">
+          Convert PDF to Word every day with perfect results – trusted by thousands at PDF Linx.
+        </p>
+      </section>
     </>
   );
 }

@@ -137,14 +137,14 @@ export default function MergePDF() {
 
       {/* ==================== MODERN UI (Same as Word/Image to PDF) ==================== */}
       <main className="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 flex items-center justify-center p-6">
-        <div className="max-w-4xl w-full">
+        <div className="max-w-2xl w-full">
           {/* Header */}
           <div className="text-center mb-12">
-            <h1 className="text-6xl font-extrabold bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent mb-4">
-              Merge PDF Files
+            <h1 className="text-5xl font-extrabold bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent mb-6">
+              Merge PDF Files Online (Free)
             </h1>
             <p className="text-2xl text-gray-700">
-              Combine multiple PDFs into one — fast, easy & completely free!
+              Combine multiple PDF files into one online — fast, secure & completely free.
             </p>
           </div>
 
@@ -164,15 +164,14 @@ export default function MergePDF() {
 
                 <div
                   onClick={() => fileInputRef.current?.click()}
-                  className={`border-4 border-dashed rounded-3xl p-20 text-center cursor-pointer transition-all ${
-                    files.length > 0 ? 'border-green-500 bg-green-50' : 'border-gray-300 hover:border-indigo-500 hover:bg-indigo-50'
-                  }`}
+                  className={`border-4 border-dashed rounded-3xl p-20 text-center cursor-pointer transition-all ${files.length > 0 ? 'border-green-500 bg-green-50' : 'border-gray-300 hover:border-indigo-500 hover:bg-indigo-50'
+                    }`}
                 >
                   <Files className="w-24 h-24 mx-auto mb-6 text-indigo-600" />
                   <p className="text-2xl font-bold text-gray-800">
-                    {files.length > 0 ? `${files.length} PDF files selected` : "Click to select PDF files"}
+                    {files.length > 0 ? `${files.length} PDF files selected` : "Drop PDF files here or click to upload"}
                   </p>
-                  <p className="text-gray-600 mt-3">Select 2 or more PDFs to merge • Drag & drop also supported</p>
+                  <p className="text-gray-600 mt-3">Merge 2 or more PDFs into one file instantly</p>
                 </div>
 
                 {/* Selected Files Preview */}
@@ -234,6 +233,95 @@ export default function MergePDF() {
           </div>
         </div>
       </main>
+
+
+      {/* ==================== UNIQUE SEO CONTENT SECTION - MERGE PDF ==================== */}
+      <section className="mt-20 max-w-5xl mx-auto px-6 pb-16">
+        {/* Main Heading */}
+        <div className="text-center mb-16">
+          <h2 className="text-4xl md:text-5xl font-extrabold bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent mb-6">
+            Merge PDF Online Free - Combine Files Instantly
+          </h2>
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            Combine multiple PDF files into one single document in seconds. Perfect for reports, contracts, ebooks, or any project needing unified PDFs.
+          </p>
+        </div>
+
+        {/* Benefits Grid - 3 Cards with Icons */}
+        <div className="grid md:grid-cols-3 gap-8 mb-20">
+          <div className="bg-gradient-to-br from-blue-50 to-white p-8 rounded-2xl shadow-lg border border-blue-100 text-center hover:shadow-xl transition">
+            <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-6">
+              <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+              </svg>
+            </div>
+            <h3 className="text-2xl font-bold text-gray-800 mb-4">Unlimited Merges</h3>
+            <p className="text-gray-600">
+              Merge PDF files online free – combine as many documents as you need, no limits or hidden fees.
+            </p>
+          </div>
+
+          <div className="bg-gradient-to-br from-green-50 to-white p-8 rounded-2xl shadow-lg border border-green-100 text-center hover:shadow-xl transition">
+            <div className="w-16 h-16 bg-green-600 rounded-full flex items-center justify-center mx-auto mb-6">
+              <CheckCircle className="w-8 h-8 text-white" />
+            </div>
+            <h3 className="text-2xl font-bold text-gray-800 mb-4">Preserve Quality & Order</h3>
+            <p className="text-gray-600">
+              Combine PDF files without losing formatting. Rearrange pages easily before merging.
+            </p>
+          </div>
+
+          <div className="bg-gradient-to-br from-purple-50 to-white p-8 rounded-2xl shadow-lg border border-purple-100 text-center hover:shadow-xl transition">
+            <div className="w-16 h-16 bg-purple-600 rounded-full flex items-center justify-center mx-auto mb-6">
+              <Download className="w-8 h-8 text-white" />
+            </div>
+            <h3 className="text-2xl font-bold text-gray-800 mb-4">Fast, Safe & Private</h3>
+            <p className="text-gray-600">
+              Merge PDFs quickly on any device. Files encrypted and deleted after 1 hour – 100% secure.
+            </p>
+          </div>
+        </div>
+
+        {/* How To Steps */}
+        <div className="bg-white rounded-3xl shadow-xl p-10 md:p-16 border border-gray-100">
+          <h3 className="text-3xl md:text-4xl font-bold text-center mb-12 text-gray-800">
+            How to Merge PDF Files in 3 Simple Steps
+          </h3>
+          <div className="grid md:grid-cols-3 gap-10">
+            <div className="text-center">
+              <div className="w-20 h-20 bg-gradient-to-r from-blue-600 to-blue-700 rounded-full flex items-center justify-center mx-auto mb-6 text-3xl font-bold text-white shadow-lg">
+                1
+              </div>
+              <h4 className="text-xl font-semibold mb-3">Upload PDFs</h4>
+              <p className="text-gray-600">Drag & drop multiple PDF files or click to select</p>
+            </div>
+
+            <div className="text-center">
+              <div className="w-20 h-20 bg-gradient-to-r from-green-600 to-green-700 rounded-full flex items-center justify-center mx-auto mb-6 text-3xl font-bold text-white shadow-lg">
+                2
+              </div>
+              <h4 className="text-xl font-semibold mb-3">Arrange Order</h4>
+              <p className="text-gray-600">Reorder pages with drag & drop if needed</p>
+            </div>
+
+            <div className="text-center">
+              <div className="w-20 h-20 bg-gradient-to-r from-purple-600 to-purple-700 rounded-full flex items-center justify-center mx-auto mb-6 text-3xl font-bold text-white shadow-lg">
+                3
+              </div>
+              <h4 className="text-xl font-semibold mb-3">Click Merge</h4>
+              <p className="text-gray-600">Download your combined PDF instantly!</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Final CTA */}
+        <p className="text-center mt-12 text-lg text-gray-500 italic">
+          Trusted by thousands daily – merge PDF files free, fast, and without hassle at PDF Linx.
+        </p>
+      </section>
+
+
+
     </>
   );
 }

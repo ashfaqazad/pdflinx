@@ -112,11 +112,11 @@ export default function ExcelToPDF() {
         <div className="max-w-2xl w-full">
           {/* Header */}
           <div className="text-center mb-10">
-            <h1 className="text-5xl font-extrabold bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent mb-4">
-              Excel to PDF Converter
+            <h1 className="text-4xl md:text-4xl font-extrabold bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent mb-6 leading-[1.2] md:leading-[1.1]">
+              Excel to PDF Online Converter (Free)
             </h1>
             <p className="text-xl text-gray-600">
-              Convert XLSX/XLS to PDF with perfect formatting — fast & free!
+              Convert Excel (XLSX, XLS) to PDF online with perfect formatting — fast & free.
             </p>
           </div>
 
@@ -131,7 +131,7 @@ export default function ExcelToPDF() {
                     <p className="text-xl font-semibold text-gray-700">
                       {file ? file.name : "Drop Excel file here or click to upload"}
                     </p>
-                    <p className="text-sm text-gray-500 mt-2">Supports .xlsx, .xls • Perfect layout preserved</p>
+                    <p className="text-sm text-gray-500 mt-2">Supports .xlsx, .xls • Excel to PDF conversion with perfect layout</p>
                   </div>
                   <input
                     type="file"
@@ -185,6 +185,95 @@ export default function ExcelToPDF() {
           </div>
         </div>
       </main>
+
+
+
+
+
+      {/* ==================== UNIQUE SEO CONTENT SECTION - EXCEL TO PDF ==================== */}
+      <section className="mt-20 max-w-5xl mx-auto px-6 pb-16">
+        {/* Main Heading */}
+        <div className="text-center mb-16">
+          <h2 className="text-2xl md:text-4xl font-extrabold bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent mb-6 leading-[1.2] md:leading-[1.1]">
+            Excel to PDF Online Free - Convert Spreadsheets Instantly
+          </h2>
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            Convert Excel files (XLS, XLSX) to PDF in seconds while preserving tables, formulas, formatting, and layout. Perfect for reports, invoices, or sharing spreadsheets professionally.
+          </p>
+        </div>
+
+        {/* Benefits Grid - 3 Cards with Icons */}
+        <div className="grid md:grid-cols-3 gap-8 mb-20">
+          <div className="bg-gradient-to-br from-blue-50 to-white p-8 rounded-2xl shadow-lg border border-blue-100 text-center hover:shadow-xl transition">
+            <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-6">
+              <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 7h2l1 10h10l1-10h2M7 7v10m4-10v10m4-10v10" />
+              </svg>
+            </div>
+            <h3 className="text-2xl font-bold text-gray-800 mb-4">Perfect Formatting Preserved</h3>
+            <p className="text-gray-600">
+              Tables, formulas, charts, and layout stay exactly as in your original Excel file.
+            </p>
+          </div>
+
+          <div className="bg-gradient-to-br from-green-50 to-white p-8 rounded-2xl shadow-lg border border-green-100 text-center hover:shadow-xl transition">
+            <div className="w-16 h-16 bg-green-600 rounded-full flex items-center justify-center mx-auto mb-6">
+              <CheckCircle className="w-8 h-8 text-white" />
+            </div>
+            <h3 className="text-2xl font-bold text-gray-800 mb-4">Supports XLS & XLSX</h3>
+            <p className="text-gray-600">
+              Convert any Excel spreadsheet to PDF free – multiple sheets handled perfectly.
+            </p>
+          </div>
+
+          <div className="bg-gradient-to-br from-purple-50 to-white p-8 rounded-2xl shadow-lg border border-purple-100 text-center hover:shadow-xl transition">
+            <div className="w-16 h-16 bg-purple-600 rounded-full flex items-center justify-center mx-auto mb-6">
+              <Download className="w-8 h-8 text-white" />
+            </div>
+            <h3 className="text-2xl font-bold text-gray-800 mb-4">Fast, Secure & Free</h3>
+            <p className="text-gray-600">
+              Convert Excel to PDF instantly on any device. No signup, no watermark – files deleted after 1 hour.
+            </p>
+          </div>
+        </div>
+
+        {/* How To Steps */}
+        <div className="bg-white rounded-3xl shadow-xl p-10 md:p-16 border border-gray-100">
+          <h3 className="text-3xl md:text-4xl font-bold text-center mb-12 text-gray-800">
+            How to Convert Excel to PDF in 3 Simple Steps
+          </h3>
+          <div className="grid md:grid-cols-3 gap-10">
+            <div className="text-center">
+              <div className="w-20 h-20 bg-gradient-to-r from-blue-600 to-blue-700 rounded-full flex items-center justify-center mx-auto mb-6 text-3xl font-bold text-white shadow-lg">
+                1
+              </div>
+              <h4 className="text-xl font-semibold mb-3">Upload Excel File</h4>
+              <p className="text-gray-600">Drag & drop your XLS or XLSX spreadsheet</p>
+            </div>
+
+            <div className="text-center">
+              <div className="w-20 h-20 bg-gradient-to-r from-green-600 to-green-700 rounded-full flex items-center justify-center mx-auto mb-6 text-3xl font-bold text-white shadow-lg">
+                2
+              </div>
+              <h4 className="text-xl font-semibold mb-3">Click Convert</h4>
+              <p className="text-gray-600">We process and preserve all formatting</p>
+            </div>
+
+            <div className="text-center">
+              <div className="w-20 h-20 bg-gradient-to-r from-purple-600 to-purple-700 rounded-full flex items-center justify-center mx-auto mb-6 text-3xl font-bold text-white shadow-lg">
+                3
+              </div>
+              <h4 className="text-xl font-semibold mb-3">Download PDF</h4>
+              <p className="text-gray-600">Get your professional PDF instantly!</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Final CTA */}
+        <p className="text-center mt-12 text-lg text-gray-500 italic">
+          Convert Excel to PDF daily with confidence – trusted by thousands for perfect results at PDF Linx.
+        </p>
+      </section>
     </>
   );
 }
