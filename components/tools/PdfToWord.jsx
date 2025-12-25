@@ -3,10 +3,40 @@
 "use client";
 import { useState } from "react";
 import { Upload, Download, CheckCircle, FileText } from "lucide-react";
+import Script from "next/script";
+
+// export const metadata = {
+//   title: "PDF to Word Converter - Free, Fast & No Signup | PDF Linx",
+//   description: "Convert PDF to editable Word (DOCX) online for free. No registration, no watermark, 100% secure and works on mobile.",
+// };
+
 
 export const metadata = {
   title: "PDF to Word Converter - Free, Fast & No Signup | PDF Linx",
-  description: "Convert PDF to editable Word (DOCX) online for free. No registration, no watermark, 100% secure and works on mobile.",
+  description: "Convert PDF to editable Word (DOCX) online for free. No registration, no watermark, 100% secure and works on any device.",
+  keywords: [
+    "pdf to word",
+    "pdf to docx",
+    "convert pdf to word",
+    "pdf to word converter",
+    "free pdf to word online",
+    "pdf to editable word",
+    "pdf to docx no watermark"
+  ],
+  openGraph: {
+    title: "PDF to Word Converter - Free Online Tool | PDF Linx",
+    description: "Convert any PDF to editable Word (DOCX) instantly for free — no signup, no watermark, perfect formatting.",
+    url: "https://www.pdflinx.com/pdf-to-word",
+    images: [
+      {
+        url: "https://www.pdflinx.com/og-image.png",  // Agar specific image hai to badal lena
+        width: 1200,
+        height: 630,
+        alt: "PDF to Word Converter - PDF Linx"
+      }
+    ],
+    type: "website",
+  },
 };
 
 export default function PdfToWord() {
@@ -51,60 +81,66 @@ export default function PdfToWord() {
 
   return (
     <>
-      {/* ==================== SAME OLD PERFECT SCHEMA (UNCHANGED) ==================== */}
-      <head>
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "HowTo",
-              name: "How to Convert PDF to Word Online for Free",
-              description: "Convert any PDF file to editable Word document in just 3 simple steps using PDF Linx - completely free and no signup required.",
-              url: "https://www.pdflinx.com/pdf-to-word",
-              step: [
-                {
-                  "@type": "HowToStep",
-                  name: "Upload your PDF",
-                  text: "Click on 'Select PDF file' button and choose the PDF you want to convert from your device."
-                },
-                {
-                  "@type": "HowToStep",
-                  name: "Click Convert",
-                  text: "Press the 'Convert to Word' button and wait a few seconds while we process your file."
-                },
-                {
-                  "@type": "HowToStep",
-                  name: "Download Word file",
-                  text: "Your converted .docx file will automatically download. Open it in Microsoft Word or Google Docs."
-                }
-              ],
-              totalTime: "PT30S",
-              estimatedCost: {
-                "@type": "MonetaryAmount",
-                value: "0",
-                currency: "USD"
-              },
-              tool: [{ "@type": "HowToTool", name: "PDF Linx PDF to Word Converter" }],
-              image: "https://www.pdflinx.com/og-image.png"
-            }, null, 2)
-          }}
-        />
 
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "BreadcrumbList",
-              itemListElement: [
-                { "@type": "ListItem", position: 1, name: "Home", item: "https://www.pdflinx.com" },
-                { "@type": "ListItem", position: 2, name: "PDF to Word", item: "https://www.pdflinx.com/pdf-to-word" }
-              ]
-            }, null, 2)
-          }}
-        />
-      </head>
+      {/* ==================== PAGE-SPECIFIC SEO SCHEMAS (Safe for Next.js) ==================== */}
+
+      {/* HowTo Schema - PDF to Word */}
+      <Script
+        id="howto-schema-pdf-to-word"
+        type="application/ld+json"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "HowTo",
+            name: "How to Convert PDF to Word Online for Free",
+            description: "Convert any PDF file to editable Word document in just 3 simple steps using PDF Linx - completely free and no signup required.",
+            url: "https://www.pdflinx.com/pdf-to-word",
+            step: [
+              {
+                "@type": "HowToStep",
+                name: "Upload your PDF",
+                text: "Click on 'Select PDF file' button and choose the PDF you want to convert from your device."
+              },
+              {
+                "@type": "HowToStep",
+                name: "Click Convert",
+                text: "Press the 'Convert to Word' button and wait a few seconds while we process your file."
+              },
+              {
+                "@type": "HowToStep",
+                name: "Download Word file",
+                text: "Your converted .docx file will automatically download. Open it in Microsoft Word or Google Docs."
+              }
+            ],
+            totalTime: "PT30S",
+            estimatedCost: {
+              "@type": "MonetaryAmount",
+              value: "0",
+              currency: "USD"
+            },
+            tool: [{ "@type": "HowToTool", name: "PDF Linx PDF to Word Converter" }],
+            image: "https://www.pdflinx.com/og-image.png"
+          }, null, 2),
+        }}
+      />
+
+      {/* Breadcrumb Schema - PDF to Word */}
+      <Script
+        id="breadcrumb-schema-pdf-to-word"
+        type="application/ld+json"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            itemListElement: [
+              { "@type": "ListItem", position: 1, name: "Home", item: "https://www.pdflinx.com" },
+              { "@type": "ListItem", position: 2, name: "PDF to Word", item: "https://www.pdflinx.com/pdf-to-word" }
+            ]
+          }, null, 2),
+        }}
+      />
 
       {/* ==================== BRAND NEW MODERN UI - SAME AS WORD TO PDF ==================== */}
       <main className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50 flex items-center justify-center p-6">
@@ -112,7 +148,7 @@ export default function PdfToWord() {
           {/* Header */}
           <div className="text-center mb-10">
             <h1 className="text-3xl md:text-4xl font-extrabold bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent mb-6 leading-[1.2] md:leading-[1.1]">
-              PDF to Word Converter <br/>(Free & Online)
+              PDF to Word Converter <br />(Free & Online)
             </h1>
             <p className="text-xl text-gray-600">
               Convert PDF to Word online for free. Our PDF to Word converter

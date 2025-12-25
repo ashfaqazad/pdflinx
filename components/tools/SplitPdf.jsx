@@ -3,11 +3,55 @@
 "use client";
 import { useState, useRef } from "react";
 import { Upload, Download, CheckCircle, Scissors } from "lucide-react";
+import Script from "next/script";
+
+// export const metadata = {
+//   title: "Split PDF Online - Extract Pages for Free | PDF Linx",
+//   description: "Split PDF into individual pages instantly. Free, fast, no signup. Download all pages as a ZIP file.",
+// };
+
+
 
 export const metadata = {
+  metadataBase: new URL("https://www.pdflinx.com"),
   title: "Split PDF Online - Extract Pages for Free | PDF Linx",
-  description: "Split PDF into individual pages instantly. Free, fast, no signup. Download all pages as a ZIP file.",
+  description: "Split PDF into individual pages instantly. Free, fast, no signup. Download all pages as a ZIP file with perfect quality.",
+  keywords: [
+    "split pdf",
+    "pdf splitter",
+    "extract pdf pages",
+    "split pdf online free",
+    "divide pdf",
+    "pdf to single pages",
+    "free pdf splitter no watermark"
+  ],
+  alternates: {
+    canonical: "/split-pdf",
+  },
+  openGraph: {
+    title: "Split PDF Online - Free PDF Splitter | PDF Linx",
+    description: "Split any PDF into separate pages instantly for free — no signup, secure, and download as ZIP.",
+    url: "/split-pdf",
+    siteName: "PDF Linx",
+    images: [
+      {
+        url: "/og-image.png",  // Common image
+        width: 1200,
+        height: 630,
+        alt: "Split PDF Tool - PDF Linx",
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Split PDF Online - Free & Fast | PDF Linx",
+    description: "Split PDF into individual pages instantly. No signup, no watermark, download as ZIP.",
+    images: ["/og-image.png"],
+  },
 };
+
 
 export default function SplitPDF() {
   const [file, setFile] = useState(null);
@@ -64,42 +108,50 @@ export default function SplitPDF() {
 
   return (
     <>
-      {/* ==================== SEO SCHEMAS ==================== */}
-      <head>
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "HowTo",
-              name: "How to Split a PDF into Individual Pages Online",
-              description: "Split any PDF into separate pages instantly using PDF Linx - completely free, no signup required.",
-              url: "https://www.pdflinx.com/split-pdf",
-              step: [
-                { "@type": "HowToStep", name: "Upload PDF", text: "Click the upload area and select your PDF file." },
-                { "@type": "HowToStep", name: "Click Split", text: "Press 'Split PDF' and wait a few seconds." },
-                { "@type": "HowToStep", name: "Download", text: "Download the ZIP containing all individual pages." }
-              ],
-              totalTime: "PT40S",
-              estimatedCost: { "@type": "MonetaryAmount", value: "0", currency: "USD" }
-            }, null, 2)
-          }}
-        />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "BreadcrumbList",
-              itemListElement: [
-                { "@type": "ListItem", position: 1, name: "Home", item: "https://www.pdflinx.com" },
-                { "@type": "ListItem", position: 2, name: "Split PDF", item: "https://www.pdflinx.com/split-pdf" }
-              ]
-            }, null, 2)
-          }}
-        />
-      </head>
 
+
+{/* ==================== PAGE-SPECIFIC SEO SCHEMAS (Safe for Next.js) ==================== */}
+
+{/* HowTo Schema - Split PDF */}
+<Script
+  id="howto-schema-split-pdf"
+  type="application/ld+json"
+  strategy="afterInteractive"
+  dangerouslySetInnerHTML={{
+    __html: JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "HowTo",
+      name: "How to Split a PDF into Individual Pages Online",
+      description: "Split any PDF into separate pages instantly using PDF Linx - completely free, no signup required.",
+      url: "https://www.pdflinx.com/split-pdf",
+      step: [
+        { "@type": "HowToStep", name: "Upload PDF", text: "Click the upload area and select your PDF file." },
+        { "@type": "HowToStep", name: "Click Split", text: "Press 'Split PDF' and wait a few seconds." },
+        { "@type": "HowToStep", name: "Download", text: "Download the ZIP containing all individual pages." }
+      ],
+      totalTime: "PT40S",
+      estimatedCost: { "@type": "MonetaryAmount", value: "0", currency: "USD" },
+      image: "https://www.pdflinx.com/og-image.png"
+    }, null, 2),
+  }}
+/>
+
+{/* Breadcrumb Schema - Split PDF */}
+<Script
+  id="breadcrumb-schema-split-pdf"
+  type="application/ld+json"
+  strategy="afterInteractive"
+  dangerouslySetInnerHTML={{
+    __html: JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Home", item: "https://www.pdflinx.com" },
+        { "@type": "ListItem", position: 2, name: "Split PDF", item: "https://www.pdflinx.com/split-pdf" }
+      ]
+    }, null, 2),
+  }}
+/>
       {/* ==================== UI EXACTLY SAME AS WORD TO PDF ==================== */}
       <main className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50 flex items-center justify-center p-6">
         <div className="max-w-2xl w-full">

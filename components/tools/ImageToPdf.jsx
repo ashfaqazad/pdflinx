@@ -3,10 +3,47 @@
 "use client";
 import { useState } from "react";
 import { Upload, Image, Download, CheckCircle, X } from "lucide-react";
+import Script from "next/script";
 
 export const metadata = {
+  metadataBase: new URL("https://www.pdflinx.com"),
   title: "Image to PDF Converter - Free, Fast & Online | PDF Linx",
-  description: "Convert JPG, PNG, GIF, WebP images to PDF online for free. Multiple images supported, no signup, perfect quality.",
+  description: "Convert JPG, PNG, GIF, WebP images to PDF online for free. Multiple images supported, no signup, perfect quality preserved.",
+  keywords: [
+    "image to pdf",
+    "jpg to pdf",
+    "png to pdf",
+    "convert images to pdf",
+    "free image to pdf online",
+    "multiple images to pdf",
+    "webp to pdf",
+    "gif to pdf converter"
+  ],
+  alternates: {
+    canonical: "/image-to-pdf",
+  },
+  openGraph: {
+    title: "Image to PDF Converter - Free Online Tool | PDF Linx",
+    description: "Convert multiple images (JPG, PNG, GIF, WebP) to a single PDF instantly for free — no signup, no watermark.",
+    url: "/image-to-pdf",
+    siteName: "PDF Linx",
+    images: [
+      {
+        url: "/og-image.png",  // Common image (specific nahi hai to ye best)
+        width: 1200,
+        height: 630,
+        alt: "Image to PDF Converter - PDF Linx",
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Image to PDF Converter - Free & Online | PDF Linx",
+    description: "Convert images to PDF instantly. Supports JPG, PNG, GIF, WebP. No signup, no watermark.",
+    images: ["/og-image.png"],
+  },
 };
 
 export default function ImageToPdf() {
@@ -73,58 +110,61 @@ export default function ImageToPdf() {
 
   return (
     <>
-      {/* ==================== SEO SCHEMAS ==================== */}
-      <head>
-        {/* HowTo Schema - Google Rich Results ke liye */}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "HowTo",
-              name: "How to Convert Images to PDF Online for Free",
-              description: "Convert multiple JPG, PNG, WebP, or GIF images into a single PDF file in just 3 easy steps - 100% free, no signup required.",
-              url: "https://www.pdflinx.com/image-to-pdf",
-              step: [
-                {
-                  "@type": "HowToStep",
-                  name: "Select Images",
-                  text: "Click the upload area and select one or multiple images (JPG, PNG, GIF, WebP supported)."
-                },
-                {
-                  "@type": "HowToStep",
-                  name: "Convert to PDF",
-                  text: "Click 'Convert to PDF' and wait a few seconds while we process your images."
-                },
-                {
-                  "@type": "HowToStep",
-                  name: "Download PDF",
-                  text: "Your PDF file will be ready - click download to save it instantly."
-                }
-              ],
-              totalTime: "PT30S",
-              estimatedCost: { "@type": "MonetaryAmount", value: "0", currency: "USD" },
-              image: "https://www.pdflinx.com/og-image.png"
-            }, null, 2)
-          }}
-        />
 
-        {/* Breadcrumb Schema */}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "BreadcrumbList",
-              itemListElement: [
-                { "@type": "ListItem", position: 1, name: "Home", item: "https://www.pdflinx.com" },
-                { "@type": "ListItem", position: 2, name: "Image to PDF", item: "https://www.pdflinx.com/image-to-pdf" }
-              ]
-            }, null, 2)
-          }}
-        />
-      </head>
+{/* ==================== PAGE-SPECIFIC SEO SCHEMAS (Safe for Next.js) ==================== */}
 
+{/* HowTo Schema - Image to PDF */}
+<Script
+  id="howto-schema-image-to-pdf"
+  type="application/ld+json"
+  strategy="afterInteractive"
+  dangerouslySetInnerHTML={{
+    __html: JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "HowTo",
+      name: "How to Convert Images to PDF Online for Free",
+      description: "Convert multiple JPG, PNG, WebP, or GIF images into a single PDF file in just 3 easy steps - 100% free, no signup required.",
+      url: "https://www.pdflinx.com/image-to-pdf",
+      step: [
+        {
+          "@type": "HowToStep",
+          name: "Select Images",
+          text: "Click the upload area and select one or multiple images (JPG, PNG, GIF, WebP supported)."
+        },
+        {
+          "@type": "HowToStep",
+          name: "Convert to PDF",
+          text: "Click 'Convert to PDF' and wait a few seconds while we process your images."
+        },
+        {
+          "@type": "HowToStep",
+          name: "Download PDF",
+          text: "Your PDF file will be ready - click download to save it instantly."
+        }
+      ],
+      totalTime: "PT30S",
+      estimatedCost: { "@type": "MonetaryAmount", value: "0", currency: "USD" },
+      image: "https://www.pdflinx.com/og-image.png"
+    }, null, 2),
+  }}
+/>
+
+{/* Breadcrumb Schema - Image to PDF */}
+<Script
+  id="breadcrumb-schema-image-to-pdf"
+  type="application/ld+json"
+  strategy="afterInteractive"
+  dangerouslySetInnerHTML={{
+    __html: JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Home", item: "https://www.pdflinx.com" },
+        { "@type": "ListItem", position: 2, name: "Image to PDF", item: "https://www.pdflinx.com/image-to-pdf" }
+      ]
+    }, null, 2),
+  }}
+/>
       {/* ==================== MODERN & BEAUTIFUL UI ==================== */}
       <main className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-blue-50 flex items-center justify-center p-6">
         <div className="max-w-2xl w-full">

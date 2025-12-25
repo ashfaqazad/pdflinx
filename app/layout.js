@@ -2,6 +2,7 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Script from "next/script";
+import HistatsTracker from '@/components/HistatsTracker';
 
 
 export const metadata = {
@@ -43,110 +44,119 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <head>
 
 
-        {/* ================= Google Analytics (GA4) ================= */}
-        <Script
-          strategy="afterInteractive"
-          src="https://www.googletagmanager.com/gtag/js?id=G-3PSZFQJYJ8"
-        />
-        <Script strategy="afterInteractive">
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'G-3PSZFQJYJ8');
-          `}
-        </Script>
-        {/* ========================================================== */}
+      {/* <head> tag mat daal — pura remove kar de */}
 
+      {/* ================= Google Analytics (GA4) ================= */}
+      <Script
+        strategy="afterInteractive"
+        src="https://www.googletagmanager.com/gtag/js?id=G-3PSZFQJYJ8"
+      />
+      <Script id="ga-config" strategy="afterInteractive">
+        {`
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-3PSZFQJYJ8');
+    `}
+      </Script>
 
+      {/* Crawlers */}
+      <meta name="robots" content="index, follow" />
+      <meta name="ai-access" content="allow" />
 
-        {/* Crawlers */}
-        <meta name="robots" content="index, follow" />
-        <meta name="ai-access" content="allow" />
+      {/* Organization Schema */}
+      <Script
+        id="org-schema"
+        type="application/ld+json"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Organization",
+            name: "PDF Linx",
+            url: "https://www.pdflinx.com",
+            logo: {
+              "@type": "ImageObject",
+              url: "https://www.pdflinx.com/logo.png",
+              width: 512,
+              height: 512,
+            },
+            sameAs: [],
+          }, null, 2),
+        }}
+      />
 
-        {/* Organization Schema */}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "Organization",
-              name: "PDF Linx",
-              url: "https://www.pdflinx.com",
-              logo: {
-                "@type": "ImageObject",
-                url: "https://www.pdflinx.com/logo.png",
-                width: 512,
-                height: 512,
+      {/* WebSite Schema */}
+      <Script
+        id="website-schema"
+        type="application/ld+json"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "WebSite",
+            name: "PDF Linx",
+            url: "https://www.pdflinx.com",
+            description: "Free online PDF tools to merge, convert, compress, and edit PDF files instantly.",
+            publisher: { "@type": "Organization", name: "PDF Linx" },
+          }, null, 2),
+        }}
+      />
+
+      {/* WebApplication Schema */}
+      <Script
+        id="webapp-schema"
+        type="application/ld+json"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "WebApplication",
+            name: "PDF Linx - Free PDF & Utility Tools",
+            url: "https://www.pdflinx.com",
+            applicationCategory: "UtilityApplication",
+            operatingSystem: "All",
+            browserRequirements: "Requires JavaScript and a modern browser",
+            offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+            description: "100% free online PDF converter, merger, splitter, compressor + many utility tools.",
+            featureList: [
+              "Merge PDF", "Split PDF", "Compress PDF",
+              "Word to PDF", "PDF to Word", "Image to PDF",
+              "Password Generator", "QR Code Generator",
+              "Image Compressor", "YouTube Thumbnail Downloader",
+              "Unit Converter", "Text to PDF"
+            ],
+            creator: { "@type": "Organization", name: "PDF Linx" },
+          }, null, 2),
+        }}
+      />
+
+      {/* Breadcrumb Schema (Homepage) */}
+      <Script
+        id="breadcrumb-schema-home"
+        type="application/ld+json"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            itemListElement: [
+              {
+                "@type": "ListItem",
+                position: 1,
+                name: "Home",
+                item: "https://www.pdflinx.com",
               },
-              sameAs: [],
-            }, null, 2),
-          }}
-        />
+            ],
+          }, null, 2),
+        }}
+      />
 
-        {/* WebSite Schema */}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "WebSite",
-              name: "PDF Linx",
-              url: "https://www.pdflinx.com",
-              description: "Free online PDF tools to merge, convert, compress, and edit PDF files instantly.",
-              publisher: { "@type": "Organization", name: "PDF Linx" },
-            }, null, 2),
-          }}
-        />
-
-        {/* WebApplication Schema */}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "WebApplication",
-              name: "PDF Linx - Free PDF & Utility Tools",
-              url: "https://www.pdflinx.com",
-              applicationCategory: "UtilityApplication",
-              operatingSystem: "All",
-              browserRequirements: "Requires JavaScript and a modern browser",
-              offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
-              description: "100% free online PDF converter, merger, splitter, compressor + many utility tools.",
-              featureList: [
-                "Merge PDF", "Split PDF", "Compress PDF",
-                "Word to PDF", "PDF to Word", "Image to PDF",
-                "Password Generator", "QR Code Generator",
-                "Image Compressor", "YouTube Thumbnail Downloader",
-                "Unit Converter", "Text to PDF"
-              ],
-              creator: { "@type": "Organization", name: "PDF Linx" },
-            }, null, 2),
-          }}
-        />
-
-        {/* Breadcrumb Schema */}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "BreadcrumbList",
-              itemListElement: [
-                {
-                  "@type": "ListItem",
-                  position: 1,
-                  name: "Home",
-                  item: "https://www.pdflinx.com",
-                },
-              ],
-            }, null, 2),
-          }}
-        />
-      </head>
+      <body className="flex flex-col min-h-screen bg-gray-50 font-sans">
+        {/* Baaki body content */}
+      </body>
 
       <body className="flex flex-col min-h-screen bg-gray-50 font-sans">
         <Navbar />
@@ -154,12 +164,12 @@ export default function RootLayout({ children }) {
         <Footer />
 
         {/* ✅ Histats Tracking Code (for traffic stats) */}
-        <div id="histats_counter"></div>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              var _Hasync= _Hasync|| [];
-              _Hasync.push(['Histats.start', '1,4996996,4,511,95,18,00000000']);
+        {/* <div id="histats_counter"></div> */}
+        {/* <script */}
+        {/* // dangerouslySetInnerHTML={{
+          //   __html: `
+          //     var _Hasync= _Hasync|| [];
+          //     _Hasync.push(['Histats.start', '1,4996996,4,511,95,18,00000000']);
               _Hasync.push(['Histats.fasi', '1']);
               _Hasync.push(['Histats.track_hits', '']);
               (function() {
@@ -181,8 +191,15 @@ export default function RootLayout({ children }) {
               border="0"
             />
           </a>
-        </noscript>
+        </noscript> */}
         {/* ✅ End Histats Code */}
+
+        <HistatsTracker />
+
+        {/* Optional noscript fallback (hidden rakh) */}
+        <noscript style={{ display: 'none' }}>
+          <img src="//sstatic1.histats.com/0.gif?4996996&101" alt="" width="0" height="0" />
+        </noscript>
       </body>
     </html>
   );

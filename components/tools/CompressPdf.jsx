@@ -3,10 +3,40 @@
 "use client";
 import { useState, useRef } from "react";
 import { Upload, Download, CheckCircle, FileDown, Scissors } from "lucide-react";
+import Script from "next/script";
+
+// export const metadata = {
+//   title: "Compress PDF Online - Reduce File Size for Free | PDF Linx",
+//   description: "Compress PDF files online instantly. Reduce size up to 90% without losing quality. Free, fast, no signup.",
+// };
+
 
 export const metadata = {
   title: "Compress PDF Online - Reduce File Size for Free | PDF Linx",
-  description: "Compress PDF files online instantly. Reduce size up to 90% without losing quality. Free, fast, no signup.",
+  description: "Compress PDF files online instantly. Reduce size up to 90% without losing quality. Free, fast, no signup required.",
+  keywords: [
+    "compress pdf",
+    "pdf compressor",
+    "reduce pdf size",
+    "shrink pdf online",
+    "free pdf compressor",
+    "compress pdf no watermark",
+    "small pdf online"
+  ],
+  openGraph: {
+    title: "Compress PDF Online - Reduce File Size Up to 90% | PDF Linx",
+    description: "Compress your PDF files instantly for free. Reduce size significantly while maintaining quality — no signup, no watermark.",
+    url: "https://www.pdflinx.com/compress-pdf",
+    images: [
+      {
+        url: "https://www.pdflinx.com/og-image.png",  // Agar specific OG image hai to badal lena
+        width: 1200,
+        height: 630,
+        alt: "Compress PDF Tool - PDF Linx"
+      }
+    ],
+    type: "website",
+  },
 };
 
 export default function CompressPDF() {
@@ -69,44 +99,48 @@ export default function CompressPDF() {
 
   return (
     <>
-      {/* ==================== SEO SCHEMAS ==================== */}
-      <head>
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "HowTo",
-              name: "How to Compress PDF Online for Free",
-              description: "Reduce PDF file size up to 90% while keeping quality intact. Completely free, no signup needed.",
-              url: "https://www.pdflinx.com/compress-pdf",
-              step: [
-                { "@type": "HowToStep", name: "Upload PDF", text: "Click the upload area and select your PDF file." },
-                { "@type": "HowToStep", name: "Compress", text: "Click 'Compress PDF' and wait a few seconds." },
-                { "@type": "HowToStep", name: "Download", text: "Download your smaller, optimized PDF file instantly." }
-              ],
-              totalTime: "PT30S",
-              estimatedCost: { "@type": "MonetaryAmount", value: "0", currency: "USD" },
-              image: "https://www.pdflinx.com/og-image.png"
-            }, null, 2)
-          }}
-        />
+{/* ==================== PAGE-SPECIFIC SEO SCHEMAS (Safe for Next.js) ==================== */}
 
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "BreadcrumbList",
-              itemListElement: [
-                { "@type": "ListItem", position: 1, name: "Home", item: "https://www.pdflinx.com" },
-                { "@type": "ListItem", position: 2, name: "Compress PDF", item: "https://www.pdflinx.com/compress-pdf" }
-              ]
-            }, null, 2)
-          }}
-        />
-      </head>
+{/* HowTo Schema - Compress PDF */}
+<Script
+  id="howto-schema-compress"
+  type="application/ld+json"
+  strategy="afterInteractive"
+  dangerouslySetInnerHTML={{
+    __html: JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "HowTo",
+      name: "How to Compress PDF Online for Free",
+      description: "Reduce PDF file size up to 90% while keeping quality intact. Completely free, no signup needed.",
+      url: "https://www.pdflinx.com/compress-pdf",
+      step: [
+        { "@type": "HowToStep", name: "Upload PDF", text: "Click the upload area and select your PDF file." },
+        { "@type": "HowToStep", name: "Compress", text: "Click 'Compress PDF' and wait a few seconds." },
+        { "@type": "HowToStep", name: "Download", text: "Download your smaller, optimized PDF file instantly." }
+      ],
+      totalTime: "PT30S",
+      estimatedCost: { "@type": "MonetaryAmount", value: "0", currency: "USD" },
+      image: "https://www.pdflinx.com/og-image.png"
+    }, null, 2),
+  }}
+/>
 
+{/* Breadcrumb Schema - Compress PDF */}
+<Script
+  id="breadcrumb-schema-compress"
+  type="application/ld+json"
+  strategy="afterInteractive"
+  dangerouslySetInnerHTML={{
+    __html: JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Home", item: "https://www.pdflinx.com" },
+        { "@type": "ListItem", position: 2, name: "Compress PDF", item: "https://www.pdflinx.com/compress-pdf" }
+      ]
+    }, null, 2),
+  }}
+/>
       {/* ==================== UI EXACTLY SAME AS WORD TO PDF ==================== */}
       <main className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50 flex items-center justify-center p-6">
         <div className="max-w-2xl w-full">

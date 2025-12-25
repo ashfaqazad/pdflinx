@@ -30,7 +30,15 @@
   width: 100%;
 }
 
-
+#histats_counter,
+#histats_counter * {
+  display: none !important;
+  visibility: hidden !important;
+  position: absolute !important;
+  left: -9999px !important;
+  width: 1px !important;
+  height: 1px !important;
+}
 /* :root {
   --background: #ffffff;
   --foreground: #171717;

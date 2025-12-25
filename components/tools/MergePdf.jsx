@@ -3,10 +3,46 @@
 "use client";
 import { useState, useRef } from "react";
 import { Upload, FileText, Download, CheckCircle, X, Files } from "lucide-react";
+import Script from "next/script";
 
 export const metadata = {
+  metadataBase: new URL("https://www.pdflinx.com"),
   title: "Merge PDF Online - Combine Multiple PDFs for Free | PDF Linx",
-  description: "Merge multiple PDF files into one online for free. Fast, secure, no signup, perfect order preservation.",
+  description: "Merge multiple PDF files into one online for free. Fast, secure, no signup required, perfect order preservation.",
+  keywords: [
+    "merge pdf",
+    "combine pdf",
+    "pdf merger",
+    "join pdf files",
+    "free pdf merge online",
+    "merge pdf no watermark",
+    "combine pdfs free"
+  ],
+  alternates: {
+    canonical: "/merge-pdf",
+  },
+  openGraph: {
+    title: "Merge PDF Online - Free PDF Combiner | PDF Linx",
+    description: "Combine 2 or more PDF files into one single document instantly for free — no signup, secure & fast.",
+    url: "/merge-pdf",
+    siteName: "PDF Linx",
+    images: [
+      {
+        url: "/og-image.png",  // Common image use kar rahe hain
+        width: 1200,
+        height: 630,
+        alt: "Merge PDF Tool - PDF Linx",
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Merge PDF Online - Free & Fast | PDF Linx",
+    description: "Combine multiple PDFs into one instantly. No signup, no watermark, 100% free.",
+    images: ["/og-image.png"],
+  },
 };
 
 export default function MergePDF() {
@@ -82,65 +118,71 @@ export default function MergePDF() {
 
   return (
     <>
-      {/* ==================== SEO SCHEMAS ==================== */}
-      <head>
-        {/* HowTo Schema - Google Rich Results */}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "HowTo",
-              name: "How to Merge Multiple PDF Files Online for Free",
-              description: "Combine 2 or more PDF files into one single document in seconds - 100% free, no registration required.",
-              url: "https://www.pdflinx.com/merge-pdf",
-              step: [
-                {
-                  "@type": "HowToStep",
-                  name: "Select PDF Files",
-                  text: "Click 'Select Files' and choose 2 or more PDF files from your device. You can select multiple files at once."
-                },
-                {
-                  "@type": "HowToStep",
-                  name: "Click Merge PDFs",
-                  text: "Press the 'Merge PDFs' button and wait a few seconds while we combine your files."
-                },
-                {
-                  "@type": "HowToStep",
-                  name: "Download Merged PDF",
-                  text: "Your merged PDF will be ready instantly - click download to save the combined file."
-                }
-              ],
-              totalTime: "PT45S",
-              estimatedCost: { "@type": "MonetaryAmount", value: "0", currency: "USD" },
-              tool: [{ "@type": "HowToTool", name: "PDF Linx Merge Tool" }],
-              image: "https://www.pdflinx.com/og-image.png"
-            }, null, 2)
-          }}
-        />
 
-        {/* Breadcrumb */}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "BreadcrumbList",
-              itemListElement: [
-                { "@type": "ListItem", position: 1, name: "Home", item: "https://www.pdflinx.com" },
-                { "@type": "ListItem", position: 2, name: "Merge PDF", item: "https://www.pdflinx.com/merge-pdf" }
-              ]
-            }, null, 2)
-          }}
-        />
-      </head>
+
+{/* ==================== PAGE-SPECIFIC SEO SCHEMAS (Safe for Next.js) ==================== */}
+
+{/* HowTo Schema - Merge PDF */}
+<Script
+  id="howto-schema-merge-pdf"
+  type="application/ld+json"
+  strategy="afterInteractive"
+  dangerouslySetInnerHTML={{
+    __html: JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "HowTo",
+      name: "How to Merge Multiple PDF Files Online for Free",
+      description: "Combine 2 or more PDF files into one single document in seconds - 100% free, no registration required.",
+      url: "https://www.pdflinx.com/merge-pdf",
+      step: [
+        {
+          "@type": "HowToStep",
+          name: "Select PDF Files",
+          text: "Click 'Select Files' and choose 2 or more PDF files from your device. You can select multiple files at once."
+        },
+        {
+          "@type": "HowToStep",
+          name: "Click Merge PDFs",
+          text: "Press the 'Merge PDFs' button and wait a few seconds while we combine your files."
+        },
+        {
+          "@type": "HowToStep",
+          name: "Download Merged PDF",
+          text: "Your merged PDF will be ready instantly - click download to save the combined file."
+        }
+      ],
+      totalTime: "PT45S",
+      estimatedCost: { "@type": "MonetaryAmount", value: "0", currency: "USD" },
+      tool: [{ "@type": "HowToTool", name: "PDF Linx Merge Tool" }],
+      image: "https://www.pdflinx.com/og-image.png"
+    }, null, 2),
+  }}
+/>
+
+{/* Breadcrumb Schema - Merge PDF */}
+<Script
+  id="breadcrumb-schema-merge-pdf"
+  type="application/ld+json"
+  strategy="afterInteractive"
+  dangerouslySetInnerHTML={{
+    __html: JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Home", item: "https://www.pdflinx.com" },
+        { "@type": "ListItem", position: 2, name: "Merge PDF", item: "https://www.pdflinx.com/merge-pdf" }
+      ]
+    }, null, 2),
+  }}
+/>
+
 
       {/* ==================== MODERN UI (Same as Word/Image to PDF) ==================== */}
       <main className="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 flex items-center justify-center p-6">
         <div className="max-w-2xl w-full">
           {/* Header */}
           <div className="text-center mb-12">
-            <h1 className="text-5xl font-extrabold bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent mb-6">
+            <h1 className="text-2xl md:text-4xl font-extrabold bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent mb-6 leading-[1.2] md:leading-[1.1]">
               Merge PDF Files Online (Free)
             </h1>
             <p className="text-2xl text-gray-700">
@@ -239,7 +281,7 @@ export default function MergePDF() {
       <section className="mt-20 max-w-5xl mx-auto px-6 pb-16">
         {/* Main Heading */}
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-extrabold bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent mb-6">
+          <h2 className="text-2xl md:text-4xl font-extrabold bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent mb-6 leading-[1.2] md:leading-[1.1]">
             Merge PDF Online Free - Combine Files Instantly
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
