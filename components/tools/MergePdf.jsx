@@ -5,45 +5,6 @@ import { useState, useRef } from "react";
 import { Upload, FileText, Download, CheckCircle, X, Files } from "lucide-react";
 import Script from "next/script";
 
-export const metadata = {
-  metadataBase: new URL("https://www.pdflinx.com"),
-  title: "Merge PDF Online - Combine Multiple PDFs for Free | PDF Linx",
-  description: "Merge multiple PDF files into one online for free. Fast, secure, no signup required, perfect order preservation.",
-  keywords: [
-    "merge pdf",
-    "combine pdf",
-    "pdf merger",
-    "join pdf files",
-    "free pdf merge online",
-    "merge pdf no watermark",
-    "combine pdfs free"
-  ],
-  alternates: {
-    canonical: "/merge-pdf",
-  },
-  openGraph: {
-    title: "Merge PDF Online - Free PDF Combiner | PDF Linx",
-    description: "Combine 2 or more PDF files into one single document instantly for free — no signup, secure & fast.",
-    url: "/merge-pdf",
-    siteName: "PDF Linx",
-    images: [
-      {
-        url: "/og-image.png",  // Common image use kar rahe hain
-        width: 1200,
-        height: 630,
-        alt: "Merge PDF Tool - PDF Linx",
-      },
-    ],
-    locale: "en_US",
-    type: "website",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Merge PDF Online - Free & Fast | PDF Linx",
-    description: "Combine multiple PDFs into one instantly. No signup, no watermark, 100% free.",
-    images: ["/og-image.png"],
-  },
-};
 
 export default function MergePDF() {
   const [files, setFiles] = useState([]);

@@ -22,15 +22,44 @@ const componentMap = {
 };
 
 // 🔹 Dynamic Metadata
+// export async function generateMetadata({ params }) {
+//   const { tool } = params;
+//   const pageData = seoData[tool];
+//   if (!pageData) notFound();
+
+//   return {
+//     title: pageData.title,
+//     description: pageData.description,
+//     keywords: pageData.keywords.join(", "),
+//   };
+// }
+
 export async function generateMetadata({ params }) {
   const { tool } = params;
   const pageData = seoData[tool];
   if (!pageData) notFound();
 
   return {
+    metadataBase: new URL("https://www.pdflinx.com"),
     title: pageData.title,
     description: pageData.description,
     keywords: pageData.keywords.join(", "),
+    alternates: {
+      canonical: pageData.canonical,
+    },
+    openGraph: pageData.openGraph,
+    // twitter: {
+    //   card: "summary_large_image",
+    //   title: pageData.openGraph.title,
+    //   description: pageData.openGraph.description,
+    //   images: pageData.openGraph.images,
+    // },
+    twitter: {
+      card: "summary_large_image",
+      title: pageData.openGraph.title,
+      description: pageData.openGraph.description,
+      images: pageData.openGraph.images,  // Ye already array of objects hai seoData mein → perfect
+    },
   };
 }
 
@@ -43,3 +72,4 @@ export default async function ToolPage({ params }) {
   const Component = (await ComponentImport()).default;
   return <Component />;
 }
+

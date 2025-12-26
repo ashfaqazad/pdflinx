@@ -5,39 +5,6 @@ import { useState } from "react";
 import { Upload, Download, CheckCircle, FileText } from "lucide-react";
 import Script from "next/script";
 
-// export const metadata = {
-//   title: "PDF to Word Converter - Free, Fast & No Signup | PDF Linx",
-//   description: "Convert PDF to editable Word (DOCX) online for free. No registration, no watermark, 100% secure and works on mobile.",
-// };
-
-
-export const metadata = {
-  title: "PDF to Word Converter - Free, Fast & No Signup | PDF Linx",
-  description: "Convert PDF to editable Word (DOCX) online for free. No registration, no watermark, 100% secure and works on any device.",
-  keywords: [
-    "pdf to word",
-    "pdf to docx",
-    "convert pdf to word",
-    "pdf to word converter",
-    "free pdf to word online",
-    "pdf to editable word",
-    "pdf to docx no watermark"
-  ],
-  openGraph: {
-    title: "PDF to Word Converter - Free Online Tool | PDF Linx",
-    description: "Convert any PDF to editable Word (DOCX) instantly for free — no signup, no watermark, perfect formatting.",
-    url: "https://www.pdflinx.com/pdf-to-word",
-    images: [
-      {
-        url: "https://www.pdflinx.com/og-image.png",  // Agar specific image hai to badal lena
-        width: 1200,
-        height: 630,
-        alt: "PDF to Word Converter - PDF Linx"
-      }
-    ],
-    type: "website",
-  },
-};
 
 export default function PdfToWord() {
   const [file, setFile] = useState(null);

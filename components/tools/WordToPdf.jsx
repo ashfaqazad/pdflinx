@@ -5,20 +5,6 @@ import { useState } from "react";
 import { Upload, FileText, Download, CheckCircle } from "lucide-react";
 import Script from "next/script";  // Ye import add kar—schemas ke liye
 
-export const metadata = {
-  title: "Word to PDF Converter - Free, Fast & No Signup | PDF Linx",
-  description: "Convert Word (DOC/DOCX) to PDF online for free. No registration, no watermark, perfect formatting preserved.",
-  // Extra SEO for this page (Google loves this)
-  keywords: ["word to pdf", "doc to pdf", "docx to pdf converter", "free word to pdf online", "convert word to pdf no signup"],
-  openGraph: {
-    title: "Word to PDF Converter - Free Online Tool | PDF Linx",
-    description: "Convert Word documents to PDF instantly for free—no watermark, secure & fast.",
-    url: "https://www.pdflinx.com/word-to-pdf",
-    images: [{ url: "https://www.pdflinx.com/og-word-to-pdf.png", width: 1200, height: 630 }],
-    type: "website",
-  },
-  // JSON-LD schemas ko yahan static daal sakte hain (server-side safe), lekin dynamic ke liye neeche Script use kiya
-};
 
 export default function WordToPdf() {
   const [file, setFile] = useState(null);

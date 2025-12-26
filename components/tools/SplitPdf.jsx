@@ -5,52 +5,6 @@ import { useState, useRef } from "react";
 import { Upload, Download, CheckCircle, Scissors } from "lucide-react";
 import Script from "next/script";
 
-// export const metadata = {
-//   title: "Split PDF Online - Extract Pages for Free | PDF Linx",
-//   description: "Split PDF into individual pages instantly. Free, fast, no signup. Download all pages as a ZIP file.",
-// };
-
-
-
-export const metadata = {
-  metadataBase: new URL("https://www.pdflinx.com"),
-  title: "Split PDF Online - Extract Pages for Free | PDF Linx",
-  description: "Split PDF into individual pages instantly. Free, fast, no signup. Download all pages as a ZIP file with perfect quality.",
-  keywords: [
-    "split pdf",
-    "pdf splitter",
-    "extract pdf pages",
-    "split pdf online free",
-    "divide pdf",
-    "pdf to single pages",
-    "free pdf splitter no watermark"
-  ],
-  alternates: {
-    canonical: "/split-pdf",
-  },
-  openGraph: {
-    title: "Split PDF Online - Free PDF Splitter | PDF Linx",
-    description: "Split any PDF into separate pages instantly for free — no signup, secure, and download as ZIP.",
-    url: "/split-pdf",
-    siteName: "PDF Linx",
-    images: [
-      {
-        url: "/og-image.png",  // Common image
-        width: 1200,
-        height: 630,
-        alt: "Split PDF Tool - PDF Linx",
-      },
-    ],
-    locale: "en_US",
-    type: "website",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Split PDF Online - Free & Fast | PDF Linx",
-    description: "Split PDF into individual pages instantly. No signup, no watermark, download as ZIP.",
-    images: ["/og-image.png"],
-  },
-};
 
 
 export default function SplitPDF() {

@@ -6,54 +6,6 @@ import { Upload, Download, CheckCircle, FileSpreadsheet } from "lucide-react";
 import Script from "next/script";
 
 
-export const metadata = {
-  metadataBase: new URL("https://www.pdflinx.com"),
-  title: "Excel to PDF Converter – Free, Fast & Online | PDF Linx",
-  description:
-    "Convert Excel files (XLSX, XLS) to PDF online for free. Perfect formatting preserved, instant download, no signup, no watermark.",
-  keywords: [
-    "excel to pdf",
-    "xlsx to pdf",
-    "xls to pdf converter",
-    "convert excel to pdf online",
-    "free excel to pdf",
-    "excel spreadsheet to pdf",
-    "excel to pdf no watermark"
-  ],
-  alternates: {
-    canonical: "/excel-pdf",  // metadataBase ke saath relative bhi chalega, ya full URL de sakta hai
-  },
-  openGraph: {
-    title: "Excel to PDF Converter – Free Online Tool | PDF Linx",
-    description:
-      "Convert Excel spreadsheets to PDF instantly for free. Secure, fast, and perfect layout every time.",
-    url: "/excel-pdf",
-    siteName: "PDF Linx",
-    images: [
-      {
-        url: "https://www.pdflinx.com/og-image.png",  // Agar specific image hai, warna "/og-image.png" common rakh
-        width: 1200,
-        height: 630,
-        alt: "Excel to PDF Converter – PDF Linx",
-      },
-    ],
-    locale: "en_US",
-    type: "website",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Excel to PDF Converter – Free & Online | PDF Linx",
-    description:
-      "Free Excel to PDF converter. No signup, no watermark, instant results.",
-    images: ["https://www.pdflinx.com/og-image.png"],
-  },
-  robots: {
-    index: true,
-    follow: true,
-  },
-};
-
-
 export default function ExcelToPDF() {
   const [file, setFile] = useState(null);
   const [loading, setLoading] = useState(false);

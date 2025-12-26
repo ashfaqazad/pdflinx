@@ -163,6 +163,23 @@ export default function RootLayout({ children }) {
         <main className="flex-grow">{children}</main>
         <Footer />
 
+
+        <HistatsTracker />
+
+        {/* Optional noscript fallback (hidden rakh) */}
+        <noscript style={{ display: 'none' }}>
+          <img src="//sstatic1.histats.com/0.gif?4996996&101" alt="" width="0" height="0" />
+        </noscript>
+      </body>
+    </html>
+  );
+}
+
+
+
+
+
+
         {/* ✅ Histats Tracking Code (for traffic stats) */}
         {/* <div id="histats_counter"></div> */}
         {/* <script */}
@@ -193,21 +210,6 @@ export default function RootLayout({ children }) {
           </a>
         </noscript> */}
         {/* ✅ End Histats Code */}
-
-        <HistatsTracker />
-
-        {/* Optional noscript fallback (hidden rakh) */}
-        <noscript style={{ display: 'none' }}>
-          <img src="//sstatic1.histats.com/0.gif?4996996&101" alt="" width="0" height="0" />
-        </noscript>
-      </body>
-    </html>
-  );
-}
-
-
-
-
 
 
 

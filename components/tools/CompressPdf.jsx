@@ -5,39 +5,6 @@ import { useState, useRef } from "react";
 import { Upload, Download, CheckCircle, FileDown, Scissors } from "lucide-react";
 import Script from "next/script";
 
-// export const metadata = {
-//   title: "Compress PDF Online - Reduce File Size for Free | PDF Linx",
-//   description: "Compress PDF files online instantly. Reduce size up to 90% without losing quality. Free, fast, no signup.",
-// };
-
-
-export const metadata = {
-  title: "Compress PDF Online - Reduce File Size for Free | PDF Linx",
-  description: "Compress PDF files online instantly. Reduce size up to 90% without losing quality. Free, fast, no signup required.",
-  keywords: [
-    "compress pdf",
-    "pdf compressor",
-    "reduce pdf size",
-    "shrink pdf online",
-    "free pdf compressor",
-    "compress pdf no watermark",
-    "small pdf online"
-  ],
-  openGraph: {
-    title: "Compress PDF Online - Reduce File Size Up to 90% | PDF Linx",
-    description: "Compress your PDF files instantly for free. Reduce size significantly while maintaining quality — no signup, no watermark.",
-    url: "https://www.pdflinx.com/compress-pdf",
-    images: [
-      {
-        url: "https://www.pdflinx.com/og-image.png",  // Agar specific OG image hai to badal lena
-        width: 1200,
-        height: 630,
-        alt: "Compress PDF Tool - PDF Linx"
-      }
-    ],
-    type: "website",
-  },
-};
 
 export default function CompressPDF() {
   const [file, setFile] = useState(null);
