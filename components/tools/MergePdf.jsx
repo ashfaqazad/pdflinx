@@ -94,7 +94,7 @@ export default function MergePDF() {
       "@type": "HowTo",
       name: "How to Merge Multiple PDF Files Online for Free",
       description: "Combine 2 or more PDF files into one single document in seconds - 100% free, no registration required.",
-      url: "https://www.pdflinx.com/merge-pdf",
+      url: "https://pdflinx.com/merge-pdf",
       step: [
         {
           "@type": "HowToStep",
@@ -115,7 +115,7 @@ export default function MergePDF() {
       totalTime: "PT45S",
       estimatedCost: { "@type": "MonetaryAmount", value: "0", currency: "USD" },
       tool: [{ "@type": "HowToTool", name: "PDF Linx Merge Tool" }],
-      image: "https://www.pdflinx.com/og-image.png"
+      image: "https://pdflinx.com/og-image.png"
     }, null, 2),
   }}
 />
@@ -130,8 +130,8 @@ export default function MergePDF() {
       "@context": "https://schema.org",
       "@type": "BreadcrumbList",
       itemListElement: [
-        { "@type": "ListItem", position: 1, name: "Home", item: "https://www.pdflinx.com" },
-        { "@type": "ListItem", position: 2, name: "Merge PDF", item: "https://www.pdflinx.com/merge-pdf" }
+        { "@type": "ListItem", position: 1, name: "Home", item: "https://pdflinx.com" },
+        { "@type": "ListItem", position: 2, name: "Merge PDF", item: "https://pdflinx.com/merge-pdf" }
       ]
     }, null, 2),
   }}

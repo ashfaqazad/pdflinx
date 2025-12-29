@@ -76,7 +76,7 @@ export default function WordToPdf() {
             name: "How to Convert Word to PDF Online for Free",
             description:
               "Convert any Word document (DOC/DOCX) to PDF in just 3 simple steps - completely free, no signup needed.",
-            url: "https://www.pdflinx.com/word-to-pdf",
+            url: "https://pdflinx.com/word-to-pdf",
             step: [
               {
                 "@type": "HowToStep",
@@ -100,7 +100,7 @@ export default function WordToPdf() {
               value: "0",
               currency: "USD",
             },
-            image: "https://www.pdflinx.com/og-image.png",
+            image: "https://pdflinx.com/og-image.png",
           }, null, 2),
         }}
       />
@@ -119,13 +119,13 @@ export default function WordToPdf() {
                 "@type": "ListItem",
                 position: 1,
                 name: "Home",
-                item: "https://www.pdflinx.com",
+                item: "https://pdflinx.com",
               },
               {
                 "@type": "ListItem",
                 position: 2,
                 name: "Word to PDF",
-                item: "https://www.pdflinx.com/word-to-pdf",
+                item: "https://pdflinx.com/word-to-pdf",
               },
             ],
           }, null, 2),
@@ -404,7 +404,7 @@ export default function WordToPdf() {
 //               name: "How to Convert Word to PDF Online for Free",
 //               description:
 //                 "Convert any Word document (DOC/DOCX) to PDF in just 3 simple steps - completely free, no signup needed.",
-//               url: "https://www.pdflinx.com/word-to-pdf",
+//               url: "https://pdflinx.com/word-to-pdf",
 //               step: [
 //                 {
 //                   "@type": "HowToStep",
@@ -428,7 +428,7 @@ export default function WordToPdf() {
 //                 value: "0",
 //                 currency: "USD",
 //               },
-//               image: "https://www.pdflinx.com/og-image.png",
+//               image: "https://pdflinx.com/og-image.png",
 //             }, null, 2),
 //           }}
 //         />
@@ -445,13 +445,13 @@ export default function WordToPdf() {
 //                   "@type": "ListItem",
 //                   position: 1,
 //                   name: "Home",
-//                   item: "https://www.pdflinx.com",
+//                   item: "https://pdflinx.com",
 //                 },
 //                 {
 //                   "@type": "ListItem",
 //                   position: 2,
 //                   name: "Word to PDF",
-//                   item: "https://www.pdflinx.com/word-to-pdf",
+//                   item: "https://pdflinx.com/word-to-pdf",
 //                 },
 //               ],
 //             }, null, 2),

@@ -56,7 +56,7 @@ export default function YouTubeThumbnailDownloader() {
             "@type": "HowTo",
             name: "How to Download YouTube Thumbnail in HD",
             description: "Download any YouTube video thumbnail in full HD quality instantly.",
-            url: "https://www.pdflinx.com/youtube-thumbnail",
+            url: "https://pdflinx.com/youtube-thumbnail",
             step: [
               { "@type": "HowToStep", name: "Paste URL", text: "Copy and paste YouTube video URL." },
               { "@type": "HowToStep", name: "Click Download", text: "Press get thumbnail button." },
@@ -64,7 +64,7 @@ export default function YouTubeThumbnailDownloader() {
             ],
             totalTime: "PT20S",
             estimatedCost: { "@type": "MonetaryAmount", value: "0", currency: "USD" },
-            image: "https://www.pdflinx.com/og-image.png"
+            image: "https://pdflinx.com/og-image.png"
           }, null, 2),
         }}
       />
@@ -78,8 +78,8 @@ export default function YouTubeThumbnailDownloader() {
             "@context": "https://schema.org",
             "@type": "BreadcrumbList",
             itemListElement: [
-              { "@type": "ListItem", position: 1, name: "Home", item: "https://www.pdflinx.com" },
-              { "@type": "ListItem", position: 2, name: "YouTube Thumbnail Downloader", item: "https://www.pdflinx.com/youtube-thumbnail" }
+              { "@type": "ListItem", position: 1, name: "Home", item: "https://pdflinx.com" },
+              { "@type": "ListItem", position: 2, name: "YouTube Thumbnail Downloader", item: "https://pdflinx.com/youtube-thumbnail" }
             ]
           }, null, 2),
         }}

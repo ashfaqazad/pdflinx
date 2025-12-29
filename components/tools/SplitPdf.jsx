@@ -77,7 +77,7 @@ export default function SplitPDF() {
       "@type": "HowTo",
       name: "How to Split a PDF into Individual Pages Online",
       description: "Split any PDF into separate pages instantly using PDF Linx - completely free, no signup required.",
-      url: "https://www.pdflinx.com/split-pdf",
+      url: "https://pdflinx.com/split-pdf",
       step: [
         { "@type": "HowToStep", name: "Upload PDF", text: "Click the upload area and select your PDF file." },
         { "@type": "HowToStep", name: "Click Split", text: "Press 'Split PDF' and wait a few seconds." },
@@ -85,7 +85,7 @@ export default function SplitPDF() {
       ],
       totalTime: "PT40S",
       estimatedCost: { "@type": "MonetaryAmount", value: "0", currency: "USD" },
-      image: "https://www.pdflinx.com/og-image.png"
+      image: "https://pdflinx.com/og-image.png"
     }, null, 2),
   }}
 />
@@ -100,8 +100,8 @@ export default function SplitPDF() {
       "@context": "https://schema.org",
       "@type": "BreadcrumbList",
       itemListElement: [
-        { "@type": "ListItem", position: 1, name: "Home", item: "https://www.pdflinx.com" },
-        { "@type": "ListItem", position: 2, name: "Split PDF", item: "https://www.pdflinx.com/split-pdf" }
+        { "@type": "ListItem", position: 1, name: "Home", item: "https://pdflinx.com" },
+        { "@type": "ListItem", position: 2, name: "Split PDF", item: "https://pdflinx.com/split-pdf" }
       ]
     }, null, 2),
   }}

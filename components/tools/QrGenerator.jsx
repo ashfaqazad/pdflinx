@@ -30,7 +30,7 @@ export default function QRGenerator() {
           "@type": "HowTo",
           name: "How to Create Custom QR Code Online for Free",
           description: "Generate QR codes for URLs, text, WiFi, vCard in seconds - completely free.",
-          url: "https://www.pdflinx.com/qr-generator",
+          url: "https://pdflinx.com/qr-generator",
           step: [
             { "@type": "HowToStep", name: "Enter Data", text: "Paste URL, text, or contact details." },
             { "@type": "HowToStep", name: "Customize", text: "Add colors, logo, change style." },
@@ -38,7 +38,7 @@ export default function QRGenerator() {
           ],
           totalTime: "PT30S",
           estimatedCost: { "@type": "MonetaryAmount", value: "0", currency: "USD" },
-          image: "https://www.pdflinx.com/og-image.png"
+          image: "https://pdflinx.com/og-image.png"
         }, null, 2)
       }} />
 
@@ -47,8 +47,8 @@ export default function QRGenerator() {
           "@context": "https://schema.org",
           "@type": "BreadcrumbList",
           itemListElement: [
-            { "@type": "ListItem", position: 1, name: "Home", item: "https://www.pdflinx.com" },
-            { "@type": "ListItem", position: 2, name: "QR Code Generator", item: "https://www.pdflinx.com/qr-generator" }
+            { "@type": "ListItem", position: 1, name: "Home", item: "https://pdflinx.com" },
+            { "@type": "ListItem", position: 2, name: "QR Code Generator", item: "https://pdflinx.com/qr-generator" }
           ]
         }, null, 2)
       }} />

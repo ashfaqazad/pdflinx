@@ -58,7 +58,7 @@ export default function ImageToText() {
             "@type": "HowTo",
             name: "How to Extract Text from Image Online for Free",
             description: "Use OCR to convert images to editable text instantly.",
-            url: "https://www.pdflinx.com/image-to-text",
+            url: "https://pdflinx.com/image-to-text",
             step: [
               { "@type": "HowToStep", name: "Upload Image", text: "Select image containing text." },
               { "@type": "HowToStep", name: "Extract", text: "Click extract and wait for OCR processing." },
@@ -66,7 +66,7 @@ export default function ImageToText() {
             ],
             totalTime: "PT30S",
             estimatedCost: { "@type": "MonetaryAmount", value: "0", currency: "USD" },
-            image: "https://www.pdflinx.com/og-image.png"
+            image: "https://pdflinx.com/og-image.png"
           }, null, 2),
         }}
       />
@@ -80,8 +80,8 @@ export default function ImageToText() {
             "@context": "https://schema.org",
             "@type": "BreadcrumbList",
             itemListElement: [
-              { "@type": "ListItem", position: 1, name: "Home", item: "https://www.pdflinx.com" },
-              { "@type": "ListItem", position: 2, name: "Image to Text", item: "https://www.pdflinx.com/image-to-text" }
+              { "@type": "ListItem", position: 1, name: "Home", item: "https://pdflinx.com" },
+              { "@type": "ListItem", position: 2, name: "Image to Text", item: "https://pdflinx.com/image-to-text" }
             ]
           }, null, 2),
         }}

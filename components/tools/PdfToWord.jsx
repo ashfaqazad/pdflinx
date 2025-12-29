@@ -62,7 +62,7 @@ export default function PdfToWord() {
             "@type": "HowTo",
             name: "How to Convert PDF to Word Online for Free",
             description: "Convert any PDF file to editable Word document in just 3 simple steps using PDF Linx - completely free and no signup required.",
-            url: "https://www.pdflinx.com/pdf-to-word",
+            url: "https://pdflinx.com/pdf-to-word",
             step: [
               {
                 "@type": "HowToStep",
@@ -87,7 +87,7 @@ export default function PdfToWord() {
               currency: "USD"
             },
             tool: [{ "@type": "HowToTool", name: "PDF Linx PDF to Word Converter" }],
-            image: "https://www.pdflinx.com/og-image.png"
+            image: "https://pdflinx.com/og-image.png"
           }, null, 2),
         }}
       />
@@ -102,8 +102,8 @@ export default function PdfToWord() {
             "@context": "https://schema.org",
             "@type": "BreadcrumbList",
             itemListElement: [
-              { "@type": "ListItem", position: 1, name: "Home", item: "https://www.pdflinx.com" },
-              { "@type": "ListItem", position: 2, name: "PDF to Word", item: "https://www.pdflinx.com/pdf-to-word" }
+              { "@type": "ListItem", position: 1, name: "Home", item: "https://pdflinx.com" },
+              { "@type": "ListItem", position: 2, name: "PDF to Word", item: "https://pdflinx.com/pdf-to-word" }
             ]
           }, null, 2),
         }}

@@ -84,7 +84,7 @@ export default function ImageToPdf() {
       "@type": "HowTo",
       name: "How to Convert Images to PDF Online for Free",
       description: "Convert multiple JPG, PNG, WebP, or GIF images into a single PDF file in just 3 easy steps - 100% free, no signup required.",
-      url: "https://www.pdflinx.com/image-to-pdf",
+      url: "https://pdflinx.com/image-to-pdf",
       step: [
         {
           "@type": "HowToStep",
@@ -104,7 +104,7 @@ export default function ImageToPdf() {
       ],
       totalTime: "PT30S",
       estimatedCost: { "@type": "MonetaryAmount", value: "0", currency: "USD" },
-      image: "https://www.pdflinx.com/og-image.png"
+      image: "https://pdflinx.com/og-image.png"
     }, null, 2),
   }}
 />
@@ -119,8 +119,8 @@ export default function ImageToPdf() {
       "@context": "https://schema.org",
       "@type": "BreadcrumbList",
       itemListElement: [
-        { "@type": "ListItem", position: 1, name: "Home", item: "https://www.pdflinx.com" },
-        { "@type": "ListItem", position: 2, name: "Image to PDF", item: "https://www.pdflinx.com/image-to-pdf" }
+        { "@type": "ListItem", position: 1, name: "Home", item: "https://pdflinx.com" },
+        { "@type": "ListItem", position: 2, name: "Image to PDF", item: "https://pdflinx.com/image-to-pdf" }
       ]
     }, null, 2),
   }}

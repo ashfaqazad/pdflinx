@@ -56,7 +56,7 @@ export default function ImageCompressor() {
             "@type": "HowTo",
             name: "How to Compress Image Online for Free",
             description: "Reduce image file size up to 90% while maintaining quality.",
-            url: "https://www.pdflinx.com/image-compressor",
+            url: "https://pdflinx.com/image-compressor",
             step: [
               { "@type": "HowToStep", name: "Upload Image", text: "Select JPG, PNG, or WebP image." },
               { "@type": "HowToStep", name: "Compress", text: "Click compress and wait a few seconds." },
@@ -64,7 +64,7 @@ export default function ImageCompressor() {
             ],
             totalTime: "PT30S",
             estimatedCost: { "@type": "MonetaryAmount", value: "0", currency: "USD" },
-            image: "https://www.pdflinx.com/og-image.png"
+            image: "https://pdflinx.com/og-image.png"
           }, null, 2),
         }}
       />
@@ -78,8 +78,8 @@ export default function ImageCompressor() {
             "@context": "https://schema.org",
             "@type": "BreadcrumbList",
             itemListElement: [
-              { "@type": "ListItem", position: 1, name: "Home", item: "https://www.pdflinx.com" },
-              { "@type": "ListItem", position: 2, name: "Image Compressor", item: "https://www.pdflinx.com/image-compressor" }
+              { "@type": "ListItem", position: 1, name: "Home", item: "https://pdflinx.com" },
+              { "@type": "ListItem", position: 2, name: "Image Compressor", item: "https://pdflinx.com/image-compressor" }
             ]
           }, null, 2),
         }}

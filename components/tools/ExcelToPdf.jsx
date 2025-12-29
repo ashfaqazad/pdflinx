@@ -80,7 +80,7 @@ export default function ExcelToPDF() {
       "@type": "HowTo",
       name: "How to Convert Excel to PDF Online for Free",
       description: "Convert any Excel spreadsheet (XLSX, XLS) to PDF in seconds - completely free, no signup required.",
-      url: "https://www.pdflinx.com/excel-pdf",
+      url: "https://pdflinx.com/excel-pdf",
       step: [
         { "@type": "HowToStep", name: "Upload Excel", text: "Click the upload area and select your .xlsx or .xls file." },
         { "@type": "HowToStep", name: "Convert to PDF", text: "Click 'Convert to PDF' and wait a few seconds." },
@@ -88,7 +88,7 @@ export default function ExcelToPDF() {
       ],
       totalTime: "PT30S",
       estimatedCost: { "@type": "MonetaryAmount", value: "0", currency: "USD" },
-      image: "https://www.pdflinx.com/og-image.png"
+      image: "https://pdflinx.com/og-image.png"
     }, null, 2),
   }}
 />
@@ -103,8 +103,8 @@ export default function ExcelToPDF() {
       "@context": "https://schema.org",
       "@type": "BreadcrumbList",
       itemListElement: [
-        { "@type": "ListItem", position: 1, name: "Home", item: "https://www.pdflinx.com" },
-        { "@type": "ListItem", position: 2, name: "Excel to PDF", item: "https://www.pdflinx.com/excel-pdf" }
+        { "@type": "ListItem", position: 1, name: "Home", item: "https://pdflinx.com" },
+        { "@type": "ListItem", position: 2, name: "Excel to PDF", item: "https://pdflinx.com/excel-pdf" }
       ]
     }, null, 2),
   }}
@@ -189,10 +189,6 @@ export default function ExcelToPDF() {
           </div>
         </div>
       </main>
-
-
-
-
 
       {/* ==================== UNIQUE SEO CONTENT SECTION - EXCEL TO PDF ==================== */}
       <section className="mt-20 max-w-5xl mx-auto px-6 pb-16">

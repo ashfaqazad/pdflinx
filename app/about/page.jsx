@@ -30,8 +30,8 @@ export const metadata = {
   openGraph: {
     title: "About PDF Linx - Free Online PDF & File Tools",
     description: "Discover PDF Linx: Free PDF converters, QR generators, image tools, and more for secure document management.",
-    url: "https://www.pdflinx.com/about",
-    images: [{ url: "https://www.pdflinx.com/og-about.png", width: 1200, height: 630 }],
+    url: "https://pdflinx.com/about",
+    images: [{ url: "https://pdflinx.com/og-about.png", width: 1200, height: 630 }],
     type: "website",
   },
 };
@@ -49,11 +49,11 @@ export default function About() {
               "@type": "AboutPage",
               name: "About PDF Linx",
               description: "Learn about our free online PDF and utility tools platform.",
-              url: "https://www.pdflinx.com/about",
+              url: "https://pdflinx.com/about",
               publisher: {
                 "@type": "Organization",
                 name: "PDF Linx",
-                url: "https://www.pdflinx.com",
+                url: "https://pdflinx.com",
               },
             }),
           }}

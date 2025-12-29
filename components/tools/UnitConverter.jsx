@@ -63,7 +63,7 @@ export default function UnitConverter() {
             "@type": "HowTo",
             name: "How to Convert Units Online for Free",
             description: "Convert length, weight, temperature, volume instantly with accurate results.",
-            url: "https://www.pdflinx.com/unit-converter",
+            url: "https://pdflinx.com/unit-converter",
             step: [
               { "@type": "HowToStep", name: "Select Category", text: "Choose length, weight, temperature etc." },
               { "@type": "HowToStep", name: "Enter Value", text: "Type the value to convert." },
@@ -71,7 +71,7 @@ export default function UnitConverter() {
             ],
             totalTime: "PT20S",
             estimatedCost: { "@type": "MonetaryAmount", value: "0", currency: "USD" },
-            image: "https://www.pdflinx.com/og-image.png"
+            image: "https://pdflinx.com/og-image.png"
           }, null, 2),
         }}
       />
@@ -85,8 +85,8 @@ export default function UnitConverter() {
             "@context": "https://schema.org",
             "@type": "BreadcrumbList",
             itemListElement: [
-              { "@type": "ListItem", position: 1, name: "Home", item: "https://www.pdflinx.com" },
-              { "@type": "ListItem", position: 2, name: "Unit Converter", item: "https://www.pdflinx.com/unit-converter" }
+              { "@type": "ListItem", position: 1, name: "Home", item: "https://pdflinx.com" },
+              { "@type": "ListItem", position: 2, name: "Unit Converter", item: "https://pdflinx.com/unit-converter" }
             ]
           }, null, 2),
         }}

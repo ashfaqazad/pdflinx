@@ -59,7 +59,7 @@ export default function TextToPDF() {
             "@type": "HowTo",
             name: "How to Convert Text to PDF Online for Free",
             description: "Create PDF from plain text with custom formatting instantly.",
-            url: "https://www.pdflinx.com/text-to-pdf",
+            url: "https://pdflinx.com/text-to-pdf",
             step: [
               { "@type": "HowToStep", name: "Paste Text", text: "Type or paste your text." },
               { "@type": "HowToStep", name: "Customize", text: "Choose font, size, alignment." },
@@ -67,7 +67,7 @@ export default function TextToPDF() {
             ],
             totalTime: "PT30S",
             estimatedCost: { "@type": "MonetaryAmount", value: "0", currency: "USD" },
-            image: "https://www.pdflinx.com/og-image.png"
+            image: "https://pdflinx.com/og-image.png"
           }, null, 2),
         }}
       />
@@ -81,8 +81,8 @@ export default function TextToPDF() {
             "@context": "https://schema.org",
             "@type": "BreadcrumbList",
             itemListElement: [
-              { "@type": "ListItem", position: 1, name: "Home", item: "https://www.pdflinx.com" },
-              { "@type": "ListItem", position: 2, name: "Text to PDF", item: "https://www.pdflinx.com/text-to-pdf" }
+              { "@type": "ListItem", position: 1, name: "Home", item: "https://pdflinx.com" },
+              { "@type": "ListItem", position: 2, name: "Text to PDF", item: "https://pdflinx.com/text-to-pdf" }
             ]
           }, null, 2),
         }}

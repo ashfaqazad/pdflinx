@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import {
   FileText, FileType, FileArchive, FileImage, FileSpreadsheet,
-  Split, QrCode, Lock, Ruler, Youtube, Image as ImageIcon, PenTool
+  Split, QrCode, Lock, Ruler, Youtube, Image as ImageIcon, PenTool, Stamp 
 } from "lucide-react";
 
 export default function HomeContent() {
@@ -26,6 +26,12 @@ export default function HomeContent() {
     { title: "Signature Maker", desc: "Create and download your digital signature with ease.", link: "/signature-maker", icon: <PenTool className="w-12 h-12" />, color: "from-teal-400 to-emerald-500" }, // ← YEH GALTI THI!
     { title: "HEIC to JPG Converter", desc: "Convert iPhone HEIC photos into widely supported JPG format.", link: "/heic-to-jpg", icon: <FileImage className="w-12 h-12" />, color: "from-amber-400 to-orange-500" },
     { title: "Text to PDF", desc: "Turn plain text into a professional-looking PDF instantly.", link: "/text-to-pdf", icon: <FileText className="w-12 h-12" />, color: "from-violet-400 to-purple-500" },
+
+    { title: "Image Converter", desc: "Turn plain text into a professional-looking PDF instantly.", link: "/image-converter", icon: <FileText className="w-12 h-12" />, color: "from-violet-400 to-purple-500" },
+
+    {title: "Add Watermark", desc: "Add text or logo watermark to images easily and securely.", link: "/add-watermark",icon: <Stamp className="w-12 h-12" />, color: "from-blue-400 to-cyan-500" },
+
+    
   ];
 
   return (
@@ -59,9 +65,6 @@ export default function HomeContent() {
         <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-gray-50 to-transparent"></div>
       </section>
 
-
-
-
       {/* Why Choose Section */}
       <section className="py-24 px-6">
         <div className="text-center mb-16">
@@ -89,7 +92,6 @@ export default function HomeContent() {
           ))}
         </div>
       </section>
-
 
       {/* Tools Grid */}
       <section id="tools" className="py-24 px-6 bg-gray-50/50">

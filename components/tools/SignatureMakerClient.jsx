@@ -97,7 +97,7 @@ export default function SignatureMakerClient() {
             "@type": "HowTo",
             name: "How to Create Digital Signature Online for Free",
             description: "Make professional signatures by drawing or typing instantly.",
-            url: "https://www.pdflinx.com/signature-maker",
+            url: "https://pdflinx.com/signature-maker",
             step: [
               { "@type": "HowToStep", name: "Choose Method", text: "Draw with mouse/finger or type your name." },
               { "@type": "HowToStep", name: "Customize", text: "Change color, style, and thickness." },
@@ -105,7 +105,7 @@ export default function SignatureMakerClient() {
             ],
             totalTime: "PT40S",
             estimatedCost: { "@type": "MonetaryAmount", value: "0", currency: "USD" },
-            image: "https://www.pdflinx.com/og-image.png"
+            image: "https://pdflinx.com/og-image.png"
           }, null, 2),
         }}
       />
@@ -119,8 +119,8 @@ export default function SignatureMakerClient() {
             "@context": "https://schema.org",
             "@type": "BreadcrumbList",
             itemListElement: [
-              { "@type": "ListItem", position: 1, name: "Home", item: "https://www.pdflinx.com" },
-              { "@type": "ListItem", position: 2, name: "Signature Maker", item: "https://www.pdflinx.com/signature-maker" }
+              { "@type": "ListItem", position: 1, name: "Home", item: "https://pdflinx.com" },
+              { "@type": "ListItem", position: 2, name: "Signature Maker", item: "https://pdflinx.com/signature-maker" }
             ]
           }, null, 2),
         }}

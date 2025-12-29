@@ -1,11 +1,32 @@
 "use client";
 import Link from "next/link";
 import { useState } from "react";
+// import {
+//   ChevronDown,
+//   FileText, FileType, FileImage, FileSpreadsheet,
+//   Scissors, FileMinus, FilePlus, QrCode, Lock, Ruler,
+//   Youtube, Image as ImageIcon, PenTool
+// } from "lucide-react";
 import {
   ChevronDown,
-  FileText, FileType, FileImage, FileSpreadsheet,
-  Scissors, FileMinus, FilePlus, QrCode, Lock, Ruler,
-  Youtube, Image as ImageIcon, PenTool
+  FileText,
+  FileType,
+  FileImage,
+  FileSpreadsheet,
+  Scissors,
+  FileMinus,
+  FilePlus,
+  QrCode,
+  Lock,
+  Ruler,
+  Youtube,
+  Image as ImageIcon,
+  PenTool,
+
+  // 🔥 Added icons
+  RotateCw,
+  Stamp,
+  ShieldCheck,
 } from "lucide-react";
 
 export default function Navbar() {
@@ -122,48 +143,72 @@ export default function Navbar() {
     All Tools <ChevronDown size={18} className="group-hover:rotate-180 transition" />
   </button>
 
-  {/* DropDown Content */}
-  <div
-    className="dropdown-content absolute top-16 left-1/2 -translate-x-1/2 w-[620px] 
-               bg-white rounded-2xl shadow-2xl border border-gray-100 
-               opacity-0 invisible transition-all duration-300"
-  >
-    <div className="p-7">
-      <h3 className="font-bold text-lg text-gray-800 mb-5 text-center">
-        All Utility Tools
-      </h3>
-      <div className="grid grid-cols-3 gap-5">
-        {[
-          { href: "/qr-generator", icon: QrCode, color: "text-sky-600", label: "QR Generator" },
-          { href: "/password-gen", icon: Lock, color: "text-amber-600", label: "Password Gen" },
-          { href: "/unit-converter", icon: Ruler, color: "text-lime-600", label: "Unit Converter" },
-          { href: "/youtube-thumbnail", icon: Youtube, color: "text-red-600", label: "YT Thumbnail" },
-          { href: "/image-compressor", icon: ImageIcon, color: "text-cyan-600", label: "Image Compress" },
-          { href: "/image-to-text", icon: ImageIcon, color: "text-indigo-600", label: "Image to Text" },
-          { href: "/signature-maker", icon: PenTool, color: "text-emerald-600", label: "Signature Maker" },
-          { href: "/text-to-pdf", icon: FileText, color: "text-purple-600", label: "Text to PDF" },
-          { href: "/heic-to-jpg", icon: FileImage, color: "text-orange-600", label: "HEIC to JPG" },
-        ].map((item) => (
-          <button
-            key={item.href}
-            onClick={(e) => {
-              e.preventDefault();
-              window.location.href = item.href; // ✅ navigate
-              // ✅ dropdown close manually:
-              const dropdown = e.currentTarget.closest('.dropdown-content');
-              dropdown.classList.add('invisible', 'opacity-0');
-            }}
-            className="flex flex-col items-center gap-3 hover:bg-indigo-50 p-4 rounded-2xl transition group w-full"
-          >
-            <item.icon size={34} className={item.color} />
-            <span className="text-sm font-medium text-gray-700 group-hover:text-indigo-600 text-center leading-tight">
-              {item.label}
-            </span>
-          </button>
-        ))}
-      </div>
+{/* DropDown Content */}
+<div
+  className="dropdown-content absolute top-16 left-1/2 -translate-x-1/2 w-[620px] 
+             bg-white rounded-2xl shadow-2xl border border-gray-100 
+             opacity-0 invisible transition-all duration-300"
+>
+  <div className="p-3">
+    <h3 className="font-bold text-lg text-gray-800 mb-5 text-center">
+      All Utility Tools
+    </h3>
+
+    <div className="grid grid-cols-3 gap-3">
+      {[
+        { href: "/qr-generator", icon: QrCode, color: "text-sky-600", label: "QR Generator" },
+        { href: "/password-gen", icon: Lock, color: "text-amber-600", label: "Password Gen" },
+        { href: "/unit-converter", icon: Ruler, color: "text-lime-600", label: "Unit Converter" },
+        { href: "/youtube-thumbnail", icon: Youtube, color: "text-red-600", label: "YT Thumbnail" },
+        { href: "/image-compressor", icon: ImageIcon, color: "text-cyan-600", label: "Image Compress" },
+        { href: "/image-to-text", icon: ImageIcon, color: "text-indigo-600", label: "Image to Text" },
+        { href: "/signature-maker", icon: PenTool, color: "text-emerald-600", label: "Signature Maker" },
+        { href: "/text-to-pdf", icon: FileText, color: "text-purple-600", label: "Text to PDF" },
+        { href: "/heic-to-jpg", icon: FileImage, color: "text-orange-600", label: "HEIC to JPG" },
+          // 🔥 Fixed icons below
+        { href: "/image-converter", icon: ImageIcon, color: "text-blue-600", label: "Image Converter" },
+        // { href: "/rotate-pdf", icon: RotateCw, color: "text-fuchsia-600", label: "Rotate PDF" },
+        { href: "/pdf-to-jpg", icon: FileImage, color: "text-rose-600", label: "PDF to JPG" },
+        { href: "/add-watermark", icon: Stamp, color: "text-teal-600", label: "Add Watermark" },
+        { href: "/protect-pdf", icon: ShieldCheck, color: "text-green-600", label: "Protect PDF" },
+
+        // { href: "/image-converter", icon: FileImage, color: "text-orange-600", label: "Image Converter" },
+        // { href: "/rotate-pdf", icon: FileImage, color: "text-orange-600", label: "Rotate Pdf" },
+        // { href: "/pdf-to-jpg", icon: FileImage, color: "text-orange-600", label: "Pdf To Jpg" },
+        // { href: "/add-watermark", icon: FileImage, color: "text-orange-600", label: "Add Watermark" },
+        // { href: "/protect-pdf", icon: FileImage, color: "text-orange-600", label: "Protect Pdf" },
+
+
+      ].map((item) => (
+        <button
+          key={item.href}
+          onClick={(e) => {
+            e.preventDefault();
+            window.location.href = item.href;
+
+            // close dropdown
+            const dropdown = e.currentTarget.closest(".dropdown-content");
+            dropdown?.classList.add("invisible", "opacity-0");
+          }}
+          className="flex items-center gap-3 w-full 
+                     p-3 rounded-xl transition 
+                     hover:bg-indigo-50 group justify-start"
+        >
+          <item.icon
+            size={26}
+            className={`${item.color} shrink-0`}
+          />
+
+          <span className="text-sm font-medium text-gray-700 group-hover:text-indigo-600">
+            {item.label}
+          </span>
+        </button>
+      ))}
     </div>
   </div>
+</div>
+
+
 </div>
 
 
@@ -260,6 +305,21 @@ export default function Navbar() {
                 onClick={(e) => { e.preventDefault(); window.location.href = '/heic-to-jpg'; }}
 
                 className="block text-gray-600 hover:text-indigo-600 py-1">HEIC to JPG</Link>
+
+
+                {/* New 4 Tools Moble view */}
+                <Link href="/image-converter" 
+                onClick={(e) => { e.preventDefault(); window.location.href = '/image-converter'; }}
+                className="block text-gray-600 hover:text-indigo-600 py-1">Image Converter</Link>
+                <Link href="/pdf-to-jpg" 
+                onClick={(e) => { e.preventDefault(); window.location.href = '/pdf-to-jpg'; }}
+                className="block text-gray-600 hover:text-indigo-600 py-1">PDF to JPG</Link>
+                <Link href="/add-watermark" 
+                onClick={(e) => { e.preventDefault(); window.location.href = '/add-watermark'; }}
+                className="block text-gray-600 hover:text-indigo-600 py-1">Add Watermark</Link>
+                <Link href="/protect-pdf" 
+                onClick={(e) => { e.preventDefault(); window.location.href = '/protect-pdf'; }}
+                className="block text-gray-600 hover:text-indigo-600 py-1">Protect Pdf</Link>
               </div>
             </details>
             <Link href="/blog" 

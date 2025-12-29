@@ -49,7 +49,7 @@ export default function PasswordGenerator() {
             "@type": "HowTo",
             name: "How to Generate Strong Password Online for Free",
             description: "Create secure random passwords with custom settings in seconds.",
-            url: "https://www.pdflinx.com/password-gen",
+            url: "https://pdflinx.com/password-gen",
             step: [
               { "@type": "HowToStep", name: "Choose Options", text: "Select length, include symbols, numbers, uppercase." },
               { "@type": "HowToStep", name: "Generate", text: "Click generate to get multiple strong passwords." },
@@ -57,7 +57,7 @@ export default function PasswordGenerator() {
             ],
             totalTime: "PT20S",
             estimatedCost: { "@type": "MonetaryAmount", value: "0", currency: "USD" },
-            image: "https://www.pdflinx.com/og-image.png"
+            image: "https://pdflinx.com/og-image.png"
           }, null, 2),
         }}
       />
@@ -71,8 +71,8 @@ export default function PasswordGenerator() {
             "@context": "https://schema.org",
             "@type": "BreadcrumbList",
             itemListElement: [
-              { "@type": "ListItem", position: 1, name: "Home", item: "https://www.pdflinx.com" },
-              { "@type": "ListItem", position: 2, name: "Password Generator", item: "https://www.pdflinx.com/password-gen" }
+              { "@type": "ListItem", position: 1, name: "Home", item: "https://pdflinx.com" },
+              { "@type": "ListItem", position: 2, name: "Password Generator", item: "https://pdflinx.com/password-gen" }
             ]
           }, null, 2),
         }}

@@ -56,7 +56,7 @@ export default function HeicToJpg() {
             "@type": "HowTo",
             name: "How to Convert HEIC to JPG Online for Free",
             description: "Convert iPhone HEIC photos to JPG format instantly.",
-            url: "https://www.pdflinx.com/heic-to-jpg",
+            url: "https://pdflinx.com/heic-to-jpg",
             step: [
               { "@type": "HowToStep", name: "Upload HEIC", text: "Select one or multiple HEIC files." },
               { "@type": "HowToStep", name: "Convert", text: "Click convert and wait." },
@@ -64,7 +64,7 @@ export default function HeicToJpg() {
             ],
             totalTime: "PT30S",
             estimatedCost: { "@type": "MonetaryAmount", value: "0", currency: "USD" },
-            image: "https://www.pdflinx.com/og-image.png"
+            image: "https://pdflinx.com/og-image.png"
           }, null, 2),
         }}
       />
@@ -78,8 +78,8 @@ export default function HeicToJpg() {
             "@context": "https://schema.org",
             "@type": "BreadcrumbList",
             itemListElement: [
-              { "@type": "ListItem", position: 1, name: "Home", item: "https://www.pdflinx.com" },
-              { "@type": "ListItem", position: 2, name: "HEIC to JPG", item: "https://www.pdflinx.com/heic-to-jpg" }
+              { "@type": "ListItem", position: 1, name: "Home", item: "https://pdflinx.com" },
+              { "@type": "ListItem", position: 2, name: "HEIC to JPG", item: "https://pdflinx.com/heic-to-jpg" }
             ]
           }, null, 2),
         }}
