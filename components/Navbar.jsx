@@ -168,9 +168,9 @@ export default function Navbar() {
           // 🔥 Fixed icons below
         { href: "/image-converter", icon: ImageIcon, color: "text-blue-600", label: "Image Converter" },
         // { href: "/rotate-pdf", icon: RotateCw, color: "text-fuchsia-600", label: "Rotate PDF" },
-        { href: "/pdf-to-jpg", icon: FileImage, color: "text-rose-600", label: "PDF to JPG" },
+        // { href: "/pdf-to-jpg", icon: FileImage, color: "text-rose-600", label: "PDF to JPG" },
         { href: "/add-watermark", icon: Stamp, color: "text-teal-600", label: "Add Watermark" },
-        { href: "/protect-pdf", icon: ShieldCheck, color: "text-green-600", label: "Protect PDF" },
+        // { href: "/protect-pdf", icon: ShieldCheck, color: "text-green-600", label: "Protect PDF" },
 
         // { href: "/image-converter", icon: FileImage, color: "text-orange-600", label: "Image Converter" },
         // { href: "/rotate-pdf", icon: FileImage, color: "text-orange-600", label: "Rotate Pdf" },
