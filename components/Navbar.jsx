@@ -39,7 +39,7 @@ export default function Navbar() {
 
           {/* Logo */}
           <Link href="/" className="flex items-center py-3">
-            <img src="/pdflinx-logo.svg" alt="PDF Linx" className="h-11 w-auto" />
+            <img src="/pdflinx-logo.svg" alt="PDF Linx logo" className="h-11 w-auto" />
           </Link>
 
           {/* Desktop Menu */}

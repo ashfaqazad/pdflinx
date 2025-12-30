@@ -159,8 +159,17 @@ export default function RootLayout({ children }) {
         <HistatsTracker />
 
         {/* Optional noscript fallback */}
-        <noscript style={{ display: 'none' }}>
+        {/* <noscript style={{ display: 'none' }}>
           <img src="//sstatic1.histats.com/0.gif?4996996&101" alt="" width="0" height="0" />
+        </noscript> */}
+        <noscript style={{ display: 'none' }}>
+          <img
+            src="//sstatic1.histats.com/0.gif?4996996&101"
+            alt="Website visitor tracking pixel"
+            width="0"
+            height="0"
+            aria-hidden="true"
+          />
         </noscript>
       </body>
     </html>
