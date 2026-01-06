@@ -4,6 +4,8 @@
 import { useState } from "react";
 import { Upload, Image, Download, CheckCircle, X } from "lucide-react";
 import Script from "next/script";
+import RelatedToolsSection from "@/components/RelatedTools";
+
 
 
 export default function ImageToPdf() {
@@ -311,6 +313,9 @@ export default function ImageToPdf() {
           Turn your photos and images into beautiful PDFs every day – trusted by thousands at PDF Linx.
         </p>
       </section>
+
+      <RelatedToolsSection currentPage="image-to-pdf" />
+
     </>
   );
 }

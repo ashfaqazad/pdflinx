@@ -3,6 +3,8 @@
 import { useState } from 'react';
 import { Download, Youtube, Copy, CheckCircle, Zap } from 'lucide-react';
 import Script from 'next/script';
+import RelatedToolsSection from "@/components/RelatedTools";
+
 
 export default function YouTubeThumbnailDownloader() {
   const [url, setUrl] = useState('');
@@ -243,6 +245,9 @@ export default function YouTubeThumbnailDownloader() {
           Download YouTube thumbnails every day with PDF Linx — trusted by creators worldwide for fast, reliable, and free thumbnail downloading.
         </p>
       </section>
+
+    <RelatedToolsSection currentPage="youtube-thumbnail" />
+
     </>
   );
 }

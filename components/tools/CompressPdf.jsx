@@ -4,6 +4,8 @@
 import { useState, useRef } from "react";
 import { Upload, Download, CheckCircle, FileDown, Scissors } from "lucide-react";
 import Script from "next/script";
+import RelatedToolsSection from "@/components/RelatedTools";
+
 
 
 export default function CompressPDF() {
@@ -272,6 +274,7 @@ export default function CompressPDF() {
   </p>
 </section>
 
+        <RelatedToolsSection currentPage="compress-pdf" />
 
 
     </>

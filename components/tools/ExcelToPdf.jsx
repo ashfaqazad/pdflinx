@@ -4,6 +4,8 @@
 import { useState, useRef } from "react";
 import { Upload, Download, CheckCircle, FileSpreadsheet } from "lucide-react";
 import Script from "next/script";
+import RelatedToolsSection from "@/components/RelatedTools";
+
 
 
 export default function ExcelToPDF() {
@@ -274,6 +276,8 @@ export default function ExcelToPDF() {
           Convert Excel to PDF daily with confidence – trusted by thousands for perfect results at PDF Linx.
         </p>
       </section>
+    <RelatedToolsSection currentPage="excel-to-pdf" />
+
     </>
   );
 }

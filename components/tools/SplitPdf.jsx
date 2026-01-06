@@ -4,6 +4,8 @@
 import { useState, useRef } from "react";
 import { Upload, Download, CheckCircle, Scissors } from "lucide-react";
 import Script from "next/script";
+import RelatedToolsSection from "@/components/RelatedTools";
+
 
 
 
@@ -277,37 +279,7 @@ export default function SplitPDF() {
 </section>
 
 
-
-
-      {/* ==================== SEO CONTENT BLOCK - BELOW THE TOOL ==================== */}
-      {/* <section className="mt-16 max-w-4xl mx-auto text-gray-700 space-y-8 px-6">
-        <h2 className="text-4xl font-bold text-center">Split PDF Online Free - Extract Pages Easily</h2>
-        <p className="text-lg leading-relaxed">
-          PDF Linx lets you split PDF files online for free in seconds. Our free PDF splitter tool extracts individual pages or divides large PDFs without any signup, watermark, or software installation. Simply upload your file and download separate pages as a ZIP.
-        </p>
-
-        <h3 className="text-3xl font-semibold">Why Use Our Free PDF Splitter Tool?</h3>
-        <ul className="list-disc pl-8 space-y-2 text-lg">
-          <li>100% free online PDF splitting - no hidden costs</li>
-          <li>No signup or account required</li>
-          <li>No watermarks on extracted pages</li>
-          <li>Fast processing - split large PDFs quickly</li>
-          <li>Secure: Files deleted automatically after 1 hour</li>
-          <li>Extract specific pages or split by ranges</li>
-          <li>Works on any device - mobile, desktop, tablet</li>
-        </ul>
-
-        <h3 className="text-3xl font-semibold">How to Split a PDF File Online</h3>
-        <ol className="list-decimal pl-8 space-y-3 text-lg">
-          <li>Upload your PDF file using the drag-and-drop area above.</li>
-          <li>Click "Split PDF Online" to process the file.</li>
-          <li>Download the ZIP file containing all individual PDF pages.</li>
-        </ol>
-
-        <p className="text-lg italic text-center">
-          Perfect for separating reports, invoices, chapters, or any multi-page PDF document!
-        </p>
-      </section> */}
+      <RelatedToolsSection currentPage="split-pdf" />
 
 
 

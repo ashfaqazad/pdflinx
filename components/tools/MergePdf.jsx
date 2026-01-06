@@ -4,6 +4,8 @@
 import { useState, useRef } from "react";
 import { Upload, FileText, Download, CheckCircle, X, Files } from "lucide-react";
 import Script from "next/script";
+import RelatedToolsSection from "@/components/RelatedTools";
+
 
 
 export default function MergePDF() {
@@ -323,6 +325,7 @@ export default function MergePDF() {
         </p>
       </section>
 
+        <RelatedToolsSection currentPage="merge-pdf" />
 
 
     </>

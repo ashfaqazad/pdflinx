@@ -3,6 +3,8 @@
 import { useState } from 'react';
 import { Upload, Download, Smartphone, Image as ImageIcon, CheckCircle } from 'lucide-react';
 import Script from 'next/script';
+import RelatedToolsSection from "@/components/RelatedTools";
+
 
 export default function HeicToJpg() {
   const [converted, setConverted] = useState([]);
@@ -251,6 +253,8 @@ export default function HeicToJpg() {
           Convert HEIC to JPG every day with PDF Linx — trusted by iPhone users worldwide for fast, reliable, and completely free photo conversion.
         </p>
       </section>
+   <RelatedToolsSection currentPage="heic-to-jpg" />
+
     </>
   );
 }

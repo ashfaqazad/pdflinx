@@ -4,6 +4,8 @@ import { useState, useEffect, useRef } from 'react';
 import QRCode from 'qrcode';
 import { Link, Wifi, MessageCircle, Download } from 'lucide-react'; // Icons ke liye
 import Script from "next/script";
+import RelatedToolsSection from "@/components/RelatedTools";
+
 
 
 
@@ -195,6 +197,8 @@ export default function QRGenerator() {
           Create professional QR codes every day with PDF Linx — trusted by thousands for fast, reliable, and free QR generation.
         </p>
       </section>
+      <RelatedToolsSection currentPage="qr-generator" />
+
     </>
   );
 }

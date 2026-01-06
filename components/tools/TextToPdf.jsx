@@ -5,6 +5,8 @@ import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import { Download, FileText, Type, CheckCircle } from 'lucide-react';
 import Script from 'next/script';
+import RelatedToolsSection from "@/components/RelatedTools";
+
 
 export default function TextToPDF() {
   const [text, setText] = useState('');
@@ -220,6 +222,9 @@ export default function TextToPDF() {
           Convert text to PDF every day with PDF Linx — trusted by thousands for fast, professional, and completely free document creation.
         </p>
       </section>
+    
+    <RelatedToolsSection currentPage="text-to-pdf" />
+
     </>
   );
 }

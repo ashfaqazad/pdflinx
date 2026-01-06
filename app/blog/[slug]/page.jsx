@@ -363,62 +363,71 @@ const blogs = [
   title: "Best Tools for Students to Study Smarter in 2025",
   date: "Dec 11, 2025",
   content: `
-    In today’s digital age, students have access to hundreds of free tools that can make learning smarter, faster, and more efficient. 
-    From managing notes to converting assignments into PDFs the right set of online tools can save you hours every week.
+    <p class="mb-8 text-lg leading-relaxed">
+      So here’s my honest list of tools that actually help me study better — the ones I personally use and recommend to friends. No fluff, just stuff that works.
+    </p>
 
-    This guide lists some of the "best online tools for students in 2025" that help with studying, productivity, and creativity
-    whether you’re in school, college, or university.
+    <p class="mb-8 text-lg leading-relaxed">
+      <strong>1. PDF Linx – My Go-To for Anything PDF Related</strong><br>
+      Let’s be real: half of student life is dealing with PDFs. Scanned notes, assignment guidelines, forms to fill — sab PDF mein hi aata he.<br><br>
+      That’s why I made PDF Linx. It’s completely free, runs right in your browser, and your files never leave your device (no uploading to random servers).<br><br>
+      With it, you can:<br>
+      • Convert PDFs to Word when you need to edit something<br>
+      • Merge multiple files into one before submitting<br>
+      • Compress big PDFs so they actually attach in emails<br>
+      • Turn Word docs or text files into clean PDFs<br><br>
+      No signup, no ads, no watermarks. Just works.
+    </p>
 
-    ✨ Here’s our curated list of top tools every student should try:
+    <p class="mb-8 text-lg leading-relaxed">
+      <strong>2. Notion – Where I Keep My Entire Student Life Together</strong><br>
+      Notion is like my second brain. I have one workspace with class notes organized by subject, weekly study schedule, assignment tracker with deadlines, and a reading list.<br><br>
+      The best part? You can share pages with classmates for group projects without sending 50 WhatsApp messages. Templates are a lifesaver too.
+    </p>
 
-    1️⃣ "PDF Linx" – The All-in-One File Helper  
-    Students often deal with tons of PDFs assignments, forms, scanned notes, etc.  
-    With PDF Linx, you can:
-    - Convert PDF to Word for easy editing.  
-    - Merge or split PDFs for assignments.  
-    - Compress PDFs before submitting them online.  
-    - Create professional PDFs from Word or Text files.  
-    All tools are "free, secure, and browser-based" no software needed.
+    <p class="mb-8 text-lg leading-relaxed">
+      <strong>3. Google Docs – For Writing and Group Work</strong><br>
+      Whenever I have a group assignment, we just create one Google Doc and everyone edits together in real-time. No more “which version is final?” drama.<br><br>
+      Auto-save means I’ve never lost an essay again (trust me, that happened in first year). And it’s free with your college Gmail.
+    </p>
 
-    2️⃣ "Notion" – Stay Organized & Plan Smarter  
-    Notion is the ultimate note-taking and task management app for students.  
-    Use it to plan your study schedule, track deadlines, and create digital notebooks.  
-    You can even collaborate with friends on group projects.
+    <p class="mb-8 text-lg leading-relaxed">
+      <strong>4. Grammarly – Saves Me from Stupid Mistakes</strong><br>
+      I’m good with ideas, but sometimes my grammar or spelling goes off track — especially when writing late at night.<br><br>
+      Grammarly catches those mistakes and even suggests better ways to phrase things. The free version is honestly enough for most students.
+    </p>
 
-    3️⃣ "Google Docs" – Write, Edit & Share with Ease  
-    Google Docs allows students to write assignments or essays online with auto-save and real-time collaboration.  
-    It’s perfect for group projects and essay drafting.  
-    Plus, all your data stays synced in Google Drive.
+    <p class="mb-8 text-lg leading-relaxed">
+      <strong>5. Canva – When Presentations Need to Look Good</strong><br>
+      Professors love slides that don’t look like default PowerPoint. Canva makes it easy to create posters, presentations, or infographics that actually stand out.<br><br>
+      There are tons of free templates made for students — just swap in your content and done.
+    </p>
 
-    4️⃣ "Grammarly" – Write Error-Free Assignments  
-    Grammarly helps you correct grammar, spelling, and tone while writing essays, reports, or research papers.  
-    It’s like having an English teacher right inside your browser.
+    <p class="mb-8 text-lg leading-relaxed">
+      <strong>6. Quizlet – For Actually Remembering Stuff</strong><br>
+      When exams come, Quizlet is my best friend. I make flashcards for formulas, definitions, dates — whatever needs to be memorized.<br><br>
+      The spaced repetition mode really helps things stick long-term. Way better than re-reading notes 10 times.
+    </p>
 
-    5️⃣ "Canva" – Make Creative Presentations  
-    Canva is an amazing free design tool for creating posters, resumes, and slides.  
-    With hundreds of free templates, it’s perfect for making your school or college projects stand out.
+    <p class="mb-8 text-lg leading-relaxed">
+      <strong>7. ChatGPT – Quick Explanations and Brainstorming</strong><br>
+      Sometimes a topic just doesn’t click from the textbook. I ask ChatGPT to explain it like I’m 15, and suddenly it makes sense.<br><br>
+      It’s also great for brainstorming essay ideas or creating study outlines. Just double-check important facts — it’s a helper, not a replacement.
+    </p>
 
-    6️⃣ "Quizlet" – Study Better with Flashcards  
-    Learning definitions, vocabulary, or formulas?  
-    Quizlet lets you create and use flashcards to memorize concepts faster.  
-    It’s especially useful before exams.
+    <p class="mb-12 text-lg leading-relaxed font-semibold">
+      Why These Tools Actually Make a Difference<br><br>
+      Using the right tools doesn’t just save time — it reduces stress. When your notes are organized, files are handled, and deadlines are tracked, you can actually focus on learning instead of panicking.<br><br>
+      I’ve gone from feeling overwhelmed every semester to having things under control, and these tools are a big reason why.
+    </p>
 
-    7️⃣ "ChatGPT" – Your AI Study Partner  
-    From explaining complex topics to generating summaries, ChatGPT can save hours of research time.  
-    It’s perfect for brainstorming ideas or learning new subjects in plain English.  
-    (Just don’t forget to fact-check important answers!)
-
-    💡 "Why These Tools Matter"
-    Using the right digital tools helps students:
-    - Stay organized and productive  
-    - Complete assignments faster  
-    - Improve focus and creativity  
-    - Prepare for exams efficiently
-
-    🎓 "Final Thoughts"
-    In 2025, studying isn’t about working harder it’s about working smarter.  
-    Tools like "PDF Linx", "Notion", and "Google Docs" empower students to stay ahead, manage time better, and achieve more with less effort.  
-    So next time you open your laptop to study, make sure you’ve got these smart companions by your side. 🚀
+    <p class="text-lg leading-relaxed">
+      <strong>Final Thoughts</strong><br><br>
+      Studying in 2025 isn’t about grinding harder — it’s about using smart tools that work for you.<br><br>
+      Start with one or two from this list. Try PDF Linx for your next assignment, set up a Notion page this weekend, or make your first Quizlet set tonight.<br><br>
+      Small changes add up, and before you know it, you’ll be that student who’s always prepared and never stressed.<br><br>
+      You got this! 🚀
+    </p>
   `,
 },
 

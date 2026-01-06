@@ -3,6 +3,8 @@
 import { useRef, useState, useEffect } from 'react';
 import { Download, PenTool, Palette, Trash2, CheckCircle } from 'lucide-react';
 import Script from 'next/script';
+import RelatedToolsSection from "@/components/RelatedTools";
+
 
 export default function SignatureMakerClient() {
   const canvasRef = useRef(null);

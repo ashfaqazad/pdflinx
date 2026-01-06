@@ -4,6 +4,8 @@ import { useState } from 'react';
 import imageCompression from 'browser-image-compression';
 import { Upload, Download, Zap, Shield, Image as ImageIcon } from 'lucide-react';
 import Script from 'next/script';
+import RelatedToolsSection from "@/components/RelatedTools";
+
 
 export default function ImageCompressor() {
   const [original, setOriginal] = useState(null);
@@ -257,6 +259,8 @@ export default function ImageCompressor() {
           Compress images every day with PDF Linx — trusted by thousands for fast, high-quality, and completely free image optimization.
         </p>
       </section>
+    <RelatedToolsSection currentPage="image-compressor" />
+
     </>
   );
 }

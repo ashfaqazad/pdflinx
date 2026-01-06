@@ -4,6 +4,8 @@ import { useState } from 'react';
 import { PDFDocument, rgb } from 'pdf-lib';
 import { Upload, Download, Type, CheckCircle } from 'lucide-react';
 import Script from 'next/script';
+import RelatedToolsSection from "@/components/RelatedTools";
+
 
 export default function AddWatermark() {
   const [file, setFile] = useState(null);
@@ -242,6 +244,9 @@ export default function AddWatermark() {
           Add watermark to PDFs every day with PDF Linx — trusted by professionals for fast, reliable, and completely free document protection.
         </p>
       </section>
+
+    <RelatedToolsSection currentPage="add-watermark" />
+      
     </>
   );
 }

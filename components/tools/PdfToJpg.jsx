@@ -3,6 +3,8 @@
 import { useState } from 'react';
 import { Upload, Download, Image as ImageIcon, CheckCircle } from 'lucide-react';
 import Script from 'next/script';
+import RelatedToolsSection from "@/components/RelatedTools";
+
 
 export default function PdfToJpg() {
   const [file, setFile] = useState(null);

@@ -4,6 +4,8 @@ import { useState } from 'react';
 import generatePassword from 'generate-password';
 import { Copy, Shield, Zap, CheckCircle } from 'lucide-react';
 import Script from 'next/script';
+import RelatedToolsSection from "@/components/RelatedTools";
+
 
 export default function PasswordGenerator() {
   const [options, setOptions] = useState({
@@ -270,6 +272,9 @@ export default function PasswordGenerator() {
           Generate strong passwords every day with PDF Linx — trusted by thousands for secure, fast, and free password creation.
         </p>
       </section>
+        
+        <RelatedToolsSection currentPage="password-gen" />
+      
     </>
   );
 }

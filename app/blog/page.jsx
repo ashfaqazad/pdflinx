@@ -122,12 +122,21 @@ export default function Blog() {
 {
   title: "Best Tools for Students to Study Smarter in 2025",
   description:
-    "Discover the best free online tools every student needs in 2025 from note-taking and task management to file conversion and study aids. Boost productivity, stay organized, and make learning easier with these powerful digital tools designed for students.",
+    "Hey, if you're a student right now, you know how crazy things can get — assignments piling up, group projects going wrong, exams sneaking up, and PDFs that just won't cooperate.\n\nI’ve been there (still am sometimes), and over the years I’ve tried pretty much every tool out there. Some were slow, some were full of ads, and some just didn’t do the job properly.",
   date: "Dec 11, 2025",
   slug: "best-tools-for-students",
 },
 
+// {
+//   title: "Best Tools for Students to Study Smarter in 2025",
+//   description:
+//     // "Discover the best free online tools every student needs in 2025 from note-taking and task management to file conversion and study aids. Boost productivity, stay organized, and make learning easier with these powerful digital tools designed for students.",
+//     "Hey, if you're a student right now, you know how crazy things can get — assignments piling up, group projects going wrong, exams sneaking up, and PDFs that just won't cooperate.
+// I have been there (still am sometimes), and over the years I’ve tried pretty much every tool out there. Some were slow, some were full of ads, and some just didn’t do the job properly.",
 
+//   date: "Dec 11, 2025",
+//   slug: "best-tools-for-students",
+// },
 
 
   ];

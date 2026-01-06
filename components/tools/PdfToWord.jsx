@@ -4,6 +4,8 @@
 import { useState } from "react";
 import { Upload, Download, CheckCircle, FileText } from "lucide-react";
 import Script from "next/script";
+import RelatedToolsSection from "@/components/RelatedTools";
+
 
 
 export default function PdfToWord() {
@@ -268,6 +270,9 @@ export default function PdfToWord() {
           Convert PDF to Word every day with perfect results – trusted by thousands at PDF Linx.
         </p>
       </section>
+
+            <RelatedToolsSection currentPage="pdf-to-word" />
+      
     </>
   );
 }

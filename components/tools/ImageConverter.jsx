@@ -3,6 +3,8 @@
 import { useState } from 'react';
 import { Upload, Download, Image as ImageIcon, Zap, Shield, CheckCircle } from 'lucide-react';
 import Script from 'next/script';
+import RelatedToolsSection from "@/components/RelatedTools";
+
 
 export default function ImageConverter() {
   const [files, setFiles] = useState([]);
@@ -331,7 +333,9 @@ export default function ImageConverter() {
         <p className="text-center mt-16 text-xl text-gray-600 italic max-w-4xl mx-auto">
           Convert image formats every day with PDF Linx — trusted by designers, developers, and users worldwide for fast, reliable, and completely free image conversion.
         </p>
-      </section>
+    </section>
+    <RelatedToolsSection currentPage="image-converter" />
+
     </>
   );
 }
