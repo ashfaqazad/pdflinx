@@ -113,10 +113,10 @@ export default function Contact() {
               <span className="font-medium">📧 Email:</span> ashfaqahmed@pdflinx.com
             </li>
             <li>
-              <span className="font-medium">📍 Address:</span> Karachi, Pakistan
+              {/* <span className="font-medium">📍 Address:</span> Karachi, Pakistan */}
             </li>
             <li>
-              <span className="font-medium">☎ Phone:</span> +92 3332758958
+              {/* <span className="font-medium">☎ Phone:</span> +92 3332758958 */}
             </li>
           </ul>
         </div>
