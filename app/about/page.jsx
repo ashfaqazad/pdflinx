@@ -27,19 +27,19 @@ export default function About() {
       </head>
 
       <main className="max-w-6xl mx-auto py-10 px-6 bg-gradient-to-br from-slate-50 via-white to-indigo-50/30">
-        
+
         {/* Hero Section */}
         <section className="text-center mb-20 backdrop-blur-md bg-white/80 rounded-3xl shadow-2xl border border-white/50 p-10 md:p-16 transition-all duration-700 hover:shadow-indigo-100">
           <h1 className="text-5xl md:text-6xl font-black mb-8 text-indigo-900 leading-tight tracking-tight">
             About <strong>PDF Linx</strong>
           </h1>
-          
+
           <div className="text-gray-700 text-lg md:text-xl max-w-4xl mx-auto leading-relaxed text-left space-y-4">
             <p>
-              Built this in <strong>October 2023</strong> after spending 2 hours trying to convert a scanned receipt. 
+              Built this in <strong>October 2023</strong> after spending 2 hours trying to convert a scanned receipt.
               Tried 5 different "free" PDF converters. Every single one was trash.
             </p>
-            
+
             <p>You know the type:</p>
             <ul className="list-none space-y-2 ml-4">
               <li>→ "Sign up to download your file" (like, why?)</li>
@@ -49,17 +49,17 @@ export default function About() {
             </ul>
 
             <p>
-              So I spent that weekend building something that just... works. No signup BS, 
+              So I spent that weekend building something that just... works. No signup BS,
               no file uploads to random servers, no ads. Everything runs in your browser.
             </p>
 
             <p>
-              Posted it on Reddit in November. Got <strong>200 users first day</strong>. My roommate Ali used it 
+              Posted it on Reddit in November. Got <strong>200 users first day</strong>. My roommate Ali used it
               for his thesis (had to merge like 50 PDFs), then his entire lab started using it.
             </p>
 
             <p>
-              Now we've got a <strong>growing community</strong> — mostly from Pakistan, India, 
+              Now we've got a <strong>growing community</strong> — mostly from Pakistan, India,
               and Bangladesh (shoutout to the desi dev community 🙏).
             </p>
 
@@ -74,10 +74,10 @@ export default function About() {
           <h2 className="text-4xl font-bold text-center text-indigo-900 mb-8">
             Why This Exists
           </h2>
-          
+
           <div className="text-gray-700 max-w-4xl mx-auto text-lg leading-relaxed space-y-4">
             <p>
-              Look, I'm not trying to build the next billion-dollar startup or whatever. 
+              Look, I'm not trying to build the next billion-dollar startup or whatever.
               I just got tired of clunky software that charges $30/month for basic PDF operations.
             </p>
 
@@ -86,8 +86,8 @@ export default function About() {
             </p>
 
             <p>
-              Whether you're a student juggling assignments at 2 AM, a freelancer dealing with 
-              clients' messy files, or someone who just needs to make a QR code for their cafe menu 
+              Whether you're a student juggling assignments at 2 AM, a freelancer dealing with
+              clients' messy files, or someone who just needs to make a QR code for their cafe menu
               — these tools should just work. Fast. Free. No friction.
             </p>
 
@@ -99,7 +99,7 @@ export default function About() {
 
         {/* Feature Cards */}
         <section className="grid grid-cols-1 md:grid-cols-3 gap-10 mb-20">
-          
+
           {/* Card 1 */}
           <div className="group bg-white/90 backdrop-blur-sm rounded-3xl p-10 shadow-xl border border-gray-100/50 transition-all duration-500 hover:shadow-2xl hover:-translate-y-4 hover:border-indigo-200">
             <Globe className="w-20 h-20 mx-auto text-indigo-700 mb-6 shadow-lg p-4 rounded-2xl bg-indigo-50/80 group-hover:scale-110 transition-transform duration-300" />
@@ -109,7 +109,7 @@ export default function About() {
             <p className="text-gray-600 text-center leading-relaxed">
               No "free trial" BS. No "upgrade to premium" popups. No credit card required.
               <br /><br />
-              Everything is free. Forever. Use it on your phone, laptop, tablet — whatever. 
+              Everything is free. Forever. Use it on your phone, laptop, tablet — whatever.
               No app download, no account signup.
               <br /><br />
               Just open the site and go.
@@ -138,10 +138,10 @@ export default function About() {
               Your Files Stay <strong>Yours</strong>
             </h3>
             <p className="text-gray-600 text-center leading-relaxed">
-              Everything happens in your browser. I don't upload your files to any server. 
+              Everything happens in your browser. I don't upload your files to any server.
               Ever.
               <br /><br />
-              No cloud storage. No "we'll delete your files in 24 hours" (because they're never uploaded 
+              No cloud storage. No "we'll delete your files in 24 hours" (because they're never uploaded
               in the first place).
               <br /><br />
               Zero tracking. Zero data collection. I literally can't see what files you're converting.
@@ -154,15 +154,15 @@ export default function About() {
           <h2 className="text-4xl font-black mb-8 text-indigo-900">
             How We Got <strong>Here</strong>
           </h2>
-          
+
           <div className="text-gray-700 max-w-4xl mx-auto text-lg leading-relaxed text-left space-y-4">
             <p>
-              Started as a weekend project in <strong>October 2023</strong>. Just me, frustrated with existing 
+              Started as a weekend project in <strong>October 2023</strong>. Just me, frustrated with existing
               PDF tools, coding something better.
             </p>
 
             <p>
-              First version had 3 tools: <strong>PDF to Word</strong>, <strong>Merge PDF</strong>, and <strong>Compress PDF</strong>. 
+              First version had 3 tools: <strong>PDF to Word</strong>, <strong>Merge PDF</strong>, and <strong>Compress PDF</strong>.
               That's it. Built them in like 2 weeks.
             </p>
 
@@ -180,13 +180,21 @@ export default function About() {
               Now we have <strong>18 tools</strong> (probably too many tbh, but people keep requesting stuff).
             </p>
 
+            {/* <p>
+              Started with a handful of friends and Reddit shares. Now serving <strong>thousands of users
+                </strong> 
+              across South Asia as of early 2026.
+            </p> */}
+
             <p>
-              Started with a handful of friends and Reddit shares. Now serving <strong>thousands of users</strong> 
+              Started with a handful of friends and Reddit shares. Now serving{" "}
+              <strong>thousands of users</strong>{" "}
               across South Asia as of early 2026.
             </p>
 
+
             <p className="text-base text-gray-600 italic">
-              If you've got ideas for new tools or found a bug, hit me up on Twitter 
+              If you've got ideas for new tools or found a bug, hit me up on Twitter
               (@pdflinx) or email (hello@pdflinx.com). Seriously, I read everything.
             </p>
           </div>

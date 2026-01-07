@@ -7,45 +7,45 @@
 const blogs = [
 
 
-// {
-//   slug: "pdf-to-word",
-//   title: "How to Convert PDF to Word Easily (Free & Online Guide)",
-//   date: "Aug 24, 2025",
-//   content: `
-//     <h2>How to Convert PDF to Word Easily (Free & Online Guide)</h2>
+  // {
+  //   slug: "pdf-to-word",
+  //   title: "How to Convert PDF to Word Easily (Free & Online Guide)",
+  //   date: "Aug 24, 2025",
+  //   content: `
+  //     <h2>How to Convert PDF to Word Easily (Free & Online Guide)</h2>
 
-//     <p>Converting PDF files to Word format is one of the most common tasks for students, professionals, and freelancers. Whether you're editing a contract, fixing a resume, or reusing text from a PDF, this simple online process can save you hours.</p>
+  //     <p>Converting PDF files to Word format is one of the most common tasks for students, professionals, and freelancers. Whether you're editing a contract, fixing a resume, or reusing text from a PDF, this simple online process can save you hours.</p>
 
-//     <p><strong>Good news:</strong> You don't need to install any software! 
-//     With our <a href="/pdf-to-word"><strong>Free PDF to Word Converter</strong></a>, 
-//     you can transform any locked PDF into a fully editable DOCX file in seconds — 
-//     <strong>no signup, no watermark, 100% free</strong>.</p>
+  //     <p><strong>Good news:</strong> You don't need to install any software! 
+  //     With our <a href="/pdf-to-word"><strong>Free PDF to Word Converter</strong></a>, 
+  //     you can transform any locked PDF into a fully editable DOCX file in seconds — 
+  //     <strong>no signup, no watermark, 100% free</strong>.</p>
 
-//     <h3>Quick Steps to Convert PDF to Word:</h3>
-//     <ol>
-//       <li>Go to our <a href="/pdf-to-word">PDF to Word tool</a></li>
-//       <li>Upload your PDF file (drag & drop or click to select)</li>
-//       <li>Wait a few seconds while we convert it</li>
-//       <li>Download your editable .docx file instantly</li>
-//     </ol>
+  //     <h3>Quick Steps to Convert PDF to Word:</h3>
+  //     <ol>
+  //       <li>Go to our <a href="/pdf-to-word">PDF to Word tool</a></li>
+  //       <li>Upload your PDF file (drag & drop or click to select)</li>
+  //       <li>Wait a few seconds while we convert it</li>
+  //       <li>Download your editable .docx file instantly</li>
+  //     </ol>
 
-//     <p><strong>Pro Tip:</strong> For scanned PDFs or images, our converter uses advanced OCR to extract text accurately. Just upload and get perfect results!</p>
+  //     <p><strong>Pro Tip:</strong> For scanned PDFs or images, our converter uses advanced OCR to extract text accurately. Just upload and get perfect results!</p>
 
-//     <p>Tools like <strong>PDF Linx</strong> make this process 100% secure and private — 
-//     your files are processed with encryption and <strong>automatically deleted after 1 hour</strong>.</p>
+  //     <p>Tools like <strong>PDF Linx</strong> make this process 100% secure and private — 
+  //     your files are processed with encryption and <strong>automatically deleted after 1 hour</strong>.</p>
 
-//     <div class="bg-indigo-50 border border-indigo-200 rounded-xl p-6 text-center font-bold text-indigo-800 mt-10">
-//       Ready to convert? → <a href="/pdf-to-word" class="text-indigo-600 underline hover:text-indigo-800">Click here to use our Free PDF to Word Converter now!</a>
-//     </div>
-//   `,
-// },
+  //     <div class="bg-indigo-50 border border-indigo-200 rounded-xl p-6 text-center font-bold text-indigo-800 mt-10">
+  //       Ready to convert? → <a href="/pdf-to-word" class="text-indigo-600 underline hover:text-indigo-800">Click here to use our Free PDF to Word Converter now!</a>
+  //     </div>
+  //   `,
+  // },
 
 
-{
-  slug: "pdf-to-word",
-  title: "How to Convert PDF to Word Easily (Free & Online Guide)",
-  date: "Aug 24, 2025",
-  content: `
+  {
+    slug: "pdf-to-word",
+    title: "How to Convert PDF to Word Easily (Free & Online Guide)",
+    date: "Aug 24, 2025",
+    content: `
     <h2>How to Convert PDF to Word Without Losing the Formatting</h2>
 
     <p>Let me guess — you've got a PDF that you desperately need to edit. Maybe it's your resume, a contract from a client, or assignment notes your professor sent. You open it and... it's locked. You can't select text, can't change anything. Super annoying, right?</p>
@@ -77,14 +77,14 @@ const blogs = [
       <a href="/blog" class="text-indigo-600 hover:underline">← Back to all guides</a>
     </p>
   `,
-},
+  },
 
-  
+
   {
-  slug: "word-to-pdf",
-  title: "How to Convert Word to PDF Instantly (No Software Required)",
-  date: "Aug 23, 2025",
-  content: `
+    slug: "word-to-pdf",
+    title: "How to Convert Word to PDF Instantly (No Software Required)",
+    date: "Aug 23, 2025",
+    content: `
     <h2>How to Convert Word to PDF Without Any Hassle</h2>
 
     <p>Ever finished a Word document — maybe your resume, a report, or a contract — and realized you need to send it as a PDF so it doesn’t get messed up on someone else’s computer? Yeah, me too. All the time.</p>
@@ -118,14 +118,14 @@ const blogs = [
       <a href="/blog" class="text-indigo-600 hover:underline">← Back to all guides</a>
     </p>
   `,
-},
+  },
 
 
   {
-  slug: "image-to-pdf",
-  title: "How to Convert Images to PDF in Seconds (Free & Online)",
-  date: "Aug 22, 2025",
-  content: `
+    slug: "image-to-pdf",
+    title: "How to Convert Images to PDF in Seconds (Free & Online)",
+    date: "Aug 22, 2025",
+    content: `
     <h2>How to Turn Images into a Single PDF (Super Quick Way)</h2>
 
     <p>Ever been in a situation where you have a bunch of photos or screenshots you need to send together? Maybe scanned receipts for expenses, ID photos for an application, or design mockups for a client. Emailing 10 separate images looks messy, right?</p>
@@ -157,7 +157,7 @@ const blogs = [
       <a href="/blog" class="text-indigo-600 hover:underline">← Back to all guides</a>
     </p>
   `,
-},
+  },
 
 
 
@@ -168,22 +168,22 @@ const blogs = [
   //   content: `
   //     Managing multiple PDF files can be messy merging them makes your workflow seamless.
   //     Whether you’re compiling invoices, reports, or eBooks, our free online PDF merger keeps everything in one place.
-      
+
   //     Steps:
   //     1. Upload your PDF files.
   //     2. Arrange the order by dragging.
   //     3. Click “Merge” and download your single, neat file.
-      
+
   //     No software needed, no size limits. Secure and quick.
   //     Tip: Once merged, use our “Compress PDF” feature to reduce the file size before sharing.
   //   `,
   // },
 
   {
-  slug: "merge-pdf",
-  title: "How to Merge Multiple PDFs into One (Fast & Free)",
-  date: "Aug 21, 2025",
-  content: `
+    slug: "merge-pdf",
+    title: "How to Merge Multiple PDFs into One (Fast & Free)",
+    date: "Aug 21, 2025",
+    content: `
     <h2>How to Merge Multiple PDFs into One Single File</h2>
 
     <p>Ever ended up with a bunch of separate PDF files that really should be together? Like scanned pages of a contract, monthly invoices, different chapters of study notes, or slides from a presentation. Sending them one by one is a pain, and it just looks unprofessional.</p>
@@ -215,13 +215,13 @@ const blogs = [
       <a href="/blog" class="text-indigo-600 hover:underline">← Back to all guides</a>
     </p>
   `,
-},
+  },
 
-{
-  slug: "split-pdf",
-  title: "How to Split PDF Files Online (Extract Pages Instantly)",
-  date: "Aug 20, 2025",
-  content: `
+  {
+    slug: "split-pdf",
+    title: "How to Split PDF Files Online (Extract Pages Instantly)",
+    date: "Aug 20, 2025",
+    content: `
     <h2>How to Split a PDF and Extract Just the Pages You Need</h2>
 
     <p>Ever downloaded a huge PDF — maybe a 100-page report, a textbook chapter pack, or a contract bundle — and realized you only need like 5-10 pages from it? Sending the whole thing is wasteful, and scrolling through to find the right part is annoying.</p>
@@ -253,13 +253,13 @@ const blogs = [
       <a href="/blog" class="text-indigo-600 hover:underline">← Back to all guides</a>
     </p>
   `,
-},
+  },
 
-{
-  slug: "compress-pdf",
-  title: "How to Compress PDF Files Without Losing Quality",
-  date: "Aug 19, 2025",
-  content: `
+  {
+    slug: "compress-pdf",
+    title: "How to Compress PDF Files Without Losing Quality",
+    date: "Aug 19, 2025",
+    content: `
     <h2>How to Compress Large PDFs (And Actually Keep Them Looking Good)</h2>
 
     <p>Nothing’s more frustrating than finishing a document, turning it into a PDF, and then realizing the file is way too big. 20MB, 50MB… sometimes even more. Email bounces it back, job portals reject it, and uploading feels like it takes forever.</p>
@@ -291,13 +291,13 @@ const blogs = [
       <a href="/blog" class="text-indigo-600 hover:underline">← Back to all guides</a>
     </p>
   `,
-},
+  },
 
-{
-  slug: "excel-to-pdf",
-  title: "How to Convert Excel to PDF Without Losing Formatting",
-  date: "Aug 18, 2025",
-  content: `
+  {
+    slug: "excel-to-pdf",
+    title: "How to Convert Excel to PDF Without Losing Formatting",
+    date: "Aug 18, 2025",
+    content: `
     <h2>How to Convert Excel Sheets to PDF (And Keep Everything Looking Perfect)</h2>
 
     <p>I work with Excel a lot — budgets, data trackers, reports with charts. The problem? When you send an .xlsx file, the other person might not have Excel, or the formatting gets messed up on their computer. Worst case, someone accidentally edits your carefully made formulas.</p>
@@ -331,14 +331,14 @@ const blogs = [
       <a href="/blog" class="text-indigo-600 hover:underline">← Back to all guides</a>
     </p>
   `,
-},
+  },
 
 
-{
-  slug: "qr-generator",
-  title: "How to Generate QR Codes Instantly (Free & Customizable)",
-  date: "Dec 2, 2025",
-  content: `
+  {
+    slug: "qr-generator",
+    title: "How to Generate QR Codes Instantly (Free & Customizable)",
+    date: "Dec 2, 2025",
+    content: `
     <h2>How to Make QR Codes Quickly (And Actually Make Them Look Good)</h2>
 
     <p>QR codes are literally everywhere now — restaurant menus, business cards, posters, even Wi-Fi passwords at cafes. I remember the first time I needed one: I wanted to share my portfolio link at a meetup. Spent way too long searching for a decent free tool that didn’t slap a watermark or make it ugly.</p>
@@ -370,13 +370,13 @@ const blogs = [
       <a href="/blog" class="text-indigo-600 hover:underline">← Back to all guides</a>
     </p>
   `,
-},
+  },
 
-{
-  slug: "password-gen",
-  title: "How to Create Strong Passwords Instantly (Free Password Generator)",
-  date: "Dec 3, 2025",
-  content: `
+  {
+    slug: "password-gen",
+    title: "How to Create Strong Passwords Instantly (Free Password Generator)",
+    date: "Dec 3, 2025",
+    content: `
     <h2>How to Make Really Strong Passwords (Without Going Crazy)</h2>
 
     <p>I used to be terrible with passwords. Same one for everything, or slight variations like "Password123" and "Password123!" — you know the type. Then one day an old account got hacked, and I realized how dumb that was.</p>
@@ -408,161 +408,295 @@ const blogs = [
       <a href="/blog" class="text-indigo-600 hover:underline">← Back to all guides</a>
     </p>
   `,
-},
+  },
 
 
-{
-  slug: "unit-converter",
-  title: "Convert Units Easily with Our Free Online Unit Converter",
-  date: "Dec 4, 2025",
-  content: `
-    Convert values quickly between measurement systems like meters to feet or Celsius to Fahrenheit with our smart online Unit Converter.
+  {
+    slug: "unit-converter",
+    title: "How to Convert Units Easily (Free Online Unit Converter)",
+    date: "Dec 4, 2025",
+    content: `
+    <h2>How to Convert Units Without Pulling Your Hair Out</h2>
 
-    💡 Use Cases:
-    - Students, engineers, or cooks who need instant conversions.
-    - Perfect for travel, construction, and science projects.
+    <p>I still remember the first time I needed to convert meters to feet for a project — opened Google, typed it in, got the answer, but then needed centimeters to inches, kilograms to pounds… and ended up with 10 tabs open. Total mess.</p>
 
-    How to Use:
-    1. Choose a conversion type (Length, Weight, Area, etc.).
-    2. Enter a value in one unit.
-    3. Instantly see the equivalent in all other formats.
+    <p>Cooking recipes from American sites? Same problem — cups to milliliters, Fahrenheit to Celsius. Even simple stuff like checking weather abroad or helping kids with homework turns into a conversion nightmare.</p>
 
-    Quick Tip:
-    Save time by bookmarking the converter for daily use.
+    <p>That’s why I built the <a href="/unit-converter"><strong>Unit Converter</strong></a> on PDF Linx. Now whenever I need to switch units — length, weight, temperature, volume, area — I just type the number, pick the units, and boom, instant accurate result. No tabs, no calculator, no guessing.</p>
+
+    <h3>Super Easy Steps (Takes literally 5 seconds):</h3>
+    <ol class="list-decimal list-inside space-y-3 ml-4 text-lg">
+      <li>Go to the <a href="/unit-converter" class="text-indigo-600 hover:underline">Unit Converter</a></li>
+      <li>Pick what you're converting (length, weight, temperature, etc.)</li>
+      <li>Type your value and choose "from" and "to" units</li>
+      <li>Watch the conversion happen instantly as you type</li>
+    </ol>
+
+    <p>No signup, no ads, works on phone or laptop. Perfect for students doing science homework, cooks following foreign recipes, travelers checking temperatures, or anyone who just hates doing math in their head.</p>
+
+    <p><strong>My favorite thing:</strong> It shows the result in real-time as you type — no "submit" button needed. I keep it bookmarked and use it way more than I expected.</p>
+
+    <div class="bg-indigo-50 border border-indigo-200 rounded-xl p-8 text-center my-12">
+      <p class="text-xl font-semibold text-indigo-800 mb-4">
+        Need to convert something right now? Try it — you’ll probably end up bookmarking it too.
+      </p>
+      <a href="/unit-converter" class="inline-block bg-indigo-600 text-white font-bold px-8 py-4 rounded-xl hover:bg-indigo-700 transition shadow-lg">
+        Open Free Unit Converter →
+      </a>
+    </div>
+
+    <p class="text-center text-gray-600">
+      <a href="/blog" class="text-indigo-600 hover:underline">← Back to all guides</a>
+    </p>
   `,
-},
-{
-  slug: "youtube-thumbnail",
-  title: "Download HD YouTube Thumbnails Instantly in One Click",
-  date: "Dec 5, 2025",
-  content: `
-    Save high-quality YouTube thumbnails directly from any video link no software or login required. 
-    Our downloader supports HD, Full HD, and even 4K thumbnails.
+  },
 
-    💡 Use Cases:
-    - Ideal for video editors, bloggers, and content creators.
-    - Download cover images for your own YouTube videos.
+  {
+    slug: "youtube-thumbnail",
+    title: "How to Download YouTube Thumbnails in HD (One Click, Free)",
+    date: "Dec 5, 2025",
+    content: `
+    <h2>How to Grab YouTube Thumbnails in High Quality (Super Easy Way)</h2>
 
-    How to Use:
-    1. Copy the YouTube video URL.
-    2. Paste it into the downloader field.
-    3. Click “Download” and choose your image quality.
+    <p>I watch a lot of YouTube — tutorials, reviews, music, random stuff. Sometimes I see a video with an awesome thumbnail and think, “Man, that would make a great wallpaper” or “I need that image for a project.” But right-clicking doesn’t give you the full-quality version.</p>
 
-    Tip:
-    Always credit the creator if using thumbnails for public use.
+    <p>Used to hunt around for shady download sites that either gave low-res images, added watermarks, or tried to install junk on my computer. Not fun.</p>
+
+    <p>So I built the <a href="/youtube-thumbnail"><strong>YouTube Thumbnail Downloader</strong></a> on PDF Linx. Now whenever I want a thumbnail — for my own videos, inspiration, or just because it looks cool — I paste the video link, pick the quality, and download a crisp HD (or even 4K) image in seconds.</p>
+
+    <h3>Dead Simple Steps (Takes less than 10 seconds):</h3>
+    <ol class="list-decimal list-inside space-y-3 ml-4 text-lg">
+      <li>Copy the YouTube video URL (any video, doesn't have to be yours)</li>
+      <li>Go to the <a href="/youtube-thumbnail" class="text-indigo-600 hover:underline">Thumbnail Downloader</a></li>
+      <li>Paste the link</li>
+      <li>Choose your quality — HD, Full HD, or max resolution</li>
+      <li>Download the image instantly</li>
+    </ol>
+
+    <p>No signup, no watermarks, no weird ads. Works for any public YouTube video. Great for creators making playlists, bloggers embedding videos, designers needing inspiration, or just saving a cool cover for personal use.</p>
+
+    <p><strong>Quick note from me:</strong> If you're using someone else's thumbnail publicly (like in a blog or video), always give credit to the creator. Fair play.</p>
+
+    <div class="bg-indigo-50 border border-indigo-200 rounded-xl p-8 text-center my-12">
+      <p class="text-xl font-semibold text-indigo-800 mb-4">
+        Got a YouTube video with a thumbnail you love? Grab it in full quality now.
+      </p>
+      <a href="/youtube-thumbnail" class="inline-block bg-indigo-600 text-white font-bold px-8 py-4 rounded-xl hover:bg-indigo-700 transition shadow-lg">
+        Download YouTube Thumbnail for Free →
+      </a>
+    </div>
+
+    <p class="text-center text-gray-600">
+      <a href="/blog" class="text-indigo-600 hover:underline">← Back to all guides</a>
+    </p>
   `,
-},
-{
-  slug: "image-compressor",
-  title: "Compress Images Online Without Losing Quality",
-  date: "Dec 6, 2025",
-  content: `
-    Large image files slow down websites and uploads. 
-    Our free Image Compressor reduces file size while keeping visual quality intact no installation needed.
+  },
 
-    💡 Use Cases:
-    - Compress JPG, PNG, or WebP for web and social media.
-    - Optimize images for better website speed and SEO.
 
-    How to Use:
-    1. Upload your image files.
-    2. Choose compression strength.
-    3. Download your smaller, high-quality image.
+  {
+    slug: "image-compressor",
+    title: "How to Compress Images Without Losing Quality (Free Online Tool)",
+    date: "Dec 6, 2025",
+    content: `
+    <h2>How to Make Images Smaller Without Them Looking Terrible</h2>
 
-    Pro Tip:
-    Use medium compression to balance size and clarity perfectly.
+    <p>I take a lot of photos — phone pics, screenshots, product shots for side projects. The problem? They’re usually huge. 5MB, 10MB each. Upload them to a website and the page loads like molasses. Try emailing a few and your attachment gets rejected.</p>
+
+    <p>I used to open Photoshop or some heavy app just to shrink them, but that was overkill for simple stuff. Online tools either crushed the quality or slapped watermarks everywhere.</p>
+
+    <p>That’s why I added the <a href="/image-compressor"><strong>Image Compressor</strong></a> on PDF Linx. Now whenever I have big images — photos for a blog post, screenshots for tutorials, or just cleaning up my phone gallery — I drop them here, slide the compression level, and get much smaller files that still look crisp and clear.</p>
+
+    <h3>Really Easy Steps (Takes about 10 seconds per image):</h3>
+    <ol class="list-decimal list-inside space-y-3 ml-4 text-lg">
+      <li>Go to the <a href="/image-compressor" class="text-indigo-600 hover:underline">Image Compressor</a></li>
+      <li>Upload your JPG, PNG, or WebP files (drag or click — multiple at once works too)</li>
+      <li>Adjust the compression slider (I usually stick to medium)</li>
+      <li>Download the smaller versions instantly</li>
+    </ol>
+
+    <p>No signup, no watermarks, no limits. Perfect for speeding up websites, making social media posts load faster, fitting more photos on your phone, or just sending images without “file too large” errors.</p>
+
+    <p><strong>My go-to setting:</strong> Medium compression almost always cuts the size in half (or more) while you can barely tell the difference. Great balance — I use it for everything unless I need absolute max quality.</p>
+
+    <div class="bg-indigo-50 border border-indigo-200 rounded-xl p-8 text-center my-12">
+      <p class="text-xl font-semibold text-indigo-800 mb-4">
+        Got some heavy images taking up space? Shrink them now — you’ll be surprised how much room you free up.
+      </p>
+      <a href="/image-compressor" class="inline-block bg-indigo-600 text-white font-bold px-8 py-4 rounded-xl hover:bg-indigo-700 transition shadow-lg">
+        Compress Images for Free →
+      </a>
+    </div>
+
+    <p class="text-center text-gray-600">
+      <a href="/blog" class="text-indigo-600 hover:underline">← Back to all guides</a>
+    </p>
   `,
-},
-{
-  slug: "image-to-text",
-  title: "Convert Images to Text Using AI (Image to Text Extractor)",
-  date: "Dec 7, 2025",
-  content: `
-    Extract editable text from images or scanned papers with our AI-powered Image to Text converter fast, accurate, and 100% free.
+  },
 
-    💡 Use Cases:
-    - Turn handwritten notes, printed docs, or receipts into text.
-    - Ideal for students, researchers, and office users.
 
-    How to Use:
-    1. Upload your image or screenshot.
-    2. Click “Extract Text.”
-    3. Copy or download your converted text instantly.
+  {
+    slug: "image-to-text",
+    title: "How to Convert Images to Text Using AI (Free Image to Text Tool)",
+    date: "Dec 7, 2025",
+    content: `
+    <h2>How to Extract Text from Images (The Easy Way)</h2>
 
-    Pro Tip:
-    Use clear, bright images for the best recognition accuracy.
+    <p>I take a lot of photos of things I want to remember — whiteboards from meetings, pages from books at the library, receipts for expenses, handwritten notes from classes. But then I’m stuck: the text is trapped in the image, and typing it all out manually takes forever.</p>
+
+    <p>I used to try free apps or websites, but most were slow, inaccurate, or tried to charge after the first try. That’s why I built the <a href="/image-to-text"><strong>Image to Text tool</strong></a> on PDF Linx. Now whenever I have a photo or screenshot with text, I just drop it in, wait a few seconds, and get clean, editable text I can copy or edit right away.</p>
+
+    <h3>Super Simple Steps (Takes about 10-20 seconds):</h3>
+    <ol class="list-decimal list-inside space-y-3 ml-4 text-lg">
+      <li>Go to the <a href="/image-to-text" class="text-indigo-600 hover:underline">Image to Text tool</a></li>
+      <li>Upload your image or screenshot (JPG, PNG, even scans)</li>
+      <li>Wait while the AI does its thing (usually 5-15 seconds)</li>
+      <li>Copy the extracted text or download it</li>
+    </ol>
+
+    <p>No signup, no watermarks, nothing uploaded permanently. Works great for handwritten notes (if the writing is clear), printed documents, receipts, book pages, or even text in photos.</p>
+
+    <p><strong>My best tip:</strong> The clearer and brighter the image, the better the result. Good lighting and straight-on shots make a huge difference — I always try to snap pics in decent light now.</p>
+
+    <div class="bg-indigo-50 border border-indigo-200 rounded-xl p-8 text-center my-12">
+      <p class="text-xl font-semibold text-indigo-800 mb-4">
+        Got a photo or scan with text you need to copy? Try it now — you’ll save yourself a ton of typing.
+      </p>
+      <a href="/image-to-text" class="inline-block bg-indigo-600 text-white font-bold px-8 py-4 rounded-xl hover:bg-indigo-700 transition shadow-lg">
+        Extract Text from Image for Free →
+      </a>
+    </div>
+
+    <p class="text-center text-gray-600">
+      <a href="/blog" class="text-indigo-600 hover:underline">← Back to all guides</a>
+    </p>
   `,
-},
-{
-  slug: "signature-maker",
-  title: "Draw & Download Signatures Online with Signature Maker",
-  date: "Dec 8, 2025",
-  content: `
-    Create a professional digital signature instantly. 
-    Our Signature Maker lets you draw, type, or upload your signature and download it in transparent PNG format.
+  },
 
-    💡 Use Cases:
-    - Sign contracts, NDAs, or forms online.
-    - Ideal for freelancers and business professionals.
 
-    How to Use:
-    1. Draw or type your signature.
-    2. Adjust color and thickness.
-    3. Click “Download” and save your PNG file.
+  {
+    slug: "signature-maker",
+    title: "How to Create & Download Digital Signatures Online (Free Signature Maker)",
+    date: "Dec 8, 2025",
+    content: `
+    <h2>How to Make a Digital Signature That Actually Looks Good</h2>
 
-    Tip:
-    Keep your digital signature safe for future use on official documents.
+    <p>I freelance a bit on the side, and nothing kills the vibe faster than a client sending a contract and saying “just sign and send back.” Printing, signing by hand, scanning — total hassle. Or worse, typing your name in Comic Sans and calling it a signature.</p>
+
+    <p>I needed something quick that looked professional. That’s why I built the <a href="/signature-maker"><strong>Signature Maker</strong></a> on PDF Linx. Now whenever I need to sign something — contracts, NDAs, permission forms, invoices — I just draw my signature with the mouse (or type it if I’m lazy), tweak the style a bit, and download a clean transparent PNG in seconds.</p>
+
+    <h3>Super Easy Steps (Takes less than 30 seconds):</h3>
+    <ol class="list-decimal list-inside space-y-3 ml-4 text-lg">
+      <li>Go to the <a href="/signature-maker" class="text-indigo-600 hover:underline">Signature Maker</a></li>
+      <li>Draw your signature with the mouse/trackpad, or type it and pick a font</li>
+      <li>Change color, thickness, or style if you want (black on transparent looks pro)</li>
+      <li>Click Download and save the PNG file</li>
+    </ol>
+
+    <p>No signup, no watermarks, downloads as transparent PNG so it works perfectly on any document. Great for freelancers, remote workers, parents signing school forms, or anyone who deals with PDFs regularly.</p>
+
+    <p><strong>My usual trick:</strong> I draw it once with a smooth stroke, make it black, medium thickness, and save the PNG. Then I reuse the same file for everything — looks consistent and way more professional than typing my name in Word.</p>
+
+    <div class="bg-indigo-50 border border-indigo-200 rounded-xl p-8 text-center my-12">
+      <p class="text-xl font-semibold text-indigo-800 mb-4">
+        Need a digital signature ready to go? Make one now — you’ll use it more than you think.
+      </p>
+      <a href="/signature-maker" class="inline-block bg-indigo-600 text-white font-bold px-8 py-4 rounded-xl hover:bg-indigo-700 transition shadow-lg">
+        Create Signature for Free →
+      </a>
+    </div>
+
+    <p class="text-center text-gray-600">
+      <a href="/blog" class="text-indigo-600 hover:underline">← Back to all guides</a>
+    </p>
   `,
-},
-{
-  slug: "heic-to-jpg",
-  title: "Convert HEIC to JPG Instantly Online",
-  date: "Dec 9, 2025",
-  content: `
-    Apple’s HEIC photos often can’t open on Windows or Android. 
-    Our HEIC to JPG converter solves that by changing them to a universal JPG format instantly.
+  },
 
-    💡 Use Cases:
-    - Convert iPhone photos before sharing online.
-    - Upload HEIC files easily to websites or email.
+  {
+    slug: "heic-to-jpg",
+    title: "How to Convert HEIC to JPG Instantly (Free Online Tool)",
+    date: "Dec 9, 2025",
+    content: `
+    <h2>How to Convert iPhone HEIC Photos to JPG (The Easy Way)</h2>
 
-    How to Use:
-    1. Upload your HEIC files.
-    2. Click “Convert.”
-    3. Download your JPGs in seconds.
+    <p>I love my iPhone camera, but every time I try to send photos to friends on Android or upload them to a website on my Windows laptop, I hit the same problem: “File format not supported.” Turns out Apple’s HEIC files look great and save space, but half the world can’t open them without hassle.</p>
 
-    Pro Tip:
-    Batch convert multiple photos to save time and maintain quality.
+    <p>Used to connect my phone to the computer, change settings, or hunt for apps that half-worked. Total waste of time.</p>
+
+    <p>That’s why I added the <a href="/heic-to-jpg"><strong>HEIC to JPG converter</strong></a> on PDF Linx. Now whenever I have iPhone photos I need to share or upload, I just drop the HEIC files here and get clean, normal JPGs in seconds. Quality stays exactly the same, colors don’t shift, and they open everywhere.</p>
+
+    <h3>Super Simple Steps (Takes less than 20 seconds):</h3>
+    <ol class="list-decimal list-inside space-y-3 ml-4 text-lg">
+      <li>Go to the <a href="/heic-to-jpg" class="text-indigo-600 hover:underline">HEIC to JPG tool</a></li>
+      <li>Upload your HEIC photos (drag multiple at once if you want)</li>
+      <li>Click Convert</li>
+      <li>Download the JPG versions instantly</li>
+    </ol>
+
+    <p>No signup, no watermarks, no quality loss. Perfect for sharing vacation pics with Android friends, uploading to job sites, posting on forums, or just making sure your photos work everywhere.</p>
+
+    <p><strong>My favorite thing:</strong> It handles batches really well. I often select 20-30 photos from a trip, convert them all at once, and they come out ready to share without any fuss.</p>
+
+    <div class="bg-indigo-50 border border-indigo-200 rounded-xl p-8 text-center my-12">
+      <p class="text-xl font-semibold text-indigo-800 mb-4">
+        Got some iPhone photos stuck in HEIC? Turn them into JPGs now — you’ll wonder why Apple doesn’t do this automatically.
+      </p>
+      <a href="/heic-to-jpg" class="inline-block bg-indigo-600 text-white font-bold px-8 py-4 rounded-xl hover:bg-indigo-700 transition shadow-lg">
+        Convert HEIC to JPG for Free →
+      </a>
+    </div>
+
+    <p class="text-center text-gray-600">
+      <a href="/blog" class="text-indigo-600 hover:underline">← Back to all guides</a>
+    </p>
   `,
-},
-{
-  slug: "text-to-pdf",
-  title: "Convert Text to PDF Instantly Online (Free & Secure)",
-  date: "Dec 10, 2025",
-  content: `
-    Turn simple text into a clean, professional PDF in seconds. 
-    Our Text to PDF converter helps students, writers, and professionals format their notes or reports easily.
+  },
 
-    💡 Use Cases:
-    - Create resumes, letters, or documents.
-    - Save notes and essays in shareable PDF format.
 
-    How to Use:
-    1. Paste or type your text into the editor.
-    2. Click “Convert.”
-    3. Download your PDF instantly.
+  {
+    slug: "text-to-pdf",
+    title: "How to Convert Text to PDF Instantly (Free Online Tool)",
+    date: "Dec 10, 2025",
+    content: `
+    <h2>How to Turn Plain Text into a Nice PDF (The Quick Way)</h2>
 
-    Pro Tip:
-    Combine multiple text files using our Merge PDF tool for organized documents.
+    <p>Sometimes you just have text — notes in Notepad, an essay in a plain editor, a quick letter, or code comments you want to share. But sending it as a .txt file looks messy, and people might not even open it properly.</p>
+
+    <p>I run into this a lot. I’ll write something in a simple text editor (no fancy formatting), and then need to share it as a proper document. Copy-pasting into Word feels like overkill, and I don’t always have it open.</p>
+
+    <p>That’s why I added the <a href="/text-to-pdf"><strong>Text to PDF converter</strong></a> on PDF Linx. Now whenever I have plain text I want to turn into something clean and shareable, I just paste it in, hit convert, and get a nice-looking PDF in seconds. Fonts are readable, layout is neat, and it opens perfectly on any device.</p>
+
+    <h3>Really Easy Steps (Takes less than 20 seconds):</h3>
+    <ol class="list-decimal list-inside space-y-3 ml-4 text-lg">
+      <li>Go to the <a href="/text-to-pdf" class="text-indigo-600 hover:underline">Text to PDF tool</a></li>
+      <li>Paste or type your text into the box</li>
+      <li>Click Convert</li>
+      <li>Download your clean PDF instantly</li>
+    </ol>
+
+    <p>No signup, no watermarks, no weird formatting issues. Great for saving notes, turning essays into submittable files, making quick letters, or just archiving text in a proper format.</p>
+
+    <p><strong>My usual combo:</strong> If I have several text snippets or notes, I paste them all in one go (with headings or line breaks), convert to PDF, then use the <a href="/merge-pdf" class="text-indigo-600 hover:underline">Merge PDF tool</a> if I need to combine with other files. Ends up super organized.</p>
+
+    <div class="bg-indigo-50 border border-indigo-200 rounded-xl p-8 text-center my-12">
+      <p class="text-xl font-semibold text-indigo-800 mb-4">
+        Got some text you want to turn into a proper PDF? Try it now — it’s surprisingly useful.
+      </p>
+      <a href="/text-to-pdf" class="inline-block bg-indigo-600 text-white font-bold px-8 py-4 rounded-xl hover:bg-indigo-700 transition shadow-lg">
+        Convert Text to PDF for Free →
+      </a>
+    </div>
+
+    <p class="text-center text-gray-600">
+      <a href="/blog" class="text-indigo-600 hover:underline">← Back to all guides</a>
+    </p>
   `,
-},
+  },
 
-
-{
-  slug: "best-tools-for-students",
-  title: "Best Tools for Students to Study Smarter in 2025",
-  date: "Dec 11, 2025",
-  content: `
+  {
+    slug: "best-tools-for-students",
+    title: "Best Tools for Students to Study Smarter in 2025",
+    date: "Dec 11, 2025",
+    content: `
     <p class="mb-8 text-lg leading-relaxed">
       So here’s my honest list of tools that actually help me study better — the ones I personally use and recommend to friends. No fluff, just stuff that works.
     </p>
@@ -628,8 +762,12 @@ const blogs = [
       Small changes add up, and before you know it, you’ll be that student who’s always prepared and never stressed.<br><br>
       You got this! 🚀
     </p>
+        <p class="text-center text-gray-600">
+      <a href="/blog" class="text-indigo-600 hover:underline">← Back to all guides</a>
+    </p>
+
   `,
-},
+  },
 
 
 ];
@@ -661,43 +799,6 @@ export async function generateMetadata({ params }) {
   };
 }
 
-// // ✅ Blog Page Component
-// export default async function BlogPost({ params }) {
-//   const { slug } = await params;
-//   const blog = blogs.find((b) => b.slug === slug);
-
-//   if (!blog) return notFound();
-
-//   return (
-//     <main className="max-w-3xl mx-auto py-12 px-6">
-//       {/* Back Button */}
-//       {/* <Link
-//         href="/blog"
-//         className="inline-flex items-center text-red-600 hover:text-red-700 mb-6 transition-colors"
-//       >
-//         <ArrowLeft className="w-5 h-5 mr-2" />
-//         Back to Blogs
-//       </Link> */}
-
-//       <h1 className="text-4xl font-bold mb-4">{blog.title}</h1>
-//       <p className="text-gray-500 mb-6">{blog.date}</p>
-
-//       <div className="text-lg leading-relaxed text-gray-700 whitespace-pre-line">
-//         {blog.content}
-//       </div>
-
-//       <div className="mt-12">
-//         <Link
-//           href="/blog"
-//           className="text-blue-600 font-medium hover:underline"
-//         >
-//           ← Explore More Guides on PDF Linx
-//         </Link>
-//       </div>
-//     </main>
-//   );
-// }
-
 
 
 // ✅ Blog Page Component - FINAL & WORKING VERSION
@@ -724,20 +825,21 @@ export default async function BlogPost({ params }) {
       <p className="text-gray-500 text-sm mb-10">{blog.date}</p>
 
       {/* YE LINE CHANGE KI HAI — AB HTML PERFECT DIKHEGA! */}
-      <article 
+      <article
         className="prose prose-lg max-w-none text-gray-700 leading-relaxed space-y-6"
-        dangerouslySetInnerHTML={{ __html: blog.content }} 
+        dangerouslySetInnerHTML={{ __html: blog.content }}
       />
 
       {/* Bottom CTA */}
-      <div className="mt-16 pt-10 border-t border-gray-200 text-center">
+      {/* <div className="mt-16 pt-10 border-t border-gray-200 text-center">
         <Link
           href="/blog"
           className="inline-flex items-center text-indigo-600 hover:text-indigo-800 font-bold text-lg transition"
         >
           ← Explore More Guides on PDF Linx
         </Link>
-      </div>
+      </div> */}
+
     </main>
   );
 }

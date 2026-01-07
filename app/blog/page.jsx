@@ -60,81 +60,92 @@ export default function Blog() {
 
 
 
-   {
-  title: "Convert Excel to PDF Without Losing Formatting",
-  description:
-    "Need to turn your Excel spreadsheet into a clean PDF that keeps all the tables, charts, and formatting perfect? Here’s how I do it in seconds — great for reports, budgets, or sharing data securely.",
-  date: "Sep 5, 2025",
-  slug: "excel-to-pdf",
-},
+    {
+      title: "Convert Excel to PDF Without Losing Formatting",
+      description:
+        "Need to turn your Excel spreadsheet into a clean PDF that keeps all the tables, charts, and formatting perfect? Here’s how I do it in seconds — great for reports, budgets, or sharing data securely.",
+      date: "Sep 5, 2025",
+      slug: "excel-to-pdf",
+    },
 
     {
-  title: "Generate QR Codes Instantly for Links, Text & Contacts",
-  description:
-    "Need a quick QR code for your website, Wi-Fi password, or contact info? Here’s how I make clean, custom ones in seconds — perfect for menus, business cards, or sharing links easily.",
-  date: "Dec 2, 2025",
-  slug: "qr-generator",
-},
+      title: "Generate QR Codes Instantly for Links, Text & Contacts",
+      description:
+        "Need a quick QR code for your website, Wi-Fi password, or contact info? Here’s how I make clean, custom ones in seconds — perfect for menus, business cards, or sharing links easily.",
+      date: "Dec 2, 2025",
+      slug: "qr-generator",
+    },
 
-{
-  title: "Create Strong Passwords Instantly with Our Password Generator",
-  description:
-    "Tired of using the same weak passwords everywhere? Here’s how I create super-strong, random ones in seconds — perfect for new accounts, emails, or just tightening up your security.",
-  date: "Dec 3, 2025",
-  slug: "password-gen",
-},
+    {
+      title: "Create Strong Passwords Instantly with Our Password Generator",
+      description:
+        "Tired of using the same weak passwords everywhere? Here’s how I create super-strong, random ones in seconds — perfect for new accounts, emails, or just tightening up your security.",
+      date: "Dec 3, 2025",
+      slug: "password-gen",
+    },
 
 
     {
       title: "Convert Units Easily with Our Free Online Unit Converter",
       description:
-        "Convert length, weight, area, temperature, and more with our smart online unit converter. Fast, accurate, and essential for students and professionals.",
+        "Need to switch between meters and feet, kg and pounds, or Celsius and Fahrenheit? Here’s the dead-simple unit converter I use all the time — instant, accurate, and completely free.",
       date: "Dec 4, 2025",
       slug: "unit-converter",
     },
+
+
     {
       title: "Download HD YouTube Thumbnails Instantly in One Click",
       description:
-        "Download YouTube video thumbnails in HD, Full HD, or 4K quality instantly. Perfect for creators, editors, and designers free, fast, and watermark-free.",
+        "Need a clean, high-quality thumbnail from a YouTube video? Here’s how I grab them in HD or even 4K in seconds — perfect for creators, editors, or just saving cool covers.",
       date: "Dec 5, 2025",
       slug: "youtube-thumbnail",
     },
+
+
     {
       title: "Compress Images Online Without Losing Quality",
       description:
-        "Reduce image file size instantly while keeping full resolution. Free online image compressor for JPG, PNG, and WebP ideal for websites and social media.",
+        "Got heavy photos slowing down your site or eating storage? Here’s how I shrink JPGs, PNGs, and WebPs down to tiny sizes while keeping them looking sharp — free and super fast.",
       date: "Dec 6, 2025",
       slug: "image-compressor",
     },
+
+
     {
       title: "Convert Images to Text Using AI (Image to Text Extractor)",
       description:
-        "Extract readable text from images or scanned documents using our AI-powered OCR image to text tool. Perfect for notes, receipts, and books.",
+        "Need to pull text out of a photo, screenshot, or scanned page? Here’s how I quickly turn images into editable text — perfect for notes, receipts, books, or anything with words in it.",
       date: "Dec 7, 2025",
       slug: "image-to-text",
     },
+
+
+
     {
       title: "Draw & Download Signatures Online with Signature Maker",
       description:
-        "Create a professional digital signature online instantly. Draw, type, or upload your signature and download it in PNG for documents or forms.",
+        "Need a clean digital signature for documents? Here’s how I quickly draw or type one and download it as a transparent PNG — perfect for contracts, forms, or anything official.",
       date: "Dec 8, 2025",
       slug: "signature-maker",
     },
+
+
     {
       title: "Convert HEIC to JPG Instantly Online",
       description:
-        "Convert Apple HEIC photos to JPG online in seconds. Keep original quality and metadata intact no software or signup required.",
+        "Got iPhone photos in HEIC format that won’t open on Windows or Android? Here’s how I quickly turn them into regular JPGs — keeps quality perfect, no software needed.",
       date: "Dec 9, 2025",
       slug: "heic-to-jpg",
     },
+
     {
       title: "Convert Text to PDF Instantly Online (Free & Secure)",
       description:
-        "Turn plain text, notes, or reports into professional PDF documents in one click. Free online text to PDF converter with formatting support.",
+        "Got plain text or notes you need to turn into a proper PDF? Here’s how I quickly make clean, professional PDFs from any text — great for essays, letters, or just saving stuff neatly.",
       date: "Dec 10, 2025",
       slug: "text-to-pdf",
     },
-
     {
       title: "Best Tools for Students to Study Smarter in 2025",
       description:
@@ -162,13 +173,22 @@ export default function Blog() {
       {/* <h1 className="text-4xl md:text-5xl font-extrabold text-center mb-10 bg-gradient-to-r from-red-600 to-purple-600 bg-clip-text text-transparent">
         PDF Tools Blog & Guides
       </h1> */}
-      <h1 className="text-4xl md:text-5xl font-extrabold text-center mb-10 bg-gradient-to-r from-red-600 to-purple-600 bg-clip-text text-transparent leading-tight pb-1">
+      {/* <h1 className="text-4xl md:text-5xl font-extrabold text-center mb-10 bg-gradient-to-r from-red-600 to-purple-600 bg-clip-text text-transparent leading-tight pb-1">
         PDF Tools Blog & Guides
       </h1>
 
       <p className="text-center text-gray-600 max-w-2xl mx-auto mb-12 text-lg">
         Explore expert tips, tutorials, and how-to guides to master all our free PDF and document tools from file conversions and compression to merging, splitting, and more.
         Stay productive with <strong>PDF Linx</strong> your all-in-one online toolkit.
+      </p> */}
+
+      <h1 className="text-4xl md:text-5xl font-extrabold text-center mb-10 bg-gradient-to-r from-red-600 to-purple-600 bg-clip-text text-transparent leading-tight pb-1">
+        PDF Tools Blog & Guides
+      </h1>
+
+      <p className="text-center text-gray-600 max-w-2xl mx-auto mb-12 text-lg">
+        Hey, welcome to the blog! Here I've written simple, no-nonsense guides for all the tools — how to merge PDFs, convert Word to PDF, pull text from images, and everything else.<br /><br />
+        Everything is <strong>free</strong>, no fluff, and I've tested it all myself in real life. Hope these help you save time and get stuff done easier. Enjoy! 🚀
       </p>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">

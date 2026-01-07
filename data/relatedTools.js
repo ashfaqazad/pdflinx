@@ -76,7 +76,7 @@ export const relatedToolsData = {
     { title: 'Signature Maker', emoji: '✍️', url: '/signature-maker', desc: 'Design digital signatures' },
     { title: 'Unit Converter', emoji: '📏', url: '/unit-converter', desc: 'Convert measurements' },
   ],
-  'password-generator': [
+  'password-gen': [
     { title: 'QR Generator', emoji: '📱', url: '/qr-generator', desc: 'Create QR codes instantly' },
     { title: 'Signature Maker', emoji: '✍️', url: '/signature-maker', desc: 'Make digital signatures' },
     { title: 'Text to PDF', emoji: '📝', url: '/text-to-pdf', desc: 'Convert text to PDF' },
