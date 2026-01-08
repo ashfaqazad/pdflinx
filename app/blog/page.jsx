@@ -154,57 +154,68 @@ export default function Blog() {
       slug: "best-tools-for-students",
     },
 
-    // {
-    //   title: "Best Tools for Students to Study Smarter in 2025",
-    //   description:
-    //     // "Discover the best free online tools every student needs in 2025 from note-taking and task management to file conversion and study aids. Boost productivity, stay organized, and make learning easier with these powerful digital tools designed for students.",
-    //     "Hey, if you're a student right now, you know how crazy things can get — assignments piling up, group projects going wrong, exams sneaking up, and PDFs that just won't cooperate.
-    // I have been there (still am sometimes), and over the years I’ve tried pretty much every tool out there. Some were slow, some were full of ads, and some just didn’t do the job properly.",
-
-    //   date: "Dec 11, 2025",
-    //   slug: "best-tools-for-students",
-    // },
-
 
   ];
 
   return (
-    <main className="max-w-7xl mx-auto py-16 px-6">
-      {/* <h1 className="text-4xl md:text-5xl font-extrabold text-center mb-10 bg-gradient-to-r from-red-600 to-purple-600 bg-clip-text text-transparent">
-        PDF Tools Blog & Guides
-      </h1> */}
-      {/* <h1 className="text-4xl md:text-5xl font-extrabold text-center mb-10 bg-gradient-to-r from-red-600 to-purple-600 bg-clip-text text-transparent leading-tight pb-1">
+    // <main className="max-w-7xl mx-auto py-16 px-6">
+
+    //   <h1 className="text-4xl md:text-5xl font-extrabold text-center mb-10 bg-gradient-to-r from-red-600 to-purple-600 bg-clip-text text-transparent leading-tight pb-1">
+    //     PDF Tools Blog & Guides
+    //   </h1>
+
+    //   <p className="text-center text-gray-600 max-w-2xl mx-auto mb-12 text-lg">
+    //     Hey, welcome to the blog! Here I've written simple, no-nonsense guides for all the tools — how to merge PDFs, convert Word to PDF, pull text from images, and everything else.<br /><br />
+    //     Everything is <strong>free</strong>, no fluff, and I've tested it all myself in real life. Hope these help you save time and get stuff done easier. Enjoy! 🚀
+    //   </p>
+
+    //   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+    //     {blogs.map((blog, index) => (
+    //       <div
+    //         key={index}
+    //         className="bg-white shadow-lg rounded-2xl p-6 hover:shadow-xl transition-transform hover:-translate-y-1"
+    //       >
+    //         <h2 className="text-2xl font-semibold mb-3 text-gray-800 hover:text-red-700 transition">
+    //           {blog.title}
+    //         </h2>
+    //         <p className="text-gray-600 mb-4 leading-relaxed">{blog.description}</p>
+    //         <p className="text-sm text-gray-500 mb-4">{blog.date}</p>
+    //         <Link
+    //           href={`/blog/${blog.slug}`}
+    //           className="inline-block bg-red-700 text-white px-5 py-2 rounded-md font-medium hover:bg-red-600 transition"
+    //         >
+    //           Read More →
+    //         </Link>
+    //       </div>
+    //     ))}
+    //   </div>
+    // </main>
+
+        <main className="max-w-4xl mx-auto py-8 px-4">
+
+      <h1 className="text-3xl md:text-4xl font-bold text-center mb-6 bg-gradient-to-r from-red-600 to-purple-600 bg-clip-text text-transparent leading-tight">
         PDF Tools Blog & Guides
       </h1>
 
-      <p className="text-center text-gray-600 max-w-2xl mx-auto mb-12 text-lg">
-        Explore expert tips, tutorials, and how-to guides to master all our free PDF and document tools from file conversions and compression to merging, splitting, and more.
-        Stay productive with <strong>PDF Linx</strong> your all-in-one online toolkit.
-      </p> */}
-
-      <h1 className="text-4xl md:text-5xl font-extrabold text-center mb-10 bg-gradient-to-r from-red-600 to-purple-600 bg-clip-text text-transparent leading-tight pb-1">
-        PDF Tools Blog & Guides
-      </h1>
-
-      <p className="text-center text-gray-600 max-w-2xl mx-auto mb-12 text-lg">
+      <p className="text-center text-gray-600 max-w-2xl mx-auto mb-8 text-base">
         Hey, welcome to the blog! Here I've written simple, no-nonsense guides for all the tools — how to merge PDFs, convert Word to PDF, pull text from images, and everything else.<br /><br />
         Everything is <strong>free</strong>, no fluff, and I've tested it all myself in real life. Hope these help you save time and get stuff done easier. Enjoy! 🚀
       </p>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {blogs.map((blog, index) => (
           <div
             key={index}
-            className="bg-white shadow-lg rounded-2xl p-6 hover:shadow-xl transition-transform hover:-translate-y-1"
+            className="bg-white rounded-xl shadow-md p-5 hover:shadow-lg transition hover:-translate-y-1"
           >
-            <h2 className="text-2xl font-semibold mb-3 text-gray-800 hover:text-red-700 transition">
+            <h2 className="text-xl font-semibold mb-2 text-gray-800 hover:text-red-700 transition">
               {blog.title}
             </h2>
-            <p className="text-gray-600 mb-4 leading-relaxed">{blog.description}</p>
-            <p className="text-sm text-gray-500 mb-4">{blog.date}</p>
+            <p className="text-gray-600 mb-3 text-sm leading-relaxed">{blog.description}</p>
+            <p className="text-xs text-gray-500 mb-3">{blog.date}</p>
             <Link
               href={`/blog/${blog.slug}`}
-              className="inline-block bg-red-700 text-white px-5 py-2 rounded-md font-medium hover:bg-red-600 transition"
+              className="inline-block bg-red-700 text-white px-4 py-2 rounded-lg font-medium hover:bg-red-600 transition text-sm"
             >
               Read More →
             </Link>

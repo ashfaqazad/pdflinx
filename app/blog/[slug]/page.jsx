@@ -812,34 +812,44 @@ export default async function BlogPost({ params }) {
   if (!blog) return notFound();
 
   return (
-    <main className="max-w-4xl mx-auto py-16 px-6">
+    // <main className="max-w-4xl mx-auto py-16 px-6">
+    //   {/* Optional Back Button */}
+    //   {/* <Link href="/blog" className="inline-flex items-center text-indigo-600 hover:text-indigo-800 font-medium mb-8">
+    //     ← Back to Blog
+    //   </Link> */}
+
+    //   {/* Title & Date */}
+    //   <h1 className="text-4xl md:text-5xl font-extrabold text-gray-800 mb-4 leading-tight">
+    //     {blog.title}
+    //   </h1>
+    //   <p className="text-gray-500 text-sm mb-10">{blog.date}</p>
+
+    //   {/* YE LINE CHANGE KI HAI — AB HTML PERFECT DIKHEGA! */}
+    //   <article
+    //     className="prose prose-lg max-w-none text-gray-700 leading-relaxed space-y-6"
+    //     dangerouslySetInnerHTML={{ __html: blog.content }}
+    //   />
+
+
+    // </main>
+
+        <main className="max-w-4xl mx-auto py-8 px-4">
       {/* Optional Back Button */}
-      {/* <Link href="/blog" className="inline-flex items-center text-indigo-600 hover:text-indigo-800 font-medium mb-8">
+      {/* <Link href="/blog" className="inline-flex items-center text-indigo-600 hover:text-indigo-800 font-medium mb-6 text-sm">
         ← Back to Blog
       </Link> */}
 
       {/* Title & Date */}
-      <h1 className="text-4xl md:text-5xl font-extrabold text-gray-800 mb-4 leading-tight">
+      <h1 className="text-3xl md:text-4xl font-bold text-gray-800 mb-3 leading-tight">
         {blog.title}
       </h1>
-      <p className="text-gray-500 text-sm mb-10">{blog.date}</p>
+      <p className="text-gray-500 text-sm mb-8">{blog.date}</p>
 
-      {/* YE LINE CHANGE KI HAI — AB HTML PERFECT DIKHEGA! */}
+      {/* Content */}
       <article
-        className="prose prose-lg max-w-none text-gray-700 leading-relaxed space-y-6"
+        className="prose prose-base max-w-none text-gray-700 leading-relaxed space-y-5"
         dangerouslySetInnerHTML={{ __html: blog.content }}
       />
-
-      {/* Bottom CTA */}
-      {/* <div className="mt-16 pt-10 border-t border-gray-200 text-center">
-        <Link
-          href="/blog"
-          className="inline-flex items-center text-indigo-600 hover:text-indigo-800 font-bold text-lg transition"
-        >
-          ← Explore More Guides on PDF Linx
-        </Link>
-      </div> */}
-
     </main>
   );
 }

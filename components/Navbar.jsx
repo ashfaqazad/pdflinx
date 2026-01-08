@@ -1,12 +1,6 @@
 "use client";
 import Link from "next/link";
 import { useState } from "react";
-// import {
-//   ChevronDown,
-//   FileText, FileType, FileImage, FileSpreadsheet,
-//   Scissors, FileMinus, FilePlus, QrCode, Lock, Ruler,
-//   Youtube, Image as ImageIcon, PenTool
-// } from "lucide-react";
 import {
   ChevronDown,
   FileText,
@@ -22,8 +16,6 @@ import {
   Youtube,
   Image as ImageIcon,
   PenTool,
-
-  // 🔥 Added icons
   RotateCw,
   Stamp,
   ShieldCheck,
@@ -49,42 +41,40 @@ export default function Navbar() {
               Home
             </Link>
 
-            {/* === PDF TOOLS Dropdown (Only 7 Tools) === */}
+            {/* === PDF TOOLS Dropdown (Compact) === */}
             <div className="relative group">
               <button className="flex items-center gap-2 text-gray-700 hover:text-indigo-600 font-semibold transition">
-                PDF Tools <ChevronDown size={18} className="group-hover:rotate-180 transition" />
+                PDF Tools <ChevronDown size={16} className="group-hover:rotate-180 transition" />
               </button>
 
-              <div className="absolute top-16 left-1/2 -translate-x-1/2 w-[680px] bg-white rounded-2xl shadow-2xl border border-gray-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
-                <div className="grid grid-cols-2 gap-10 p-7 bg-gradient-to-b from-gray-50 to-white">
+              <div className="absolute top-14 left-1/2 -translate-x-1/2 w-[520px] bg-white rounded-xl shadow-xl border border-gray-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
+                <div className="grid grid-cols-2 gap-6 p-5 bg-gradient-to-b from-gray-50 to-white">
                   {/* Convert TO PDF */}
                   <div>
-                    <h3 className="font-bold text-lg text-gray-800 mb-5">Convert TO PDF</h3>
-                    <div className="space-y-3">
-
+                    <h3 className="font-bold text-base text-gray-800 mb-3">Convert TO PDF</h3>
+                    <div className="space-y-2">
                       <Link 
                         href="/word-to-pdf"
                         onClick={(e) => { e.preventDefault(); window.location.href = '/word-to-pdf'; }}
-                        className="flex items-center gap-4 hover:bg-indigo-50 px-4 py-2.5 rounded-xl transition"
+                        className="flex items-center gap-3 hover:bg-indigo-50 px-3 py-2 rounded-lg transition text-sm"
                       >
-                        <FileType size={26} className="text-blue-600" />
+                        <FileType size={20} className="text-blue-600" />
                         <span className="font-medium text-gray-700 hover:text-indigo-600">WORD to PDF</span>
                       </Link>
 
-
-
                       <Link href="/excel-pdf" 
-                      onClick={(e) => { e.preventDefault(); window.location.href = '/excel-pdf'; }}
-
-                      className="flex items-center gap-4 hover:bg-indigo-50 px-4 py-2.5 rounded-xl transition">
-                        <FileSpreadsheet size={26} className="text-green-600" />
+                        onClick={(e) => { e.preventDefault(); window.location.href = '/excel-pdf'; }}
+                        className="flex items-center gap-3 hover:bg-indigo-50 px-3 py-2 rounded-lg transition text-sm"
+                      >
+                        <FileSpreadsheet size={20} className="text-green-600" />
                         <span className="font-medium text-gray-700 hover:text-indigo-600">EXCEL to PDF</span>
                       </Link>
-                      <Link href="/image-to-pdf" 
-                      onClick={(e) => { e.preventDefault(); window.location.href = '/image-to-pdf'; }}
 
-                      className="flex items-center gap-4 hover:bg-indigo-50 px-4 py-2.5 rounded-xl transition">
-                        <FileImage size={26} className="text-orange-600" />
+                      <Link href="/image-to-pdf" 
+                        onClick={(e) => { e.preventDefault(); window.location.href = '/image-to-pdf'; }}
+                        className="flex items-center gap-3 hover:bg-indigo-50 px-3 py-2 rounded-lg transition text-sm"
+                      >
+                        <FileImage size={20} className="text-orange-600" />
                         <span className="font-medium text-gray-700 hover:text-indigo-600">JPG to PDF</span>
                       </Link>
                     </div>
@@ -92,34 +82,37 @@ export default function Navbar() {
 
                   {/* Convert FROM PDF */}
                   <div>
-                    <h3 className="font-bold text-lg text-gray-800 mb-5">Convert FROM PDF</h3>
-                    <div className="space-y-3">
+                    <h3 className="font-bold text-base text-gray-800 mb-3">Convert FROM PDF</h3>
+                    <div className="space-y-2">
                       <Link href="/pdf-to-word" 
-                      onClick={(e) => { e.preventDefault(); window.location.href = '/pdf-to-word'; }}
-
-                      className="flex items-center gap-4 hover:bg-indigo-50 px-4 py-2.5 rounded-xl transition">
-                        <FileText size={26} className="text-red-600" />
+                        onClick={(e) => { e.preventDefault(); window.location.href = '/pdf-to-word'; }}
+                        className="flex items-center gap-3 hover:bg-indigo-50 px-3 py-2 rounded-lg transition text-sm"
+                      >
+                        <FileText size={20} className="text-red-600" />
                         <span className="font-medium text-gray-700 hover:text-indigo-600">PDF to WORD</span>
                       </Link>
-                      <Link href="/compress-pdf" 
-                      onClick={(e) => { e.preventDefault(); window.location.href = '/compress-pdf'; }}
 
-                      className="flex items-center gap-4 hover:bg-indigo-50 px-4 py-2.5 rounded-xl transition">
-                        <FileMinus size={26} className="text-purple-600" />
+                      <Link href="/compress-pdf" 
+                        onClick={(e) => { e.preventDefault(); window.location.href = '/compress-pdf'; }}
+                        className="flex items-center gap-3 hover:bg-indigo-50 px-3 py-2 rounded-lg transition text-sm"
+                      >
+                        <FileMinus size={20} className="text-purple-600" />
                         <span className="font-medium text-gray-700 hover:text-indigo-600">Compress PDF</span>
                       </Link>
-                      <Link href="/merge-pdf" 
-                      onClick={(e) => { e.preventDefault(); window.location.href = '/merge-pdf'; }}
 
-                      className="flex items-center gap-4 hover:bg-indigo-50 px-4 py-2.5 rounded-xl transition">
-                        <FilePlus size={26} className="text-emerald-600" />
+                      <Link href="/merge-pdf" 
+                        onClick={(e) => { e.preventDefault(); window.location.href = '/merge-pdf'; }}
+                        className="flex items-center gap-3 hover:bg-indigo-50 px-3 py-2 rounded-lg transition text-sm"
+                      >
+                        <FilePlus size={20} className="text-emerald-600" />
                         <span className="font-medium text-gray-700 hover:text-indigo-600">Merge PDF</span>
                       </Link>
-                      <Link href="/split-pdf" 
-                      onClick={(e) => { e.preventDefault(); window.location.href = '/split-pdf'; }}
 
-                      className="flex items-center gap-4 hover:bg-indigo-50 px-4 py-2.5 rounded-xl transition">
-                        <Scissors size={26} className="text-amber-600" />
+                      <Link href="/split-pdf" 
+                        onClick={(e) => { e.preventDefault(); window.location.href = '/split-pdf'; }}
+                        className="flex items-center gap-3 hover:bg-indigo-50 px-3 py-2 rounded-lg transition text-sm"
+                      >
+                        <Scissors size={20} className="text-amber-600" />
                         <span className="font-medium text-gray-700 hover:text-indigo-600">Split PDF</span>
                       </Link>
                     </div>
@@ -128,91 +121,50 @@ export default function Navbar() {
               </div>
             </div>
 
-<div
-  className="relative group"
-  onMouseEnter={(e) => {
-    const dropdown = e.currentTarget.querySelector('.dropdown-content');
-    dropdown.classList.remove('invisible', 'opacity-0');
-  }}
-  onMouseLeave={(e) => {
-    const dropdown = e.currentTarget.querySelector('.dropdown-content');
-    dropdown.classList.add('invisible', 'opacity-0');
-  }}
->
-  <button className="flex items-center gap-2 text-gray-700 hover:text-indigo-600 font-semibold transition">
-    All Tools <ChevronDown size={18} className="group-hover:rotate-180 transition" />
-  </button>
+            {/* === ALL TOOLS Dropdown (Compact) === */}
+            <div className="relative group">
+              <button className="flex items-center gap-2 text-gray-700 hover:text-indigo-600 font-semibold transition">
+                All Tools <ChevronDown size={16} className="group-hover:rotate-180 transition" />
+              </button>
 
-{/* DropDown Content */}
-<div
-  className="dropdown-content absolute top-16 left-1/2 -translate-x-1/2 w-[620px] 
-             bg-white rounded-2xl shadow-2xl border border-gray-100 
-             opacity-0 invisible transition-all duration-300"
->
-  <div className="p-3">
-    <h3 className="font-bold text-lg text-gray-800 mb-5 text-center">
-      All Utility Tools
-    </h3>
+              <div className="absolute top-14 left-1/2 -translate-x-1/2 w-[480px] bg-white rounded-xl shadow-xl border border-gray-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
+                <div className="p-4">
+                  <h3 className="font-bold text-base text-gray-800 mb-4 text-center">
+                    All Utility Tools
+                  </h3>
 
-    <div className="grid grid-cols-3 gap-3">
-      {[
-        { href: "/qr-generator", icon: QrCode, color: "text-sky-600", label: "QR Generator" },
-        { href: "/password-gen", icon: Lock, color: "text-amber-600", label: "Password Gen" },
-        { href: "/unit-converter", icon: Ruler, color: "text-lime-600", label: "Unit Converter" },
-        { href: "/youtube-thumbnail", icon: Youtube, color: "text-red-600", label: "YT Thumbnail" },
-        { href: "/image-compressor", icon: ImageIcon, color: "text-cyan-600", label: "Image Compress" },
-        { href: "/image-to-text", icon: ImageIcon, color: "text-indigo-600", label: "Image to Text" },
-        { href: "/signature-maker", icon: PenTool, color: "text-emerald-600", label: "Signature Maker" },
-        { href: "/text-to-pdf", icon: FileText, color: "text-purple-600", label: "Text to PDF" },
-        { href: "/heic-to-jpg", icon: FileImage, color: "text-orange-600", label: "HEIC to JPG" },
-          // 🔥 Fixed icons below
-        { href: "/image-converter", icon: ImageIcon, color: "text-blue-600", label: "Image Converter" },
-        // { href: "/rotate-pdf", icon: RotateCw, color: "text-fuchsia-600", label: "Rotate PDF" },
-        // { href: "/pdf-to-jpg", icon: FileImage, color: "text-rose-600", label: "PDF to JPG" },
-        { href: "/add-watermark", icon: Stamp, color: "text-teal-600", label: "Add Watermark" },
-        // { href: "/protect-pdf", icon: ShieldCheck, color: "text-green-600", label: "Protect PDF" },
-
-        // { href: "/image-converter", icon: FileImage, color: "text-orange-600", label: "Image Converter" },
-        // { href: "/rotate-pdf", icon: FileImage, color: "text-orange-600", label: "Rotate Pdf" },
-        // { href: "/pdf-to-jpg", icon: FileImage, color: "text-orange-600", label: "Pdf To Jpg" },
-        // { href: "/add-watermark", icon: FileImage, color: "text-orange-600", label: "Add Watermark" },
-        // { href: "/protect-pdf", icon: FileImage, color: "text-orange-600", label: "Protect Pdf" },
-
-
-      ].map((item) => (
-        <button
-          key={item.href}
-          onClick={(e) => {
-            e.preventDefault();
-            window.location.href = item.href;
-
-            // close dropdown
-            const dropdown = e.currentTarget.closest(".dropdown-content");
-            dropdown?.classList.add("invisible", "opacity-0");
-          }}
-          className="flex items-center gap-3 w-full 
-                     p-3 rounded-xl transition 
-                     hover:bg-indigo-50 group justify-start"
-        >
-          <item.icon
-            size={26}
-            className={`${item.color} shrink-0`}
-          />
-
-          <span className="text-sm font-medium text-gray-700 group-hover:text-indigo-600">
-            {item.label}
-          </span>
-        </button>
-      ))}
-    </div>
-  </div>
-</div>
-
-
-</div>
-
-
-
+                  <div className="grid grid-cols-3 gap-3">
+                    {[
+                      { href: "/qr-generator", icon: QrCode, color: "text-sky-600", label: "QR Generator" },
+                      { href: "/password-gen", icon: Lock, color: "text-amber-600", label: "Password Gen" },
+                      { href: "/unit-converter", icon: Ruler, color: "text-lime-600", label: "Unit Converter" },
+                      { href: "/youtube-thumbnail", icon: Youtube, color: "text-red-600", label: "YT Thumbnail" },
+                      { href: "/image-compressor", icon: ImageIcon, color: "text-cyan-600", label: "Image Compress" },
+                      { href: "/image-to-text", icon: ImageIcon, color: "text-indigo-600", label: "Image to Text" },
+                      { href: "/signature-maker", icon: PenTool, color: "text-emerald-600", label: "Signature Maker" },
+                      { href: "/text-to-pdf", icon: FileText, color: "text-purple-600", label: "Text to PDF" },
+                      { href: "/heic-to-jpg", icon: FileImage, color: "text-orange-600", label: "HEIC to JPG" },
+                      { href: "/image-converter", icon: ImageIcon, color: "text-blue-600", label: "Image Converter" },
+                      { href: "/add-watermark", icon: Stamp, color: "text-teal-600", label: "Add Watermark" },
+                    ].map((item) => (
+                      <button
+                        key={item.href}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          window.location.href = item.href;
+                        }}
+                        className="flex flex-col items-center gap-2 w-full p-3 rounded-lg transition hover:bg-indigo-50 group"
+                      >
+                        <item.icon size={22} className={`${item.color}`} />
+                        <span className="text-xs font-medium text-gray-700 group-hover:text-indigo-600 text-center">
+                          {item.label}
+                        </span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
 
             <Link href="/blog" className="text-gray-700 hover:text-indigo-600 font-semibold transition">Blog</Link>
             <Link href="/about" className="text-gray-700 hover:text-indigo-600 font-semibold transition">About</Link>
@@ -234,34 +186,20 @@ export default function Navbar() {
         <div className="lg:hidden bg-white border-t border-gray-100">
           <div className="px-6 py-6 space-y-4">
             <Link href="/" 
-          onClick={(e) => { e.preventDefault(); window.location.href = '/'; }}
-            className="block font-semibold text-gray-800 py-2">Home</Link>
+              onClick={(e) => { e.preventDefault(); window.location.href = '/'; }}
+              className="block font-semibold text-gray-800 py-2">Home</Link>
             <details className="group">
               <summary className="flex justify-between items-center font-semibold text-gray-800 cursor-pointer py-2">
                 PDF Tools <ChevronDown className="group-open:rotate-180 transition" />
               </summary>
               <div className="pl-6 mt-2 space-y-2">
-                <Link href="/pdf-to-word"
-                onClick={(e) => { e.preventDefault(); window.location.href = '/pdf-to-word'; }}
-                className="block text-gray-600 hover:text-indigo-600 py-1">PDF to Word</Link>
-                <Link href="/word-to-pdf" 
-                onClick={(e) => { e.preventDefault(); window.location.href = '/word-to-pdf'; }}
-                className="block text-gray-600 hover:text-indigo-600 py-1">Word to PDF</Link>
-                <Link href="/image-to-pdf" 
-                onClick={(e) => { e.preventDefault(); window.location.href = '/image-to-pdf'; }}
-                className="block text-gray-600 hover:text-indigo-600 py-1">Image to PDF</Link>
-                <Link href="/merge-pdf" 
-                onClick={(e) => { e.preventDefault(); window.location.href = '/merge-pdf'; }}
-                className="block text-gray-600 hover:text-indigo-600 py-1">Merge PDF</Link>
-                <Link href="/split-pdf" 
-                onClick={(e) => { e.preventDefault(); window.location.href = '/split-pdf'; }}
-                className="block text-gray-600 hover:text-indigo-600 py-1">Split PDF</Link>
-                <Link href="/compress-pdf" 
-                onClick={(e) => { e.preventDefault(); window.location.href = '/compress-pdf'; }}
-                className="block text-gray-600 hover:text-indigo-600 py-1">Compress PDF</Link>
-                <Link href="/excel-pdf" 
-                onClick={(e) => { e.preventDefault(); window.location.href = '/excel-pdf'; }}
-                className="block text-gray-600 hover:text-indigo-600 py-1">Excel to PDF</Link>
+                <Link href="/pdf-to-word" onClick={(e) => { e.preventDefault(); window.location.href = '/pdf-to-word'; }} className="block text-gray-600 hover:text-indigo-600 py-1">PDF to Word</Link>
+                <Link href="/word-to-pdf" onClick={(e) => { e.preventDefault(); window.location.href = '/word-to-pdf'; }} className="block text-gray-600 hover:text-indigo-600 py-1">Word to PDF</Link>
+                <Link href="/image-to-pdf" onClick={(e) => { e.preventDefault(); window.location.href = '/image-to-pdf'; }} className="block text-gray-600 hover:text-indigo-600 py-1">Image to PDF</Link>
+                <Link href="/merge-pdf" onClick={(e) => { e.preventDefault(); window.location.href = '/merge-pdf'; }} className="block text-gray-600 hover:text-indigo-600 py-1">Merge PDF</Link>
+                <Link href="/split-pdf" onClick={(e) => { e.preventDefault(); window.location.href = '/split-pdf'; }} className="block text-gray-600 hover:text-indigo-600 py-1">Split PDF</Link>
+                <Link href="/compress-pdf" onClick={(e) => { e.preventDefault(); window.location.href = '/compress-pdf'; }} className="block text-gray-600 hover:text-indigo-600 py-1">Compress PDF</Link>
+                <Link href="/excel-pdf" onClick={(e) => { e.preventDefault(); window.location.href = '/excel-pdf'; }} className="block text-gray-600 hover:text-indigo-600 py-1">Excel to PDF</Link>
               </div>
             </details>
             <details className="group">
@@ -269,74 +207,382 @@ export default function Navbar() {
                 All Tools <ChevronDown className="group-open:rotate-180 transition" />
               </summary>
               <div className="pl-6 mt-2 space-y-2 text-sm">
-                <Link href="/qr-generator" 
-                onClick={(e) => { e.preventDefault(); window.location.href = '/qr-generator'; }}
-
-                className="block text-gray-600 hover:text-indigo-600 py-1">QR Generator</Link>
-                <Link href="/password-gen" 
-                onClick={(e) => { e.preventDefault(); window.location.href = '/password-gen'; }}
-
-                className="block text-gray-600 hover:text-indigo-600 py-1">Password Generator</Link>
-                <Link href="/unit-converter" 
-                onClick={(e) => { e.preventDefault(); window.location.href = '/unit-converter'; }}
-
-                className="block text-gray-600 hover:text-indigo-600 py-1">Unit Converter</Link>
-                <Link href="/youtube-thumbnail" 
-                onClick={(e) => { e.preventDefault(); window.location.href = '/youtube-thumbnail'; }}
-
-                className="block text-gray-600 hover:text-indigo-600 py-1">YouTube Thumbnail</Link>
-                <Link href="/image-compressor" 
-                onClick={(e) => { e.preventDefault(); window.location.href = '/image-compressor'; }}
-
-                className="block text-gray-600 hover:text-indigo-600 py-1">Image Compressor</Link>
-                <Link href="/image-to-text" 
-                onClick={(e) => { e.preventDefault(); window.location.href = '/image-to-text'; }}
-
-                className="block text-gray-600 hover:text-indigo-600 py-1">Image to Text</Link>
-                <Link href="/signature-maker" 
-                onClick={(e) => { e.preventDefault(); window.location.href = '/signature-maker'; }}
-
-                className="block text-gray-600 hover:text-indigo-600 py-1">Signature Maker</Link>
-                <Link href="/text-to-pdf" 
-                onClick={(e) => { e.preventDefault(); window.location.href = '/text-to-pdf'; }}
-
-                className="block text-gray-600 hover:text-indigo-600 py-1">Text to PDF</Link>
-                <Link href="/heic-to-jpg" 
-                onClick={(e) => { e.preventDefault(); window.location.href = '/heic-to-jpg'; }}
-
-                className="block text-gray-600 hover:text-indigo-600 py-1">HEIC to JPG</Link>
-
-
-                {/* New 4 Tools Moble view */}
-                <Link href="/image-converter" 
-                onClick={(e) => { e.preventDefault(); window.location.href = '/image-converter'; }}
-                className="block text-gray-600 hover:text-indigo-600 py-1">Image Converter</Link>
-                <Link href="/pdf-to-jpg" 
-                onClick={(e) => { e.preventDefault(); window.location.href = '/pdf-to-jpg'; }}
-                className="block text-gray-600 hover:text-indigo-600 py-1">PDF to JPG</Link>
-                <Link href="/add-watermark" 
-                onClick={(e) => { e.preventDefault(); window.location.href = '/add-watermark'; }}
-                className="block text-gray-600 hover:text-indigo-600 py-1">Add Watermark</Link>
-                <Link href="/protect-pdf" 
-                onClick={(e) => { e.preventDefault(); window.location.href = '/protect-pdf'; }}
-                className="block text-gray-600 hover:text-indigo-600 py-1">Protect Pdf</Link>
+                <Link href="/qr-generator" onClick={(e) => { e.preventDefault(); window.location.href = '/qr-generator'; }} className="block text-gray-600 hover:text-indigo-600 py-1">QR Generator</Link>
+                <Link href="/password-gen" onClick={(e) => { e.preventDefault(); window.location.href = '/password-gen'; }} className="block text-gray-600 hover:text-indigo-600 py-1">Password Generator</Link>
+                <Link href="/unit-converter" onClick={(e) => { e.preventDefault(); window.location.href = '/unit-converter'; }} className="block text-gray-600 hover:text-indigo-600 py-1">Unit Converter</Link>
+                <Link href="/youtube-thumbnail" onClick={(e) => { e.preventDefault(); window.location.href = '/youtube-thumbnail'; }} className="block text-gray-600 hover:text-indigo-600 py-1">YouTube Thumbnail</Link>
+                <Link href="/image-compressor" onClick={(e) => { e.preventDefault(); window.location.href = '/image-compressor'; }} className="block text-gray-600 hover:text-indigo-600 py-1">Image Compressor</Link>
+                <Link href="/image-to-text" onClick={(e) => { e.preventDefault(); window.location.href = '/image-to-text'; }} className="block text-gray-600 hover:text-indigo-600 py-1">Image to Text</Link>
+                <Link href="/signature-maker" onClick={(e) => { e.preventDefault(); window.location.href = '/signature-maker'; }} className="block text-gray-600 hover:text-indigo-600 py-1">Signature Maker</Link>
+                <Link href="/text-to-pdf" onClick={(e) => { e.preventDefault(); window.location.href = '/text-to-pdf'; }} className="block text-gray-600 hover:text-indigo-600 py-1">Text to PDF</Link>
+                <Link href="/heic-to-jpg" onClick={(e) => { e.preventDefault(); window.location.href = '/heic-to-jpg'; }} className="block text-gray-600 hover:text-indigo-600 py-1">HEIC to JPG</Link>
+                <Link href="/image-converter" onClick={(e) => { e.preventDefault(); window.location.href = '/image-converter'; }} className="block text-gray-600 hover:text-indigo-600 py-1">Image Converter</Link>
+                <Link href="/add-watermark" onClick={(e) => { e.preventDefault(); window.location.href = '/add-watermark'; }} className="block text-gray-600 hover:text-indigo-600 py-1">Add Watermark</Link>
               </div>
             </details>
-            <Link href="/blog" 
-          onClick={(e) => { e.preventDefault(); window.location.href = '/blog'; }}
-            className="block font-semibold text-gray-800 py-2">Blog</Link>
-            <Link href="/about" 
-          onClick={(e) => { e.preventDefault(); window.location.href = '/about'; }}
-            className="block font-semibold text-gray-800 py-2">About</Link>
-            <Link href="/contact" 
-          onClick={(e) => { e.preventDefault(); window.location.href = '/contact'; }}
-            className="block font-semibold text-gray-800 py-2">Contact</Link>
+            <Link href="/blog" onClick={(e) => { e.preventDefault(); window.location.href = '/blog'; }} className="block font-semibold text-gray-800 py-2">Blog</Link>
+            <Link href="/about" onClick={(e) => { e.preventDefault(); window.location.href = '/about'; }} className="block font-semibold text-gray-800 py-2">About</Link>
+            <Link href="/contact" onClick={(e) => { e.preventDefault(); window.location.href = '/contact'; }} className="block font-semibold text-gray-800 py-2">Contact</Link>
           </div>
         </div>
       )}
     </nav>
   );
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// "use client";
+// import Link from "next/link";
+// import { useState } from "react";
+// // import {
+// //   ChevronDown,
+// //   FileText, FileType, FileImage, FileSpreadsheet,
+// //   Scissors, FileMinus, FilePlus, QrCode, Lock, Ruler,
+// //   Youtube, Image as ImageIcon, PenTool
+// // } from "lucide-react";
+// import {
+//   ChevronDown,
+//   FileText,
+//   FileType,
+//   FileImage,
+//   FileSpreadsheet,
+//   Scissors,
+//   FileMinus,
+//   FilePlus,
+//   QrCode,
+//   Lock,
+//   Ruler,
+//   Youtube,
+//   Image as ImageIcon,
+//   PenTool,
+
+//   // 🔥 Added icons
+//   RotateCw,
+//   Stamp,
+//   ShieldCheck,
+// } from "lucide-react";
+
+// export default function Navbar() {
+//   const [mobileOpen, setMobileOpen] = useState(false);
+
+//   return (
+//     <nav className="bg-white shadow-md border-b border-gray-100 sticky top-0 z-50">
+//       <div className="max-w-7xl mx-auto px-6">
+//         <div className="flex justify-between items-center h-18">
+
+//           {/* Logo */}
+//           <Link href="/" className="flex items-center py-3">
+//             <img src="/pdflinx-logo.svg" alt="PDF Linx logo" className="h-11 w-auto" />
+//           </Link>
+
+//           {/* Desktop Menu */}
+//           <div className="hidden lg:flex items-center space-x-10">
+
+//             <Link href="/" className="text-gray-700 hover:text-indigo-600 font-semibold transition">
+//               Home
+//             </Link>
+
+//             {/* === PDF TOOLS Dropdown (Only 7 Tools) === */}
+//             <div className="relative group">
+//               <button className="flex items-center gap-2 text-gray-700 hover:text-indigo-600 font-semibold transition">
+//                 PDF Tools <ChevronDown size={18} className="group-hover:rotate-180 transition" />
+//               </button>
+
+//               <div className="absolute top-16 left-1/2 -translate-x-1/2 w-[680px] bg-white rounded-2xl shadow-2xl border border-gray-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
+//                 <div className="grid grid-cols-2 gap-10 p-7 bg-gradient-to-b from-gray-50 to-white">
+//                   {/* Convert TO PDF */}
+//                   <div>
+//                     <h3 className="font-bold text-lg text-gray-800 mb-5">Convert TO PDF</h3>
+//                     <div className="space-y-3">
+
+//                       <Link 
+//                         href="/word-to-pdf"
+//                         onClick={(e) => { e.preventDefault(); window.location.href = '/word-to-pdf'; }}
+//                         className="flex items-center gap-4 hover:bg-indigo-50 px-4 py-2.5 rounded-xl transition"
+//                       >
+//                         <FileType size={26} className="text-blue-600" />
+//                         <span className="font-medium text-gray-700 hover:text-indigo-600">WORD to PDF</span>
+//                       </Link>
+
+
+
+//                       <Link href="/excel-pdf" 
+//                       onClick={(e) => { e.preventDefault(); window.location.href = '/excel-pdf'; }}
+
+//                       className="flex items-center gap-4 hover:bg-indigo-50 px-4 py-2.5 rounded-xl transition">
+//                         <FileSpreadsheet size={26} className="text-green-600" />
+//                         <span className="font-medium text-gray-700 hover:text-indigo-600">EXCEL to PDF</span>
+//                       </Link>
+//                       <Link href="/image-to-pdf" 
+//                       onClick={(e) => { e.preventDefault(); window.location.href = '/image-to-pdf'; }}
+
+//                       className="flex items-center gap-4 hover:bg-indigo-50 px-4 py-2.5 rounded-xl transition">
+//                         <FileImage size={26} className="text-orange-600" />
+//                         <span className="font-medium text-gray-700 hover:text-indigo-600">JPG to PDF</span>
+//                       </Link>
+//                     </div>
+//                   </div>
+
+//                   {/* Convert FROM PDF */}
+//                   <div>
+//                     <h3 className="font-bold text-lg text-gray-800 mb-5">Convert FROM PDF</h3>
+//                     <div className="space-y-3">
+//                       <Link href="/pdf-to-word" 
+//                       onClick={(e) => { e.preventDefault(); window.location.href = '/pdf-to-word'; }}
+
+//                       className="flex items-center gap-4 hover:bg-indigo-50 px-4 py-2.5 rounded-xl transition">
+//                         <FileText size={26} className="text-red-600" />
+//                         <span className="font-medium text-gray-700 hover:text-indigo-600">PDF to WORD</span>
+//                       </Link>
+//                       <Link href="/compress-pdf" 
+//                       onClick={(e) => { e.preventDefault(); window.location.href = '/compress-pdf'; }}
+
+//                       className="flex items-center gap-4 hover:bg-indigo-50 px-4 py-2.5 rounded-xl transition">
+//                         <FileMinus size={26} className="text-purple-600" />
+//                         <span className="font-medium text-gray-700 hover:text-indigo-600">Compress PDF</span>
+//                       </Link>
+//                       <Link href="/merge-pdf" 
+//                       onClick={(e) => { e.preventDefault(); window.location.href = '/merge-pdf'; }}
+
+//                       className="flex items-center gap-4 hover:bg-indigo-50 px-4 py-2.5 rounded-xl transition">
+//                         <FilePlus size={26} className="text-emerald-600" />
+//                         <span className="font-medium text-gray-700 hover:text-indigo-600">Merge PDF</span>
+//                       </Link>
+//                       <Link href="/split-pdf" 
+//                       onClick={(e) => { e.preventDefault(); window.location.href = '/split-pdf'; }}
+
+//                       className="flex items-center gap-4 hover:bg-indigo-50 px-4 py-2.5 rounded-xl transition">
+//                         <Scissors size={26} className="text-amber-600" />
+//                         <span className="font-medium text-gray-700 hover:text-indigo-600">Split PDF</span>
+//                       </Link>
+//                     </div>
+//                   </div>
+//                 </div>
+//               </div>
+//             </div>
+
+// <div
+//   className="relative group"
+//   onMouseEnter={(e) => {
+//     const dropdown = e.currentTarget.querySelector('.dropdown-content');
+//     dropdown.classList.remove('invisible', 'opacity-0');
+//   }}
+//   onMouseLeave={(e) => {
+//     const dropdown = e.currentTarget.querySelector('.dropdown-content');
+//     dropdown.classList.add('invisible', 'opacity-0');
+//   }}
+// >
+//   <button className="flex items-center gap-2 text-gray-700 hover:text-indigo-600 font-semibold transition">
+//     All Tools <ChevronDown size={18} className="group-hover:rotate-180 transition" />
+//   </button>
+
+// {/* DropDown Content */}
+// <div
+//   className="dropdown-content absolute top-16 left-1/2 -translate-x-1/2 w-[620px] 
+//              bg-white rounded-2xl shadow-2xl border border-gray-100 
+//              opacity-0 invisible transition-all duration-300"
+// >
+//   <div className="p-3">
+//     <h3 className="font-bold text-lg text-gray-800 mb-5 text-center">
+//       All Utility Tools
+//     </h3>
+
+//     <div className="grid grid-cols-3 gap-3">
+//       {[
+//         { href: "/qr-generator", icon: QrCode, color: "text-sky-600", label: "QR Generator" },
+//         { href: "/password-gen", icon: Lock, color: "text-amber-600", label: "Password Gen" },
+//         { href: "/unit-converter", icon: Ruler, color: "text-lime-600", label: "Unit Converter" },
+//         { href: "/youtube-thumbnail", icon: Youtube, color: "text-red-600", label: "YT Thumbnail" },
+//         { href: "/image-compressor", icon: ImageIcon, color: "text-cyan-600", label: "Image Compress" },
+//         { href: "/image-to-text", icon: ImageIcon, color: "text-indigo-600", label: "Image to Text" },
+//         { href: "/signature-maker", icon: PenTool, color: "text-emerald-600", label: "Signature Maker" },
+//         { href: "/text-to-pdf", icon: FileText, color: "text-purple-600", label: "Text to PDF" },
+//         { href: "/heic-to-jpg", icon: FileImage, color: "text-orange-600", label: "HEIC to JPG" },
+//           // 🔥 Fixed icons below
+//         { href: "/image-converter", icon: ImageIcon, color: "text-blue-600", label: "Image Converter" },
+//         // { href: "/rotate-pdf", icon: RotateCw, color: "text-fuchsia-600", label: "Rotate PDF" },
+//         // { href: "/pdf-to-jpg", icon: FileImage, color: "text-rose-600", label: "PDF to JPG" },
+//         { href: "/add-watermark", icon: Stamp, color: "text-teal-600", label: "Add Watermark" },
+//         // { href: "/protect-pdf", icon: ShieldCheck, color: "text-green-600", label: "Protect PDF" },
+
+//         // { href: "/image-converter", icon: FileImage, color: "text-orange-600", label: "Image Converter" },
+//         // { href: "/rotate-pdf", icon: FileImage, color: "text-orange-600", label: "Rotate Pdf" },
+//         // { href: "/pdf-to-jpg", icon: FileImage, color: "text-orange-600", label: "Pdf To Jpg" },
+//         // { href: "/add-watermark", icon: FileImage, color: "text-orange-600", label: "Add Watermark" },
+//         // { href: "/protect-pdf", icon: FileImage, color: "text-orange-600", label: "Protect Pdf" },
+
+
+//       ].map((item) => (
+//         <button
+//           key={item.href}
+//           onClick={(e) => {
+//             e.preventDefault();
+//             window.location.href = item.href;
+
+//             // close dropdown
+//             const dropdown = e.currentTarget.closest(".dropdown-content");
+//             dropdown?.classList.add("invisible", "opacity-0");
+//           }}
+//           className="flex items-center gap-3 w-full 
+//                      p-3 rounded-xl transition 
+//                      hover:bg-indigo-50 group justify-start"
+//         >
+//           <item.icon
+//             size={26}
+//             className={`${item.color} shrink-0`}
+//           />
+
+//           <span className="text-sm font-medium text-gray-700 group-hover:text-indigo-600">
+//             {item.label}
+//           </span>
+//         </button>
+//       ))}
+//     </div>
+//   </div>
+// </div>
+
+// </div>
+
+//             <Link href="/blog" className="text-gray-700 hover:text-indigo-600 font-semibold transition">Blog</Link>
+//             <Link href="/about" className="text-gray-700 hover:text-indigo-600 font-semibold transition">About</Link>
+//             <Link href="/contact" className="text-gray-700 hover:text-indigo-600 font-semibold transition">Contact</Link>
+//           </div>
+
+//           {/* Mobile Menu Button */}
+//           <button
+//             onClick={() => setMobileOpen(!mobileOpen)}
+//             className="lg:hidden text-gray-700 hover:text-indigo-600 text-3xl"
+//           >
+//             {mobileOpen ? "×" : "☰"}
+//           </button>
+//         </div>
+//       </div>
+
+//       {/* Mobile Menu */}
+//       {mobileOpen && (
+//         <div className="lg:hidden bg-white border-t border-gray-100">
+//           <div className="px-6 py-6 space-y-4">
+//             <Link href="/" 
+//           onClick={(e) => { e.preventDefault(); window.location.href = '/'; }}
+//             className="block font-semibold text-gray-800 py-2">Home</Link>
+//             <details className="group">
+//               <summary className="flex justify-between items-center font-semibold text-gray-800 cursor-pointer py-2">
+//                 PDF Tools <ChevronDown className="group-open:rotate-180 transition" />
+//               </summary>
+//               <div className="pl-6 mt-2 space-y-2">
+//                 <Link href="/pdf-to-word"
+//                 onClick={(e) => { e.preventDefault(); window.location.href = '/pdf-to-word'; }}
+//                 className="block text-gray-600 hover:text-indigo-600 py-1">PDF to Word</Link>
+//                 <Link href="/word-to-pdf" 
+//                 onClick={(e) => { e.preventDefault(); window.location.href = '/word-to-pdf'; }}
+//                 className="block text-gray-600 hover:text-indigo-600 py-1">Word to PDF</Link>
+//                 <Link href="/image-to-pdf" 
+//                 onClick={(e) => { e.preventDefault(); window.location.href = '/image-to-pdf'; }}
+//                 className="block text-gray-600 hover:text-indigo-600 py-1">Image to PDF</Link>
+//                 <Link href="/merge-pdf" 
+//                 onClick={(e) => { e.preventDefault(); window.location.href = '/merge-pdf'; }}
+//                 className="block text-gray-600 hover:text-indigo-600 py-1">Merge PDF</Link>
+//                 <Link href="/split-pdf" 
+//                 onClick={(e) => { e.preventDefault(); window.location.href = '/split-pdf'; }}
+//                 className="block text-gray-600 hover:text-indigo-600 py-1">Split PDF</Link>
+//                 <Link href="/compress-pdf" 
+//                 onClick={(e) => { e.preventDefault(); window.location.href = '/compress-pdf'; }}
+//                 className="block text-gray-600 hover:text-indigo-600 py-1">Compress PDF</Link>
+//                 <Link href="/excel-pdf" 
+//                 onClick={(e) => { e.preventDefault(); window.location.href = '/excel-pdf'; }}
+//                 className="block text-gray-600 hover:text-indigo-600 py-1">Excel to PDF</Link>
+//               </div>
+//             </details>
+//             <details className="group">
+//               <summary className="flex justify-between items-center font-semibold text-gray-800 cursor-pointer py-2">
+//                 All Tools <ChevronDown className="group-open:rotate-180 transition" />
+//               </summary>
+//               <div className="pl-6 mt-2 space-y-2 text-sm">
+//                 <Link href="/qr-generator" 
+//                 onClick={(e) => { e.preventDefault(); window.location.href = '/qr-generator'; }}
+
+//                 className="block text-gray-600 hover:text-indigo-600 py-1">QR Generator</Link>
+//                 <Link href="/password-gen" 
+//                 onClick={(e) => { e.preventDefault(); window.location.href = '/password-gen'; }}
+
+//                 className="block text-gray-600 hover:text-indigo-600 py-1">Password Generator</Link>
+//                 <Link href="/unit-converter" 
+//                 onClick={(e) => { e.preventDefault(); window.location.href = '/unit-converter'; }}
+
+//                 className="block text-gray-600 hover:text-indigo-600 py-1">Unit Converter</Link>
+//                 <Link href="/youtube-thumbnail" 
+//                 onClick={(e) => { e.preventDefault(); window.location.href = '/youtube-thumbnail'; }}
+
+//                 className="block text-gray-600 hover:text-indigo-600 py-1">YouTube Thumbnail</Link>
+//                 <Link href="/image-compressor" 
+//                 onClick={(e) => { e.preventDefault(); window.location.href = '/image-compressor'; }}
+
+//                 className="block text-gray-600 hover:text-indigo-600 py-1">Image Compressor</Link>
+//                 <Link href="/image-to-text" 
+//                 onClick={(e) => { e.preventDefault(); window.location.href = '/image-to-text'; }}
+
+//                 className="block text-gray-600 hover:text-indigo-600 py-1">Image to Text</Link>
+//                 <Link href="/signature-maker" 
+//                 onClick={(e) => { e.preventDefault(); window.location.href = '/signature-maker'; }}
+
+//                 className="block text-gray-600 hover:text-indigo-600 py-1">Signature Maker</Link>
+//                 <Link href="/text-to-pdf" 
+//                 onClick={(e) => { e.preventDefault(); window.location.href = '/text-to-pdf'; }}
+
+//                 className="block text-gray-600 hover:text-indigo-600 py-1">Text to PDF</Link>
+//                 <Link href="/heic-to-jpg" 
+//                 onClick={(e) => { e.preventDefault(); window.location.href = '/heic-to-jpg'; }}
+
+//                 className="block text-gray-600 hover:text-indigo-600 py-1">HEIC to JPG</Link>
+
+
+//                 {/* New 4 Tools Moble view */}
+//                 <Link href="/image-converter" 
+//                 onClick={(e) => { e.preventDefault(); window.location.href = '/image-converter'; }}
+//                 className="block text-gray-600 hover:text-indigo-600 py-1">Image Converter</Link>
+//                 <Link href="/pdf-to-jpg" 
+//                 onClick={(e) => { e.preventDefault(); window.location.href = '/pdf-to-jpg'; }}
+//                 className="block text-gray-600 hover:text-indigo-600 py-1">PDF to JPG</Link>
+//                 <Link href="/add-watermark" 
+//                 onClick={(e) => { e.preventDefault(); window.location.href = '/add-watermark'; }}
+//                 className="block text-gray-600 hover:text-indigo-600 py-1">Add Watermark</Link>
+//                 <Link href="/protect-pdf" 
+//                 onClick={(e) => { e.preventDefault(); window.location.href = '/protect-pdf'; }}
+//                 className="block text-gray-600 hover:text-indigo-600 py-1">Protect Pdf</Link>
+//               </div>
+//             </details>
+//             <Link href="/blog" 
+//           onClick={(e) => { e.preventDefault(); window.location.href = '/blog'; }}
+//             className="block font-semibold text-gray-800 py-2">Blog</Link>
+//             <Link href="/about" 
+//           onClick={(e) => { e.preventDefault(); window.location.href = '/about'; }}
+//             className="block font-semibold text-gray-800 py-2">About</Link>
+//             <Link href="/contact" 
+//           onClick={(e) => { e.preventDefault(); window.location.href = '/contact'; }}
+//             className="block font-semibold text-gray-800 py-2">Contact</Link>
+//           </div>
+//         </div>
+//       )}
+//     </nav>
+//   );
+// }
 
 
 

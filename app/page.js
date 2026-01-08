@@ -41,33 +41,34 @@ export default function HomeContent() {
   ];
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-indigo-50">
+
+        <main className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-indigo-50">
 
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-indigo-600 via-purple-600 to-blue-700 text-white py-24 px-6 overflow-hidden">
+      <section className="relative bg-gradient-to-br from-indigo-600 via-purple-600 to-blue-700 text-white py-16 px-4 overflow-hidden">
         <div className="absolute inset-0 bg-black/20"></div>
-        <div className="relative z-10 max-w-5xl mx-auto text-center">
-          <h1 className="text-4xl md:text-5xl font-black mb-8 leading-tight">
+        <div className="relative z-10 max-w-4xl mx-auto text-center">
+          <h1 className="text-3xl md:text-4xl font-bold mb-6 leading-tight">
             Tired of sketchy PDF tools?
           </h1>
-          <p className="text-lg md:text-xl mb-10 max-w-4xl mx-auto leading-relaxed opacity-95">
+          <p className="text-base md:text-lg mb-8 max-w-3xl mx-auto leading-relaxed opacity-95">
             I built PDFLinx because I was fed up — slow sites, pop-up ads, files getting stored on shady servers.
             <br />
-            <span className="block mt-4 text-xl font-semibold">
+            <span className="block mt-3 text-lg font-semibold">
               Everything here runs in your browser. Your files never leave your device.
             </span>
-            <span className="block mt-3 text-base">No ads. No signup. No nonsense.</span>
+            <span className="block mt-2 text-base">No ads. No signup. No nonsense.</span>
           </p>
 
-          <div className="flex flex-wrap justify-center gap-6 mb-10 text-base">
-            <div className="flex items-center gap-3"><span className="text-2xl">🔒</span> Files Stay on Your Device</div>
-            <div className="flex items-center gap-3"><span className="text-2xl">⚡</span> Actually Fast</div>
-            <div className="flex items-center gap-3"><span className="text-2xl">🆓</span> Completely Free</div>
+          <div className="flex flex-wrap justify-center gap-4 mb-8 text-sm">
+            <div className="flex items-center gap-2"><span className="text-xl">🔒</span> Files Stay on Your Device</div>
+            <div className="flex items-center gap-2"><span className="text-xl">⚡</span> Actually Fast</div>
+            <div className="flex items-center gap-2"><span className="text-xl">🆓</span> Completely Free</div>
           </div>
 
           <button
             onClick={() => document.getElementById("tools")?.scrollIntoView({ behavior: "smooth" })}
-            className="bg-white text-indigo-700 font-bold text-lg px-12 py-5 rounded-2xl shadow-2xl hover:shadow-indigo-400 hover:scale-105 transition-all duration-300"
+            className="bg-white text-indigo-700 font-semibold text-base px-10 py-4 rounded-xl shadow-lg hover:shadow-indigo-400 hover:scale-105 transition-all duration-300"
           >
             Check Out the Tools
           </button>
@@ -75,13 +76,13 @@ export default function HomeContent() {
       </section>
 
       {/* Why Choose */}
-      <section className="py-24 px-6">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-black text-gray-900 mb-6">Why I Built This</h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">And why you might actually like using it</p>
+      <section className="py-16 px-4">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Why I Built This</h2>
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto">And why you might actually like using it</p>
         </div>
 
-        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10">
+        <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
           {[
             { title: "No Creepy File Storage", text: "Most sites upload your files to their servers. Not here — everything processes locally in your browser.", emoji: "🔒" },
             { title: "Zero Ads", text: "No popups, no video ads, no 'upgrade to premium' bullshit. Just a clean tool that works.", emoji: "🙅‍♂️" },
@@ -90,39 +91,39 @@ export default function HomeContent() {
             { title: "No Account Needed", text: "Just open the site and start using. No email, no password, no spam later.", emoji: "🚀" },
             { title: "Works on Phone Too", text: "Tested on mobile — smooth drag-and-drop, no pinching or zooming hell.", emoji: "📱" },
           ].map((item, i) => (
-            <div key={i} className="bg-white/90 backdrop-blur-sm rounded-3xl p-8 shadow-xl hover:shadow-2xl hover:-translate-y-3 transition-all duration-500 border border-gray-100">
-              <div className="text-6xl mb-6">{item.emoji}</div>
-              <h3 className="text-2xl font-bold text-gray-800 mb-4">{item.title}</h3>
-              <p className="text-base text-gray-700 leading-relaxed">{item.text}</p>
+            <div key={i} className="bg-white rounded-xl p-6 shadow-md hover:shadow-lg hover:-translate-y-2 transition-all duration-300 border border-gray-100">
+              <div className="text-5xl mb-4">{item.emoji}</div>
+              <h3 className="text-xl font-bold text-gray-800 mb-3">{item.title}</h3>
+              <p className="text-sm text-gray-700 leading-relaxed">{item.text}</p>
             </div>
           ))}
         </div>
       </section>
 
       {/* Tools Grid */}
-      <section id="tools" className="py-24 px-6 bg-gradient-to-b from-white to-gray-50">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-black text-gray-900 mb-6">All the Tools You Need</h2>
-          <p className="text-xl text-gray-600">Pick one and get started — takes seconds</p>
+      <section id="tools" className="py-16 px-4 bg-gradient-to-b from-white to-gray-50">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">All the Tools You Need</h2>
+          <p className="text-lg text-gray-600">Pick one and get started — takes seconds</p>
         </div>
 
-        <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+        <div className="max-w-4xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {tools.map((tool, i) => (
             <div
               key={i}
               onClick={() => router.push(tool.link)}
-              className="group bg-white rounded-3xl shadow-lg hover:shadow-2xl border border-gray-200 overflow-hidden cursor-pointer transition-all duration-500 hover:-translate-y-4"
+              className="group bg-white rounded-xl shadow-md hover:shadow-lg border border-gray-200 overflow-hidden cursor-pointer transition-all duration-300 hover:-translate-y-2"
             >
-              <div className={`h-3 bg-gradient-to-r ${tool.color}`}></div>
-              <div className="p-8 text-center">
-                <div className={`p-6 rounded-2xl bg-gradient-to-br ${tool.color} text-white inline-flex mb-6 shadow-xl group-hover:scale-110 group-hover:rotate-6 transition-all duration-300`}>
+              <div className={`h-2 bg-gradient-to-r ${tool.color}`}></div>
+              <div className="p-6 text-center">
+                <div className={`p-5 rounded-xl bg-gradient-to-br ${tool.color} text-white inline-flex mb-4 shadow-md group-hover:scale-105 transition-all duration-300`}>
                   {tool.icon}
                 </div>
-                <h3 className="text-xl font-bold text-gray-800 mb-3 group-hover:text-indigo-600 transition">
+                <h3 className="text-lg font-bold text-gray-800 mb-2 group-hover:text-indigo-600 transition">
                   {tool.title}
                 </h3>
-                <p className="text-gray-600 text-sm mb-6 leading-relaxed">{tool.desc}</p>
-                <span className="text-indigo-600 font-semibold text-base flex items-center justify-center gap-2 group-hover:gap-4 transition-all">
+                <p className="text-gray-600 text-sm mb-4 leading-relaxed">{tool.desc}</p>
+                <span className="text-indigo-600 font-medium text-sm flex items-center justify-center gap-2 group-hover:gap-3 transition-all">
                   Open Tool →
                 </span>
               </div>
@@ -131,38 +132,146 @@ export default function HomeContent() {
         </div>
       </section>
 
-
-      {/* Back to Top */}
-      {showBackToTop && (
-        <button
-          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-          className="fixed bottom-8 right-8 bg-indigo-600 text-white p-4 rounded-full shadow-2xl hover:scale-110 hover:bg-indigo-700 transition-all z-50"
-        >
-          <ArrowUp className="w-6 h-6" />
-        </button>
-      )}
-      
-      {/* <InternalLinkingSections /> */}
-
-
-            {/* Final CTA */}
-      <section className="relative bg-gradient-to-br from-indigo-700 via-purple-700 to-blue-800 text-white py-20 text-center overflow-hidden">
+      {/* Final CTA */}
+      <section className="relative bg-gradient-to-br from-indigo-700 via-purple-700 to-blue-800 text-white py-16 text-center overflow-hidden">
         <div className="absolute inset-0 bg-black/20"></div>
-        <div className="relative z-10 max-w-4xl mx-auto px-6">
-          <h2 className="text-4xl md:text-5xl font-black mb-8">Give It a Try</h2>
-          <p className="text-xl mb-10 opacity-95">
+        <div className="relative z-10 max-w-4xl mx-auto px-4">
+          <h2 className="text-3xl md:text-4xl font-bold mb-6">Give It a Try</h2>
+          <p className="text-base md:text-lg mb-8 opacity-95">
             Pick any tool — I promise it won't waste your time.<br />
             Free. Fast. Private.
           </p>
           <button
             onClick={() => document.getElementById("tools")?.scrollIntoView({ behavior: "smooth" })}
-            className="bg-white text-indigo-700 font-bold text-lg px-16 py-6 rounded-2xl shadow-2xl hover:scale-105 hover:shadow-indigo-500 transition-all duration-300"
+            className="bg-white text-indigo-700 font-semibold text-base px-12 py-4 rounded-xl shadow-lg hover:scale-105 hover:shadow-indigo-500 transition-all duration-300"
           >
             Start Now
           </button>
         </div>
       </section>
     </main>
+    // <main className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-indigo-50">
+
+    //   {/* Hero Section */}
+    //   <section className="relative bg-gradient-to-br from-indigo-600 via-purple-600 to-blue-700 text-white py-24 px-6 overflow-hidden">
+    //     <div className="absolute inset-0 bg-black/20"></div>
+    //     <div className="relative z-10 max-w-5xl mx-auto text-center">
+    //       <h1 className="text-4xl md:text-5xl font-black mb-8 leading-tight">
+    //         Tired of sketchy PDF tools?
+    //       </h1>
+    //       <p className="text-lg md:text-xl mb-10 max-w-4xl mx-auto leading-relaxed opacity-95">
+    //         I built PDFLinx because I was fed up — slow sites, pop-up ads, files getting stored on shady servers.
+    //         <br />
+    //         <span className="block mt-4 text-xl font-semibold">
+    //           Everything here runs in your browser. Your files never leave your device.
+    //         </span>
+    //         <span className="block mt-3 text-base">No ads. No signup. No nonsense.</span>
+    //       </p>
+
+    //       <div className="flex flex-wrap justify-center gap-6 mb-10 text-base">
+    //         <div className="flex items-center gap-3"><span className="text-2xl">🔒</span> Files Stay on Your Device</div>
+    //         <div className="flex items-center gap-3"><span className="text-2xl">⚡</span> Actually Fast</div>
+    //         <div className="flex items-center gap-3"><span className="text-2xl">🆓</span> Completely Free</div>
+    //       </div>
+
+    //       <button
+    //         onClick={() => document.getElementById("tools")?.scrollIntoView({ behavior: "smooth" })}
+    //         className="bg-white text-indigo-700 font-bold text-lg px-12 py-5 rounded-2xl shadow-2xl hover:shadow-indigo-400 hover:scale-105 transition-all duration-300"
+    //       >
+    //         Check Out the Tools
+    //       </button>
+    //     </div>
+    //   </section>
+
+    //   {/* Why Choose */}
+    //   <section className="py-24 px-6">
+    //     <div className="text-center mb-16">
+    //       <h2 className="text-4xl md:text-5xl font-black text-gray-900 mb-6">Why I Built This</h2>
+    //       <p className="text-xl text-gray-600 max-w-3xl mx-auto">And why you might actually like using it</p>
+    //     </div>
+
+    //     <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10">
+    //       {[
+    //         { title: "No Creepy File Storage", text: "Most sites upload your files to their servers. Not here — everything processes locally in your browser.", emoji: "🔒" },
+    //         { title: "Zero Ads", text: "No popups, no video ads, no 'upgrade to premium' bullshit. Just a clean tool that works.", emoji: "🙅‍♂️" },
+    //         { title: "Built for Speed", text: "I hate waiting. These tools finish in seconds — no unnecessary loading screens.", emoji: "⚡" },
+    //         { title: "All Tools in One Place", text: "Stop jumping between 5 different websites. Everything you need is right here.", emoji: "🛠️" },
+    //         { title: "No Account Needed", text: "Just open the site and start using. No email, no password, no spam later.", emoji: "🚀" },
+    //         { title: "Works on Phone Too", text: "Tested on mobile — smooth drag-and-drop, no pinching or zooming hell.", emoji: "📱" },
+    //       ].map((item, i) => (
+    //         <div key={i} className="bg-white/90 backdrop-blur-sm rounded-3xl p-8 shadow-xl hover:shadow-2xl hover:-translate-y-3 transition-all duration-500 border border-gray-100">
+    //           <div className="text-6xl mb-6">{item.emoji}</div>
+    //           <h3 className="text-2xl font-bold text-gray-800 mb-4">{item.title}</h3>
+    //           <p className="text-base text-gray-700 leading-relaxed">{item.text}</p>
+    //         </div>
+    //       ))}
+    //     </div>
+    //   </section>
+
+    //   {/* Tools Grid */}
+    //   <section id="tools" className="py-24 px-6 bg-gradient-to-b from-white to-gray-50">
+    //     <div className="text-center mb-16">
+    //       <h2 className="text-4xl md:text-5xl font-black text-gray-900 mb-6">All the Tools You Need</h2>
+    //       <p className="text-xl text-gray-600">Pick one and get started — takes seconds</p>
+    //     </div>
+
+    //     <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+    //       {tools.map((tool, i) => (
+    //         <div
+    //           key={i}
+    //           onClick={() => router.push(tool.link)}
+    //           className="group bg-white rounded-3xl shadow-lg hover:shadow-2xl border border-gray-200 overflow-hidden cursor-pointer transition-all duration-500 hover:-translate-y-4"
+    //         >
+    //           <div className={`h-3 bg-gradient-to-r ${tool.color}`}></div>
+    //           <div className="p-8 text-center">
+    //             <div className={`p-6 rounded-2xl bg-gradient-to-br ${tool.color} text-white inline-flex mb-6 shadow-xl group-hover:scale-110 group-hover:rotate-6 transition-all duration-300`}>
+    //               {tool.icon}
+    //             </div>
+    //             <h3 className="text-xl font-bold text-gray-800 mb-3 group-hover:text-indigo-600 transition">
+    //               {tool.title}
+    //             </h3>
+    //             <p className="text-gray-600 text-sm mb-6 leading-relaxed">{tool.desc}</p>
+    //             <span className="text-indigo-600 font-semibold text-base flex items-center justify-center gap-2 group-hover:gap-4 transition-all">
+    //               Open Tool →
+    //             </span>
+    //           </div>
+    //         </div>
+    //       ))}
+    //     </div>
+    //   </section>
+
+
+    //   {/* Back to Top */}
+    //   {showBackToTop && (
+    //     <button
+    //       onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+    //       className="fixed bottom-8 right-8 bg-indigo-600 text-white p-4 rounded-full shadow-2xl hover:scale-110 hover:bg-indigo-700 transition-all z-50"
+    //     >
+    //       <ArrowUp className="w-6 h-6" />
+    //     </button>
+    //   )}
+      
+    //   {/* <InternalLinkingSections /> */}
+
+
+    //         {/* Final CTA */}
+    //   <section className="relative bg-gradient-to-br from-indigo-700 via-purple-700 to-blue-800 text-white py-20 text-center overflow-hidden">
+    //     <div className="absolute inset-0 bg-black/20"></div>
+    //     <div className="relative z-10 max-w-4xl mx-auto px-6">
+    //       <h2 className="text-4xl md:text-5xl font-black mb-8">Give It a Try</h2>
+    //       <p className="text-xl mb-10 opacity-95">
+    //         Pick any tool — I promise it won't waste your time.<br />
+    //         Free. Fast. Private.
+    //       </p>
+    //       <button
+    //         onClick={() => document.getElementById("tools")?.scrollIntoView({ behavior: "smooth" })}
+    //         className="bg-white text-indigo-700 font-bold text-lg px-16 py-6 rounded-2xl shadow-2xl hover:scale-105 hover:shadow-indigo-500 transition-all duration-300"
+    //       >
+    //         Start Now
+    //       </button>
+    //     </div>
+    //   </section>
+    // </main>
   );
 }
 
