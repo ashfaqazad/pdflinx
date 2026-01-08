@@ -87,28 +87,28 @@ export default function ImageCompressor() {
         }}
       />
 
-      {/* ==================== MAIN TOOL SECTION ==================== */}
-      <main className="min-h-screen bg-gradient-to-br from-green-50 via-white to-teal-50 py-12 px-4">
-        <div className="max-w-5xl mx-auto">
+{/* ==================== MAIN TOOL SECTION ==================== */}
+      <main className="min-h-screen bg-gradient-to-br from-green-50 via-white to-teal-50 py-8 px-4">
+        <div className="max-w-4xl mx-auto">
           {/* Header */}
-          <div className="text-center mb-12">
-            <h1 className="text-4xl md:text-6xl font-extrabold bg-gradient-to-r from-green-600 to-teal-600 bg-clip-text text-transparent mb-6">
-              Image Compressor <br /> Online (Free)
+          <div className="text-center mb-8">
+            <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-green-600 to-teal-600 bg-clip-text text-transparent mb-4">
+              Image Compressor Online (Free)
             </h1>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
               Compress JPG, PNG, WebP images up to 90% smaller without losing quality. Convert to WebP for best results — 100% free, no signup.
             </p>
           </div>
 
           {/* Upload Area */}
-          <div className="bg-white rounded-3xl shadow-2xl p-12 border border-gray-100 mb-12">
-            <div className="border-4 border-dashed border-green-300 rounded-2xl p-16 text-center hover:border-green-500 transition">
-              <Upload className="w-20 h-20 mx-auto text-green-600 mb-6" />
+          <div className="bg-white rounded-2xl shadow-lg p-8 border border-gray-100 mb-8">
+            <div className="border-2 border-dashed border-green-300 rounded-xl p-8 text-center hover:border-green-500 transition">
+              <Upload className="w-12 h-12 mx-auto text-green-600 mb-4" />
               <label className="cursor-pointer">
-                <span className="text-2xl font-bold text-gray-700 block mb-4">
+                <span className="text-lg font-semibold text-gray-700 block mb-2">
                   Drop your image here or click to upload
                 </span>
-                <span className="text-gray-500">Supports JPG, PNG, WebP, GIF • Max 50MB</span>
+                <span className="text-gray-500 text-sm">Supports JPG, PNG, WebP, GIF • Max 50MB</span>
                 <input
                   type="file"
                   accept="image/*"
@@ -121,24 +121,24 @@ export default function ImageCompressor() {
 
           {/* Comparison Section */}
           {original && (
-            <div className="grid md:grid-cols-2 gap-12 mb-12">
+            <div className="grid md:grid-cols-2 gap-8 mb-8">
               {/* Original */}
-              <div className="bg-gradient-to-br from-gray-50 to-white rounded-3xl shadow-xl p-8 text-center border border-gray-200">
-                <h3 className="text-3xl font-bold text-gray-800 mb-6">Original Image</h3>
+              <div className="bg-gradient-to-br from-gray-50 to-white rounded-xl shadow-md p-6 text-center border border-gray-200">
+                <h3 className="text-xl font-semibold text-gray-800 mb-4">Original Image</h3>
                 <img
                   src={URL.createObjectURL(original)}
                   alt="Original"
-                  className="max-w-full rounded-2xl shadow-lg mx-auto"
+                  className="max-w-full rounded-xl shadow-md mx-auto"
                 />
-                <div className="mt-8">
-                  <p className="text-2xl font-bold text-gray-700">{originalSize} MB</p>
-                  <p className="text-gray-500">Before Compression</p>
+                <div className="mt-6">
+                  <p className="text-lg font-bold text-gray-700">{originalSize} MB</p>
+                  <p className="text-gray-500 text-sm">Before Compression</p>
                 </div>
               </div>
 
               {/* Compressed */}
-              <div className="bg-gradient-to-br from-green-50 to-white rounded-3xl shadow-xl p-8 text-center border-4 border-green-400">
-                <h3 className="text-3xl font-bold text-green-600 mb-6">
+              <div className="bg-gradient-to-br from-green-50 to-white rounded-xl shadow-md p-6 text-center border-2 border-green-400">
+                <h3 className="text-xl font-semibold text-green-600 mb-4">
                   {loading ? 'Compressing...' : 'Compressed Image'}
                 </h3>
                 {compressed ? (
@@ -146,116 +146,116 @@ export default function ImageCompressor() {
                     <img
                       src={compressed}
                       alt="Compressed"
-                      className="max-w-full rounded-2xl shadow-lg mx-auto border-4 border-green-500"
+                      className="max-w-full rounded-xl shadow-md mx-auto border-2 border-green-500"
                     />
-                    <div className="mt-8">
-                      <p className="text-4xl font-extrabold text-green-600 mb-2">{saved}% Smaller!</p>
-                      <p className="text-2xl font-bold text-gray-700">{compressedSize} MB</p>
-                      <p className="text-gray-500">After Compression</p>
+                    <div className="mt-6">
+                      <p className="text-2xl font-bold text-green-600 mb-2">{saved}% Smaller!</p>
+                      <p className="text-lg font-bold text-gray-700">{compressedSize} MB</p>
+                      <p className="text-gray-500 text-sm">After Compression</p>
                     </div>
                     <a
                       href={compressed}
                       download={`compressed-${original.name.split('.')[0]}.webp`}
-                      className="inline-flex items-center gap-3 mt-8 bg-gradient-to-r from-green-600 to-teal-600 text-white font-bold text-xl px-12 py-6 rounded-2xl hover:from-green-700 hover:to-teal-700 transition shadow-2xl"
+                      className="inline-flex items-center gap-2 mt-6 bg-gradient-to-r from-green-600 to-teal-600 text-white font-semibold text-base px-8 py-3 rounded-xl hover:from-green-700 hover:to-teal-700 transition shadow-md"
                     >
-                      <Download size={32} />
+                      <Download size={20} />
                       Download Optimized Image
                     </a>
                   </>
                 ) : (
-                  <div className="h-96 flex items-center justify-center">
-                    <div className="animate-spin rounded-full h-32 w-32 border-b-8 border-green-600"></div>
+                  <div className="h-64 flex items-center justify-center">
+                    <div className="animate-spin rounded-full h-16 w-16 border-b-4 border-green-600"></div>
                   </div>
                 )}
               </div>
             </div>
           )}
 
-          <p className="text-center text-gray-600 text-lg">
+          <p className="text-center mt-6 text-gray-600 text-base">
             No signup • Unlimited compression • Nothing stored • 100% free
           </p>
         </div>
       </main>
 
       {/* ==================== SEO CONTENT SECTION ==================== */}
-      <section className="mt-20 max-w-6xl mx-auto px-6 pb-20">
+      <section className="mt-16 max-w-4xl mx-auto px-6 pb-16">
         {/* Main Heading */}
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-5xl font-extrabold bg-gradient-to-r from-green-600 to-teal-600 bg-clip-text text-transparent mb-6">
+        <div className="text-center mb-12">
+          <h2 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-green-600 to-teal-600 bg-clip-text text-transparent mb-4">
             Image Compressor Online Free - Reduce Size Up to 90% Instantly
           </h2>
-          <p className="text-xl text-gray-600 max-w-4xl mx-auto">
+          <p className="text-lg text-gray-600 max-w-3xl mx-auto">
             Compress JPG, PNG, WebP, and GIF images online without losing quality. Convert to WebP for maximum savings — perfect for websites, emails, and social media. Completely free with PDF Linx.
           </p>
         </div>
 
         {/* Benefits Grid */}
-        <div className="grid md:grid-cols-3 gap-10 mb-20">
-          <div className="bg-gradient-to-br from-green-50 to-white p-10 rounded-3xl shadow-xl border border-green-100 text-center hover:shadow-2xl transition">
-            <div className="w-20 h-20 bg-green-600 rounded-full flex items-center justify-center mx-auto mb-6">
-              <Zap className="w-10 h-10 text-white" />
+        <div className="grid md:grid-cols-3 gap-8 mb-16">
+          <div className="bg-gradient-to-br from-green-50 to-white p-8 rounded-2xl shadow-lg border border-green-100 text-center hover:shadow-xl transition">
+            <div className="w-16 h-16 bg-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
+              <Zap className="w-8 h-8 text-white" />
             </div>
-            <h3 className="text-2xl font-bold text-gray-800 mb-4">Up to 90% Smaller</h3>
-            <p className="text-gray-600">
+            <h3 className="text-xl font-semibold text-gray-800 mb-3">Up to 90% Smaller</h3>
+            <p className="text-gray-600 text-sm">
               Reduce file size dramatically while keeping visual quality — ideal for fast loading websites.
             </p>
           </div>
 
-          <div className="bg-gradient-to-br from-teal-50 to-white p-10 rounded-3xl shadow-xl border border-teal-100 text-center hover:shadow-2xl transition">
-            <div className="w-20 h-20 bg-teal-600 rounded-full flex items-center justify-center mx-auto mb-6">
-              <ImageIcon className="w-10 h-10 text-white" />
+          <div className="bg-gradient-to-br from-teal-50 to-white p-8 rounded-2xl shadow-lg border border-teal-100 text-center hover:shadow-xl transition">
+            <div className="w-16 h-16 bg-teal-600 rounded-full flex items-center justify-center mx-auto mb-4">
+              <ImageIcon className="w-8 h-8 text-white" />
             </div>
-            <h3 className="text-2xl font-bold text-gray-800 mb-4">WebP Conversion</h3>
-            <p className="text-gray-600">
+            <h3 className="text-xl font-semibold text-gray-800 mb-3">WebP Conversion</h3>
+            <p className="text-gray-600 text-sm">
               Automatically convert to modern WebP format — smallest size with excellent quality.
             </p>
           </div>
 
-          <div className="bg-gradient-to-br from-blue-50 to-white p-10 rounded-3xl shadow-xl border border-blue-100 text-center hover:shadow-2xl transition">
-            <div className="w-20 h-20 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-6">
-              <Shield className="w-10 h-10 text-white" />
+          <div className="bg-gradient-to-br from-blue-50 to-white p-8 rounded-2xl shadow-lg border border-blue-100 text-center hover:shadow-xl transition">
+            <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
+              <Shield className="w-8 h-8 text-white" />
             </div>
-            <h3 className="text-2xl font-bold text-gray-800 mb-4">Secure & Private</h3>
-            <p className="text-gray-600">
+            <h3 className="text-xl font-semibold text-gray-800 mb-3">Secure & Private</h3>
+            <p className="text-gray-600 text-sm">
               Images processed in browser — nothing uploaded or stored. Completely private and free.
             </p>
           </div>
         </div>
 
         {/* How To Steps */}
-        <div className="bg-white rounded-3xl shadow-2xl p-12 md:p-20 border border-gray-100">
-          <h3 className="text-4xl md:text-5xl font-bold text-center mb-16 text-gray-800">
+        <div className="bg-white rounded-2xl shadow-lg p-8 md:p-12 border border-gray-100">
+          <h3 className="text-2xl md:text-3xl font-bold text-center mb-12 text-gray-800">
             How to Compress Image in 3 Simple Steps
           </h3>
-          <div className="grid md:grid-cols-3 gap-12">
+          <div className="grid md:grid-cols-3 gap-8">
             <div className="text-center">
-              <div className="w-24 h-24 bg-gradient-to-r from-green-600 to-green-700 rounded-full flex items-center justify-center mx-auto mb-8 text-4xl font-bold text-white shadow-2xl">
+              <div className="w-16 h-16 bg-gradient-to-r from-green-600 to-green-700 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold text-white shadow-lg">
                 1
               </div>
-              <h4 className="text-2xl font-semibold mb-4">Upload Image</h4>
-              <p className="text-gray-600 text-lg">Drop or select any JPG, PNG, WebP, or GIF image from your device.</p>
+              <h4 className="text-lg font-semibold mb-2">Upload Image</h4>
+              <p className="text-gray-600 text-sm">Drop or select any JPG, PNG, WebP, or GIF image from your device.</p>
             </div>
 
             <div className="text-center">
-              <div className="w-24 h-24 bg-gradient-to-r from-teal-600 to-teal-700 rounded-full flex items-center justify-center mx-auto mb-8 text-4xl font-bold text-white shadow-2xl">
+              <div className="w-16 h-16 bg-gradient-to-r from-teal-600 to-teal-700 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold text-white shadow-lg">
                 2
               </div>
-              <h4 className="text-2xl font-semibold mb-4">Auto Compress</h4>
-              <p className="text-gray-600 text-lg">We optimize and convert to WebP automatically in seconds.</p>
+              <h4 className="text-lg font-semibold mb-2">Auto Compress</h4>
+              <p className="text-gray-600 text-sm">We optimize and convert to WebP automatically in seconds.</p>
             </div>
 
             <div className="text-center">
-              <div className="w-24 h-24 bg-gradient-to-r from-blue-600 to-blue-700 rounded-full flex items-center justify-center mx-auto mb-8 text-4xl font-bold text-white shadow-2xl">
+              <div className="w-16 h-16 bg-gradient-to-r from-blue-600 to-blue-700 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold text-white shadow-lg">
                 3
               </div>
-              <h4 className="text-2xl font-semibold mb-4">Download</h4>
-              <p className="text-gray-600 text-lg">Save your smaller, optimized image instantly.</p>
+              <h4 className="text-lg font-semibold mb-2">Download</h4>
+              <p className="text-gray-600 text-sm">Save your smaller, optimized image instantly.</p>
             </div>
           </div>
         </div>
 
         {/* Final CTA */}
-        <p className="text-center mt-16 text-xl text-gray-600 italic max-w-4xl mx-auto">
+        <p className="text-center mt-12 text-base text-gray-600 italic max-w-3xl mx-auto">
           Compress images every day with PDF Linx — trusted by thousands for fast, high-quality, and completely free image optimization.
         </p>
       </section>
@@ -264,9 +264,6 @@ export default function ImageCompressor() {
     </>
   );
 }
-
-
-
 
 
 

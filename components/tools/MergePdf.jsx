@@ -140,22 +140,22 @@ export default function MergePDF() {
 />
 
 
-      {/* ==================== MODERN UI (Same as Word/Image to PDF) ==================== */}
-      <main className="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 flex items-center justify-center p-6">
-        <div className="max-w-2xl w-full">
+      {/* ==================== MAIN TOOL SECTION ==================== */}
+      <main className="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 py-8 px-4">
+        <div className="max-w-4xl mx-auto">
           {/* Header */}
-          <div className="text-center mb-12">
-            <h1 className="text-2xl md:text-4xl font-extrabold bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent mb-6 leading-[1.2] md:leading-[1.1]">
+          <div className="text-center mb-8">
+            <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent mb-4">
               Merge PDF Files Online (Free)
             </h1>
-            <p className="text-2xl text-gray-700">
-              Combine multiple PDF files into one online — fast, secure & completely free.
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+              Need to combine a few PDFs into one? Drop them here – we’ll stitch them together perfectly. Fast, easy, and totally free!
             </p>
           </div>
 
           {/* Main Card */}
-          <div className="bg-white rounded-3xl shadow-2xl p-12 border border-gray-100">
-            <div className="space-y-10">
+          <div className="bg-white rounded-2xl shadow-lg p-8 border border-gray-100">
+            <div className="space-y-6">
               {/* Upload Area */}
               <div>
                 <input
@@ -169,28 +169,28 @@ export default function MergePDF() {
 
                 <div
                   onClick={() => fileInputRef.current?.click()}
-                  className={`border-4 border-dashed rounded-3xl p-20 text-center cursor-pointer transition-all ${files.length > 0 ? 'border-green-500 bg-green-50' : 'border-gray-300 hover:border-indigo-500 hover:bg-indigo-50'
+                  className={`border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition-all ${files.length > 0 ? 'border-green-500 bg-green-50' : 'border-gray-300 hover:border-indigo-500 hover:bg-indigo-50'
                     }`}
                 >
-                  <Files className="w-24 h-24 mx-auto mb-6 text-indigo-600" />
-                  <p className="text-2xl font-bold text-gray-800">
-                    {files.length > 0 ? `${files.length} PDF files selected` : "Drop PDF files here or click to upload"}
+                  <Files className="w-12 h-12 mx-auto mb-3 text-indigo-600" />
+                  <p className="text-lg font-semibold text-gray-800">
+                    {files.length > 0 ? `${files.length} PDF${files.length > 1 ? 's' : ''} ready` : "Drop PDFs here or click to upload"}
                   </p>
-                  <p className="text-gray-600 mt-3">Merge 2 or more PDFs into one file instantly</p>
+                  <p className="text-sm text-gray-600 mt-2">Combine 2 or more into one clean file</p>
                 </div>
 
                 {/* Selected Files Preview */}
                 {files.length > 0 && (
-                  <div className="mt-8 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 max-h-80 overflow-y-auto p-6 bg-gray-50 rounded-2xl">
+                  <div className="mt-4 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 max-h-64 overflow-y-auto p-4 bg-gray-50 rounded-xl">
                     {files.map((file, index) => (
-                      <div key={index} className="relative group bg-white p-4 rounded-xl shadow hover:shadow-lg transition">
-                        <FileText className="w-12 h-12 text-indigo-600 mx-auto mb-2" />
+                      <div key={index} className="relative group bg-white p-3 rounded-lg shadow hover:shadow-md transition">
+                        <FileText className="w-10 h-10 text-indigo-600 mx-auto mb-1" />
                         <p className="text-xs text-center font-medium truncate">{file.name}</p>
                         <button
                           onClick={() => removeFile(index)}
-                          className="absolute top-2 right-2 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition"
+                          className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition"
                         >
-                          <X size={16} />
+                          <X className="w-4 h-4" />
                         </button>
                       </div>
                     ))}
@@ -202,13 +202,13 @@ export default function MergePDF() {
               <button
                 onClick={handleMerge}
                 disabled={loading || files.length < 2}
-                className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-bold text-2xl py-6 rounded-2xl hover:from-indigo-700 hover:to-purple-700 disabled:opacity-50 disabled:cursor-not-allowed transition shadow-xl flex items-center justify-center gap-4"
+                className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold text-lg py-4 rounded-xl hover:from-indigo-700 hover:to-purple-700 disabled:opacity-50 disabled:cursor-not-allowed transition shadow-md flex items-center justify-center gap-2"
               >
                 {loading ? (
                   "Merging your PDFs..."
                 ) : (
                   <>
-                    <Upload size={32} />
+                    <Upload className="w-5 h-5" />
                     Merge PDFs Now
                   </>
                 )}
@@ -217,14 +217,15 @@ export default function MergePDF() {
 
             {/* Success State */}
             {success && (
-              <div className="mt-12 p-10 bg-gradient-to-r from-green-50 to-emerald-50 border-2 border-green-300 rounded-3xl text-center animate-pulse">
-                <CheckCircle className="w-24 h-24 text-green-600 mx-auto mb-6" />
-                <p className="text-3xl font-bold text-green-700 mb-6">All PDFs merged successfully!</p>
+              <div className="mt-6 p-4 bg-green-50 border-2 border-green-200 rounded-xl text-center">
+                <CheckCircle className="w-12 h-12 text-green-600 mx-auto mb-3" />
+                <p className="text-xl font-bold text-green-700 mb-2">All merged!</p>
+                <p className="text-base text-gray-700 mb-3">Your PDFs are now one perfect file</p>
                 <button
                   onClick={handleDownload}
-                  className="bg-green-600 text-white px-12 py-6 rounded-2xl font-bold text-2xl hover:bg-green-700 transition shadow-2xl flex items-center gap-4 mx-auto"
+                  className="bg-green-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-green-700 transition shadow-md flex items-center gap-2 mx-auto text-base"
                 >
-                  <Download size={36} />
+                  <Download className="w-5 h-5" />
                   Download Merged PDF
                 </button>
               </div>
@@ -232,107 +233,101 @@ export default function MergePDF() {
           </div>
 
           {/* Trust Footer */}
-          <div className="text-center mt-12 text-gray-600 space-y-2">
-            <p className="font-semibold text-lg">No signup • No limits • Files deleted after 1 hour</p>
-            <p className="text-sm">100% Free • Secure • Works on all devices</p>
-          </div>
+          <p className="text-center mt-6 text-gray-600 text-base">
+            No sign-up • No limits • Files gone after 1 hour • 100% free & secure
+          </p>
         </div>
       </main>
 
-
-      {/* ==================== UNIQUE SEO CONTENT SECTION - MERGE PDF ==================== */}
-      <section className="mt-20 max-w-5xl mx-auto px-6 pb-16">
+      {/* ==================== SEO CONTENT SECTION ==================== */}
+      <section className="mt-16 max-w-4xl mx-auto px-6 pb-16">
         {/* Main Heading */}
-        <div className="text-center mb-16">
-          <h2 className="text-2xl md:text-4xl font-extrabold bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent mb-6 leading-[1.2] md:leading-[1.1]">
-            Merge PDF Online Free - Combine Files Instantly
+        <div className="text-center mb-12">
+          <h2 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent mb-4">
+            Merge PDF Online Free – Combine Files in Seconds
           </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Combine multiple PDF files into one single document in seconds. Perfect for reports, contracts, ebooks, or any project needing unified PDFs.
+          <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+            Got multiple PDFs that belong together? Merge them into one clean document here – order stays perfect, super fast, and always free on PDF Linx!
           </p>
         </div>
 
-        {/* Benefits Grid - 3 Cards with Icons */}
-        <div className="grid md:grid-cols-3 gap-8 mb-20">
-          <div className="bg-gradient-to-br from-blue-50 to-white p-8 rounded-2xl shadow-lg border border-blue-100 text-center hover:shadow-xl transition">
-            <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-6">
+        {/* Benefits Grid */}
+        <div className="grid md:grid-cols-3 gap-8 mb-16">
+          <div className="bg-gradient-to-br from-indigo-50 to-white p-8 rounded-2xl shadow-lg border border-indigo-100 text-center hover:shadow-xl transition">
+            <div className="w-16 h-16 bg-indigo-600 rounded-full flex items-center justify-center mx-auto mb-4">
               <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
               </svg>
             </div>
-            <h3 className="text-2xl font-bold text-gray-800 mb-4">Unlimited Merges</h3>
-            <p className="text-gray-600">
-              Merge PDF files online free – combine as many documents as you need, no limits or hidden fees.
+            <h3 className="text-xl font-semibold text-gray-800 mb-3">Merge as Many as You Want</h3>
+            <p className="text-gray-600 text-sm">
+              Combine 2 or 200 PDFs – no limits, no fees.
             </p>
           </div>
 
           <div className="bg-gradient-to-br from-green-50 to-white p-8 rounded-2xl shadow-lg border border-green-100 text-center hover:shadow-xl transition">
-            <div className="w-16 h-16 bg-green-600 rounded-full flex items-center justify-center mx-auto mb-6">
+            <div className="w-16 h-16 bg-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
               <CheckCircle className="w-8 h-8 text-white" />
             </div>
-            <h3 className="text-2xl font-bold text-gray-800 mb-4">Preserve Quality & Order</h3>
-            <p className="text-gray-600">
-              Combine PDF files without losing formatting. Rearrange pages easily before merging.
+            <h3 className="text-xl font-semibold text-gray-800 mb-3">Everything Stays Perfect</h3>
+            <p className="text-gray-600 text-sm">
+              Formatting, quality, order – just like the originals.
             </p>
           </div>
 
           <div className="bg-gradient-to-br from-purple-50 to-white p-8 rounded-2xl shadow-lg border border-purple-100 text-center hover:shadow-xl transition">
-            <div className="w-16 h-16 bg-purple-600 rounded-full flex items-center justify-center mx-auto mb-6">
+            <div className="w-16 h-16 bg-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
               <Download className="w-8 h-8 text-white" />
             </div>
-            <h3 className="text-2xl font-bold text-gray-800 mb-4">Fast, Safe & Private</h3>
-            <p className="text-gray-600">
-              Merge PDFs quickly on any device. Files encrypted and deleted after 1 hour – 100% secure.
+            <h3 className="text-xl font-semibold text-gray-800 mb-3">Fast & Private</h3>
+            <p className="text-gray-600 text-sm">
+              Works instantly – files deleted after 1 hour, no sign-up needed.
             </p>
           </div>
         </div>
 
         {/* How To Steps */}
-        <div className="bg-white rounded-3xl shadow-xl p-10 md:p-16 border border-gray-100">
-          <h3 className="text-3xl md:text-4xl font-bold text-center mb-12 text-gray-800">
-            How to Merge PDF Files in 3 Simple Steps
+        <div className="bg-white rounded-2xl shadow-lg p-8 md:p-12 border border-gray-100">
+          <h3 className="text-2xl md:text-3xl font-bold text-center mb-12 text-gray-800">
+            Merge PDFs in 3 Easy Steps
           </h3>
-          <div className="grid md:grid-cols-3 gap-10">
+          <div className="grid md:grid-cols-3 gap-8">
             <div className="text-center">
-              <div className="w-20 h-20 bg-gradient-to-r from-blue-600 to-blue-700 rounded-full flex items-center justify-center mx-auto mb-6 text-3xl font-bold text-white shadow-lg">
+              <div className="w-16 h-16 bg-gradient-to-r from-indigo-600 to-indigo-700 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold text-white shadow-lg">
                 1
               </div>
-              <h4 className="text-xl font-semibold mb-3">Upload PDFs</h4>
-              <p className="text-gray-600">Drag & drop multiple PDF files or click to select</p>
+              <h4 className="text-lg font-semibold mb-2">Upload Your PDFs</h4>
+              <p className="text-gray-600 text-sm">Drop multiple files – easy preview.</p>
             </div>
 
             <div className="text-center">
-              <div className="w-20 h-20 bg-gradient-to-r from-green-600 to-green-700 rounded-full flex items-center justify-center mx-auto mb-6 text-3xl font-bold text-white shadow-lg">
+              <div className="w-16 h-16 bg-gradient-to-r from-purple-600 to-purple-700 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold text-white shadow-lg">
                 2
               </div>
-              <h4 className="text-xl font-semibold mb-3">Arrange Order</h4>
-              <p className="text-gray-600">Reorder pages with drag & drop if needed</p>
+              <h4 className="text-lg font-semibold mb-2">Remove if Needed</h4>
+              <p className="text-gray-600 text-sm">Click X on any you don’t want.</p>
             </div>
 
             <div className="text-center">
-              <div className="w-20 h-20 bg-gradient-to-r from-purple-600 to-purple-700 rounded-full flex items-center justify-center mx-auto mb-6 text-3xl font-bold text-white shadow-lg">
+              <div className="w-16 h-16 bg-gradient-to-r from-green-600 to-green-700 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold text-white shadow-lg">
                 3
               </div>
-              <h4 className="text-xl font-semibold mb-3">Click Merge</h4>
-              <p className="text-gray-600">Download your combined PDF instantly!</p>
+              <h4 className="text-lg font-semibold mb-2">Merge & Download</h4>
+              <p className="text-gray-600 text-sm">Your combined PDF is ready!</p>
             </div>
           </div>
         </div>
 
         {/* Final CTA */}
-        <p className="text-center mt-12 text-lg text-gray-500 italic">
-          Trusted by thousands daily – merge PDF files free, fast, and without hassle at PDF Linx.
+        <p className="text-center mt-12 text-base text-gray-600 italic max-w-3xl mx-auto">
+          Thousands merge PDFs daily with PDF Linx – simple, reliable, and always free.
         </p>
       </section>
 
-        <RelatedToolsSection currentPage="merge-pdf" />
-
-
+      <RelatedToolsSection currentPage="merge-pdf" />
     </>
   );
 }
-
-
 
 
 

@@ -127,31 +127,31 @@ export default function ImageToPdf() {
     }, null, 2),
   }}
 />
-      {/* ==================== MODERN & BEAUTIFUL UI ==================== */}
-      <main className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-blue-50 flex items-center justify-center p-6">
-        <div className="max-w-2xl w-full">
+      {/* ==================== MAIN TOOL SECTION ==================== */}
+      <main className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-blue-50 py-8 px-4">
+        <div className="max-w-4xl mx-auto">
           {/* Header */}
-          <div className="text-center mb-10">
-            <h1 className="text-3xl md:text-4xl font-extrabold bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent mb-6 leading-[1.2] md:leading-[1.1]">
-              Image to PDF Converter
+          <div className="text-center mb-8">
+            <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mb-4">
+              Image to PDF Converter <br /> Online (Free)
             </h1>
-            <p className="text-xl text-gray-700">
-              Convert JPG, PNG, GIF, WebP images to a single PDF — instantly & free!
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+              Got a bunch of photos or screenshots? Turn them into one neat PDF in seconds – perfect quality, super easy, and totally free!
             </p>
           </div>
 
           {/* Main Card */}
-          <div className="bg-white rounded-3xl shadow-2xl p-10 border border-gray-100">
-            <form onSubmit={handleSubmit} className="space-y-8">
+          <div className="bg-white rounded-2xl shadow-lg p-8 border border-gray-100">
+            <form onSubmit={handleSubmit} className="space-y-6">
               {/* Drop Zone */}
               <div className="relative">
                 <label className="block">
-                  <div className={`border-4 border-dashed rounded-3xl p-16 text-center cursor-pointer transition-all ${files.length > 0 ? 'border-green-500 bg-green-50' : 'border-gray-300 hover:border-purple-500 hover:bg-purple-50'}`}>
-                    <Image className="w-20 h-20 mx-auto mb-6 text-purple-600" />
-                    <p className="text-2xl font-bold text-gray-800">
-                      {files.length > 0 ? `${files.length} image(s) selected` : "Drop images here or click to upload"}
+                  <div className={`border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition-all ${files.length > 0 ? 'border-green-500 bg-green-50' : 'border-gray-300 hover:border-purple-500 hover:bg-purple-50'}`}>
+                    <Image className="w-12 h-12 mx-auto mb-3 text-purple-600" />
+                    <p className="text-lg font-semibold text-gray-700">
+                      {files.length > 0 ? `${files.length} image(s) ready` : "Drop images here or click to upload"}
                     </p>
-                    <p className="text-gray-500 mt-3">Supports JPG, PNG, GIF, WebP • Up to 50 images</p>
+                    <p className="text-sm text-gray-500 mt-2">JPG, PNG, GIF, WebP • Up to 50 images</p>
                   </div>
                   <input
                     type="file"
@@ -164,19 +164,19 @@ export default function ImageToPdf() {
 
                 {/* Selected Images Preview */}
                 {files.length > 0 && (
-                  <div className="mt-6 grid grid-cols-4 gap-4 max-h-64 overflow-y-auto p-4 bg-gray-50 rounded-2xl">
+                  <div className="mt-4 grid grid-cols-4 gap-3 max-h-56 overflow-y-auto p-3 bg-gray-50 rounded-xl">
                     {files.map((file, index) => (
                       <div key={index} className="relative group">
                         <img
                           src={URL.createObjectURL(file)}
                           alt={file.name}
-                          className="w-full h-32 object-cover rounded-lg shadow"
+                          className="w-full h-28 object-cover rounded-lg shadow"
                         />
                         <button
                           onClick={() => removeFile(index)}
                           className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition"
                         >
-                          <X size={16} />
+                          <X className="w-4 h-4" />
                         </button>
                         <p className="text-xs text-center mt-1 truncate">{file.name}</p>
                       </div>
@@ -189,13 +189,13 @@ export default function ImageToPdf() {
               <button
                 type="submit"
                 disabled={loading || files.length === 0}
-                className="w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white font-bold text-xl py-6 rounded-2xl hover:from-purple-700 hover:to-pink-700 disabled:opacity-50 disabled:cursor-not-allowed transition shadow-xl flex items-center justify-center gap-3"
+                className="w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white font-semibold text-lg py-4 rounded-xl hover:from-purple-700 hover:to-pink-700 disabled:opacity-50 disabled:cursor-not-allowed transition shadow-md flex items-center justify-center gap-2"
               >
                 {loading ? (
-                  "Converting your images..."
+                  "Turning images into PDF..."
                 ) : (
                   <>
-                    <Upload size={28} />
+                    <Upload className="w-5 h-5" />
                     Convert to PDF
                   </>
                 )}
@@ -204,14 +204,15 @@ export default function ImageToPdf() {
 
             {/* Success Message */}
             {success && (
-              <div className="mt-10 p-8 bg-gradient-to-r from-green-50 to-emerald-50 border-2 border-green-200 rounded-3xl text-center animate-bounce">
-                <CheckCircle className="w-20 h-20 text-green-600 mx-auto mb-4" />
-                <p className="text-2xl font-bold text-green-700 mb-6">All images converted successfully!</p>
+              <div className="mt-6 p-4 bg-green-50 border-2 border-green-200 rounded-xl text-center">
+                <CheckCircle className="w-12 h-12 text-green-600 mx-auto mb-3" />
+                <p className="text-xl font-bold text-green-700 mb-2">All done!</p>
+                <p className="text-base text-gray-700 mb-3">Your images are now one beautiful PDF</p>
                 <button
                   onClick={handleDownload}
-                  className="bg-green-600 text-white px-12 py-5 rounded-2xl font-bold text-xl hover:bg-green-700 transition shadow-lg flex items-center gap-3 mx-auto"
+                  className="bg-green-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-green-700 transition shadow-md flex items-center gap-2 mx-auto text-base"
                 >
-                  <Download size={32} />
+                  <Download className="w-5 h-5" />
                   Download Your PDF
                 </button>
               </div>
@@ -219,98 +220,94 @@ export default function ImageToPdf() {
           </div>
 
           {/* Trust Footer */}
-          <div className="text-center mt-10 text-gray-600 space-y-2">
-            <p className="font-medium">No registration • No watermark • Files deleted after 1 hour</p>
-            <p className="text-sm">100% Free • Secure • Works on mobile & desktop</p>
-          </div>
+          <p className="text-center mt-6 text-gray-600 text-base">
+            No sign-up • No watermark • Files gone after 1 hour • 100% free & secure
+          </p>
         </div>
       </main>
 
-
-
-
-      {/* ==================== UNIQUE SEO CONTENT SECTION - JPG TO PDF ==================== */}
-      <section className="mt-20 max-w-5xl mx-auto px-6 pb-16">
+      {/* ==================== SEO CONTENT SECTION ==================== */}
+      <section className="mt-16 max-w-4xl mx-auto px-6 pb-16">
         {/* Main Heading */}
-        <div className="text-center mb-16">
-          <h2 className="text-2xl md:text-4xl font-extrabold bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent mb-6 leading-[1.2] md:leading-[1.1]">
-            JPG to PDF Online Free - Convert Images Instantly
+        <div className="text-center mb-12">
+          <h2 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mb-4">
+            Image to PDF Online Free – Photos into One Clean PDF
           </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Convert JPG, PNG, GIF, or any image to PDF in seconds. Combine multiple photos into one professional PDF document – perfect for portfolios, reports, or sharing.
+          <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+            Turn your JPGs, PNGs, screenshots, or any pics into a single PDF – each on its own page, looking sharp. Great for portfolios, reports, or just keeping things organized. Fast and free on PDF Linx!
           </p>
         </div>
 
-        {/* Benefits Grid - 3 Cards with Icons */}
-        <div className="grid md:grid-cols-3 gap-8 mb-20">
-          <div className="bg-gradient-to-br from-blue-50 to-white p-8 rounded-2xl shadow-lg border border-blue-100 text-center hover:shadow-xl transition">
-            <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-6">
+        {/* Benefits Grid */}
+        <div className="grid md:grid-cols-3 gap-8 mb-16">
+          <div className="bg-gradient-to-br from-purple-50 to-white p-8 rounded-2xl shadow-lg border border-purple-100 text-center hover:shadow-xl transition">
+            <div className="w-16 h-16 bg-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
               <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
               </svg>
             </div>
-            <h3 className="text-2xl font-bold text-gray-800 mb-4">Any Image Format</h3>
-            <p className="text-gray-600">
-              Convert JPG to PDF, PNG to PDF, GIF, BMP, or any image format – single or multiple files.
+            <h3 className="text-xl font-semibold text-gray-800 mb-3">Any Image Works</h3>
+            <p className="text-gray-600 text-sm">
+              JPG, PNG, GIF, WebP – single or up to 50 at once.
             </p>
           </div>
 
           <div className="bg-gradient-to-br from-green-50 to-white p-8 rounded-2xl shadow-lg border border-green-100 text-center hover:shadow-xl transition">
-            <div className="w-16 h-16 bg-green-600 rounded-full flex items-center justify-center mx-auto mb-6">
+            <div className="w-16 h-16 bg-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
               <CheckCircle className="w-8 h-8 text-white" />
             </div>
-            <h3 className="text-2xl font-bold text-gray-800 mb-4">Perfect Quality & Layout</h3>
-            <p className="text-gray-600">
-              Images converted to PDF with full resolution preserved. Each photo on its own page – professional look.
+            <h3 className="text-xl font-semibold text-gray-800 mb-3">Looks Professional</h3>
+            <p className="text-gray-600 text-sm">
+              Full quality, each image on its own page – clean and sharp.
             </p>
           </div>
 
           <div className="bg-gradient-to-br from-purple-50 to-white p-8 rounded-2xl shadow-lg border border-purple-100 text-center hover:shadow-xl transition">
-            <div className="w-16 h-16 bg-purple-600 rounded-full flex items-center justify-center mx-auto mb-6">
+            <div className="w-16 h-16 bg-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
               <Download className="w-8 h-8 text-white" />
             </div>
-            <h3 className="text-2xl font-bold text-gray-800 mb-4">Fast, Free & Secure</h3>
-            <p className="text-gray-600">
-              Convert images to PDF instantly on any device. No signup, no watermark – files deleted after 1 hour.
+            <h3 className="text-xl font-semibold text-gray-800 mb-3">Fast & Private</h3>
+            <p className="text-gray-600 text-sm">
+              Instant conversion – no sign-up, files deleted after 1 hour.
             </p>
           </div>
         </div>
 
         {/* How To Steps */}
-        <div className="bg-white rounded-3xl shadow-xl p-10 md:p-16 border border-gray-100">
-          <h3 className="text-3xl md:text-4xl font-bold text-center mb-12 text-gray-800">
-            How to Convert JPG to PDF in 3 Simple Steps
+        <div className="bg-white rounded-2xl shadow-lg p-8 md:p-12 border border-gray-100">
+          <h3 className="text-2xl md:text-3xl font-bold text-center mb-12 text-gray-800">
+            Turn Images into PDF in 3 Easy Steps
           </h3>
-          <div className="grid md:grid-cols-3 gap-10">
+          <div className="grid md:grid-cols-3 gap-8">
             <div className="text-center">
-              <div className="w-20 h-20 bg-gradient-to-r from-blue-600 to-blue-700 rounded-full flex items-center justify-center mx-auto mb-6 text-3xl font-bold text-white shadow-lg">
+              <div className="w-16 h-16 bg-gradient-to-r from-purple-600 to-purple-700 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold text-white shadow-lg">
                 1
               </div>
-              <h4 className="text-xl font-semibold mb-3">Upload Images</h4>
-              <p className="text-gray-600">Drag & drop JPG, PNG, or multiple photos</p>
+              <h4 className="text-lg font-semibold mb-2">Upload Photos</h4>
+              <p className="text-gray-600 text-sm">Drop one or many – easy preview.</p>
             </div>
 
             <div className="text-center">
-              <div className="w-20 h-20 bg-gradient-to-r from-green-600 to-green-700 rounded-full flex items-center justify-center mx-auto mb-6 text-3xl font-bold text-white shadow-lg">
+              <div className="w-16 h-16 bg-gradient-to-r from-pink-600 to-pink-700 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold text-white shadow-lg">
                 2
               </div>
-              <h4 className="text-xl font-semibold mb-3">Arrange Order</h4>
-              <p className="text-gray-600">Reorder images easily with drag & drop</p>
+              <h4 className="text-lg font-semibold mb-2">Remove if Needed</h4>
+              <p className="text-gray-600 text-sm">Click X on any you don’t want.</p>
             </div>
 
             <div className="text-center">
-              <div className="w-20 h-20 bg-gradient-to-r from-purple-600 to-purple-700 rounded-full flex items-center justify-center mx-auto mb-6 text-3xl font-bold text-white shadow-lg">
+              <div className="w-16 h-16 bg-gradient-to-r from-green-600 to-green-700 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold text-white shadow-lg">
                 3
               </div>
-              <h4 className="text-xl font-semibold mb-3">Convert to PDF</h4>
-              <p className="text-gray-600">Download your professional PDF instantly!</p>
+              <h4 className="text-lg font-semibold mb-2">Get Your PDF</h4>
+              <p className="text-gray-600 text-sm">Download your combined PDF instantly!</p>
             </div>
           </div>
         </div>
 
         {/* Final CTA */}
-        <p className="text-center mt-12 text-lg text-gray-500 italic">
-          Turn your photos and images into beautiful PDFs every day – trusted by thousands at PDF Linx.
+        <p className="text-center mt-12 text-base text-gray-600 italic max-w-3xl mx-auto">
+          People turn photos into PDFs daily with PDF Linx – quick, clean, and always free.
         </p>
       </section>
 
@@ -319,8 +316,6 @@ export default function ImageToPdf() {
     </>
   );
 }
-
-
 
 
 

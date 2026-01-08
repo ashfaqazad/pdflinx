@@ -88,65 +88,65 @@ export default function YouTubeThumbnailDownloader() {
       />
 
       {/* ==================== MAIN TOOL SECTION ==================== */}
-      <main className="min-h-screen bg-gradient-to-br from-red-50 via-white to-pink-50 py-12 px-4">
-        <div className="max-w-5xl mx-auto">
+      <main className="min-h-screen bg-gradient-to-br from-red-50 via-white to-pink-50 py-8 px-4">
+        <div className="max-w-4xl mx-auto">
           {/* Header */}
-          <div className="text-center mb-12">
-            <h1 className="text-4xl md:text-6xl font-extrabold bg-gradient-to-r from-red-600 to-pink-600 bg-clip-text text-transparent mb-6">
+          <div className="text-center mb-8">
+            <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-red-600 to-pink-600 bg-clip-text text-transparent mb-4">
               YouTube Thumbnail Downloader <br /> Online (Free)
             </h1>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
               Download any YouTube video thumbnail in full HD quality instantly. Just paste the video URL — no signup, no watermark, 100% free.
             </p>
           </div>
 
           {/* Tool Card */}
-          <div className="bg-white rounded-3xl shadow-2xl p-10 border border-gray-100">
-            <div className="flex flex-col md:flex-row gap-4 mb-8">
+          <div className="bg-white rounded-2xl shadow-lg p-8 border border-gray-100">
+            <div className="flex flex-col md:flex-row gap-4 mb-6">
               <input
                 type="text"
                 value={url}
                 onChange={(e) => setUrl(e.target.value)}
                 placeholder="Paste YouTube video URL here (e.g., https://youtube.com/watch?v=...)"
-                className="flex-1 p-5 text-lg border-2 border-gray-300 rounded-xl focus:border-red-500 outline-none transition"
+                className="flex-1 p-4 text-base border-2 border-gray-300 rounded-xl focus:border-red-500 outline-none transition"
               />
               <button
                 onClick={download}
                 disabled={loading || !url}
-                className="bg-gradient-to-r from-red-600 to-pink-600 text-white font-bold text-xl px-10 py-5 rounded-xl hover:from-red-700 hover:to-pink-700 disabled:opacity-60 transition shadow-lg flex items-center justify-center gap-3"
+                className="bg-gradient-to-r from-red-600 to-pink-600 text-white font-semibold text-lg px-8 py-4 rounded-xl hover:from-red-700 hover:to-pink-700 disabled:opacity-60 transition shadow-md flex items-center justify-center gap-2"
               >
-                <Youtube size={28} />
+                <Youtube size={20} />
                 {loading ? 'Loading...' : 'Get Thumbnails'}
               </button>
             </div>
 
             {/* Thumbnails Grid */}
             {thumbs.length > 0 && (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {thumbs.map((thumb, i) => (
-                  <div key={i} className="bg-gradient-to-br from-gray-50 to-white rounded-2xl shadow-xl overflow-hidden border border-gray-200 hover:shadow-2xl transition">
+                  <div key={i} className="bg-gradient-to-br from-gray-50 to-white rounded-xl shadow-md overflow-hidden border border-gray-200 hover:shadow-lg transition">
                     <img
                       src={thumb.url}
                       alt={thumb.name}
                       className="w-full h-auto object-cover"
                       loading="lazy"
                     />
-                    <div className="p-6 text-center">
-                      <p className="font-bold text-gray-800 mb-4">{thumb.name}</p>
-                      <div className="flex justify-center gap-4">
+                    <div className="p-4 text-center">
+                      <p className="font-semibold text-gray-800 mb-2">{thumb.name}</p>
+                      <div className="flex justify-center gap-2">
                         <a
                           href={thumb.url}
                           download
-                          className="bg-green-600 text-white px-6 py-3 rounded-xl font-bold hover:bg-green-700 transition flex items-center gap-2"
+                          className="bg-green-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-green-700 transition flex items-center gap-1 text-sm"
                         >
-                          <Download size={20} />
+                          <Download size={16} />
                           Download
                         </a>
                         <button
                           onClick={() => copyUrl(thumb.url)}
-                          className="bg-blue-600 text-white px-6 py-3 rounded-xl font-bold hover:bg-blue-700 transition flex items-center gap-2"
+                          className="bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-blue-700 transition flex items-center gap-1 text-sm"
                         >
-                          <Copy size={20} />
+                          <Copy size={16} />
                           {copied ? 'Copied!' : 'Copy URL'}
                         </button>
                       </div>
@@ -157,91 +157,91 @@ export default function YouTubeThumbnailDownloader() {
             )}
           </div>
 
-          <p className="text-center mt-8 text-gray-600 text-sm">
+          <p className="text-center mt-6 text-gray-600 text-base">
             No signup • Unlimited downloads • Works on all devices • 100% free
           </p>
         </div>
       </main>
 
       {/* ==================== SEO CONTENT SECTION ==================== */}
-      <section className="mt-20 max-w-6xl mx-auto px-6 pb-20">
+      <section className="mt-16 max-w-4xl mx-auto px-6 pb-16">
         {/* Main Heading */}
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-5xl font-extrabold bg-gradient-to-r from-red-600 to-pink-600 bg-clip-text text-transparent mb-6">
+        <div className="text-center mb-12">
+          <h2 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-red-600 to-pink-600 bg-clip-text text-transparent mb-4">
             YouTube Thumbnail Downloader Online Free - Get HD Thumbnails Instantly
           </h2>
-          <p className="text-xl text-gray-600 max-w-4xl mx-auto">
+          <p className="text-lg text-gray-600 max-w-3xl mx-auto">
             Download high-quality YouTube video thumbnails in seconds. Get Max Resolution (1920x1080), HD, and more — perfect for creators, designers, and marketers. Completely free with PDF Linx.
           </p>
         </div>
 
         {/* Benefits Grid */}
-        <div className="grid md:grid-cols-3 gap-10 mb-20">
-          <div className="bg-gradient-to-br from-red-50 to-white p-10 rounded-3xl shadow-xl border border-red-100 text-center hover:shadow-2xl transition">
-            <div className="w-20 h-20 bg-red-600 rounded-full flex items-center justify-center mx-auto mb-6">
-              <Youtube className="w-10 h-10 text-white" />
+        <div className="grid md:grid-cols-3 gap-8 mb-16">
+          <div className="bg-gradient-to-br from-red-50 to-white p-8 rounded-2xl shadow-lg border border-red-100 text-center hover:shadow-xl transition">
+            <div className="w-16 h-16 bg-red-600 rounded-full flex items-center justify-center mx-auto mb-4">
+              <Youtube className="w-8 h-8 text-white" />
             </div>
-            <h3 className="text-2xl font-bold text-gray-800 mb-4">All Qualities Available</h3>
-            <p className="text-gray-600">
+            <h3 className="text-xl font-semibold text-gray-800 mb-3">All Qualities Available</h3>
+            <p className="text-gray-600 text-sm">
               Get thumbnails in Max (1920x1080), HD (1280x720), Medium, Standard — best quality every time.
             </p>
           </div>
 
-          <div className="bg-gradient-to-br from-pink-50 to-white p-10 rounded-3xl shadow-xl border border-pink-100 text-center hover:shadow-2xl transition">
-            <div className="w-20 h-20 bg-pink-600 rounded-full flex items-center justify-center mx-auto mb-6">
-              <Zap className="w-10 h-10 text-white" />
+          <div className="bg-gradient-to-br from-pink-50 to-white p-8 rounded-2xl shadow-lg border border-pink-100 text-center hover:shadow-xl transition">
+            <div className="w-16 h-16 bg-pink-600 rounded-full flex items-center justify-center mx-auto mb-4">
+              <Zap className="w-8 h-8 text-white" />
             </div>
-            <h3 className="text-2xl font-bold text-gray-800 mb-4">Instant & Easy</h3>
-            <p className="text-gray-600">
+            <h3 className="text-xl font-semibold text-gray-800 mb-3">Instant & Easy</h3>
+            <p className="text-gray-600 text-sm">
               Just paste YouTube URL — thumbnails appear instantly. Copy URL or download directly.
             </p>
           </div>
 
-          <div className="bg-gradient-to-br from-green-50 to-white p-10 rounded-3xl shadow-xl border border-green-100 text-center hover:shadow-2xl transition">
-            <div className="w-20 h-20 bg-green-600 rounded-full flex items-center justify-center mx-auto mb-6">
-              <CheckCircle className="w-10 h-10 text-white" />
+          <div className="bg-gradient-to-br from-green-50 to-white p-8 rounded-2xl shadow-lg border border-green-100 text-center hover:shadow-xl transition">
+            <div className="w-16 h-16 bg-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
+              <CheckCircle className="w-8 h-8 text-white" />
             </div>
-            <h3 className="text-2xl font-bold text-gray-800 mb-4">Free & No Limits</h3>
-            <p className="text-gray-600">
+            <h3 className="text-xl font-semibold text-gray-800 mb-3">Free & No Limits</h3>
+            <p className="text-gray-600 text-sm">
               Download unlimited thumbnails. No signup, no watermark, works on mobile & desktop.
             </p>
           </div>
         </div>
 
         {/* How To Steps */}
-        <div className="bg-white rounded-3xl shadow-2xl p-12 md:p-20 border border-gray-100">
-          <h3 className="text-4xl md:text-5xl font-bold text-center mb-16 text-gray-800">
+        <div className="bg-white rounded-2xl shadow-lg p-8 md:p-12 border border-gray-100">
+          <h3 className="text-2xl md:text-3xl font-bold text-center mb-12 text-gray-800">
             How to Download YouTube Thumbnail in 3 Simple Steps
           </h3>
-          <div className="grid md:grid-cols-3 gap-12">
+          <div className="grid md:grid-cols-3 gap-8">
             <div className="text-center">
-              <div className="w-24 h-24 bg-gradient-to-r from-red-600 to-red-700 rounded-full flex items-center justify-center mx-auto mb-8 text-4xl font-bold text-white shadow-2xl">
+              <div className="w-16 h-16 bg-gradient-to-r from-red-600 to-red-700 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold text-white shadow-lg">
                 1
               </div>
-              <h4 className="text-2xl font-semibold mb-4">Paste Video URL</h4>
-              <p className="text-gray-600 text-lg">Copy and paste any YouTube video link into the box above.</p>
+              <h4 className="text-lg font-semibold mb-2">Paste Video URL</h4>
+              <p className="text-gray-600 text-sm">Copy and paste any YouTube video link into the box above.</p>
             </div>
 
             <div className="text-center">
-              <div className="w-24 h-24 bg-gradient-to-r from-pink-600 to-pink-700 rounded-full flex items-center justify-center mx-auto mb-8 text-4xl font-bold text-white shadow-2xl">
+              <div className="w-16 h-16 bg-gradient-to-r from-pink-600 to-pink-700 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold text-white shadow-lg">
                 2
               </div>
-              <h4 className="text-2xl font-semibold mb-4">Get Thumbnails</h4>
-              <p className="text-gray-600 text-lg">All available thumbnail sizes appear instantly below.</p>
+              <h4 className="text-lg font-semibold mb-2">Get Thumbnails</h4>
+              <p className="text-gray-600 text-sm">All available thumbnail sizes appear instantly below.</p>
             </div>
 
             <div className="text-center">
-              <div className="w-24 h-24 bg-gradient-to-r from-green-600 to-green-700 rounded-full flex items-center justify-center mx-auto mb-8 text-4xl font-bold text-white shadow-2xl">
+              <div className="w-16 h-16 bg-gradient-to-r from-green-600 to-green-700 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold text-white shadow-lg">
                 3
               </div>
-              <h4 className="text-2xl font-semibold mb-4">Download or Copy</h4>
-              <p className="text-gray-600 text-lg">Download your favorite quality or copy direct image URL.</p>
+              <h4 className="text-lg font-semibold mb-2">Download or Copy</h4>
+              <p className="text-gray-600 text-sm">Download your favorite quality or copy direct image URL.</p>
             </div>
           </div>
         </div>
 
         {/* Final CTA */}
-        <p className="text-center mt-16 text-xl text-gray-600 italic max-w-4xl mx-auto">
+        <p className="text-center mt-12 text-base text-gray-600 italic max-w-3xl mx-auto">
           Download YouTube thumbnails every day with PDF Linx — trusted by creators worldwide for fast, reliable, and free thumbnail downloading.
         </p>
       </section>
@@ -251,8 +251,6 @@ export default function YouTubeThumbnailDownloader() {
     </>
   );
 }
-
-
 
 
 

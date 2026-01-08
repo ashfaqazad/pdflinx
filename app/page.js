@@ -162,8 +162,6 @@ export default function HomeContent() {
           </button>
         </div>
       </section>
-
-
     </main>
   );
 }

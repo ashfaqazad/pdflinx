@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import convert from 'convert-units';
-import { ArrowRightLeft, Ruler, Scale, Thermometer, Droplets, CheckCircle, Zap  } from 'lucide-react';
+import { ArrowRightLeft, Ruler, Scale, Thermometer, Droplets, CheckCircle, Zap } from 'lucide-react';
 import Script from 'next/script';
 import RelatedToolsSection from "@/components/RelatedTools";
 
@@ -111,8 +111,8 @@ export default function UnitConverter() {
 
           {/* Tool Card */}
           <div className="bg-white rounded-2xl shadow-lg p-8 border border-gray-100">
-            {/* Value Input */}
-            <div className="mb-8">
+            Value Input
+            {/* <div className="mb-8">
               <label className="text-xl font-semibold text-gray-800 mb-3 block text-center">
                 Enter Value to Convert
               </label>
@@ -123,7 +123,23 @@ export default function UnitConverter() {
                 className="w-full max-w-sm mx-auto p-4 text-xl font-semibold text-center border-2 border-orange-300 rounded-xl focus:border-amber-500 outline-none transition bg-gray-50"
                 placeholder="1"
               />
+            </div> */}
+
+            {/* Value Input */}
+            <div className="mb-8 flex flex-col items-center">
+              <label className="text-xl font-semibold text-gray-800 mb-3 block text-center">
+                Enter Value to Convert
+              </label>
+
+              <input
+                type="number"
+                value={value}
+                onChange={(e) => setValue(e.target.value || '')}
+                className="w-full max-w-sm p-4 text-xl font-semibold text-center border-2 border-orange-300 rounded-xl focus:border-amber-500 outline-none transition bg-gray-50"
+                placeholder="1"
+              />
             </div>
+
 
             {/* From → To Selectors */}
             <div className="grid md:grid-cols-2 gap-8 mb-8">

@@ -108,36 +108,31 @@ export default function SplitPDF() {
     }, null, 2),
   }}
 />
-      {/* ==================== UI EXACTLY SAME AS WORD TO PDF ==================== */}
-      <main className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50 flex items-center justify-center p-6">
-        <div className="max-w-2xl w-full">
-          <div className="text-center mb-10">
-            <h1 className="text-3xl md:text-4xl font-extrabold bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent mb-6 leading-[1.2] md:leading-[1.1]">
-              Split PDF Online Free
+      {/* ==================== MAIN TOOL SECTION ==================== */}
+      <main className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50 py-8 px-4">
+        <div className="max-w-4xl mx-auto">
+          {/* Header */}
+          <div className="text-center mb-8">
+            <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent mb-4">
+              Split PDF Online (Free)
             </h1>
-            <p className="text-xl text-gray-600">
-              Split PDF into individual pages online for free. Extract pages instantly with our fast,
-              secure PDF splitter — no signup, no watermark.
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+              Need just one or a few pages from a big PDF? Drop it here – we’ll split it into separate pages for you in seconds. Super simple and totally free!
             </p>
           </div>
 
-          <div className="bg-white rounded-3xl shadow-2xl p-10 border border-gray-100">
-            <form onSubmit={handleSplit} className="space-y-8">
-              {/* Upload Area - Same as Word to PDF */}
+          {/* Main Card */}
+          <div className="bg-white rounded-2xl shadow-lg p-8 border border-gray-100">
+            <form onSubmit={handleSplit} className="space-y-6">
+              {/* Upload Area */}
               <div className="relative">
                 <label className="block">
-                  <div className={`border-3 border-dashed rounded-2xl p-12 text-center cursor-pointer transition-all ${file ? 'border-green-500 bg-green-50' : 'border-gray-300 hover:border-blue-500 hover:bg-blue-50'}`}>
-                    <Scissors className="w-16 h-16 mx-auto mb-4 text-blue-600" />
-                    <p className="text-xl font-semibold text-gray-700">
-                      {/* {file ? file.name : "Drop PDF here or click to upload"} */}
-                      {file ? file.name : "Drop your PDF here or click to upload and split online"}
-
+                  <div className={`border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition-all ${file ? 'border-green-500 bg-green-50' : 'border-gray-300 hover:border-blue-500 hover:bg-blue-50'}`}>
+                    <Scissors className="w-12 h-12 mx-auto mb-3 text-blue-600" />
+                    <p className="text-lg font-semibold text-gray-700">
+                      {file ? file.name : "Drop your PDF here or click to upload"}
                     </p>
-                    {/* <p className="text-sm text-gray-500 mt-2">Your PDF will be split page by page</p> */}
-                    <p className="text-sm text-gray-500 mt-2">
-                      Split PDF into individual pages • Extract pages from PDF • 100% free
-                    </p>
-
+                    <p className="text-sm text-gray-500 mt-2">We’ll split it page by page – easy peasy!</p>
                   </div>
                   <input
                     type="file"
@@ -149,147 +144,134 @@ export default function SplitPDF() {
                 </label>
               </div>
 
-              {/* Split Button - Same gradient as Word to PDF */}
+              {/* Split Button */}
               <button
                 type="submit"
                 disabled={loading || !file}
-                className="w-full bg-gradient-to-r from-blue-600 to-green-600 text-white font-bold text-xl py-5 rounded-2xl hover:from-blue-700 hover:to-green-700 disabled:opacity-60 disabled:cursor-not-allowed transition shadow-lg flex items-center justify-center gap-3"
+                className="w-full bg-gradient-to-r from-blue-600 to-green-600 text-white font-semibold text-lg py-4 rounded-xl hover:from-blue-700 hover:to-green-700 disabled:opacity-60 disabled:cursor-not-allowed transition shadow-md flex items-center justify-center gap-2"
               >
                 {loading ? (
                   <>Splitting your PDF...</>
                 ) : (
                   <>
-                    <Scissors size={28} />
+                    <Scissors className="w-5 h-5" />
                     Split PDF
                   </>
                 )}
               </button>
             </form>
 
-            {/* Success - Exactly same style */}
+            {/* Success State */}
             {success && (
-              <div className="mt-8 p-6 bg-green-50 border-2 border-green-200 rounded-2xl text-center animate-pulse">
-                <CheckCircle className="w-16 h-16 text-green-600 mx-auto mb-4" />
-                <p className="text-2xl font-bold text-green-700 mb-4">PDF Split Complete!</p>
+              <div className="mt-6 p-4 bg-green-50 border-2 border-green-200 rounded-xl text-center">
+                <CheckCircle className="w-12 h-12 text-green-600 mx-auto mb-3" />
+                <p className="text-xl font-bold text-green-700 mb-2">All split!</p>
+                <p className="text-base text-gray-700 mb-3">Your pages are ready in a handy ZIP</p>
                 <button
                   onClick={handleDownload}
-                  className="bg-green-600 text-white px-10 py-4 rounded-xl font-bold text-xl hover:bg-green-700 transition shadow-lg flex items-center gap-3 mx-auto"
+                  className="bg-green-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-green-700 transition shadow-md flex items-center gap-2 mx-auto text-base"
                 >
-                  <Download size={28} />
+                  <Download className="w-5 h-5" />
                   Download ZIP File
                 </button>
               </div>
             )}
           </div>
 
-          <div className="text-center mt-8 text-gray-600">
-            <p className="text-sm">
-              No signup • No watermark • 100% free • Files delete after 1 hour
-            </p>
-          </div>
+          {/* Footer Note */}
+          <p className="text-center mt-6 text-gray-600 text-base">
+            No account • No watermark • Files gone after 1 hour • Completely free
+          </p>
         </div>
       </main>
 
-
-
-
-
-{/* ==================== UNIQUE SEO CONTENT SECTION - BELOW THE TOOL ==================== */}
-<section className="mt-20 max-w-5xl mx-auto px-6 pb-16">
-  {/* Main Heading */}
-  <div className="text-center mb-16">
-    <h2 className="text-3xl md:text-4xl font-extrabold bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent mb-6 leading-[1.2] md:leading-[1.1]">
-      Split PDF Online Free - Fast & Secure
-    </h2>
-    <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-      Extract individual pages from your PDF in seconds. No signup, no watermarks, no limits. 
-      Perfect for reports, invoices, ebooks, or any multi-page document.
-    </p>
-  </div>
-
-  {/* Benefits Grid - 3 Cards with Icons */}
-  <div className="grid md:grid-cols-3 gap-8 mb-20">
-    <div className="bg-gradient-to-br from-blue-50 to-white p-8 rounded-2xl shadow-lg border border-blue-100 text-center hover:shadow-xl transition">
-      <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-6">
-        <Scissors className="w-8 h-8 text-white" />
-      </div>
-      <h3 className="text-2xl font-bold text-gray-800 mb-4">Instant Page Extraction</h3>
-      <p className="text-gray-600">
-        Split large PDFs into single pages quickly. Download all pages as a clean ZIP file.
-      </p>
-    </div>
-
-    <div className="bg-gradient-to-br from-green-50 to-white p-8 rounded-2xl shadow-lg border border-green-100 text-center hover:shadow-xl transition">
-      <div className="w-16 h-16 bg-green-600 rounded-full flex items-center justify-center mx-auto mb-6">
-        <CheckCircle className="w-8 h-8 text-white" />
-      </div>
-      <h3 className="text-2xl font-bold text-gray-800 mb-4">100% Free & Private</h3>
-      <p className="text-gray-600">
-        No registration needed. Files are encrypted and automatically deleted after 1 hour.
-      </p>
-    </div>
-
-    <div className="bg-gradient-to-br from-purple-50 to-white p-8 rounded-2xl shadow-lg border border-purple-100 text-center hover:shadow-xl transition">
-      <div className="w-16 h-16 bg-purple-600 rounded-full flex items-center justify-center mx-auto mb-6">
-        <Upload className="w-8 h-8 text-white" />
-      </div>
-      <h3 className="text-2xl font-bold text-gray-800 mb-4">Works Everywhere</h3>
-      <p className="text-gray-600">
-        Use on mobile, tablet, or desktop. Supports all PDF files - no size limits.
-      </p>
-    </div>
-  </div>
-
-  {/* How To Steps - Clean Numbered List */}
-  <div className="bg-white rounded-3xl shadow-xl p-10 md:p-16 border border-gray-100">
-    <h3 className="text-3xl md:text-4xl font-bold text-center mb-12 text-gray-800">
-      How to Split a PDF in 3 Simple Steps
-    </h3>
-    <div className="grid md:grid-cols-3 gap-10">
-      <div className="text-center">
-        <div className="w-20 h-20 bg-gradient-to-r from-blue-600 to-blue-700 rounded-full flex items-center justify-center mx-auto mb-6 text-3xl font-bold text-white shadow-lg">
-          1
+      {/* ==================== SEO CONTENT SECTION ==================== */}
+      <section className="mt-16 max-w-4xl mx-auto px-6 pb-16">
+        {/* Main Heading */}
+        <div className="text-center mb-12">
+          <h2 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent mb-4">
+            Split PDF Online Free – Pull Out Pages in Seconds
+          </h2>
+          <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+            Big PDF with just a few pages you need? Split it here – every page becomes its own file, packed in a ZIP for easy download. Fast, clean, and always free on PDF Linx!
+          </p>
         </div>
-        <h4 className="text-xl font-semibold mb-3">Upload Your PDF</h4>
-        <p className="text-gray-600">Drag & drop or click to select your file</p>
-      </div>
 
-      <div className="text-center">
-        <div className="w-20 h-20 bg-gradient-to-r from-green-600 to-green-700 rounded-full flex items-center justify-center mx-auto mb-6 text-3xl font-bold text-white shadow-lg">
-          2
+        {/* Benefits Grid */}
+        <div className="grid md:grid-cols-3 gap-8 mb-16">
+          <div className="bg-gradient-to-br from-blue-50 to-white p-8 rounded-2xl shadow-lg border border-blue-100 text-center hover:shadow-xl transition">
+            <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
+              <Scissors className="w-8 h-8 text-white" />
+            </div>
+            <h3 className="text-xl font-semibold text-gray-800 mb-3">Instant Split</h3>
+            <p className="text-gray-600 text-sm">
+              One click and every page is separated – ready to use.
+            </p>
+          </div>
+
+          <div className="bg-gradient-to-br from-green-50 to-white p-8 rounded-2xl shadow-lg border border-green-100 text-center hover:shadow-xl transition">
+            <div className="w-16 h-16 bg-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
+              <CheckCircle className="w-8 h-8 text-white" />
+            </div>
+            <h3 className="text-xl font-semibold text-gray-800 mb-3">Quality Never Drops</h3>
+            <p className="text-gray-600 text-sm">
+              Pages look exactly like the original – crisp and clear.
+            </p>
+          </div>
+
+          <div className="bg-gradient-to-br from-purple-50 to-white p-8 rounded-2xl shadow-lg border border-purple-100 text-center hover:shadow-xl transition">
+            <div className="w-16 h-16 bg-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
+              <Download className="w-8 h-8 text-white" />
+            </div>
+            <h3 className="text-xl font-semibold text-gray-800 mb-3">Fast & Private</h3>
+            <p className="text-gray-600 text-sm">
+              Works instantly – no sign-up, files deleted after 1 hour.
+            </p>
+          </div>
         </div>
-        <h4 className="text-xl font-semibold mb-3">Click Split PDF</h4>
-        <p className="text-gray-600">We process and extract all pages instantly</p>
-      </div>
 
-      <div className="text-center">
-        <div className="w-20 h-20 bg-gradient-to-r from-purple-600 to-purple-700 rounded-full flex items-center justify-center mx-auto mb-6 text-3xl font-bold text-white shadow-lg">
-          3
+        {/* How To Steps */}
+        <div className="bg-white rounded-2xl shadow-lg p-8 md:p-12 border border-gray-100">
+          <h3 className="text-2xl md:text-3xl font-bold text-center mb-12 text-gray-800">
+            Split PDF in 3 Easy Steps
+          </h3>
+          <div className="grid md:grid-cols-3 gap-8">
+            <div className="text-center">
+              <div className="w-16 h-16 bg-gradient-to-r from-blue-600 to-blue-700 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold text-white shadow-lg">
+                1
+              </div>
+              <h4 className="text-lg font-semibold mb-2">Upload PDF</h4>
+              <p className="text-gray-600 text-sm">Drop your file – big or small.</p>
+            </div>
+
+            <div className="text-center">
+              <div className="w-16 h-16 bg-gradient-to-r from-green-600 to-green-700 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold text-white shadow-lg">
+                2
+              </div>
+              <h4 className="text-lg font-semibold mb-2">Hit Split</h4>
+              <p className="text-gray-600 text-sm">We separate every page neatly.</p>
+            </div>
+
+            <div className="text-center">
+              <div className="w-16 h-16 bg-gradient-to-r from-purple-600 to-purple-700 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold text-white shadow-lg">
+                3
+              </div>
+              <h4 className="text-lg font-semibold mb-2">Download ZIP</h4>
+              <p className="text-gray-600 text-sm">Grab all pages in one handy file!</p>
+            </div>
+          </div>
         </div>
-        <h4 className="text-xl font-semibold mb-3">Download Pages</h4>
-        <p className="text-gray-600">Get your split pages in a ZIP file - done!</p>
-      </div>
-    </div>
-  </div>
 
-  {/* Final CTA Line */}
-  <p className="text-center mt-12 text-lg text-gray-500 italic">
-    Join thousands who split PDFs daily with PDF Linx — fast, free, and reliable.
-  </p>
-</section>
-
+        {/* Final CTA */}
+        <p className="text-center mt-12 text-base text-gray-600 italic max-w-3xl mx-auto">
+          Folks split PDFs daily with PDF Linx – quick, reliable, and always free.
+        </p>
+      </section>
 
       <RelatedToolsSection currentPage="split-pdf" />
-
-
-
     </>
   );
 }
-
-
-
-
 
 
 
