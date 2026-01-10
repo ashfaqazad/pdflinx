@@ -72,7 +72,7 @@ export const relatedToolsData = {
 
   // Utility Tools
   'qr-generator': [
-    { title: 'Password Generator', emoji: '🔐', url: '/password-generator', desc: 'Create secure passwords' },
+    { title: 'Password Generator', emoji: '🔐', url: '/password-gen', desc: 'Create secure passwords' },
     { title: 'Signature Maker', emoji: '✍️', url: '/signature-maker', desc: 'Design digital signatures' },
     { title: 'Unit Converter', emoji: '📏', url: '/unit-converter', desc: 'Convert measurements' },
   ],
@@ -88,7 +88,7 @@ export const relatedToolsData = {
   ],
   'unit-converter': [
     { title: 'QR Generator', emoji: '📱', url: '/qr-generator', desc: 'Generate QR codes' },
-    { title: 'Password Generator', emoji: '🔐', url: '/password-generator', desc: 'Create strong passwords' },
+    { title: 'Password Generator', emoji: '🔐', url: '/password-gen', desc: 'Create strong passwords' },
     { title: 'Text to PDF', emoji: '📝', url: '/text-to-pdf', desc: 'Convert text to PDF' },
   ],
   'youtube-thumbnail': [
@@ -185,7 +185,7 @@ const DemoPage = () => {
           </optgroup>
           <optgroup label="Utility Tools">
             <option value="qr-generator">QR Generator</option>
-            <option value="password-generator">Password Generator</option>
+            <option value="password-gen">Password Generator</option>
             <option value="signature-maker">Signature Maker</option>
             <option value="unit-converter">Unit Converter</option>
             <option value="youtube-thumbnail">YouTube Thumbnail</option>
