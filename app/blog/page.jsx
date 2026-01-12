@@ -191,38 +191,50 @@ export default function Blog() {
     //   </div>
     // </main>
 
-        <main className="max-w-4xl mx-auto py-8 px-4">
 
-      <h1 className="text-3xl md:text-4xl font-bold text-center mb-6 bg-gradient-to-r from-red-600 to-purple-600 bg-clip-text text-transparent leading-tight">
-        PDF Tools Blog & Guides
-      </h1>
+    <main className="max-w-6xl mx-auto py-12 px-6"> {/* max-w-7xl → 6xl, py-16 → 12 */}
 
-      <p className="text-center text-gray-600 max-w-2xl mx-auto mb-8 text-base">
+  <h1 className="text-3xl md:text-4xl font-extrabold text-center mb-6 bg-gradient-to-r from-red-600 to-purple-600 bg-clip-text text-transparent leading-tight">
+    PDF Tools Blog & Guides
+  </h1>
+
+  <p className="text-center text-gray-600 max-w-3xl mx-auto mb-10 text-base leading-relaxed">
         Hey, welcome to the blog! Here I've written simple, no-nonsense guides for all the tools — how to merge PDFs, convert Word to PDF, pull text from images, and everything else.<br /><br />
-        Everything is <strong>free</strong>, no fluff, and I've tested it all myself in real life. Hope these help you save time and get stuff done easier. Enjoy! 🚀
-      </p>
+        Everything is <strong>free</strong>, no fluff, and I've tested it all myself in real life. Hope these help you save time and get stuff done easier.
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {blogs.map((blog, index) => (
-          <div
-            key={index}
-            className="bg-white rounded-xl shadow-md p-5 hover:shadow-lg transition hover:-translate-y-1"
-          >
-            <h2 className="text-xl font-semibold mb-2 text-gray-800 hover:text-red-700 transition">
-              {blog.title}
-            </h2>
-            <p className="text-gray-600 mb-3 text-sm leading-relaxed">{blog.description}</p>
-            <p className="text-xs text-gray-500 mb-3">{blog.date}</p>
+  </p>
+
+  {/* Compact Grid: Mobile 1 col, Tablet 2 col, Desktop 3 col */}
+  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"> {/* gap-8 → gap-6 */}
+    {blogs.map((blog, index) => (
+      <div
+        key={index}
+        className="bg-white shadow-md rounded-xl overflow-hidden hover:shadow-lg transition-all duration-300 hover:-translate-y-1 border border-gray-100 flex flex-col h-full"
+      >
+        {/* Card Content - Compact Padding */}
+        <div className="p-5 flex flex-col flex-grow"> {/* p-6 → p-5 */}
+          <h2 className="text-xl font-bold mb-2 text-gray-800 line-clamp-2 hover:text-red-700 transition">
+            {blog.title}
+          </h2>
+          <p className="text-gray-600 text-sm mb-3 leading-relaxed line-clamp-3 flex-grow">
+            {blog.description}
+          </p>
+          <p className="text-xs text-gray-500 mb-4">{blog.date}</p>
+          
+          <div className="mt-auto">
             <Link
               href={`/blog/${blog.slug}`}
-              className="inline-block bg-red-700 text-white px-4 py-2 rounded-lg font-medium hover:bg-red-600 transition text-sm"
+              className="inline-block bg-red-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-red-700 transition shadow-sm"
             >
               Read More →
             </Link>
           </div>
-        ))}
+        </div>
       </div>
-    </main>
+    ))}
+  </div>
+</main>
+
   );
 }
 

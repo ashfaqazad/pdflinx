@@ -80,7 +80,7 @@ const PrivacyPolicy = () => {
       <p>
         If you have any questions or concerns regarding this Privacy Policy,
         please contact us at:{" "}
-        <span className="font-medium">support@pdfnsky.com</span>
+        <span className="font-medium">support@pdflinx.com</span>
       </p>
     </div>
   );
