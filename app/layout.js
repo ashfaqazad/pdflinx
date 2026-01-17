@@ -4,6 +4,43 @@ import Footer from "@/components/Footer";
 import Script from "next/script";
 import HistatsTracker from '@/components/HistatsTracker';
 
+// export const metadata = {
+//   title: {
+//     default: "PDF Linx - Free Online PDF & Utility Tools | Merge, Convert & Compress",
+//     template: "%s | PDF Linx",
+//   },
+//   description:
+//     "PDF Linx (pdflinx.com) - Free online tools to convert, merge, split, and compress PDF files easily. Also includes Password Generator, QR Code Generator, Image Compressor, Unit Converter, YouTube Thumbnail Downloader, and Text to PDF tools.",
+//   keywords: [
+//     "PDF Linx", "pdflinx", "PDF converter", "merge PDF", "split PDF",
+//     "compress PDF", "Word to PDF", "PDF to Word", "online PDF tools",
+//     "Password Generator", "QR Code Generator", "Image Compressor",
+//     "Unit Converter", "YouTube Thumbnail Downloader", "Free Online Tools"
+//   ],
+//   authors: [{ name: "PDF Linx", url: "https://pdflinx.com" }],  // ✅ Without www
+//   creator: "PDF Linx",
+//   publisher: "PDF Linx",
+//   metadataBase: new URL("https://pdflinx.com"),  // ✅ Without www
+//   openGraph: {
+//     title: "PDF Linx - Free Online PDF & Utility Tools",
+//     description: "Convert, merge, and compress PDFs online — plus many utility tools on PDF Linx.",
+//     url: "https://pdflinx.com/",  // ✅ Without www
+//     siteName: "PDF Linx",
+//     images: [{ url: "https://pdflinx.com/og-image.png", width: 1200, height: 630 }],  // ✅ Without www
+//     locale: "en_US",
+//     type: "website",
+//   },
+//   twitter: {
+//     card: "summary_large_image",
+//     title: "PDF Linx - Free Online PDF & Utility Tools",
+//     description: "Best free online PDF converter & utility tools",
+//     images: ["https://pdflinx.com/og-image.png"],  // ✅ Without www
+//   },
+//   robots: { index: true, follow: true },
+//   icons: { icon: "/favicon.svg" },
+// };
+
+
 export const metadata = {
   title: {
     default: "PDF Linx - Free Online PDF & Utility Tools | Merge, Convert & Compress",
@@ -17,28 +54,39 @@ export const metadata = {
     "Password Generator", "QR Code Generator", "Image Compressor",
     "Unit Converter", "YouTube Thumbnail Downloader", "Free Online Tools"
   ],
-  authors: [{ name: "PDF Linx", url: "https://pdflinx.com" }],  // ✅ Without www
+  authors: [{ name: "PDF Linx", url: "https://pdflinx.com" }],
   creator: "PDF Linx",
   publisher: "PDF Linx",
-  metadataBase: new URL("https://pdflinx.com"),  // ✅ Without www
+  metadataBase: new URL("https://pdflinx.com"),
+
   openGraph: {
     title: "PDF Linx - Free Online PDF & Utility Tools",
     description: "Convert, merge, and compress PDFs online — plus many utility tools on PDF Linx.",
-    url: "https://pdflinx.com/",  // ✅ Without www
+    url: "https://pdflinx.com/",
     siteName: "PDF Linx",
-    images: [{ url: "https://pdflinx.com/og-image.png", width: 1200, height: 630 }],  // ✅ Without www
+    images: [{ url: "https://pdflinx.com/og-image.png", width: 1200, height: 630 }],
     locale: "en_US",
     type: "website",
   },
+
   twitter: {
     card: "summary_large_image",
     title: "PDF Linx - Free Online PDF & Utility Tools",
     description: "Best free online PDF converter & utility tools",
-    images: ["https://pdflinx.com/og-image.png"],  // ✅ Without www
+    images: ["https://pdflinx.com/og-image.png"],
   },
+
   robots: { index: true, follow: true },
-  icons: { icon: "/favicon.svg" },
+  icons: {
+    icon: [
+      // { url: "/favicon.ico" },
+      { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+      { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+    ],
+    apple: "/favicon-32x32.png",
+  },
 };
+
 
 export default function RootLayout({ children }) {
   return (
