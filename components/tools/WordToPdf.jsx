@@ -7,15 +7,13 @@ import Script from "next/script";  // Ye import add kar—schemas ke liye
 import RelatedToolsSection from "@/components/RelatedTools";
 
 
-
-
-
 export default function WordToPdf() {
   const [file, setFile] = useState(null);
   const [loading, setLoading] = useState(false);
   const [downloadUrl, setDownloadUrl] = useState(null);
   const [success, setSuccess] = useState(false);
 
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!file) return alert("Please select a Word file first!");
@@ -48,6 +46,8 @@ export default function WordToPdf() {
       setLoading(false);
     }
   };
+
+
 
   const handleDownload = async () => {
     if (!downloadUrl) return;
