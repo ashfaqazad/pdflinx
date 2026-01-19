@@ -1,53 +1,75 @@
-'use client';
-
-import { useState } from 'react';
-import { Upload, Download, Image as ImageIcon, CheckCircle } from 'lucide-react';
-import Script from 'next/script';
+"use client";
+import { useState } from "react";
+import { Upload, Download, CheckCircle, Image as ImageIcon } from "lucide-react";
+import Script from "next/script";
 import RelatedToolsSection from "@/components/RelatedTools";
 
 
 export default function PdfToJpg() {
-  const [file, setFile] = useState(null);
-  const [images, setImages] = useState([]);
+  const [files, setFiles] = useState([]); // Multiple files support
   const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
 
-  // Backend API base URL — dev aur production ke liye auto detect
-  const API_BASE = typeof window !== 'undefined' && window.location.hostname === 'localhost'
-    ? 'http://localhost:4000/convert'
-    : 'https://pdflinx.com/convert';
+  const handleFileChange = (e) => {
+    const selectedFiles = Array.from(e.target.files);
+    if (selectedFiles.length === 0) return;
+    setFiles(selectedFiles);
+    setSuccess(false);
+  };
 
-  const convert = async (e) => {
-    const selected = e.target.files[0];
-    if (!selected) return;
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (files.length === 0) return alert("Please select at least one PDF file!");
 
-    setFile(selected);
-    setImages([]);
     setLoading(true);
+    setSuccess(false);
 
     const formData = new FormData();
-    formData.append('file', selected);
+    files.forEach((file) => {
+      formData.append("files", file); // "files" name – backend mein upload.array("files")
+    });
 
     try {
-      const res = await fetch(`${API_BASE}/pdf-to-jpg`, {
-        method: 'POST',
+      // const res = await fetch("/convert/pdf-to-jpg", {
+      const res = await fetch("/convert/pdf-to-jpg", {
+        method: "POST",
         body: formData,
       });
 
-      const data = await res.json();
-
-      if (!res.ok || data.error) {
-        throw new Error(data.error || 'Conversion failed');
+      if (!res.ok) {
+        const errorText = await res.text();
+        alert("Conversion failed: " + errorText);
+        setLoading(false);
+        return;
       }
 
-      // Backend se image paths aayenge jaise /converted/xyz/page-1.jpg
-      setImages(data.images.map((path, i) => ({
-        page: i + 1,
-        url: path.startsWith('http') ? path : `https://pdflinx.com${path}`,
-        name: path.split('/').pop(),
-      })));
+      // Backend direct ZIP ya single JPG stream karega
+      const blob = await res.blob();
+      const contentType = res.headers.get("content-type");
+      const disposition = res.headers.get("content-disposition");
+      let filename = "converted_file";
+
+      if (disposition && disposition.includes("filename=")) {
+        filename = disposition.split("filename=")[1].replace(/"/g, "");
+      } else if (files.length === 1) {
+        filename = files[0].name.replace(/\.pdf$/i, contentType.includes("image") ? ".jpg" : "_jpgs.zip");
+      } else {
+        filename = "pdf_to_jpg_batch.zip";
+      }
+
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
+
+      setSuccess(true);
     } catch (err) {
       console.error(err);
-      alert('Error converting PDF to JPG. Try a smaller or text-based PDF.');
+      alert("Something went wrong. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -55,9 +77,9 @@ export default function PdfToJpg() {
 
   return (
     <>
-      {/* Schemas same as before */}
+      {/* ==================== SEO SCHEMAS ==================== */}
       <Script
-        id="howto-schema-pdf-to-jpg"
+        id="howto-schema"
         type="application/ld+json"
         strategy="afterInteractive"
         dangerouslySetInnerHTML={{
@@ -65,22 +87,22 @@ export default function PdfToJpg() {
             "@context": "https://schema.org",
             "@type": "HowTo",
             name: "How to Convert PDF to JPG Online for Free",
-            description: "Convert PDF pages to high-quality JPG images instantly.",
+            description: "Convert one or multiple PDFs to high-quality JPG images instantly – single page gets JPG, multi-page gets ZIP.",
             url: "https://pdflinx.com/pdf-to-jpg",
             step: [
-              { "@type": "HowToStep", name: "Upload PDF", text: "Select your PDF file." },
-              { "@type": "HowToStep", name: "Convert", text: "Automatic conversion to JPG." },
-              { "@type": "HowToStep", name: "Download", text: "Download all page images." }
+              { "@type": "HowToStep", name: "Upload PDFs", text: "Select one or multiple PDF files." },
+              { "@type": "HowToStep", name: "Click Convert", text: "Wait a few seconds for processing." },
+              { "@type": "HowToStep", name: "Download", text: "Auto download starts – single JPG or ZIP with all images." },
             ],
             totalTime: "PT30S",
             estimatedCost: { "@type": "MonetaryAmount", value: "0", currency: "USD" },
-            image: "https://pdflinx.com/og-image.png"
+            image: "https://pdflinx.com/og-image.png",
           }, null, 2),
         }}
       />
 
       <Script
-        id="breadcrumb-schema-pdf-to-jpg"
+        id="breadcrumb-schema-pdf-jpg"
         type="application/ld+json"
         strategy="afterInteractive"
         dangerouslySetInnerHTML={{
@@ -89,586 +111,178 @@ export default function PdfToJpg() {
             "@type": "BreadcrumbList",
             itemListElement: [
               { "@type": "ListItem", position: 1, name: "Home", item: "https://pdflinx.com" },
-              { "@type": "ListItem", position: 2, name: "PDF to JPG", item: "https://pdflinx.com/pdf-to-jpg" }
-            ]
+              { "@type": "ListItem", position: 2, name: "PDF to JPG", item: "https://pdflinx.com/pdf-to-jpg" },
+            ],
           }, null, 2),
         }}
       />
 
-      <main className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 py-12 px-4">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12">
-            <h1 className="text-4xl md:text-6xl font-extrabold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent mb-6">
+      {/* ==================== MAIN TOOL ==================== */}
+      <main className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-amber-50 py-8 px-4">
+        <div className="max-w-4xl mx-auto">
+          {/* Header */}
+          <div className="text-center mb-8">
+            <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-orange-600 to-amber-600 bg-clip-text text-transparent mb-4">
               PDF to JPG Converter <br /> Online (Free)
             </h1>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Convert PDF pages to high-quality JPG images instantly. Perfect for sharing or editing — 100% free, no signup.
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+              Extract pages from one or multiple PDFs as high-quality JPG images. Single page → direct JPG, multiple pages → ZIP file. Just like iLovePDF & Smallpdf!
             </p>
           </div>
 
-          <div className="bg-white rounded-3xl shadow-2xl p-12 border border-gray-100 mb-12">
-            <label className="block cursor-pointer">
-              <div className="border-4 border-dashed border-blue-300 rounded-3xl p-20 text-center hover:border-indigo-500 transition">
-                <Upload className="w-24 h-24 mx-auto text-blue-600 mb-8" />
-                <span className="text-3xl font-bold text-gray-800 block mb-4">
-                  Drop PDF here or click to upload
-                </span>
-                <span className="text-xl text-gray-600">Multi-page PDFs supported</span>
+          {/* Upload Card */}
+          <div className="bg-white rounded-2xl shadow-lg p-8 border border-gray-100">
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div className="relative">
+                <label className="block">
+                  <div
+                    className={`border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition-all ${
+                      files.length > 0
+                        ? "border-green-500 bg-green-50"
+                        : "border-gray-300 hover:border-orange-500 hover:bg-orange-50"
+                    }`}
+                  >
+                    <Upload className="w-12 h-12 mx-auto mb-3 text-orange-600" />
+                    <p className="text-lg font-semibold text-gray-700">
+                      {files.length > 0
+                        ? `${files.length} PDF file(s) selected`
+                        : "Drop PDF files here or click to upload"}
+                    </p>
+                    <p className="text-sm text-gray-500 mt-1">
+                      Multiple PDFs supported • Up to 100MB each
+                    </p>
+                  </div>
+                  <input
+                    type="file"
+                    accept="application/pdf"
+                    multiple
+                    onChange={handleFileChange}
+                    className="hidden"
+                  />
+                </label>
               </div>
-              <input type="file" accept=".pdf" onChange={convert} className="hidden" />
-            </label>
 
-            {loading && (
-              <div className="text-center mt-12">
-                <div className="inline-block animate-spin rounded-full h-20 w-20 border-t-4 border-b-4 border-indigo-600"></div>
-                <p className="mt-6 text-2xl font-bold text-indigo-600">Converting PDF to JPG...</p>
+              <button
+                type="submit"
+                disabled={loading || files.length === 0}
+                className="w-full bg-gradient-to-r from-orange-600 to-amber-600 text-white font-bold text-lg py-4 rounded-xl hover:from-orange-700 hover:to-amber-700 disabled:opacity-60 disabled:cursor-not-allowed transition shadow-lg flex items-center justify-center gap-3"
+              >
+                {loading ? (
+                  <>Converting... please wait</>
+                ) : (
+                  <>
+                    <ImageIcon className="w-6 h-6" />
+                    Convert to JPG
+                  </>
+                )}
+              </button>
+            </form>
+
+            {/* Success Message */}
+            {success && (
+              <div className="mt-6 p-6 bg-green-50 border-2 border-green-200 rounded-xl text-center">
+                <CheckCircle className="w-14 h-14 text-green-600 mx-auto mb-4" />
+                <p className="text-2xl font-bold text-green-700 mb-3">
+                  Success! Download started automatically
+                </p>
+                <p className="text-gray-700 mb-2">
+                  {files.length === 1
+                    ? "Single page → direct JPG | Multiple pages → ZIP file"
+                    : "Multiple PDFs → separate ZIPs/JPGs in one batch download"}
+                </p>
+                <p className="text-sm text-gray-500">
+                  Check your downloads folder. If not started, try again.
+                </p>
               </div>
             )}
           </div>
 
-          {images.length > 0 && (
-            <div>
-              <h2 className="text-4xl font-bold text-center text-indigo-700 mb-10">
-                JPG Images Ready!
-              </h2>
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10">
-                {images.map((img) => (
-                  <div key={img.page} className="bg-gradient-to-br from-white to-indigo-50 rounded-3xl shadow-2xl overflow-hidden border border-indigo-200 hover:shadow-3xl transition">
-                    <img src={img.url} alt={`Page ${img.page}`} className="w-full h-64 object-cover" />
-                    <div className="p-6 text-center">
-                      <p className="font-semibold text-gray-800 mb-4">Page {img.page}</p>
-                      <a
-                        href={img.url}
-                        download={img.name}
-                        className="inline-flex items-center gap-3 bg-gradient-to-r from-indigo-600 to-blue-600 text-white font-bold px-8 py-4 rounded-xl hover:from-indigo-700 hover:to-blue-700 transition shadow-lg"
-                      >
-                        <Download size={24} />
-                        Download JPG
-                      </a>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          <p className="text-center mt-12 text-gray-600 text-lg">
-            No signup • All pages converted • High quality • 100% free & private
+          <p className="text-center mt-8 text-gray-600 text-base">
+            No account • No watermark • Files deleted after 1 hour • 100% Free
           </p>
         </div>
       </main>
 
-      {/* SEO Section same as before — no change */}
-      <section className="mt-20 max-w-6xl mx-auto px-6 pb-20">
-        {/* ... same as previous ... */}
+      {/* ==================== SEO CONTENT SECTION ==================== */}
+      <section className="mt-16 max-w-4xl mx-auto px-6 pb-16">
+        <div className="text-center mb-12">
+          <h2 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-orange-600 to-amber-600 bg-clip-text text-transparent mb-4">
+            PDF to JPG Online Free – Extract Pages as Images Instantly
+          </h2>
+          <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+            Convert one or multiple PDFs to JPG images. Single page PDFs become direct JPGs, multi-page PDFs become clean ZIP files – just like iLovePDF and Smallpdf. Fast, free, no signup!
+          </p>
+        </div>
+
+        <div className="grid md:grid-cols-3 gap-8 mb-16">
+          <div className="bg-gradient-to-br from-orange-50 to-white p-8 rounded-2xl shadow-lg border border-orange-100 text-center hover:shadow-xl transition">
+            <div className="w-16 h-16 bg-orange-600 rounded-full flex items-center justify-center mx-auto mb-4">
+              <ImageIcon className="w-8 h-8 text-white" />
+            </div>
+            <h3 className="text-xl font-semibold text-gray-800 mb-3">Smart Download</h3>
+            <p className="text-gray-600 text-sm">
+              1 page = single JPG | Multiple pages = ZIP with all images
+            </p>
+          </div>
+
+          <div className="bg-gradient-to-br from-amber-50 to-white p-8 rounded-2xl shadow-lg border border-amber-100 text-center hover:shadow-xl transition">
+            <div className="w-16 h-16 bg-amber-600 rounded-full flex items-center justify-center mx-auto mb-4">
+              <CheckCircle className="w-8 h-8 text-white" />
+            </div>
+            <h3 className="text-xl font-semibold text-gray-800 mb-3">Batch Support</h3>
+            <p className="text-gray-600 text-sm">
+              Upload multiple PDFs at once – each gets its own JPG/ZIP
+            </p>
+          </div>
+
+          <div className="bg-gradient-to-br from-purple-50 to-white p-8 rounded-2xl shadow-lg border border-purple-100 text-center hover:shadow-xl transition">
+            <div className="w-16 h-16 bg-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
+              <Download className="w-8 h-8 text-white" />
+            </div>
+            <h3 className="text-xl font-semibold text-gray-800 mb-3">Fast & Private</h3>
+            <p className="text-gray-600 text-sm">
+              Instant conversion, auto download, files deleted after 1 hour
+            </p>
+          </div>
+        </div>
+
+        <div className="bg-white rounded-2xl shadow-lg p-8 md:p-12 border border-gray-100">
+          <h3 className="text-2xl md:text-3xl font-bold text-center mb-12 text-gray-800">
+            Convert PDF to JPG in 3 Easy Steps
+          </h3>
+          <div className="grid md:grid-cols-3 gap-8">
+            <div className="text-center">
+              <div className="w-16 h-16 bg-gradient-to-r from-orange-600 to-orange-700 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold text-white shadow-lg">
+                1
+              </div>
+              <h4 className="text-lg font-semibold mb-2">Upload PDFs</h4>
+              <p className="text-gray-600 text-sm">One or multiple – drop them here</p>
+            </div>
+            <div className="text-center">
+              <div className="w-16 h-16 bg-gradient-to-r from-amber-600 to-amber-700 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold text-white shadow-lg">
+                2
+              </div>
+              <h4 className="text-lg font-semibold mb-2">Hit Convert</h4>
+              <p className="text-gray-600 text-sm">We extract every page as JPG</p>
+            </div>
+            <div className="text-center">
+              <div className="w-16 h-16 bg-gradient-to-r from-purple-600 to-purple-700 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold text-white shadow-lg">
+                3
+              </div>
+              <h4 className="text-lg font-semibold mb-2">Auto Download</h4>
+              <p className="text-gray-600 text-sm">JPG or ZIP starts downloading instantly</p>
+            </div>
+          </div>
+        </div>
+
+        <p className="text-center mt-12 text-base text-gray-600 italic max-w-3xl mx-auto">
+          Thousands trust PDF Linx daily for PDF to JPG conversions – fast, smart, and completely free.
+        </p>
       </section>
+
+    <RelatedToolsSection currentPage="pdf-to-jpg" />
+
     </>
   );
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// 'use client';
-
-// import { useState } from 'react';
-// import { Upload, Download, Image as ImageIcon, CheckCircle } from 'lucide-react';
-// import Script from 'next/script';
-
-// export default function PdfToJpg() {
-//   const [file, setFile] = useState(null);
-//   const [images, setImages] = useState([]);
-//   const [loading, setLoading] = useState(false);
-
-//   const convert = async (e) => {
-//     const selected = e.target.files[0];
-//     if (!selected) return;
-
-//     setFile(selected);
-//     setImages([]);
-//     setLoading(true);
-
-//     const formData = new FormData();
-//     formData.append('file', selected);
-
-//     try {
-//       const res = await fetch('/api/convert/pdf-to-jpg', {
-//         method: 'POST',
-//         body: formData,
-//       });
-
-//       const data = await res.json();
-
-//       if (!res.ok || data.error) {
-//         throw new Error(data.error || 'Conversion failed');
-//       }
-
-//       // Backend se image URLs aayenge
-//       setImages(data.images.map((path, i) => ({
-//         page: i + 1,
-//         url: path, // direct server path jaise /converted/abc/page-1.jpg
-//         name: `page-${i + 1}.jpg`,
-//       })));
-//     } catch (err) {
-//       console.error(err);
-//       alert('Error converting PDF to JPG. Try a smaller or text-based PDF.');
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
-
-//   return (
-//     <>
-//       {/* ==================== SCHEMAS (same as before) ==================== */}
-//       <Script
-//         id="howto-schema-pdf-to-jpg"
-//         type="application/ld+json"
-//         strategy="afterInteractive"
-//         dangerouslySetInnerHTML={{
-//           __html: JSON.stringify({
-//             "@context": "https://schema.org",
-//             "@type": "HowTo",
-//             name: "How to Convert PDF to JPG Online for Free",
-//             description: "Convert PDF pages to high-quality JPG images instantly.",
-//             url: "https://pdflinx.com/pdf-to-jpg",
-//             step: [
-//               { "@type": "HowToStep", name: "Upload PDF", text: "Select your PDF file." },
-//               { "@type": "HowToStep", name: "Convert", text: "Automatic conversion to JPG." },
-//               { "@type": "HowToStep", name: "Download", text: "Download all page images." }
-//             ],
-//             totalTime: "PT30S",
-//             estimatedCost: { "@type": "MonetaryAmount", value: "0", currency: "USD" },
-//             image: "https://pdflinx.com/og-image.png"
-//           }, null, 2),
-//         }}
-//       />
-
-//       <Script
-//         id="breadcrumb-schema-pdf-to-jpg"
-//         type="application/ld+json"
-//         strategy="afterInteractive"
-//         dangerouslySetInnerHTML={{
-//           __html: JSON.stringify({
-//             "@context": "https://schema.org",
-//             "@type": "BreadcrumbList",
-//             itemListElement: [
-//               { "@type": "ListItem", position: 1, name: "Home", item: "https://pdflinx.com" },
-//               { "@type": "ListItem", position: 2, name: "PDF to JPG", item: "https://pdflinx.com/pdf-to-jpg" }
-//             ]
-//           }, null, 2),
-//         }}
-//       />
-
-//       {/* ==================== MAIN UI (same premium design) ==================== */}
-//       <main className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 py-12 px-4">
-//         <div className="max-w-6xl mx-auto">
-//           <div className="text-center mb-12">
-//             <h1 className="text-4xl md:text-6xl font-extrabold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent mb-6">
-//               PDF to JPG Converter <br /> Online (Free)
-//             </h1>
-//             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-//               Convert PDF pages to high-quality JPG images instantly. Perfect for sharing or editing — 100% free, no signup.
-//             </p>
-//           </div>
-
-//           <div className="bg-white rounded-3xl shadow-2xl p-12 border border-gray-100 mb-12">
-//             <label className="block cursor-pointer">
-//               <div className="border-4 border-dashed border-blue-300 rounded-3xl p-20 text-center hover:border-indigo-500 transition">
-//                 <Upload className="w-24 h-24 mx-auto text-blue-600 mb-8" />
-//                 <span className="text-3xl font-bold text-gray-800 block mb-4">
-//                   Drop PDF here or click to upload
-//                 </span>
-//                 <span className="text-xl text-gray-600">Multi-page PDFs supported</span>
-//               </div>
-//               <input type="file" accept=".pdf" onChange={convert} className="hidden" />
-//             </label>
-
-//             {loading && (
-//               <div className="text-center mt-12">
-//                 <div className="inline-block animate-spin rounded-full h-20 w-20 border-t-4 border-b-4 border-indigo-600"></div>
-//                 <p className="mt-6 text-2xl font-bold text-indigo-600">Converting PDF to JPG...</p>
-//               </div>
-//             )}
-//           </div>
-
-//           {images.length > 0 && (
-//             <div>
-//               <h2 className="text-4xl font-bold text-center text-indigo-700 mb-10">
-//                 JPG Images Ready!
-//               </h2>
-//               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10">
-//                 {images.map((img) => (
-//                   <div key={img.page} className="bg-gradient-to-br from-white to-indigo-50 rounded-3xl shadow-2xl overflow-hidden border border-indigo-200 hover:shadow-3xl transition">
-//                     <img src={img.url} alt={`Page ${img.page}`} className="w-full h-64 object-cover" />
-//                     <div className="p-6 text-center">
-//                       <p className="font-semibold text-gray-800 mb-4">Page {img.page}</p>
-//                       <a
-//                         href={img.url}
-//                         download={img.name}
-//                         className="inline-flex items-center gap-3 bg-gradient-to-r from-indigo-600 to-blue-600 text-white font-bold px-8 py-4 rounded-xl hover:from-indigo-700 hover:to-blue-700 transition shadow-lg"
-//                       >
-//                         <Download size={24} />
-//                         Download JPG
-//                       </a>
-//                     </div>
-//                   </div>
-//                 ))}
-//               </div>
-//             </div>
-//           )}
-
-//           <p className="text-center mt-12 text-gray-600 text-lg">
-//             No signup • All pages converted • High quality • 100% free & private
-//           </p>
-//         </div>
-//       </main>
-
-//       {/* ==================== SEO CONTENT SECTION (same as before) ==================== */}
-//       <section className="mt-20 max-w-6xl mx-auto px-6 pb-20">
-//         <div className="text-center mb-16">
-//           <h2 className="text-3xl md:text-5xl font-extrabold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent mb-6">
-//             PDF to JPG Converter Online Free - Convert Pages to Images
-//           </h2>
-//           <p className="text-xl text-gray-600 max-w-4xl mx-auto">
-//             Convert each PDF page to high-quality JPG image instantly. Perfect for extracting images, sharing, or editing — completely free with PDF Linx.
-//           </p>
-//         </div>
-
-//         <div className="grid md:grid-cols-3 gap-10 mb-20">
-//           <div className="bg-gradient-to-br from-blue-50 to-white p-10 rounded-3xl shadow-xl border border-blue-100 text-center hover:shadow-2xl transition">
-//             <div className="w-20 h-20 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-6">
-//               <ImageIcon className="w-10 h-10 text-white" />
-//             </div>
-//             <h3 className="text-2xl font-bold text-gray-800 mb-4">Every Page Converted</h3>
-//             <p className="text-gray-600">All pages become separate high-quality JPG images.</p>
-//           </div>
-
-//           <div className="bg-gradient-to-br from-indigo-50 to-white p-10 rounded-3xl shadow-xl border border-indigo-100 text-center hover:shadow-2xl transition">
-//             <div className="w-20 h-20 bg-indigo-600 rounded-full flex items-center justify-center mx-auto mb-6">
-//               <CheckCircle className="w-10 h-10 text-white" />
-//             </div>
-//             <h3 className="text-2xl font-bold text-gray-800 mb-4">Perfect Quality</h3>
-//             <p className="text-gray-600">High-resolution JPG export — no quality loss.</p>
-//           </div>
-
-//           <div className="bg-gradient-to-br from-green-50 to-white p-10 rounded-3xl shadow-xl border border-green-100 text-center hover:shadow-2xl transition">
-//             <div className="w-20 h-20 bg-green-600 rounded-full flex items-center justify-center mx-auto mb-6">
-//               <CheckCircle className="w-10 h-10 text-white" />
-//             </div>
-//             <h3 className="text-2xl font-bold text-gray-800 mb-4">Fast & Free</h3>
-//             <p className="text-gray-600">Convert unlimited PDFs instantly — no signup needed.</p>
-//           </div>
-//         </div>
-
-//         <div className="bg-white rounded-3xl shadow-2xl p-12 md:p-20 border border-gray-100">
-//           <h3 className="text-4xl md:text-5xl font-bold text-center mb-16 text-gray-800">
-//             How to Convert PDF to JPG in 3 Simple Steps
-//           </h3>
-//           <div className="grid md:grid-cols-3 gap-12">
-//             <div className="text-center">
-//               <div className="w-24 h-24 bg-gradient-to-r from-blue-600 to-blue-700 rounded-full flex items-center justify-center mx-auto mb-8 text-4xl font-bold text-white shadow-2xl">
-//                 1
-//               </div>
-//               <h4 className="text-2xl font-semibold mb-4">Upload PDF</h4>
-//               <p className="text-gray-600 text-lg">Drop or select your PDF file.</p>
-//             </div>
-
-//             <div className="text-center">
-//               <div className="w-24 h-24 bg-gradient-to-r from-indigo-600 to-indigo-700 rounded-full flex items-center justify-center mx-auto mb-8 text-4xl font-bold text-white shadow-2xl">
-//                 2
-//               </div>
-//               <h4 className="text-2xl font-semibold mb-4">Auto Convert</h4>
-//               <p className="text-gray-600 text-lg">Each page converted to JPG automatically.</p>
-//             </div>
-
-//             <div className="text-center">
-//               <div className="w-24 h-24 bg-gradient-to-r from-green-600 to-green-700 rounded-full flex items-center justify-center mx-auto mb-8 text-4xl font-bold text-white shadow-2xl">
-//                 3
-//               </div>
-//               <h4 className="text-2xl font-semibold mb-4">Download</h4>
-//               <p className="text-gray-600 text-lg">Save all JPG images instantly.</p>
-//             </div>
-//           </div>
-//         </div>
-
-//         <p className="text-center mt-16 text-xl text-gray-600 italic max-w-4xl mx-auto">
-//           Convert PDF to JPG every day with PDF Linx — trusted by thousands for fast, high-quality, and completely free image extraction.
-//         </p>
-//       </section>
-//     </>
-//   );
-// }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// // 'use client';
-
-// // import { useState } from 'react';
-// // import { PDFDocument } from 'pdf-lib';
-// // import { Upload, Download, Image as ImageIcon, CheckCircle } from 'lucide-react';
-// // import Script from 'next/script';
-
-// // export default function PdfToJpg() {
-// //   const [file, setFile] = useState(null);
-// //   const [images, setImages] = useState([]);
-// //   const [loading, setLoading] = useState(false);
-
-// //   const convert = async (e) => {
-// //     const selected = e.target.files[0];
-// //     if (!selected) return;
-
-// //     setFile(selected);
-// //     setImages([]);
-// //     setLoading(true);
-
-// //     try {
-// //       const arrayBuffer = await selected.arrayBuffer();
-// //       const pdfDoc = await PDFDocument.load(arrayBuffer);
-// //       const pages = pdfDoc.getPages();
-// //       const results = [];
-
-// //       for (let i = 0; i < pages.length; i++) {
-// //         const page = pages[i];
-// //         const viewport = page.getViewport({ scale: 2.0 });
-// //         const canvas = document.createElement('canvas');
-// //         canvas.width = viewport.width;
-// //         canvas.height = viewport.height;
-// //         const context = canvas.getContext('2d');
-
-// //         await page.render({ canvasContext: context, viewport }).promise;
-
-// //         canvas.toBlob((blob) => {
-// //           const url = URL.createObjectURL(blob);
-// //           results.push({
-// //             page: i + 1,
-// //             url,
-// //             name: `${selected.name.replace('.pdf', '')}-page-${i + 1}.jpg`,
-// //           });
-
-// //           if (results.length === pages.length) {
-// //             setImages(results);
-// //             setLoading(false);
-// //           }
-// //         }, 'image/jpeg', 0.95);
-// //       }
-// //     } catch (err) {
-// //       alert('Error converting PDF to JPG');
-// //       setLoading(false);
-// //     }
-// //   };
-
-// //   return (
-// //     <>
-// //       <Script
-// //         id="howto-schema-pdf-to-jpg"
-// //         type="application/ld+json"
-// //         strategy="afterInteractive"
-// //         dangerouslySetInnerHTML={{
-// //           __html: JSON.stringify({
-// //             "@context": "https://schema.org",
-// //             "@type": "HowTo",
-// //             name: "How to Convert PDF to JPG Online for Free",
-// //             description: "Convert PDF pages to high-quality JPG images instantly.",
-// //             url: "https://pdflinx.com/pdf-to-jpg",
-// //             step: [
-// //               { "@type": "HowToStep", name: "Upload PDF", text: "Select your PDF file." },
-// //               { "@type": "HowToStep", name: "Convert", text: "Automatic conversion to JPG." },
-// //               { "@type": "HowToStep", name: "Download", text: "Download all page images." }
-// //             ],
-// //             totalTime: "PT30S",
-// //             estimatedCost: { "@type": "MonetaryAmount", value: "0", currency: "USD" },
-// //             image: "https://pdflinx.com/og-image.png"
-// //           }, null, 2),
-// //         }}
-// //       />
-
-// //       <Script
-// //         id="breadcrumb-schema-pdf-to-jpg"
-// //         type="application/ld+json"
-// //         strategy="afterInteractive"
-// //         dangerouslySetInnerHTML={{
-// //           __html: JSON.stringify({
-// //             "@context": "https://schema.org",
-// //             "@type": "BreadcrumbList",
-// //             itemListElement: [
-// //               { "@type": "ListItem", position: 1, name: "Home", item: "https://pdflinx.com" },
-// //               { "@type": "ListItem", position: 2, name: "PDF to JPG", item: "https://pdflinx.com/pdf-to-jpg" }
-// //             ]
-// //           }, null, 2),
-// //         }}
-// //       />
-
-// //       <main className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 py-12 px-4">
-// //         <div className="max-w-6xl mx-auto">
-// //           <div className="text-center mb-12">
-// //             <h1 className="text-4xl md:text-6xl font-extrabold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent mb-6">
-// //               PDF to JPG Converter <br /> Online (Free)
-// //             </h1>
-// //             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-// //               Convert PDF pages to high-quality JPG images instantly. Perfect for sharing or editing — 100% free, no signup.
-// //             </p>
-// //           </div>
-
-// //           <div className="bg-white rounded-3xl shadow-2xl p-12 border border-gray-100 mb-12">
-// //             <label className="block cursor-pointer">
-// //               <div className="border-4 border-dashed border-blue-300 rounded-3xl p-20 text-center hover:border-indigo-500 transition">
-// //                 <Upload className="w-24 h-24 mx-auto text-blue-600 mb-8" />
-// //                 <span className="text-3xl font-bold text-gray-800 block mb-4">
-// //                   Drop PDF here or click to upload
-// //                 </span>
-// //                 <span className="text-xl text-gray-600">Multi-page PDFs supported</span>
-// //               </div>
-// //               <input type="file" accept=".pdf" onChange={convert} className="hidden" />
-// //             </label>
-
-// //             {loading && (
-// //               <div className="text-center mt-12">
-// //                 <div className="inline-block animate-spin rounded-full h-20 w-20 border-t-4 border-b-4 border-indigo-600"></div>
-// //                 <p className="mt-6 text-2xl font-bold text-indigo-600">Converting PDF to JPG...</p>
-// //               </div>
-// //             )}
-// //           </div>
-
-// //           {images.length > 0 && (
-// //             <div>
-// //               <h2 className="text-4xl font-bold text-center text-indigo-700 mb-10">
-// //                 JPG Images Ready!
-// //               </h2>
-// //               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10">
-// //                 {images.map((img) => (
-// //                   <div key={img.page} className="bg-gradient-to-br from-white to-indigo-50 rounded-3xl shadow-2xl overflow-hidden border border-indigo-200 hover:shadow-3xl transition">
-// //                     <img src={img.url} alt={`Page ${img.page}`} className="w-full h-64 object-cover" />
-// //                     <div className="p-6 text-center">
-// //                       <p className="font-semibold text-gray-800 mb-4">Page {img.page}</p>
-// //                       <a
-// //                         href={img.url}
-// //                         download={img.name}
-// //                         className="inline-flex items-center gap-3 bg-gradient-to-r from-indigo-600 to-blue-600 text-white font-bold px-8 py-4 rounded-xl hover:from-indigo-700 hover:to-blue-700 transition shadow-lg"
-// //                       >
-// //                         <Download size={24} />
-// //                         Download JPG
-// //                       </a>
-// //                     </div>
-// //                   </div>
-// //                 ))}
-// //               </div>
-// //             </div>
-// //           )}
-
-// //           <p className="text-center mt-12 text-gray-600 text-lg">
-// //             No signup • All pages converted • High quality • 100% free & private
-// //           </p>
-// //         </div>
-// //       </main>
-
-// //       <section className="mt-20 max-w-6xl mx-auto px-6 pb-20">
-// //         <div className="text-center mb-16">
-// //           <h2 className="text-3xl md:text-5xl font-extrabold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent mb-6">
-// //             PDF to JPG Converter Online Free - Convert Pages to Images
-// //           </h2>
-// //           <p className="text-xl text-gray-600 max-w-4xl mx-auto">
-// //             Convert each PDF page to high-quality JPG image instantly. Perfect for extracting images, sharing, or editing — completely free with PDF Linx.
-// //           </p>
-// //         </div>
-
-// //         <div className="grid md:grid-cols-3 gap-10 mb-20">
-// //           <div className="bg-gradient-to-br from-blue-50 to-white p-10 rounded-3xl shadow-xl border border-blue-100 text-center hover:shadow-2xl transition">
-// //             <div className="w-20 h-20 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-6">
-// //               <ImageIcon className="w-10 h-10 text-white" />
-// //             </div>
-// //             <h3 className="text-2xl font-bold text-gray-800 mb-4">Every Page Converted</h3>
-// //             <p className="text-gray-600">All pages become separate high-quality JPG images.</p>
-// //           </div>
-
-// //           <div className="bg-gradient-to-br from-indigo-50 to-white p-10 rounded-3xl shadow-xl border border-indigo-100 text-center hover:shadow-2xl transition">
-// //             <div className="w-20 h-20 bg-indigo-600 rounded-full flex items-center justify-center mx-auto mb-6">
-// //               <CheckCircle className="w-10 h-10 text-white" />
-// //             </div>
-// //             <h3 className="text-2xl font-bold text-gray-800 mb-4">Perfect Quality</h3>
-// //             <p className="text-gray-600">High-resolution JPG export — no quality loss.</p>
-// //           </div>
-
-// //           <div className="bg-gradient-to-br from-green-50 to-white p-10 rounded-3xl shadow-xl border border-green-100 text-center hover:shadow-2xl transition">
-// //             <div className="w-20 h-20 bg-green-600 rounded-full flex items-center justify-center mx-auto mb-6">
-// //               <CheckCircle className="w-10 h-10 text-white" />
-// //             </div>
-// //             <h3 className="text-2xl font-bold text-gray-800 mb-4">Fast & Free</h3>
-// //             <p className="text-gray-600">Convert unlimited PDFs instantly — no signup needed.</p>
-// //           </div>
-// //         </div>
-
-// //         <div className="bg-white rounded-3xl shadow-2xl p-12 md:p-20 border border-gray-100">
-// //           <h3 className="text-4xl md:text-5xl font-bold text-center mb-16 text-gray-800">
-// //             How to Convert PDF to JPG in 3 Simple Steps
-// //           </h3>
-// //           <div className="grid md:grid-cols-3 gap-12">
-// //             <div className="text-center">
-// //               <div className="w-24 h-24 bg-gradient-to-r from-blue-600 to-blue-700 rounded-full flex items-center justify-center mx-auto mb-8 text-4xl font-bold text-white shadow-2xl">
-// //                 1
-// //               </div>
-// //               <h4 className="text-2xl font-semibold mb-4">Upload PDF</h4>
-// //               <p className="text-gray-600 text-lg">Drop or select your PDF file.</p>
-// //             </div>
-
-// //             <div className="text-center">
-// //               <div className="w-24 h-24 bg-gradient-to-r from-indigo-600 to-indigo-700 rounded-full flex items-center justify-center mx-auto mb-8 text-4xl font-bold text-white shadow-2xl">
-// //                 2
-// //               </div>
-// //               <h4 className="text-2xl font-semibold mb-4">Auto Convert</h4>
-// //               <p className="text-gray-600 text-lg">Each page converted to JPG automatically.</p>
-// //             </div>
-
-// //             <div className="text-center">
-// //               <div className="w-24 h-24 bg-gradient-to-r from-green-600 to-green-700 rounded-full flex items-center justify-center mx-auto mb-8 text-4xl font-bold text-white shadow-2xl">
-// //                 3
-// //               </div>
-// //               <h4 className="text-2xl font-semibold mb-4">Download</h4>
-// //               <p className="text-gray-600 text-lg">Save all JPG images instantly.</p>
-// //             </div>
-// //           </div>
-// //         </div>
-
-// //         <p className="text-center mt-16 text-xl text-gray-600 italic max-w-4xl mx-auto">
-// //           Convert PDF to JPG every day with PDF Linx — trusted by thousands for fast, high-quality, and completely free image extraction.
-// //         </p>
-// //       </section>
-// //     </>
-// //   );
-// // }

@@ -5,6 +5,7 @@ import {
   FileText, FileType, FileArchive, FileImage, FileSpreadsheet,
   Split, QrCode, Lock, Ruler, Youtube, Image as ImageIcon, PenTool, Stamp, ArrowUp
 } from "lucide-react";
+import { Image } from "lucide-react";
 import { useState, useEffect } from "react";
 import InternalLinkingSections from "@/components/InternalLinkingSections";
 
@@ -27,6 +28,9 @@ export default function HomeContent() {
     { title: "Word to PDF", desc: "Convert your Word docs to sharp, professional PDFs that look good everywhere.", link: "/word-to-pdf", icon: <FileSpreadsheet className="w-10 h-10" />, color: "from-blue-500 to-indigo-600" },
     { title: "Image to PDF", desc: "Turn photos, screenshots, or scans into a single PDF – supports batch upload too.", link: "/image-to-pdf", icon: <FileImage className="w-10 h-10" />, color: "from-teal-500 to-emerald-600" },
     { title: "Excel to PDF", desc: "Export your spreadsheets as clean, print-ready PDFs – all sheets included.", link: "/excel-pdf", icon: <FileSpreadsheet className="w-10 h-10" />, color: "from-green-500 to-emerald-600" },
+    {
+      title: "PDF to JPG", desc: "Extract every page from your PDF as high-quality JPG images. Single page → direct JPG, multiple pages → ZIP file.", link: "/pdf-to-jpg", icon: <Image className="w-10 h-10" />, color: "from-orange-500 to-amber-600"
+    },
     { title: "QR Code Generator", desc: "Make QR codes for links, WiFi passwords, menus – ready in seconds.", link: "/qr-generator", icon: <QrCode className="w-10 h-10" />, color: "from-cyan-500 to-blue-600" },
     { title: "Password Generator", desc: "Create strong, random passwords that actually keep your accounts safe.", link: "/password-gen", icon: <Lock className="w-10 h-10" />, color: "from-purple-500 to-violet-600" },
     { title: "Unit Converter", desc: "Quick conversions for length, weight, temperature – over 50 units supported.", link: "/unit-converter", icon: <Ruler className="w-10 h-10" />, color: "from-lime-500 to-green-600" },

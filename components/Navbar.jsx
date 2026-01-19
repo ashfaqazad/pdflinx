@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useState } from "react";
+import { Image } from "lucide-react";  // ya Camera / FileImage jo pasand aaye
 import {
   ChevronDown,
   FileText,
@@ -115,6 +116,18 @@ export default function Navbar() {
                         <Scissors size={20} className="text-amber-600" />
                         <span className="font-medium text-gray-700 hover:text-indigo-600">Split PDF</span>
                       </Link>
+
+
+                      <Link href="/pdf-to-jpg" 
+                        onClick={(e) => { e.preventDefault(); window.location.href = '/pdf-to-jpg'; }}
+                        className="flex items-center gap-3 hover:bg-indigo-50 px-3 py-2 rounded-lg transition text-sm"
+                      >
+                        {/* <Scissors size={20} className="text-amber-600" /> */}
+                        {/* <FileImage size={20} className="text-orange-600" /> */}
+                        <Image size={20} className="text-orange-600" />
+                        <span className="font-medium text-gray-700 hover:text-indigo-600">PDF to JPG</span>
+                      </Link>
+
                     </div>
                   </div>
                 </div>
@@ -200,6 +213,8 @@ export default function Navbar() {
                 <Link href="/split-pdf" onClick={(e) => { e.preventDefault(); window.location.href = '/split-pdf'; }} className="block text-gray-600 hover:text-indigo-600 py-1">Split PDF</Link>
                 <Link href="/compress-pdf" onClick={(e) => { e.preventDefault(); window.location.href = '/compress-pdf'; }} className="block text-gray-600 hover:text-indigo-600 py-1">Compress PDF</Link>
                 <Link href="/excel-pdf" onClick={(e) => { e.preventDefault(); window.location.href = '/excel-pdf'; }} className="block text-gray-600 hover:text-indigo-600 py-1">Excel to PDF</Link>
+                <Link href="/pdf-to-jpg" onClick={(e) => { e.preventDefault(); window.location.href = '/pdf-to-jpg'; }} className="block text-gray-600 hover:text-indigo-600 py-1">PDF to JPG</Link>
+
               </div>
             </details>
             <details className="group">

@@ -37,11 +37,19 @@ export const relatedToolsData = {
     { title: 'Compress PDF', emoji: '🗜️', url: '/compress-pdf', desc: 'Reduce file size' },
     { title: 'PDF to Word', emoji: '📄', url: '/pdf-to-word', desc: 'Convert to Word' },
   ],
+
   'compress-pdf': [
     { title: 'Merge PDF', emoji: '📚', url: '/merge-pdf', desc: 'Combine multiple PDFs' },
     { title: 'Split PDF', emoji: '✂️', url: '/split-pdf', desc: 'Separate pages' },
     { title: 'PDF to Word', emoji: '📄', url: '/pdf-to-word', desc: 'Convert to Word' },
   ],
+
+    'pdf-to-jpg': [
+    { title: 'Image to PDF', emoji: '🖼️', url: '/image-to-pdf', desc: 'Turn images into PDF documents' },
+    { title: 'Split PDF', emoji: '✂️', url: '/split-pdf', desc: 'Separate pages' },
+    { title: 'PDF to Word', emoji: '📄', url: '/pdf-to-word', desc: 'Convert to Word' },
+  ],
+
 
   // Image Tools
   'image-compressor': [

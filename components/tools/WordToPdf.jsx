@@ -47,8 +47,6 @@ export default function WordToPdf() {
     }
   };
 
-
-
   const handleDownload = async () => {
     if (!downloadUrl) return;
     try {

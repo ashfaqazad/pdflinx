@@ -24,6 +24,8 @@ const componentMap = {
   "pdf-to-jpg": () => import("@/components/tools/PdfToJpg"),
   "add-watermark": () => import("@/components/tools/AddWatermark"),
   "protect-pdf": () => import("@/components/tools/ProtectPdf"),
+  "pdf-to-jpg": () => import("@/components/tools/PdfToJpg"),
+
 };
 
 export async function generateMetadata({ params }) {
