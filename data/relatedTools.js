@@ -25,6 +25,7 @@ export const relatedToolsData = {
     { title: 'Merge PDF', emoji: '📚', url: '/merge-pdf', desc: 'Combine multiple PDFs' },
     { title: 'Compress PDF', emoji: '🗜️', url: '/compress-pdf', desc: 'Reduce PDF file size' },
   ],
+  
 
   // PDF Manipulation Tools
   'merge-pdf': [

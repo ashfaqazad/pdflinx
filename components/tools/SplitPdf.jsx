@@ -66,48 +66,48 @@ export default function SplitPDF() {
     <>
 
 
-{/* ==================== PAGE-SPECIFIC SEO SCHEMAS (Safe for Next.js) ==================== */}
+      {/* ==================== PAGE-SPECIFIC SEO SCHEMAS (Safe for Next.js) ==================== */}
 
-{/* HowTo Schema - Split PDF */}
-<Script
-  id="howto-schema-split-pdf"
-  type="application/ld+json"
-  strategy="afterInteractive"
-  dangerouslySetInnerHTML={{
-    __html: JSON.stringify({
-      "@context": "https://schema.org",
-      "@type": "HowTo",
-      name: "How to Split a PDF into Individual Pages Online",
-      description: "Split any PDF into separate pages instantly using PDF Linx - completely free, no signup required.",
-      url: "https://pdflinx.com/split-pdf",
-      step: [
-        { "@type": "HowToStep", name: "Upload PDF", text: "Click the upload area and select your PDF file." },
-        { "@type": "HowToStep", name: "Click Split", text: "Press 'Split PDF' and wait a few seconds." },
-        { "@type": "HowToStep", name: "Download", text: "Download the ZIP containing all individual pages." }
-      ],
-      totalTime: "PT40S",
-      estimatedCost: { "@type": "MonetaryAmount", value: "0", currency: "USD" },
-      image: "https://pdflinx.com/og-image.png"
-    }, null, 2),
-  }}
-/>
+      {/* HowTo Schema - Split PDF */}
+      <Script
+        id="howto-schema-split-pdf"
+        type="application/ld+json"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "HowTo",
+            name: "How to Split a PDF into Individual Pages Online",
+            description: "Split any PDF into separate pages instantly using PDF Linx - completely free, no signup required.",
+            url: "https://pdflinx.com/split-pdf",
+            step: [
+              { "@type": "HowToStep", name: "Upload PDF", text: "Click the upload area and select your PDF file." },
+              { "@type": "HowToStep", name: "Click Split", text: "Press 'Split PDF' and wait a few seconds." },
+              { "@type": "HowToStep", name: "Download", text: "Download the ZIP containing all individual pages." }
+            ],
+            totalTime: "PT40S",
+            estimatedCost: { "@type": "MonetaryAmount", value: "0", currency: "USD" },
+            image: "https://pdflinx.com/og-image.png"
+          }, null, 2),
+        }}
+      />
 
-{/* Breadcrumb Schema - Split PDF */}
-<Script
-  id="breadcrumb-schema-split-pdf"
-  type="application/ld+json"
-  strategy="afterInteractive"
-  dangerouslySetInnerHTML={{
-    __html: JSON.stringify({
-      "@context": "https://schema.org",
-      "@type": "BreadcrumbList",
-      itemListElement: [
-        { "@type": "ListItem", position: 1, name: "Home", item: "https://pdflinx.com" },
-        { "@type": "ListItem", position: 2, name: "Split PDF", item: "https://pdflinx.com/split-pdf" }
-      ]
-    }, null, 2),
-  }}
-/>
+      {/* Breadcrumb Schema - Split PDF */}
+      <Script
+        id="breadcrumb-schema-split-pdf"
+        type="application/ld+json"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            itemListElement: [
+              { "@type": "ListItem", position: 1, name: "Home", item: "https://pdflinx.com" },
+              { "@type": "ListItem", position: 2, name: "Split PDF", item: "https://pdflinx.com/split-pdf" }
+            ]
+          }, null, 2),
+        }}
+      />
       {/* ==================== MAIN TOOL SECTION ==================== */}
       <main className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50 py-8 px-4">
         <div className="max-w-4xl mx-auto">
@@ -266,6 +266,172 @@ export default function SplitPDF() {
         <p className="text-center mt-12 text-base text-gray-600 italic max-w-3xl mx-auto">
           Folks split PDFs daily with PDF Linx – quick, reliable, and always free.
         </p>
+      </section>
+
+      <section className="max-w-4xl mx-auto px-4 py-14 text-slate-700">
+        {/* Heading */}
+        <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-6">
+          Split PDF – Free Online PDF Splitter by PDFLinx
+        </h2>
+
+        {/* Intro */}
+        <p className="text-base leading-7 mb-6">
+          Ever received a huge PDF with hundreds of pages and only needed a few specific ones?
+          Or wanted to break a big report into smaller, manageable files?
+          It’s such a pain to do it manually. That’s why we made the <span className="font-medium text-slate-900">PDFLinx Split PDF tool</span>—a completely free online splitter that lets you extract pages or divide your PDF exactly how you want, in seconds. No software, no watermarks, no complications.
+        </p>
+
+        {/* What is */}
+        <h3 className="text-xl font-semibold text-slate-900 mb-3">
+          What is PDF Splitting?
+        </h3>
+        <p className="leading-7 mb-6">
+          PDF splitting means breaking a single PDF document into multiple smaller PDFs.
+          You can extract specific pages, split by range, or even take out just one page.
+          It’s perfect when you need to share only part of a file, separate chapters, or reduce a large document into bite-sized pieces.
+        </p>
+
+        {/* Why split */}
+        <h3 className="text-xl font-semibold text-slate-900 mb-3">
+          Why Split Your PDF Files?
+        </h3>
+        <ul className="space-y-2 mb-6 list-disc pl-6">
+          <li>Extract only the pages you need from a large PDF</li>
+          <li>Create separate files for different sections or chapters</li>
+          <li>Reduce file size by removing unnecessary pages</li>
+          <li>Share specific parts without sending the entire document</li>
+          <li>Organize scanned books, reports, or contracts easily</li>
+        </ul>
+
+        {/* Steps */}
+        <h3 className="text-xl font-semibold text-slate-900 mb-3">
+          How to Split PDF Online
+        </h3>
+        <ol className="space-y-2 mb-6 list-decimal pl-6">
+          <li>Upload your PDF file (drag & drop or click to select)</li>
+          <li>Choose how to split: by page range, extract specific pages, or split into equal parts</li>
+          <li>Click “Split PDF”</li>
+          <li>Download your new PDF files instantly (individually or as a ZIP)</li>
+        </ol>
+
+        <p className="mb-6">
+          No sign-up, no watermark, no installation required—100% free and fast.
+        </p>
+
+        {/* Features box */}
+        <div className="bg-slate-50 border border-slate-200 rounded-xl p-6 mb-6">
+          <h3 className="text-xl font-semibold text-slate-900 mb-4">
+            Features of PDFLinx PDF Splitter
+          </h3>
+          <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 list-disc pl-5">
+            <li>100% free online splitter</li>
+            <li>Split by page range or selection</li>
+            <li>Extract single or multiple pages</li>
+            <li>Preserves original quality & formatting</li>
+            <li>Fast and accurate processing</li>
+            <li>Works on mobile & desktop</li>
+            <li>No file storage – full privacy</li>
+          </ul>
+        </div>
+
+        {/* Audience */}
+        <h3 className="text-xl font-semibold text-slate-900 mb-3">
+          Who Should Use This Tool?
+        </h3>
+        <ul className="space-y-2 mb-6 list-disc pl-6">
+          <li><strong>Students:</strong> Extract chapters from textbooks or study notes</li>
+          <li><strong>Professionals:</strong> Pull specific sections from reports or contracts</li>
+          <li><strong>Businesses:</strong> Separate invoices or receipts from monthly statements</li>
+          <li><strong>Job Seekers:</strong> Send only relevant pages from a large certificate bundle</li>
+          <li><strong>Anyone:</strong> Break down big scanned documents into manageable parts</li>
+        </ul>
+
+        {/* Safety */}
+        <h3 className="text-xl font-semibold text-slate-900 mb-3">
+          Is PDFLinx Safe to Use?
+        </h3>
+        <p className="leading-7 mb-6">
+          Absolutely safe. We take your privacy very seriously.
+          Your uploaded PDF is processed securely and automatically deleted from our servers shortly after splitting.
+          We never store or share your files with anyone.
+        </p>
+
+        {/* Closing */}
+        <h3 className="text-xl font-semibold text-slate-900 mb-3">
+          Split PDFs Anytime, Anywhere
+        </h3>
+        <p className="leading-7">
+          PDFLinx works smoothly on Windows, macOS, Linux, Android, and iOS.
+          Whether you’re on your phone, tablet, or computer, split any PDF quickly and easily—just a browser and internet connection needed.
+        </p>
+      </section>
+
+
+      <section className="py-16 bg-gray-50">
+        <div className="max-w-4xl mx-auto px-4">
+
+          <h2 className="text-3xl font-bold text-center mb-10 text-slate-900">
+            Frequently Asked Questions
+          </h2>
+
+          <div className="space-y-4">
+
+            <details className="bg-white rounded-lg shadow-sm p-5">
+              <summary className="font-semibold cursor-pointer">
+                Is the PDF splitter free to use?
+              </summary>
+              <p className="mt-2 text-gray-600">
+                Yes — completely free with no limits or hidden charges.
+              </p>
+            </details>
+
+            <details className="bg-white rounded-lg shadow-sm p-5">
+              <summary className="font-semibold cursor-pointer">
+                Do I need to install any software?
+              </summary>
+              <p className="mt-2 text-gray-600">
+                No — everything works directly in your browser.
+              </p>
+            </details>
+
+            <details className="bg-white rounded-lg shadow-sm p-5">
+              <summary className="font-semibold cursor-pointer">
+                Can I extract just one page from a PDF?
+              </summary>
+              <p className="mt-2 text-gray-600">
+                Yes! You can select any single page or multiple pages to extract.
+              </p>
+            </details>
+
+            <details className="bg-white rounded-lg shadow-sm p-5">
+              <summary className="font-semibold cursor-pointer">
+                Will the quality of extracted pages change?
+              </summary>
+              <p className="mt-2 text-gray-600">
+                No — all text, images, and formatting stay exactly as in the original.
+              </p>
+            </details>
+
+            <details className="bg-white rounded-lg shadow-sm p-5">
+              <summary className="font-semibold cursor-pointer">
+                Are my files safe and private?
+              </summary>
+              <p className="mt-2 text-gray-600">
+                100% safe — files are deleted automatically shortly after processing.
+              </p>
+            </details>
+
+            <details className="bg-white rounded-lg shadow-sm p-5">
+              <summary className="font-semibold cursor-pointer">
+                Can I split PDF on my phone?
+              </summary>
+              <p className="mt-2 text-gray-600">
+                Yes! Works perfectly on mobile phones, tablets, and desktops.
+              </p>
+            </details>
+
+          </div>
+        </div>
       </section>
 
       <RelatedToolsSection currentPage="split-pdf" />

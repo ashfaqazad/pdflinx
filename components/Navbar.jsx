@@ -71,6 +71,15 @@ export default function Navbar() {
                         <span className="font-medium text-gray-700 hover:text-indigo-600">EXCEL to PDF</span>
                       </Link>
 
+                        <Link href="/ppt-to-pdf" 
+                        onClick={(e) => { e.preventDefault(); window.location.href = '/ppt-to-pdf'; }}
+                        className="flex items-center gap-3 hover:bg-indigo-50 px-3 py-2 rounded-lg transition text-sm"
+                      >
+                        <FileSpreadsheet size={20} className="text-green-600" />
+                        <span className="font-medium text-gray-700 hover:text-indigo-600">POWERPOINT to PDF</span>
+                      </Link>
+
+
                       <Link href="/image-to-pdf" 
                         onClick={(e) => { e.preventDefault(); window.location.href = '/image-to-pdf'; }}
                         className="flex items-center gap-3 hover:bg-indigo-50 px-3 py-2 rounded-lg transition text-sm"
@@ -128,6 +137,18 @@ export default function Navbar() {
                         <span className="font-medium text-gray-700 hover:text-indigo-600">PDF to JPG</span>
                       </Link>
 
+
+                        {/* <Link href="/pdf-to-excel" 
+                        onClick={(e) => { e.preventDefault(); window.location.href = '/pdf-to-excel'; }}
+                        className="flex items-center gap-3 hover:bg-indigo-50 px-3 py-2 rounded-lg transition text-sm"
+                      >
+                        {/* <Scissors size={20} className="text-amber-600" /> */}
+                        {/* <FileImage size={20} className="text-orange-600" /> */}
+                        {/* <Image size={20} className="text-orange-600" />
+                        <span className="font-medium text-gray-700 hover:text-indigo-600">PDF to Excel</span>
+                      </Link> */}
+
+
                     </div>
                   </div>
                 </div>
@@ -137,7 +158,7 @@ export default function Navbar() {
             {/* === ALL TOOLS Dropdown (Compact) === */}
             <div className="relative group">
               <button className="flex items-center gap-2 text-gray-700 hover:text-indigo-600 font-semibold transition">
-                All Tools <ChevronDown size={16} className="group-hover:rotate-180 transition" />
+                Utility Tools <ChevronDown size={16} className="group-hover:rotate-180 transition" />
               </button>
 
               <div className="absolute top-14 left-1/2 -translate-x-1/2 w-[480px] bg-white rounded-xl shadow-xl border border-gray-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">

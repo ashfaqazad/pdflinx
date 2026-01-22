@@ -274,6 +274,343 @@ export default function ExcelToPDF() {
         </p>
       </section>
 
+
+      <section className="max-w-4xl mx-auto px-4 py-14 text-slate-700">
+        {/* Heading */}
+        <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-6">
+          Excel to PDF Converter – Free Online Tool by PDFLinx
+        </h2>
+
+        {/* Intro */}
+        <p className="text-base leading-7 mb-6">
+          Ever needed to share an Excel spreadsheet but worried it’ll look different on someone else’s computer?
+          Or maybe you want to lock down those formulas and formatting so nothing gets accidentally changed?
+          That’s where our <span className="font-medium text-slate-900">PDFLinx Excel to PDF Converter</span> comes in.
+          It’s a 100% free online tool that turns your Excel files (XLS or XLSX) into clean, professional PDFs in seconds—no installation, no watermarks, no fuss.
+        </p>
+
+        {/* What is */}
+        <h3 className="text-xl font-semibold text-slate-900 mb-3">
+          What is Excel to PDF Conversion?
+        </h3>
+        <p className="leading-7 mb-6">
+          Excel to PDF conversion takes your editable spreadsheet and transforms it into a fixed-layout PDF document.
+          Everything—formulas, charts, tables, colors, and formatting—stays exactly as you designed it,
+          no matter what device or software the recipient uses. It’s the perfect way to share reports, budgets, invoices, or data tables professionally.
+        </p>
+
+        {/* Why convert */}
+        <h3 className="text-xl font-semibold text-slate-900 mb-3">
+          Why Convert Excel Files to PDF?
+        </h3>
+        <ul className="space-y-2 mb-6 list-disc pl-6">
+          <li>Preserves all formatting, charts, colors, and grid lines perfectly</li>
+          <li>Looks identical on any device—no missing fonts or shifted columns</li>
+          <li>Protects your data and formulas from accidental edits</li>
+          <li>Ideal for sharing financial reports, invoices, budgets, or dashboards</li>
+          <li>Smaller file size and easier to print or archive</li>
+        </ul>
+
+        {/* Steps */}
+        <h3 className="text-xl font-semibold text-slate-900 mb-3">
+          How to Convert Excel to PDF Online
+        </h3>
+        <ol className="space-y-2 mb-6 list-decimal pl-6">
+          <li>Upload your Excel file (XLS or XLSX) – just drag & drop or click</li>
+          <li>Click the “Convert to PDF” button</li>
+          <li>Wait a few seconds while we process it</li>
+          <li>Download your perfect PDF instantly</li>
+        </ol>
+
+        <p className="mb-6">
+          No registration, no watermark, no software needed—completely free and fast.
+        </p>
+
+        {/* Features box */}
+        <div className="bg-slate-50 border border-slate-200 rounded-xl p-6 mb-6">
+          <h3 className="text-xl font-semibold text-slate-900 mb-4">
+            Features of PDFLinx Excel to PDF Converter
+          </h3>
+          <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 list-disc pl-5">
+            <li>100% free online converter</li>
+            <li>Supports XLS and XLSX formats</li>
+            <li>Full preservation of charts & formulas</li>
+            <li>High-quality, print-ready output</li>
+            <li>Super-fast conversion</li>
+            <li>Works on mobile & desktop</li>
+            <li>No file storage – complete privacy</li>
+          </ul>
+        </div>
+
+        {/* Audience */}
+        <h3 className="text-xl font-semibold text-slate-900 mb-3">
+          Who Should Use This Tool?
+        </h3>
+        <ul className="space-y-2 mb-6 list-disc pl-6">
+          <li><strong>Accountants & Finance Teams:</strong> Share monthly reports and budgets securely</li>
+          <li><strong>Business Owners:</strong> Send professional invoices and quotes</li>
+          <li><strong>Students:</strong> Submit data analysis or project spreadsheets neatly</li>
+          <li><strong>Analysts:</strong> Present dashboards and charts without formatting issues</li>
+          <li><strong>Anyone with Excel:</strong> Lock in your hard work and share confidently</li>
+        </ul>
+
+        {/* Safety */}
+        <h3 className="text-xl font-semibold text-slate-900 mb-3">
+          Is PDFLinx Safe to Use?
+        </h3>
+        <p className="leading-7 mb-6">
+          Yes — completely safe. We take your privacy seriously.
+          Your uploaded files are processed securely and automatically deleted from our servers shortly after conversion.
+          We never store or share your documents.
+        </p>
+
+        {/* Closing */}
+        <h3 className="text-xl font-semibold text-slate-900 mb-3">
+          Convert Excel to PDF Anytime, Anywhere
+        </h3>
+        <p className="leading-7">
+          PDFLinx works perfectly on Windows, macOS, Linux, Android, and iOS devices.
+          All you need is a browser and an internet connection—turn any Excel spreadsheet into a polished PDF in just a few clicks.
+        </p>
+      </section>
+
+
+      <section className="py-16 bg-gray-50">
+        <div className="max-w-4xl mx-auto px-4">
+
+          <h2 className="text-3xl font-bold text-center mb-10 text-slate-900">
+            Frequently Asked Questions
+          </h2>
+
+          <div className="space-y-4">
+
+            <details className="bg-white rounded-lg shadow-sm p-5">
+              <summary className="font-semibold cursor-pointer">
+                Is the Excel to PDF converter free to use?
+              </summary>
+              <p className="mt-2 text-gray-600">
+                Yes — totally free, no hidden charges or limits.
+              </p>
+            </details>
+
+            <details className="bg-white rounded-lg shadow-sm p-5">
+              <summary className="font-semibold cursor-pointer">
+                Do I need to install any software?
+              </summary>
+              <p className="mt-2 text-gray-600">
+                No — everything works directly in your browser.
+              </p>
+            </details>
+
+            <details className="bg-white rounded-lg shadow-sm p-5">
+              <summary className="font-semibold cursor-pointer">
+                Will my charts and formatting be preserved?
+              </summary>
+              <p className="mt-2 text-gray-600">
+                Absolutely. Tables, charts, colors, fonts, and layout are preserved with high accuracy.
+              </p>
+            </details>
+
+            <details className="bg-white rounded-lg shadow-sm p-5">
+              <summary className="font-semibold cursor-pointer">
+                Are my files safe and private?
+              </summary>
+              <p className="mt-2 text-gray-600">
+                Yes — files are securely processed and deleted automatically after conversion.
+              </p>
+            </details>
+
+            <details className="bg-white rounded-lg shadow-sm p-5">
+              <summary className="font-semibold cursor-pointer">
+                Can I convert Excel to PDF on my phone?
+              </summary>
+              <p className="mt-2 text-gray-600">
+                Yes! It works smoothly on mobile phones, tablets, and desktops.
+              </p>
+            </details>
+
+            <details className="bg-white rounded-lg shadow-sm p-5">
+              <summary className="font-semibold cursor-pointer">
+                Does it support older XLS files?
+              </summary>
+              <p className="mt-2 text-gray-600">
+                Yes — both XLS and XLSX formats are fully supported.
+              </p>
+            </details>
+
+          </div>
+        </div>
+      </section>
+
+
+      <section className="max-w-4xl mx-auto px-4 py-14 text-slate-700">
+        {/* Heading */}
+        <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-6">
+          PowerPoint to PDF Converter – Free Online Tool by PDFLinx
+        </h2>
+
+        {/* Intro */}
+        <p className="text-base leading-7 mb-6">
+          Ever created a beautiful PowerPoint presentation and then worried it might look messed up on someone else’s computer?
+          Missing fonts, broken animations, or shifted layouts—no thanks!
+          That’s why we made the <span className="font-medium text-slate-900">PDFLinx PowerPoint to PDF Converter</span>.
+          It’s a completely free online tool that turns your PPT or PPTX files into perfect, professional PDFs in seconds—no software needed, no watermarks, no stress.
+        </p>
+
+        {/* What is */}
+        <h3 className="text-xl font-semibold text-slate-900 mb-3">
+          What is PowerPoint to PDF Conversion?
+        </h3>
+        <p className="leading-7 mb-6">
+          PowerPoint to PDF conversion transforms your editable presentation slides into a fixed-layout PDF document.
+          Every slide—text, images, animations (as static frames), charts, transitions, and formatting—stays exactly as you designed it.
+          The result is a clean, shareable file that looks identical on any device, whether the viewer has PowerPoint or not.
+        </p>
+
+        {/* Why convert */}
+        <h3 className="text-xl font-semibold text-slate-900 mb-3">
+          Why Convert PowerPoint Files to PDF?
+        </h3>
+        <ul className="space-y-2 mb-6 list-disc pl-6">
+          <li>Preserves slide layout, fonts, images, and design perfectly</li>
+          <li>Looks the same on any device—no missing fonts or broken elements</li>
+          <li>Protects your content from accidental edits</li>
+          <li>Ideal for sharing presentations, handouts, or portfolios professionally</li>
+          <li>Smaller file size and easier to print or email</li>
+        </ul>
+
+        {/* Steps */}
+        <h3 className="text-xl font-semibold text-slate-900 mb-3">
+          How to Convert PowerPoint to PDF Online
+        </h3>
+        <ol className="space-y-2 mb-6 list-decimal pl-6">
+          <li>Upload your PowerPoint file (PPT or PPTX) – drag & drop or click to select</li>
+          <li>Click the “Convert to PDF” button</li>
+          <li>Wait just a few seconds while we process it</li>
+          <li>Download your high-quality PDF instantly</li>
+        </ol>
+
+        <p className="mb-6">
+          No account required, no watermark added, no installation—100% free and simple.
+        </p>
+
+        {/* Features box */}
+        <div className="bg-slate-50 border border-slate-200 rounded-xl p-6 mb-6">
+          <h3 className="text-xl font-semibold text-slate-900 mb-4">
+            Features of PDFLinx PowerPoint to PDF Converter
+          </h3>
+          <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 list-disc pl-5">
+            <li>100% free online converter</li>
+            <li>Supports PPT and PPTX formats</li>
+            <li>Full slide design & layout preserved</li>
+            <li>High-quality, print-ready PDFs</li>
+            <li>Super-fast conversion speed</li>
+            <li>Works on mobile & desktop</li>
+            <li>No file storage – total privacy</li>
+          </ul>
+        </div>
+
+        {/* Audience */}
+        <h3 className="text-xl font-semibold text-slate-900 mb-3">
+          Who Should Use This Tool?
+        </h3>
+        <ul className="space-y-2 mb-6 list-disc pl-6">
+          <li><strong>Teachers & Educators:</strong> Share lesson slides as clean handouts</li>
+          <li><strong>Students:</strong> Submit assignments or project presentations neatly</li>
+          <li><strong>Business Professionals:</strong> Send pitch decks or reports confidently</li>
+          <li><strong>Trainers & Speakers:</strong> Distribute slide decks without formatting worries</li>
+          <li><strong>Designers:</strong> Showcase portfolios in a universal format</li>
+        </ul>
+
+        {/* Safety */}
+        <h3 className="text-xl font-semibold text-slate-900 mb-3">
+          Is PDFLinx Safe to Use?
+        </h3>
+        <p className="leading-7 mb-6">
+          Absolutely safe. We value your privacy above everything.
+          Your uploaded presentations are processed securely and automatically deleted from our servers right after conversion.
+          We never store or share your files with anyone.
+        </p>
+
+        {/* Closing */}
+        <h3 className="text-xl font-semibold text-slate-900 mb-3">
+          Convert PowerPoint to PDF Anytime, Anywhere
+        </h3>
+        <p className="leading-7">
+          PDFLinx works flawlessly on Windows, macOS, Linux, Android, and iOS.
+          Just open your browser, upload your slides, and get a polished PDF in seconds—no matter where you are.
+        </p>
+      </section>
+
+
+      <section className="py-16 bg-gray-50">
+        <div className="max-w-4xl mx-auto px-4">
+
+          <h2 className="text-3xl font-bold text-center mb-10 text-slate-900">
+            Frequently Asked Questions
+          </h2>
+
+          <div className="space-y-4">
+
+            <details className="bg-white rounded-lg shadow-sm p-5">
+              <summary className="font-semibold cursor-pointer">
+                Is the PowerPoint to PDF converter free to use?
+              </summary>
+              <p className="mt-2 text-gray-600">
+                Yes — completely free with no hidden fees or restrictions.
+              </p>
+            </details>
+
+            <details className="bg-white rounded-lg shadow-sm p-5">
+              <summary className="font-semibold cursor-pointer">
+                Do I need to install any software?
+              </summary>
+              <p className="mt-2 text-gray-600">
+                No — it all happens directly in your browser.
+              </p>
+            </details>
+
+            <details className="bg-white rounded-lg shadow-sm p-5">
+              <summary className="font-semibold cursor-pointer">
+                Will my slides and animations be preserved?
+              </summary>
+              <p className="mt-2 text-gray-600">
+                Yes! All text, images, layouts, fonts, and designs are preserved accurately.
+                Animations appear as static frames in the correct order.
+              </p>
+            </details>
+
+            <details className="bg-white rounded-lg shadow-sm p-5">
+              <summary className="font-semibold cursor-pointer">
+                Are my files safe and private?
+              </summary>
+              <p className="mt-2 text-gray-600">
+                100% safe — files are deleted automatically shortly after conversion.
+              </p>
+            </details>
+
+            <details className="bg-white rounded-lg shadow-sm p-5">
+              <summary className="font-semibold cursor-pointer">
+                Can I convert PowerPoint to PDF on my phone?
+              </summary>
+              <p className="mt-2 text-gray-600">
+                Yes! Works perfectly on mobile phones, tablets, and desktops.
+              </p>
+            </details>
+
+            <details className="bg-white rounded-lg shadow-sm p-5">
+              <summary className="font-semibold cursor-pointer">
+                Does it support older PPT files?
+              </summary>
+              <p className="mt-2 text-gray-600">
+                Yes — both PPT and PPTX formats are fully supported.
+              </p>
+            </details>
+
+          </div>
+        </div>
+      </section>
+
       <RelatedToolsSection currentPage="excel-to-pdf" />
 
     </>

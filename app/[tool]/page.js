@@ -25,6 +25,8 @@ const componentMap = {
   "add-watermark": () => import("@/components/tools/AddWatermark"),
   "protect-pdf": () => import("@/components/tools/ProtectPdf"),
   "pdf-to-jpg": () => import("@/components/tools/PdfToJpg"),
+  "pdf-to-excel": () => import("@/components/tools/PdfToExcel"),
+  "ppt-to-pdf": () => import("@/components/tools/PptToPdf"),
 
 };
 

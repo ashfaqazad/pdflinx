@@ -73,60 +73,60 @@ export default function ImageToPdf() {
   return (
     <>
 
-{/* ==================== PAGE-SPECIFIC SEO SCHEMAS (Safe for Next.js) ==================== */}
+      {/* ==================== PAGE-SPECIFIC SEO SCHEMAS (Safe for Next.js) ==================== */}
 
-{/* HowTo Schema - Image to PDF */}
-<Script
-  id="howto-schema-image-to-pdf"
-  type="application/ld+json"
-  strategy="afterInteractive"
-  dangerouslySetInnerHTML={{
-    __html: JSON.stringify({
-      "@context": "https://schema.org",
-      "@type": "HowTo",
-      name: "How to Convert Images to PDF Online for Free",
-      description: "Convert multiple JPG, PNG, WebP, or GIF images into a single PDF file in just 3 easy steps - 100% free, no signup required.",
-      url: "https://pdflinx.com/image-to-pdf",
-      step: [
-        {
-          "@type": "HowToStep",
-          name: "Select Images",
-          text: "Click the upload area and select one or multiple images (JPG, PNG, GIF, WebP supported)."
-        },
-        {
-          "@type": "HowToStep",
-          name: "Convert to PDF",
-          text: "Click 'Convert to PDF' and wait a few seconds while we process your images."
-        },
-        {
-          "@type": "HowToStep",
-          name: "Download PDF",
-          text: "Your PDF file will be ready - click download to save it instantly."
-        }
-      ],
-      totalTime: "PT30S",
-      estimatedCost: { "@type": "MonetaryAmount", value: "0", currency: "USD" },
-      image: "https://pdflinx.com/og-image.png"
-    }, null, 2),
-  }}
-/>
+      {/* HowTo Schema - Image to PDF */}
+      <Script
+        id="howto-schema-image-to-pdf"
+        type="application/ld+json"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "HowTo",
+            name: "How to Convert Images to PDF Online for Free",
+            description: "Convert multiple JPG, PNG, WebP, or GIF images into a single PDF file in just 3 easy steps - 100% free, no signup required.",
+            url: "https://pdflinx.com/image-to-pdf",
+            step: [
+              {
+                "@type": "HowToStep",
+                name: "Select Images",
+                text: "Click the upload area and select one or multiple images (JPG, PNG, GIF, WebP supported)."
+              },
+              {
+                "@type": "HowToStep",
+                name: "Convert to PDF",
+                text: "Click 'Convert to PDF' and wait a few seconds while we process your images."
+              },
+              {
+                "@type": "HowToStep",
+                name: "Download PDF",
+                text: "Your PDF file will be ready - click download to save it instantly."
+              }
+            ],
+            totalTime: "PT30S",
+            estimatedCost: { "@type": "MonetaryAmount", value: "0", currency: "USD" },
+            image: "https://pdflinx.com/og-image.png"
+          }, null, 2),
+        }}
+      />
 
-{/* Breadcrumb Schema - Image to PDF */}
-<Script
-  id="breadcrumb-schema-image-to-pdf"
-  type="application/ld+json"
-  strategy="afterInteractive"
-  dangerouslySetInnerHTML={{
-    __html: JSON.stringify({
-      "@context": "https://schema.org",
-      "@type": "BreadcrumbList",
-      itemListElement: [
-        { "@type": "ListItem", position: 1, name: "Home", item: "https://pdflinx.com" },
-        { "@type": "ListItem", position: 2, name: "Image to PDF", item: "https://pdflinx.com/image-to-pdf" }
-      ]
-    }, null, 2),
-  }}
-/>
+      {/* Breadcrumb Schema - Image to PDF */}
+      <Script
+        id="breadcrumb-schema-image-to-pdf"
+        type="application/ld+json"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            itemListElement: [
+              { "@type": "ListItem", position: 1, name: "Home", item: "https://pdflinx.com" },
+              { "@type": "ListItem", position: 2, name: "Image to PDF", item: "https://pdflinx.com/image-to-pdf" }
+            ]
+          }, null, 2),
+        }}
+      />
       {/* ==================== MAIN TOOL SECTION ==================== */}
       <main className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-blue-50 py-8 px-4">
         <div className="max-w-4xl mx-auto">
@@ -311,140 +311,178 @@ export default function ImageToPdf() {
         </p>
       </section>
 
+
+      <section className="max-w-4xl mx-auto px-4 py-14 text-slate-700">
+        {/* Heading */}
+        <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-6">
+          JPG to PDF Converter – Free Online Tool by PDFLinx
+        </h2>
+
+        {/* Intro */}
+        <p className="text-base leading-7 mb-6">
+          Got a bunch of photos or screenshots in JPG format that you need to share as a single, professional document?
+          Maybe receipts, certificates, or product images?
+          Our <span className="font-medium text-slate-900">PDFLinx JPG to PDF Converter</span> makes it super easy.
+          It’s a 100% free online tool that combines one or multiple JPG images into a clean, high-quality PDF in seconds—no software, no watermarks, no complications.
+        </p>
+
+        {/* What is */}
+        <h3 className="text-xl font-semibold text-slate-900 mb-3">
+          What is JPG to PDF Conversion?
+        </h3>
+        <p className="leading-7 mb-6">
+          JPG to PDF conversion takes your image files (JPEG/JPG) and places them neatly into a portable PDF document.
+          Each image becomes a full page (or you can fit multiple per page), preserving original quality, colors, and sharpness.
+          The result is a professional, easy-to-share file that opens perfectly on any device.
+        </p>
+
+        {/* Why convert */}
+        <h3 className="text-xl font-semibold text-slate-900 mb-3">
+          Why Convert JPG Images to PDF?
+        </h3>
+        <ul className="space-y-2 mb-6 list-disc pl-6">
+          <li>Combine multiple photos into one organized PDF file</li>
+          <li>Preserves image quality, colors, and resolution</li>
+          <li>Easier to share, print, or archive than separate image files</li>
+          <li>Perfect for portfolios, reports, receipts, certificates, or scanned documents</li>
+          <li>More professional and universally compatible format</li>
+        </ul>
+
+        {/* Steps */}
+        <h3 className="text-xl font-semibold text-slate-900 mb-3">
+          How to Convert JPG to PDF Online
+        </h3>
+        <ol className="space-y-2 mb-6 list-decimal pl-6">
+          <li>Upload one or more JPG images (drag & drop or click to select)</li>
+          <li>Arrange the order if needed</li>
+          <li>Click the “Convert to PDF” button</li>
+          <li>Download your ready PDF in seconds</li>
+        </ol>
+
+        <p className="mb-6">
+          No sign-up, no watermark, no installation required—completely free and instant.
+        </p>
+
+        {/* Features box */}
+        <div className="bg-slate-50 border border-slate-200 rounded-xl p-6 mb-6">
+          <h3 className="text-xl font-semibold text-slate-900 mb-4">
+            Features of PDFLinx JPG to PDF Converter
+          </h3>
+          <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 list-disc pl-5">
+            <li>100% free online converter</li>
+            <li>Supports single or multiple JPG files</li>
+            <li>High-quality image preservation</li>
+            <li>Adjustable page layout options</li>
+            <li>Lightning-fast processing</li>
+            <li>Works on mobile & desktop</li>
+            <li>No file storage – full privacy</li>
+          </ul>
+        </div>
+
+        {/* Audience */}
+        <h3 className="text-xl font-semibold text-slate-900 mb-3">
+          Who Should Use This Tool?
+        </h3>
+        <ul className="space-y-2 mb-6 list-disc pl-6">
+          <li><strong>Students:</strong> Compile assignment scans or project images</li>
+          <li><strong>Business Owners:</strong> Create product catalogs or invoice attachments</li>
+          <li><strong>Photographers:</strong> Share proof sheets or portfolios professionally</li>
+          <li><strong>Professionals:</strong> Submit expense receipts or ID proofs in one file</li>
+          <li><strong>Anyone:</strong> Turn phone photos into organized, printable PDFs</li>
+        </ul>
+
+        {/* Safety */}
+        <h3 className="text-xl font-semibold text-slate-900 mb-3">
+          Is PDFLinx Safe to Use?
+        </h3>
+        <p className="leading-7 mb-6">
+          Yes — completely safe and private.
+          We respect your images and documents.
+          All uploaded files are processed securely and automatically deleted from our servers shortly after conversion.
+          Nothing is stored or shared.
+        </p>
+
+        {/* Closing */}
+        <h3 className="text-xl font-semibold text-slate-900 mb-3">
+          Convert JPG to PDF Anytime, Anywhere
+        </h3>
+        <p className="leading-7">
+          PDFLinx works perfectly on Windows, macOS, Linux, Android, and iOS.
+          Whether you’re on your phone or laptop, just upload your JPGs and get a polished PDF in moments—no app needed.
+        </p>
+      </section>
+
+
+      <section className="py-16 bg-gray-50">
+        <div className="max-w-4xl mx-auto px-4">
+
+          <h2 className="text-3xl font-bold text-center mb-10 text-slate-900">
+            Frequently Asked Questions
+          </h2>
+
+          <div className="space-y-4">
+
+            <details className="bg-white rounded-lg shadow-sm p-5">
+              <summary className="font-semibold cursor-pointer">
+                Is the JPG to PDF converter free to use?
+              </summary>
+              <p className="mt-2 text-gray-600">
+                Yes — totally free, no limits or hidden charges.
+              </p>
+            </details>
+
+            <details className="bg-white rounded-lg shadow-sm p-5">
+              <summary className="font-semibold cursor-pointer">
+                Do I need to install any software?
+              </summary>
+              <p className="mt-2 text-gray-600">
+                No — everything works right in your browser.
+              </p>
+            </details>
+
+            <details className="bg-white rounded-lg shadow-sm p-5">
+              <summary className="font-semibold cursor-pointer">
+                Will my image quality be preserved?
+              </summary>
+              <p className="mt-2 text-gray-600">
+                Absolutely. Your JPGs are embedded at full quality with no compression or loss.
+              </p>
+            </details>
+
+            <details className="bg-white rounded-lg shadow-sm p-5">
+              <summary className="font-semibold cursor-pointer">
+                Can I convert multiple JPGs at once?
+              </summary>
+              <p className="mt-2 text-gray-600">
+                Yes! Upload as many images as you need and they’ll be combined into one PDF.
+              </p>
+            </details>
+
+            <details className="bg-white rounded-lg shadow-sm p-5">
+              <summary className="font-semibold cursor-pointer">
+                Are my images safe and private?
+              </summary>
+              <p className="mt-2 text-gray-600">
+                100% safe — files are deleted automatically after conversion.
+              </p>
+            </details>
+
+            <details className="bg-white rounded-lg shadow-sm p-5">
+              <summary className="font-semibold cursor-pointer">
+                Can I use this on my phone?
+              </summary>
+              <p className="mt-2 text-gray-600">
+                Yes! Works perfectly on mobile phones, tablets, and desktops.
+              </p>
+            </details>
+
+          </div>
+        </div>
+      </section>
+
       <RelatedToolsSection currentPage="image-to-pdf" />
 
     </>
   );
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// "use client";
-// import { useState } from "react";
-
-// export default function ImageToPdf() {
-//   const [files, setFiles] = useState([]);  // Multiple files ke liye array
-//   const [loading, setLoading] = useState(false);
-//   const [downloadUrl, setDownloadUrl] = useState(null);  // Download link ke liye
-
-//   const handleSubmit = async (e) => {
-//     e.preventDefault();
-//     if (files.length === 0) {
-//       alert("Please select at least one image");
-//       return;
-//     }
-
-//     setLoading(true);
-//     setDownloadUrl(null);  // Reset previous
-
-//     try {
-//       const formData = new FormData();
-//       files.forEach((file) => {
-//         formData.append("images", file);  // Backend array ke liye
-//       });
-
-//       const res = await fetch("/api/convert/image-to-pdf", {
-//         method: "POST",
-//         body: formData,
-//       });
-
-//       const data = await res.json();
-
-//       if (data.success) {
-//         // ✅ Use full download link from VPS
-//         setDownloadUrl(`/api${data.download}`);
-//       } else {
-//         alert("Conversion failed: " + data.error);
-//         console.error("API Error:", data);
-//       }
-//     } catch (err) {
-//       alert("Something went wrong!");
-//       console.error(err);
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
-
-//   const handleDownload = async () => {
-//     if (downloadUrl) {
-//       try {
-//         const response = await fetch(downloadUrl);
-//         if (!response.ok) throw new Error("Download failed");
-//         const blob = await response.blob();
-//         const url = window.URL.createObjectURL(blob);
-//         const a = document.createElement("a");
-//         a.href = url;
-//         a.download = "images-to-pdf.pdf";  // Fixed name, ya files[0]?.name se derive kar sakte ho agar chahiye
-//         document.body.appendChild(a);
-//         a.click();
-//         a.remove();
-//         window.URL.revokeObjectURL(url);
-//       } catch (err) {
-//         console.error("Download error:", err);
-//         alert("Failed to download file");
-//       }
-//     }
-//   };
-
-//   return (
-//     <main className="min-h-screen flex flex-col items-center justify-center bg-gray-50 p-6">
-//       <h1 className="text-3xl font-bold mb-2">Image to PDF Converter</h1>
-//       <p className="text-gray-600 mb-8">
-//         Convert your images (JPG, PNG, etc.) to a single PDF with high quality.
-//       </p>
-
-//       <form
-//         onSubmit={handleSubmit}
-//         className="flex flex-col items-center space-y-6"
-//       >
-//         <label className="bg-green-600 text-white px-8 py-4 rounded-lg shadow-lg cursor-pointer hover:bg-green-700 transition">
-//           {files.length > 0 ? `${files.length} image(s) selected` : "Select Images"}
-//           <input
-//             type="file"
-//             accept="image/*"  // All images: .jpg,.jpeg,.png,.gif etc.
-//             multiple  // Multiple select enable
-//             onChange={(e) => setFiles(Array.from(e.target.files))}
-//             className="hidden"
-//           />
-//         </label>
-
-//         <button
-//           type="submit"
-//           className="bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 disabled:opacity-50 transition"
-//           disabled={loading}
-//         >
-//           {loading ? "Converting..." : "Convert to PDF"}
-//         </button>
-//       </form>
-
-//       {downloadUrl && (
-//         <div className="mt-6 flex flex-col items-center space-y-2">
-//           <p className="text-green-600">Conversion successful! Download your file:</p>
-//           <button
-//             onClick={handleDownload}
-//             className="bg-green-500 text-white px-6 py-2 rounded-lg hover:bg-green-600 transition"
-//             disabled={loading}  // Optional: disable during download
-//           >
-//             Download PDF
-//           </button>
-//         </div>
-//       )}
-//     </main>
-//   );
-// }

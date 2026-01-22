@@ -136,11 +136,10 @@ export default function PdfToJpg() {
               <div className="relative">
                 <label className="block">
                   <div
-                    className={`border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition-all ${
-                      files.length > 0
+                    className={`border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition-all ${files.length > 0
                         ? "border-green-500 bg-green-50"
                         : "border-gray-300 hover:border-orange-500 hover:bg-orange-50"
-                    }`}
+                      }`}
                   >
                     <Upload className="w-12 h-12 mx-auto mb-3 text-orange-600" />
                     <p className="text-lg font-semibold text-gray-700">
@@ -280,7 +279,174 @@ export default function PdfToJpg() {
         </p>
       </section>
 
-    <RelatedToolsSection currentPage="pdf-to-jpg" />
+
+      <section className="max-w-4xl mx-auto px-4 py-14 text-slate-700">
+        {/* Heading */}
+        <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-6">
+          PDF to JPG Converter – Free Online Tool by PDFLinx
+        </h2>
+
+        {/* Intro */}
+        <p className="text-base leading-7 mb-6">
+          Sometimes you have a beautiful PDF—maybe a report, brochure, presentation, or scanned document—and you just need the pages as high-quality images.
+          Perhaps for posting on social media, embedding in a website, or editing in a photo app.
+          That’s exactly why we created the <span className="font-medium text-slate-900">PDFLinx PDF to JPG Converter</span>—a completely free online tool that turns each page of your PDF into crisp, clear JPG images in seconds. No software, no watermarks, no hassle.
+        </p>
+
+        {/* What is */}
+        <h3 className="text-xl font-semibold text-slate-900 mb-3">
+          What is PDF to JPG Conversion?
+        </h3>
+        <p className="leading-7 mb-6">
+          PDF to JPG conversion extracts every page from your PDF and saves it as a separate high-quality JPEG image.
+          This is perfect when you want to share individual pages as pictures, use them in presentations, or edit them in tools that don’t support PDF.
+          Each page becomes a standalone image while keeping colors, text sharpness, and layout intact.
+        </p>
+
+        {/* Why convert */}
+        <h3 className="text-xl font-semibold text-slate-900 mb-3">
+          Why Convert PDF to JPG?
+        </h3>
+        <ul className="space-y-2 mb-6 list-disc pl-6">
+          <li>Turn each PDF page into a high-quality JPG image</li>
+          <li>Perfect for sharing on social media, websites, or email</li>
+          <li>Use pages in PowerPoint, Canva, or photo editing apps</li>
+          <li>Extract visuals from reports, ebooks, or scanned documents</li>
+          <li>Great for creating thumbnails or previews</li>
+        </ul>
+
+        {/* Steps */}
+        <h3 className="text-xl font-semibold text-slate-900 mb-3">
+          How to Convert PDF to JPG Online
+        </h3>
+        <ol className="space-y-2 mb-6 list-decimal pl-6">
+          <li>Upload your PDF file (drag & drop or click to select)</li>
+          <li>Choose to convert all pages or select specific ones</li>
+          <li>Click “Convert to JPG”</li>
+          <li>Download all images instantly (individually or as a ZIP)</li>
+        </ol>
+
+        <p className="mb-6">
+          No account needed, no watermark added, no installation—100% free and super fast.
+        </p>
+
+        {/* Features box */}
+        <div className="bg-slate-50 border border-slate-200 rounded-xl p-6 mb-6">
+          <h3 className="text-xl font-semibold text-slate-900 mb-4">
+            Features of PDFLinx PDF to JPG Converter
+          </h3>
+          <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 list-disc pl-5">
+            <li>100% free online converter</li>
+            <li>High-quality JPG output</li>
+            <li>Convert all or selected pages</li>
+            <li>Preserves colors & sharpness</li>
+            <li>Fast processing</li>
+            <li>Works on mobile & desktop</li>
+            <li>No file storage – full privacy</li>
+          </ul>
+        </div>
+
+        {/* Audience */}
+        <h3 className="text-xl font-semibold text-slate-900 mb-3">
+          Who Should Use This Tool?
+        </h3>
+        <ul className="space-y-2 mb-6 list-disc pl-6">
+          <li><strong>Marketers & Designers:</strong> Extract visuals for social media or websites</li>
+          <li><strong>Students:</strong> Pull pages from textbooks or notes as images</li>
+          <li><strong>Bloggers:</strong> Use PDF screenshots in articles</li>
+          <li><strong>Presenters:</strong> Insert PDF pages into slides easily</li>
+          <li><strong>Anyone:</strong> Turn important documents into shareable images</li>
+        </ul>
+
+        {/* Safety */}
+        <h3 className="text-xl font-semibold text-slate-900 mb-3">
+          Is PDFLinx Safe to Use?
+        </h3>
+        <p className="leading-7 mb-6">
+          Absolutely safe. We respect your privacy completely.
+          Your uploaded PDF is processed securely and automatically deleted from our servers shortly after conversion.
+          We never store or share your files.
+        </p>
+
+        {/* Closing */}
+        <h3 className="text-xl font-semibold text-slate-900 mb-3">
+          Convert PDF to JPG Anytime, Anywhere
+        </h3>
+        <p className="leading-7">
+          PDFLinx works perfectly on Windows, macOS, Linux, Android, and iOS.
+          Whether you're on your phone or laptop, turn any PDF page into a high-quality JPG image in just a few clicks.
+        </p>
+      </section>
+
+
+      <section className="py-16 bg-gray-50">
+        <div className="max-w-4xl mx-auto px-4">
+
+          <h2 className="text-3xl font-bold text-center mb-10 text-slate-900">
+            Frequently Asked Questions
+          </h2>
+
+          <div className="space-y-4">
+
+            <details className="bg-white rounded-lg shadow-sm p-5">
+              <summary className="font-semibold cursor-pointer">
+                Is the PDF to JPG converter free to use?
+              </summary>
+              <p className="mt-2 text-gray-600">
+                Yes — completely free with no limits or hidden charges.
+              </p>
+            </details>
+
+            <details className="bg-white rounded-lg shadow-sm p-5">
+              <summary className="font-semibold cursor-pointer">
+                Do I need to install any software?
+              </summary>
+              <p className="mt-2 text-gray-600">
+                No — everything works directly in your browser.
+              </p>
+            </details>
+
+            <details className="bg-white rounded-lg shadow-sm p-5">
+              <summary className="font-semibold cursor-pointer">
+                Will the image quality be good?
+              </summary>
+              <p className="mt-2 text-gray-600">
+                Yes! We export at high resolution to keep text sharp and colors vibrant.
+              </p>
+            </details>
+
+            <details className="bg-white rounded-lg shadow-sm p-5">
+              <summary className="font-semibold cursor-pointer">
+                Can I convert only specific pages?
+              </summary>
+              <p className="mt-2 text-gray-600">
+                Yes — choose all pages or just the ones you need.
+              </p>
+            </details>
+
+            <details className="bg-white rounded-lg shadow-sm p-5">
+              <summary className="font-semibold cursor-pointer">
+                Are my files safe and private?
+              </summary>
+              <p className="mt-2 text-gray-600">
+                100% safe — files are deleted automatically shortly after conversion.
+              </p>
+            </details>
+
+            <details className="bg-white rounded-lg shadow-sm p-5">
+              <summary className="font-semibold cursor-pointer">
+                Can I use this on my phone?
+              </summary>
+              <p className="mt-2 text-gray-600">
+                Yes! Works perfectly on mobile phones, tablets, and desktops.
+              </p>
+            </details>
+
+          </div>
+        </div>
+      </section>
+
+      <RelatedToolsSection currentPage="pdf-to-jpg" />
 
     </>
   );

@@ -267,6 +267,175 @@ export default function PdfToWord() {
         </p>
       </section>
 
+
+      <section className="max-w-4xl mx-auto px-4 py-14 text-slate-700">
+  {/* Heading */}
+  <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-6">
+    PDF to Word Converter – Free Online Tool by PDFLinx
+  </h2>
+
+  {/* Intro */}
+  <p className="text-base leading-7 mb-6">
+    Ever received a PDF that you desperately needed to edit, but it just wouldn't let you? 
+    We've all been there—stuck with a locked document when you need to make quick changes. 
+    That's exactly why we built the <span className="font-medium text-slate-900">PDFLinx PDF to Word Converter</span>. 
+    It's a completely free online tool that turns your PDFs into fully editable Word (DOCX) files in seconds—no software downloads, no watermarks, and no hassle.
+  </p>
+
+  {/* What is */}
+  <h3 className="text-xl font-semibold text-slate-900 mb-3">
+    What is PDF to Word Conversion?
+  </h3>
+  <p className="leading-7 mb-6">
+    PDF to Word conversion means taking a fixed-layout PDF and turning it back into an editable Microsoft Word document. 
+    PDFs are great for sharing because nothing moves around, but when you need to update text, fix a typo, or add new content, 
+    you need it in Word format. Our tool gives you that freedom while keeping the original look and feel as intact as possible.
+  </p>
+
+  {/* Why convert */}
+  <h3 className="text-xl font-semibold text-slate-900 mb-3">
+    Why Convert PDF Files to Word?
+  </h3>
+  <ul className="space-y-2 mb-6 list-disc pl-6">
+    <li>Easily edit text, images, tables, and everything else</li>
+    <li>Keeps fonts, headings, layout, and formatting as accurate as possible</li>
+    <li>Open and edit directly in Microsoft Word, Google Docs, or any editor</li>
+    <li>Perfect for updating resumes, reports, contracts, or assignments quickly</li>
+    <li>Even works with scanned PDFs thanks to built-in OCR technology</li>
+  </ul>
+
+  {/* Steps */}
+  <h3 className="text-xl font-semibold text-slate-900 mb-3">
+    How to Convert PDF to Word Online
+  </h3>
+  <ol className="space-y-2 mb-6 list-decimal pl-6">
+    <li>Upload your PDF file (just drag & drop or click to select)</li>
+    <li>Hit the “Convert to Word” button</li>
+    <li>Wait a few seconds—conversion is super fast</li>
+    <li>Download your fully editable DOCX file instantly</li>
+  </ol>
+
+  <p className="mb-6">
+    No account needed, no watermark added, no software to install—completely free and simple.
+  </p>
+
+  {/* Features box */}
+  <div className="bg-slate-50 border border-slate-200 rounded-xl p-6 mb-6">
+    <h3 className="text-xl font-semibold text-slate-900 mb-4">
+      Features of PDFLinx PDF to Word Converter
+    </h3>
+    <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 list-disc pl-5">
+      <li>100% free online converter</li>
+      <li>High accuracy with layout preservation</li>
+      <li>Supports scanned PDFs with OCR</li>
+      <li>Lightning-fast conversion</li>
+      <li>Works perfectly on mobile & desktop</li>
+      <li>No file storage – full privacy guaranteed</li>
+      <li>Clean output with no watermarks</li>
+    </ul>
+  </div>
+
+  {/* Audience */}
+  <h3 className="text-xl font-semibold text-slate-900 mb-3">
+    Who Should Use This Tool?
+  </h3>
+  <ul className="space-y-2 mb-6 list-disc pl-6">
+    <li><strong>Students:</strong> Edit assignments, theses, or notes received as PDFs</li>
+    <li><strong>Professionals:</strong> Update resumes, reports, or proposals on the go</li>
+    <li><strong>Businesses:</strong> Make changes to invoices, contracts, or legal docs</li>
+    <li><strong>Freelancers:</strong> Turn client PDF briefs into editable Word files quickly</li>
+    <li><strong>Teachers:</strong> Modify study materials or handouts before sharing</li>
+  </ul>
+
+  {/* Safety */}
+  <h3 className="text-xl font-semibold text-slate-900 mb-3">
+    Is PDFLinx Safe to Use?
+  </h3>
+  <p className="leading-7 mb-6">
+    Absolutely. Your privacy matters to us. 
+    Every file you upload is processed securely and automatically deleted from our servers shortly after conversion. 
+    We never store your documents permanently or share them with anyone.
+  </p>
+
+  {/* Closing */}
+  <h3 className="text-xl font-semibold text-slate-900 mb-3">
+    Convert PDF to Word Anytime, Anywhere
+  </h3>
+  <p className="leading-7">
+    PDFLinx works smoothly on Windows, macOS, Linux, Android, and iOS. 
+    All you need is an internet connection and a browser—turn any PDF into an editable Word document in just a few clicks, wherever you are.
+  </p>
+</section>
+
+
+<section className="py-16 bg-gray-50">
+  <div className="max-w-4xl mx-auto px-4">
+
+    <h2 className="text-3xl font-bold text-center mb-10 text-slate-900">
+      Frequently Asked Questions
+    </h2>
+
+    <div className="space-y-4">
+
+      <details className="bg-white rounded-lg shadow-sm p-5">
+        <summary className="font-semibold cursor-pointer">
+          Is the PDF to Word converter free to use?
+        </summary>
+        <p className="mt-2 text-gray-600">
+          Yes — completely free with no hidden fees or limits.
+        </p>
+      </details>
+
+      <details className="bg-white rounded-lg shadow-sm p-5">
+        <summary className="font-semibold cursor-pointer">
+          Do I need to install any software?
+        </summary>
+        <p className="mt-2 text-gray-600">
+          No downloads or installations needed. Everything happens right in your browser.
+        </p>
+      </details>
+
+      <details className="bg-white rounded-lg shadow-sm p-5">
+        <summary className="font-semibold cursor-pointer">
+          Will the formatting from my PDF be preserved?
+        </summary>
+        <p className="mt-2 text-gray-600">
+          We work hard to keep fonts, tables, images, and layout as close to the original as possible. 
+          Results are highly accurate, though very complex PDFs might need minor tweaks afterward.
+        </p>
+      </details>
+
+      <details className="bg-white rounded-lg shadow-sm p-5">
+        <summary className="font-semibold cursor-pointer">
+          Are my files safe and private?
+        </summary>
+        <p className="mt-2 text-gray-600">
+          Yes — files are securely processed and automatically deleted shortly after conversion. No permanent storage.
+        </p>
+      </details>
+
+      <details className="bg-white rounded-lg shadow-sm p-5">
+        <summary className="font-semibold cursor-pointer">
+          Can I use this on my phone?
+        </summary>
+        <p className="mt-2 text-gray-600">
+          Absolutely! It works great on mobile phones, tablets, and desktops.
+        </p>
+      </details>
+
+      <details className="bg-white rounded-lg shadow-sm p-5">
+        <summary className="font-semibold cursor-pointer">
+          Does it work with scanned PDFs?
+        </summary>
+        <p className="mt-2 text-gray-600">
+          Yes! Our built-in OCR technology extracts text from scanned documents accurately.
+        </p>
+      </details>
+
+    </div>
+  </div>
+</section>
+
       <RelatedToolsSection currentPage="pdf-to-word" />
       
     </>
