@@ -196,6 +196,182 @@ export default function QRGenerator() {
           Create professional QR codes every day with PDF Linx — trusted by thousands for fast, reliable, and free QR generation.
         </p>
       </section>
+
+
+      <section className="max-w-4xl mx-auto px-4 py-14 text-slate-700">
+  {/* Heading */}
+  <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-6">
+    QR Code Generator – Free Online QR Code Generator by PDFLinx
+  </h2>
+
+  {/* Intro */}
+  <p className="text-base leading-7 mb-6">
+    Need to share a website link, WiFi password, WhatsApp number, or contact details quickly?
+    Typing long links or information can be frustrating and time-consuming.
+    That’s why we built the <span className="font-medium text-slate-900">PDFLinx QR Code Generator</span> —
+    a simple, fast, and completely free online tool that lets you create high-quality QR codes in seconds.
+    No sign-up, no watermarks, and no software installation required.
+  </p>
+
+  {/* What is */}
+  <h3 className="text-xl font-semibold text-slate-900 mb-3">
+    What Is a QR Code?
+  </h3>
+  <p className="leading-7 mb-6">
+    A QR code (Quick Response code) is a scannable code that instantly opens digital information
+    when scanned with a smartphone camera. It can store URLs, plain text, WiFi credentials,
+    WhatsApp chat links, email addresses, or contact information.
+    QR codes make sharing information faster, cleaner, and more convenient.
+  </p>
+
+  {/* Why use */}
+  <h3 className="text-xl font-semibold text-slate-900 mb-3">
+    Why Use a QR Code Generator?
+  </h3>
+  <ul className="space-y-2 mb-6 list-disc pl-6">
+    <li>Share website links instantly without typing</li>
+    <li>Let users connect to WiFi without revealing passwords</li>
+    <li>Create quick access to WhatsApp chats or phone numbers</li>
+    <li>Share contact details using a single scan</li>
+    <li>Perfect for posters, menus, business cards, and events</li>
+  </ul>
+
+  {/* Steps */}
+  <h3 className="text-xl font-semibold text-slate-900 mb-3">
+    How to Generate a QR Code Online
+  </h3>
+  <ol className="space-y-2 mb-6 list-decimal pl-6">
+    <li>Enter or paste your data (URL, text, WiFi details, WhatsApp number, or contact)</li>
+    <li>Your QR code is generated instantly with a live preview</li>
+    <li>Download the QR code in high-quality image format</li>
+    <li>Use it anywhere — print it or share it digitally</li>
+  </ol>
+
+  <p className="mb-6">
+    No registration, no usage limits, and no hidden restrictions — 100% free and easy to use.
+  </p>
+
+  {/* Features box */}
+  <div className="bg-slate-50 border border-slate-200 rounded-xl p-6 mb-6">
+    <h3 className="text-xl font-semibold text-slate-900 mb-4">
+      Features of PDFLinx QR Code Generator
+    </h3>
+    <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 list-disc pl-5">
+      <li>Completely free QR code generator</li>
+      <li>Supports URLs, text, WiFi, WhatsApp, email, and contacts</li>
+      <li>Instant QR code generation with live preview</li>
+      <li>High-quality image downloads</li>
+      <li>Fast, reliable, and easy to use</li>
+      <li>Works perfectly on mobile and desktop</li>
+      <li>No data storage — full privacy protection</li>
+    </ul>
+  </div>
+
+  {/* Audience */}
+  <h3 className="text-xl font-semibold text-slate-900 mb-3">
+    Who Should Use This Tool?
+  </h3>
+  <ul className="space-y-2 mb-6 list-disc pl-6">
+    <li><strong>Businesses:</strong> Add QR codes to business cards, flyers, and packaging</li>
+    <li><strong>Restaurants:</strong> Share digital menus using QR codes</li>
+    <li><strong>Event Organizers:</strong> Provide instant access to tickets and event details</li>
+    <li><strong>Students & Teachers:</strong> Share study resources and links easily</li>
+    <li><strong>Anyone:</strong> Who wants fast, contactless information sharing</li>
+  </ul>
+
+  {/* Safety */}
+  <h3 className="text-xl font-semibold text-slate-900 mb-3">
+    Is PDFLinx QR Code Generator Safe to Use?
+  </h3>
+  <p className="leading-7 mb-6">
+    Yes, it is completely safe. Your input is only used to generate the QR code
+    and is not stored or shared.
+    We respect your privacy and ensure a secure, trustworthy experience every time.
+  </p>
+
+  {/* Closing */}
+  <h3 className="text-xl font-semibold text-slate-900 mb-3">
+    Create QR Codes Anytime, Anywhere
+  </h3>
+  <p className="leading-7">
+    PDFLinx QR Code Generator works smoothly on Windows, macOS, Linux, Android, and iOS.
+    Whether you are on a phone, tablet, or computer, you can generate QR codes instantly
+    using just your browser and an internet connection.
+  </p>
+</section>
+
+
+<section className="py-16 bg-gray-50">
+  <div className="max-w-4xl mx-auto px-4">
+
+    <h2 className="text-3xl font-bold text-center mb-10 text-slate-900">
+      Frequently Asked Questions
+    </h2>
+
+    <div className="space-y-4">
+
+      <details className="bg-white rounded-lg shadow-sm p-5">
+        <summary className="font-semibold cursor-pointer">
+          Is the QR Code Generator free to use?
+        </summary>
+        <p className="mt-2 text-gray-600">
+          Yes, it is completely free with no sign-up or hidden costs.
+        </p>
+      </details>
+
+      <details className="bg-white rounded-lg shadow-sm p-5">
+        <summary className="font-semibold cursor-pointer">
+          What types of QR codes can I create?
+        </summary>
+        <p className="mt-2 text-gray-600">
+          You can generate QR codes for websites, text, WiFi networks, WhatsApp chats,
+          email addresses, and contact details.
+        </p>
+      </details>
+
+      <details className="bg-white rounded-lg shadow-sm p-5">
+        <summary className="font-semibold cursor-pointer">
+          Do I need to install any software?
+        </summary>
+        <p className="mt-2 text-gray-600">
+          No installation is required. Everything works directly in your browser.
+        </p>
+      </details>
+
+      <details className="bg-white rounded-lg shadow-sm p-5">
+        <summary className="font-semibold cursor-pointer">
+          Will the QR code work for printing?
+        </summary>
+        <p className="mt-2 text-gray-600">
+          Yes, QR codes are generated in high quality and are suitable for printing on
+          posters, flyers, and business cards.
+        </p>
+      </details>
+
+      <details className="bg-white rounded-lg shadow-sm p-5">
+        <summary className="font-semibold cursor-pointer">
+          Are my QR codes private?
+        </summary>
+        <p className="mt-2 text-gray-600">
+          Yes. We do not store your data, and your content remains private.
+        </p>
+      </details>
+
+      <details className="bg-white rounded-lg shadow-sm p-5">
+        <summary className="font-semibold cursor-pointer">
+          Can I generate QR codes on my phone?
+        </summary>
+        <p className="mt-2 text-gray-600">
+          Absolutely. The tool works perfectly on mobile phones, tablets, and desktops.
+        </p>
+      </details>
+
+    </div>
+  </div>
+</section>
+
+
+
       <RelatedToolsSection currentPage="qr-generator" />
 
     </>

@@ -294,7 +294,7 @@ const blogs = [
   },
 
   {
-    slug: "excel-to-pdf",
+    slug: "excel-pdf",
     title: "How to Convert Excel to PDF Without Losing Formatting",
     date: "Aug 18, 2025",
     content: `
@@ -304,11 +304,11 @@ const blogs = [
 
     <p>That’s why turning it into a PDF is usually the safest move. It locks everything in place and looks exactly the same for everyone. I used to do this in Excel itself (“Save As PDF”), but it was slow and sometimes charts got cut off.</p>
 
-    <p>So I added the <a href="/excel-to-pdf"><strong>Excel to PDF converter</strong></a> on PDF Linx. Now whenever I finish a spreadsheet, I just upload the file here and get a sharp, professional PDF in seconds. Tables stay aligned, charts look crisp, colors and fonts don’t shift — everything stays exactly how I designed it.</p>
+    <p>So I added the <a href="/excel-pdf"><strong>Excel to PDF converter</strong></a> on PDF Linx. Now whenever I finish a spreadsheet, I just upload the file here and get a sharp, professional PDF in seconds. Tables stay aligned, charts look crisp, colors and fonts don’t shift — everything stays exactly how I designed it.</p>
 
     <h3>Super Easy Steps (Literally 3 clicks):</h3>
     <ol class="list-decimal list-inside space-y-3 ml-4 text-lg">
-      <li>Go to the <a href="/excel-to-pdf" class="text-indigo-600 hover:underline">Excel to PDF tool</a></li>
+      <li>Go to the <a href="/excel-pdf" class="text-indigo-600 hover:underline">Excel to PDF tool</a></li>
       <li>Upload your .xls or .xlsx file (drag or click)</li>
       <li>Wait a few seconds</li>
       <li>Download your perfect PDF — ready to print or share</li>
@@ -322,7 +322,7 @@ const blogs = [
       <p class="text-xl font-semibold text-indigo-800 mb-4">
         Got an Excel file you need to share professionally? Turn it into a PDF now — takes less than 10 seconds.
       </p>
-      <a href="/excel-to-pdf" class="inline-block bg-indigo-600 text-white font-bold px-8 py-4 rounded-xl hover:bg-indigo-700 transition shadow-lg">
+      <a href="/excel-pdf" class="inline-block bg-indigo-600 text-white font-bold px-8 py-4 rounded-xl hover:bg-indigo-700 transition shadow-lg">
         Convert Excel to PDF for Free →
       </a>
     </div>

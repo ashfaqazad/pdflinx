@@ -273,6 +273,179 @@ export default function PasswordGenerator() {
         </p>
       </section>
 
+
+      <section className="max-w-4xl mx-auto px-4 py-14 text-slate-700">
+  {/* Heading */}
+  <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-6">
+    Password Generator Online (Free) – Create Strong Passwords with PDFLinx
+  </h2>
+
+  {/* Intro */}
+  <p className="text-base leading-7 mb-6">
+    Let’s be honest — coming up with a “strong” password is annoying.
+    And reusing the same password everywhere is even worse (and risky).
+    That’s why we built the <span className="font-medium text-slate-900">PDFLinx Password Generator</span> —
+    a free online tool that creates secure, random passwords instantly.
+    You can control the password length, include symbols and numbers, and even exclude confusing characters.
+    No signup, no tracking, and nothing stored.
+  </p>
+
+  {/* What is */}
+  <h3 className="text-xl font-semibold text-slate-900 mb-3">
+    What Is a Password Generator?
+  </h3>
+  <p className="leading-7 mb-6">
+    A password generator is a tool that creates random passwords that are hard to guess and
+    far more secure than passwords humans typically invent. Instead of using common words,
+    predictable patterns, or personal info, it generates stronger combinations of uppercase letters,
+    lowercase letters, numbers, and symbols — helping you protect accounts from hacks and brute-force attacks.
+  </p>
+
+  {/* Why use */}
+  <h3 className="text-xl font-semibold text-slate-900 mb-3">
+    Why Use a Strong Password Generator?
+  </h3>
+  <ul className="space-y-2 mb-6 list-disc pl-6">
+    <li>Generate truly random passwords (not “easy-to-guess” ones)</li>
+    <li>Reduce the risk of account takeovers and password cracking</li>
+    <li>Create unique passwords for every site or app</li>
+    <li>Customize your password length based on security needs</li>
+    <li>Include symbols, numbers, and mixed case for stronger protection</li>
+  </ul>
+
+  {/* Steps */}
+  <h3 className="text-xl font-semibold text-slate-900 mb-3">
+    How to Generate a Strong Password Online
+  </h3>
+  <ol className="space-y-2 mb-6 list-decimal pl-6">
+    <li>Choose your password length using the slider</li>
+    <li>Select what to include: uppercase, lowercase, numbers, and symbols</li>
+    <li>Optionally enable “Exclude similar characters” (like 1, l, I, 0, O)</li>
+    <li>Click “Generate Strong Password”</li>
+    <li>Hit “Copy to Clipboard” and use it anywhere</li>
+  </ol>
+
+  <p className="mb-6">
+    No sign-up, unlimited passwords, nothing stored — 100% free and privacy-friendly.
+  </p>
+
+  {/* Features box */}
+  <div className="bg-slate-50 border border-slate-200 rounded-xl p-6 mb-6">
+    <h3 className="text-xl font-semibold text-slate-900 mb-4">
+      Features of PDFLinx Password Generator
+    </h3>
+    <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 list-disc pl-5">
+      <li>100% free password generator</li>
+      <li>Adjustable password length slider</li>
+      <li>Include/exclude uppercase, lowercase, numbers, and symbols</li>
+      <li>Exclude similar characters for easier reading</li>
+      <li>One-click “Copy to Clipboard”</li>
+      <li>Unlimited password generation</li>
+      <li>No storage — your passwords stay private</li>
+    </ul>
+  </div>
+
+  {/* Audience */}
+  <h3 className="text-xl font-semibold text-slate-900 mb-3">
+    Who Should Use This Tool?
+  </h3>
+  <ul className="space-y-2 mb-6 list-disc pl-6">
+    <li><strong>Everyone:</strong> Anyone who wants safer online accounts</li>
+    <li><strong>Remote workers:</strong> Secure logins for tools, dashboards, and email</li>
+    <li><strong>Students:</strong> Strong passwords for school portals and apps</li>
+    <li><strong>Businesses:</strong> Better password hygiene for teams and internal systems</li>
+    <li><strong>Developers:</strong> Quick password generation for testing and accounts</li>
+  </ul>
+
+  {/* Safety */}
+  <h3 className="text-xl font-semibold text-slate-900 mb-3">
+    Is PDFLinx Password Generator Safe to Use?
+  </h3>
+  <p className="leading-7 mb-6">
+    Yes — safety and privacy come first. The password is generated instantly and you can copy it right away.
+    We do not store generated passwords, and there’s no sign-up required.
+    It’s a simple tool built for quick, secure password creation without complications.
+  </p>
+
+  {/* Closing */}
+  <h3 className="text-xl font-semibold text-slate-900 mb-3">
+    Generate Secure Passwords Anytime, Anywhere
+  </h3>
+  <p className="leading-7">
+    PDFLinx Password Generator works smoothly on Windows, macOS, Linux, Android, and iOS.
+    Whether you’re on a phone or desktop, you can generate strong passwords instantly using just your browser.
+  </p>
+</section>
+
+
+<section className="py-16 bg-gray-50">
+  <div className="max-w-4xl mx-auto px-4">
+
+    <h2 className="text-3xl font-bold text-center mb-10 text-slate-900">
+      Frequently Asked Questions
+    </h2>
+
+    <div className="space-y-4">
+
+      <details className="bg-white rounded-lg shadow-sm p-5">
+        <summary className="font-semibold cursor-pointer">
+          Is the password generator free to use?
+        </summary>
+        <p className="mt-2 text-gray-600">
+          Yes — it’s completely free with unlimited password generation and no hidden charges.
+        </p>
+      </details>
+
+      <details className="bg-white rounded-lg shadow-sm p-5">
+        <summary className="font-semibold cursor-pointer">
+          Can I customize the password length?
+        </summary>
+        <p className="mt-2 text-gray-600">
+          Absolutely. Use the length slider to create short or long passwords depending on your needs.
+        </p>
+      </details>
+
+      <details className="bg-white rounded-lg shadow-sm p-5">
+        <summary className="font-semibold cursor-pointer">
+          What options can I include in the password?
+        </summary>
+        <p className="mt-2 text-gray-600">
+          You can include uppercase letters, lowercase letters, numbers, and symbols — or turn any of them off.
+        </p>
+      </details>
+
+      <details className="bg-white rounded-lg shadow-sm p-5">
+        <summary className="font-semibold cursor-pointer">
+          What does “Exclude similar characters” mean?
+        </summary>
+        <p className="mt-2 text-gray-600">
+          It removes look-alike characters such as 1, l, I, 0, and O — making the password easier to read and type.
+        </p>
+      </details>
+
+      <details className="bg-white rounded-lg shadow-sm p-5">
+        <summary className="font-semibold cursor-pointer">
+          Are generated passwords stored anywhere?
+        </summary>
+        <p className="mt-2 text-gray-600">
+          No. We do not store your generated passwords — they remain private to you.
+        </p>
+      </details>
+
+      <details className="bg-white rounded-lg shadow-sm p-5">
+        <summary className="font-semibold cursor-pointer">
+          Can I use this on mobile?
+        </summary>
+        <p className="mt-2 text-gray-600">
+          Yes — the password generator works perfectly on phones, tablets, and desktops.
+        </p>
+      </details>
+
+    </div>
+  </div>
+</section>
+
+
       <RelatedToolsSection currentPage="password-gen" />
     </>
   );

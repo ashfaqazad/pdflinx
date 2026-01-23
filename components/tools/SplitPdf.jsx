@@ -268,6 +268,8 @@ export default function SplitPDF() {
         </p>
       </section>
 
+
+
       <section className="max-w-4xl mx-auto px-4 py-14 text-slate-700">
         {/* Heading */}
         <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-6">

@@ -20,15 +20,17 @@ const componentMap = {
   "heic-to-jpg": () => import("@/components/tools/HeicToJpg"),
   "text-to-pdf": () => import("@/components/tools/TextToPdf"),
   "image-converter": () => import("@/components/tools/ImageConverter"),
-  "rotate-pdf": () => import("@/components/tools/RotatePdf"),
   "pdf-to-jpg": () => import("@/components/tools/PdfToJpg"),
   "add-watermark": () => import("@/components/tools/AddWatermark"),
-  "protect-pdf": () => import("@/components/tools/ProtectPdf"),
-  "pdf-to-jpg": () => import("@/components/tools/PdfToJpg"),
-  "pdf-to-excel": () => import("@/components/tools/PdfToExcel"),
   "ppt-to-pdf": () => import("@/components/tools/PptToPdf"),
 
 };
+
+
+// "rotate-pdf": () => import("@/components/tools/RotatePdf"),
+  // "protect-pdf": () => import("@/components/tools/ProtectPdf"),
+  // "pdf-to-jpg": () => import("@/components/tools/PdfToJpg"),
+  // "pdf-to-excel": () => import("@/components/tools/PdfToExcel"),
 
 export async function generateMetadata({ params }) {
   const { tool } = params;

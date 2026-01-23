@@ -12,9 +12,32 @@ const nextConfig = {
       },
     ];
   },
+
+  async redirects() {
+    return [
+      // ✅ redirect any old /tools/... link to root
+      {
+        source: "/tools/:slug*",
+        destination: "/:slug*",
+        permanent: true,
+      },
+
+      // ✅ optional: old wrong excel URL (since you had it in blog)
+      {
+        source: "/excel-to-pdf",
+        destination: "/excel-pdf",
+        permanent: true,
+      },
+    ];
+  },
 };
 
 export default nextConfig;
+
+
+
+
+
 
 
 
@@ -35,19 +58,18 @@ export default nextConfig;
 // const nextConfig = {
 //   async rewrites() {
 //     return [
-//       // ← Sab Node.js wale tools ke liye (Word to PDF, Image to PDF, etc.)
 //       {
 //         source: "/api/:path*",
-//         destination: "http://72.60.78.58:4000/:path*",
+//         destination: `${process.env.NEXT_PUBLIC_BACKEND_URL}/:path*`,
 //       },
-//       // ← PDF to Word ke liye (Python wala)
 //       {
 //         source: "/convert/:path*",
-//         destination: "http://72.60.78.58:4000/convert/:path*",
+//         destination: `${process.env.NEXT_PUBLIC_BACKEND_URL}/convert/:path*`,
 //       },
 //     ];
 //   },
 // };
 
 // export default nextConfig;
+
 
