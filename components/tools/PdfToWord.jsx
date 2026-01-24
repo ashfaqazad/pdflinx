@@ -6,52 +6,203 @@ import { Upload, Download, CheckCircle, FileText } from "lucide-react";
 import Script from "next/script";
 import RelatedToolsSection from "@/components/RelatedTools";
 
-
-
 export default function PdfToWord() {
-  const [file, setFile] = useState(null);
+  const [files, setFiles] = useState([]); // ✅ multiple PDFs
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
 
-  
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!file) return alert("Please select a PDF file");
+  // ✅ only for ZIP downloads (multiple files)
+  const [downloadUrl, setDownloadUrl] = useState(null);
 
-    setLoading(true);
-    setSuccess(false);
+//   const handleSubmit = async (e) => {
+//     e.preventDefault();
+//     if (!files.length) return alert("Please select a PDF file");
 
-    const formData = new FormData();
-    formData.append("file", file);
+//     setLoading(true);
+//     setSuccess(false);
+//     setDownloadUrl(null);
 
-    try {
-      const res = await fetch("/convert/pdf-to-word", {
-        method: "POST",
-        body: formData,
-      });
+//     const formData = new FormData();
+//     for (const f of files) formData.append("files", f); // ✅ backend should accept "files"
 
-      if (!res.ok) throw new Error("Conversion failed");
+//     try {
+//       const res = await fetch("/convert/pdf-to-word", {
+//         method: "POST",
+//         body: formData,
+//       });
 
+//       if (!res.ok) {
+//         // try json error
+//         let msg = "Conversion failed";
+//         try {
+//           const maybeJson = await res.json();
+//           msg = maybeJson?.error || msg;
+//         } catch {}
+//         throw new Error(msg);
+//       }
+
+//       // const contentType = res.headers.get("content-type") || "";
+
+//       // // ✅ SINGLE FILE: backend returns DOCX stream directly
+//       // // (Some servers return octet-stream, so we check both)
+//       // if (
+//       //   contentType.includes(
+//       //     "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+//       //   ) ||
+//       //   contentType.includes("application/octet-stream")
+//       // ) {
+//       //   const blob = await res.blob();
+//       //   const url = window.URL.createObjectURL(blob);
+
+//       //   const a = document.createElement("a");
+//       //   a.href = url;
+//       //   a.download = files[0].name.replace(/\.pdf$/i, ".docx");
+//       //   a.click();
+
+//       //   window.URL.revokeObjectURL(url);
+
+//       //   setSuccess(true);
+//       //   setFiles([]);
+//       //   return;
+//       // }
+
+
+//       const contentType = res.headers.get("content-type") || "";
+
+// if (contentType.includes("application/zip")) {
+//   const blob = await res.blob();
+//   const url = window.URL.createObjectURL(blob);
+//   const a = document.createElement("a");
+//   a.href = url;
+//   a.download = "pdflinx-pdf-to-word.zip";
+//   a.click();
+//   window.URL.revokeObjectURL(url);
+//   setSuccess(true);
+//   setFiles([]);
+//   return;
+// }
+
+//       // ✅ MULTIPLE FILES: backend returns JSON with ZIP path
+//       const data = await res.json();
+
+//       if (data.success && data.download) {
+//         // Your server should return something like: { success:true, download:"/converted/xxx.zip" }
+//         // If your zip is served directly from Express, you may not need `/api` prefix.
+//         // Keep it consistent with your project routing:
+//         // setDownloadUrl(data.download.startsWith("http") ? data.download : data.download);
+//         setDownloadUrl(data.download);
+
+//         setSuccess(true);
+//       } else {
+//         throw new Error(data?.error || "Conversion failed");
+//       }
+//     } catch (err) {
+//       alert(err.message || "Oops! Something went wrong. Try again?");
+//       console.error(err);
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
+
+
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  if (!files.length) return alert("Please select a PDF file");
+
+  setLoading(true);
+  setSuccess(false);
+  setDownloadUrl(null); // ye state ab bekaar hai, lekin remove karne se pehle rakho
+
+  const formData = new FormData();
+  for (const f of files) {
+    formData.append("files", f); // backend "files" ya "file" dono accept karta hai
+  }
+
+  try {
+    const res = await fetch("/convert/pdf-to-word", { // jo bhi tera API path hai
+      method: "POST",
+      body: formData,
+    });
+
+    if (!res.ok) {
+      let msg = "Conversion failed";
+      try {
+        const err = await res.json();
+        msg = err.error || msg;
+      } catch {}
+      throw new Error(msg);
+    }
+
+    const contentType = res.headers.get("content-type") || "";
+
+    // ✅ SINGLE FILE: direct DOCX
+    if (contentType.includes("vnd.openxmlformats") || contentType.includes("octet-stream")) {
       const blob = await res.blob();
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = file.name.replace(/\.pdf$/i, ".docx");
+      a.download = files[0].name.replace(/\.pdf$/i, ".docx");
       a.click();
       window.URL.revokeObjectURL(url);
 
       setSuccess(true);
-      setFile(null); // Reset after success
-    } catch (err) {
-      alert("Oops! Something went wrong. Try again?");
-    } finally {
+      setFiles([]);
       setLoading(false);
+      return;
+    }
+
+    // ✅ MULTIPLE FILES: direct ZIP
+    if (contentType.includes("application/zip")) {
+      const blob = await res.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "pdflinx-pdf-to-word.zip";
+      a.click();
+      window.URL.revokeObjectURL(url);
+
+      setSuccess(true);
+      setFiles([]);
+      setLoading(false);
+      return;
+    }
+
+    // Agar kuch aur aaye (rare)
+    throw new Error("Unexpected response from server");
+
+  } catch (err) {
+    alert(err.message || "Oops! Something went wrong. Try again?");
+    console.error(err);
+  } finally {
+    setLoading(false);
+  }
+};
+
+  // ✅ Only for ZIP downloads (multiple PDFs)
+  const handleDownloadZip = async () => {
+    if (!downloadUrl) return;
+
+    try {
+      const res = await fetch(downloadUrl);
+      if (!res.ok) throw new Error("Download failed");
+
+      const blob = await res.blob();
+      const url = window.URL.createObjectURL(blob);
+
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "pdflinx-pdf-to-word.zip";
+      a.click();
+
+      window.URL.revokeObjectURL(url);
+    } catch (err) {
+      alert("There was a problem with the download.");
+      console.error(err);
     }
   };
 
   return (
     <>
-
       {/* ==================== PAGE-SPECIFIC SEO SCHEMAS ==================== */}
 
       {/* HowTo Schema - PDF to Word */}
@@ -60,38 +211,39 @@ export default function PdfToWord() {
         type="application/ld+json"
         strategy="afterInteractive"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "HowTo",
-            name: "How to Convert PDF to Word Online for Free",
-            description: "Convert any PDF file to editable Word document in just 3 simple steps using PDF Linx - completely free and no signup required.",
-            url: "https://pdflinx.com/pdf-to-word",
-            step: [
-              {
-                "@type": "HowToStep",
-                name: "Upload your PDF",
-                text: "Click on 'Select PDF file' button and choose the PDF you want to convert from your device."
-              },
-              {
-                "@type": "HowToStep",
-                name: "Click Convert",
-                text: "Press the 'Convert to Word' button and wait a few seconds while we process your file."
-              },
-              {
-                "@type": "HowToStep",
-                name: "Download Word file",
-                text: "Your converted .docx file will automatically download. Open it in Microsoft Word or Google Docs."
-              }
-            ],
-            totalTime: "PT30S",
-            estimatedCost: {
-              "@type": "MonetaryAmount",
-              value: "0",
-              currency: "USD"
+          __html: JSON.stringify(
+            {
+              "@context": "https://schema.org",
+              "@type": "HowTo",
+              name: "How to Convert PDF to Word Online for Free",
+              description:
+                "Convert one or multiple PDF files into editable Word (DOCX) in seconds with PDFLinx — free, fast, and no signup required.",
+              url: "https://pdflinx.com/pdf-to-word",
+              step: [
+                {
+                  "@type": "HowToStep",
+                  name: "Upload PDF File(s)",
+                  text: "Upload a single PDF or select multiple PDFs at once.",
+                },
+                {
+                  "@type": "HowToStep",
+                  name: "Click Convert",
+                  text: "Press 'Convert to Word' and wait a few seconds while we process your file(s).",
+                },
+                {
+                  "@type": "HowToStep",
+                  name: "Download DOCX (or ZIP)",
+                  text: "Single file downloads as DOCX. Multiple files download as a ZIP containing all DOCX files.",
+                },
+              ],
+              totalTime: "PT30S",
+              estimatedCost: { "@type": "MonetaryAmount", value: "0", currency: "USD" },
+              tool: [{ "@type": "HowToTool", name: "PDFLinx PDF to Word Converter" }],
+              image: "https://pdflinx.com/og-image.png",
             },
-            tool: [{ "@type": "HowToTool", name: "PDF Linx PDF to Word Converter" }],
-            image: "https://pdflinx.com/og-image.png"
-          }, null, 2),
+            null,
+            2
+          ),
         }}
       />
 
@@ -101,14 +253,18 @@ export default function PdfToWord() {
         type="application/ld+json"
         strategy="afterInteractive"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "BreadcrumbList",
-            itemListElement: [
-              { "@type": "ListItem", position: 1, name: "Home", item: "https://pdflinx.com" },
-              { "@type": "ListItem", position: 2, name: "PDF to Word", item: "https://pdflinx.com/pdf-to-word" }
-            ]
-          }, null, 2),
+          __html: JSON.stringify(
+            {
+              "@context": "https://schema.org",
+              "@type": "BreadcrumbList",
+              itemListElement: [
+                { "@type": "ListItem", position: 1, name: "Home", item: "https://pdflinx.com" },
+                { "@type": "ListItem", position: 2, name: "PDF to Word", item: "https://pdflinx.com/pdf-to-word" },
+              ],
+            },
+            null,
+            2
+          ),
         }}
       />
 
@@ -121,7 +277,8 @@ export default function PdfToWord() {
               PDF to Word Converter <br />(Free & Online)
             </h1>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Stuck with a PDF you need to edit? Turn it into a fully editable Word file in seconds – formatting stays perfect, no sign-up needed!
+              Got a PDF you need to edit? Upload one file for a quick DOCX — or select multiple PDFs together and download
+              everything in one ZIP. Clean output, no watermark, no signup.
             </p>
           </div>
 
@@ -131,17 +288,32 @@ export default function PdfToWord() {
               {/* Upload Area */}
               <div className="relative">
                 <label className="block">
-                  <div className={`border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition-all ${file ? 'border-green-500 bg-green-50' : 'border-gray-300 hover:border-blue-500 hover:bg-blue-50'}`}>
-                    <FileText className="w-12 h-12 mx-auto mb-3 text-blue-600" />
+                  <div
+                    className={`border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition-all ${
+                      files.length
+                        ? "border-green-500 bg-green-50"
+                        : "border-gray-300 hover:border-blue-500 hover:bg-blue-50"
+                    }`}
+                  >
+                    <Upload className="w-12 h-12 mx-auto mb-3 text-blue-600" />
                     <p className="text-lg font-semibold text-gray-700">
-                      {file ? file.name : "Drop your PDF here or click to upload"}
+                      {files.length
+                        ? `${files.length} file(s) selected`
+                        : "Drop your PDF file(s) here or click to upload"}
                     </p>
-                    <p className="text-sm text-gray-500 mt-1">Turns into editable Word (DOCX)</p>
+                    <p className="text-sm text-gray-500 mt-1">
+                      Converts PDF to editable Word (DOCX)
+                    </p>
+                    <p className="text-xs text-gray-500 mt-2">
+                      Tip: Single PDF downloads as DOCX. Multiple PDFs download as a ZIP with all DOCX files inside.
+                    </p>
                   </div>
+
                   <input
                     type="file"
+                    multiple
                     accept="application/pdf"
-                    onChange={(e) => setFile(e.target.files?.[0] || null)}
+                    onChange={(e) => setFiles(Array.from(e.target.files || []))}
                     className="hidden"
                     required
                   />
@@ -151,7 +323,7 @@ export default function PdfToWord() {
               {/* Convert Button */}
               <button
                 type="submit"
-                disabled={loading || !file}
+                disabled={loading || !files.length}
                 className="w-full bg-gradient-to-r from-blue-600 to-green-600 text-white font-semibold text-lg py-4 rounded-xl hover:from-blue-700 hover:to-green-700 disabled:opacity-60 disabled:cursor-not-allowed transition shadow-md flex items-center justify-center gap-2"
               >
                 {loading ? (
@@ -166,31 +338,65 @@ export default function PdfToWord() {
             </form>
 
             {/* Success Message */}
-            {success && (
+            {/* {success && (
               <div className="mt-6 p-4 bg-green-50 border-2 border-green-200 rounded-xl text-center">
                 <CheckCircle className="w-12 h-12 text-green-600 mx-auto mb-3" />
-                <p className="text-xl font-bold text-green-700 mb-2">All done!</p>
-                <p className="text-base text-gray-700">Your editable Word file downloaded automatically</p>
-              </div>
-            )}
+                <p className="text-xl font-bold text-green-700 mb-2">
+                  Done! Your {files.length <= 1 ? "DOCX" : "ZIP"} is ready
+                </p> */}
+
+                {/* ✅ For multiple files: show ZIP download button */}
+                {/* {files.length > 1 && downloadUrl && (
+                  <button
+                    onClick={handleDownloadZip}
+                    className="bg-green-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-green-700 transition shadow-md flex items-center gap-2 mx-auto text-base"
+                  >
+                    <Download className="w-5 h-5" />
+                    Download ZIP
+                  </button>
+                )} */}
+
+                {/* ✅ For single file: it auto-downloaded */}
+                {/* {files.length <= 1 && (
+                  <p className="text-base text-gray-700 mt-2">
+                    Your editable Word file downloaded automatically.
+                  </p>
+                )}
+              </div> */}
+            {/* )} */}
+
+
+            {success && (
+  <div className="mt-6 p-4 bg-green-50 border-2 border-green-200 rounded-xl text-center">
+    <CheckCircle className="w-12 h-12 text-green-600 mx-auto mb-3" />
+    <p className="text-xl font-bold text-green-700 mb-2">
+      Done! Your file(s) downloaded automatically 🎉
+    </p>
+    <p className="text-base text-gray-700">
+      {files.length === 1 
+        ? "Check your downloads for the editable Word file." 
+        : "Check your downloads – ZIP contains all converted DOCX files."}
+    </p>
+  </div>
+)}
           </div>
 
           {/* Footer */}
           <p className="text-center mt-6 text-gray-600 text-base">
-            No account • No watermark • Files gone after 1 hour • Completely free
+            No account • No watermark • Files gone after 1 hour • Completely free • Single & bulk conversions supported
           </p>
         </div>
       </main>
 
       {/* ==================== SEO CONTENT SECTION ==================== */}
       <section className="mt-16 max-w-4xl mx-auto px-6 pb-16">
-        {/* Main Heading */}
         <div className="text-center mb-12">
           <h2 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent mb-4">
             PDF to Word Online Free – Make Your PDFs Editable
           </h2>
           <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-            Need to tweak a PDF? Convert it to Word here – text, tables, images, everything stays in place so you can edit easily. Fast, accurate, and always free on PDF Linx!
+            Need to tweak a PDF? Convert it to Word here — text, tables, images, everything stays in place so you can edit easily.
+            Converting a bunch of PDFs? Upload multiple files together and download a ZIP with all DOCX files inside.
           </p>
         </div>
 
@@ -204,7 +410,7 @@ export default function PdfToWord() {
             </div>
             <h3 className="text-xl font-semibold text-gray-800 mb-3">Super Accurate</h3>
             <p className="text-gray-600 text-sm">
-              Text, tables, layout – everything transfers cleanly for easy editing.
+              Text, tables, and layout move over neatly so editing feels easy.
             </p>
           </div>
 
@@ -212,9 +418,9 @@ export default function PdfToWord() {
             <div className="w-16 h-16 bg-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
               <CheckCircle className="w-8 h-8 text-white" />
             </div>
-            <h3 className="text-xl font-semibold text-gray-800 mb-3">Handles Tough PDFs</h3>
+            <h3 className="text-xl font-semibold text-gray-800 mb-3">Single + Bulk Support</h3>
             <p className="text-gray-600 text-sm">
-              Scanned pages, images, multi-column – turns them into editable Word.
+              Convert one PDF to DOCX or upload multiple PDFs and download a ZIP — your choice.
             </p>
           </div>
 
@@ -224,7 +430,7 @@ export default function PdfToWord() {
             </div>
             <h3 className="text-xl font-semibold text-gray-800 mb-3">Fast & Private</h3>
             <p className="text-gray-600 text-sm">
-              Instant conversion – no sign-up, no watermark, files deleted after 1 hour.
+              No sign-up, no watermark, and files are removed after 1 hour.
             </p>
           </div>
         </div>
@@ -239,8 +445,10 @@ export default function PdfToWord() {
               <div className="w-16 h-16 bg-gradient-to-r from-blue-600 to-blue-700 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold text-white shadow-lg">
                 1
               </div>
-              <h4 className="text-lg font-semibold mb-2">Upload PDF</h4>
-              <p className="text-gray-600 text-sm">Drop your file (even scanned ones work)</p>
+              <h4 className="text-lg font-semibold mb-2">Upload PDF File(s)</h4>
+              <p className="text-gray-600 text-sm">
+                Upload a single PDF — or select multiple PDFs at once.
+              </p>
             </div>
 
             <div className="text-center">
@@ -248,199 +456,151 @@ export default function PdfToWord() {
                 2
               </div>
               <h4 className="text-lg font-semibold mb-2">Hit Convert</h4>
-              <p className="text-gray-600 text-sm">We pull out text and formatting neatly</p>
+              <p className="text-gray-600 text-sm">We extract content and keep it editable.</p>
             </div>
 
             <div className="text-center">
               <div className="w-16 h-16 bg-gradient-to-r from-purple-600 to-purple-700 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold text-white shadow-lg">
                 3
               </div>
-              <h4 className="text-lg font-semibold mb-2">Download Word</h4>
-              <p className="text-gray-600 text-sm">Your editable DOCX is ready!</p>
+              <h4 className="text-lg font-semibold mb-2">Download DOCX (or ZIP)</h4>
+              <p className="text-gray-600 text-sm">
+                Single file downloads as DOCX. Multiple files download as a ZIP.
+              </p>
             </div>
           </div>
         </div>
 
-        {/* Final CTA */}
         <p className="text-center mt-12 text-base text-gray-600 italic max-w-3xl mx-auto">
-          Thousands use PDF Linx daily to unlock PDFs into editable Word files – fast, accurate, and always free.
+          Convert PDFs into editable Word files with PDF Linx — fast, accurate, and always free.
         </p>
       </section>
 
-
+      {/* Long-form content (Human touch + bulk mention) */}
       <section className="max-w-4xl mx-auto px-4 py-14 text-slate-700">
-  {/* Heading */}
-  <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-6">
-    PDF to Word Converter – Free Online Tool by PDFLinx
-  </h2>
+        <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-6">
+          PDF to Word Converter – Free Online Tool by PDFLinx
+        </h2>
 
-  {/* Intro */}
-  <p className="text-base leading-7 mb-6">
-    Ever received a PDF that you desperately needed to edit, but it just wouldn't let you? 
-    We've all been there—stuck with a locked document when you need to make quick changes. 
-    That's exactly why we built the <span className="font-medium text-slate-900">PDFLinx PDF to Word Converter</span>. 
-    It's a completely free online tool that turns your PDFs into fully editable Word (DOCX) files in seconds—no software downloads, no watermarks, and no hassle.
-  </p>
-
-  {/* What is */}
-  <h3 className="text-xl font-semibold text-slate-900 mb-3">
-    What is PDF to Word Conversion?
-  </h3>
-  <p className="leading-7 mb-6">
-    PDF to Word conversion means taking a fixed-layout PDF and turning it back into an editable Microsoft Word document. 
-    PDFs are great for sharing because nothing moves around, but when you need to update text, fix a typo, or add new content, 
-    you need it in Word format. Our tool gives you that freedom while keeping the original look and feel as intact as possible.
-  </p>
-
-  {/* Why convert */}
-  <h3 className="text-xl font-semibold text-slate-900 mb-3">
-    Why Convert PDF Files to Word?
-  </h3>
-  <ul className="space-y-2 mb-6 list-disc pl-6">
-    <li>Easily edit text, images, tables, and everything else</li>
-    <li>Keeps fonts, headings, layout, and formatting as accurate as possible</li>
-    <li>Open and edit directly in Microsoft Word, Google Docs, or any editor</li>
-    <li>Perfect for updating resumes, reports, contracts, or assignments quickly</li>
-    <li>Even works with scanned PDFs thanks to built-in OCR technology</li>
-  </ul>
-
-  {/* Steps */}
-  <h3 className="text-xl font-semibold text-slate-900 mb-3">
-    How to Convert PDF to Word Online
-  </h3>
-  <ol className="space-y-2 mb-6 list-decimal pl-6">
-    <li>Upload your PDF file (just drag & drop or click to select)</li>
-    <li>Hit the “Convert to Word” button</li>
-    <li>Wait a few seconds—conversion is super fast</li>
-    <li>Download your fully editable DOCX file instantly</li>
-  </ol>
-
-  <p className="mb-6">
-    No account needed, no watermark added, no software to install—completely free and simple.
-  </p>
-
-  {/* Features box */}
-  <div className="bg-slate-50 border border-slate-200 rounded-xl p-6 mb-6">
-    <h3 className="text-xl font-semibold text-slate-900 mb-4">
-      Features of PDFLinx PDF to Word Converter
-    </h3>
-    <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 list-disc pl-5">
-      <li>100% free online converter</li>
-      <li>High accuracy with layout preservation</li>
-      <li>Supports scanned PDFs with OCR</li>
-      <li>Lightning-fast conversion</li>
-      <li>Works perfectly on mobile & desktop</li>
-      <li>No file storage – full privacy guaranteed</li>
-      <li>Clean output with no watermarks</li>
-    </ul>
-  </div>
-
-  {/* Audience */}
-  <h3 className="text-xl font-semibold text-slate-900 mb-3">
-    Who Should Use This Tool?
-  </h3>
-  <ul className="space-y-2 mb-6 list-disc pl-6">
-    <li><strong>Students:</strong> Edit assignments, theses, or notes received as PDFs</li>
-    <li><strong>Professionals:</strong> Update resumes, reports, or proposals on the go</li>
-    <li><strong>Businesses:</strong> Make changes to invoices, contracts, or legal docs</li>
-    <li><strong>Freelancers:</strong> Turn client PDF briefs into editable Word files quickly</li>
-    <li><strong>Teachers:</strong> Modify study materials or handouts before sharing</li>
-  </ul>
-
-  {/* Safety */}
-  <h3 className="text-xl font-semibold text-slate-900 mb-3">
-    Is PDFLinx Safe to Use?
-  </h3>
-  <p className="leading-7 mb-6">
-    Absolutely. Your privacy matters to us. 
-    Every file you upload is processed securely and automatically deleted from our servers shortly after conversion. 
-    We never store your documents permanently or share them with anyone.
-  </p>
-
-  {/* Closing */}
-  <h3 className="text-xl font-semibold text-slate-900 mb-3">
-    Convert PDF to Word Anytime, Anywhere
-  </h3>
-  <p className="leading-7">
-    PDFLinx works smoothly on Windows, macOS, Linux, Android, and iOS. 
-    All you need is an internet connection and a browser—turn any PDF into an editable Word document in just a few clicks, wherever you are.
-  </p>
-</section>
-
-
-<section className="py-16 bg-gray-50">
-  <div className="max-w-4xl mx-auto px-4">
-
-    <h2 className="text-3xl font-bold text-center mb-10 text-slate-900">
-      Frequently Asked Questions
-    </h2>
-
-    <div className="space-y-4">
-
-      <details className="bg-white rounded-lg shadow-sm p-5">
-        <summary className="font-semibold cursor-pointer">
-          Is the PDF to Word converter free to use?
-        </summary>
-        <p className="mt-2 text-gray-600">
-          Yes — completely free with no hidden fees or limits.
+        <p className="text-base leading-7 mb-6">
+          Ever had a PDF that you needed to edit “right now” — but it wouldn’t let you? That’s the exact pain this tool solves.
+          The <span className="font-medium text-slate-900">PDFLinx PDF to Word Converter</span> turns PDFs into editable Word (DOCX)
+          in seconds. And the best part? If you have a bunch of PDFs, you can upload multiple files at once and download everything in a single ZIP.
         </p>
-      </details>
 
-      <details className="bg-white rounded-lg shadow-sm p-5">
-        <summary className="font-semibold cursor-pointer">
-          Do I need to install any software?
-        </summary>
-        <p className="mt-2 text-gray-600">
-          No downloads or installations needed. Everything happens right in your browser.
+        <h3 className="text-xl font-semibold text-slate-900 mb-3">
+          What is PDF to Word conversion?
+        </h3>
+        <p className="leading-7 mb-6">
+          PDF to Word conversion means taking a PDF (which is usually fixed and hard to edit) and turning it into a Word document
+          you can change freely — edit text, fix typos, update tables, or copy content into your own template.
         </p>
-      </details>
 
-      <details className="bg-white rounded-lg shadow-sm p-5">
-        <summary className="font-semibold cursor-pointer">
-          Will the formatting from my PDF be preserved?
-        </summary>
-        <p className="mt-2 text-gray-600">
-          We work hard to keep fonts, tables, images, and layout as close to the original as possible. 
-          Results are highly accurate, though very complex PDFs might need minor tweaks afterward.
-        </p>
-      </details>
+        <h3 className="text-xl font-semibold text-slate-900 mb-3">
+          Single file or multiple files — both supported
+        </h3>
+        <ul className="space-y-2 mb-6 list-disc pl-6">
+          <li><strong>Single PDF:</strong> converts and downloads as a Word (DOCX) file directly.</li>
+          <li><strong>Multiple PDFs:</strong> converts all files and gives you a ZIP containing all DOCX files.</li>
+        </ul>
 
-      <details className="bg-white rounded-lg shadow-sm p-5">
-        <summary className="font-semibold cursor-pointer">
-          Are my files safe and private?
-        </summary>
-        <p className="mt-2 text-gray-600">
-          Yes — files are securely processed and automatically deleted shortly after conversion. No permanent storage.
-        </p>
-      </details>
+        <h3 className="text-xl font-semibold text-slate-900 mb-3">
+          Why use PDFLinx?
+        </h3>
+        <ul className="space-y-2 mb-6 list-disc pl-6">
+          <li>Fast conversion with clean, editable output</li>
+          <li>No watermark, no signup, no annoying limits</li>
+          <li>Great for resumes, reports, contracts, and assignments</li>
+          <li>Supports bulk conversion when you’re working with many files</li>
+          <li>Privacy-first: files are removed after processing</li>
+        </ul>
+      </section>
 
-      <details className="bg-white rounded-lg shadow-sm p-5">
-        <summary className="font-semibold cursor-pointer">
-          Can I use this on my phone?
-        </summary>
-        <p className="mt-2 text-gray-600">
-          Absolutely! It works great on mobile phones, tablets, and desktops.
-        </p>
-      </details>
+      {/* FAQ */}
+      <section className="py-16 bg-gray-50">
+        <div className="max-w-4xl mx-auto px-4">
+          <h2 className="text-3xl font-bold text-center mb-10 text-slate-900">
+            Frequently Asked Questions
+          </h2>
 
-      <details className="bg-white rounded-lg shadow-sm p-5">
-        <summary className="font-semibold cursor-pointer">
-          Does it work with scanned PDFs?
-        </summary>
-        <p className="mt-2 text-gray-600">
-          Yes! Our built-in OCR technology extracts text from scanned documents accurately.
-        </p>
-      </details>
+          <div className="space-y-4">
+            <details className="bg-white rounded-lg shadow-sm p-5">
+              <summary className="font-semibold cursor-pointer">
+                Is the PDF to Word converter free to use?
+              </summary>
+              <p className="mt-2 text-gray-600">
+                Yes — it’s completely free with no hidden charges.
+              </p>
+            </details>
 
-    </div>
-  </div>
-</section>
+            <details className="bg-white rounded-lg shadow-sm p-5">
+              <summary className="font-semibold cursor-pointer">
+                Do I need to install any software?
+              </summary>
+              <p className="mt-2 text-gray-600">
+                No. Everything works directly in your browser.
+              </p>
+            </details>
+
+            <details className="bg-white rounded-lg shadow-sm p-5">
+              <summary className="font-semibold cursor-pointer">
+                Will the formatting from my PDF be preserved?
+              </summary>
+              <p className="mt-2 text-gray-600">
+                We try to keep formatting (tables, spacing, headings) as close as possible. Very complex PDFs may need minor cleanup afterward.
+              </p>
+            </details>
+
+            <details className="bg-white rounded-lg shadow-sm p-5">
+              <summary className="font-semibold cursor-pointer">
+                Are my files safe and private?
+              </summary>
+              <p className="mt-2 text-gray-600">
+                Yes — files are processed securely and removed after conversion.
+              </p>
+            </details>
+
+            {/* ✅ NEW FAQS (bulk support) */}
+            <details className="bg-white rounded-lg shadow-sm p-5">
+              <summary className="font-semibold cursor-pointer">
+                Can I convert multiple PDFs to Word at the same time?
+              </summary>
+              <p className="mt-2 text-gray-600">
+                Yes. Upload multiple PDFs together and you’ll get a ZIP containing all converted DOCX files.
+              </p>
+            </details>
+
+            <details className="bg-white rounded-lg shadow-sm p-5">
+              <summary className="font-semibold cursor-pointer">
+                What happens if I upload only one PDF?
+              </summary>
+              <p className="mt-2 text-gray-600">
+                If you upload a single PDF, it downloads as a DOCX directly — no ZIP.
+              </p>
+            </details>
+
+            <details className="bg-white rounded-lg shadow-sm p-5">
+              <summary className="font-semibold cursor-pointer">
+                Can I use this on my phone?
+              </summary>
+              <p className="mt-2 text-gray-600">
+                Absolutely. It works smoothly on mobile, tablet, and desktop.
+              </p>
+            </details>
+          </div>
+        </div>
+      </section>
 
       <RelatedToolsSection currentPage="pdf-to-word" />
-      
     </>
   );
 }
+
+
+
+
+
+
 
 
 
@@ -476,6 +636,7 @@ export default function PdfToWord() {
 //   const [loading, setLoading] = useState(false);
 //   const [success, setSuccess] = useState(false);
 
+  
 //   const handleSubmit = async (e) => {
 //     e.preventDefault();
 //     if (!file) return alert("Please select a PDF file");
@@ -505,7 +666,7 @@ export default function PdfToWord() {
 //       setSuccess(true);
 //       setFile(null); // Reset after success
 //     } catch (err) {
-//       alert("Error: " + err.message);
+//       alert("Oops! Something went wrong. Try again?");
 //     } finally {
 //       setLoading(false);
 //     }
@@ -514,7 +675,7 @@ export default function PdfToWord() {
 //   return (
 //     <>
 
-//       {/* ==================== PAGE-SPECIFIC SEO SCHEMAS (Safe for Next.js) ==================== */}
+//       {/* ==================== PAGE-SPECIFIC SEO SCHEMAS ==================== */}
 
 //       {/* HowTo Schema - PDF to Word */}
 //       <Script
@@ -574,32 +735,31 @@ export default function PdfToWord() {
 //         }}
 //       />
 
-//       {/* ==================== BRAND NEW MODERN UI - SAME AS WORD TO PDF ==================== */}
-//       <main className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50 flex items-center justify-center p-6">
-//         <div className="max-w-2xl w-full">
+//       {/* ==================== MAIN TOOL SECTION ==================== */}
+//       <main className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50 py-8 px-4">
+//         <div className="max-w-4xl mx-auto">
 //           {/* Header */}
-//           <div className="text-center mb-10">
-//             <h1 className="text-3xl md:text-4xl font-extrabold bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent mb-6 leading-[1.2] md:leading-[1.1]">
+//           <div className="text-center mb-8">
+//             <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent mb-4">
 //               PDF to Word Converter <br />(Free & Online)
 //             </h1>
-//             <p className="text-xl text-gray-600">
-//               Convert PDF to Word online for free. Our PDF to Word converter
-//               creates editable DOCX files fast, secure and without signup.
+//             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+//               Stuck with a PDF you need to edit? Turn it into a fully editable Word file in seconds – formatting stays perfect, no sign-up needed!
 //             </p>
 //           </div>
 
 //           {/* Main Card */}
-//           <div className="bg-white rounded-3xl shadow-2xl p-10 border border-gray-100">
-//             <form onSubmit={handleSubmit} className="space-y-8">
+//           <div className="bg-white rounded-2xl shadow-lg p-8 border border-gray-100">
+//             <form onSubmit={handleSubmit} className="space-y-6">
 //               {/* Upload Area */}
 //               <div className="relative">
 //                 <label className="block">
-//                   <div className={`border-3 border-dashed rounded-2xl p-12 text-center cursor-pointer transition-all ${file ? 'border-green-500 bg-green-50' : 'border-gray-300 hover:border-blue-500 hover:bg-blue-50'}`}>
-//                     <FileText className="w-16 h-16 mx-auto mb-4 text-blue-600" />
-//                     <p className="text-xl font-semibold text-gray-700">
-//                       {file ? file.name : "Drop your PDF file here or click to upload"}
+//                   <div className={`border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition-all ${file ? 'border-green-500 bg-green-50' : 'border-gray-300 hover:border-blue-500 hover:bg-blue-50'}`}>
+//                     <FileText className="w-12 h-12 mx-auto mb-3 text-blue-600" />
+//                     <p className="text-lg font-semibold text-gray-700">
+//                       {file ? file.name : "Drop your PDF here or click to upload"}
 //                     </p>
-//                     <p className="text-sm text-gray-500 mt-2">Convert PDF to fully editable Word (DOCX)</p>
+//                     <p className="text-sm text-gray-500 mt-1">Turns into editable Word (DOCX)</p>
 //                   </div>
 //                   <input
 //                     type="file"
@@ -615,13 +775,13 @@ export default function PdfToWord() {
 //               <button
 //                 type="submit"
 //                 disabled={loading || !file}
-//                 className="w-full bg-gradient-to-r from-blue-600 to-green-600 text-white font-bold text-xl py-5 rounded-2xl hover:from-blue-700 hover:to-green-700 disabled:opacity-60 disabled:cursor-not-allowed transition shadow-lg flex items-center justify-center gap-3"
+//                 className="w-full bg-gradient-to-r from-blue-600 to-green-600 text-white font-semibold text-lg py-4 rounded-xl hover:from-blue-700 hover:to-green-700 disabled:opacity-60 disabled:cursor-not-allowed transition shadow-md flex items-center justify-center gap-2"
 //               >
 //                 {loading ? (
-//                   <>Converting your PDF...</>
+//                   <>Converting... almost there!</>
 //                 ) : (
 //                   <>
-//                     <FileText size={28} />
+//                     <FileText className="w-5 h-5" />
 //                     Convert to Word
 //                   </>
 //                 )}
@@ -630,221 +790,279 @@ export default function PdfToWord() {
 
 //             {/* Success Message */}
 //             {success && (
-//               <div className="mt-8 p-6 bg-green-50 border-2 border-green-200 rounded-2xl text-center animate-pulse">
-//                 <CheckCircle className="w-16 h-16 text-green-600 mx-auto mb-4" />
-//                 <p className="text-2xl font-bold text-green-700 mb-4">Converted Successfully!</p>
-//                 <p className="text-lg text-gray-700">Your editable Word file has been downloaded</p>
+//               <div className="mt-6 p-4 bg-green-50 border-2 border-green-200 rounded-xl text-center">
+//                 <CheckCircle className="w-12 h-12 text-green-600 mx-auto mb-3" />
+//                 <p className="text-xl font-bold text-green-700 mb-2">All done!</p>
+//                 <p className="text-base text-gray-700">Your editable Word file downloaded automatically</p>
 //               </div>
 //             )}
 //           </div>
 
 //           {/* Footer */}
-//           <div className="text-center mt-8 text-gray-600">
-//             <p className="text-sm">
-//               No signup • No watermark • 100% free • Files delete after 1 hour
-//             </p>
-//           </div>
+//           <p className="text-center mt-6 text-gray-600 text-base">
+//             No account • No watermark • Files gone after 1 hour • Completely free
+//           </p>
 //         </div>
 //       </main>
 
-
-
-//       {/* ==================== UNIQUE SEO CONTENT SECTION - PDF TO WORD ==================== */}
-//       <section className="mt-20 max-w-5xl mx-auto px-6 pb-16">
+//       {/* ==================== SEO CONTENT SECTION ==================== */}
+//       <section className="mt-16 max-w-4xl mx-auto px-6 pb-16">
 //         {/* Main Heading */}
-//         <div className="text-center mb-16">
-//           <h2 className="text-2xl md:text-4xl font-extrabold bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent mb-6 leading-[1.2] md:leading-[1.1]">
-//             PDF to Word Online Free - Convert to Editable DOCX
+//         <div className="text-center mb-12">
+//           <h2 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent mb-4">
+//             PDF to Word Online Free – Make Your PDFs Editable
 //           </h2>
-//           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-//             Convert PDF to Word (DOCX) instantly while keeping text, tables, images, and formatting intact. Edit your documents easily – perfect for reports, contracts, or resumes.
+//           <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+//             Need to tweak a PDF? Convert it to Word here – text, tables, images, everything stays in place so you can edit easily. Fast, accurate, and always free on PDF Linx!
 //           </p>
 //         </div>
 
-//         {/* Benefits Grid - 3 Cards with Icons */}
-//         <div className="grid md:grid-cols-3 gap-8 mb-20">
+//         {/* Benefits Grid */}
+//         <div className="grid md:grid-cols-3 gap-8 mb-16">
 //           <div className="bg-gradient-to-br from-blue-50 to-white p-8 rounded-2xl shadow-lg border border-blue-100 text-center hover:shadow-xl transition">
-//             <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-6">
+//             <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
 //               <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 //                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
 //               </svg>
 //             </div>
-//             <h3 className="text-2xl font-bold text-gray-800 mb-4">Accurate & Editable</h3>
-//             <p className="text-gray-600">
-//               Convert PDF to Word with high accuracy. Text, tables, and layout preserved for easy editing.
+//             <h3 className="text-xl font-semibold text-gray-800 mb-3">Super Accurate</h3>
+//             <p className="text-gray-600 text-sm">
+//               Text, tables, layout – everything transfers cleanly for easy editing.
 //             </p>
 //           </div>
 
 //           <div className="bg-gradient-to-br from-green-50 to-white p-8 rounded-2xl shadow-lg border border-green-100 text-center hover:shadow-xl transition">
-//             <div className="w-16 h-16 bg-green-600 rounded-full flex items-center justify-center mx-auto mb-6">
+//             <div className="w-16 h-16 bg-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
 //               <CheckCircle className="w-8 h-8 text-white" />
 //             </div>
-//             <h3 className="text-2xl font-bold text-gray-800 mb-4">Supports Complex PDFs</h3>
-//             <p className="text-gray-600">
-//               Handles scanned PDFs, images, tables, and multi-column layouts – converts to editable DOCX.
+//             <h3 className="text-xl font-semibold text-gray-800 mb-3">Handles Tough PDFs</h3>
+//             <p className="text-gray-600 text-sm">
+//               Scanned pages, images, multi-column – turns them into editable Word.
 //             </p>
 //           </div>
 
 //           <div className="bg-gradient-to-br from-purple-50 to-white p-8 rounded-2xl shadow-lg border border-purple-100 text-center hover:shadow-xl transition">
-//             <div className="w-16 h-16 bg-purple-600 rounded-full flex items-center justify-center mx-auto mb-6">
+//             <div className="w-16 h-16 bg-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
 //               <Download className="w-8 h-8 text-white" />
 //             </div>
-//             <h3 className="text-2xl font-bold text-gray-800 mb-4">Fast, Free & Secure</h3>
-//             <p className="text-gray-600">
-//               Convert PDF to Word online instantly. No signup, no watermark – files deleted after 1 hour.
+//             <h3 className="text-xl font-semibold text-gray-800 mb-3">Fast & Private</h3>
+//             <p className="text-gray-600 text-sm">
+//               Instant conversion – no sign-up, no watermark, files deleted after 1 hour.
 //             </p>
 //           </div>
 //         </div>
 
 //         {/* How To Steps */}
-//         <div className="bg-white rounded-3xl shadow-xl p-10 md:p-16 border border-gray-100">
-//           <h3 className="text-3xl md:text-4xl font-bold text-center mb-12 text-gray-800">
-//             How to Convert PDF to Word in 3 Simple Steps
+//         <div className="bg-white rounded-2xl shadow-lg p-8 md:p-12 border border-gray-100">
+//           <h3 className="text-2xl md:text-3xl font-bold text-center mb-12 text-gray-800">
+//             Convert PDF to Word in 3 Easy Steps
 //           </h3>
-//           <div className="grid md:grid-cols-3 gap-10">
+//           <div className="grid md:grid-cols-3 gap-8">
 //             <div className="text-center">
-//               <div className="w-20 h-20 bg-gradient-to-r from-blue-600 to-blue-700 rounded-full flex items-center justify-center mx-auto mb-6 text-3xl font-bold text-white shadow-lg">
+//               <div className="w-16 h-16 bg-gradient-to-r from-blue-600 to-blue-700 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold text-white shadow-lg">
 //                 1
 //               </div>
-//               <h4 className="text-xl font-semibold mb-3">Upload PDF</h4>
-//               <p className="text-gray-600">Drag & drop your PDF file (even scanned)</p>
+//               <h4 className="text-lg font-semibold mb-2">Upload PDF</h4>
+//               <p className="text-gray-600 text-sm">Drop your file (even scanned ones work)</p>
 //             </div>
 
 //             <div className="text-center">
-//               <div className="w-20 h-20 bg-gradient-to-r from-green-600 to-green-700 rounded-full flex items-center justify-center mx-auto mb-6 text-3xl font-bold text-white shadow-lg">
+//               <div className="w-16 h-16 bg-gradient-to-r from-green-600 to-green-700 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold text-white shadow-lg">
 //                 2
 //               </div>
-//               <h4 className="text-xl font-semibold mb-3">Click Convert</h4>
-//               <p className="text-gray-600">We extract text and formatting accurately</p>
+//               <h4 className="text-lg font-semibold mb-2">Hit Convert</h4>
+//               <p className="text-gray-600 text-sm">We pull out text and formatting neatly</p>
 //             </div>
 
 //             <div className="text-center">
-//               <div className="w-20 h-20 bg-gradient-to-r from-purple-600 to-purple-700 rounded-full flex items-center justify-center mx-auto mb-6 text-3xl font-bold text-white shadow-lg">
+//               <div className="w-16 h-16 bg-gradient-to-r from-purple-600 to-purple-700 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold text-white shadow-lg">
 //                 3
 //               </div>
-//               <h4 className="text-xl font-semibold mb-3">Download Word File</h4>
-//               <p className="text-gray-600">Get your editable DOCX instantly!</p>
+//               <h4 className="text-lg font-semibold mb-2">Download Word</h4>
+//               <p className="text-gray-600 text-sm">Your editable DOCX is ready!</p>
 //             </div>
 //           </div>
 //         </div>
 
 //         {/* Final CTA */}
-//         <p className="text-center mt-12 text-lg text-gray-500 italic">
-//           Convert PDF to Word every day with perfect results – trusted by thousands at PDF Linx.
+//         <p className="text-center mt-12 text-base text-gray-600 italic max-w-3xl mx-auto">
+//           Thousands use PDF Linx daily to unlock PDFs into editable Word files – fast, accurate, and always free.
 //         </p>
 //       </section>
 
-//             <RelatedToolsSection currentPage="pdf-to-word" />
+
+//       <section className="max-w-4xl mx-auto px-4 py-14 text-slate-700">
+//   {/* Heading */}
+//   <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-6">
+//     PDF to Word Converter – Free Online Tool by PDFLinx
+//   </h2>
+
+//   {/* Intro */}
+//   <p className="text-base leading-7 mb-6">
+//     Ever received a PDF that you desperately needed to edit, but it just wouldn't let you? 
+//     We've all been there—stuck with a locked document when you need to make quick changes. 
+//     That's exactly why we built the <span className="font-medium text-slate-900">PDFLinx PDF to Word Converter</span>. 
+//     It's a completely free online tool that turns your PDFs into fully editable Word (DOCX) files in seconds—no software downloads, no watermarks, and no hassle.
+//   </p>
+
+//   {/* What is */}
+//   <h3 className="text-xl font-semibold text-slate-900 mb-3">
+//     What is PDF to Word Conversion?
+//   </h3>
+//   <p className="leading-7 mb-6">
+//     PDF to Word conversion means taking a fixed-layout PDF and turning it back into an editable Microsoft Word document. 
+//     PDFs are great for sharing because nothing moves around, but when you need to update text, fix a typo, or add new content, 
+//     you need it in Word format. Our tool gives you that freedom while keeping the original look and feel as intact as possible.
+//   </p>
+
+//   {/* Why convert */}
+//   <h3 className="text-xl font-semibold text-slate-900 mb-3">
+//     Why Convert PDF Files to Word?
+//   </h3>
+//   <ul className="space-y-2 mb-6 list-disc pl-6">
+//     <li>Easily edit text, images, tables, and everything else</li>
+//     <li>Keeps fonts, headings, layout, and formatting as accurate as possible</li>
+//     <li>Open and edit directly in Microsoft Word, Google Docs, or any editor</li>
+//     <li>Perfect for updating resumes, reports, contracts, or assignments quickly</li>
+//     <li>Even works with scanned PDFs thanks to built-in OCR technology</li>
+//   </ul>
+
+//   {/* Steps */}
+//   <h3 className="text-xl font-semibold text-slate-900 mb-3">
+//     How to Convert PDF to Word Online
+//   </h3>
+//   <ol className="space-y-2 mb-6 list-decimal pl-6">
+//     <li>Upload your PDF file (just drag & drop or click to select)</li>
+//     <li>Hit the “Convert to Word” button</li>
+//     <li>Wait a few seconds—conversion is super fast</li>
+//     <li>Download your fully editable DOCX file instantly</li>
+//   </ol>
+
+//   <p className="mb-6">
+//     No account needed, no watermark added, no software to install—completely free and simple.
+//   </p>
+
+//   {/* Features box */}
+//   <div className="bg-slate-50 border border-slate-200 rounded-xl p-6 mb-6">
+//     <h3 className="text-xl font-semibold text-slate-900 mb-4">
+//       Features of PDFLinx PDF to Word Converter
+//     </h3>
+//     <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 list-disc pl-5">
+//       <li>100% free online converter</li>
+//       <li>High accuracy with layout preservation</li>
+//       <li>Supports scanned PDFs with OCR</li>
+//       <li>Lightning-fast conversion</li>
+//       <li>Works perfectly on mobile & desktop</li>
+//       <li>No file storage – full privacy guaranteed</li>
+//       <li>Clean output with no watermarks</li>
+//     </ul>
+//   </div>
+
+//   {/* Audience */}
+//   <h3 className="text-xl font-semibold text-slate-900 mb-3">
+//     Who Should Use This Tool?
+//   </h3>
+//   <ul className="space-y-2 mb-6 list-disc pl-6">
+//     <li><strong>Students:</strong> Edit assignments, theses, or notes received as PDFs</li>
+//     <li><strong>Professionals:</strong> Update resumes, reports, or proposals on the go</li>
+//     <li><strong>Businesses:</strong> Make changes to invoices, contracts, or legal docs</li>
+//     <li><strong>Freelancers:</strong> Turn client PDF briefs into editable Word files quickly</li>
+//     <li><strong>Teachers:</strong> Modify study materials or handouts before sharing</li>
+//   </ul>
+
+//   {/* Safety */}
+//   <h3 className="text-xl font-semibold text-slate-900 mb-3">
+//     Is PDFLinx Safe to Use?
+//   </h3>
+//   <p className="leading-7 mb-6">
+//     Absolutely. Your privacy matters to us. 
+//     Every file you upload is processed securely and automatically deleted from our servers shortly after conversion. 
+//     We never store your documents permanently or share them with anyone.
+//   </p>
+
+//   {/* Closing */}
+//   <h3 className="text-xl font-semibold text-slate-900 mb-3">
+//     Convert PDF to Word Anytime, Anywhere
+//   </h3>
+//   <p className="leading-7">
+//     PDFLinx works smoothly on Windows, macOS, Linux, Android, and iOS. 
+//     All you need is an internet connection and a browser—turn any PDF into an editable Word document in just a few clicks, wherever you are.
+//   </p>
+// </section>
+
+
+// <section className="py-16 bg-gray-50">
+//   <div className="max-w-4xl mx-auto px-4">
+
+//     <h2 className="text-3xl font-bold text-center mb-10 text-slate-900">
+//       Frequently Asked Questions
+//     </h2>
+
+//     <div className="space-y-4">
+
+//       <details className="bg-white rounded-lg shadow-sm p-5">
+//         <summary className="font-semibold cursor-pointer">
+//           Is the PDF to Word converter free to use?
+//         </summary>
+//         <p className="mt-2 text-gray-600">
+//           Yes — completely free with no hidden fees or limits.
+//         </p>
+//       </details>
+
+//       <details className="bg-white rounded-lg shadow-sm p-5">
+//         <summary className="font-semibold cursor-pointer">
+//           Do I need to install any software?
+//         </summary>
+//         <p className="mt-2 text-gray-600">
+//           No downloads or installations needed. Everything happens right in your browser.
+//         </p>
+//       </details>
+
+//       <details className="bg-white rounded-lg shadow-sm p-5">
+//         <summary className="font-semibold cursor-pointer">
+//           Will the formatting from my PDF be preserved?
+//         </summary>
+//         <p className="mt-2 text-gray-600">
+//           We work hard to keep fonts, tables, images, and layout as close to the original as possible. 
+//           Results are highly accurate, though very complex PDFs might need minor tweaks afterward.
+//         </p>
+//       </details>
+
+//       <details className="bg-white rounded-lg shadow-sm p-5">
+//         <summary className="font-semibold cursor-pointer">
+//           Are my files safe and private?
+//         </summary>
+//         <p className="mt-2 text-gray-600">
+//           Yes — files are securely processed and automatically deleted shortly after conversion. No permanent storage.
+//         </p>
+//       </details>
+
+//       <details className="bg-white rounded-lg shadow-sm p-5">
+//         <summary className="font-semibold cursor-pointer">
+//           Can I use this on my phone?
+//         </summary>
+//         <p className="mt-2 text-gray-600">
+//           Absolutely! It works great on mobile phones, tablets, and desktops.
+//         </p>
+//       </details>
+
+//       <details className="bg-white rounded-lg shadow-sm p-5">
+//         <summary className="font-semibold cursor-pointer">
+//           Does it work with scanned PDFs?
+//         </summary>
+//         <p className="mt-2 text-gray-600">
+//           Yes! Our built-in OCR technology extracts text from scanned documents accurately.
+//         </p>
+//       </details>
+
+//     </div>
+//   </div>
+// </section>
+
+//       <RelatedToolsSection currentPage="pdf-to-word" />
       
 //     </>
 //   );
 // }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// "use client";
-// import { useState } from "react";
-
-// export default function PdfToWord() {
-//   const [file, setFile] = useState(null);
-//   const [loading, setLoading] = useState(false);
-
-// const API_URL = "";
-
-
-//   const handleSubmit = async (e) => {
-//   e.preventDefault();
-//   if (!file) return alert("Please select a PDF file");
-
-//   setLoading(true);
-//   const formData = new FormData();
-//   formData.append("file", file);
-
-//   try {
-//     // ← YEHI LINE HAI JO SAB THEEK KAREGI
-//     const res = await fetch("/convert/pdf-to-word", {
-//       method: "POST",
-//       body: formData,
-//     });
-
-//     if (!res.ok) throw new Error("Conversion failed");
-
-//     const blob = await res.blob();
-//     const url = window.URL.createObjectURL(blob);
-//     const a = document.createElement("a");
-//     a.href = url;
-//     a.download = file.name.replace(/\.pdf$/i, ".docx");
-//     a.click();
-//     window.URL.revokeObjectURL(url);
-
-//   } catch (err) {
-//     alert("Error: " + err.message);
-//   } finally {
-//     setLoading(false);
-//     setFile(null);
-//   }
-// };
-//   return (
-//     <main className="min-h-screen flex flex-col items-center justify-center bg-gray-50 p-6">
-//       <div className="text-center max-w-2xl">
-//         <h1 className="text-3xl font-bold mb-2">PDF to WORD Converter</h1>
-//         <p className="text-gray-600 mb-8">
-//           Convert your PDF to Word documents with incredible accuracy.
-//         </p>
-//       </div>
-
-//       <form onSubmit={handleSubmit} className="flex flex-col items-center space-y-6">
-//         <label className="bg-red-600 text-white px-8 py-4 rounded-lg shadow-lg cursor-pointer hover:bg-red-700 transition text-lg font-medium">
-//           {file ? file.name : "Select PDF file"}
-//           <input
-//             type="file"
-//             accept="application/pdf"
-//             onChange={(e) => setFile(e.target.files?.[0] || null)}
-//             className="hidden"
-//             required
-//           />
-//         </label>
-
-//         <button
-//           type="submit"
-//           disabled={loading}
-//           className="bg-blue-600 text-white px-8 py-4 rounded-lg font-bold text-xl hover:bg-blue-700 disabled:opacity-60 transition shadow-lg"
-//         >
-//           {loading ? "Converting... Please wait" : "Convert to Word"}
-//         </button>
-//       </form>
-
-//       {loading && (
-//         <p className="mt-8 text-blue-600 text-lg font-medium animate-pulse">
-//           Converting your PDF... (takes 5-15 seconds)
-//         </p>
-//       )}
-//     </main>
-//   );
-// }
 
