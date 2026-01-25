@@ -65,7 +65,7 @@ export default function Blog() {
       description:
         "Need to turn your Excel spreadsheet into a clean PDF that keeps all the tables, charts, and formatting perfect? Here’s how I do it in seconds — great for reports, budgets, or sharing data securely.",
       date: "Sep 5, 2025",
-      slug: "excel-to-pdf",
+      slug: "excel-pdf",
     },
 
     {

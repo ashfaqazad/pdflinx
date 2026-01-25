@@ -28,6 +28,11 @@ const nextConfig = {
         destination: "/excel-pdf",
         permanent: true,
       },
+      {
+        source: "/blog/excel-to-pdf",
+        destination: "/blog/excel-pdf",
+        permanent: true,
+      },
     ];
   },
 };
