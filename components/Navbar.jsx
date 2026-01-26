@@ -234,6 +234,7 @@ export default function Navbar() {
                 <Link href="/split-pdf" onClick={(e) => { e.preventDefault(); window.location.href = '/split-pdf'; }} className="block text-gray-600 hover:text-indigo-600 py-1">Split PDF</Link>
                 <Link href="/compress-pdf" onClick={(e) => { e.preventDefault(); window.location.href = '/compress-pdf'; }} className="block text-gray-600 hover:text-indigo-600 py-1">Compress PDF</Link>
                 <Link href="/excel-pdf" onClick={(e) => { e.preventDefault(); window.location.href = '/excel-pdf'; }} className="block text-gray-600 hover:text-indigo-600 py-1">Excel to PDF</Link>
+                <Link href="/ppt-to-pdf" onClick={(e) => { e.preventDefault(); window.location.href = '/ppt-to-pdf'; }} className="block text-gray-600 hover:text-indigo-600 py-1">PowerPoint to PDF</Link>
                 <Link href="/pdf-to-jpg" onClick={(e) => { e.preventDefault(); window.location.href = '/pdf-to-jpg'; }} className="block text-gray-600 hover:text-indigo-600 py-1">PDF to JPG</Link>
 
               </div>
