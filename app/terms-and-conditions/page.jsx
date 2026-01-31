@@ -9,7 +9,7 @@ const TermsAndConditions = () => {
       </h1>
 
       <p className="mb-4">
-        Welcome to PDF Converter NSky. By accessing or using our website, you
+        Welcome to PDF Converter pdflinx. By accessing or using our website, you
         agree to be bound by the following Terms and Conditions. If you do not
         agree with any part of these terms, please discontinue using our
         website.
@@ -52,7 +52,7 @@ const TermsAndConditions = () => {
 
       <h2 className="text-xl font-semibold mt-6 mb-2">Limitation of Liability</h2>
       <p className="mb-4">
-        PDF Converter NSky shall not be held liable for any damages, data loss,
+        PDF Converter pdflinx shall not be held liable for any damages, data loss,
         or issues arising from the use or inability to use our website or
         services.
       </p>
@@ -88,7 +88,7 @@ const TermsAndConditions = () => {
       <h2 className="text-xl font-semibold mt-6 mb-2">Contact Us</h2>
       <p>
         For any questions regarding these Terms, please contact us at:{" "}
-        <span className="font-medium">support@pdfnsky.com</span>
+        <span className="font-medium">pdflinx@gmail.com</span>
       </p>
     </div>
   );

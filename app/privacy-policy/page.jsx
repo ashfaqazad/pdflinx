@@ -7,7 +7,7 @@ const PrivacyPolicy = () => {
       <h1 className="text-3xl font-bold mb-6 text-center">Privacy Policy</h1>
 
       <p className="mb-4">
-        Welcome to PDF Converter NSky. Your privacy is very important to us.
+        Welcome to PDF Converter pdflinx. Your privacy is very important to us.
         This Privacy Policy explains how we collect, use, and protect your
         personal information when you use our website and services.
       </p>
@@ -80,7 +80,7 @@ const PrivacyPolicy = () => {
       <p>
         If you have any questions or concerns regarding this Privacy Policy,
         please contact us at:{" "}
-        <span className="font-medium">support@pdflinx.com</span>
+        <span className="font-medium">pdflinx@gmail.com</span>
       </p>
     </div>
   );
