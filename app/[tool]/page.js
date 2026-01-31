@@ -6,9 +6,9 @@ const componentMap = {
   "pdf-to-word": () => import("@/components/tools/PdfToWord"),
   "word-to-pdf": () => import("@/components/tools/WordToPdf"),
   "image-to-pdf": () => import("@/components/tools/ImageToPdf"),
-  "merge-pdf": () => import("@/components/tools/MergePdf"),
-  "split-pdf": () => import("@/components/tools/SplitPdf"),
-  "compress-pdf": () => import("@/components/tools/CompressPdf"),
+  // "merge-pdf": () => import("@/components/tools/MergePdf"),
+  // "split-pdf": () => import("@/components/tools/SplitPdf"),
+  // "compress-pdf": () => import("@/components/tools/CompressPdf"),
   "excel-pdf": () => import("@/components/tools/ExcelToPdf"),
   "qr-generator": () => import("@/components/tools/QrGenerator"),
   "password-gen": () => import("@/components/tools/PasswordGen"),
@@ -23,12 +23,13 @@ const componentMap = {
   "pdf-to-jpg": () => import("@/components/tools/PdfToJpg"),
   "add-watermark": () => import("@/components/tools/AddWatermark"),
   "ppt-to-pdf": () => import("@/components/tools/PptToPdf"),
+  "protect-pdf": () => import("@/components/tools/ProtectPdf"),
+  "unlock-pdf": () => import("@/components/tools/UnlockPdf"),
 
 };
 
 
 // "rotate-pdf": () => import("@/components/tools/RotatePdf"),
-  // "protect-pdf": () => import("@/components/tools/ProtectPdf"),
   // "pdf-to-jpg": () => import("@/components/tools/PdfToJpg"),
   // "pdf-to-excel": () => import("@/components/tools/PdfToExcel"),
 

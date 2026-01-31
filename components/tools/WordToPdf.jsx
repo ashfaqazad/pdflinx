@@ -472,6 +472,7 @@ export default function WordToPdf() {
                 Yes, PDFLinx works perfectly on mobile, tablet, and desktop devices.
               </p>
             </details>
+            
 
             {/* ✅ NEW FAQS (Bulk support) */}
             <details className="bg-white rounded-lg shadow-sm p-5">

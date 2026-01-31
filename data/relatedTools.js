@@ -51,6 +51,22 @@ export const relatedToolsData = {
     { title: 'PDF to Word', emoji: '📄', url: '/pdf-to-word', desc: 'Convert to Word' },
   ],
 
+  
+    // ===============================
+  // PDF Security Tools (NEW 🔥)
+  // ===============================
+  'protect-pdf': [
+    { title: 'Unlock PDF', emoji: '🔓', url: '/unlock-pdf', desc: 'Remove password protection from PDFs' },
+    { title: 'Compress PDF', emoji: '🗜️', url: '/compress-pdf', desc: 'Reduce file size after securing PDFs' },
+    { title: 'Merge PDF', emoji: '📚', url: '/merge-pdf', desc: 'Combine multiple PDFs securely' },
+  ],
+
+  'unlock-pdf': [
+    { title: 'Protect PDF', emoji: '🔐', url: '/protect-pdf', desc: 'Add password protection to PDF files' },
+    { title: 'PDF to Word', emoji: '📄', url: '/pdf-to-word', desc: 'Convert unlocked PDFs to editable Word' },
+    { title: 'Split PDF', emoji: '✂️', url: '/split-pdf', desc: 'Split unlocked PDF into pages' },
+  ],
+
 
   // Image Tools
   'image-compressor': [

@@ -55,8 +55,7 @@ export default function HomeContent() {
             Tired of sketchy PDF tools?
           </h1>
           <p className="text-lg md:text-xl mb-8 max-w-3xl mx-auto leading-relaxed opacity-95">
-            I built PDFLinx because I was fed up — slow sites, pop-up ads, files getting stored on shady servers.
-            <br />
+            I built PDFLinx out of frustration with slow sites, intrusive pop-up ads, and files being stored on shady servers.            <br />
             <span className="block mt-3 text-xl font-semibold">
               Everything here runs in your browser. Your files never leave your device.
             </span>

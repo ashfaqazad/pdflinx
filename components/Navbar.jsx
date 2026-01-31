@@ -40,120 +40,145 @@ export default function Navbar() {
 
             <Link href="/" className="text-gray-700 hover:text-indigo-600 font-semibold transition">
               Home
-            </Link>
+          </Link>
 
-            {/* === PDF TOOLS Dropdown (Compact) === */}
-            <div className="relative group">
-              <button className="flex items-center gap-2 text-gray-700 hover:text-indigo-600 font-semibold transition">
-                PDF Tools <ChevronDown size={16} className="group-hover:rotate-180 transition" />
-              </button>
+          <Link href="/merge-pdf" className="text-gray-700 hover:text-indigo-600 font-semibold transition">Merge PDF</Link>
 
-              <div className="absolute top-14 left-1/2 -translate-x-1/2 w-[520px] bg-white rounded-xl shadow-xl border border-gray-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
-                <div className="grid grid-cols-2 gap-6 p-5 bg-gradient-to-b from-gray-50 to-white">
-                  {/* Convert TO PDF */}
-                  <div>
-                    <h3 className="font-bold text-base text-gray-800 mb-3">Convert TO PDF</h3>
-                    <div className="space-y-2">
-                      <Link 
-                        href="/word-to-pdf"
-                        onClick={(e) => { e.preventDefault(); window.location.href = '/word-to-pdf'; }}
-                        className="flex items-center gap-3 hover:bg-indigo-50 px-3 py-2 rounded-lg transition text-sm"
-                      >
-                        <FileType size={20} className="text-blue-600" />
-                        <span className="font-medium text-gray-700 hover:text-indigo-600">WORD to PDF</span>
-                      </Link>
+        <Link href="/split-pdf" className="text-gray-700 hover:text-indigo-600 font-semibold transition">Split PDF</Link>
 
-                      <Link href="/excel-pdf" 
-                        onClick={(e) => { e.preventDefault(); window.location.href = '/excel-pdf'; }}
-                        className="flex items-center gap-3 hover:bg-indigo-50 px-3 py-2 rounded-lg transition text-sm"
-                      >
-                        <FileSpreadsheet size={20} className="text-green-600" />
-                        <span className="font-medium text-gray-700 hover:text-indigo-600">EXCEL to PDF</span>
-                      </Link>
-
-                        <Link href="/ppt-to-pdf" 
-                        onClick={(e) => { e.preventDefault(); window.location.href = '/ppt-to-pdf'; }}
-                        className="flex items-center gap-3 hover:bg-indigo-50 px-3 py-2 rounded-lg transition text-sm"
-                      >
-                        <FileSpreadsheet size={20} className="text-green-600" />
-                        <span className="font-medium text-gray-700 hover:text-indigo-600">POWERPOINT to PDF</span>
-                      </Link>
+        <Link href="/compress-pdf" className="text-gray-700 hover:text-indigo-600 font-semibold transition">Compress PDF</Link>
 
 
-                      <Link href="/image-to-pdf" 
-                        onClick={(e) => { e.preventDefault(); window.location.href = '/image-to-pdf'; }}
-                        className="flex items-center gap-3 hover:bg-indigo-50 px-3 py-2 rounded-lg transition text-sm"
-                      >
-                        <FileImage size={20} className="text-orange-600" />
-                        <span className="font-medium text-gray-700 hover:text-indigo-600">JPG to PDF</span>
-                      </Link>
-                    </div>
-                  </div>
-
-                  {/* Convert FROM PDF */}
-                  <div>
-                    <h3 className="font-bold text-base text-gray-800 mb-3">Convert FROM PDF</h3>
-                    <div className="space-y-2">
-                      <Link href="/pdf-to-word" 
-                        onClick={(e) => { e.preventDefault(); window.location.href = '/pdf-to-word'; }}
-                        className="flex items-center gap-3 hover:bg-indigo-50 px-3 py-2 rounded-lg transition text-sm"
-                      >
-                        <FileText size={20} className="text-red-600" />
-                        <span className="font-medium text-gray-700 hover:text-indigo-600">PDF to WORD</span>
-                      </Link>
-
-                      <Link href="/compress-pdf" 
-                        onClick={(e) => { e.preventDefault(); window.location.href = '/compress-pdf'; }}
-                        className="flex items-center gap-3 hover:bg-indigo-50 px-3 py-2 rounded-lg transition text-sm"
-                      >
-                        <FileMinus size={20} className="text-purple-600" />
-                        <span className="font-medium text-gray-700 hover:text-indigo-600">Compress PDF</span>
-                      </Link>
-
-                      <Link href="/merge-pdf" 
-                        onClick={(e) => { e.preventDefault(); window.location.href = '/merge-pdf'; }}
-                        className="flex items-center gap-3 hover:bg-indigo-50 px-3 py-2 rounded-lg transition text-sm"
-                      >
-                        <FilePlus size={20} className="text-emerald-600" />
-                        <span className="font-medium text-gray-700 hover:text-indigo-600">Merge PDF</span>
-                      </Link>
-
-                      <Link href="/split-pdf" 
-                        onClick={(e) => { e.preventDefault(); window.location.href = '/split-pdf'; }}
-                        className="flex items-center gap-3 hover:bg-indigo-50 px-3 py-2 rounded-lg transition text-sm"
-                      >
-                        <Scissors size={20} className="text-amber-600" />
-                        <span className="font-medium text-gray-700 hover:text-indigo-600">Split PDF</span>
-                      </Link>
 
 
-                      <Link href="/pdf-to-jpg" 
-                        onClick={(e) => { e.preventDefault(); window.location.href = '/pdf-to-jpg'; }}
-                        className="flex items-center gap-3 hover:bg-indigo-50 px-3 py-2 rounded-lg transition text-sm"
-                      >
-                        {/* <Scissors size={20} className="text-amber-600" /> */}
-                        {/* <FileImage size={20} className="text-orange-600" /> */}
-                        <Image size={20} className="text-orange-600" />
-                        <span className="font-medium text-gray-700 hover:text-indigo-600">PDF to JPG</span>
-                      </Link>
+                  {/* === PDF TOOLS Dropdown (Compact) === */}
+      <div className="relative group">
+        <button className="flex items-center gap-2 text-gray-700 hover:text-indigo-600 font-semibold transition">
+          PDF Tools <ChevronDown size={16} className="group-hover:rotate-180 transition" />
+        </button>
 
+        <div className="absolute top-14 left-1/2 -translate-x-1/2 w-[520px] bg-white rounded-xl shadow-xl border border-gray-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
+          <div className="grid grid-cols-2 gap-6 p-5 bg-gradient-to-b from-gray-50 to-white">
 
-                        {/* <Link href="/pdf-to-excel" 
-                        onClick={(e) => { e.preventDefault(); window.location.href = '/pdf-to-excel'; }}
-                        className="flex items-center gap-3 hover:bg-indigo-50 px-3 py-2 rounded-lg transition text-sm"
-                      >
-                        {/* <Scissors size={20} className="text-amber-600" /> */}
-                        {/* <FileImage size={20} className="text-orange-600" /> */}
-                        {/* <Image size={20} className="text-orange-600" />
-                        <span className="font-medium text-gray-700 hover:text-indigo-600">PDF to Excel</span>
-                      </Link> */}
+            {/* 🔹 ALL PDF TOOLS (HUB LINK) */}
+            <div className="col-span-2 mb-2">
+              <Link
+                href="/free-pdf-tools"
+                onClick={(e) => {
+                  e.preventDefault();
+                  window.location.href = "/free-pdf-tools";
+                }}
+                className="flex items-center justify-center gap-2 px-4 py-2 rounded-lg
+                          bg-indigo-50 text-indigo-700 font-semibold
+                          hover:bg-indigo-100 transition text-sm"
+              >
+                🔹 All PDF Tools
+              </Link>
+            </div>
 
+            {/* Convert TO PDF */}
+            <div>
+              <h3 className="font-bold text-base text-gray-800 mb-3">Convert TO PDF</h3>
+              <div className="space-y-2">
+                <Link
+                  href="/word-to-pdf"
+                  onClick={(e) => { e.preventDefault(); window.location.href = "/word-to-pdf"; }}
+                  className="flex items-center gap-3 hover:bg-indigo-50 px-3 py-2 rounded-lg transition text-sm"
+                >
+                  <FileType size={20} className="text-blue-600" />
+                  <span className="font-medium text-gray-700 hover:text-indigo-600">
+                    WORD to PDF
+                  </span>
+                </Link>
 
-                    </div>
-                  </div>
-                </div>
+                <Link
+                  href="/excel-pdf"
+                  onClick={(e) => { e.preventDefault(); window.location.href = "/excel-pdf"; }}
+                  className="flex items-center gap-3 hover:bg-indigo-50 px-3 py-2 rounded-lg transition text-sm"
+                >
+                  <FileSpreadsheet size={20} className="text-green-600" />
+                  <span className="font-medium text-gray-700 hover:text-indigo-600">
+                    EXCEL to PDF
+                  </span>
+                </Link>
+
+                <Link
+                  href="/ppt-to-pdf"
+                  onClick={(e) => { e.preventDefault(); window.location.href = "/ppt-to-pdf"; }}
+                  className="flex items-center gap-3 hover:bg-indigo-50 px-3 py-2 rounded-lg transition text-sm"
+                >
+                  <FileSpreadsheet size={20} className="text-green-600" />
+                  <span className="font-medium text-gray-700 hover:text-indigo-600">
+                    POWERPOINT to PDF
+                  </span>
+                </Link>
+
+                <Link
+                  href="/image-to-pdf"
+                  onClick={(e) => { e.preventDefault(); window.location.href = "/image-to-pdf"; }}
+                  className="flex items-center gap-3 hover:bg-indigo-50 px-3 py-2 rounded-lg transition text-sm"
+                >
+                  <FileImage size={20} className="text-orange-600" />
+                  <span className="font-medium text-gray-700 hover:text-indigo-600">
+                    JPG to PDF
+                  </span>
+                </Link>
               </div>
             </div>
+
+            {/* Convert FROM PDF */}
+            <div>
+              <h3 className="font-bold text-base text-gray-800 mb-3">Convert FROM PDF</h3>
+              <div className="space-y-2">
+                <Link
+                  href="/pdf-to-word"
+                  onClick={(e) => { e.preventDefault(); window.location.href = "/pdf-to-word"; }}
+                  className="flex items-center gap-3 hover:bg-indigo-50 px-3 py-2 rounded-lg transition text-sm"
+                >
+                  <FileText size={20} className="text-red-600" />
+                  <span className="font-medium text-gray-700 hover:text-indigo-600">
+                    PDF to WORD
+                  </span>
+                </Link>
+
+                <Link
+                  href="/pdf-to-jpg"
+                  onClick={(e) => { e.preventDefault(); window.location.href = "/pdf-to-jpg"; }}
+                  className="flex items-center gap-3 hover:bg-indigo-50 px-3 py-2 rounded-lg transition text-sm"
+                >
+                  <Image size={20} className="text-orange-600" />
+                  <span className="font-medium text-gray-700 hover:text-indigo-600">
+                    PDF to JPG
+                  </span>
+                </Link>
+
+                <Link
+                  href="/protect-pdf"
+                  onClick={(e) => { e.preventDefault(); window.location.href = "/protect-pdf"; }}
+                  className="flex items-center gap-3 hover:bg-indigo-50 px-3 py-2 rounded-lg transition text-sm"
+                >
+                  <FileMinus size={20} className="text-purple-600" />
+                  <span className="font-medium text-gray-700 hover:text-indigo-600">
+                    Protect PDF
+                  </span>
+                </Link>
+
+                <Link
+                  href="/unlock-pdf"
+                  onClick={(e) => { e.preventDefault(); window.location.href = "/unlock-pdf"; }}
+                  className="flex items-center gap-3 hover:bg-indigo-50 px-3 py-2 rounded-lg transition text-sm"
+                >
+                  <FilePlus size={20} className="text-emerald-600" />
+                  <span className="font-medium text-gray-700 hover:text-indigo-600">
+                    Unlock PDF
+                  </span>
+                </Link>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
 
             {/* === ALL TOOLS Dropdown (Compact) === */}
             <div className="relative group">
@@ -222,10 +247,24 @@ export default function Navbar() {
             <Link href="/" 
               onClick={(e) => { e.preventDefault(); window.location.href = '/'; }}
               className="block font-semibold text-gray-800 py-2">Home</Link>
+
             <details className="group">
               <summary className="flex justify-between items-center font-semibold text-gray-800 cursor-pointer py-2">
                 PDF Tools <ChevronDown className="group-open:rotate-180 transition" />
               </summary>
+
+              {/* 🔹 All PDF Tools (Mobile Hub Link) */}
+              <Link
+                href="/free-pdf-tools"
+                onClick={(e) => {
+                  e.preventDefault();
+                  window.location.href = "/free-pdf-tools";
+                }}
+                className="block font-semibold text-indigo-600 py-2 border-b border-gray-100"
+              >
+                🔹 All PDF Tools
+              </Link>
+
               <div className="pl-6 mt-2 space-y-2">
                 <Link href="/pdf-to-word" onClick={(e) => { e.preventDefault(); window.location.href = '/pdf-to-word'; }} className="block text-gray-600 hover:text-indigo-600 py-1">PDF to Word</Link>
                 <Link href="/word-to-pdf" onClick={(e) => { e.preventDefault(); window.location.href = '/word-to-pdf'; }} className="block text-gray-600 hover:text-indigo-600 py-1">Word to PDF</Link>
@@ -236,12 +275,16 @@ export default function Navbar() {
                 <Link href="/excel-pdf" onClick={(e) => { e.preventDefault(); window.location.href = '/excel-pdf'; }} className="block text-gray-600 hover:text-indigo-600 py-1">Excel to PDF</Link>
                 <Link href="/ppt-to-pdf" onClick={(e) => { e.preventDefault(); window.location.href = '/ppt-to-pdf'; }} className="block text-gray-600 hover:text-indigo-600 py-1">PowerPoint to PDF</Link>
                 <Link href="/pdf-to-jpg" onClick={(e) => { e.preventDefault(); window.location.href = '/pdf-to-jpg'; }} className="block text-gray-600 hover:text-indigo-600 py-1">PDF to JPG</Link>
+                <Link href="/protect-pdf" onClick={(e) => { e.preventDefault(); window.location.href = '/protect-pdf'; }} className="block text-gray-600 hover:text-indigo-600 py-1">Protect PDF</Link>
+
+                <Link href="/unlock-pdf" onClick={(e) => { e.preventDefault(); window.location.href = '/unlock-pdf'; }} className="block text-gray-600 hover:text-indigo-600 py-1">Unlock PDF</Link>
+
 
               </div>
             </details>
             <details className="group">
               <summary className="flex justify-between items-center font-semibold text-gray-800 cursor-pointer py-2">
-                All Tools <ChevronDown className="group-open:rotate-180 transition" />
+                Utility Tools <ChevronDown className="group-open:rotate-180 transition" />
               </summary>
               <div className="pl-6 mt-2 space-y-2 text-sm">
                 <Link href="/qr-generator" onClick={(e) => { e.preventDefault(); window.location.href = '/qr-generator'; }} className="block text-gray-600 hover:text-indigo-600 py-1">QR Generator</Link>
