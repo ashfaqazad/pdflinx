@@ -14,97 +14,6 @@ export default function PdfToWord() {
   // ✅ only for ZIP downloads (multiple files)
   const [downloadUrl, setDownloadUrl] = useState(null);
 
-//   const handleSubmit = async (e) => {
-//     e.preventDefault();
-//     if (!files.length) return alert("Please select a PDF file");
-
-//     setLoading(true);
-//     setSuccess(false);
-//     setDownloadUrl(null);
-
-//     const formData = new FormData();
-//     for (const f of files) formData.append("files", f); // ✅ backend should accept "files"
-
-//     try {
-//       const res = await fetch("/convert/pdf-to-word", {
-//         method: "POST",
-//         body: formData,
-//       });
-
-//       if (!res.ok) {
-//         // try json error
-//         let msg = "Conversion failed";
-//         try {
-//           const maybeJson = await res.json();
-//           msg = maybeJson?.error || msg;
-//         } catch {}
-//         throw new Error(msg);
-//       }
-
-//       // const contentType = res.headers.get("content-type") || "";
-
-//       // // ✅ SINGLE FILE: backend returns DOCX stream directly
-//       // // (Some servers return octet-stream, so we check both)
-//       // if (
-//       //   contentType.includes(
-//       //     "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-//       //   ) ||
-//       //   contentType.includes("application/octet-stream")
-//       // ) {
-//       //   const blob = await res.blob();
-//       //   const url = window.URL.createObjectURL(blob);
-
-//       //   const a = document.createElement("a");
-//       //   a.href = url;
-//       //   a.download = files[0].name.replace(/\.pdf$/i, ".docx");
-//       //   a.click();
-
-//       //   window.URL.revokeObjectURL(url);
-
-//       //   setSuccess(true);
-//       //   setFiles([]);
-//       //   return;
-//       // }
-
-
-//       const contentType = res.headers.get("content-type") || "";
-
-// if (contentType.includes("application/zip")) {
-//   const blob = await res.blob();
-//   const url = window.URL.createObjectURL(blob);
-//   const a = document.createElement("a");
-//   a.href = url;
-//   a.download = "pdflinx-pdf-to-word.zip";
-//   a.click();
-//   window.URL.revokeObjectURL(url);
-//   setSuccess(true);
-//   setFiles([]);
-//   return;
-// }
-
-//       // ✅ MULTIPLE FILES: backend returns JSON with ZIP path
-//       const data = await res.json();
-
-//       if (data.success && data.download) {
-//         // Your server should return something like: { success:true, download:"/converted/xxx.zip" }
-//         // If your zip is served directly from Express, you may not need `/api` prefix.
-//         // Keep it consistent with your project routing:
-//         // setDownloadUrl(data.download.startsWith("http") ? data.download : data.download);
-//         setDownloadUrl(data.download);
-
-//         setSuccess(true);
-//       } else {
-//         throw new Error(data?.error || "Conversion failed");
-//       }
-//     } catch (err) {
-//       alert(err.message || "Oops! Something went wrong. Try again?");
-//       console.error(err);
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
-
-
 const handleSubmit = async (e) => {
   e.preventDefault();
   if (!files.length) return alert("Please select a PDF file");
@@ -320,66 +229,70 @@ const handleSubmit = async (e) => {
                 </label>
               </div>
 
-              {/* Convert Button */}
-              <button
-                type="submit"
-                disabled={loading || !files.length}
-                className="w-full bg-gradient-to-r from-blue-600 to-green-600 text-white font-semibold text-lg py-4 rounded-xl hover:from-blue-700 hover:to-green-700 disabled:opacity-60 disabled:cursor-not-allowed transition shadow-md flex items-center justify-center gap-2"
-              >
-                {loading ? (
-                  <>Converting... almost there!</>
-                ) : (
-                  <>
-                    <FileText className="w-5 h-5" />
-                    Convert to Word
-                  </>
-                )}
-              </button>
-            </form>
 
-            {/* Success Message */}
-            {/* {success && (
-              <div className="mt-6 p-4 bg-green-50 border-2 border-green-200 rounded-xl text-center">
-                <CheckCircle className="w-12 h-12 text-green-600 mx-auto mb-3" />
-                <p className="text-xl font-bold text-green-700 mb-2">
-                  Done! Your {files.length <= 1 ? "DOCX" : "ZIP"} is ready
-                </p> */}
+                {/* Convert Button */}
+                <button
+                  type="submit"
+                  disabled={loading || !files.length}
+                  className="w-full bg-gradient-to-r from-blue-600 to-green-600 text-white font-semibold text-lg py-4 rounded-xl hover:from-blue-700 hover:to-green-700 disabled:opacity-60 disabled:cursor-not-allowed transition shadow-md flex items-center justify-center gap-2"
+                >
+                  {loading ? (
+                    <>Converting… please wait</>
+                  ) : (
+                    <>
+                      <FileText className="w-5 h-5" />
+                      Convert to Word
+                    </>
+                  )}
+                </button>
 
-                {/* ✅ For multiple files: show ZIP download button */}
-                {/* {files.length > 1 && downloadUrl && (
-                  <button
-                    onClick={handleDownloadZip}
-                    className="bg-green-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-green-700 transition shadow-md flex items-center gap-2 mx-auto text-base"
-                  >
-                    <Download className="w-5 h-5" />
-                    Download ZIP
-                  </button>
-                )} */}
-
-                {/* ✅ For single file: it auto-downloaded */}
-                {/* {files.length <= 1 && (
-                  <p className="text-base text-gray-700 mt-2">
-                    Your editable Word file downloaded automatically.
+                {/* UX Notice (✅ button ke neeche, form ke andar) */}
+                <div className="text-sm text-gray-600 text-center mt-4 space-y-1">
+                  <p>
+                    ⏱️ <strong>Multiple files conversion may take up to 1 minute.</strong> Please don’t close this tab.
                   </p>
-                )}
-              </div> */}
-            {/* )} */}
+                  <p>
+                    🔢 You can convert up to <strong>10 PDF files at once</strong>.
+                  </p>
+                </div>
+                </form>
+
+          
+
+                  {/* MS Word Compatibility Notice (✅ form ke baad, bilkul sahi) */}
+                  <div className="mt-6 bg-blue-50 border border-blue-200 rounded-xl p-4 text-sm text-gray-700">
+                    <p className="font-semibold mb-1">ℹ️ Microsoft Word Compatibility</p>
+                    <ul className="list-disc pl-5 space-y-1">
+                      <li>
+                        Converted files open best in <strong>Microsoft Word 2013 or newer</strong>.
+                      </li>
+                      <li>
+                        When opening the file, click <strong>“Enable Editing”</strong> if prompted.
+                      </li>
+                      <li>
+                        Older versions of Word may not fully support modern DOCX files.
+                      </li>
+                    </ul>
+                  </div>
+
 
 
             {success && (
-  <div className="mt-6 p-4 bg-green-50 border-2 border-green-200 rounded-xl text-center">
-    <CheckCircle className="w-12 h-12 text-green-600 mx-auto mb-3" />
-    <p className="text-xl font-bold text-green-700 mb-2">
-      Done! Your file(s) downloaded automatically 🎉
-    </p>
-    <p className="text-base text-gray-700">
-      {files.length === 1 
-        ? "Check your downloads for the editable Word file." 
-        : "Check your downloads – ZIP contains all converted DOCX files."}
-    </p>
-  </div>
-)}
+          <div className="mt-6 p-4 bg-green-50 border-2 border-green-200 rounded-xl text-center">
+            <CheckCircle className="w-12 h-12 text-green-600 mx-auto mb-3" />
+            <p className="text-xl font-bold text-green-700 mb-2">
+              Done! Your file(s) downloaded automatically 🎉
+            </p>
+            <p className="text-base text-gray-700">
+              {files.length === 1 
+                ? "Check your downloads for the editable Word file." 
+                : "Check your downloads – ZIP contains all converted DOCX files."}
+            </p>
           </div>
+
+
+        )}
+    </div>
 
           {/* Footer */}
           <p className="text-center mt-6 text-gray-600 text-base">
@@ -587,8 +500,19 @@ const handleSubmit = async (e) => {
                 Absolutely. It works smoothly on mobile, tablet, and desktop.
               </p>
             </details>
+
+            <details className="bg-white rounded-lg shadow-sm p-5">
+              <summary className="font-semibold cursor-pointer">
+                Why does Word ask me to “Enable Editing”?
+              </summary>
+              <p className="mt-2 text-gray-600">
+                This is a normal Microsoft Word security prompt for downloaded files. Click “Enable Editing” to start editing your converted document.
+              </p>
+            </details>
+
           </div>
         </div>
+
       </section>
 
       <RelatedToolsSection currentPage="pdf-to-word" />

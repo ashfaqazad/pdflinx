@@ -1,77 +1,174 @@
 import Link from "next/link";
+import Script from "next/script";
+
 import { pdfToolsMeta } from "@/lib/pdfToolsMeta";
 import {
-    FileText,
-    FileType,
-    FileImage,
-    FileSpreadsheet,
-    FilePlus,
-    Scissors,
-    FileMinus,
-    Lock,
-    Unlock,
+  FileText,
+  FileType,
+  FileImage,
+  FileSpreadsheet,
+  FilePlus,
+  Scissors,
+  FileMinus,
+  Lock,
+  Unlock,
 } from "lucide-react";
 
 const icons = {
-    "pdf-to-word": FileText,
-    "word-to-pdf": FileType,
-    "image-to-pdf": FileImage,
-    "merge-pdf": FilePlus,
-    "split-pdf": Scissors,
-    "compress-pdf": FileMinus,
-    "excel-pdf": FileSpreadsheet,
-    "ppt-to-pdf": FileType,
-    "protect-pdf": Lock,
-    "unlock-pdf": Unlock,
+  "pdf-to-word": FileText,
+  "word-to-pdf": FileType,
+  "image-to-pdf": FileImage,
+  "merge-pdf": FilePlus,
+  "split-pdf": Scissors,
+  "compress-pdf": FileMinus,
+  "excel-pdf": FileSpreadsheet,
+  "ppt-to-pdf": FileType,
+  "protect-pdf": Lock,
+  "unlock-pdf": Unlock,
 };
 
 export const metadata = {
-    title: "Free PDF Tools – Convert, Merge, Compress PDFs | PDF Linx",
-    description:
-        "Access all free PDF tools in one place. Convert, merge, compress, protect and unlock PDFs instantly.",
+  title: "Free PDF Tools – Convert, Merge, Compress PDFs | PDF Linx",
+  description:
+    "PDFLinx offers a complete collection of free online PDF tools to convert, merge, compress, protect, and unlock PDF files instantly. No signup required.",
 };
 
 export default function FreePdfToolsPage() {
-    return (
-        <main className="max-w-6xl mx-auto px-4 py-12">
+  return (
+    <>
+      {/* ================= FAQ SCHEMA ================= */}
+      <Script
+        id="faq-schema-free-pdf-tools"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            mainEntity: [
+              {
+                "@type": "Question",
+                name: "What are free PDF tools?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text:
+                    "Free PDF tools allow you to convert, merge, compress, protect, and unlock PDF files online without installing software.",
+                },
+              },
+              {
+                "@type": "Question",
+                name: "Are PDFLinx PDF tools completely free?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text:
+                    "Yes. All PDFLinx tools are free to use with no signup or watermark.",
+                },
+              },
+              {
+                "@type": "Question",
+                name: "Is my data safe while using PDF tools?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text:
+                    "Yes. Files are processed securely and deleted automatically after processing. PDFLinx does not store your files.",
+                },
+              },
+              {
+                "@type": "Question",
+                name: "Do I need to create an account?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text:
+                    "No registration is required. You can use all PDF tools instantly.",
+                },
+              },
+            ],
+          }),
+        }}
+      />
 
-            <h1 className="text-4xl font-bold mb-4 text-gray-900 text-center">
-                Free Online PDF Tools
-            </h1>
+      <main className="max-w-6xl mx-auto px-4 py-12">
+        {/* ================= HERO ================= */}
+        <h1 className="text-4xl md:text-5xl font-bold mb-4 text-gray-900 text-center">
+          Free Online PDF Tools
+        </h1>
 
-            <p className="text-gray-600 max-w-3xl mx-auto mb-10 text-center">
-                PDF Linx provides a complete collection of free online PDF tools.
-                Convert, merge, compress, protect and unlock PDF files easily.
-            </p>
+        <p className="text-gray-600 max-w-3xl mx-auto mb-12 text-center">
+          PDFLinx offers a complete collection of free online PDF tools to help you
+          convert, merge, compress, protect, and unlock PDF files instantly.
+          No signup required, no watermark, and works on all devices.
+        </p>
 
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {Object.values(pdfToolsMeta).map((tool) => {
-                    const Icon = icons[tool.slug] || FileText;
+        {/* ================= TOP TOOLS ================= */}
+        <section className="mb-14">
+          <h2 className="text-2xl font-bold text-gray-900 text-center mb-6">
+            Most Popular PDF Tools
+          </h2>
 
-                    return (
-                        <Link
-                            key={tool.slug}
-                            href={tool.href}
-                            className="group bg-white rounded-2xl p-6 shadow-sm hover:shadow-xl transition-all"
-                        >
-                            <div className="flex items-center gap-4 mb-3">
-                                <Icon size={28} className="text-indigo-600" />
-                                <h2 className="text-lg font-semibold group-hover:text-indigo-600">
-                                    {tool.title.replace(" | PDF Linx", "")}
-                                </h2>
-                            </div>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+            {[
+              { title: "Word to PDF", url: "/word-to-pdf", emoji: "📄" },
+              { title: "PDF to Word", url: "/pdf-to-word", emoji: "📝" },
+              { title: "Protect PDF", url: "/protect-pdf", emoji: "🔐" },
+              { title: "Compress PDF", url: "/compress-pdf", emoji: "🗜️" },
+            ].map((tool) => (
+              <Link
+                key={tool.url}
+                href={tool.url}
+                className="bg-white rounded-xl p-5 shadow-sm hover:shadow-lg transition text-center"
+              >
+                <div className="text-3xl mb-2">{tool.emoji}</div>
+                <h3 className="font-semibold text-gray-800">
+                  {tool.title}
+                </h3>
+              </Link>
+            ))}
+          </div>
+        </section>
 
-                            <p className="text-sm text-gray-600">{tool.description}</p>
+        {/* ================= ALL TOOLS GRID ================= */}
+        <section>
+          <h2 className="text-2xl font-bold text-gray-900 text-center mb-8">
+            All PDF Tools
+          </h2>
 
-                            <span className="inline-block mt-4 text-sm font-medium text-indigo-600">
-                                Use tool →
-                            </span>
-                        </Link>
-                    );
-                })}
-            </div>
-        </main>
-    );
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {Object.values(pdfToolsMeta).map((tool) => {
+              const Icon = icons[tool.slug] || FileText;
+
+              return (
+                <Link
+                  key={tool.slug}
+                  href={tool.href}
+                  className="group bg-white rounded-2xl p-6 shadow-sm hover:shadow-xl transition-all"
+                >
+                  <div className="flex items-center gap-4 mb-3">
+                    <Icon size={28} className="text-indigo-600" />
+                    <h3 className="text-lg font-semibold group-hover:text-indigo-600">
+                      {tool.title.replace(" | PDF Linx", "")}
+                    </h3>
+                  </div>
+
+                  <p className="text-sm text-gray-600">
+                    {tool.description}
+                  </p>
+
+                  <span className="inline-block mt-4 text-sm font-medium text-indigo-600">
+                    Use tool →
+                  </span>
+                </Link>
+              );
+            })}
+          </div>
+        </section>
+
+        {/* ================= FOOTER NOTE ================= */}
+        <p className="text-sm text-gray-500 text-center mt-12">
+          All tools work online without installation. Files are processed securely
+          and removed automatically for your privacy.
+        </p>
+      </main>
+    </>
+  );
 }
 
 

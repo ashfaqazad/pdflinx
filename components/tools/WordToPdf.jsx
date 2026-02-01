@@ -9,15 +9,125 @@ import RelatedToolsSection from "@/components/RelatedTools";
 export default function WordToPdf() {
   const [files, setFiles] = useState([]); // ✅ multiple
   const [loading, setLoading] = useState(false);
-  const [downloadUrl, setDownloadUrl] = useState(null); // ✅ only used for ZIP case
+  // const [downloadUrl, setDownloadUrl] = useState(null); // ✅ only used for ZIP case
   const [success, setSuccess] = useState(false);
+
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   if (!files.length) return alert("Please select a Word file first!");
+
+  //   setLoading(true);
+  //   setDownloadUrl(null);
+  //   setSuccess(false);
+
+  //   const formData = new FormData();
+  //   for (const f of files) formData.append("files", f);
+
+  //   try {
+  //     const res = await fetch("/api/convert/word-to-pdf", {
+  //       method: "POST",
+  //       body: formData,
+  //     });
+
+  //     if (!res.ok) {
+  //       // try JSON error
+  //       let msg = "Conversion failed";
+  //       try {
+  //         const maybeJson = await res.json();
+  //         msg = maybeJson?.error || msg;
+  //       } catch { }
+  //       throw new Error(msg);
+  //     }
+
+  //     const contentType = res.headers.get("content-type") || "";
+
+  //     // ✅ SINGLE FILE: backend returns PDF stream
+  //     if (contentType.includes("application/pdf")) {
+  //       const blob = await res.blob();
+  //       const url = window.URL.createObjectURL(blob);
+
+  //       const a = document.createElement("a");
+  //       a.href = url;
+  //       a.download = files[0].name.replace(/\.(doc|docx)$/i, ".pdf");
+  //       a.click();
+
+  //       window.URL.revokeObjectURL(url);
+
+  //       setSuccess(true);
+  //       return;
+  //     }
+
+  //     // ✅ MULTIPLE FILES: backend returns JSON with ZIP path
+  //     // const data = await res.json();
+
+  //     // if (data.success) {
+  //     //   setDownloadUrl(`/api${data.download}`);
+  //     //   setSuccess(true);
+  //     // } else {
+  //     //   alert("Conversion failed: " + data.error);
+  //     // }
+
+  //     const data = await res.json();
+
+  //     if (data?.success && data?.download) {
+  //       const zipUrl = data.download.startsWith("http")
+  //         ? data.download
+  //         : data.download; // usually "/converted/xxx.zip"
+
+  //       const a = document.createElement("a");
+  //       a.href = zipUrl;
+  //       a.download = "pdflinx-word-to-pdf.zip";
+  //       document.body.appendChild(a);
+  //       a.click();
+  //       a.remove();
+
+  //       setSuccess(true);
+  //       setFiles([]);
+  //       return;
+  //     }
+
+  //     throw new Error(data?.error || "Bulk conversion failed");
+
+
+  //   } catch (err) {
+  //     alert(err.message || "Something went wrong, please try again.");
+  //     console.error(err);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+
+
+
+  // ✅ Only for ZIP downloads (multiple files)
+  // const handleDownloadZip = async () => {
+  //   if (!downloadUrl) return;
+
+  //   try {
+  //     const res = await fetch(downloadUrl);
+  //     if (!res.ok) throw new Error("Download failed");
+
+  //     const blob = await res.blob();
+  //     const url = window.URL.createObjectURL(blob);
+
+  //     const a = document.createElement("a");
+  //     a.href = url;
+  //     a.download = "pdflinx-word-to-pdf.zip";
+  //     a.click();
+
+  //     window.URL.revokeObjectURL(url);
+  //   } catch (err) {
+  //     alert("There was a problem with the download.");
+  //     console.error(err);
+  //   }
+  // };
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!files.length) return alert("Please select a Word file first!");
 
     setLoading(true);
-    setDownloadUrl(null);
     setSuccess(false);
 
     const formData = new FormData();
@@ -30,18 +140,18 @@ export default function WordToPdf() {
       });
 
       if (!res.ok) {
-        // try JSON error
+        // backend kabhi JSON error bhej sakta hai
         let msg = "Conversion failed";
         try {
           const maybeJson = await res.json();
           msg = maybeJson?.error || msg;
-        } catch {}
+        } catch { }
         throw new Error(msg);
       }
 
-      const contentType = res.headers.get("content-type") || "";
+      const contentType = (res.headers.get("content-type") || "").toLowerCase();
 
-      // ✅ SINGLE FILE: backend returns PDF stream
+      // ✅ SINGLE: PDF stream
       if (contentType.includes("application/pdf")) {
         const blob = await res.blob();
         const url = window.URL.createObjectURL(blob);
@@ -49,23 +159,40 @@ export default function WordToPdf() {
         const a = document.createElement("a");
         a.href = url;
         a.download = files[0].name.replace(/\.(doc|docx)$/i, ".pdf");
+        document.body.appendChild(a);
         a.click();
+        a.remove();
 
         window.URL.revokeObjectURL(url);
 
         setSuccess(true);
+        setFiles([]);
         return;
       }
 
-      // ✅ MULTIPLE FILES: backend returns JSON with ZIP path
-      const data = await res.json();
+      // ✅ MULTIPLE: ZIP stream (PK...)
+      if (contentType.includes("application/zip") || contentType.includes("application/octet-stream")) {
+        const blob = await res.blob();
+        const url = window.URL.createObjectURL(blob);
 
-      if (data.success) {
-        setDownloadUrl(`/api${data.download}`);
+        const a = document.createElement("a");
+        a.href = url;
+        // a.download = `pdflinx-word-to-pdf-${Date.now()}.zip`;
+        a.download = "pdflinx-word-to-pdf.zip";
+
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+
+        window.URL.revokeObjectURL(url);
+
         setSuccess(true);
-      } else {
-        alert("Conversion failed: " + data.error);
+        setFiles([]);
+        return;
       }
+
+      // fallback: agar backend kuch aur bhej de
+      throw new Error("Unexpected response from server.");
     } catch (err) {
       alert(err.message || "Something went wrong, please try again.");
       console.error(err);
@@ -74,28 +201,86 @@ export default function WordToPdf() {
     }
   };
 
-  // ✅ Only for ZIP downloads (multiple files)
-  const handleDownloadZip = async () => {
-    if (!downloadUrl) return;
 
-    try {
-      const res = await fetch(downloadUrl);
-      if (!res.ok) throw new Error("Download failed");
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   if (!files.length) return alert("Please select a Word file first!");
 
-      const blob = await res.blob();
-      const url = window.URL.createObjectURL(blob);
+  //   setLoading(true);
+  //   setSuccess(false);
 
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = "pdflinx-word-to-pdf.zip";
-      a.click();
+  //   const formData = new FormData();
+  //   for (const f of files) formData.append("files", f);
 
-      window.URL.revokeObjectURL(url);
-    } catch (err) {
-      alert("There was a problem with the download.");
-      console.error(err);
-    }
-  };
+  //   try {
+  //     const res = await fetch("/api/convert/word-to-pdf", {
+  //       method: "POST",
+  //       body: formData,
+  //     });
+
+  //     const contentType = res.headers.get("content-type") || "";
+
+  //     // ❌ if failed, try to read JSON error safely
+  //     if (!res.ok) {
+  //       let msg = "Conversion failed";
+  //       try {
+  //         const maybeJson = await res.json();
+  //         msg = maybeJson?.error || msg;
+  //       } catch {
+  //         // if server returned non-json error
+  //         try {
+  //           const txt = await res.text();
+  //           if (txt) msg = txt;
+  //         } catch {}
+  //       }
+  //       throw new Error(msg);
+  //     }
+
+  //     // ✅ SINGLE FILE: backend returns PDF stream
+  //     if (contentType.includes("application/pdf")) {
+  //       const blob = await res.blob();
+  //       const url = window.URL.createObjectURL(blob);
+
+  //       const a = document.createElement("a");
+  //       a.href = url;
+  //       a.download = files[0].name.replace(/\.(doc|docx)$/i, ".pdf");
+  //       document.body.appendChild(a);
+  //       a.click();
+  //       a.remove();
+
+  //       window.URL.revokeObjectURL(url);
+
+  //       setSuccess(true);
+  //       setFiles([]);
+  //       return;
+  //     }
+
+  //     // ✅ MULTIPLE FILES: backend returns JSON { success, download: "/converted/xxx.zip" }
+  //     const data = await res.json();
+
+  //     if (data?.success && data?.download) {
+  //       const zipUrl = data.download; // usually "/converted/xxx.zip"
+
+  //       const a = document.createElement("a");
+  //       a.href = zipUrl;
+  //       a.download = "pdflinx-word-to-pdf.zip";
+  //       document.body.appendChild(a);
+  //       a.click();
+  //       a.remove();
+
+  //       setSuccess(true);
+  //       setFiles([]);
+  //       return;
+  //     }
+
+  //     throw new Error(data?.error || "Bulk conversion failed");
+  //   } catch (err) {
+  //     alert(err?.message || "Something went wrong, please try again.");
+  //     console.error(err);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
 
   return (
     <>
@@ -181,11 +366,10 @@ export default function WordToPdf() {
               <div className="relative">
                 <label className="block">
                   <div
-                    className={`border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition-all ${
-                      files.length
-                        ? "border-green-500 bg-green-50"
-                        : "border-gray-300 hover:border-blue-500 hover:bg-blue-50"
-                    }`}
+                    className={`border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition-all ${files.length
+                      ? "border-green-500 bg-green-50"
+                      : "border-gray-300 hover:border-blue-500 hover:bg-blue-50"
+                      }`}
                   >
                     <Upload className="w-12 h-12 mx-auto mb-3 text-blue-600" />
                     <p className="text-lg font-semibold text-gray-700">
@@ -215,6 +399,34 @@ export default function WordToPdf() {
               </div>
 
               {/* Convert Button */}
+              {/* <button
+                type="submit"
+                disabled={loading || !files.length}
+                className="w-full bg-gradient-to-r from-blue-600 to-green-600 text-white font-semibold text-lg py-4 rounded-xl hover:from-blue-700 hover:to-green-700 disabled:opacity-60 disabled:cursor-not-allowed transition shadow-md flex items-center justify-center gap-2"
+              >
+                {loading ? (
+                  <>Converting... hang tight!</>
+                ) : (
+                  <>
+                    <FileText className="w-5 h-5" />
+                    Convert to PDF
+                  </>
+                )}
+              </button>
+
+              {files.length > 1 && (
+                <div className="text-sm text-gray-600 text-center mt-4 space-y-1">
+                  <p>
+                    ⏱️ <strong>Multiple files conversion may take up to 1 minute.</strong> Please don’t close this tab.
+                  </p>
+                  <p>
+                    🔢 You can convert up to <strong>10 Word files at once</strong>.
+                  </p>
+                </div>
+              )} */}
+
+              {/* Convert Button */}
+              {/* Convert Button */}
               <button
                 type="submit"
                 disabled={loading || !files.length}
@@ -229,18 +441,30 @@ export default function WordToPdf() {
                   </>
                 )}
               </button>
+
+              {/* ✅ ALWAYS show UX notice */}
+              <div className="text-sm text-gray-600 text-center mt-4 space-y-1">
+                <p>
+                  ⏱️ <strong>Multiple files conversion may take up to 1 minute.</strong>
+                  Please don’t close this tab.
+                </p>
+                <p>
+                  🔢 You can convert up to <strong>10 Word files at once</strong>.
+                </p>
+              </div>
+
             </form>
 
             {/* Success State */}
-            {success && (
+            {/* {success && (
               <div className="mt-6 p-4 bg-green-50 border-2 border-green-200 rounded-xl text-center">
                 <CheckCircle className="w-12 h-12 text-green-600 mx-auto mb-3" />
                 <p className="text-xl font-bold text-green-700 mb-3">
                   Done! Your {files.length === 1 ? "PDF" : "ZIP"} is ready
-                </p>
+                </p> */}
 
-                {/* ✅ Only show download button for ZIP */}
-                {files.length > 1 && downloadUrl && (
+            {/* ✅ Only show download button for ZIP */}
+            {/* {files.length > 1 && downloadUrl && (
                   <button
                     onClick={handleDownloadZip}
                     className="bg-green-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-green-700 transition shadow-md flex items-center gap-2 mx-auto text-base"
@@ -248,9 +472,25 @@ export default function WordToPdf() {
                     <Download className="w-5 h-5" />
                     Download ZIP
                   </button>
-                )}
+                )} */}
+
+
+            {/* </div>
+            )} */}
+
+
+            {success && (
+              <div className="mt-6 p-4 bg-green-50 border-2 border-green-200 rounded-xl text-center">
+                <CheckCircle className="w-12 h-12 text-green-600 mx-auto mb-3" />
+                <p className="text-xl font-bold text-green-700 mb-2">
+                  Done! Your file(s) downloaded automatically 🎉
+                </p>
+                <p className="text-base text-gray-700">
+                  Check your downloads folder.
+                </p>
               </div>
             )}
+
           </div>
 
           {/* Footer Note */}
@@ -472,7 +712,7 @@ export default function WordToPdf() {
                 Yes, PDFLinx works perfectly on mobile, tablet, and desktop devices.
               </p>
             </details>
-            
+
 
             {/* ✅ NEW FAQS (Bulk support) */}
             <details className="bg-white rounded-lg shadow-sm p-5">
@@ -501,1063 +741,5 @@ export default function WordToPdf() {
     </>
   );
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// // app/word-to-pdf/page.js  (ya jsx—same)
-
-// "use client";
-// import { useState } from "react";
-// import { Upload, FileText, Download, CheckCircle } from "lucide-react";
-// import Script from "next/script"; // schemas
-// import RelatedToolsSection from "@/components/RelatedTools";
-
-// export default function WordToPdf() {
-//   const [files, setFiles] = useState([]); // ✅ multiple
-//   const [loading, setLoading] = useState(false);
-//   const [downloadUrl, setDownloadUrl] = useState(null); // ✅ only used for ZIP case
-//   const [success, setSuccess] = useState(false);
-
-//   const handleSubmit = async (e) => {
-//     e.preventDefault();
-//     if (!files.length) return alert("Please select a Word file first!");
-
-//     setLoading(true);
-//     setDownloadUrl(null);
-//     setSuccess(false);
-
-//     const formData = new FormData();
-//     for (const f of files) formData.append("files", f);
-
-//     try {
-//       const res = await fetch("/api/convert/word-to-pdf", {
-//         method: "POST",
-//         body: formData,
-//       });
-
-//       if (!res.ok) {
-//         // try JSON error
-//         let msg = "Conversion failed";
-//         try {
-//           const maybeJson = await res.json();
-//           msg = maybeJson?.error || msg;
-//         } catch {}
-//         throw new Error(msg);
-//       }
-
-//       const contentType = res.headers.get("content-type") || "";
-
-//       // ✅ SINGLE FILE: backend returns PDF stream
-//       if (contentType.includes("application/pdf")) {
-//         const blob = await res.blob();
-//         const url = window.URL.createObjectURL(blob);
-
-//         const a = document.createElement("a");
-//         a.href = url;
-//         a.download = files[0].name.replace(/\.(doc|docx)$/i, ".pdf");
-//         a.click();
-
-//         window.URL.revokeObjectURL(url);
-
-//         setSuccess(true);
-//         return;
-//       }
-
-//       // ✅ MULTIPLE FILES: backend returns JSON with ZIP path
-//       const data = await res.json();
-
-//       if (data.success) {
-//         setDownloadUrl(`/api${data.download}`);
-//         setSuccess(true);
-//       } else {
-//         alert("Conversion failed: " + data.error);
-//       }
-//     } catch (err) {
-//       alert(err.message || "Something went wrong, please try again.");
-//       console.error(err);
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
-
-//   // ✅ Only for ZIP downloads (multiple files)
-//   const handleDownloadZip = async () => {
-//     if (!downloadUrl) return;
-
-//     try {
-//       const res = await fetch(downloadUrl);
-//       if (!res.ok) throw new Error("Download failed");
-
-//       const blob = await res.blob();
-//       const url = window.URL.createObjectURL(blob);
-
-//       const a = document.createElement("a");
-//       a.href = url;
-//       a.download = "pdflinx-word-to-pdf.zip";
-//       a.click();
-
-//       window.URL.revokeObjectURL(url);
-//     } catch (err) {
-//       alert("There was a problem with the download.");
-//       console.error(err);
-//     }
-//   };
-
-//   return (
-//     <>
-//       {/* ==================== PAGE-SPECIFIC SEO SCHEMAS (Client-Side Safe) ==================== */}
-//       <Script
-//         id="howto-schema"
-//         type="application/ld+json"
-//         strategy="afterInteractive"
-//         dangerouslySetInnerHTML={{
-//           __html: JSON.stringify(
-//             {
-//               "@context": "https://schema.org",
-//               "@type": "HowTo",
-//               name: "How to Convert Word to PDF Online for Free",
-//               description:
-//                 "Convert any Word document (DOC/DOCX) to PDF in just 3 simple steps - completely free, no signup needed.",
-//               url: "https://pdflinx.com/word-to-pdf",
-//               step: [
-//                 {
-//                   "@type": "HowToStep",
-//                   name: "Upload Word File",
-//                   text: "Click 'Select Word file' and choose your .doc or .docx file from computer or phone.",
-//                 },
-//                 {
-//                   "@type": "HowToStep",
-//                   name: "Click Convert",
-//                   text: "Press the 'Convert to PDF' button and wait 5-10 seconds.",
-//                 },
-//                 {
-//                   "@type": "HowToStep",
-//                   name: "Download PDF",
-//                   text: "Your converted PDF will be ready - click download and save it.",
-//                 },
-//               ],
-//               totalTime: "PT30S",
-//               estimatedCost: { "@type": "MonetaryAmount", value: "0", currency: "USD" },
-//               image: "https://pdflinx.com/og-image.png",
-//             },
-//             null,
-//             2
-//           ),
-//         }}
-//       />
-
-//       <Script
-//         id="breadcrumb-schema-word"
-//         type="application/ld+json"
-//         strategy="afterInteractive"
-//         dangerouslySetInnerHTML={{
-//           __html: JSON.stringify(
-//             {
-//               "@context": "https://schema.org",
-//               "@type": "BreadcrumbList",
-//               itemListElement: [
-//                 { "@type": "ListItem", position: 1, name: "Home", item: "https://pdflinx.com" },
-//                 { "@type": "ListItem", position: 2, name: "Word to PDF", item: "https://pdflinx.com/word-to-pdf" },
-//               ],
-//             },
-//             null,
-//             2
-//           ),
-//         }}
-//       />
-
-//       {/* ==================== MAIN TOOL SECTION ==================== */}
-//       <main className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50 py-8 px-4">
-//         <div className="max-w-4xl mx-auto">
-//           {/* Header */}
-//           <div className="text-center mb-8">
-//             <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent mb-4">
-//               Word to PDF Converter <br /> Online (Free)
-//             </h1>
-//             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-//               Got a Word doc that needs to become a PDF? Just drop it here – we’ll turn it into a perfect PDF in seconds. No sign-up, no watermark, looks exactly the same!
-//             </p>
-//           </div>
-
-//           {/* Upload Card */}
-//           <div className="bg-white rounded-2xl shadow-lg p-8 border border-gray-100">
-//             <form onSubmit={handleSubmit} className="space-y-6">
-//               {/* File Input */}
-//               <div className="relative">
-//                 <label className="block">
-//                   <div
-//                     className={`border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition-all ${
-//                       files.length
-//                         ? "border-green-500 bg-green-50"
-//                         : "border-gray-300 hover:border-blue-500 hover:bg-blue-50"
-//                     }`}
-//                   >
-//                     <Upload className="w-12 h-12 mx-auto mb-3 text-blue-600" />
-//                     <p className="text-lg font-semibold text-gray-700">
-//                       {files.length
-//                         ? `${files.length} file(s) selected`
-//                         : "Drop your Word file(s) here or click to upload"}
-//                     </p>
-//                     <p className="text-sm text-gray-500 mt-1">Only .doc & .docx files</p>
-//                   </div>
-
-//                   <input
-//                     type="file"
-//                     multiple
-//                     accept=".doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-//                     onChange={(e) => setFiles(Array.from(e.target.files || []))}
-//                     className="hidden"
-//                     required
-//                   />
-//                 </label>
-//               </div>
-
-//               {/* Convert Button */}
-//               <button
-//                 type="submit"
-//                 disabled={loading || !files.length}
-//                 className="w-full bg-gradient-to-r from-blue-600 to-green-600 text-white font-semibold text-lg py-4 rounded-xl hover:from-blue-700 hover:to-green-700 disabled:opacity-60 disabled:cursor-not-allowed transition shadow-md flex items-center justify-center gap-2"
-//               >
-//                 {loading ? (
-//                   <>Converting... hang tight!</>
-//                 ) : (
-//                   <>
-//                     <FileText className="w-5 h-5" />
-//                     Convert to PDF
-//                   </>
-//                 )}
-//               </button>
-//             </form>
-
-//             {/* Success State */}
-//             {success && (
-//               <div className="mt-6 p-4 bg-green-50 border-2 border-green-200 rounded-xl text-center">
-//                 <CheckCircle className="w-12 h-12 text-green-600 mx-auto mb-3" />
-//                 <p className="text-xl font-bold text-green-700 mb-3">
-//                   Done! Your {files.length === 1 ? "PDF" : "ZIP"} is ready
-//                 </p>
-
-//                 {/* ✅ Only show download button for ZIP */}
-//                 {files.length > 1 && downloadUrl && (
-//                   <button
-//                     onClick={handleDownloadZip}
-//                     className="bg-green-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-green-700 transition shadow-md flex items-center gap-2 mx-auto text-base"
-//                   >
-//                     <Download className="w-5 h-5" />
-//                     Download ZIP
-//                   </button>
-//                 )}
-//               </div>
-//             )}
-//           </div>
-
-//           {/* Footer Note */}
-//           <p className="text-center mt-6 text-gray-600 text-base">
-//             No account • No watermark • Files gone after 1 hour • Completely free
-//           </p>
-//         </div>
-//       </main>
-
-
-
-//       {/* ==================== SEO CONTENT SECTION ==================== */}
-//       {/* (Tumhara SEO/content section as-is rehta hai) */}
-
-//       {/* <section className="mt-16 max-w-4xl mx-auto px-6 pb-16"> */}
-//         {/* ... tumhara existing content same ... */}
-//         {/* NOTE: maine yahan content cut nahi kiya—tum apna existing content niche as-is rehne do */}
-//       {/* </section> */}
-
-//             {/* ==================== SEO CONTENT SECTION ==================== */}
-//       <section className="mt-16 max-w-4xl mx-auto px-6 pb-16">
-//         {/* Main Heading */}
-//         <div className="text-center mb-12">
-//           <h2 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent mb-4">
-//             Word to PDF Online Free – Turn DOC/DOCX into PDF in a Flash
-//           </h2>
-//           <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-//             Need to send a Word file but want it to look the same on every device? Convert it to PDF here – formatting, fonts, images, tables stay perfect. Quick, clean, and always free on PDF Linx!
-//           </p>
-//         </div>
-
-//         {/* Benefits Grid */}
-//         <div className="grid md:grid-cols-3 gap-8 mb-16">
-//           <div className="bg-gradient-to-br from-blue-50 to-white p-8 rounded-2xl shadow-lg border border-blue-100 text-center hover:shadow-xl transition">
-//             <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
-//               <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-//                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-//               </svg>
-//             </div>
-//             <h3 className="text-xl font-semibold text-gray-800 mb-3">Everything Stays Perfect</h3>
-//             <p className="text-gray-600 text-sm">
-//               Fonts, pics, tables, headings – your doc looks exactly the same in PDF.
-//             </p>
-//           </div>
-
-//           <div className="bg-gradient-to-br from-green-50 to-white p-8 rounded-2xl shadow-lg border border-green-100 text-center hover:shadow-xl transition">
-//             <div className="w-16 h-16 bg-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
-//               <CheckCircle className="w-8 h-8 text-white" />
-//             </div>
-//             <h3 className="text-xl font-semibold text-gray-800 mb-3">DOC & DOCX Welcome</h3>
-//             <p className="text-gray-600 text-sm">
-//               Works with any Word file – even fancy ones with styles and layouts.
-//             </p>
-//           </div>
-
-//           <div className="bg-gradient-to-br from-purple-50 to-white p-8 rounded-2xl shadow-lg border border-purple-100 text-center hover:shadow-xl transition">
-//             <div className="w-16 h-16 bg-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
-//               <Download className="w-8 h-8 text-white" />
-//             </div>
-//             <h3 className="text-xl font-semibold text-gray-800 mb-3">Fast & Worry-Free</h3>
-//             <p className="text-gray-600 text-sm">
-//               Instant conversion on any device – no sign-up, no watermark, files deleted after 1 hour.
-//             </p>
-//           </div>
-//         </div>
-
-//         {/* How To Steps */}
-//         <div className="bg-white rounded-2xl shadow-lg p-8 md:p-12 border border-gray-100">
-//           <h3 className="text-2xl md:text-3xl font-bold text-center mb-12 text-gray-800">
-//             Convert Word to PDF in 3 Easy Steps
-//           </h3>
-//           <div className="grid md:grid-cols-3 gap-8">
-//             <div className="text-center">
-//               <div className="w-16 h-16 bg-gradient-to-r from-blue-600 to-blue-700 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold text-white shadow-lg">
-//                 1
-//               </div>
-//               <h4 className="text-lg font-semibold mb-2">Upload Your File</h4>
-//               <p className="text-gray-600 text-sm">Drop your DOC or DOCX right here.</p>
-//             </div>
-
-//             <div className="text-center">
-//               <div className="w-16 h-16 bg-gradient-to-r from-green-600 to-green-700 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold text-white shadow-lg">
-//                 2
-//               </div>
-//               <h4 className="text-lg font-semibold mb-2">Hit Convert</h4>
-//               <p className="text-gray-600 text-sm">We keep everything looking sharp.</p>
-//             </div>
-
-//             <div className="text-center">
-//               <div className="w-16 h-16 bg-gradient-to-r from-purple-600 to-purple-700 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold text-white shadow-lg">
-//                 3
-//               </div>
-//               <h4 className="text-lg font-semibold mb-2">Download PDF</h4>
-//               <p className="text-gray-600 text-sm">Grab your ready-to-go PDF!</p>
-//             </div>
-//           </div>
-//         </div>
-
-//         {/* Final CTA */}
-//         <p className="text-center mt-12 text-base text-gray-600 italic max-w-3xl mx-auto">
-//           Thousands use PDF Linx daily to turn Word into perfect PDFs – fast, reliable, and always free.
-//         </p>
-//       </section>
-
-
-//       <section className="max-w-4xl mx-auto px-4 py-14 text-slate-700">
-//         {/* Heading */}
-//         <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-6">
-//           Word to PDF Converter – Free Online Tool by PDFLinx
-//         </h2>
-
-//         {/* Intro */}
-//         <p className="text-base leading-7 mb-6">
-//           A Word to PDF converter is an essential online tool that allows users to convert
-//           Word documents (DOC or DOCX) into secure, professional, and universally compatible
-//           PDF files. PDFs are widely used because they preserve formatting, layout, fonts,
-//           images, and structure across all devices.
-//           <span className="font-medium text-slate-900">
-//             {" "}PDFLinx Word to PDF Converter
-//           </span>{" "}
-//           lets you convert files instantly without installing any software.
-//         </p>
-
-//         {/* What is */}
-//         <h3 className="text-xl font-semibold text-slate-900 mb-3">
-//           What is Word to PDF Conversion?
-//         </h3>
-//         <p className="leading-7 mb-6">
-//           Word to PDF conversion is the process of transforming editable Microsoft Word
-//           documents into fixed-layout PDF files. This ensures your document looks exactly
-//           the same on every device, browser, and operating system. PDFs are commonly used
-//           for resumes, contracts, reports, invoices, and academic documents because they
-//           prevent accidental changes.
-//         </p>
-
-//         {/* Why convert */}
-//         <h3 className="text-xl font-semibold text-slate-900 mb-3">
-//           Why Convert Word Files to PDF?
-//         </h3>
-//         <ul className="space-y-2 mb-6 list-disc pl-6">
-//           <li>Preserves fonts, margins, tables, and images</li>
-//           <li>Opens perfectly on all devices without Microsoft Word</li>
-//           <li>Gives a professional and polished appearance</li>
-//           <li>More secure and harder to edit accidentally</li>
-//           <li>Optimized file size for easy sharing</li>
-//         </ul>
-
-//         {/* Steps */}
-//         <h3 className="text-xl font-semibold text-slate-900 mb-3">
-//           How to Convert Word to PDF Online
-//         </h3>
-//         <ol className="space-y-2 mb-6 list-decimal pl-6">
-//           <li>Upload your Word file (DOC or DOCX)</li>
-//           <li>Click the “Convert to PDF” button</li>
-//           <li>Wait a few seconds while the file is processed</li>
-//           <li>Download your converted PDF instantly</li>
-//         </ol>
-
-//         <p className="mb-6">
-//           No registration, no watermark, and no installation required.
-//         </p>
-
-//         {/* Features box */}
-//         <div className="bg-slate-50 border border-slate-200 rounded-xl p-6 mb-6">
-//           <h3 className="text-xl font-semibold text-slate-900 mb-4">
-//             Features of PDFLinx Word to PDF Converter
-//           </h3>
-//           <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 list-disc pl-5">
-//             <li>Free online Word to PDF converter</li>
-//             <li>Supports DOC & DOCX formats</li>
-//             <li>High-quality PDF output</li>
-//             <li>Original layout & formatting preserved</li>
-//             <li>Fast conversion speed</li>
-//             <li>Works on desktop & mobile</li>
-//             <li>No file storage – privacy protected</li>
-//           </ul>
-//         </div>
-
-//         {/* Audience */}
-//         <h3 className="text-xl font-semibold text-slate-900 mb-3">
-//           Who Should Use This Tool?
-//         </h3>
-//         <ul className="space-y-2 mb-6 list-disc pl-6">
-//           <li><strong>Students:</strong> Submit assignments in PDF format</li>
-//           <li><strong>Professionals:</strong> Share resumes and reports securely</li>
-//           <li><strong>Businesses:</strong> Convert invoices and contracts</li>
-//           <li><strong>Freelancers:</strong> Deliver polished documents to clients</li>
-//           <li><strong>Teachers:</strong> Distribute learning material easily</li>
-//         </ul>
-
-//         {/* Safety */}
-//         <h3 className="text-xl font-semibold text-slate-900 mb-3">
-//           Is PDFLinx Safe to Use?
-//         </h3>
-//         <p className="leading-7 mb-6">
-//           Yes. PDFLinx is privacy-focused. Uploaded files are processed automatically and
-//           deleted shortly after conversion. Your documents are never shared or stored
-//           permanently.
-//         </p>
-
-//         {/* Closing */}
-//         <h3 className="text-xl font-semibold text-slate-900 mb-3">
-//           Convert Word to PDF Anytime, Anywhere
-//         </h3>
-//         <p className="leading-7">
-//           PDFLinx works on Windows, macOS, Linux, Android, and iOS devices. All you need is
-//           an internet connection and a modern browser to convert Word documents into
-//           professional PDFs in seconds.
-//         </p>
-//       </section>
-
-
-//       <section className="py-16">
-//         <div className="max-w-4xl mx-auto px-4">
-
-//           <h2 className="text-3xl font-bold text-center mb-10">
-//             Frequently Asked Questions
-//           </h2>
-
-//           <div className="space-y-4">
-
-//             <details className="bg-white rounded-lg shadow-sm p-5">
-//               <summary className="font-semibold cursor-pointer">
-//                 Is the Word to PDF converter free to use?
-//               </summary>
-//               <p className="mt-2 text-gray-600">
-//                 Yes, PDFLinx offers a completely free Word to PDF converter with no hidden charges.
-//               </p>
-//             </details>
-
-//             <details className="bg-white rounded-lg shadow-sm p-5">
-//               <summary className="font-semibold cursor-pointer">
-//                 Do I need to install any software?
-//               </summary>
-//               <p className="mt-2 text-gray-600">
-//                 No installation is required. Everything works directly in your browser.
-//               </p>
-//             </details>
-
-//             <details className="bg-white rounded-lg shadow-sm p-5">
-//               <summary className="font-semibold cursor-pointer">
-//                 Will my Word formatting be preserved?
-//               </summary>
-//               <p className="mt-2 text-gray-600">
-//                 Yes, fonts, tables, images, and layout are preserved accurately.
-//               </p>
-//             </details>
-
-//             <details className="bg-white rounded-lg shadow-sm p-5">
-//               <summary className="font-semibold cursor-pointer">
-//                 Are my files safe and private?
-//               </summary>
-//               <p className="mt-2 text-gray-600">
-//                 Files are processed securely and deleted automatically after conversion.
-//               </p>
-//             </details>
-
-//             <details className="bg-white rounded-lg shadow-sm p-5">
-//               <summary className="font-semibold cursor-pointer">
-//                 Can I convert Word to PDF on mobile?
-//               </summary>
-//               <p className="mt-2 text-gray-600">
-//                 Yes, PDFLinx works perfectly on mobile, tablet, and desktop devices.
-//               </p>
-//             </details>
-
-//           </div>
-//         </div>
-//       </section>
-
-
-//       {/* (Tumhare baqi sections/FAQ same rehne do) */}
-//       <RelatedToolsSection currentPage="word-to-pdf" />
-//     </>
-//   );
-// }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// // app/word-to-pdf/page.js  (ya jsx—same)
-
-// "use client";
-// import { useState } from "react";
-// import { Upload, FileText, Download, CheckCircle } from "lucide-react";
-// import Script from "next/script";  // Ye import add kar—schemas ke liye
-// import RelatedToolsSection from "@/components/RelatedTools";
-
-
-// export default function WordToPdf() {
-//   const [file, setFile] = useState(null);
-//   const [loading, setLoading] = useState(false);
-//   const [downloadUrl, setDownloadUrl] = useState(null);
-//   const [success, setSuccess] = useState(false);
-
-
-//   const handleSubmit = async (e) => {
-//     e.preventDefault();
-//     if (!file) return alert("Please select a Word file first!");
-
-//     setLoading(true);
-//     setDownloadUrl(null);
-//     setSuccess(false);
-
-//     const formData = new FormData();
-//     formData.append("file", file);
-
-//     try {
-//       const res = await fetch("/api/convert/word-to-pdf", {
-//         method: "POST",
-//         body: formData,
-//       });
-
-//       const data = await res.json();
-
-//       if (data.success) {
-//         setDownloadUrl(`/api${data.download}`);
-//         setSuccess(true);
-//       } else {
-//         alert("Conversion failed: " + data.error);
-//       }
-//     } catch (err) {
-//       alert("Something went wrong, please try again.");
-//       console.error(err);
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
-
-//   const handleDownload = async () => {
-//     if (!downloadUrl) return;
-//     try {
-//       const res = await fetch(downloadUrl);
-//       const blob = await res.blob();
-//       const url = window.URL.createObjectURL(blob);
-//       const a = document.createElement("a");
-//       a.href = url;
-//       a.download = file.name.replace(/\.(doc|docx)$/i, ".pdf");
-//       a.click();
-//       window.URL.revokeObjectURL(url);
-//     } catch (err) {
-//       alert("There was a problem with the download.");
-//     }
-//   };
-
-//   return (
-//     <>
-//       {/* ==================== PAGE-SPECIFIC SEO SCHEMAS (Client-Side Safe) ==================== */}
-//       {/* HowTo Schema - Wrapped in Script for hydration safety */}
-//       <Script
-//         id="howto-schema"
-//         type="application/ld+json"
-//         strategy="afterInteractive"
-//         dangerouslySetInnerHTML={{
-//           __html: JSON.stringify({
-//             "@context": "https://schema.org",
-//             "@type": "HowTo",
-//             name: "How to Convert Word to PDF Online for Free",
-//             description:
-//               "Convert any Word document (DOC/DOCX) to PDF in just 3 simple steps - completely free, no signup needed.",
-//             url: "https://pdflinx.com/word-to-pdf",
-//             step: [
-//               {
-//                 "@type": "HowToStep",
-//                 name: "Upload Word File",
-//                 text: "Click 'Select Word file' and choose your .doc or .docx file from computer or phone.",
-//               },
-//               {
-//                 "@type": "HowToStep",
-//                 name: "Click Convert",
-//                 text: "Press the 'Convert to PDF' button and wait 5-10 seconds.",
-//               },
-//               {
-//                 "@type": "HowToStep",
-//                 name: "Download PDF",
-//                 text: "Your converted PDF will be ready - click download and save it.",
-//               },
-//             ],
-//             totalTime: "PT30S",
-//             estimatedCost: {
-//               "@type": "MonetaryAmount",
-//               value: "0",
-//               currency: "USD",
-//             },
-//             image: "https://pdflinx.com/og-image.png",
-//           }, null, 2),
-//         }}
-//       />
-
-//       {/* Breadcrumb Schema - Wrapped */}
-//       <Script
-//         id="breadcrumb-schema-word"
-//         type="application/ld+json"
-//         strategy="afterInteractive"
-//         dangerouslySetInnerHTML={{
-//           __html: JSON.stringify({
-//             "@context": "https://schema.org",
-//             "@type": "BreadcrumbList",
-//             itemListElement: [
-//               {
-//                 "@type": "ListItem",
-//                 position: 1,
-//                 name: "Home",
-//                 item: "https://pdflinx.com",
-//               },
-//               {
-//                 "@type": "ListItem",
-//                 position: 2,
-//                 name: "Word to PDF",
-//                 item: "https://pdflinx.com/word-to-pdf",
-//               },
-//             ],
-//           }, null, 2),
-//         }}
-//       />
-
-//       {/* ==================== MAIN TOOL SECTION ==================== */}
-//       <main className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50 py-8 px-4">
-//         <div className="max-w-4xl mx-auto">
-//           {/* Header */}
-//           <div className="text-center mb-8">
-//             <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent mb-4">
-//               Word to PDF Converter <br /> Online (Free)
-//             </h1>
-//             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-//               Got a Word doc that needs to become a PDF? Just drop it here – we’ll turn it into a perfect PDF in seconds. No sign-up, no watermark, looks exactly the same!
-//             </p>
-//           </div>
-
-//           {/* Upload Card */}
-//           <div className="bg-white rounded-2xl shadow-lg p-8 border border-gray-100">
-//             <form onSubmit={handleSubmit} className="space-y-6">
-//               {/* File Input */}
-//               <div className="relative">
-//                 <label className="block">
-//                   <div
-//                     className={`border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition-all ${file
-//                       ? "border-green-500 bg-green-50"
-//                       : "border-gray-300 hover:border-blue-500 hover:bg-blue-50"
-//                       }`}
-//                   >
-//                     <Upload className="w-12 h-12 mx-auto mb-3 text-blue-600" />
-//                     <p className="text-lg font-semibold text-gray-700">
-//                       {file
-//                         ? file.name
-//                         : "Drop your Word file here or click to upload"}
-//                     </p>
-//                     <p className="text-sm text-gray-500 mt-1">
-//                       Only .doc & .docx files
-//                     </p>
-//                   </div>
-//                   <input
-//                     type="file"
-//                     accept=".doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-//                     onChange={(e) => setFile(e.target.files?.[0] || null)}
-//                     className="hidden"
-//                     required
-//                   />
-//                 </label>
-//               </div>
-
-//               {/* Convert Button */}
-//               <button
-//                 type="submit"
-//                 disabled={loading || !file}
-//                 className="w-full bg-gradient-to-r from-blue-600 to-green-600 text-white font-semibold text-lg py-4 rounded-xl hover:from-blue-700 hover:to-green-700 disabled:opacity-60 disabled:cursor-not-allowed transition shadow-md flex items-center justify-center gap-2"
-//               >
-//                 {loading ? (
-//                   <>Converting... hang tight!</>
-//                 ) : (
-//                   <>
-//                     <FileText className="w-5 h-5" />
-//                     Convert to PDF
-//                   </>
-//                 )}
-//               </button>
-//             </form>
-
-//             {/* Success State */}
-//             {success && (
-//               <div className="mt-6 p-4 bg-green-50 border-2 border-green-200 rounded-xl text-center">
-//                 <CheckCircle className="w-12 h-12 text-green-600 mx-auto mb-3" />
-//                 <p className="text-xl font-bold text-green-700 mb-3">
-//                   Done! Your PDF is ready
-//                 </p>
-//                 <button
-//                   onClick={handleDownload}
-//                   className="bg-green-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-green-700 transition shadow-md flex items-center gap-2 mx-auto text-base"
-//                 >
-//                   <Download className="w-5 h-5" />
-//                   Download PDF
-//                 </button>
-//               </div>
-//             )}
-//           </div>
-
-//           {/* Footer Note */}
-//           <p className="text-center mt-6 text-gray-600 text-base">
-//             No account • No watermark • Files gone after 1 hour • Completely free
-//           </p>
-//         </div>
-//       </main>
-
-//       {/* ==================== SEO CONTENT SECTION ==================== */}
-//       <section className="mt-16 max-w-4xl mx-auto px-6 pb-16">
-//         {/* Main Heading */}
-//         <div className="text-center mb-12">
-//           <h2 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent mb-4">
-//             Word to PDF Online Free – Turn DOC/DOCX into PDF in a Flash
-//           </h2>
-//           <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-//             Need to send a Word file but want it to look the same on every device? Convert it to PDF here – formatting, fonts, images, tables stay perfect. Quick, clean, and always free on PDF Linx!
-//           </p>
-//         </div>
-
-//         {/* Benefits Grid */}
-//         <div className="grid md:grid-cols-3 gap-8 mb-16">
-//           <div className="bg-gradient-to-br from-blue-50 to-white p-8 rounded-2xl shadow-lg border border-blue-100 text-center hover:shadow-xl transition">
-//             <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
-//               <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-//                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-//               </svg>
-//             </div>
-//             <h3 className="text-xl font-semibold text-gray-800 mb-3">Everything Stays Perfect</h3>
-//             <p className="text-gray-600 text-sm">
-//               Fonts, pics, tables, headings – your doc looks exactly the same in PDF.
-//             </p>
-//           </div>
-
-//           <div className="bg-gradient-to-br from-green-50 to-white p-8 rounded-2xl shadow-lg border border-green-100 text-center hover:shadow-xl transition">
-//             <div className="w-16 h-16 bg-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
-//               <CheckCircle className="w-8 h-8 text-white" />
-//             </div>
-//             <h3 className="text-xl font-semibold text-gray-800 mb-3">DOC & DOCX Welcome</h3>
-//             <p className="text-gray-600 text-sm">
-//               Works with any Word file – even fancy ones with styles and layouts.
-//             </p>
-//           </div>
-
-//           <div className="bg-gradient-to-br from-purple-50 to-white p-8 rounded-2xl shadow-lg border border-purple-100 text-center hover:shadow-xl transition">
-//             <div className="w-16 h-16 bg-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
-//               <Download className="w-8 h-8 text-white" />
-//             </div>
-//             <h3 className="text-xl font-semibold text-gray-800 mb-3">Fast & Worry-Free</h3>
-//             <p className="text-gray-600 text-sm">
-//               Instant conversion on any device – no sign-up, no watermark, files deleted after 1 hour.
-//             </p>
-//           </div>
-//         </div>
-
-//         {/* How To Steps */}
-//         <div className="bg-white rounded-2xl shadow-lg p-8 md:p-12 border border-gray-100">
-//           <h3 className="text-2xl md:text-3xl font-bold text-center mb-12 text-gray-800">
-//             Convert Word to PDF in 3 Easy Steps
-//           </h3>
-//           <div className="grid md:grid-cols-3 gap-8">
-//             <div className="text-center">
-//               <div className="w-16 h-16 bg-gradient-to-r from-blue-600 to-blue-700 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold text-white shadow-lg">
-//                 1
-//               </div>
-//               <h4 className="text-lg font-semibold mb-2">Upload Your File</h4>
-//               <p className="text-gray-600 text-sm">Drop your DOC or DOCX right here.</p>
-//             </div>
-
-//             <div className="text-center">
-//               <div className="w-16 h-16 bg-gradient-to-r from-green-600 to-green-700 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold text-white shadow-lg">
-//                 2
-//               </div>
-//               <h4 className="text-lg font-semibold mb-2">Hit Convert</h4>
-//               <p className="text-gray-600 text-sm">We keep everything looking sharp.</p>
-//             </div>
-
-//             <div className="text-center">
-//               <div className="w-16 h-16 bg-gradient-to-r from-purple-600 to-purple-700 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold text-white shadow-lg">
-//                 3
-//               </div>
-//               <h4 className="text-lg font-semibold mb-2">Download PDF</h4>
-//               <p className="text-gray-600 text-sm">Grab your ready-to-go PDF!</p>
-//             </div>
-//           </div>
-//         </div>
-
-//         {/* Final CTA */}
-//         <p className="text-center mt-12 text-base text-gray-600 italic max-w-3xl mx-auto">
-//           Thousands use PDF Linx daily to turn Word into perfect PDFs – fast, reliable, and always free.
-//         </p>
-//       </section>
-
-
-//       <section className="max-w-4xl mx-auto px-4 py-14 text-slate-700">
-//         {/* Heading */}
-//         <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-6">
-//           Word to PDF Converter – Free Online Tool by PDFLinx
-//         </h2>
-
-//         {/* Intro */}
-//         <p className="text-base leading-7 mb-6">
-//           A Word to PDF converter is an essential online tool that allows users to convert
-//           Word documents (DOC or DOCX) into secure, professional, and universally compatible
-//           PDF files. PDFs are widely used because they preserve formatting, layout, fonts,
-//           images, and structure across all devices.
-//           <span className="font-medium text-slate-900">
-//             {" "}PDFLinx Word to PDF Converter
-//           </span>{" "}
-//           lets you convert files instantly without installing any software.
-//         </p>
-
-//         {/* What is */}
-//         <h3 className="text-xl font-semibold text-slate-900 mb-3">
-//           What is Word to PDF Conversion?
-//         </h3>
-//         <p className="leading-7 mb-6">
-//           Word to PDF conversion is the process of transforming editable Microsoft Word
-//           documents into fixed-layout PDF files. This ensures your document looks exactly
-//           the same on every device, browser, and operating system. PDFs are commonly used
-//           for resumes, contracts, reports, invoices, and academic documents because they
-//           prevent accidental changes.
-//         </p>
-
-//         {/* Why convert */}
-//         <h3 className="text-xl font-semibold text-slate-900 mb-3">
-//           Why Convert Word Files to PDF?
-//         </h3>
-//         <ul className="space-y-2 mb-6 list-disc pl-6">
-//           <li>Preserves fonts, margins, tables, and images</li>
-//           <li>Opens perfectly on all devices without Microsoft Word</li>
-//           <li>Gives a professional and polished appearance</li>
-//           <li>More secure and harder to edit accidentally</li>
-//           <li>Optimized file size for easy sharing</li>
-//         </ul>
-
-//         {/* Steps */}
-//         <h3 className="text-xl font-semibold text-slate-900 mb-3">
-//           How to Convert Word to PDF Online
-//         </h3>
-//         <ol className="space-y-2 mb-6 list-decimal pl-6">
-//           <li>Upload your Word file (DOC or DOCX)</li>
-//           <li>Click the “Convert to PDF” button</li>
-//           <li>Wait a few seconds while the file is processed</li>
-//           <li>Download your converted PDF instantly</li>
-//         </ol>
-
-//         <p className="mb-6">
-//           No registration, no watermark, and no installation required.
-//         </p>
-
-//         {/* Features box */}
-//         <div className="bg-slate-50 border border-slate-200 rounded-xl p-6 mb-6">
-//           <h3 className="text-xl font-semibold text-slate-900 mb-4">
-//             Features of PDFLinx Word to PDF Converter
-//           </h3>
-//           <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 list-disc pl-5">
-//             <li>Free online Word to PDF converter</li>
-//             <li>Supports DOC & DOCX formats</li>
-//             <li>High-quality PDF output</li>
-//             <li>Original layout & formatting preserved</li>
-//             <li>Fast conversion speed</li>
-//             <li>Works on desktop & mobile</li>
-//             <li>No file storage – privacy protected</li>
-//           </ul>
-//         </div>
-
-//         {/* Audience */}
-//         <h3 className="text-xl font-semibold text-slate-900 mb-3">
-//           Who Should Use This Tool?
-//         </h3>
-//         <ul className="space-y-2 mb-6 list-disc pl-6">
-//           <li><strong>Students:</strong> Submit assignments in PDF format</li>
-//           <li><strong>Professionals:</strong> Share resumes and reports securely</li>
-//           <li><strong>Businesses:</strong> Convert invoices and contracts</li>
-//           <li><strong>Freelancers:</strong> Deliver polished documents to clients</li>
-//           <li><strong>Teachers:</strong> Distribute learning material easily</li>
-//         </ul>
-
-//         {/* Safety */}
-//         <h3 className="text-xl font-semibold text-slate-900 mb-3">
-//           Is PDFLinx Safe to Use?
-//         </h3>
-//         <p className="leading-7 mb-6">
-//           Yes. PDFLinx is privacy-focused. Uploaded files are processed automatically and
-//           deleted shortly after conversion. Your documents are never shared or stored
-//           permanently.
-//         </p>
-
-//         {/* Closing */}
-//         <h3 className="text-xl font-semibold text-slate-900 mb-3">
-//           Convert Word to PDF Anytime, Anywhere
-//         </h3>
-//         <p className="leading-7">
-//           PDFLinx works on Windows, macOS, Linux, Android, and iOS devices. All you need is
-//           an internet connection and a modern browser to convert Word documents into
-//           professional PDFs in seconds.
-//         </p>
-//       </section>
-
-
-//       <section className="py-16">
-//         <div className="max-w-4xl mx-auto px-4">
-
-//           <h2 className="text-3xl font-bold text-center mb-10">
-//             Frequently Asked Questions
-//           </h2>
-
-//           <div className="space-y-4">
-
-//             <details className="bg-white rounded-lg shadow-sm p-5">
-//               <summary className="font-semibold cursor-pointer">
-//                 Is the Word to PDF converter free to use?
-//               </summary>
-//               <p className="mt-2 text-gray-600">
-//                 Yes, PDFLinx offers a completely free Word to PDF converter with no hidden charges.
-//               </p>
-//             </details>
-
-//             <details className="bg-white rounded-lg shadow-sm p-5">
-//               <summary className="font-semibold cursor-pointer">
-//                 Do I need to install any software?
-//               </summary>
-//               <p className="mt-2 text-gray-600">
-//                 No installation is required. Everything works directly in your browser.
-//               </p>
-//             </details>
-
-//             <details className="bg-white rounded-lg shadow-sm p-5">
-//               <summary className="font-semibold cursor-pointer">
-//                 Will my Word formatting be preserved?
-//               </summary>
-//               <p className="mt-2 text-gray-600">
-//                 Yes, fonts, tables, images, and layout are preserved accurately.
-//               </p>
-//             </details>
-
-//             <details className="bg-white rounded-lg shadow-sm p-5">
-//               <summary className="font-semibold cursor-pointer">
-//                 Are my files safe and private?
-//               </summary>
-//               <p className="mt-2 text-gray-600">
-//                 Files are processed securely and deleted automatically after conversion.
-//               </p>
-//             </details>
-
-//             <details className="bg-white rounded-lg shadow-sm p-5">
-//               <summary className="font-semibold cursor-pointer">
-//                 Can I convert Word to PDF on mobile?
-//               </summary>
-//               <p className="mt-2 text-gray-600">
-//                 Yes, PDFLinx works perfectly on mobile, tablet, and desktop devices.
-//               </p>
-//             </details>
-
-//           </div>
-//         </div>
-//       </section>
-
-
-//       <RelatedToolsSection currentPage="word-to-pdf" />
-//     </>
-//   );
-// }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
