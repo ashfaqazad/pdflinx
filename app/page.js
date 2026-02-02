@@ -1,6 +1,8 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import Link from "next/link";
+
 import {
   FileText, FileType, FileArchive, FileImage, FileSpreadsheet,
   Split, QrCode, Lock, Ruler, Youtube, Image as ImageIcon, PenTool, Stamp, ArrowUp
@@ -48,34 +50,77 @@ export default function HomeContent() {
     <main className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-indigo-50">
 
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-indigo-600 via-purple-600 to-blue-700 text-white py-20 px-4 overflow-hidden">
+      <section className="relative bg-gradient-to-br from-indigo-600 via-purple-600 to-blue-700 text-white py-12 px-4 overflow-hidden">
+        {/* overlay */}
         <div className="absolute inset-0 bg-black/20"></div>
-        <div className="relative z-10 max-w-5xl mx-auto text-center">
-          <h1 className="text-4xl md:text-5xl font-black mb-6 leading-tight">
-            Tired of sketchy PDF tools?
-          </h1>
-          <p className="text-lg md:text-xl mb-8 max-w-3xl mx-auto leading-relaxed opacity-95">
-            I built PDFLinx out of frustration with slow sites, intrusive pop-up ads, and files being stored on shady servers.            <br />
-            <span className="block mt-3 text-xl font-semibold">
-              Everything here runs in your browser. Your files never leave your device.
-            </span>
-            <span className="block mt-2 text-base">No ads. No signup. No nonsense.</span>
-          </p>
 
-          <div className="flex flex-wrap justify-center gap-5 mb-8 text-base">
-            <div className="flex items-center gap-3"><span className="text-2xl">🔒</span> Files Stay on Your Device</div>
-            <div className="flex items-center gap-3"><span className="text-2xl">⚡</span> Actually Fast</div>
-            <div className="flex items-center gap-3"><span className="text-2xl">🆓</span> Completely Free</div>
+        <div className="relative z-10 max-w-6xl mx-auto text-center">
+
+          {/* Top badge */}
+          <div className="inline-flex items-center gap-2 mb-8 px-5 py-2 rounded-full bg-white/10 backdrop-blur border border-white/20 text-sm font-medium">
+            🔒 Privacy-first PDF tools · No ads · No signup
           </div>
 
-          <button
-            onClick={() => document.getElementById("tools")?.scrollIntoView({ behavior: "smooth" })}
-            className="bg-white text-indigo-700 font-bold text-lg px-12 py-5 rounded-2xl shadow-2xl hover:shadow-indigo-400 hover:scale-105 transition-all duration-300"
-          >
-            Check Out the Tools
-          </button>
+          {/* Main heading */}
+          <h1 className="text-3xl md:text-5xl font-extrabold leading-tight mb-6">
+            Free Online PDF Tools
+            <br />
+            Convert PDF to Word, Merge,
+            <br />
+            Split & Compress PDFs
+          </h1>
+
+          {/* Subtitle */}
+          <p className="text-lg md:text-xl max-w-4xl mx-auto mb-6 opacity-95 leading-relaxed">
+            PDF to Word, Word to PDF & other essential tools, fast, simple, and built for privacy.
+          </p>
+
+          {/* Personal line */}
+          <p className="text-base md:text-lg max-w-4xl mx-auto mb-6 opacity-90">
+            I built PDFLinx after getting tired of slow sites, intrusive pop-ups, and tools that upload files to shady servers.
+          </p>
+
+          {/* Emphasis line */}
+          <p className="text-lg md:text-xl font-semibold mb-10">
+            Everything runs in your browser, your files never leave your device.
+          </p>
+
+          {/* Feature pills */}
+          <div className="flex flex-wrap justify-center gap-4 mb-12 text-sm md:text-base">
+            <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 border border-white/20 backdrop-blur">
+              🔒 Files stay on your device
+            </div>
+            <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 border border-white/20 backdrop-blur">
+              ⚡ Actually fast
+            </div>
+            <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 border border-white/20 backdrop-blur">
+              🆓 Completely free
+            </div>
+          </div>
+
+          {/* CTA buttons */}
+          <div className="flex flex-col sm:flex-row justify-center gap-4">
+            <button
+              onClick={() =>
+                document.getElementById("tools")?.scrollIntoView({ behavior: "smooth" })
+              }
+              className="bg-white text-indigo-700 font-bold text-lg px-10 py-4 rounded-2xl shadow-xl hover:scale-105 transition"
+            >
+              Check Out the Tools
+            </button>
+
+            <a
+              href="/pdf-to-word"
+              className="bg-white/10 border border-white/30 backdrop-blur text-white font-semibold text-lg px-10 py-4 rounded-2xl hover:bg-white/20 transition"
+            >
+              Try PDF to Word →
+            </a>
+          </div>
+
         </div>
       </section>
+
+
 
       {/* Why Choose */}
       <section className="py-20 px-4">
@@ -105,8 +150,12 @@ export default function HomeContent() {
       {/* Tools Grid */}
       <section id="tools" className="py-20 px-4 bg-gradient-to-b from-white to-gray-50">
         <div className="text-center mb-12">
-          <h2 className="text-4xl md:text-5xl font-black text-gray-900 mb-5">All the Tools You Need</h2>
-          <p className="text-xl text-gray-600">Pick one and get started — takes seconds</p>
+          <h2 className="text-4xl md:text-5xl font-black text-gray-900 mb-5">
+            All the Tools You Need
+          </h2>
+          <p className="text-xl text-gray-600">
+            Pick one and get started — takes seconds
+          </p>
         </div>
 
         <div className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
@@ -118,13 +167,17 @@ export default function HomeContent() {
             >
               <div className={`h-3 bg-gradient-to-r ${tool.color}`}></div>
               <div className="p-7 text-center">
-                <div className={`p-5 rounded-2xl bg-gradient-to-br ${tool.color} text-white inline-flex mb-5 shadow-lg group-hover:scale-105 transition-all duration-300`}>
+                <div
+                  className={`p-5 rounded-2xl bg-gradient-to-br ${tool.color} text-white inline-flex mb-5 shadow-lg group-hover:scale-105 transition-all duration-300`}
+                >
                   {tool.icon}
                 </div>
                 <h3 className="text-xl font-bold text-gray-800 mb-3 group-hover:text-indigo-600 transition">
                   {tool.title}
                 </h3>
-                <p className="text-gray-600 text-sm mb-5 leading-relaxed">{tool.desc}</p>
+                <p className="text-gray-600 text-sm mb-5 leading-relaxed">
+                  {tool.desc}
+                </p>
                 <span className="text-indigo-600 font-semibold text-base flex items-center justify-center gap-2 group-hover:gap-3 transition-all">
                   Open Tool →
                 </span>
@@ -132,23 +185,15 @@ export default function HomeContent() {
             </div>
           ))}
         </div>
-      </section>
 
-      {/* Final CTA */}
-      <section className="relative bg-gradient-to-br from-indigo-700 via-purple-700 to-blue-800 text-white py-20 text-center overflow-hidden">
-        <div className="absolute inset-0 bg-black/20"></div>
-        <div className="relative z-10 max-w-5xl mx-auto px-4">
-          <h2 className="text-4xl md:text-5xl font-black mb-6">Give It a Try</h2>
-          <p className="text-xl mb-8 opacity-95">
-            Pick any tool — I promise it won't waste your time.<br />
-            Free. Fast. Private.
-          </p>
-          <button
-            onClick={() => document.getElementById("tools")?.scrollIntoView({ behavior: "smooth" })}
-            className="bg-white text-indigo-700 font-bold text-lg px-14 py-5 rounded-2xl shadow-2xl hover:scale-105 hover:shadow-indigo-500 transition-all duration-300"
+        {/* 🔗 View All Tools Link */}
+        <div className="text-center mt-12">
+          <Link
+            href="/free-pdf-tools"
+            className="inline-block text-indigo-600 font-semibold text-lg hover:underline"
           >
-            Start Now
-          </button>
+            View all free PDF tools →
+          </Link>
         </div>
       </section>
 
