@@ -738,6 +738,55 @@ export default function WordToPdf() {
       </section>
 
       <RelatedToolsSection currentPage="word-to-pdf" />
+
+      {/* 🔗 Comparison Links */}
+        <section className="max-w-4xl mx-auto mb-16 px-4">
+          <div className="rounded-2xl border bg-white p-6 md:p-8 shadow-sm">
+            <h3 className="text-lg md:text-xl font-bold text-slate-900">
+              Compare Word to PDF tools
+            </h3>
+            <p className="mt-1 text-sm text-slate-600">
+              See how PDF Linx compares with other Word to PDF converters.
+            </p>
+
+            <div className="mt-6 grid gap-3 sm:grid-cols-2">
+              <a
+                href="/compare/pdflinx-vs-ilovepdf"
+                className="group rounded-xl border p-4 hover:border-indigo-300 hover:bg-indigo-50/40 transition"
+              >
+                <div className="flex justify-between gap-3">
+                  <div>
+                    <div className="text-sm font-semibold text-slate-900">
+                      PDF Linx vs iLovePDF
+                    </div>
+                    <div className="mt-1 text-xs text-slate-600">
+                      Free limits, ads, and output quality comparison.
+                    </div>
+                  </div>
+                  <span className="text-indigo-600">→</span>
+                </div>
+              </a>
+
+              <a
+                href="/compare/pdflinx-vs-smallpdf"
+                className="group rounded-xl border p-4 hover:border-indigo-300 hover:bg-indigo-50/40 transition"
+              >
+                <div className="flex justify-between gap-3">
+                  <div>
+                    <div className="text-sm font-semibold text-slate-900">
+                      PDF Linx vs Smallpdf
+                    </div>
+                    <div className="mt-1 text-xs text-slate-600">
+                      Pricing, daily limits, and ease of use.
+                    </div>
+                  </div>
+                  <span className="text-indigo-600">→</span>
+                </div>
+              </a>
+            </div>
+          </div>
+        </section>
+
     </>
   );
 }
