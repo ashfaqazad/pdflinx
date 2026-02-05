@@ -283,8 +283,8 @@ export default function ImageConverter() {
                     <label
                       key={fmt.value}
                       className={`flex items-center justify-between p-3 rounded-lg border cursor-pointer transition hover:shadow-sm ${toFormat === fmt.value
-                          ? 'border-purple-500 bg-purple-50'
-                          : 'border-gray-300 bg-white'
+                        ? 'border-purple-500 bg-purple-50'
+                        : 'border-gray-300 bg-white'
                         }`}
                     >
                       <div className="flex items-center gap-3">
@@ -460,6 +460,175 @@ export default function ImageConverter() {
           Photographers, devs, and iPhone users love PDF Linx for effortless format flips – from HEIC to web-ready WebP. Always free, always awesome.
         </p>
       </section>
+
+      <section className="max-w-4xl mx-auto px-4 py-14 text-slate-700">
+        {/* Heading */}
+        <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-6">
+          Image Converter Online (Free) – Convert JPG, PNG, HEIC, WebP, RAW & More by PDFLinx
+        </h2>
+
+        {/* Intro */}
+        <p className="text-base leading-7 mb-6">
+          Need to convert images into different formats quickly? Whether you want to convert JPG to PNG, HEIC to JPG,
+          RAW to WebP, or switch between hundreds of formats, manual conversion tools can be slow and confusing.
+          That’s why we built the{" "}
+          <span className="font-medium text-slate-900">PDFLinx Image Converter</span> —
+          a fast, flexible, and completely free online tool that supports 500+ image formats.
+          Upload your images, choose your output format, adjust quality, and download instantly.
+          No signup, no watermark, works on all devices.
+        </p>
+
+        {/* What is */}
+        <h3 className="text-xl font-semibold text-slate-900 mb-3">
+          What Is an Image Converter?
+        </h3>
+        <p className="leading-7 mb-6">
+          An image converter allows you to change image file formats while keeping visual quality intact.
+          For example, you can convert HEIC photos from iPhones into JPG, PNG images into WebP for web optimization,
+          or RAW photography files into shareable formats. Image conversion helps improve compatibility,
+          reduce file size, and prepare images for web, design, and printing.
+        </p>
+
+        {/* Why use */}
+        <h3 className="text-xl font-semibold text-slate-900 mb-3">
+          Why Use an Online Image Converter?
+        </h3>
+        <ul className="space-y-2 mb-6 list-disc pl-6">
+          <li>Convert images into formats supported by websites and apps</li>
+          <li>Optimize images for web performance and SEO</li>
+          <li>Convert iPhone HEIC photos into universal formats</li>
+          <li>Convert RAW and professional photography formats easily</li>
+          <li>Batch convert multiple images to save time</li>
+        </ul>
+
+        {/* Steps */}
+        <h3 className="text-xl font-semibold text-slate-900 mb-3">
+          How to Convert Images Online
+        </h3>
+        <ol className="space-y-2 mb-6 list-decimal pl-6">
+          <li>Upload your image files (JPG, PNG, HEIC, RAW, and more)</li>
+          <li>Select your desired output format</li>
+          <li>Adjust quality settings if needed</li>
+          <li>Start conversion — it processes instantly</li>
+          <li>Download converted images individually or in batch</li>
+        </ol>
+
+        <p className="mb-6">
+          Unlimited conversions, fast results — 100% free and easy to use.
+        </p>
+
+        {/* Features box */}
+        <div className="bg-slate-50 border border-slate-200 rounded-xl p-6 mb-6">
+          <h3 className="text-xl font-semibold text-slate-900 mb-4">
+            Features of PDFLinx Image Converter
+          </h3>
+          <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 list-disc pl-5">
+            <li>Free online image format converter</li>
+            <li>Supports 500+ image formats</li>
+            <li>Convert JPG, PNG, WebP, HEIC, RAW, AVIF, TIFF, SVG & more</li>
+            <li>Batch image conversion support</li>
+            <li>Quality slider for file size and clarity control</li>
+            <li>Fast processing and instant downloads</li>
+            <li>Works on mobile, tablet, and desktop</li>
+            <li>No signup, no watermark, no installation</li>
+          </ul>
+        </div>
+
+        {/* Audience */}
+        <h3 className="text-xl font-semibold text-slate-900 mb-3">
+          Who Should Use This Tool?
+        </h3>
+        <ul className="space-y-2 mb-6 list-disc pl-6">
+          <li><strong>Photographers:</strong> Convert RAW and high-resolution images into shareable formats</li>
+          <li><strong>Web developers:</strong> Optimize images for faster website loading</li>
+          <li><strong>Designers:</strong> Convert images between transparent and compressed formats</li>
+          <li><strong>iPhone users:</strong> Convert HEIC images into JPG or PNG easily</li>
+          <li><strong>Everyone:</strong> Who needs quick and reliable image format conversion</li>
+        </ul>
+
+        {/* Privacy */}
+        <h3 className="text-xl font-semibold text-slate-900 mb-3">
+          Is PDFLinx Image Converter Safe?
+        </h3>
+        <p className="leading-7 mb-6">
+          Yes. You don’t need to create an account, and your images are used only to generate converted outputs.
+          The tool is designed to be fast, private, and user-friendly.
+        </p>
+
+        {/* Closing */}
+        <h3 className="text-xl font-semibold text-slate-900 mb-3">
+          Convert Images Anytime, Anywhere
+        </h3>
+        <p className="leading-7">
+          PDFLinx Image Converter works smoothly on Windows, macOS, Linux, Android, and iOS.
+          Whether you’re using a phone, tablet, or computer, you can convert images instantly using only your browser.
+        </p>
+      </section>
+
+      <section className="py-16 bg-gray-50">
+        <div className="max-w-4xl mx-auto px-4">
+          <h2 className="text-3xl font-bold text-center mb-10 text-slate-900">
+            Frequently Asked Questions
+          </h2>
+
+          <div className="space-y-4">
+            <details className="bg-white rounded-lg shadow-sm p-5">
+              <summary className="font-semibold cursor-pointer">
+                Is the Image Converter free?
+              </summary>
+              <p className="mt-2 text-gray-600">
+                Yes — it’s completely free with unlimited image conversions.
+              </p>
+            </details>
+
+            <details className="bg-white rounded-lg shadow-sm p-5">
+              <summary className="font-semibold cursor-pointer">
+                Which image formats are supported?
+              </summary>
+              <p className="mt-2 text-gray-600">
+                The tool supports 500+ formats including JPG, PNG, WebP, HEIC, RAW, TIFF, SVG, AVIF and more.
+              </p>
+            </details>
+
+            <details className="bg-white rounded-lg shadow-sm p-5">
+              <summary className="font-semibold cursor-pointer">
+                Can I convert multiple images at once?
+              </summary>
+              <p className="mt-2 text-gray-600">
+                Yes — batch conversion allows you to convert multiple files together.
+              </p>
+            </details>
+
+            <details className="bg-white rounded-lg shadow-sm p-5">
+              <summary className="font-semibold cursor-pointer">
+                Will image quality be affected?
+              </summary>
+              <p className="mt-2 text-gray-600">
+                You can control output quality using the quality slider. Higher quality keeps clarity, lower quality reduces file size.
+              </p>
+            </details>
+
+            <details className="bg-white rounded-lg shadow-sm p-5">
+              <summary className="font-semibold cursor-pointer">
+                Are my images stored anywhere?
+              </summary>
+              <p className="mt-2 text-gray-600">
+                No — your images are used only to generate converted results. Nothing is stored.
+              </p>
+            </details>
+
+            <details className="bg-white rounded-lg shadow-sm p-5">
+              <summary className="font-semibold cursor-pointer">
+                Can I use this tool on mobile devices?
+              </summary>
+              <p className="mt-2 text-gray-600">
+                Yes — it works perfectly on mobile phones, tablets, and desktops.
+              </p>
+            </details>
+          </div>
+        </div>
+      </section>
+
       <RelatedToolsSection currentPage="image-converter" />
     </>
   );

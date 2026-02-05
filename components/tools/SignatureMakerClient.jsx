@@ -284,6 +284,174 @@ export default function SignatureMakerClient() {
         </p>
       </section>
 
+
+      <section className="max-w-4xl mx-auto px-4 py-14 text-slate-700">
+        {/* Heading */}
+        <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-6">
+          Signature Maker Online (Free) – Create Digital Signatures Instantly by PDFLinx
+        </h2>
+
+        {/* Intro */}
+        <p className="text-base leading-7 mb-6">
+          Need a quick digital signature for documents, contracts, or emails — but don’t want to print, sign, and scan every time?
+          That’s why we built the{" "}
+          <span className="font-medium text-slate-900">PDFLinx Signature Maker</span>.
+          Simply draw your signature using your mouse, stylus, or finger, customize its color, and download it as a clean PNG file.
+          No signup, no watermark, and works smoothly on mobile and desktop.
+        </p>
+
+        {/* What is */}
+        <h3 className="text-xl font-semibold text-slate-900 mb-3">
+          What Is a Digital Signature Maker?
+        </h3>
+        <p className="leading-7 mb-6">
+          A digital signature maker allows you to create handwritten-style signatures online.
+          Instead of signing documents manually on paper, you can draw your signature digitally and reuse it for PDFs,
+          contracts, forms, and online paperwork. It saves time, reduces printing, and makes document signing faster and easier.
+        </p>
+
+        {/* Why use */}
+        <h3 className="text-xl font-semibold text-slate-900 mb-3">
+          Why Use an Online Signature Maker?
+        </h3>
+        <ul className="space-y-2 mb-6 list-disc pl-6">
+          <li>Create signatures instantly without printing or scanning</li>
+          <li>Draw signatures using mouse, stylus, or mobile touch</li>
+          <li>Customize signature color and style</li>
+          <li>Download transparent PNG signatures for documents</li>
+          <li>Save time when signing contracts, PDFs, and forms</li>
+        </ul>
+
+        {/* Steps */}
+        <h3 className="text-xl font-semibold text-slate-900 mb-3">
+          How to Create a Digital Signature Online
+        </h3>
+        <ol className="space-y-2 mb-6 list-decimal pl-6">
+          <li>Draw your signature using mouse, stylus, or finger</li>
+          <li>Choose your preferred pen color</li>
+          <li>Adjust or redraw until it looks perfect</li>
+          <li>Download the signature as PNG (transparent background)</li>
+          <li>Use it in PDFs, documents, emails, and forms</li>
+        </ol>
+
+        <p className="mb-6">
+          Unlimited signatures, instant downloads — completely free and easy to use.
+        </p>
+
+        {/* Features box */}
+        <div className="bg-slate-50 border border-slate-200 rounded-xl p-6 mb-6">
+          <h3 className="text-xl font-semibold text-slate-900 mb-4">
+            Features of PDFLinx Signature Maker
+          </h3>
+          <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 list-disc pl-5">
+            <li>Free online handwritten signature creator</li>
+            <li>Draw signatures using mouse, stylus, or touch</li>
+            <li>Custom pen color selection</li>
+            <li>Download transparent PNG signature</li>
+            <li>Clear canvas and redraw anytime</li>
+            <li>Works on mobile, tablet, and desktop</li>
+            <li>No signup, no watermark, no installation</li>
+            <li>Simple and user-friendly interface</li>
+          </ul>
+        </div>
+
+        {/* Audience */}
+        <h3 className="text-xl font-semibold text-slate-900 mb-3">
+          Who Should Use This Tool?
+        </h3>
+        <ul className="space-y-2 mb-6 list-disc pl-6">
+          <li><strong>Business professionals:</strong> Sign contracts, agreements, and forms</li>
+          <li><strong>Freelancers:</strong> Add signatures to invoices and proposals</li>
+          <li><strong>Students:</strong> Sign academic forms and documents</li>
+          <li><strong>Remote workers:</strong> Sign documents without printing</li>
+          <li><strong>Anyone:</strong> Who wants a quick reusable digital signature</li>
+        </ul>
+
+        {/* Safety */}
+        <h3 className="text-xl font-semibold text-slate-900 mb-3">
+          Is PDFLinx Signature Maker Safe to Use?
+        </h3>
+        <p className="leading-7 mb-6">
+          Yes. You don’t need to create an account or upload personal documents.
+          Your signature is generated directly on your device and downloaded instantly.
+          The tool is designed to be fast, simple, and privacy-friendly.
+        </p>
+
+        {/* Closing */}
+        <h3 className="text-xl font-semibold text-slate-900 mb-3">
+          Create Digital Signatures Anytime, Anywhere
+        </h3>
+        <p className="leading-7">
+          PDFLinx Signature Maker works smoothly on Windows, macOS, Linux, Android, and iOS.
+          Whether you’re using a phone, tablet, or computer, you can create and download signatures instantly using your browser.
+        </p>
+      </section>
+
+      <section className="py-16 bg-gray-50">
+        <div className="max-w-4xl mx-auto px-4">
+          <h2 className="text-3xl font-bold text-center mb-10 text-slate-900">
+            Frequently Asked Questions
+          </h2>
+
+          <div className="space-y-4">
+            <details className="bg-white rounded-lg shadow-sm p-5">
+              <summary className="font-semibold cursor-pointer">
+                Is the Signature Maker free to use?
+              </summary>
+              <p className="mt-2 text-gray-600">
+                Yes — it’s completely free with unlimited signature creation and downloads.
+              </p>
+            </details>
+
+            <details className="bg-white rounded-lg shadow-sm p-5">
+              <summary className="font-semibold cursor-pointer">
+                Can I create signatures on mobile?
+              </summary>
+              <p className="mt-2 text-gray-600">
+                Yes — you can draw your signature using your finger on mobile devices or stylus on tablets.
+              </p>
+            </details>
+
+            <details className="bg-white rounded-lg shadow-sm p-5">
+              <summary className="font-semibold cursor-pointer">
+                In which format can I download my signature?
+              </summary>
+              <p className="mt-2 text-gray-600">
+                You can download your signature as a transparent PNG file for easy use in documents and PDFs.
+              </p>
+            </details>
+
+            <details className="bg-white rounded-lg shadow-sm p-5">
+              <summary className="font-semibold cursor-pointer">
+                Can I change signature color?
+              </summary>
+              <p className="mt-2 text-gray-600">
+                Yes — you can choose different pen colors before downloading your signature.
+              </p>
+            </details>
+
+            <details className="bg-white rounded-lg shadow-sm p-5">
+              <summary className="font-semibold cursor-pointer">
+                Are my signatures stored anywhere?
+              </summary>
+              <p className="mt-2 text-gray-600">
+                No — your signature is generated only for download. Nothing is stored.
+              </p>
+            </details>
+
+            <details className="bg-white rounded-lg shadow-sm p-5">
+              <summary className="font-semibold cursor-pointer">
+                Can I reuse my signature later?
+              </summary>
+              <p className="mt-2 text-gray-600">
+                Yes — simply save the downloaded PNG file and reuse it in any document or form.
+              </p>
+            </details>
+          </div>
+        </div>
+      </section>
+
+
       <RelatedToolsSection currentPage="signature-maker" />
     </>
   );

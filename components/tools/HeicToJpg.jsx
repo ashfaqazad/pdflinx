@@ -253,7 +253,176 @@ export default function HeicToJpg() {
           iPhone users hit up PDF Linx daily to turn HEIC into JPG – it's quick, keeps quality high, and never costs a penny.
         </p>
       </section>
-   <RelatedToolsSection currentPage="heic-to-jpg" />
+
+
+      <section className="max-w-4xl mx-auto px-4 py-14 text-slate-700">
+        {/* Heading */}
+        <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-6">
+          HEIC to JPG Converter Online (Free) – Convert iPhone HEIC Photos to JPG by PDFLinx
+        </h2>
+
+        {/* Intro */}
+        <p className="text-base leading-7 mb-6">
+          iPhone photos aksar HEIC format me save hoti hain — quality great hoti hai, lekin problem ye hai ke HEIC har jagah
+          easily open ya upload nahi hota (Windows, websites, forms, etc.). Is liye humne banaya{" "}
+          <span className="font-medium text-slate-900">PDFLinx HEIC to JPG Converter</span> —
+          ek fast, free, aur easy tool jo aapki HEIC photos ko seconds me JPG me convert kar deta hai.
+          Bas files upload karo, convert karo, aur JPG download kar lo. No signup, no watermark — batch conversion bhi supported.
+        </p>
+
+        {/* What is */}
+        <h3 className="text-xl font-semibold text-slate-900 mb-3">
+          What Is HEIC and Why Convert It to JPG?
+        </h3>
+        <p className="leading-7 mb-6">
+          HEIC (High Efficiency Image Container) Apple ka modern image format hai jo high quality ke sath less storage use karta
+          hai. But HEIC compatibility limited ho sakti hai — especially Windows PCs, older Android devices, and many online
+          platforms par. JPG is universally supported, is liye HEIC ko JPG me convert karna sharing, uploading, printing aur
+          editing ke liye best option hota hai.
+        </p>
+
+        {/* Why use */}
+        <h3 className="text-xl font-semibold text-slate-900 mb-3">
+          Why Use an Online HEIC to JPG Converter?
+        </h3>
+        <ul className="space-y-2 mb-6 list-disc pl-6">
+          <li>Open iPhone photos easily on Windows, Android, and any device</li>
+          <li>Upload images on websites, forms, and social platforms without errors</li>
+          <li>Convert multiple HEIC files in one go (batch mode)</li>
+          <li>Keep images sharp and clean after conversion</li>
+          <li>Save time — no apps or installs needed</li>
+        </ul>
+
+        {/* Steps */}
+        <h3 className="text-xl font-semibold text-slate-900 mb-3">
+          How to Convert HEIC to JPG Online
+        </h3>
+        <ol className="space-y-2 mb-6 list-decimal pl-6">
+          <li>Upload your HEIC photos (single or multiple files)</li>
+          <li>Wait a moment — conversion happens instantly</li>
+          <li>Preview the output (if available)</li>
+          <li>Download your JPG images one by one (or as a batch if supported)</li>
+          <li>Use JPGs anywhere: WhatsApp, emails, websites, editing tools, etc.</li>
+        </ol>
+
+        <p className="mb-6">
+          No signup, unlimited conversions, high quality output — 100% free.
+        </p>
+
+        {/* Features box */}
+        <div className="bg-slate-50 border border-slate-200 rounded-xl p-6 mb-6">
+          <h3 className="text-xl font-semibold text-slate-900 mb-4">
+            Features of PDFLinx HEIC to JPG Converter
+          </h3>
+          <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 list-disc pl-5">
+            <li>Free online HEIC to JPG converter</li>
+            <li>iPhone & iPad HEIC photos supported</li>
+            <li>Batch conversion (multiple files at once)</li>
+            <li>Fast processing — results in seconds</li>
+            <li>High-quality JPG output</li>
+            <li>Works on mobile, tablet, and desktop</li>
+            <li>No signup, no watermark, no installation</li>
+            <li>Simple drag & drop upload</li>
+          </ul>
+        </div>
+
+        {/* Audience */}
+        <h3 className="text-xl font-semibold text-slate-900 mb-3">
+          Who Should Use This Tool?
+        </h3>
+        <ul className="space-y-2 mb-6 list-disc pl-6">
+          <li><strong>iPhone users:</strong> Convert HEIC photos to JPG for easy sharing</li>
+          <li><strong>Windows users:</strong> Open iPhone images without compatibility issues</li>
+          <li><strong>Students:</strong> Upload photos on portals and assignments easily</li>
+          <li><strong>Office teams:</strong> Use images in documents, presentations, and emails</li>
+          <li><strong>Everyone:</strong> Who wants quick HEIC to JPG conversion without apps</li>
+        </ul>
+
+        {/* Privacy */}
+        <h3 className="text-xl font-semibold text-slate-900 mb-3">
+          Is PDFLinx HEIC to JPG Converter Safe?
+        </h3>
+        <p className="leading-7 mb-6">
+          Yes. No account is required, and the conversion is designed to be quick and privacy-friendly.
+          Just upload your HEIC photos, convert them, and download JPGs instantly.
+        </p>
+
+        {/* Closing */}
+        <h3 className="text-xl font-semibold text-slate-900 mb-3">
+          Convert iPhone HEIC Photos Anytime, Anywhere
+        </h3>
+        <p className="leading-7">
+          PDFLinx HEIC to JPG works smoothly on Windows, macOS, Linux, Android, and iOS.
+          Whether you’re on a phone, tablet, or desktop, you can convert HEIC photos into JPG in seconds using only your browser.
+        </p>
+      </section>
+
+      <section className="py-16 bg-gray-50">
+        <div className="max-w-4xl mx-auto px-4">
+          <h2 className="text-3xl font-bold text-center mb-10 text-slate-900">
+            Frequently Asked Questions
+          </h2>
+
+          <div className="space-y-4">
+            <details className="bg-white rounded-lg shadow-sm p-5">
+              <summary className="font-semibold cursor-pointer">
+                Is HEIC to JPG conversion free?
+              </summary>
+              <p className="mt-2 text-gray-600">
+                Yes — it’s completely free with unlimited conversions and downloads.
+              </p>
+            </details>
+
+            <details className="bg-white rounded-lg shadow-sm p-5">
+              <summary className="font-semibold cursor-pointer">
+                Can I convert multiple HEIC files at once?
+              </summary>
+              <p className="mt-2 text-gray-600">
+                Yes — batch conversion is supported. Upload multiple HEIC photos and convert them together.
+              </p>
+            </details>
+
+            <details className="bg-white rounded-lg shadow-sm p-5">
+              <summary className="font-semibold cursor-pointer">
+                Will JPG quality be reduced?
+              </summary>
+              <p className="mt-2 text-gray-600">
+                The conversion is optimized to keep your photos sharp and clear. Output quality depends on the original image.
+              </p>
+            </details>
+
+            <details className="bg-white rounded-lg shadow-sm p-5">
+              <summary className="font-semibold cursor-pointer">
+                Why does iPhone use HEIC?
+              </summary>
+              <p className="mt-2 text-gray-600">
+                HEIC saves space while keeping high quality. But JPG is more compatible, so converting helps for sharing and uploads.
+              </p>
+            </details>
+
+            <details className="bg-white rounded-lg shadow-sm p-5">
+              <summary className="font-semibold cursor-pointer">
+                Are my photos stored anywhere?
+              </summary>
+              <p className="mt-2 text-gray-600">
+                No — your photos are used only to generate the converted output. Nothing is stored.
+              </p>
+            </details>
+
+            <details className="bg-white rounded-lg shadow-sm p-5">
+              <summary className="font-semibold cursor-pointer">
+                Can I use this converter on mobile?
+              </summary>
+              <p className="mt-2 text-gray-600">
+                Yes — it works perfectly on iPhone, Android, tablets, and desktops.
+              </p>
+            </details>
+          </div>
+        </div>
+      </section>
+
+
+      <RelatedToolsSection currentPage="heic-to-jpg" />
 
     </>
   );

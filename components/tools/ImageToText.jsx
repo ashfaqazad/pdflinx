@@ -272,6 +272,175 @@ export default function ImageToText() {
           Extract text from images anytime with PDF Linx — fast, private, and completely free OCR tool.
         </p>
       </section>
+
+
+      <section className="max-w-4xl mx-auto px-4 py-14 text-slate-700">
+        {/* Heading */}
+        <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-6">
+          Image to Text OCR Online (Free) – Extract Text from Photos & Screenshots by PDFLinx
+        </h2>
+
+        {/* Intro */}
+        <p className="text-base leading-7 mb-6">
+          Kabhi screenshot, scanned notes, receipt ya kisi photo me text hota hai — aur aapko bas woh text copy karna hota hai.
+          Lekin typing manually time waste karta hai. Is liye humne banaya{" "}
+          <span className="font-medium text-slate-900">PDFLinx Image to Text OCR</span> —
+          ek fast, accurate, aur free online OCR tool jo image se text extract karta hai seconds me.
+          Bas image upload karo, kuch seconds wait karo, aur extracted text copy/download kar lo.
+          No signup, no clutter — works perfectly on mobile and desktop.
+        </p>
+
+        {/* What is */}
+        <h3 className="text-xl font-semibold text-slate-900 mb-3">
+          What Is Image to Text OCR?
+        </h3>
+        <p className="leading-7 mb-6">
+          OCR (Optical Character Recognition) ek technology hai jo images ke andar likha hua text read karke usay editable text
+          me convert karti hai. Matlab aap photos, screenshots, scanned documents, receipts, posters, ya whiteboard images se
+          text nikaal kar copy/paste kar sakte ho — bina manually type kiye.
+        </p>
+
+        {/* Why use */}
+        <h3 className="text-xl font-semibold text-slate-900 mb-3">
+          Why Use an Online OCR Tool?
+        </h3>
+        <ul className="space-y-2 mb-6 list-disc pl-6">
+          <li>Extract text instantly from photos, screenshots, and scans</li>
+          <li>Save time — no manual typing</li>
+          <li>Useful for receipts, notes, study material, and documents</li>
+          <li>Copy text with one click for emails, reports, and edits</li>
+          <li>Works on any device — just a browser needed</li>
+        </ul>
+
+        {/* Steps */}
+        <h3 className="text-xl font-semibold text-slate-900 mb-3">
+          How to Extract Text from an Image
+        </h3>
+        <ol className="space-y-2 mb-6 list-decimal pl-6">
+          <li>Upload your image (JPG, PNG, WebP, etc.)</li>
+          <li>Wait a few seconds — OCR runs automatically</li>
+          <li>Review the extracted text</li>
+          <li>Copy the text with one click (or download if available)</li>
+          <li>Use it anywhere: documents, notes, emails, blogs, etc.</li>
+        </ol>
+
+        <p className="mb-6">
+          No signup, unlimited OCR, accurate results — 100% free and easy.
+        </p>
+
+        {/* Features box */}
+        <div className="bg-slate-50 border border-slate-200 rounded-xl p-6 mb-6">
+          <h3 className="text-xl font-semibold text-slate-900 mb-4">
+            Features of PDFLinx Image to Text OCR
+          </h3>
+          <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 list-disc pl-5">
+            <li>Free online OCR tool (Image to Text)</li>
+            <li>Extract text from photos, screenshots, and scans</li>
+            <li>Fast processing — results in seconds</li>
+            <li>High accuracy for clear printed text</li>
+            <li>Copy text instantly (one click)</li>
+            <li>Works on mobile, tablet, and desktop</li>
+            <li>No signup, no watermark, no clutter</li>
+            <li>Privacy-friendly workflow</li>
+          </ul>
+        </div>
+
+        {/* Audience */}
+        <h3 className="text-xl font-semibold text-slate-900 mb-3">
+          Who Should Use This Tool?
+        </h3>
+        <ul className="space-y-2 mb-6 list-disc pl-6">
+          <li><strong>Students:</strong> Extract text from notes, books, and study screenshots</li>
+          <li><strong>Office users:</strong> Convert scanned documents into editable text</li>
+          <li><strong>Freelancers:</strong> Copy text from receipts, invoices, or client screenshots</li>
+          <li><strong>Researchers:</strong> Grab quotes from images and scans quickly</li>
+          <li><strong>Anyone:</strong> Who wants quick copyable text from an image</li>
+        </ul>
+
+        {/* Privacy / Safety */}
+        <h3 className="text-xl font-semibold text-slate-900 mb-3">
+          Is PDFLinx OCR Safe and Private?
+        </h3>
+        <p className="leading-7 mb-6">
+          Yes. No account is required. Your image is used only to extract text and generate the result.
+          If you’re working with sensitive screenshots or receipts, this tool keeps the process simple and privacy-friendly.
+        </p>
+
+        {/* Closing */}
+        <h3 className="text-xl font-semibold text-slate-900 mb-3">
+          Convert Image to Text Anytime, Anywhere
+        </h3>
+        <p className="leading-7">
+          PDFLinx Image to Text OCR works smoothly on Windows, macOS, Linux, Android, and iOS.
+          Upload your image and get editable text instantly — directly in your browser.
+        </p>
+      </section>
+
+      <section className="py-16 bg-gray-50">
+        <div className="max-w-4xl mx-auto px-4">
+          <h2 className="text-3xl font-bold text-center mb-10 text-slate-900">
+            Frequently Asked Questions
+          </h2>
+
+          <div className="space-y-4">
+            <details className="bg-white rounded-lg shadow-sm p-5">
+              <summary className="font-semibold cursor-pointer">
+                Is Image to Text OCR free to use?
+              </summary>
+              <p className="mt-2 text-gray-600">
+                Yes — it’s completely free with unlimited usage and no hidden charges.
+              </p>
+            </details>
+
+            <details className="bg-white rounded-lg shadow-sm p-5">
+              <summary className="font-semibold cursor-pointer">
+                Which image formats are supported?
+              </summary>
+              <p className="mt-2 text-gray-600">
+                You can upload common formats like JPG, PNG, and WebP (and other formats based on browser support).
+              </p>
+            </details>
+
+            <details className="bg-white rounded-lg shadow-sm p-5">
+              <summary className="font-semibold cursor-pointer">
+                How accurate is the OCR?
+              </summary>
+              <p className="mt-2 text-gray-600">
+                Accuracy is high for clear printed text. Blurry images or messy handwriting may reduce accuracy.
+              </p>
+            </details>
+
+            <details className="bg-white rounded-lg shadow-sm p-5">
+              <summary className="font-semibold cursor-pointer">
+                Can it read handwritten text?
+              </summary>
+              <p className="mt-2 text-gray-600">
+                It may work for clean handwriting, but printed/clear text gives the best results.
+              </p>
+            </details>
+
+            <details className="bg-white rounded-lg shadow-sm p-5">
+              <summary className="font-semibold cursor-pointer">
+                Do you store my images or extracted text?
+              </summary>
+              <p className="mt-2 text-gray-600">
+                No — your input is used only to generate the OCR result. Nothing is stored.
+              </p>
+            </details>
+
+            <details className="bg-white rounded-lg shadow-sm p-5">
+              <summary className="font-semibold cursor-pointer">
+                Can I use this on mobile?
+              </summary>
+              <p className="mt-2 text-gray-600">
+                Absolutely — it works perfectly on phones, tablets, and desktops.
+              </p>
+            </details>
+          </div>
+        </div>
+      </section>
+
+
       <RelatedToolsSection currentPage="image-to-text" />
 
     </>

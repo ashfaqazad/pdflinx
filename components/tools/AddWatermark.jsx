@@ -249,6 +249,174 @@ export default function AddWatermark() {
         </p>
       </section>
 
+
+      <section className="max-w-4xl mx-auto px-4 py-14 text-slate-700">
+  {/* Heading */}
+  <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-6">
+    Add Watermark to PDF Online (Free) – Protect Documents with Text Watermarks by PDFLinx
+  </h2>
+
+  {/* Intro */}
+  <p className="text-base leading-7 mb-6">
+    Want to mark a PDF as <strong>CONFIDENTIAL</strong>, <strong>DRAFT</strong>, <strong>DO NOT COPY</strong>, or add your
+    name/brand on every page? Doing this manually is slow and messy. That’s why we built the{" "}
+    <span className="font-medium text-slate-900">PDFLinx Add Watermark to PDF</span> tool —
+    a fast and free way to add clean text watermarks across your entire PDF in seconds.
+    Upload your file, type the watermark text, customize how it looks, and download your watermarked PDF instantly.
+    No signup, no watermark on your watermark — just simple, professional results.
+  </p>
+
+  {/* What is */}
+  <h3 className="text-xl font-semibold text-slate-900 mb-3">
+    What Is a PDF Watermark?
+  </h3>
+  <p className="leading-7 mb-6">
+    A watermark is a visible text label added on top of a document to show ownership, status, or confidentiality.
+    Common examples include “CONFIDENTIAL”, “DRAFT”, “SAMPLE”, “COPY”, or a company name/logo.
+    Watermarks help discourage unauthorized sharing, protect branding, and clearly communicate document status.
+  </p>
+
+  {/* Why use */}
+  <h3 className="text-xl font-semibold text-slate-900 mb-3">
+    Why Add a Watermark to a PDF?
+  </h3>
+  <ul className="space-y-2 mb-6 list-disc pl-6">
+    <li>Protect documents by marking them confidential or draft</li>
+    <li>Add ownership or branding (name, company, copyright notice)</li>
+    <li>Prevent misuse by clearly labeling “DO NOT COPY” or “SAMPLE”</li>
+    <li>Apply watermark automatically on every page (no manual editing)</li>
+    <li>Make PDFs look professional for sharing and review</li>
+  </ul>
+
+  {/* Steps */}
+  <h3 className="text-xl font-semibold text-slate-900 mb-3">
+    How to Add Watermark to PDF Online
+  </h3>
+  <ol className="space-y-2 mb-6 list-decimal pl-6">
+    <li>Upload your PDF file</li>
+    <li>Type the watermark text (e.g., CONFIDENTIAL / DRAFT / Your Name)</li>
+    <li>Adjust the style (size, opacity, position, rotation — if available)</li>
+    <li>Apply watermark — it adds across all pages</li>
+    <li>Download your watermarked PDF instantly</li>
+  </ol>
+
+  <p className="mb-6">
+    No account needed, unlimited use — fast and clean results, totally free.
+  </p>
+
+  {/* Features box */}
+  <div className="bg-slate-50 border border-slate-200 rounded-xl p-6 mb-6">
+    <h3 className="text-xl font-semibold text-slate-900 mb-4">
+      Features of PDFLinx Add Watermark Tool
+    </h3>
+    <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 list-disc pl-5">
+      <li>Free online PDF watermark tool</li>
+      <li>Add text watermark to all pages automatically</li>
+      <li>Great for CONFIDENTIAL, DRAFT, SAMPLE, DO NOT COPY</li>
+      <li>Clean, professional watermark output</li>
+      <li>Fast processing — watermark in seconds</li>
+      <li>Works on mobile, tablet, and desktop</li>
+      <li>No signup, no watermark ads, no installation</li>
+      <li>Privacy-friendly workflow</li>
+    </ul>
+  </div>
+
+  {/* Audience */}
+  <h3 className="text-xl font-semibold text-slate-900 mb-3">
+    Who Should Use This Tool?
+  </h3>
+  <ul className="space-y-2 mb-6 list-disc pl-6">
+    <li><strong>Businesses:</strong> Mark contracts and reports as confidential</li>
+    <li><strong>Students:</strong> Add “DRAFT” or name on assignments and submissions</li>
+    <li><strong>Freelancers:</strong> Protect proposals and client documents</li>
+    <li><strong>Teams:</strong> Share review files with “SAMPLE” or “INTERNAL” labels</li>
+    <li><strong>Anyone:</strong> Who wants fast watermarking without editing apps</li>
+  </ul>
+
+  {/* Safety */}
+  <h3 className="text-xl font-semibold text-slate-900 mb-3">
+    Is PDFLinx Watermark Tool Safe?
+  </h3>
+  <p className="leading-7 mb-6">
+    Yes. You don’t need to create an account. Your PDF is used only to generate the watermarked output, and then you
+    download the final file. The tool is designed to be simple, secure, and privacy-friendly.
+  </p>
+
+  {/* Closing */}
+  <h3 className="text-xl font-semibold text-slate-900 mb-3">
+    Watermark PDFs Anytime, Anywhere
+  </h3>
+  <p className="leading-7">
+    PDFLinx Add Watermark works smoothly on Windows, macOS, Linux, Android, and iOS.
+    Upload your PDF, add your watermark text, and download a protected PDF instantly — directly in your browser.
+  </p>
+</section>
+
+<section className="py-16 bg-gray-50">
+  <div className="max-w-4xl mx-auto px-4">
+    <h2 className="text-3xl font-bold text-center mb-10 text-slate-900">
+      Frequently Asked Questions
+    </h2>
+
+    <div className="space-y-4">
+      <details className="bg-white rounded-lg shadow-sm p-5">
+        <summary className="font-semibold cursor-pointer">
+          Is the Add Watermark to PDF tool free?
+        </summary>
+        <p className="mt-2 text-gray-600">
+          Yes — it’s completely free with unlimited watermarking and downloads.
+        </p>
+      </details>
+
+      <details className="bg-white rounded-lg shadow-sm p-5">
+        <summary className="font-semibold cursor-pointer">
+          Can I add watermark to every page automatically?
+        </summary>
+        <p className="mt-2 text-gray-600">
+          Yes — the watermark is applied across all pages of your PDF automatically.
+        </p>
+      </details>
+
+      <details className="bg-white rounded-lg shadow-sm p-5">
+        <summary className="font-semibold cursor-pointer">
+          What watermark text can I use?
+        </summary>
+        <p className="mt-2 text-gray-600">
+          You can use anything like “CONFIDENTIAL”, “DRAFT”, “SAMPLE”, “DO NOT COPY”, your name, or your company branding.
+        </p>
+      </details>
+
+      <details className="bg-white rounded-lg shadow-sm p-5">
+        <summary className="font-semibold cursor-pointer">
+          Will watermark affect PDF readability?
+        </summary>
+        <p className="mt-2 text-gray-600">
+          You can keep it subtle by using lower opacity and clean placement (depending on the options available).
+        </p>
+      </details>
+
+      <details className="bg-white rounded-lg shadow-sm p-5">
+        <summary className="font-semibold cursor-pointer">
+          Are my PDFs stored anywhere?
+        </summary>
+        <p className="mt-2 text-gray-600">
+          No — your PDF is used only to create the watermarked output. Nothing is stored.
+        </p>
+      </details>
+
+      <details className="bg-white rounded-lg shadow-sm p-5">
+        <summary className="font-semibold cursor-pointer">
+          Can I use this watermark tool on mobile?
+        </summary>
+        <p className="mt-2 text-gray-600">
+          Yes — it works perfectly on phones, tablets, and desktops.
+        </p>
+      </details>
+    </div>
+  </div>
+</section>
+
+
     <RelatedToolsSection currentPage="add-watermark" />
       
     </>

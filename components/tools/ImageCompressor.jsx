@@ -339,6 +339,177 @@ export default function ImageCompressor() {
           Compress images every day with PDF Linx — trusted by thousands for fast, high-quality, multi-format optimization. Free forever!
         </p>
       </section>
+
+
+      <section className="max-w-4xl mx-auto px-4 py-14 text-slate-700">
+  {/* Heading */}
+  <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-6">
+    Image Compressor Online (Free) – Compress JPG, PNG, HEIC, WebP & More by PDFLinx
+  </h2>
+
+  {/* Intro */}
+  <p className="text-base leading-7 mb-6">
+    Big images slow down websites, fail in email uploads, and eat up phone storage. And most “free” compressors either
+    reduce quality too much or add watermarks. That’s why we built the{" "}
+    <span className="font-medium text-slate-900">PDFLinx Image Compressor</span> —
+    a fast, clean, and completely free tool that reduces image size in seconds while keeping your visuals sharp.
+    Upload your image, choose a compression level (Low / Medium / High), and download the smaller file instantly.
+    No signup, no limits, works on all devices.
+  </p>
+
+  {/* What is */}
+  <h3 className="text-xl font-semibold text-slate-900 mb-3">
+    What Is an Image Compressor?
+  </h3>
+  <p className="leading-7 mb-6">
+    An image compressor reduces the file size of an image without noticeably hurting its quality. It works by optimizing
+    how the image data is stored (for example: removing unnecessary metadata, improving encoding, or converting to more
+    efficient formats like WebP). This helps you upload faster, share easily, and improve page speed on websites.
+  </p>
+
+  {/* Why use */}
+  <h3 className="text-xl font-semibold text-slate-900 mb-3">
+    Why Use an Online Image Compressor?
+  </h3>
+  <ul className="space-y-2 mb-6 list-disc pl-6">
+    <li>Reduce image size to speed up websites and improve SEO performance</li>
+    <li>Upload images faster on forms, emails, and social media</li>
+    <li>Save storage on mobile and desktop</li>
+    <li>Compress multiple images for bulk work (batch-friendly)</li>
+    <li>Choose the best balance between quality and size</li>
+  </ul>
+
+  {/* Steps */}
+  <h3 className="text-xl font-semibold text-slate-900 mb-3">
+    How to Compress Images Online
+  </h3>
+  <ol className="space-y-2 mb-6 list-decimal pl-6">
+    <li>Upload your image (JPG, PNG, WebP, HEIC, TIFF, SVG and more)</li>
+    <li>Select a compression level: <strong>Low</strong> (best quality), <strong>Medium</strong> (balanced), or <strong>High</strong> (max savings)</li>
+    <li>Click compress — it processes in seconds</li>
+    <li>Download your optimized image instantly</li>
+    <li>Optional: convert to <strong>WebP</strong> for the smallest file size</li>
+  </ol>
+
+  <p className="mb-6">
+    No signup, unlimited compression, and clean output — 100% free.
+  </p>
+
+  {/* Features box */}
+  <div className="bg-slate-50 border border-slate-200 rounded-xl p-6 mb-6">
+    <h3 className="text-xl font-semibold text-slate-900 mb-4">
+      Features of PDFLinx Image Compressor
+    </h3>
+    <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 list-disc pl-5">
+      <li>Free online image compressor with instant results</li>
+      <li>Supports JPG, PNG, WebP, HEIC, TIFF, SVG & more</li>
+      <li>Compression levels: Low / Medium / High</li>
+      <li>Reduce image size up to 90% (depends on image type)</li>
+      <li>Optional WebP conversion for maximum savings</li>
+      <li>Batch-friendly uploads (compress multiple images)</li>
+      <li>Works on mobile, tablet, and desktop</li>
+      <li>No signup, no watermark, no clutter</li>
+    </ul>
+  </div>
+
+  {/* Audience */}
+  <h3 className="text-xl font-semibold text-slate-900 mb-3">
+    Who Should Use This Tool?
+  </h3>
+  <ul className="space-y-2 mb-6 list-disc pl-6">
+    <li><strong>Website owners:</strong> Improve loading speed and Core Web Vitals</li>
+    <li><strong>Designers:</strong> Export lightweight images for web and UI projects</li>
+    <li><strong>Students:</strong> Reduce image size for assignments and portals</li>
+    <li><strong>Marketers:</strong> Optimize images for campaigns, ads, and landing pages</li>
+    <li><strong>Everyone:</strong> Save storage and share images faster</li>
+  </ul>
+
+  {/* Privacy / Safety */}
+  <h3 className="text-xl font-semibold text-slate-900 mb-3">
+    Is PDFLinx Image Compressor Safe and Private?
+  </h3>
+  <p className="leading-7 mb-6">
+    Yes. The tool is designed to be simple and privacy-friendly. No account is needed, and your images are only used to
+    generate the compressed output. Just upload, compress, and download.
+  </p>
+
+  {/* Closing */}
+  <h3 className="text-xl font-semibold text-slate-900 mb-3">
+    Compress Images Anytime, Anywhere
+  </h3>
+  <p className="leading-7">
+    PDFLinx Image Compressor works smoothly on Windows, macOS, Linux, Android, and iOS. Whether you’re on a phone, tablet,
+    or computer, you can compress images instantly using only your browser.
+  </p>
+</section>
+
+<section className="py-16 bg-gray-50">
+  <div className="max-w-4xl mx-auto px-4">
+    <h2 className="text-3xl font-bold text-center mb-10 text-slate-900">
+      Frequently Asked Questions
+    </h2>
+
+    <div className="space-y-4">
+      <details className="bg-white rounded-lg shadow-sm p-5">
+        <summary className="font-semibold cursor-pointer">
+          Is the Image Compressor free to use?
+        </summary>
+        <p className="mt-2 text-gray-600">
+          Yes — it’s completely free with unlimited compression and no hidden charges.
+        </p>
+      </details>
+
+      <details className="bg-white rounded-lg shadow-sm p-5">
+        <summary className="font-semibold cursor-pointer">
+          Which formats are supported?
+        </summary>
+        <p className="mt-2 text-gray-600">
+          You can compress popular formats like JPG, PNG, WebP, HEIC, TIFF, SVG and more (based on what your browser
+          supports).
+        </p>
+      </details>
+
+      <details className="bg-white rounded-lg shadow-sm p-5">
+        <summary className="font-semibold cursor-pointer">
+          Will compression reduce quality?
+        </summary>
+        <p className="mt-2 text-gray-600">
+          Slightly — depending on your selected level. Use <strong>Low</strong> for best quality, <strong>Medium</strong>{" "}
+          for balance, and <strong>High</strong> for maximum size reduction.
+        </p>
+      </details>
+
+      <details className="bg-white rounded-lg shadow-sm p-5">
+        <summary className="font-semibold cursor-pointer">
+          How much can I reduce image size?
+        </summary>
+        <p className="mt-2 text-gray-600">
+          It depends on the image type and content. In many cases, you can reduce size significantly — sometimes up to 90%.
+        </p>
+      </details>
+
+      <details className="bg-white rounded-lg shadow-sm p-5">
+        <summary className="font-semibold cursor-pointer">
+          Can I compress multiple images at once?
+        </summary>
+        <p className="mt-2 text-gray-600">
+          Yes — you can upload and compress multiple images (batch-friendly). Download them individually or as a ZIP if
+          your tool provides it.
+        </p>
+      </details>
+
+      <details className="bg-white rounded-lg shadow-sm p-5">
+        <summary className="font-semibold cursor-pointer">
+          Are my images stored anywhere?
+        </summary>
+        <p className="mt-2 text-gray-600">
+          No — your images are used only to produce the compressed output. Nothing is stored.
+        </p>
+      </details>
+    </div>
+  </div>
+</section>
+
       <RelatedToolsSection currentPage="image-compressor" />
     </>
   );

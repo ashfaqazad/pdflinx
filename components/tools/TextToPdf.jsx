@@ -222,6 +222,173 @@ export default function TextToPDF() {
           People turn to PDF Linx every day to quickly whip up clean PDFs from text – it's fast, simple, and always free.
         </p>
       </section>
+
+
+      <section className="max-w-4xl mx-auto px-4 py-14 text-slate-700">
+  {/* Heading */}
+  <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-6">
+    Text to PDF Converter Online (Free) – Convert Notes, Letters & Content into PDF by PDFLinx
+  </h2>
+
+  {/* Intro */}
+  <p className="text-base leading-7 mb-6">
+    Need to turn plain text into a clean, shareable PDF? Whether it’s notes, a resume, a letter, or copied content,
+    manually formatting documents can be frustrating. That’s why we built the{" "}
+    <span className="font-medium text-slate-900">PDFLinx Text to PDF Converter</span>.
+    Simply paste your text, click convert, and instantly download a polished PDF file.
+    No signup, no watermark, and works smoothly on mobile and desktop.
+  </p>
+
+  {/* What is */}
+  <h3 className="text-xl font-semibold text-slate-900 mb-3">
+    What Is a Text to PDF Converter?
+  </h3>
+  <p className="leading-7 mb-6">
+    A text to PDF converter transforms plain written content into a structured PDF document.
+    Instead of sharing raw text files or screenshots, you can convert your text into professional-looking PDFs that are
+    easier to print, share, and store securely across devices.
+  </p>
+
+  {/* Why use */}
+  <h3 className="text-xl font-semibold text-slate-900 mb-3">
+    Why Convert Text to PDF?
+  </h3>
+  <ul className="space-y-2 mb-6 list-disc pl-6">
+    <li>Create clean and professional documents instantly</li>
+    <li>Share text content easily without formatting issues</li>
+    <li>Preserve document structure across devices and platforms</li>
+    <li>Perfect for resumes, assignments, letters, and reports</li>
+    <li>Easy printing and secure document storage</li>
+  </ul>
+
+  {/* Steps */}
+  <h3 className="text-xl font-semibold text-slate-900 mb-3">
+    How to Convert Text to PDF Online
+  </h3>
+  <ol className="space-y-2 mb-6 list-decimal pl-6">
+    <li>Paste or type your text into the editor</li>
+    <li>Click the “Download as PDF” button</li>
+    <li>The tool formats your text automatically</li>
+    <li>Download your ready-to-use PDF instantly</li>
+    <li>Use it for printing, sharing, or archiving</li>
+  </ol>
+
+  <p className="mb-6">
+    Unlimited conversions, instant downloads — completely free and simple to use.
+  </p>
+
+  {/* Features box */}
+  <div className="bg-slate-50 border border-slate-200 rounded-xl p-6 mb-6">
+    <h3 className="text-xl font-semibold text-slate-900 mb-4">
+      Features of PDFLinx Text to PDF Converter
+    </h3>
+    <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 list-disc pl-5">
+      <li>Free online text to PDF converter</li>
+      <li>Convert notes, letters, resumes, and content into PDF</li>
+      <li>Clean and professional PDF formatting</li>
+      <li>Instant PDF generation</li>
+      <li>Works on mobile, tablet, and desktop</li>
+      <li>No signup, no watermark, no installation</li>
+      <li>Handles short and long text content</li>
+      <li>Fast and user-friendly interface</li>
+    </ul>
+  </div>
+
+  {/* Audience */}
+  <h3 className="text-xl font-semibold text-slate-900 mb-3">
+    Who Should Use This Tool?
+  </h3>
+  <ul className="space-y-2 mb-6 list-disc pl-6">
+    <li><strong>Students:</strong> Convert assignments, notes, and essays into PDFs</li>
+    <li><strong>Job seekers:</strong> Turn resumes and cover letters into professional PDF format</li>
+    <li><strong>Office professionals:</strong> Create reports, letters, and official documents</li>
+    <li><strong>Writers & Bloggers:</strong> Export written content as shareable PDFs</li>
+    <li><strong>Anyone:</strong> Who wants to convert plain text into a printable document</li>
+  </ul>
+
+  {/* Privacy */}
+  <h3 className="text-xl font-semibold text-slate-900 mb-3">
+    Is PDFLinx Text to PDF Converter Safe?
+  </h3>
+  <p className="leading-7 mb-6">
+    Yes. You don’t need to create an account or upload sensitive files. Your text is used only to generate the PDF output.
+    The tool is designed to be fast, secure, and privacy-friendly.
+  </p>
+
+  {/* Closing */}
+  <h3 className="text-xl font-semibold text-slate-900 mb-3">
+    Convert Text to PDF Anytime, Anywhere
+  </h3>
+  <p className="leading-7">
+    PDFLinx Text to PDF Converter works smoothly on Windows, macOS, Linux, Android, and iOS.
+    Whether you’re using a phone, tablet, or computer, you can convert text into PDF instantly using your browser.
+  </p>
+</section>
+
+<section className="py-16 bg-gray-50">
+  <div className="max-w-4xl mx-auto px-4">
+    <h2 className="text-3xl font-bold text-center mb-10 text-slate-900">
+      Frequently Asked Questions
+    </h2>
+
+    <div className="space-y-4">
+      <details className="bg-white rounded-lg shadow-sm p-5">
+        <summary className="font-semibold cursor-pointer">
+          Is the Text to PDF converter free?
+        </summary>
+        <p className="mt-2 text-gray-600">
+          Yes — it’s completely free with unlimited conversions and downloads.
+        </p>
+      </details>
+
+      <details className="bg-white rounded-lg shadow-sm p-5">
+        <summary className="font-semibold cursor-pointer">
+          Can I format text before converting?
+        </summary>
+        <p className="mt-2 text-gray-600">
+          Yes — you can edit or paste formatted content before converting it into PDF.
+        </p>
+      </details>
+
+      <details className="bg-white rounded-lg shadow-sm p-5">
+        <summary className="font-semibold cursor-pointer">
+          Does the tool support long text content?
+        </summary>
+        <p className="mt-2 text-gray-600">
+          Yes — it supports both short and long text documents automatically.
+        </p>
+      </details>
+
+      <details className="bg-white rounded-lg shadow-sm p-5">
+        <summary className="font-semibold cursor-pointer">
+          Are my texts stored anywhere?
+        </summary>
+        <p className="mt-2 text-gray-600">
+          No — your text is only used to generate the PDF file. Nothing is stored.
+        </p>
+      </details>
+
+      <details className="bg-white rounded-lg shadow-sm p-5">
+        <summary className="font-semibold cursor-pointer">
+          Can I use this tool on mobile?
+        </summary>
+        <p className="mt-2 text-gray-600">
+          Yes — it works perfectly on mobile phones, tablets, and desktops.
+        </p>
+      </details>
+
+      <details className="bg-white rounded-lg shadow-sm p-5">
+        <summary className="font-semibold cursor-pointer">
+          Will my PDF look professional?
+        </summary>
+        <p className="mt-2 text-gray-600">
+          Yes — the tool automatically formats text to create clean, readable, and printable PDFs.
+        </p>
+      </details>
+    </div>
+  </div>
+</section>
+
     
     <RelatedToolsSection currentPage="text-to-pdf" />
 
