@@ -7,40 +7,6 @@
 const blogs = [
 
 
-  // {
-  //   slug: "pdf-to-word",
-  //   title: "How to Convert PDF to Word Easily (Free & Online Guide)",
-  //   date: "Aug 24, 2025",
-  //   content: `
-  //     <h2>How to Convert PDF to Word Easily (Free & Online Guide)</h2>
-
-  //     <p>Converting PDF files to Word format is one of the most common tasks for students, professionals, and freelancers. Whether you're editing a contract, fixing a resume, or reusing text from a PDF, this simple online process can save you hours.</p>
-
-  //     <p><strong>Good news:</strong> You don't need to install any software! 
-  //     With our <a href="/pdf-to-word"><strong>Free PDF to Word Converter</strong></a>, 
-  //     you can transform any locked PDF into a fully editable DOCX file in seconds — 
-  //     <strong>no signup, no watermark, 100% free</strong>.</p>
-
-  //     <h3>Quick Steps to Convert PDF to Word:</h3>
-  //     <ol>
-  //       <li>Go to our <a href="/pdf-to-word">PDF to Word tool</a></li>
-  //       <li>Upload your PDF file (drag & drop or click to select)</li>
-  //       <li>Wait a few seconds while we convert it</li>
-  //       <li>Download your editable .docx file instantly</li>
-  //     </ol>
-
-  //     <p><strong>Pro Tip:</strong> For scanned PDFs or images, our converter uses advanced OCR to extract text accurately. Just upload and get perfect results!</p>
-
-  //     <p>Tools like <strong>PDF Linx</strong> make this process 100% secure and private — 
-  //     your files are processed with encryption and <strong>automatically deleted after 1 hour</strong>.</p>
-
-  //     <div class="bg-indigo-50 border border-indigo-200 rounded-xl p-6 text-center font-bold text-indigo-800 mt-10">
-  //       Ready to convert? → <a href="/pdf-to-word" class="text-indigo-600 underline hover:text-indigo-800">Click here to use our Free PDF to Word Converter now!</a>
-  //     </div>
-  //   `,
-  // },
-
-
   {
     slug: "pdf-to-word",
     title: "How to Convert PDF to Word Easily (Free & Online Guide)",
@@ -160,24 +126,6 @@ const blogs = [
   },
 
 
-
-  // {
-  //   slug: "merge-pdf",
-  //   title: "Merge Multiple PDFs into One (Fast & Free)",
-  //   date: "Aug 21, 2025",
-  //   content: `
-  //     Managing multiple PDF files can be messy merging them makes your workflow seamless.
-  //     Whether you’re compiling invoices, reports, or eBooks, our free online PDF merger keeps everything in one place.
-
-  //     Steps:
-  //     1. Upload your PDF files.
-  //     2. Arrange the order by dragging.
-  //     3. Click “Merge” and download your single, neat file.
-
-  //     No software needed, no size limits. Secure and quick.
-  //     Tip: Once merged, use our “Compress PDF” feature to reduce the file size before sharing.
-  //   `,
-  // },
 
   {
     slug: "merge-pdf",

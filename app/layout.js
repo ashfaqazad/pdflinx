@@ -52,10 +52,10 @@ export const metadata = {
   creator: "PDF Linx",
   publisher: "PDF Linx",
 
-  alternates: {
-    canonical: "https://pdflinx.com/",
-    languages: { "en-US": "https://pdflinx.com/" },
-  },
+  // alternates: {
+  //   canonical: "https://pdflinx.com/",
+  //   languages: { "en-US": "https://pdflinx.com/" },
+  // },
 
   verification: {
     pinterest: "c1ab788f2cb7d222782d9d6ed6196669",
