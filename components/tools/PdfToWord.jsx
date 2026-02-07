@@ -10,82 +10,128 @@ export default function PdfToWord() {
   const [files, setFiles] = useState([]); // ✅ multiple PDFs
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [error, setError] = useState("");
+  const [progress, setProgress] = useState(0);
+
 
   // ✅ only for ZIP downloads (multiple files)
   const [downloadUrl, setDownloadUrl] = useState(null);
 
+
 const handleSubmit = async (e) => {
   e.preventDefault();
-  if (!files.length) return alert("Please select a PDF file");
+  if (!files.length) return alert("Please select at least one PDF file");
 
   setLoading(true);
   setSuccess(false);
-  setDownloadUrl(null); // ye state ab bekaar hai, lekin remove karne se pehle rakho
+  setError("");
+  setProgress(0);
 
   const formData = new FormData();
-  for (const f of files) {
-    formData.append("files", f); // backend "files" ya "file" dono accept karta hai
-  }
+  files.forEach((f) => formData.append("files", f));
+
+  let intervalId = null;
 
   try {
-    const res = await fetch("/convert/pdf-to-word", { // jo bhi tera API path hai
-      method: "POST",
-      body: formData,
-    });
+    const res = await fetch("/convert/pdf-to-word", { method: "POST", body: formData });
+    const ct = res.headers.get("content-type") || "";
 
     if (!res.ok) {
-      let msg = "Conversion failed";
-      try {
-        const err = await res.json();
-        msg = err.error || msg;
-      } catch {}
+      let msg = `Server error ${res.status}`;
+      if (ct.includes("json")) {
+        try { const err = await res.json(); msg = err.detail || err.error || msg; } catch {}
+      }
       throw new Error(msg);
     }
 
-    const contentType = res.headers.get("content-type") || "";
-
-    // ✅ SINGLE FILE: direct DOCX
-    if (contentType.includes("vnd.openxmlformats") || contentType.includes("octet-stream")) {
+    // ✅ CASE A: backend returned ZIP directly (multiple files)
+    if (ct.includes("application/zip") || ct.includes("zip")) {
       const blob = await res.blob();
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = files[0].name.replace(/\.pdf$/i, ".docx");
-      a.click();
-      window.URL.revokeObjectURL(url);
+      const url = URL.createObjectURL(blob);
 
-      setSuccess(true);
-      setFiles([]);
-      setLoading(false);
-      return;
-    }
-
-    // ✅ MULTIPLE FILES: direct ZIP
-    if (contentType.includes("application/zip")) {
-      const blob = await res.blob();
-      const url = window.URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
       a.download = "pdflinx-pdf-to-word.zip";
+      document.body.appendChild(a);
       a.click();
-      window.URL.revokeObjectURL(url);
+      a.remove();
+      URL.revokeObjectURL(url);
 
+      setProgress(100);
       setSuccess(true);
       setFiles([]);
       setLoading(false);
       return;
     }
 
-    // Agar kuch aur aaye (rare)
-    throw new Error("Unexpected response from server");
+    // ✅ CASE B: backend returned JSON jobId (async mode)
+    if (!ct.includes("json")) {
+      throw new Error(`Unexpected response type: ${ct}`);
+    }
+
+    const data = await res.json();
+    const jobId = data?.jobId;
+    if (!jobId) throw new Error("Job ID not received from server");
+
+    const pollIntervalMs = 1500;
+    const maxWaitMs = 15 * 60 * 1000;
+    const startedAt = Date.now();
+
+    intervalId = setInterval(async () => {
+      try {
+        if (Date.now() - startedAt > maxWaitMs) {
+          clearInterval(intervalId);
+          intervalId = null;
+          setLoading(false);
+          setError("Conversion timeout. Please try again.");
+          return;
+        }
+
+        const statusRes = await fetch(`/api/convert/job/${jobId}`, { cache: "no-store" });
+        if (!statusRes.ok) throw new Error("Failed to fetch job status");
+
+        const statusData = await statusRes.json();
+
+        if (statusData.status === "queued") return setProgress(0);
+        if (statusData.status === "processing") return setProgress(statusData.progress ?? 10);
+
+        if (statusData.status === "done") {
+          clearInterval(intervalId);
+          intervalId = null;
+
+          setProgress(100);
+          setSuccess(true);
+          setFiles([]);
+          setLoading(false);
+
+          window.location.href = `/api/convert/download/${jobId}`;
+          return;
+        }
+
+        if (statusData.status === "failed") {
+          clearInterval(intervalId);
+          intervalId = null;
+          setLoading(false);
+          setError(statusData.error || "Conversion failed on server");
+        }
+      } catch (err) {
+        if (intervalId) clearInterval(intervalId);
+        intervalId = null;
+        setLoading(false);
+        setError(err.message || "Polling failed");
+      }
+    }, pollIntervalMs);
 
   } catch (err) {
-    alert(err.message || "Oops! Something went wrong. Try again?");
-    console.error(err);
-  } finally {
+    if (intervalId) clearInterval(intervalId);
     setLoading(false);
+    setError(err.message || "Something went wrong");
   }
 };
+
+
+
+
 
   // ✅ Only for ZIP downloads (multiple PDFs)
   const handleDownloadZip = async () => {
@@ -191,7 +237,7 @@ const handleSubmit = async (e) => {
             </p>
           </div>
 
-          <div className="mb-4 rounded-lg border border-yellow-300 bg-yellow-50 px-4 py-3 text-center">
+          {/* <div className="mb-4 rounded-lg border border-yellow-300 bg-yellow-50 px-4 py-3 text-center">
             <h3 className="mb-1 text-sm font-semibold text-yellow-800">
               🚧 Tool Under Maintenance
             </h3>
@@ -200,7 +246,7 @@ const handleSubmit = async (e) => {
               <br />
               Please check back shortly — <strong>PDFLinx</strong> will be ready for you.
             </p>
-          </div>
+          </div> */}
 
 
           {/* Main Card */}
@@ -244,27 +290,29 @@ const handleSubmit = async (e) => {
 
                 {/* Convert Button */}
                 
-                {/* <button
+                <button
                   type="submit"
                   disabled={loading || !files.length}
                   className="w-full bg-gradient-to-r from-blue-600 to-green-600 text-white font-semibold text-lg py-4 rounded-xl hover:from-blue-700 hover:to-green-700 disabled:opacity-60 disabled:cursor-not-allowed transition shadow-md flex items-center justify-center gap-2"
                 >
-                  {/* {loading ? (
+                   {loading ? (
                     <>Converting… please wait</>
                   ) : (
                     <>
                       <FileText className="w-5 h-5" />
                       Convert to Word
                     </>
-                  )} */} 
-                {/* </button> */}
+                  )} 
+                 </button> 
 
-                <button
+
+
+                {/* <button
                   disabled
                   className="w-full cursor-not-allowed rounded-lg bg-gray-300 py-3 text-sm font-semibold text-gray-600"
                 >
                   Temporarily Unavailable
-                </button>
+                </button> */}
 
                 
 
