@@ -191,6 +191,18 @@ const handleSubmit = async (e) => {
             </p>
           </div>
 
+          <div className="mb-4 rounded-lg border border-yellow-300 bg-yellow-50 px-4 py-3 text-center">
+            <h3 className="mb-1 text-sm font-semibold text-yellow-800">
+              🚧 Tool Under Maintenance
+            </h3>
+            <p className="text-sm text-yellow-700">
+              We’re fixing an issue to make conversions faster and more accurate.
+              <br />
+              Please check back shortly — <strong>PDFLinx</strong> will be ready for you.
+            </p>
+          </div>
+
+
           {/* Main Card */}
           <div className="bg-white rounded-2xl shadow-lg p-8 border border-gray-100">
             <form onSubmit={handleSubmit} className="space-y-6">
@@ -231,20 +243,30 @@ const handleSubmit = async (e) => {
 
 
                 {/* Convert Button */}
-                <button
+                
+                {/* <button
                   type="submit"
                   disabled={loading || !files.length}
                   className="w-full bg-gradient-to-r from-blue-600 to-green-600 text-white font-semibold text-lg py-4 rounded-xl hover:from-blue-700 hover:to-green-700 disabled:opacity-60 disabled:cursor-not-allowed transition shadow-md flex items-center justify-center gap-2"
                 >
-                  {loading ? (
+                  {/* {loading ? (
                     <>Converting… please wait</>
                   ) : (
                     <>
                       <FileText className="w-5 h-5" />
                       Convert to Word
                     </>
-                  )}
+                  )} */} 
+                {/* </button> */}
+
+                <button
+                  disabled
+                  className="w-full cursor-not-allowed rounded-lg bg-gray-300 py-3 text-sm font-semibold text-gray-600"
+                >
+                  Temporarily Unavailable
                 </button>
+
+                
 
                 {/* UX Notice (✅ button ke neeche, form ke andar) */}
                 <div className="text-sm text-gray-600 text-center mt-4 space-y-1">
