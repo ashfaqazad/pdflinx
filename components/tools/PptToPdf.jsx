@@ -40,7 +40,7 @@ export default function PptToPdf() {
 
     try {
       // 🔹 API call
-      const res = await fetch("/api/convert/ppt-to-pdf", {
+      const res = await fetch("/convert/ppt-to-pdf", {
         method: "POST",
         body: formData,
       });
@@ -59,6 +59,18 @@ export default function PptToPdf() {
         // and "/converted/xxx.zip" for multiple
         setDownloadUrl(`/api${data.download}`);
         setSuccess(true);
+
+        // ✅ YE 8 LINES ADD KARO
+        setTimeout(() => {
+          const downloadSection = document.getElementById('download-section');
+          if (downloadSection) {
+            downloadSection.scrollIntoView({
+              behavior: 'smooth',
+              block: 'center'
+            });
+          }
+        }, 300);
+
       } else {
         alert("Conversion failed: " + (data.error || "Unknown error"));
       }
@@ -186,11 +198,10 @@ export default function PptToPdf() {
               <div className="relative">
                 <label className="block">
                   <div
-                    className={`border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition-all ${
-                      files.length
+                    className={`border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition-all ${files.length
                         ? "border-green-500 bg-green-50"
                         : "border-gray-300 hover:border-purple-500 hover:bg-purple-50"
-                    }`}
+                      }`}
                   >
                     <Upload className="w-12 h-12 mx-auto mb-3 text-purple-600" />
 
@@ -198,8 +209,8 @@ export default function PptToPdf() {
                       {files.length === 0
                         ? "Drop your PowerPoint file(s) here or click to upload"
                         : files.length === 1
-                        ? files[0].name
-                        : `${files.length} files selected (single + multiple upload supported)`}
+                          ? files[0].name
+                          : `${files.length} files selected (single + multiple upload supported)`}
                     </p>
 
                     <p className="text-sm text-gray-500 mt-1">
@@ -256,7 +267,10 @@ export default function PptToPdf() {
 
             {/* Success State */}
             {success && (
-              <div className="mt-6 p-4 bg-green-50 border-2 border-green-200 rounded-xl text-center">
+              <div 
+              id="download-section"  // ✅ BAS YE EK LINE ADD KARO
+
+              className="mt-6 p-4 bg-green-50 border-2 border-green-200 rounded-xl text-center">
                 <CheckCircle className="w-12 h-12 text-green-600 mx-auto mb-3" />
 
                 <p className="text-xl font-bold text-green-700 mb-3">

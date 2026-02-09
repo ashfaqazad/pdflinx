@@ -55,7 +55,7 @@ export default function UnlockPdf() {
     if (password.trim()) formData.append("password", password.trim());
 
     try {
-      const res = await fetch("/api/convert/unlock-pdf", {
+      const res = await fetch("/convert/unlock-pdf", {
         method: "POST",
         body: formData,
       });

@@ -67,6 +67,7 @@ export default function PdfToJpg() {
       window.URL.revokeObjectURL(url);
 
       setSuccess(true);
+      
     } catch (err) {
       console.error(err);
       alert("Something went wrong. Please try again.");

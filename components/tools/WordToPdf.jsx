@@ -12,116 +12,6 @@ export default function WordToPdf() {
   // const [downloadUrl, setDownloadUrl] = useState(null); // ✅ only used for ZIP case
   const [success, setSuccess] = useState(false);
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   if (!files.length) return alert("Please select a Word file first!");
-
-  //   setLoading(true);
-  //   setDownloadUrl(null);
-  //   setSuccess(false);
-
-  //   const formData = new FormData();
-  //   for (const f of files) formData.append("files", f);
-
-  //   try {
-  //     const res = await fetch("/api/convert/word-to-pdf", {
-  //       method: "POST",
-  //       body: formData,
-  //     });
-
-  //     if (!res.ok) {
-  //       // try JSON error
-  //       let msg = "Conversion failed";
-  //       try {
-  //         const maybeJson = await res.json();
-  //         msg = maybeJson?.error || msg;
-  //       } catch { }
-  //       throw new Error(msg);
-  //     }
-
-  //     const contentType = res.headers.get("content-type") || "";
-
-  //     // ✅ SINGLE FILE: backend returns PDF stream
-  //     if (contentType.includes("application/pdf")) {
-  //       const blob = await res.blob();
-  //       const url = window.URL.createObjectURL(blob);
-
-  //       const a = document.createElement("a");
-  //       a.href = url;
-  //       a.download = files[0].name.replace(/\.(doc|docx)$/i, ".pdf");
-  //       a.click();
-
-  //       window.URL.revokeObjectURL(url);
-
-  //       setSuccess(true);
-  //       return;
-  //     }
-
-  //     // ✅ MULTIPLE FILES: backend returns JSON with ZIP path
-  //     // const data = await res.json();
-
-  //     // if (data.success) {
-  //     //   setDownloadUrl(`/api${data.download}`);
-  //     //   setSuccess(true);
-  //     // } else {
-  //     //   alert("Conversion failed: " + data.error);
-  //     // }
-
-  //     const data = await res.json();
-
-  //     if (data?.success && data?.download) {
-  //       const zipUrl = data.download.startsWith("http")
-  //         ? data.download
-  //         : data.download; // usually "/converted/xxx.zip"
-
-  //       const a = document.createElement("a");
-  //       a.href = zipUrl;
-  //       a.download = "pdflinx-word-to-pdf.zip";
-  //       document.body.appendChild(a);
-  //       a.click();
-  //       a.remove();
-
-  //       setSuccess(true);
-  //       setFiles([]);
-  //       return;
-  //     }
-
-  //     throw new Error(data?.error || "Bulk conversion failed");
-
-
-  //   } catch (err) {
-  //     alert(err.message || "Something went wrong, please try again.");
-  //     console.error(err);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
-
-
-
-  // ✅ Only for ZIP downloads (multiple files)
-  // const handleDownloadZip = async () => {
-  //   if (!downloadUrl) return;
-
-  //   try {
-  //     const res = await fetch(downloadUrl);
-  //     if (!res.ok) throw new Error("Download failed");
-
-  //     const blob = await res.blob();
-  //     const url = window.URL.createObjectURL(blob);
-
-  //     const a = document.createElement("a");
-  //     a.href = url;
-  //     a.download = "pdflinx-word-to-pdf.zip";
-  //     a.click();
-
-  //     window.URL.revokeObjectURL(url);
-  //   } catch (err) {
-  //     alert("There was a problem with the download.");
-  //     console.error(err);
-  //   }
-  // };
-
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -134,7 +24,7 @@ export default function WordToPdf() {
     for (const f of files) formData.append("files", f);
 
     try {
-      const res = await fetch("/api/convert/word-to-pdf", {
+      const res = await fetch("/convert/word-to-pdf", {
         method: "POST",
         body: formData,
       });
@@ -201,86 +91,6 @@ export default function WordToPdf() {
     }
   };
 
-
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   if (!files.length) return alert("Please select a Word file first!");
-
-  //   setLoading(true);
-  //   setSuccess(false);
-
-  //   const formData = new FormData();
-  //   for (const f of files) formData.append("files", f);
-
-  //   try {
-  //     const res = await fetch("/api/convert/word-to-pdf", {
-  //       method: "POST",
-  //       body: formData,
-  //     });
-
-  //     const contentType = res.headers.get("content-type") || "";
-
-  //     // ❌ if failed, try to read JSON error safely
-  //     if (!res.ok) {
-  //       let msg = "Conversion failed";
-  //       try {
-  //         const maybeJson = await res.json();
-  //         msg = maybeJson?.error || msg;
-  //       } catch {
-  //         // if server returned non-json error
-  //         try {
-  //           const txt = await res.text();
-  //           if (txt) msg = txt;
-  //         } catch {}
-  //       }
-  //       throw new Error(msg);
-  //     }
-
-  //     // ✅ SINGLE FILE: backend returns PDF stream
-  //     if (contentType.includes("application/pdf")) {
-  //       const blob = await res.blob();
-  //       const url = window.URL.createObjectURL(blob);
-
-  //       const a = document.createElement("a");
-  //       a.href = url;
-  //       a.download = files[0].name.replace(/\.(doc|docx)$/i, ".pdf");
-  //       document.body.appendChild(a);
-  //       a.click();
-  //       a.remove();
-
-  //       window.URL.revokeObjectURL(url);
-
-  //       setSuccess(true);
-  //       setFiles([]);
-  //       return;
-  //     }
-
-  //     // ✅ MULTIPLE FILES: backend returns JSON { success, download: "/converted/xxx.zip" }
-  //     const data = await res.json();
-
-  //     if (data?.success && data?.download) {
-  //       const zipUrl = data.download; // usually "/converted/xxx.zip"
-
-  //       const a = document.createElement("a");
-  //       a.href = zipUrl;
-  //       a.download = "pdflinx-word-to-pdf.zip";
-  //       document.body.appendChild(a);
-  //       a.click();
-  //       a.remove();
-
-  //       setSuccess(true);
-  //       setFiles([]);
-  //       return;
-  //     }
-
-  //     throw new Error(data?.error || "Bulk conversion failed");
-  //   } catch (err) {
-  //     alert(err?.message || "Something went wrong, please try again.");
-  //     console.error(err);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
 
   return (
     <>

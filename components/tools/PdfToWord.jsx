@@ -18,6 +18,120 @@ export default function PdfToWord() {
   const [downloadUrl, setDownloadUrl] = useState(null);
 
 
+// const handleSubmit = async (e) => {
+//   e.preventDefault();
+//   if (!files.length) return alert("Please select at least one PDF file");
+
+//   setLoading(true);
+//   setSuccess(false);
+//   setError("");
+//   setProgress(0);
+
+//   const formData = new FormData();
+//   files.forEach((f) => formData.append("files", f));
+
+//   let intervalId = null;
+
+//   try {
+//     const res = await fetch("/convert/pdf-to-word", { method: "POST", body: formData });
+//     const ct = res.headers.get("content-type") || "";
+
+//     if (!res.ok) {
+//       let msg = `Server error ${res.status}`;
+//       if (ct.includes("json")) {
+//         try { const err = await res.json(); msg = err.detail || err.error || msg; } catch {}
+//       }
+//       throw new Error(msg);
+//     }
+
+//     // ✅ CASE A: backend returned ZIP directly (multiple files)
+//     if (ct.includes("application/zip") || ct.includes("zip")) {
+//       const blob = await res.blob();
+//       const url = URL.createObjectURL(blob);
+
+//       const a = document.createElement("a");
+//       a.href = url;
+//       a.download = "pdflinx-pdf-to-word.zip";
+//       document.body.appendChild(a);
+//       a.click();
+//       a.remove();
+//       URL.revokeObjectURL(url);
+
+//       setProgress(100);
+//       setSuccess(true);
+//       setFiles([]);
+//       setLoading(false);
+//       return;
+//     }
+
+//     // ✅ CASE B: backend returned JSON jobId (async mode)
+//     if (!ct.includes("json")) {
+//       throw new Error(`Unexpected response type: ${ct}`);
+//     }
+
+//     const data = await res.json();
+//     const jobId = data?.jobId;
+//     if (!jobId) throw new Error("Job ID not received from server");
+
+//     const pollIntervalMs = 1500;
+//     const maxWaitMs = 15 * 60 * 1000;
+//     const startedAt = Date.now();
+
+//     intervalId = setInterval(async () => {
+//       try {
+//         if (Date.now() - startedAt > maxWaitMs) {
+//           clearInterval(intervalId);
+//           intervalId = null;
+//           setLoading(false);
+//           setError("Conversion timeout. Please try again.");
+//           return;
+//         }
+
+//         const statusRes = await fetch(`/api/convert/job/${jobId}`, { cache: "no-store" });
+//         if (!statusRes.ok) throw new Error("Failed to fetch job status");
+
+//         const statusData = await statusRes.json();
+
+//         if (statusData.status === "queued") return setProgress(0);
+//         if (statusData.status === "processing") return setProgress(statusData.progress ?? 10);
+
+//         if (statusData.status === "done") {
+//           clearInterval(intervalId);
+//           intervalId = null;
+
+//           setProgress(100);
+//           setSuccess(true);
+//           setFiles([]);
+//           setLoading(false);
+
+//           window.location.href = `/api/convert/download/${jobId}`;
+//           return;
+//         }
+
+//         if (statusData.status === "failed") {
+//           clearInterval(intervalId);
+//           intervalId = null;
+//           setLoading(false);
+//           setError(statusData.error || "Conversion failed on server");
+//         }
+//       } catch (err) {
+//         if (intervalId) clearInterval(intervalId);
+//         intervalId = null;
+//         setLoading(false);
+//         setError(err.message || "Polling failed");
+//       }
+//     }, pollIntervalMs);
+
+//   } catch (err) {
+//     if (intervalId) clearInterval(intervalId);
+//     setLoading(false);
+//     setError(err.message || "Something went wrong");
+//   }
+// };
+
+
+
+
 const handleSubmit = async (e) => {
   e.preventDefault();
   if (!files.length) return alert("Please select at least one PDF file");
@@ -30,7 +144,127 @@ const handleSubmit = async (e) => {
   const formData = new FormData();
   files.forEach((f) => formData.append("files", f));
 
-  let intervalId = null;
+  const pollIntervalMs = 1500;
+  const maxWaitMs = 15 * 60 * 1000;
+  const startedAt = Date.now();
+
+  // Helper: fetch JSON with better errors
+  const fetchJson = async (url, options) => {
+    const r = await fetch(url, { cache: "no-store", ...options });
+    const ct = r.headers.get("content-type") || "";
+    let payload = null;
+
+    if (ct.includes("json")) {
+      try { payload = await r.json(); } catch {}
+    }
+
+    if (!r.ok) {
+      const msg =
+        payload?.detail || payload?.error || `Request failed ${r.status} ${r.statusText}`;
+      const err = new Error(msg);
+      err.status = r.status;
+      err.payload = payload;
+      throw err;
+    }
+
+    return payload ?? {};
+  };
+
+  // Helper: download file as blob (safer than window.location.href)
+  const downloadViaBlob = async (url, filenameFallback) => {
+    const r = await fetch(url, { cache: "no-store" });
+    if (!r.ok) throw new Error(`Download failed ${r.status}`);
+
+    const blob = await r.blob();
+    const urlObj = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = urlObj;
+
+    // Try filename from header if present
+    const cd = r.headers.get("content-disposition") || "";
+    const match = cd.match(/filename\*?=(?:UTF-8''|")?([^;"\n]+)"?/i);
+    const filename = match ? decodeURIComponent(match[1]) : filenameFallback;
+
+    a.download = filename || "pdflinx-download";
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(urlObj);
+  };
+
+  // Try /api first (Next/Python), fallback to /convert (Node) if 404
+  const getJobStatus = async (jobId) => {
+    try {
+      return await fetchJson(`/api/convert/job/${jobId}`);
+    } catch (err) {
+      if (err?.status === 404) {
+        return await fetchJson(`/convert/job/${jobId}`);
+      }
+      throw err;
+    }
+  };
+
+  const downloadResult = async (jobId) => {
+    // same fallback logic
+    try {
+      await downloadViaBlob(`/api/convert/download/${jobId}`, "pdflinx-pdf-to-word.docx");
+    } catch (err) {
+      if (err?.message?.includes("404")) {
+        await downloadViaBlob(`/convert/download/${jobId}`, "pdflinx-pdf-to-word.docx");
+        return;
+      }
+      // if API download failed for non-404, try convert once as well
+      try {
+        await downloadViaBlob(`/convert/download/${jobId}`, "pdflinx-pdf-to-word.docx");
+      } catch {
+        throw err;
+      }
+    }
+  };
+
+  // Poll using setTimeout to avoid overlapping async calls
+  let stopped = false;
+  const poll = async (jobId) => {
+    if (stopped) return;
+
+    if (Date.now() - startedAt > maxWaitMs) {
+      setLoading(false);
+      setError("Conversion timeout. Please try again.");
+      return;
+    }
+
+    try {
+      const statusData = await getJobStatus(jobId);
+
+      const status = statusData?.status;
+      if (status === "queued") {
+        setProgress(0);
+      } else if (status === "processing") {
+        setProgress(statusData?.progress ?? 10);
+      } else if (status === "done") {
+        setProgress(100);
+        setSuccess(true);
+        setFiles([]);
+        setLoading(false);
+
+        // download
+        await downloadResult(jobId);
+        return;
+      } else if (status === "failed") {
+        setLoading(false);
+        setError(statusData?.error || "Conversion failed on server");
+        return;
+      } else {
+        // unknown status
+        setProgress((p) => Math.max(p, 5));
+      }
+
+      setTimeout(() => poll(jobId), pollIntervalMs);
+    } catch (err) {
+      setLoading(false);
+      setError(err?.message || "Polling failed");
+    }
+  };
 
   try {
     const res = await fetch("/convert/pdf-to-word", { method: "POST", body: formData });
@@ -39,12 +273,15 @@ const handleSubmit = async (e) => {
     if (!res.ok) {
       let msg = `Server error ${res.status}`;
       if (ct.includes("json")) {
-        try { const err = await res.json(); msg = err.detail || err.error || msg; } catch {}
+        try {
+          const err = await res.json();
+          msg = err.detail || err.error || msg;
+        } catch {}
       }
       throw new Error(msg);
     }
 
-    // ✅ CASE A: backend returned ZIP directly (multiple files)
+    // CASE A: ZIP directly
     if (ct.includes("application/zip") || ct.includes("zip")) {
       const blob = await res.blob();
       const url = URL.createObjectURL(blob);
@@ -64,7 +301,7 @@ const handleSubmit = async (e) => {
       return;
     }
 
-    // ✅ CASE B: backend returned JSON jobId (async mode)
+    // CASE B: JSON job
     if (!ct.includes("json")) {
       throw new Error(`Unexpected response type: ${ct}`);
     }
@@ -73,63 +310,14 @@ const handleSubmit = async (e) => {
     const jobId = data?.jobId;
     if (!jobId) throw new Error("Job ID not received from server");
 
-    const pollIntervalMs = 1500;
-    const maxWaitMs = 15 * 60 * 1000;
-    const startedAt = Date.now();
-
-    intervalId = setInterval(async () => {
-      try {
-        if (Date.now() - startedAt > maxWaitMs) {
-          clearInterval(intervalId);
-          intervalId = null;
-          setLoading(false);
-          setError("Conversion timeout. Please try again.");
-          return;
-        }
-
-        const statusRes = await fetch(`/api/convert/job/${jobId}`, { cache: "no-store" });
-        if (!statusRes.ok) throw new Error("Failed to fetch job status");
-
-        const statusData = await statusRes.json();
-
-        if (statusData.status === "queued") return setProgress(0);
-        if (statusData.status === "processing") return setProgress(statusData.progress ?? 10);
-
-        if (statusData.status === "done") {
-          clearInterval(intervalId);
-          intervalId = null;
-
-          setProgress(100);
-          setSuccess(true);
-          setFiles([]);
-          setLoading(false);
-
-          window.location.href = `/api/convert/download/${jobId}`;
-          return;
-        }
-
-        if (statusData.status === "failed") {
-          clearInterval(intervalId);
-          intervalId = null;
-          setLoading(false);
-          setError(statusData.error || "Conversion failed on server");
-        }
-      } catch (err) {
-        if (intervalId) clearInterval(intervalId);
-        intervalId = null;
-        setLoading(false);
-        setError(err.message || "Polling failed");
-      }
-    }, pollIntervalMs);
-
+    // start polling
+    poll(jobId);
   } catch (err) {
-    if (intervalId) clearInterval(intervalId);
+    stopped = true;
     setLoading(false);
-    setError(err.message || "Something went wrong");
+    setError(err?.message || "Something went wrong");
   }
 };
-
-
 
 
 
@@ -237,7 +425,7 @@ const handleSubmit = async (e) => {
             </p>
           </div>
 
-          <div className="mb-4 rounded-lg border border-yellow-300 bg-yellow-50 px-4 py-3 text-center">
+          {/* <div className="mb-4 rounded-lg border border-yellow-300 bg-yellow-50 px-4 py-3 text-center">
             <h3 className="mb-1 text-sm font-semibold text-yellow-800">
               🚧 Tool Under Maintenance
             </h3>
@@ -246,7 +434,7 @@ const handleSubmit = async (e) => {
               <br />
               Please check back shortly — <strong>PDFLinx</strong> will be ready for you.
             </p>
-          </div> 
+          </div>  */}
  
 
           {/* Main Card */}
@@ -290,7 +478,7 @@ const handleSubmit = async (e) => {
 
                 {/* Convert Button */}
                 
-                {/* <button
+                <button
                   type="submit"
                   disabled={loading || !files.length}
                   className="w-full bg-gradient-to-r from-blue-600 to-green-600 text-white font-semibold text-lg py-4 rounded-xl hover:from-blue-700 hover:to-green-700 disabled:opacity-60 disabled:cursor-not-allowed transition shadow-md flex items-center justify-center gap-2"
@@ -303,17 +491,17 @@ const handleSubmit = async (e) => {
                       Convert to Word
                     </>
                   )} 
-                 </button>  */}
+                 </button> 
 
 
 
-                <button
+                {/* <button
                   disabled
                   className="w-full cursor-not-allowed rounded-lg bg-gray-300 py-3 text-sm font-semibold text-gray-600"
                 >
                   Temporarily Unavailable
                 </button>
-
+ */}
                 
 
                 {/* UX Notice (✅ button ke neeche, form ke andar) */}
