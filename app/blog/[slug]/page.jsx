@@ -725,6 +725,29 @@ import Link from "next/link";
 import { notFound } from "next/navigation";  // ← YEHI RAKH, BAHUT HAI
 
 // ✅ Metadata
+// export async function generateMetadata({ params }) {
+//   const { slug } = await params;
+//   const blog = blogs.find((b) => b.slug === slug);
+//   if (!blog) return notFound();
+
+//   return {
+//     title: blog.title + " | PDF Linx Blog",
+//     description: blog.content.slice(0, 160),
+//     keywords: [
+//       "PDF tools",
+//       "convert PDF online",
+//       "merge PDF",
+//       "split PDF",
+//       "compress PDF",
+//       "Word to PDF",
+//       "PDF to Word",
+//       "Excel to PDF",
+//       "PDF Linx blog",
+//     ],
+//   };
+// }
+
+
 export async function generateMetadata({ params }) {
   const { slug } = await params;
   const blog = blogs.find((b) => b.slug === slug);
@@ -744,9 +767,29 @@ export async function generateMetadata({ params }) {
       "Excel to PDF",
       "PDF Linx blog",
     ],
+    
+    // ✅ YE ADD KARO — Har article ka apna canonical URL
+    alternates: {
+      canonical: `https://pdflinx.com/blog/${slug}`,
+    },
+    
+    // ✅ Open Graph (optional but good for social sharing)
+    openGraph: {
+      title: blog.title,
+      description: blog.content.slice(0, 160),
+      url: `https://pdflinx.com/blog/${slug}`,
+      type: 'article',
+      siteName: 'PDF Linx',
+    },
+    
+    // ✅ Twitter Card (optional)
+    twitter: {
+      card: 'summary_large_image',
+      title: blog.title,
+      description: blog.content.slice(0, 160),
+    },
   };
 }
-
 
 
 // ✅ Blog Page Component - FINAL & WORKING VERSION
@@ -760,26 +803,6 @@ export default async function BlogPost({ params }) {
   if (!blog) return notFound();
 
   return (
-    // <main className="max-w-4xl mx-auto py-16 px-6">
-    //   {/* Optional Back Button */}
-    //   {/* <Link href="/blog" className="inline-flex items-center text-indigo-600 hover:text-indigo-800 font-medium mb-8">
-    //     ← Back to Blog
-    //   </Link> */}
-
-    //   {/* Title & Date */}
-    //   <h1 className="text-4xl md:text-5xl font-extrabold text-gray-800 mb-4 leading-tight">
-    //     {blog.title}
-    //   </h1>
-    //   <p className="text-gray-500 text-sm mb-10">{blog.date}</p>
-
-    //   {/* YE LINE CHANGE KI HAI — AB HTML PERFECT DIKHEGA! */}
-    //   <article
-    //     className="prose prose-lg max-w-none text-gray-700 leading-relaxed space-y-6"
-    //     dangerouslySetInnerHTML={{ __html: blog.content }}
-    //   />
-
-
-    // </main>
 
         <main className="max-w-4xl mx-auto py-8 px-4">
       {/* Optional Back Button */}
