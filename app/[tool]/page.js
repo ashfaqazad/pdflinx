@@ -25,6 +25,10 @@ const componentMap = {
   "ppt-to-pdf": () => import("@/components/tools/PptToPdf"),
   "protect-pdf": () => import("@/components/tools/ProtectPdf"),
   "unlock-pdf": () => import("@/components/tools/UnlockPdf"),
+  "rotate-pdf": () => import("@/components/tools/RotatePdf"),
+  "sign-pdf": () => import("@/components/tools/SignPdf"),
+
+
 };
 
 // 🔹 Resolve base tool (for variants)

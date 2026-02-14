@@ -2,14 +2,28 @@
 
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { useState, useEffect } from "react";
 
 import {
-  FileText, FileType, FileArchive, FileImage, FileSpreadsheet,
-  Split, QrCode, Lock, Ruler, Youtube, Image as ImageIcon, PenTool, Stamp, ArrowUp
+  ShieldCheck,
+  RotateCw,
+  PenTool,
+  FileText,
+  Image,
+  FileType,
+  FileArchive,
+  FileImage,
+  FileSpreadsheet,
+  Split,
+  QrCode,
+  Lock,
+  Ruler,
+  Youtube,
+  Image as ImageIcon,
+  Stamp,
+  ArrowUp
 } from "lucide-react";
-import { Image } from "lucide-react";
-import { useState, useEffect } from "react";
-import InternalLinkingSections from "@/components/InternalLinkingSections";
+
 
 
 export default function HomeContent() {
@@ -44,6 +58,40 @@ export default function HomeContent() {
     { title: "Text to PDF", desc: "Turn plain text into a nicely formatted PDF with custom styling.", link: "/text-to-pdf", icon: <FileText className="w-10 h-10" />, color: "from-violet-500 to-purple-600" },
     { title: "Image Converter", desc: "Switch between JPG, PNG, WebP, GIF – transparency stays intact.", link: "/image-converter", icon: <FileImage className="w-10 h-10" />, color: "from-pink-500 to-rose-600" },
     { title: "Add Watermark", desc: "Protect your images with text or logo watermarks – adjust position and transparency.", link: "/add-watermark", icon: <Stamp className="w-10 h-10" />, color: "from-blue-500 to-cyan-600" },
+
+    {
+      title: "protect-pdf",
+      desc: "Add password protection to your PDF files and keep your documents secure from unauthorized access.",
+      link: "/protect-pdf",
+      icon: <ShieldCheck className="w-10 h-10" />,
+      color: "from-purple-500 to-indigo-600"
+    },
+
+    {
+      title: "unlock-pdf",
+      desc: "Remove password protection from PDF files instantly and access your documents without restrictions.",
+      link: "/unlock-pdf",
+      icon: <Lock className="w-10 h-10" />,
+      color: "from-emerald-500 to-teal-600"
+    },
+
+    {
+      title: "rotate-pdf",
+      desc: "Rotate PDF pages 90°, 180°, or 270° to fix orientation quickly and easily online.",
+      link: "/rotate-pdf",
+      icon: <RotateCw className="w-10 h-10" />,
+      color: "from-orange-500 to-red-500"
+    },
+
+    {
+      title: "sign-pdf",
+      desc: "Add your digital signature to PDF documents. Draw, type, or upload your signature securely.",
+      link: "/sign-pdf",
+      icon: <PenTool className="w-10 h-10" />,
+      color: "from-blue-500 to-cyan-600"
+    },
+
+
   ];
 
   return (

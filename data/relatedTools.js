@@ -1,5 +1,6 @@
 import React from 'react';
 
+
 // ============================================
 // STEP 1: Related Tools Data Configuration
 // ============================================
@@ -25,7 +26,7 @@ export const relatedToolsData = {
     { title: 'Merge PDF', emoji: '📚', url: '/merge-pdf', desc: 'Combine multiple PDFs' },
     { title: 'Compress PDF', emoji: '🗜️', url: '/compress-pdf', desc: 'Reduce PDF file size' },
   ],
-  
+
 
   // PDF Manipulation Tools
   'merge-pdf': [
@@ -45,14 +46,14 @@ export const relatedToolsData = {
     { title: 'PDF to Word', emoji: '📄', url: '/pdf-to-word', desc: 'Convert to Word' },
   ],
 
-    'pdf-to-jpg': [
+  'pdf-to-jpg': [
     { title: 'Image to PDF', emoji: '🖼️', url: '/image-to-pdf', desc: 'Turn images into PDF documents' },
     { title: 'Split PDF', emoji: '✂️', url: '/split-pdf', desc: 'Separate pages' },
     { title: 'PDF to Word', emoji: '📄', url: '/pdf-to-word', desc: 'Convert to Word' },
   ],
 
-  
-    // ===============================
+
+  // ===============================
   // PDF Security Tools (NEW 🔥)
   // ===============================
   'protect-pdf': [
@@ -66,6 +67,19 @@ export const relatedToolsData = {
     { title: 'PDF to Word', emoji: '📄', url: '/pdf-to-word', desc: 'Convert unlocked PDFs to editable Word' },
     { title: 'Split PDF', emoji: '✂️', url: '/split-pdf', desc: 'Split unlocked PDF into pages' },
   ],
+
+  'rotate-pdf': [
+    { title: 'Sign PDF', emoji: '✍️', url: '/sign-pdf', desc: 'Add your digital signature to rotated PDFs' },
+    { title: 'Merge PDF', emoji: '📚', url: '/merge-pdf', desc: 'Combine rotated PDFs into one file' },
+    { title: 'Split PDF', emoji: '✂️', url: '/split-pdf', desc: 'Split rotated PDF into separate pages' },
+  ],
+
+  'sign-pdf': [
+    { title: 'Rotate PDF', emoji: '🔄', url: '/rotate-pdf', desc: 'Fix page orientation before signing' },
+    { title: 'Protect PDF', emoji: '🔐', url: '/protect-pdf', desc: 'Secure signed PDFs with a password' },
+    { title: 'Compress PDF', emoji: '🗜️', url: '/compress-pdf', desc: 'Reduce file size after signing PDF' },
+  ],
+
 
 
   // Image Tools
@@ -146,7 +160,7 @@ const RelatedToolsSection = ({ currentPage }) => {
         <h3 className="text-2xl font-bold text-gray-900 mb-6">
           You Might Also Need
         </h3>
-        
+
         <div className="space-y-4">
           {tools.map((tool, index) => (
             <a
@@ -185,7 +199,7 @@ const DemoPage = () => {
       <div className="bg-blue-600 text-white p-6 text-center">
         <h1 className="text-3xl font-bold mb-4">Related Tools Demo</h1>
         <p className="mb-4">Select a page to see related tools:</p>
-        <select 
+        <select
           value={currentPage}
           onChange={(e) => setCurrentPage(e.target.value)}
           className="px-4 py-2 rounded text-gray-900"
@@ -223,7 +237,7 @@ const DemoPage = () => {
       <div className="max-w-4xl mx-auto py-12 px-4">
         <div className="bg-white rounded-lg shadow-md p-8 mb-8">
           <h2 className="text-3xl font-bold text-gray-900 mb-4">
-            {currentPage.split('-').map(word => 
+            {currentPage.split('-').map(word =>
               word.charAt(0).toUpperCase() + word.slice(1)
             ).join(' ')}
           </h2>
