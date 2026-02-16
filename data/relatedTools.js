@@ -80,6 +80,17 @@ export const relatedToolsData = {
     { title: 'Compress PDF', emoji: '🗜️', url: '/compress-pdf', desc: 'Reduce file size after signing PDF' },
   ],
 
+  'edit-pdf': [
+  { title: 'OCR PDF', emoji: '🧠', url: '/ocr-pdf', desc: 'Extract text from scanned PDFs' },
+  { title: 'Rotate PDF', emoji: '🔄', url: '/rotate-pdf', desc: 'Fix page orientation before signing' },
+  { title: 'Protect PDF', emoji: '🔐', url: '/protect-pdf', desc: 'Secure signed PDFs with a password' },
+],
+
+  'ocr-pdf': [
+  { title: 'Edit PDF', emoji: '✏️', url: '/edit-pdf', desc: 'Modify text, images, and pages in your PDF' },
+  { title: 'Rotate PDF', emoji: '🔄', url: '/rotate-pdf', desc: 'Fix page orientation before signing' },
+  { title: 'Protect PDF', emoji: '🔐', url: '/protect-pdf', desc: 'Secure signed PDFs with a password' },
+],
 
 
   // Image Tools

@@ -27,6 +27,8 @@ const componentMap = {
   "unlock-pdf": () => import("@/components/tools/UnlockPdf"),
   "rotate-pdf": () => import("@/components/tools/RotatePdf"),
   "sign-pdf": () => import("@/components/tools/SignPdf"),
+  "ocr-pdf": () => import("@/components/tools/OCRPdf"),
+  "edit-pdf": () => import("@/components/tools/EditPdf"),
 
 
 };

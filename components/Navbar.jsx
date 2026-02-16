@@ -2,6 +2,8 @@
 import Link from "next/link";
 import { useState } from "react";
 
+
+
 import {
   ChevronDown,
   FileText,
@@ -16,6 +18,11 @@ import {
   Youtube,
   Image as ImageIcon,
   PenTool,
+  ScanLine,
+  FileEdit,
+  // RotateCw,
+  // Droplet
+
 } from "lucide-react";
 
 export default function Navbar() {
@@ -308,6 +315,41 @@ export default function Navbar() {
               Rotate PDF
             </span>
           </Link>
+
+          <Link
+            href="/ocr-pdf"
+            onClick={(e) => {
+              e.preventDefault();
+              window.location.href = "/ocr-pdf";
+            }}
+            className="
+              flex items-center gap-3 px-3 py-2 rounded-xl text-sm
+              hover:bg-indigo-50 transition-all duration-200 hover:translate-x-1
+            "
+          >
+            <ScanLine size={20} className="text-blue-600" />
+            <span className="font-medium text-gray-700 group-hover:text-indigo-600">
+              OCR PDF
+            </span>
+          </Link>
+
+          <Link
+            href="/edit-pdf"
+            onClick={(e) => {
+              e.preventDefault();
+              window.location.href = "/edit-pdf";
+            }}
+            className="
+              flex items-center gap-3 px-3 py-2 rounded-xl text-sm
+              hover:bg-indigo-50 transition-all duration-200 hover:translate-x-1
+            "
+          >
+            <FileEdit size={20} className="text-orange-600" />
+            <span className="font-medium text-gray-700 group-hover:text-indigo-600">
+              Edit PDF
+            </span>
+          </Link>
+
 
           <Link
             href="/add-watermark"
@@ -626,6 +668,7 @@ export default function Navbar() {
                     </div>
                   </div>
 
+
                   {/* Edit PDF */}
                   <div>
                     <h3 className="font-bold text-sm text-gray-800 mb-2">
@@ -643,6 +686,30 @@ export default function Navbar() {
                         <FileMinus size={16} className="text-purple-600" />
                         Rotate PDF
                       </Link>
+                      
+                      <Link
+                        href="/ocr-pdf"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          window.location.href = "/ocr-pdf";
+                        }}
+                        className="flex items-center gap-2 text-gray-600 hover:text-indigo-600 py-1"
+                      >
+                        <ScanLine size={16} className="text-blue-600" />
+                        OCR PDF
+                      </Link>
+
+                      <Link
+                        href="/edit-pdf"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          window.location.href = "/edit-pdf";
+                        }}
+                        className="flex items-center gap-2 text-gray-600 hover:text-indigo-600 py-1"
+                      >
+                        <FileEdit size={16} className="text-orange-600" />
+                        Edit PDF
+                      </Link>
 
                       <Link
                         href="/add-watermark"
@@ -657,6 +724,8 @@ export default function Navbar() {
                       </Link>
                     </div>
                   </div>
+
+
                 </div>
               </div>
             </details>
