@@ -167,10 +167,15 @@ export default function Navbar() {
               hover:bg-indigo-50 transition-all duration-200 hover:translate-x-1
             "
           >
-            <FileSpreadsheet size={20} className="text-green-600" />
-            <span className="font-medium text-gray-700 group-hover:text-indigo-600">
+            {/* <FileSpreadsheet size={20} className="text-green-600" /> */}
+            <FileSpreadsheet size={20} className="text-green-600 flex-shrink-0" />
+            {/* <span className="font-medium text-gray-700 group-hover:text-indigo-600">
+              POWERPOINT to PDF
+            </span> */}
+            <span className="font-medium text-gray-700 group-hover:text-indigo-600 whitespace-nowrap">
               POWERPOINT to PDF
             </span>
+
           </Link>
 
           <Link
@@ -363,9 +368,13 @@ export default function Navbar() {
             "
           >
             <FilePlus size={20} className="text-emerald-600" />
-            <span className="font-medium text-gray-700 group-hover:text-indigo-600">
+            {/* <span className="font-medium text-gray-700 group-hover:text-indigo-600">
+              Add Watermark
+            </span> */}
+            <span className="font-medium text-gray-700 group-hover:text-indigo-600 whitespace-nowrap">
               Add Watermark
             </span>
+
           </Link>
         </div>
       </div>

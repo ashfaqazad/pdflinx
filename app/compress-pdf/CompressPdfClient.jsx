@@ -186,6 +186,10 @@ export default function CompressPDF() {
 
 
                     <p className="text-sm text-gray-500 mt-1">We'll make it smaller without losing quality</p>
+                    <p className="text-sm text-gray-500 mt-1">
+                    Compress up to 15 PDFs at once • Max 25MB per file • Fast & secure
+                    </p>
+
                   </div>
                   {/* <input
                     type="file"
