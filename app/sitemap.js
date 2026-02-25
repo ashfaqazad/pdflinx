@@ -11,6 +11,10 @@ export default function sitemap() {
     { url: "/contact", changeFrequency: "yearly", priority: 0.5 },
     { url: "/privacy-policy", changeFrequency: "yearly", priority: 0.3 },
     { url: "/terms-and-conditions", changeFrequency: "yearly", priority: 0.3 },
+    // 🔹 Comparison Pages
+    { url: "/compare/pdflinx-vs-ilovepdf", changeFrequency: "monthly", priority: 0.8 },
+    { url: "/compare/pdflinx-vs-smallpdf", changeFrequency: "monthly", priority: 0.8 },
+
   ];
 
   const toolRoutes = [
