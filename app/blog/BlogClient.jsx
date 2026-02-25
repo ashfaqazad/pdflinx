@@ -15,6 +15,32 @@ export default function BlogClient() {
     },
 
 
+        {
+      title: "PDF to Word Formatting Messed Up? Here’s How I Fix It Every Time",
+      description:
+        "PDF to Word karte waqt fonts change, tables bigad jate hain, images idhar-udhar — bohot frustrating hai na? I've faced this headache so many times with resumes and reports. Here's how I fix it fast without losing layout, using a free tool that actually preserves everything. No software, no signup — just works every time.",
+      date: "Feb 22, 2026",
+      slug: "pdf-to-word-formatting-messed-up",
+    },
+
+    {
+  title: "How to Edit Scanned PDF in Word (The Easy Way with OCR)",
+  description:
+    "Scanned PDFs are just images — no way to copy text, highlight, or edit anything. I've wasted so much time re-typing everything from receipts, notes, and old documents. Here's how I quickly turn any scanned PDF into a fully editable Word file using OCR first, with a free tool that actually works well. No software install, no signup — just fast and accurate results every time.",
+  date: "Feb 23, 2026",
+  slug: "how-to-edit-scanned-pdf-in-word",
+},
+
+
+{
+  title: "Convert PDF Resume to Editable Word Without Losing Layout",
+  description:
+    "Job portals demand Word resumes, but converting PDF versions often ruins columns, bullets, photos, and spacing — super annoying when you're applying urgently. I've messed up so many applications this way. Here's how I convert PDF resumes to clean, editable Word files that stay professional and ATS-friendly, using a free tool that preserves everything. No signup, no software — just perfect results every time.",
+  date: "Feb 24, 2026",
+  slug: "convert-pdf-resume-to-editable-word",
+},
+
+
     {
       title: "Convert Word to PDF Instantly (No Software Needed)",
       description:
