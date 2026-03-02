@@ -81,16 +81,16 @@ export const relatedToolsData = {
   ],
 
   'edit-pdf': [
-  { title: 'OCR PDF', emoji: '🧠', url: '/ocr-pdf', desc: 'Extract text from scanned PDFs' },
-  { title: 'Rotate PDF', emoji: '🔄', url: '/rotate-pdf', desc: 'Fix page orientation before signing' },
-  { title: 'Protect PDF', emoji: '🔐', url: '/protect-pdf', desc: 'Secure signed PDFs with a password' },
-],
+    { title: 'OCR PDF', emoji: '🧠', url: '/ocr-pdf', desc: 'Extract text from scanned PDFs' },
+    { title: 'Rotate PDF', emoji: '🔄', url: '/rotate-pdf', desc: 'Fix page orientation before signing' },
+    { title: 'Protect PDF', emoji: '🔐', url: '/protect-pdf', desc: 'Secure signed PDFs with a password' },
+  ],
 
   'ocr-pdf': [
-  { title: 'Edit PDF', emoji: '✏️', url: '/edit-pdf', desc: 'Modify text, images, and pages in your PDF' },
-  { title: 'Rotate PDF', emoji: '🔄', url: '/rotate-pdf', desc: 'Fix page orientation before signing' },
-  { title: 'Protect PDF', emoji: '🔐', url: '/protect-pdf', desc: 'Secure signed PDFs with a password' },
-],
+    { title: 'Edit PDF', emoji: '✏️', url: '/edit-pdf', desc: 'Modify text, images, and pages in your PDF' },
+    { title: 'Rotate PDF', emoji: '🔄', url: '/rotate-pdf', desc: 'Fix page orientation before signing' },
+    { title: 'Protect PDF', emoji: '🔐', url: '/protect-pdf', desc: 'Secure signed PDFs with a password' },
+  ],
 
 
   // Image Tools
@@ -191,6 +191,16 @@ const RelatedToolsSection = ({ currentPage }) => {
             </a>
           ))}
         </div>
+
+        {currentPage === "pdf-to-word" && (
+          <p className="text-sm text-gray-600 mt-6">
+            Need a searchable PDF instead? Try our{" "}
+            <a className="text-blue-600 underline" href="/ocr-pdf">
+              OCR PDF tool
+            </a>.
+          </p>
+        )}
+
       </div>
     </section>
   );

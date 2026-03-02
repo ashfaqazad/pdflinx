@@ -141,8 +141,13 @@ export default function CompressPDF() {
             <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent mb-4">
               Compress PDF Online (Free)
             </h1>
+            {/* <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+              Got a huge PDF that's too big to email or upload? We'll shrink it down (up to 90% smaller) while keeping it looking sharp. Super quick and totally free!
+            </p> */}
+
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
               Got a huge PDF that's too big to email or upload? We'll shrink it down (up to 90% smaller) while keeping it looking sharp. Super quick and totally free!
+              Instantly reduce PDF file size to meet strict upload size limits for email, WhatsApp, government portals, or online forms.
             </p>
           </div>
 
@@ -357,23 +362,36 @@ export default function CompressPDF() {
         <h3 className="text-xl font-semibold text-slate-900 mb-3">
           What is PDF Compression?
         </h3>
+        {/* <p className="leading-7 mb-6">
+          PDF compression reduces the file size of your document by removing unnecessary data—like embedded fonts, hidden layers, or high-resolution images—without ruining how it looks.
+          The result? A smaller, faster-loading PDF that’s perfect for emailing, uploading, or storing, while still looking clear and professional.
+        </p> */}
+
         <p className="leading-7 mb-6">
           PDF compression reduces the file size of your document by removing unnecessary data—like embedded fonts, hidden layers, or high-resolution images—without ruining how it looks.
           The result? A smaller, faster-loading PDF that’s perfect for emailing, uploading, or storing, while still looking clear and professional.
+
+          Our PDF compressor uses advanced compression algorithms including lossless and smart lossy compression techniques. 
+          It optimizes images through DPI reduction and image downsampling to achieve a better compression ratio without affecting readability.
         </p>
 
         {/* Why compress */}
         <h3 className="text-xl font-semibold text-slate-900 mb-3">
           Why Compress Your PDF Files?
         </h3>
-        <ul className="space-y-2 mb-6 list-disc pl-6">
+          <ul className="space-y-2 mb-6 list-disc pl-6">
           <li>Reduce file size dramatically—often by 50-90%</li>
           <li>Send large PDFs via email without attachment limits</li>
           <li>Upload documents faster to websites or cloud storage</li>
           <li>Save storage space on your phone or computer</li>
           <li>Maintain readable text and clear images</li>
-        </ul>
 
+          {/* 🔥 Added Semantic Bullets */}
+          <li>Reduce PDF from 25MB to under 5MB easily</li>
+          <li>Meet strict email attachment size limits</li>
+          <li>Fit within 10MB upload size requirements</li>
+          <li>Compress PDF from 20MB to under 5MB to meet email attachment limits</li>
+          </ul>
         {/* Steps */}
         <h3 className="text-xl font-semibold text-slate-900 mb-3">
           How to Compress PDF Online
@@ -402,6 +420,9 @@ export default function CompressPDF() {
             <li>Works on mobile & desktop</li>
             <li>No file storage – complete privacy</li>
             <li>No watermarks or limits</li>
+              {/* 🔥 Added Semantic Line */}
+            <li>Smart compression level automatically selected for best quality and size balance</li>
+
           </ul>
         </div>
 
@@ -421,10 +442,16 @@ export default function CompressPDF() {
         <h3 className="text-xl font-semibold text-slate-900 mb-3">
           Is PDFLinx Safe to Use?
         </h3>
-        <p className="leading-7 mb-6">
+        {/* <p className="leading-7 mb-6">
           Absolutely. Your privacy is our priority.
           Every PDF you upload is processed securely on our servers and automatically deleted shortly after compression.
           We never store, share, or access your documents.
+        </p> */}
+        <p className="leading-7 mb-6">
+          Absolutely. Your privacy is our priority.
+          Every PDF you upload is processed through encrypted transfer and secure file processing on our servers.
+          Files are automatically deleted shortly after compression to ensure complete privacy.
+          We follow privacy-first compression practices and never store, share, or access your documents.
         </p>
 
         {/* Closing */}
@@ -501,6 +528,29 @@ export default function CompressPDF() {
                 It depends on the original PDF, but most files shrink by 40-90% while staying fully readable.
               </p>
             </details>
+
+            <details className="bg-white rounded-lg shadow-sm p-5">
+              <summary className="font-semibold cursor-pointer">
+                What is the best compression ratio for PDF?
+              </summary>
+              <p className="mt-2 text-gray-600">
+                The best compression ratio depends on your needs. If you need to meet a strict file size limit for email or online uploads, a higher compression ratio may help.
+                Our tool automatically balances size reduction while maintaining text clarity and document readability.
+              </p>
+            </details>
+
+            <details className="bg-white rounded-lg shadow-sm p-5">
+              <summary className="font-semibold cursor-pointer">
+                Does PDF compression reduce image resolution?
+              </summary>
+              <p className="mt-2 text-gray-600">
+                In some cases, PDF compression may slightly reduce resolution to optimize images and shrink file size.
+                However, our smart compression ensures visual quality remains high while reducing unnecessary data.
+                The goal is to reduce resolution only where needed while keeping text sharp and clear.
+              </p>
+            </details>
+
+
           </div>
         </div>
       </section>
