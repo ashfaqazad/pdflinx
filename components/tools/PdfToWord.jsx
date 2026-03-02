@@ -157,8 +157,8 @@ const handleSubmit = async (e) => {
   };
 
   try {
-    // const res = await fetch("/convert/pdf-to-word", { method: "POST", body: formData });
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/convert/pdf-to-word`, { method: "POST", body: formData });
+    const res = await fetch("/convert/pdf-to-word", { method: "POST", body: formData });
+    // const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/convert/pdf-to-word`, { method: "POST", body: formData });
     const ct = res.headers.get("content-type") || "";
 
     if (!res.ok) {

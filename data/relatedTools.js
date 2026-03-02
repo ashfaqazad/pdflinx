@@ -191,19 +191,11 @@ const RelatedToolsSection = ({ currentPage }) => {
             </a>
           ))}
         </div>
-
-        {currentPage === "pdf-to-word" && (
-          <p className="text-sm text-gray-600 mt-6">
-            Need a searchable PDF instead? Try our{" "}
-            <a className="text-blue-600 underline" href="/ocr-pdf">
-              OCR PDF tool
-            </a>.
-          </p>
-        )}
-
       </div>
     </section>
   );
+
+
 };
 
 
