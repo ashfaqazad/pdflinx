@@ -113,6 +113,52 @@ const handleSubmit = async (e) => {
   };
 
   // Poll using setTimeout to avoid overlapping async calls
+  // let stopped = false;
+  // const poll = async (jobId) => {
+  //   if (stopped) return;
+
+  //   if (Date.now() - startedAt > maxWaitMs) {
+  //     setLoading(false);
+  //     setError("Conversion timeout. Please try again.");
+  //     return;
+  //   }
+
+  //   try {
+  //     const statusData = await getJobStatus(jobId);
+
+  //     const status = statusData?.status;
+  //     if (status === "queued") {
+  //       setProgress(0);
+  //     } else if (status === "processing") {
+  //       setProgress(statusData?.progress ?? 10);
+
+  //     } else if (status === "done") {
+  //       setProgress(100);
+  //       setSuccess(true);
+  //       setFiles([]);
+  //       setLoading(false);
+
+  //       // download
+  //       await downloadResult(jobId);
+  //       return;
+      
+  //     } else if (status === "failed") {
+  //       setLoading(false);
+  //       setError(statusData?.error || "Conversion failed on server");
+  //       return;
+  //     } else {
+  //       // unknown status
+  //       setProgress((p) => Math.max(p, 5));
+  //     }
+
+  //     setTimeout(() => poll(jobId), pollIntervalMs);
+  //   } catch (err) {
+  //     setLoading(false);
+  //     setError(err?.message || "Polling failed");
+  //   }
+  // };
+
+  // Poll using setTimeout to avoid overlapping async calls
   let stopped = false;
   const poll = async (jobId) => {
     if (stopped) return;
@@ -131,15 +177,15 @@ const handleSubmit = async (e) => {
         setProgress(0);
       } else if (status === "processing") {
         setProgress(statusData?.progress ?? 10);
+
       } else if (status === "done") {
         setProgress(100);
-        setSuccess(true);
         setFiles([]);
+        await downloadResult(jobId);  // pehle download
+        setSuccess(true);             // tab success message
         setLoading(false);
-
-        // download
-        await downloadResult(jobId);
         return;
+      
       } else if (status === "failed") {
         setLoading(false);
         setError(statusData?.error || "Conversion failed on server");
@@ -301,7 +347,71 @@ const handleSubmit = async (e) => {
           ),
         }}
       />
-
+    <Script
+  id="faq-schema-pdf-to-word"
+  type="application/ld+json"
+  strategy="afterInteractive"
+  dangerouslySetInnerHTML={{
+    __html: JSON.stringify(
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Is the PDF to Word converter free to use?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes. PDFLinx provides a completely free PDF to Word converter with no signup and no watermark."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Do I need to install any software?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No installation is required. The tool works directly in your browser on mobile, tablet, and desktop."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Will formatting stay the same after conversion?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Most formatting such as text, tables, and images is preserved. Very complex PDFs may need small adjustments after conversion."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Can I convert scanned PDFs to editable Word documents?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes. Enable OCR to extract text from scanned or image-based PDFs and convert them into editable Word documents."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Can I convert multiple PDFs to Word at the same time?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes. Upload multiple PDF files and they will be converted together. You will receive a ZIP file containing all DOCX documents."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Are my files safe and private?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes. Files are processed securely and automatically removed after processing to protect your privacy."
+            }
+          }
+        ]
+      },
+      null,
+      2
+    )
+  }}
+/>
       {/* ==================== MAIN TOOL SECTION ==================== */}
       <main className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50 py-8 px-4">
         <div className="max-w-4xl mx-auto">
@@ -569,6 +679,44 @@ const handleSubmit = async (e) => {
           </div>
         </div>
 
+
+      {/* 🔗 Contextual Links (PDF to Word) */}
+      <div className="mt-10 bg-white p-6 md:p-8 shadow-sm">
+        <h3 className="text-lg md:text-xl font-bold text-slate-900">
+          Need to create a PDF too?
+        </h3>
+        <p className="mt-1 text-sm text-slate-600">
+          Many workflows go both ways — convert documents into PDF, then edit PDFs back in Word.
+        </p>
+
+        <ul className="mt-4 space-y-2 text-sm">
+          <li>
+            <a href="/word-to-pdf" className="text-blue-700 font-semibold hover:underline">
+              convert Word to PDF
+            </a>{" "}
+            <span className="text-slate-600">— turn DOC/DOCX into PDF without losing formatting.</span>
+          </li>
+          <li>
+            <a href="/excel-to-pdf" className="text-blue-700 font-semibold hover:underline">
+              Excel to PDF Converter
+            </a>{" "}
+            <span className="text-slate-600">— convert XLS/XLSX spreadsheets to PDF.</span>
+          </li>
+          <li>
+            <a href="/ppt-to-pdf" className="text-blue-700 font-semibold hover:underline">
+              PPT to PDF Converter
+            </a>{" "}
+            <span className="text-slate-600">— export PowerPoint slides into PDF instantly.</span>
+          </li>
+          <li>
+            <a href="/free-pdf-tools" className="text-blue-700 font-semibold hover:underline">
+              Browse all PDF tools
+            </a>{" "}
+            <span className="text-slate-600">— merge, split, compress, protect & more.</span>
+          </li>
+        </ul>
+      </div>
+
         <p className="text-center mt-12 text-base text-gray-600 italic max-w-3xl mx-auto">
           Convert PDFs into editable Word files with PDF Linx — fast, accurate, and always free.
         </p>
@@ -605,10 +753,28 @@ const handleSubmit = async (e) => {
         <h3 className="text-xl font-semibold text-slate-900 mb-3">
           Single file or multiple files — both supported
         </h3>
+        
         <ul className="space-y-2 mb-6 list-disc pl-6">
           <li><strong>Single PDF:</strong> converts and downloads as a Word (DOCX) file directly.</li>
           <li><strong>Multiple PDFs:</strong> converts all files and gives you a ZIP containing all DOCX files.</li>
         </ul>
+
+                <p className="leading-7 mb-4">
+          After converting to DOCX, you may want to send or print the edited file as a PDF again.
+          Use our{" "}
+          <a href="/word-to-pdf" className="text-blue-700 font-semibold hover:underline">
+            Word to PDF converter
+          </a>{" "}
+          to export the updated document back into PDF. If you’re working with multiple PDFs, you can combine them using{" "}
+          <a href="/merge-pdf" className="text-blue-700 font-semibold hover:underline">
+            merge PDF files
+          </a>{" "}
+          or reduce file size using{" "}
+          <a href="/compress-pdf" className="text-blue-700 font-semibold hover:underline">
+            Compress PDF
+          </a>.
+        </p>
+
 
         <h3 className="text-xl font-semibold text-slate-900 mb-3">
           Why use PDFLinx?

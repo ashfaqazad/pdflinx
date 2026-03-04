@@ -155,6 +155,118 @@ export default function WordToPdf() {
         }}
       />
 
+      <Script
+        id="faq-schema-word-to-pdf"
+        type="application/ld+json"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            {
+              "@context": "https://schema.org",
+              "@type": "FAQPage",
+              "mainEntity": [
+                {
+                  "@type": "Question",
+                  "name": "Is the Word to PDF converter free to use?",
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Yes, PDFLinx offers a completely free Word to PDF converter with no hidden charges."
+                  }
+                },
+                {
+                  "@type": "Question",
+                  "name": "Do I need to install any software?",
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "No installation is required. Everything works directly in your browser."
+                  }
+                },
+                {
+                  "@type": "Question",
+                  "name": "Will my Word formatting be preserved?",
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Yes, fonts, tables, images, and layout are preserved accurately."
+                  }
+                },
+                {
+                  "@type": "Question",
+                  "name": "Are my files safe and private?",
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Files are processed securely and deleted automatically after conversion."
+                  }
+                },
+                {
+                  "@type": "Question",
+                  "name": "Can I convert Word to PDF on mobile?",
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Yes, PDFLinx works perfectly on mobile, tablet, and desktop devices."
+                  }
+                },
+                {
+                  "@type": "Question",
+                  "name": "Can I convert multiple Word files to PDF at once?",
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Yes. PDFLinx allows you to upload and convert multiple Word files at the same time. If you upload more than one file, all converted PDFs are downloaded together in a ZIP file."
+                  }
+                },
+                {
+                  "@type": "Question",
+                  "name": "What happens if I upload only one Word file?",
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "If you upload a single Word file, it converts and downloads as a PDF directly — no ZIP file needed."
+                  }
+                }
+              ]
+            },
+            null,
+            2
+          ),
+        }}
+      />
+
+      <Script
+        id="software-schema-word-to-pdf"
+        type="application/ld+json"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            {
+              "@context": "https://schema.org",
+              "@type": "SoftwareApplication",
+              "name": "Word to PDF Converter - PDFLinx",
+              "applicationCategory": "BusinessApplication",
+              "operatingSystem": "Web Browser",
+              "description": "Free online Word to PDF converter. Convert DOC and DOCX files to high-quality PDF without losing formatting. No signup required.",
+              "url": "https://pdflinx.com/word-to-pdf",
+              "offers": {
+                "@type": "Offer",
+                "price": "0",
+                "priceCurrency": "USD"
+              },
+              "featureList": [
+                "Convert DOC to PDF",
+                "Convert DOCX to PDF",
+                "Batch Word to PDF conversion",
+                "No watermark",
+                "Secure file processing",
+                "Works on mobile and desktop",
+                "Instant browser-based conversion"
+              ],
+              "creator": {
+                "@type": "Organization",
+                "name": "PDFLinx"
+              }
+            },
+            null,
+            2
+          ),
+        }}
+      />
       {/* ==================== MAIN TOOL SECTION ==================== */}
       <main className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50 py-8 px-4">
         <div className="max-w-4xl mx-auto">
@@ -424,6 +536,78 @@ export default function WordToPdf() {
           <li>Optimized file size for easy sharing</li>
         </ul>
 
+        {/* ==================== SEMANTIC SEO BOOST (NEW) ==================== */}
+        <div className="mt-10 space-y-10">
+
+          <div>
+            <h3 className="text-xl font-semibold text-slate-900 mb-3">
+              Word vs PDF – What’s the Difference?
+            </h3>
+            <p className="leading-7">
+              A <strong>Word document (DOC/DOCX)</strong> is editable — great for writing and updates. A <strong>PDF</strong> is a fixed-layout format,
+              made for sharing and printing. That’s why people convert <strong>Microsoft Word files to PDF</strong> when they want the same look on every device,
+              with fonts, margins, and layout staying consistent.
+            </p>
+          </div>
+
+          <div>
+            <h3 className="text-xl font-semibold text-slate-900 mb-3">
+              DOC vs DOCX – Which Converts Better?
+            </h3>
+            <p className="leading-7">
+              <strong>DOCX</strong> is the newer Word format and usually converts more accurately because it supports modern styling, images, and formatting. {" "}
+              <strong>DOC</strong> also works, but if your file has complex formatting, <strong>DOCX to PDF conversion</strong> often gives the cleanest output.
+            </p>
+          </div>
+
+          <div>
+            <h3 className="text-xl font-semibold text-slate-900 mb-3">
+              How to Convert Word to PDF Without Losing Formatting?
+            </h3>
+            <ul className="space-y-2 list-disc pl-6 leading-7">
+              <li>Prefer <strong>.docx</strong> if possible (better layout support).</li>
+              <li>Use standard fonts (or embed fonts in your Word file if you can).</li>
+              <li>Keep page size consistent (A4 / Letter) to avoid layout shift.</li>
+              <li>If your Word file has tables/images, keep them inside page margins.</li>
+            </ul>
+            <p className="leading-7 mt-3">
+              PDF Linx is built to preserve <strong>fonts, headings, tables, and images</strong> — so your Word file looks the same after converting to PDF.
+            </p>
+          </div>
+
+          <div>
+            <h3 className="text-xl font-semibold text-slate-900 mb-3">
+              Convert Large Word Files to PDF
+            </h3>
+            <p className="leading-7">
+              If you’re converting a large DOCX (many pages, images, or charts), conversion may take a bit longer.
+              Tip: after converting, you can reduce size using{" "}
+              <a href="/compress-pdf" className="text-blue-700 font-medium hover:underline">
+                Compress PDF
+              </a>{" "}
+              to make sharing easier without losing quality.
+            </p>
+          </div>
+
+          <div>
+            <h3 className="text-xl font-semibold text-slate-900 mb-3">
+              Batch Word to PDF Conversion Guide
+            </h3>
+            <p className="leading-7">
+              Need to convert multiple Word files at once? Upload up to <strong>10 DOC/DOCX</strong> files together — you’ll get a <strong>ZIP download</strong> {" "}
+              with all PDFs inside. This is perfect for resumes, assignments, office docs, and client deliverables.
+            </p>
+            <p className="leading-7 mt-2">
+              After conversion, if you want to combine outputs into one file, use{" "}
+              <a href="/merge-pdf" className="text-blue-700 font-medium hover:underline">
+                Merge PDF
+              </a>.
+            </p>
+          </div>
+
+        </div>
+        {/* ==================== /SEMANTIC SEO BOOST (NEW) ==================== */}
+
         <h3 className="text-xl font-semibold text-slate-900 mb-3">How to Convert Word to PDF Online</h3>
         <ol className="space-y-2 mb-6 list-decimal pl-6">
           <li>Upload one Word file — or select multiple Word files (DOC/DOCX)</li>
@@ -550,52 +734,52 @@ export default function WordToPdf() {
       <RelatedToolsSection currentPage="word-to-pdf" />
 
       {/* 🔗 Comparison Links */}
-        <section className="max-w-4xl mx-auto mb-16 px-4">
-          <div className="rounded-2xl border bg-white p-6 md:p-8 shadow-sm">
-            <h3 className="text-lg md:text-xl font-bold text-slate-900">
-              Compare Word to PDF tools
-            </h3>
-            <p className="mt-1 text-sm text-slate-600">
-              See how PDF Linx compares with other Word to PDF converters.
-            </p>
+      <section className="max-w-4xl mx-auto mb-16 px-4">
+        <div className="rounded-2xl border bg-white p-6 md:p-8 shadow-sm">
+          <h3 className="text-lg md:text-xl font-bold text-slate-900">
+            Compare Word to PDF tools
+          </h3>
+          <p className="mt-1 text-sm text-slate-600">
+            See how PDF Linx compares with other Word to PDF converters.
+          </p>
 
-            <div className="mt-6 grid gap-3 sm:grid-cols-2">
-              <a
-                href="/compare/pdflinx-vs-ilovepdf"
-                className="group rounded-xl border p-4 hover:border-indigo-300 hover:bg-indigo-50/40 transition"
-              >
-                <div className="flex justify-between gap-3">
-                  <div>
-                    <div className="text-sm font-semibold text-slate-900">
-                      PDF Linx vs iLovePDF
-                    </div>
-                    <div className="mt-1 text-xs text-slate-600">
-                      Free limits, ads, and output quality comparison.
-                    </div>
+          <div className="mt-6 grid gap-3 sm:grid-cols-2">
+            <a
+              href="/compare/pdflinx-vs-ilovepdf"
+              className="group rounded-xl border p-4 hover:border-indigo-300 hover:bg-indigo-50/40 transition"
+            >
+              <div className="flex justify-between gap-3">
+                <div>
+                  <div className="text-sm font-semibold text-slate-900">
+                    PDF Linx vs iLovePDF
                   </div>
-                  <span className="text-indigo-600">→</span>
+                  <div className="mt-1 text-xs text-slate-600">
+                    Free limits, ads, and output quality comparison.
+                  </div>
                 </div>
-              </a>
+                <span className="text-indigo-600">→</span>
+              </div>
+            </a>
 
-              <a
-                href="/compare/pdflinx-vs-smallpdf"
-                className="group rounded-xl border p-4 hover:border-indigo-300 hover:bg-indigo-50/40 transition"
-              >
-                <div className="flex justify-between gap-3">
-                  <div>
-                    <div className="text-sm font-semibold text-slate-900">
-                      PDF Linx vs Smallpdf
-                    </div>
-                    <div className="mt-1 text-xs text-slate-600">
-                      Pricing, daily limits, and ease of use.
-                    </div>
+            <a
+              href="/compare/pdflinx-vs-smallpdf"
+              className="group rounded-xl border p-4 hover:border-indigo-300 hover:bg-indigo-50/40 transition"
+            >
+              <div className="flex justify-between gap-3">
+                <div>
+                  <div className="text-sm font-semibold text-slate-900">
+                    PDF Linx vs Smallpdf
                   </div>
-                  <span className="text-indigo-600">→</span>
+                  <div className="mt-1 text-xs text-slate-600">
+                    Pricing, daily limits, and ease of use.
+                  </div>
                 </div>
-              </a>
-            </div>
+                <span className="text-indigo-600">→</span>
+              </div>
+            </a>
           </div>
-        </section>
+        </div>
+      </section>
 
     </>
   );
