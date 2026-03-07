@@ -119,6 +119,65 @@ export default function SplitPDF() {
           }, null, 2),
         }}
       />
+
+      <Script
+        id="faq-schema-split-pdf"
+        type="application/ld+json"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            {
+              "@context": "https://schema.org",
+              "@type": "FAQPage",
+              "mainEntity": [
+                {
+                  "@type": "Question",
+                  "name": "How do I split a PDF into individual pages?",
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Upload your PDF, click Split PDF, and download the ZIP containing individual pages."
+                  }
+                },
+                {
+                  "@type": "Question",
+                  "name": "Can I extract only specific pages from a PDF?",
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Yes. You can split a PDF and extract specific pages or page ranges easily."
+                  }
+                },
+                {
+                  "@type": "Question",
+                  "name": "Is the PDF splitter free to use?",
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Yes. PDFLinx Split PDF is completely free and works directly in your browser."
+                  }
+                },
+                {
+                  "@type": "Question",
+                  "name": "Does splitting a PDF affect quality?",
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "No. All pages keep their original quality, text, and formatting."
+                  }
+                },
+                {
+                  "@type": "Question",
+                  "name": "Can I split PDF on mobile?",
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Yes. The PDF splitter works on Android, iPhone, tablets, and desktop browsers."
+                  }
+                }
+              ]
+            },
+            null,
+            2
+          )
+        }}
+      />
+
       {/* ==================== MAIN TOOL SECTION ==================== */}
       <main className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50 py-8 px-4">
         <div className="max-w-4xl mx-auto">
@@ -175,8 +234,8 @@ export default function SplitPDF() {
             {/* Success State */}
             {success && (
               <div
-              id="download-section"  // ✅ BAS YE EK LINE ADD KARO
-              className="mt-6 p-4 bg-green-50 border-2 border-green-200 rounded-xl text-center">
+                id="download-section"  // ✅ BAS YE EK LINE ADD KARO
+                className="mt-6 p-4 bg-green-50 border-2 border-green-200 rounded-xl text-center">
                 <CheckCircle className="w-12 h-12 text-green-600 mx-auto mb-3" />
                 <p className="text-xl font-bold text-green-700 mb-2">All split!</p>
                 <p className="text-base text-gray-700 mb-3">Your pages are ready in a handy ZIP</p>
@@ -203,7 +262,7 @@ export default function SplitPDF() {
         {/* Main Heading */}
         <div className="text-center mb-12">
           <h2 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent mb-4">
-            Split PDF Online Free – Pull Out Pages in Seconds
+            Split PDF Online Free – Extract or Separate PDF Pages in Seconds
           </h2>
           <p className="text-lg text-gray-600 max-w-3xl mx-auto">
             Big PDF with just a few pages you need? Split it here – every page becomes its own file, packed in a ZIP for easy download. Fast, clean, and always free on PDF Linx!
@@ -216,7 +275,7 @@ export default function SplitPDF() {
             <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
               <Scissors className="w-8 h-8 text-white" />
             </div>
-            <h3 className="text-xl font-semibold text-gray-800 mb-3">Instant Split</h3>
+            <h3 className="text-xl font-semibold text-gray-800 mb-3">Instant PDF Splitting</h3>
             <p className="text-gray-600 text-sm">
               One click and every page is separated – ready to use.
             </p>
@@ -226,7 +285,7 @@ export default function SplitPDF() {
             <div className="w-16 h-16 bg-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
               <CheckCircle className="w-8 h-8 text-white" />
             </div>
-            <h3 className="text-xl font-semibold text-gray-800 mb-3">Quality Never Drops</h3>
+            <h3 className="text-xl font-semibold text-gray-800 mb-3">No Quality Loss</h3>
             <p className="text-gray-600 text-sm">
               Pages look exactly like the original – crisp and clear.
             </p>
@@ -236,7 +295,7 @@ export default function SplitPDF() {
             <div className="w-16 h-16 bg-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
               <Download className="w-8 h-8 text-white" />
             </div>
-            <h3 className="text-xl font-semibold text-gray-800 mb-3">Fast & Private</h3>
+            <h3 className="text-xl font-semibold text-gray-800 mb-3">Fast & Private Processing</h3>
             <p className="text-gray-600 text-sm">
               Works instantly – no sign-up, files deleted after 1 hour.
             </p>
@@ -292,10 +351,11 @@ export default function SplitPDF() {
         {/* Intro */}
         <p className="text-base leading-7 mb-6">
           Ever received a huge PDF with hundreds of pages and only needed a few specific ones?
-          Or wanted to break a big report into smaller, manageable files?
-          It’s such a pain to do it manually. That’s why we made the <span className="font-medium text-slate-900">PDFLinx Split PDF tool</span>—a completely free online splitter that lets you extract pages or divide your PDF exactly how you want, in seconds. No software, no watermarks, no complications.
+          The PDFLinx Split PDF tool lets you split PDF pages, extract specific pages,
+          or divide large PDF documents into smaller files instantly.
+          You can easily separate chapters, contracts, or scanned documents into individual PDFs
+          without installing any software.
         </p>
-
         {/* What is */}
         <h3 className="text-xl font-semibold text-slate-900 mb-3">
           What is PDF Splitting?
@@ -310,6 +370,22 @@ export default function SplitPDF() {
         <h3 className="text-xl font-semibold text-slate-900 mb-3">
           Why Split Your PDF Files?
         </h3>
+
+        <p className="leading-7 mb-4">
+          Sometimes you may also need to{" "}
+          <a href="/merge-pdf" className="text-blue-700 font-semibold hover:underline">
+            merge PDF files
+          </a>{" "}
+          to combine documents into one file,{" "}
+          <a href="/compress-pdf" className="text-blue-700 font-semibold hover:underline">
+            compress PDF
+          </a>{" "}
+          to reduce file size before sharing, or{" "}
+          <a href="/word-to-pdf" className="text-blue-700 font-semibold hover:underline">
+            convert Word to PDF
+          </a>{" "}
+          after editing documents.
+        </p>
         <ul className="space-y-2 mb-6 list-disc pl-6">
           <li>Extract only the pages you need from a large PDF</li>
           <li>Create separate files for different sections or chapters</li>
@@ -411,7 +487,7 @@ export default function SplitPDF() {
 
             <details className="bg-white rounded-lg shadow-sm p-5">
               <summary className="font-semibold cursor-pointer">
-                Can I extract just one page from a PDF?
+                Can I extract specific pages from a PDF?
               </summary>
               <p className="mt-2 text-gray-600">
                 Yes! You can select any single page or multiple pages to extract.

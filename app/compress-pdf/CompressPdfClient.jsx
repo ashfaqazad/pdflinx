@@ -133,6 +133,65 @@ export default function CompressPDF() {
           }, null, 2),
         }}
       />
+
+  <Script
+  id="faq-schema-compress-pdf"
+  type="application/ld+json"
+  strategy="afterInteractive"
+  dangerouslySetInnerHTML={{
+    __html: JSON.stringify(
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Is the PDF compressor free to use?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes — PDFLinx Compress PDF is completely free with no signup and no watermark."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Will compressing affect the quality of my PDF?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "PDFLinx uses smart compression to reduce file size while keeping text sharp and images clear. Very image-heavy PDFs may reduce slightly to meet size limits."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Can I compress multiple PDF files at once?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes. You can compress multiple PDFs in one go and download results easily. If multiple files are processed together, you may receive a ZIP download."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Are my files safe and private?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes. Files are processed securely and deleted automatically after compression."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How much can the file size be reduced?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "It depends on the PDF content, but many files shrink by 40–90% while staying readable."
+            }
+          }
+        ]
+      },
+      null,
+      2
+    )
+  }}
+/>
+
       {/* ==================== MAIN TOOL SECTION ==================== */}
       <main className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50 py-8 px-4">
         <div className="max-w-4xl mx-auto">
@@ -342,6 +401,7 @@ export default function CompressPDF() {
         <p className="text-center mt-12 text-base text-gray-600 italic max-w-3xl mx-auto">
           Folks compress PDFs daily with PDF Linx – smaller files, faster sharing, zero hassle.
         </p>
+
       </section>
 
 
@@ -379,6 +439,23 @@ export default function CompressPDF() {
         <h3 className="text-xl font-semibold text-slate-900 mb-3">
           Why Compress Your PDF Files?
         </h3>
+        
+          <p className="leading-7 mb-4">
+            If you’re preparing documents for sharing, you can also{" "}
+            <a href="/merge-pdf" className="text-blue-700 font-semibold hover:underline">
+              merge PDF files
+            </a>{" "}
+            to combine multiple documents into one,{" "}
+            <a href="/split-pdf" className="text-blue-700 font-semibold hover:underline">
+              split PDF pages
+            </a>{" "}
+            to extract only what you need, or{" "}
+            <a href="/word-to-pdf" className="text-blue-700 font-semibold hover:underline">
+              convert Word to PDF
+            </a>{" "}
+            after you edit your document.
+          </p>
+
           <ul className="space-y-2 mb-6 list-disc pl-6">
           <li>Reduce file size dramatically—often by 50-90%</li>
           <li>Send large PDFs via email without attachment limits</li>

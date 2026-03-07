@@ -150,6 +150,71 @@ export default function MergePDF() {
         }}
       />
 
+      <Script
+        id="faq-schema-merge-pdf"
+        type="application/ld+json"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            {
+              "@context": "https://schema.org",
+              "@type": "FAQPage",
+              "mainEntity": [
+                {
+                  "@type": "Question",
+                  "name": "Is the PDF merger free to use?",
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Yes — PDFLinx Merge PDF is completely free with no signup, no watermark, and no hidden charges."
+                  }
+                },
+                {
+                  "@type": "Question",
+                  "name": "Do I need to install any software to merge PDFs?",
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "No. Everything works directly in your browser on mobile, tablet, and desktop."
+                  }
+                },
+                {
+                  "@type": "Question",
+                  "name": "Can I rearrange the order before merging?",
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Yes. Arrange your files in the order you want before merging so the final PDF is in the correct sequence."
+                  }
+                },
+                {
+                  "@type": "Question",
+                  "name": "Will the quality of my PDFs be affected?",
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "No — merging keeps the original text and image quality. Your PDFs are combined without compression."
+                  }
+                },
+                {
+                  "@type": "Question",
+                  "name": "Are my files safe and private?",
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Yes. Files are processed securely and deleted automatically after merging."
+                  }
+                },
+                {
+                  "@type": "Question",
+                  "name": "Can I merge PDFs on my phone?",
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Yes. PDFLinx works smoothly on Android and iPhone, as well as Windows and macOS."
+                  }
+                }
+              ]
+            },
+            null,
+            2
+          )
+        }}
+      />
 
       {/* ==================== MAIN TOOL SECTION ==================== */}
       <main className="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 py-8 px-4">
@@ -159,9 +224,15 @@ export default function MergePDF() {
             <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent mb-4">
               Merge PDF Files Online (Free)
             </h1>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            {/* <p className="text-lg text-gray-600 max-w-2xl mx-auto">
               Need to combine a few PDFs into one? Drop them here – we’ll stitch them together perfectly. Fast, easy, and totally free!
-            </p>
+            </p> */}
+          <p className="text-gray-600 mt-3 leading-7">
+          Merge multiple PDF files into a single document online for free. 
+          Our fast and secure PDF merger lets you combine PDF documents, 
+          arrange pages in the correct order, and download one organized PDF instantly. 
+          Perfect for joining reports, invoices, contracts, or scanned documents into one file.
+          </p>
           </div>
 
           {/* Main Card */}
@@ -229,9 +300,9 @@ export default function MergePDF() {
             {/* Success State */}
             {success && (
               <div
-              id="download-section"  // ✅ BAS YE EK LINE ADD KARO
+                id="download-section"  // ✅ BAS YE EK LINE ADD KARO
 
-              className="mt-6 p-4 bg-green-50 border-2 border-green-200 rounded-xl text-center">
+                className="mt-6 p-4 bg-green-50 border-2 border-green-200 rounded-xl text-center">
                 <CheckCircle className="w-12 h-12 text-green-600 mx-auto mb-3" />
                 <p className="text-xl font-bold text-green-700 mb-2">All merged!</p>
                 <p className="text-base text-gray-700 mb-3">Your PDFs are now one perfect file</p>
@@ -365,6 +436,31 @@ export default function MergePDF() {
         <h3 className="text-xl font-semibold text-slate-900 mb-3">
           Why Merge Your PDF Files?
         </h3>
+        
+        {/* ✅ NEW semantic paragraph */}
+        <p className="leading-7 mb-4">
+        Merging PDF files is useful when you want to combine reports, invoices, forms, 
+        or scanned pages into a single document. Instead of sending multiple attachments, 
+        you can join PDF pages together to create one organized PDF file that is easier 
+        to share, upload, or archive.
+        </p>
+
+        <p className="leading-7 mb-4">
+          If you’re organizing documents for sharing, you can also{" "}
+          <a href="/split-pdf" className="text-blue-700 font-semibold hover:underline">
+            split PDF pages
+          </a>{" "}
+          to extract only what you need,{" "}
+          <a href="/compress-pdf" className="text-blue-700 font-semibold hover:underline">
+            compress PDF files
+          </a>{" "}
+          to reduce file size for email/uploads, or{" "}
+          <a href="/word-to-pdf" className="text-blue-700 font-semibold hover:underline">
+            convert Word to PDF
+          </a>{" "}
+          after you edit a document.
+        </p>
+
         <ul className="space-y-2 mb-6 list-disc pl-6">
           <li>Combine multiple PDFs into one easy-to-share file</li>
           <li>Organize scanned documents, receipts, or chapters neatly</li>

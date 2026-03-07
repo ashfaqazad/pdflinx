@@ -759,7 +759,7 @@ const handleSubmit = async (e) => {
           <li><strong>Multiple PDFs:</strong> converts all files and gives you a ZIP containing all DOCX files.</li>
         </ul>
 
-                <p className="leading-7 mb-4">
+        <p className="leading-7 mb-4">
           After converting to DOCX, you may want to send or print the edited file as a PDF again.
           Use our{" "}
           <a href="/word-to-pdf" className="text-blue-700 font-semibold hover:underline">
