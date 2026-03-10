@@ -61,6 +61,8 @@ function getWordPressCode(tool, compact) {
   return `[pdflinx tool="${tool}"${compact ? ' layout="sidebar"' : ""}]`;
 }
 
+
+
 export default function EmbedCodePage() {
   const [selectedTool, setSelectedTool] = useState("compress-pdf");
   const [selectedMode, setSelectedMode] = useState("normal");
