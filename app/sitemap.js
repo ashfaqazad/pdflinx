@@ -11,6 +11,8 @@ export default function sitemap() {
     { url: "/contact", changeFrequency: "yearly", priority: 0.5 },
     { url: "/privacy-policy", changeFrequency: "yearly", priority: 0.3 },
     { url: "/terms-and-conditions", changeFrequency: "yearly", priority: 0.3 },
+    { url: "/embed-code", changeFrequency: "monthly", priority: 0.9 },
+
     // 🔹 Comparison Pages
     { url: "/compare/pdflinx-vs-ilovepdf", changeFrequency: "monthly", priority: 0.8 },
     { url: "/compare/pdflinx-vs-smallpdf", changeFrequency: "monthly", priority: 0.8 },
@@ -66,6 +68,7 @@ export default function sitemap() {
     "/blog/pdf-to-word-formatting-messed-up",
     "/blog/how-to-edit-scanned-pdf-in-word",
     "/blog/convert-pdf-resume-to-editable-word",
+
   ].map((url) => ({ url, changeFrequency: "weekly", priority: 0.7 }));
 
   const allRoutes = [...staticRoutes, ...toolRoutes, ...blogRoutes];

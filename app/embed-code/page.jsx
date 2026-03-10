@@ -25,7 +25,11 @@ const MODES = [
 ];
 
 function getIframeCode(tool, compact) {
-  const src = `https://pdflinx.com/embed/${tool}${compact ? "?compact=true" : ""}`;
+  // const src = `https://pdflinx.com/embed/${tool}${compact ? "?compact=true" : ""}`;
+  const src = compact
+  ? `https://pdflinx.com/embed/${tool}?compact=true&ref=embed`
+  : `https://pdflinx.com/embed/${tool}?ref=embed`;
+
   const width  = compact ? "340" : "680";
   const height = compact ? "380" : "480";
   return `<iframe
