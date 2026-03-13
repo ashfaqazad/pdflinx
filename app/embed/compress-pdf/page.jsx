@@ -3,6 +3,7 @@
 
 import CompressPdfCore from "@/app/compress-pdf/CompressPdfCore";
 
+
 export const metadata = {
   title: "Compress PDF - PDFLinx",
   robots: "noindex",

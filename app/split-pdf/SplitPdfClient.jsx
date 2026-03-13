@@ -5,6 +5,10 @@ import { useState, useRef } from "react";
 import { Upload, Download, CheckCircle, Scissors } from "lucide-react";
 import Script from "next/script";
 import RelatedToolsSection from "@/components/RelatedTools";
+import { useProgressBar } from "@/hooks/useProgressBar";
+import ProgressButton from "@/components/ProgressButton";
+// import { Upload, FileText, Download, CheckCircle, X, Files } from "lucide-react";
+import { Files } from "lucide-react";
 
 
 
@@ -15,14 +19,57 @@ export default function SplitPDF() {
   const [downloadUrl, setDownloadUrl] = useState("");
   const [success, setSuccess] = useState(false);
   const fileInputRef = useRef(null);
+  const { progress, isLoading, startProgress, completeProgress, cancelProgress } = useProgressBar();
+
+
 
   const handleFileChange = (e) => setFile(e.target.files[0] || null);
+
+  // const handleSplit = async (e) => {
+  //   e.preventDefault();
+  //   if (!file) return alert("Please select a PDF file");
+
+  //   setLoading(true);
+  //   setDownloadUrl("");
+  //   setSuccess(false);
+
+  //   const formData = new FormData();
+  //   formData.append("file", file);
+
+  //   try {
+  //     const res = await fetch("/convert/split-pdf", { method: "POST", body: formData });
+  //     const data = await res.json();
+
+  //     if (data.success) {
+  //       setDownloadUrl(`/api${data.download}`);
+  //       setSuccess(true);
+  //       // ✅ YE 8 LINES ADD KARO
+  //       setTimeout(() => {
+  //         const downloadSection = document.getElementById('download-section');
+  //         if (downloadSection) {
+  //           downloadSection.scrollIntoView({
+  //             behavior: 'smooth',
+  //             block: 'center'
+  //           });
+  //         }
+  //       }, 300);
+
+  //     } else {
+  //       alert("Split failed: " + (data.error || "Try again"));
+  //     }
+  //   } catch (error) {
+  //     alert("Something went wrong. Please try again.");
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
 
   const handleSplit = async (e) => {
     e.preventDefault();
     if (!file) return alert("Please select a PDF file");
 
-    setLoading(true);
+    startProgress();        // ← setLoading(true) ki jagah
+
     setDownloadUrl("");
     setSuccess(false);
 
@@ -35,8 +82,11 @@ export default function SplitPDF() {
 
       if (data.success) {
         setDownloadUrl(`/api${data.download}`);
+        completeProgress();   // ← setLoading(false) ki jagah
+
         setSuccess(true);
-        // ✅ YE 8 LINES ADD KARO
+
+        // ✅ Scroll wali lines same rakhi
         setTimeout(() => {
           const downloadSection = document.getElementById('download-section');
           if (downloadSection) {
@@ -48,14 +98,17 @@ export default function SplitPDF() {
         }, 300);
 
       } else {
+        cancelProgress();     // ← error pe
         alert("Split failed: " + (data.error || "Try again"));
       }
     } catch (error) {
+      cancelProgress();       // ← catch pe
       alert("Something went wrong. Please try again.");
-    } finally {
-      setLoading(false);
+      console.error(error);
     }
+    // finally block hata diya — hook khud handle karta hai
   };
+
 
   const handleDownload = async () => {
     if (!downloadUrl) return;
@@ -215,7 +268,7 @@ export default function SplitPDF() {
               </div>
 
               {/* Split Button */}
-              <button
+              {/* <button
                 type="submit"
                 disabled={loading || !file}
                 className="w-full bg-gradient-to-r from-blue-600 to-green-600 text-white font-semibold text-lg py-4 rounded-xl hover:from-blue-700 hover:to-green-700 disabled:opacity-60 disabled:cursor-not-allowed transition shadow-md flex items-center justify-center gap-2"
@@ -228,7 +281,17 @@ export default function SplitPDF() {
                     Split PDF
                   </>
                 )}
-              </button>
+              </button> */}
+              <ProgressButton
+                isLoading={isLoading}
+                progress={progress}
+                disabled={!file}                    // ← split ke liye single file check
+                icon={<Files className="w-5 h-5" />} // jo bhi icon use kar rahe ho
+                label="Split PDF Now"
+                gradient="from-indigo-600 to-purple-600"  // apna tool ka color yahan daal do
+                type="button"                       // ← important (form nahi hai)
+                onClick={handleSplit}               // ← important
+              />
             </form>
 
             {/* Success State */}

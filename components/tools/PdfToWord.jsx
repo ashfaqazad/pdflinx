@@ -5,6 +5,9 @@ import { useState } from "react";
 import { Upload, Download, CheckCircle, FileText } from "lucide-react";
 import Script from "next/script";
 import RelatedToolsSection from "@/components/RelatedTools";
+import { useProgressBar } from "@/hooks/useProgressBar";
+import ProgressButton from "@/components/ProgressButton";
+
 
 // export default function PdfToWord() {
 export default function PdfToWord({ seo }) {
@@ -13,250 +16,381 @@ export default function PdfToWord({ seo }) {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState("");
-  const [progress, setProgress] = useState(0);
+  // const [progress, setProgress] = useState(0);
   const [enableOcr, setEnableOcr] = useState(false);
+  const { progress, isLoading, startProgress, completeProgress, cancelProgress } = useProgressBar();
 
 
   // ✅ only for ZIP downloads (multiple files)
   const [downloadUrl, setDownloadUrl] = useState(null);
 
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
-  if (!files.length) return alert("Please select at least one PDF file");
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   if (!files.length) return alert("Please select at least one PDF file");
 
-  setLoading(true);
-  setSuccess(false);
-  setError("");
-  setProgress(0);
+  //   setLoading(true);
+  //   setSuccess(false);
+  //   setError("");
+  //   setProgress(0);
 
-  const formData = new FormData();
-  files.forEach((f) => formData.append("files", f));
-  formData.append("enable_ocr", enableOcr ? "1" : "0");
+  //   const formData = new FormData();
+  //   files.forEach((f) => formData.append("files", f));
+  //   formData.append("enable_ocr", enableOcr ? "1" : "0");
 
-  const pollIntervalMs = 1500;
-  const maxWaitMs = 15 * 60 * 1000;
-  const startedAt = Date.now();
+  //   const pollIntervalMs = 1500;
+  //   const maxWaitMs = 15 * 60 * 1000;
+  //   const startedAt = Date.now();
 
-  // Helper: fetch JSON with better errors
-  const fetchJson = async (url, options) => {
-    const r = await fetch(url, { cache: "no-store", ...options });
-    const ct = r.headers.get("content-type") || "";
-    let payload = null;
+  //   // Helper: fetch JSON with better errors
+  //   const fetchJson = async (url, options) => {
+  //     const r = await fetch(url, { cache: "no-store", ...options });
+  //     const ct = r.headers.get("content-type") || "";
+  //     let payload = null;
 
-    if (ct.includes("json")) {
-      try { payload = await r.json(); } catch {}
-    }
+  //     if (ct.includes("json")) {
+  //       try { payload = await r.json(); } catch { }
+  //     }
 
-    if (!r.ok) {
-      const msg =
-        payload?.detail || payload?.error || `Request failed ${r.status} ${r.statusText}`;
-      const err = new Error(msg);
-      err.status = r.status;
-      err.payload = payload;
-      throw err;
-    }
+  //     if (!r.ok) {
+  //       const msg =
+  //         payload?.detail || payload?.error || `Request failed ${r.status} ${r.statusText}`;
+  //       const err = new Error(msg);
+  //       err.status = r.status;
+  //       err.payload = payload;
+  //       throw err;
+  //     }
 
-    return payload ?? {};
-  };
+  //     return payload ?? {};
+  //   };
 
-  // Helper: download file as blob (safer than window.location.href)
-  const downloadViaBlob = async (url, filenameFallback) => {
-    const r = await fetch(url, { cache: "no-store" });
-    if (!r.ok) throw new Error(`Download failed ${r.status}`);
+  //   // Helper: download file as blob (safer than window.location.href)
+  //   const downloadViaBlob = async (url, filenameFallback) => {
+  //     const r = await fetch(url, { cache: "no-store" });
+  //     if (!r.ok) throw new Error(`Download failed ${r.status}`);
 
-    const blob = await r.blob();
-    const urlObj = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = urlObj;
+  //     const blob = await r.blob();
+  //     const urlObj = URL.createObjectURL(blob);
+  //     const a = document.createElement("a");
+  //     a.href = urlObj;
 
-    // Try filename from header if present
-    const cd = r.headers.get("content-disposition") || "";
-    const match = cd.match(/filename\*?=(?:UTF-8''|")?([^;"\n]+)"?/i);
-    const filename = match ? decodeURIComponent(match[1]) : filenameFallback;
+  //     // Try filename from header if present
+  //     const cd = r.headers.get("content-disposition") || "";
+  //     const match = cd.match(/filename\*?=(?:UTF-8''|")?([^;"\n]+)"?/i);
+  //     const filename = match ? decodeURIComponent(match[1]) : filenameFallback;
 
-    a.download = filename || "pdflinx-download";
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-    URL.revokeObjectURL(urlObj);
-  };
+  //     a.download = filename || "pdflinx-download";
+  //     document.body.appendChild(a);
+  //     a.click();
+  //     a.remove();
+  //     URL.revokeObjectURL(urlObj);
+  //   };
 
-  // Try /api first (Next/Python), fallback to /convert (Node) if 404
-  const getJobStatus = async (jobId) => {
-    try {
-      return await fetchJson(`/api/convert/job/${jobId}`);
-    } catch (err) {
-      if (err?.status === 404) {
-        return await fetchJson(`/convert/job/${jobId}`);
-      }
-      throw err;
-    }
-  };
+  //   // Try /api first (Next/Python), fallback to /convert (Node) if 404
+  //   const getJobStatus = async (jobId) => {
+  //     try {
+  //       return await fetchJson(`/api/convert/job/${jobId}`);
+  //     } catch (err) {
+  //       if (err?.status === 404) {
+  //         return await fetchJson(`/convert/job/${jobId}`);
+  //       }
+  //       throw err;
+  //     }
+  //   };
 
-  const downloadResult = async (jobId) => {
-    // same fallback logic
-    try {
-      await downloadViaBlob(`/api/convert/download/${jobId}`, "pdflinx-pdf-to-word.docx");
-    } catch (err) {
-      if (err?.message?.includes("404")) {
-        await downloadViaBlob(`/convert/download/${jobId}`, "pdflinx-pdf-to-word.docx");
-        return;
-      }
-      // if API download failed for non-404, try convert once as well
-      try {
-        await downloadViaBlob(`/convert/download/${jobId}`, "pdflinx-pdf-to-word.docx");
-      } catch {
-        throw err;
-      }
-    }
-  };
+  //   const downloadResult = async (jobId) => {
+  //     // same fallback logic
+  //     try {
+  //       await downloadViaBlob(`/api/convert/download/${jobId}`, "pdflinx-pdf-to-word.docx");
+  //     } catch (err) {
+  //       if (err?.message?.includes("404")) {
+  //         await downloadViaBlob(`/convert/download/${jobId}`, "pdflinx-pdf-to-word.docx");
+  //         return;
+  //       }
+  //       // if API download failed for non-404, try convert once as well
+  //       try {
+  //         await downloadViaBlob(`/convert/download/${jobId}`, "pdflinx-pdf-to-word.docx");
+  //       } catch {
+  //         throw err;
+  //       }
+  //     }
+  //   };
 
-  // Poll using setTimeout to avoid overlapping async calls
-  // let stopped = false;
-  // const poll = async (jobId) => {
-  //   if (stopped) return;
 
-  //   if (Date.now() - startedAt > maxWaitMs) {
-  //     setLoading(false);
-  //     setError("Conversion timeout. Please try again.");
-  //     return;
-  //   }
+  //   // Poll using setTimeout to avoid overlapping async calls
+  //   let stopped = false;
+  //   const poll = async (jobId) => {
+  //     if (stopped) return;
+
+  //     if (Date.now() - startedAt > maxWaitMs) {
+  //       setLoading(false);
+  //       setError("Conversion timeout. Please try again.");
+  //       return;
+  //     }
+
+  //     try {
+  //       const statusData = await getJobStatus(jobId);
+
+  //       const status = statusData?.status;
+  //       if (status === "queued") {
+  //         setProgress(0);
+  //       } else if (status === "processing") {
+  //         setProgress(statusData?.progress ?? 10);
+
+  //       } else if (status === "done") {
+  //         setProgress(100);
+  //         setFiles([]);
+  //         await downloadResult(jobId);  // pehle download
+  //         setSuccess(true);             // tab success message
+  //         setLoading(false);
+  //         return;
+
+  //       } else if (status === "failed") {
+  //         setLoading(false);
+  //         setError(statusData?.error || "Conversion failed on server");
+  //         return;
+  //       } else {
+  //         // unknown status
+  //         setProgress((p) => Math.max(p, 5));
+  //       }
+
+  //       setTimeout(() => poll(jobId), pollIntervalMs);
+  //     } catch (err) {
+  //       setLoading(false);
+  //       setError(err?.message || "Polling failed");
+  //     }
+  //   };
 
   //   try {
-  //     const statusData = await getJobStatus(jobId);
+  //     const res = await fetch("/convert/pdf-to-word", { method: "POST", body: formData });
+  //     // const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/convert/pdf-to-word`, { method: "POST", body: formData });
+  //     const ct = res.headers.get("content-type") || "";
 
-  //     const status = statusData?.status;
-  //     if (status === "queued") {
-  //       setProgress(0);
-  //     } else if (status === "processing") {
-  //       setProgress(statusData?.progress ?? 10);
+  //     if (!res.ok) {
+  //       let msg = `Server error ${res.status}`;
+  //       if (ct.includes("json")) {
+  //         try {
+  //           const err = await res.json();
+  //           msg = err.detail || err.error || msg;
+  //         } catch { }
+  //       }
+  //       throw new Error(msg);
+  //     }
 
-  //     } else if (status === "done") {
+  //     // CASE A: ZIP directly
+  //     if (ct.includes("application/zip") || ct.includes("zip")) {
+  //       const blob = await res.blob();
+  //       const url = URL.createObjectURL(blob);
+
+  //       const a = document.createElement("a");
+  //       a.href = url;
+  //       a.download = "pdflinx-pdf-to-word.zip";
+  //       document.body.appendChild(a);
+  //       a.click();
+  //       a.remove();
+  //       URL.revokeObjectURL(url);
+
   //       setProgress(100);
   //       setSuccess(true);
   //       setFiles([]);
   //       setLoading(false);
-
-  //       // download
-  //       await downloadResult(jobId);
   //       return;
-      
-  //     } else if (status === "failed") {
-  //       setLoading(false);
-  //       setError(statusData?.error || "Conversion failed on server");
-  //       return;
-  //     } else {
-  //       // unknown status
-  //       setProgress((p) => Math.max(p, 5));
   //     }
 
-  //     setTimeout(() => poll(jobId), pollIntervalMs);
+  //     // CASE B: JSON job
+  //     if (!ct.includes("json")) {
+  //       throw new Error(`Unexpected response type: ${ct}`);
+  //     }
+
+  //     const data = await res.json();
+  //     const jobId = data?.jobId;
+  //     if (!jobId) throw new Error("Job ID not received from server");
+
+  //     // start polling
+  //     poll(jobId);
   //   } catch (err) {
+  //     stopped = true;
   //     setLoading(false);
-  //     setError(err?.message || "Polling failed");
+  //     setError(err?.message || "Something went wrong");
   //   }
   // };
 
-  // Poll using setTimeout to avoid overlapping async calls
-  let stopped = false;
-  const poll = async (jobId) => {
-    if (stopped) return;
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!files.length) return alert("Please select at least one PDF file");
 
-    if (Date.now() - startedAt > maxWaitMs) {
-      setLoading(false);
-      setError("Conversion timeout. Please try again.");
-      return;
-    }
+    startProgress();        // ← setLoading(true) + setProgress(0) ki jagah
+    setSuccess(false);
+    setError("");
 
-    try {
-      const statusData = await getJobStatus(jobId);
+    const formData = new FormData();
+    files.forEach((f) => formData.append("files", f));
+    formData.append("enable_ocr", enableOcr ? "1" : "0");
 
-      const status = statusData?.status;
-      if (status === "queued") {
-        setProgress(0);
-      } else if (status === "processing") {
-        setProgress(statusData?.progress ?? 10);
+    const pollIntervalMs = 1500;
+    const maxWaitMs = 15 * 60 * 1000;
+    const startedAt = Date.now();
 
-      } else if (status === "done") {
-        setProgress(100);
-        setFiles([]);
-        await downloadResult(jobId);  // pehle download
-        setSuccess(true);             // tab success message
-        setLoading(false);
-        return;
-      
-      } else if (status === "failed") {
-        setLoading(false);
-        setError(statusData?.error || "Conversion failed on server");
-        return;
-      } else {
-        // unknown status
-        setProgress((p) => Math.max(p, 5));
-      }
+    // Helper: fetch JSON with better errors
+    const fetchJson = async (url, options) => {
+      const r = await fetch(url, { cache: "no-store", ...options });
+      const ct = r.headers.get("content-type") || "";
+      let payload = null;
 
-      setTimeout(() => poll(jobId), pollIntervalMs);
-    } catch (err) {
-      setLoading(false);
-      setError(err?.message || "Polling failed");
-    }
-  };
-
-  try {
-    const res = await fetch("/convert/pdf-to-word", { method: "POST", body: formData });
-    // const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/convert/pdf-to-word`, { method: "POST", body: formData });
-    const ct = res.headers.get("content-type") || "";
-
-    if (!res.ok) {
-      let msg = `Server error ${res.status}`;
       if (ct.includes("json")) {
-        try {
-          const err = await res.json();
-          msg = err.detail || err.error || msg;
-        } catch {}
+        try { payload = await r.json(); } catch { }
       }
-      throw new Error(msg);
-    }
 
-    // CASE A: ZIP directly
-    if (ct.includes("application/zip") || ct.includes("zip")) {
-      const blob = await res.blob();
-      const url = URL.createObjectURL(blob);
+      if (!r.ok) {
+        const msg =
+          payload?.detail || payload?.error || `Request failed ${r.status} ${r.statusText}`;
+        const err = new Error(msg);
+        err.status = r.status;
+        err.payload = payload;
+        throw err;
+      }
 
+      return payload ?? {};
+    };
+
+    // Helper: download file as blob
+    const downloadViaBlob = async (url, filenameFallback) => {
+      const r = await fetch(url, { cache: "no-store" });
+      if (!r.ok) throw new Error(`Download failed ${r.status}`);
+
+      const blob = await r.blob();
+      const urlObj = URL.createObjectURL(blob);
       const a = document.createElement("a");
-      a.href = url;
-      a.download = "pdflinx-pdf-to-word.zip";
+      a.href = urlObj;
+
+      const cd = r.headers.get("content-disposition") || "";
+      const match = cd.match(/filename\*?=(?:UTF-8''|")?([^;"\n]+)"?/i);
+      const filename = match ? decodeURIComponent(match[1]) : filenameFallback;
+
+      a.download = filename || "pdflinx-download";
       document.body.appendChild(a);
       a.click();
       a.remove();
-      URL.revokeObjectURL(url);
+      URL.revokeObjectURL(urlObj);
+    };
 
-      setProgress(100);
-      setSuccess(true);
-      setFiles([]);
-      setLoading(false);
-      return;
+    const getJobStatus = async (jobId) => {
+      try {
+        return await fetchJson(`/api/convert/job/${jobId}`);
+      } catch (err) {
+        if (err?.status === 404) {
+          return await fetchJson(`/convert/job/${jobId}`);
+        }
+        throw err;
+      }
+    };
+
+    const downloadResult = async (jobId) => {
+      try {
+        await downloadViaBlob(`/api/convert/download/${jobId}`, "pdflinx-pdf-to-word.docx");
+      } catch (err) {
+        if (err?.message?.includes("404")) {
+          await downloadViaBlob(`/convert/download/${jobId}`, "pdflinx-pdf-to-word.docx");
+          return;
+        }
+        try {
+          await downloadViaBlob(`/convert/download/${jobId}`, "pdflinx-pdf-to-word.docx");
+        } catch {
+          throw err;
+        }
+      }
+    };
+
+    let stopped = false;
+    const poll = async (jobId) => {
+      if (stopped) return;
+
+      if (Date.now() - startedAt > maxWaitMs) {
+        cancelProgress();     // ← setLoading(false) ki jagah
+        setError("Conversion timeout. Please try again.");
+        return;
+      }
+
+      try {
+        const statusData = await getJobStatus(jobId);
+        const status = statusData?.status;
+
+        if (status === "queued") {
+          // progress bar apna kaam kar raha hai, kuch nahi karna
+        } else if (status === "processing") {
+          // hook ka progress chal raha hai, override nahi karna
+
+        } else if (status === "done") {
+          setFiles([]);
+          await downloadResult(jobId);
+          completeProgress();   // ← setProgress(100) + setLoading(false) ki jagah
+          setSuccess(true);
+          return;
+
+        } else if (status === "failed") {
+          cancelProgress();     // ← setLoading(false) ki jagah
+          setError(statusData?.error || "Conversion failed on server");
+          return;
+        }
+
+        setTimeout(() => poll(jobId), pollIntervalMs);
+      } catch (err) {
+        cancelProgress();       // ← setLoading(false) ki jagah
+        setError(err?.message || "Polling failed");
+      }
+    };
+
+    try {
+      const res = await fetch("/convert/pdf-to-word", { method: "POST", body: formData });
+      const ct = res.headers.get("content-type") || "";
+
+      if (!res.ok) {
+        let msg = `Server error ${res.status}`;
+        if (ct.includes("json")) {
+          try {
+            const err = await res.json();
+            msg = err.detail || err.error || msg;
+          } catch { }
+        }
+        throw new Error(msg);
+      }
+
+      // CASE A: ZIP directly
+      if (ct.includes("application/zip") || ct.includes("zip")) {
+        const blob = await res.blob();
+        const url = URL.createObjectURL(blob);
+
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "pdflinx-pdf-to-word.zip";
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url);
+
+        completeProgress();   // ← setProgress(100) + setLoading(false) ki jagah
+        setSuccess(true);
+        setFiles([]);
+        return;
+      }
+
+      // CASE B: JSON job
+      if (!ct.includes("json")) {
+        throw new Error(`Unexpected response type: ${ct}`);
+      }
+
+      const data = await res.json();
+      const jobId = data?.jobId;
+      if (!jobId) throw new Error("Job ID not received from server");
+
+      poll(jobId);
+
+    } catch (err) {
+      stopped = true;
+      cancelProgress();         // ← setLoading(false) ki jagah
+      setError(err?.message || "Something went wrong");
     }
-
-    // CASE B: JSON job
-    if (!ct.includes("json")) {
-      throw new Error(`Unexpected response type: ${ct}`);
-    }
-
-    const data = await res.json();
-    const jobId = data?.jobId;
-    if (!jobId) throw new Error("Job ID not received from server");
-
-    // start polling
-    poll(jobId);
-  } catch (err) {
-    stopped = true;
-    setLoading(false);
-    setError(err?.message || "Something went wrong");
-  }
-};
-
-
+  };
 
   // ✅ Only for ZIP downloads (multiple PDFs)
   const handleDownloadZip = async () => {
@@ -347,71 +481,71 @@ const handleSubmit = async (e) => {
           ),
         }}
       />
-    <Script
-  id="faq-schema-pdf-to-word"
-  type="application/ld+json"
-  strategy="afterInteractive"
-  dangerouslySetInnerHTML={{
-    __html: JSON.stringify(
-      {
-        "@context": "https://schema.org",
-        "@type": "FAQPage",
-        "mainEntity": [
-          {
-            "@type": "Question",
-            "name": "Is the PDF to Word converter free to use?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "Yes. PDFLinx provides a completely free PDF to Word converter with no signup and no watermark."
-            }
-          },
-          {
-            "@type": "Question",
-            "name": "Do I need to install any software?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "No installation is required. The tool works directly in your browser on mobile, tablet, and desktop."
-            }
-          },
-          {
-            "@type": "Question",
-            "name": "Will formatting stay the same after conversion?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "Most formatting such as text, tables, and images is preserved. Very complex PDFs may need small adjustments after conversion."
-            }
-          },
-          {
-            "@type": "Question",
-            "name": "Can I convert scanned PDFs to editable Word documents?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "Yes. Enable OCR to extract text from scanned or image-based PDFs and convert them into editable Word documents."
-            }
-          },
-          {
-            "@type": "Question",
-            "name": "Can I convert multiple PDFs to Word at the same time?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "Yes. Upload multiple PDF files and they will be converted together. You will receive a ZIP file containing all DOCX documents."
-            }
-          },
-          {
-            "@type": "Question",
-            "name": "Are my files safe and private?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "Yes. Files are processed securely and automatically removed after processing to protect your privacy."
-            }
-          }
-        ]
-      },
-      null,
-      2
-    )
-  }}
-/>
+      <Script
+        id="faq-schema-pdf-to-word"
+        type="application/ld+json"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            {
+              "@context": "https://schema.org",
+              "@type": "FAQPage",
+              "mainEntity": [
+                {
+                  "@type": "Question",
+                  "name": "Is the PDF to Word converter free to use?",
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Yes. PDFLinx provides a completely free PDF to Word converter with no signup and no watermark."
+                  }
+                },
+                {
+                  "@type": "Question",
+                  "name": "Do I need to install any software?",
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "No installation is required. The tool works directly in your browser on mobile, tablet, and desktop."
+                  }
+                },
+                {
+                  "@type": "Question",
+                  "name": "Will formatting stay the same after conversion?",
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Most formatting such as text, tables, and images is preserved. Very complex PDFs may need small adjustments after conversion."
+                  }
+                },
+                {
+                  "@type": "Question",
+                  "name": "Can I convert scanned PDFs to editable Word documents?",
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Yes. Enable OCR to extract text from scanned or image-based PDFs and convert them into editable Word documents."
+                  }
+                },
+                {
+                  "@type": "Question",
+                  "name": "Can I convert multiple PDFs to Word at the same time?",
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Yes. Upload multiple PDF files and they will be converted together. You will receive a ZIP file containing all DOCX documents."
+                  }
+                },
+                {
+                  "@type": "Question",
+                  "name": "Are my files safe and private?",
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Yes. Files are processed securely and automatically removed after processing to protect your privacy."
+                  }
+                }
+              ]
+            },
+            null,
+            2
+          )
+        }}
+      />
       {/* ==================== MAIN TOOL SECTION ==================== */}
       <main className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50 py-8 px-4">
         <div className="max-w-4xl mx-auto">
@@ -419,10 +553,10 @@ const handleSubmit = async (e) => {
           {/* Header */}
           <div className="text-center mb-8">
 
-              <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent mb-4">
-                
-                {seo?.h1 || "PDF to Word Converter (Free & Online)"}
-              </h1>
+            <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent mb-4">
+
+              {seo?.h1 || "PDF to Word Converter (Free & Online)"}
+            </h1>
 
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
               {seo?.hero?.subtitle || "Upload a PDF and convert it to an editable Word (DOCX). Clean output, no watermark, no signup. Single + bulk supported."}
@@ -431,7 +565,7 @@ const handleSubmit = async (e) => {
               </span>
             </p>
 
-              {/* <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            {/* <p className="text-lg text-gray-600 max-w-2xl mx-auto">
                 {seo?.hero?.subtitle || "Got a PDF you need to edit? Upload one file for a quick DOCX..."}
               </p> */}
 
@@ -457,7 +591,7 @@ const handleSubmit = async (e) => {
               Please check back shortly — <strong>PDFLinx</strong> will be ready for you.
             </p>
           </div>  */}
- 
+
 
           {/* Main Card */}
           <div className="bg-white rounded-2xl shadow-lg p-8 border border-gray-100">
@@ -466,11 +600,10 @@ const handleSubmit = async (e) => {
               <div className="relative">
                 <label className="block">
                   <div
-                    className={`border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition-all ${
-                      files.length
-                        ? "border-green-500 bg-green-50"
-                        : "border-gray-300 hover:border-blue-500 hover:bg-blue-50"
-                    }`}
+                    className={`border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition-all ${files.length
+                      ? "border-green-500 bg-green-50"
+                      : "border-gray-300 hover:border-blue-500 hover:bg-blue-50"
+                      }`}
                   >
                     <Upload className="w-12 h-12 mx-auto mb-3 text-blue-600" />
                     <p className="text-lg font-semibold text-gray-700">
@@ -513,9 +646,9 @@ const handleSubmit = async (e) => {
                 </div>
               </div>
 
-                {/* Convert Button */}
-                
-                <button
+              {/* Convert Button */}
+
+              {/* <button
                   type="submit"
                   disabled={loading || !files.length}
                   className="w-full bg-gradient-to-r from-blue-600 to-green-600 text-white font-semibold text-lg py-4 rounded-xl hover:from-blue-700 hover:to-green-700 disabled:opacity-60 disabled:cursor-not-allowed transition shadow-md flex items-center justify-center gap-2"
@@ -528,66 +661,74 @@ const handleSubmit = async (e) => {
                       Convert to Word
                     </>
                   )} 
-                 </button> 
+                 </button>  */}
+
+              <ProgressButton
+                isLoading={isLoading}
+                progress={progress}
+                disabled={!files.length}
+                icon={<FileText className="w-5 h-5" />}
+                label="Convert to Word"
+                gradient="from-blue-600 to-green-600"
+              />
 
 
-
-                {/* <button
+              {/* <button
                   disabled
                   className="w-full cursor-not-allowed rounded-lg bg-gray-300 py-3 text-sm font-semibold text-gray-600"
                 >
                   Temporarily Unavailable
                 </button>
  */}
-                
 
-                {/* UX Notice (✅ button ke neeche, form ke andar) */}
-                <div className="text-sm text-gray-600 text-center mt-4 space-y-1">
-                  <p>
-                    ⏱️ <strong>Multiple files conversion may take up to 1 minute.</strong> Please don’t close this tab.
-                  </p>
-                  <p>
-                    🔢 You can convert up to <strong>10 PDF files at once</strong>.
-                  </p>
-                </div>
-                </form>
 
-          
+              {/* UX Notice (✅ button ke neeche, form ke andar) */}
+              <div className="text-sm text-gray-600 text-center mt-4 space-y-1">
+                <p>
+                  ⏱️ <strong>Multiple files conversion may take up to 1 minute.</strong> Please don’t close this tab.
+                </p>
+                <p>
+                  🔢 You can convert up to <strong>10 PDF files at once</strong>.
+                </p>
+              </div>
+            </form>
 
-                  {/* MS Word Compatibility Notice (✅ form ke baad, bilkul sahi) */}
-                  <div className="mt-6 bg-blue-50 border border-blue-200 rounded-xl p-4 text-sm text-gray-700">
-                    <p className="font-semibold mb-1">ℹ️ Microsoft Word Compatibility</p>
-                    <ul className="list-disc pl-5 space-y-1">
-                      <li>
-                        Converted files open best in <strong>Microsoft Word 2013 or newer</strong>.
-                      </li>
-                      <li>
-                        When opening the file, click <strong>“Enable Editing”</strong> if prompted.
-                      </li>
-                      <li>
-                        Older versions of Word may not fully support modern DOCX files.
-                      </li>
-                    </ul>
-                  </div>
+
+
+            {/* MS Word Compatibility Notice (✅ form ke baad, bilkul sahi) */}
+            <div className="mt-6 bg-blue-50 border border-blue-200 rounded-xl p-4 text-sm text-gray-700">
+              <p className="font-semibold mb-1">ℹ️ Microsoft Word Compatibility</p>
+              <ul className="list-disc pl-5 space-y-1">
+                <li>
+                  Converted files open best in <strong>Microsoft Word 2013 or newer</strong>.
+                </li>
+                <li>
+                  When opening the file, click <strong>“Enable Editing”</strong> if prompted.
+                </li>
+                <li>
+                  Older versions of Word may not fully support modern DOCX files.
+                </li>
+              </ul>
+            </div>
 
 
 
             {success && (
-          <div className="mt-6 p-4 bg-green-50 border-2 border-green-200 rounded-xl text-center">
-            <CheckCircle className="w-12 h-12 text-green-600 mx-auto mb-3" />
-            <p className="text-xl font-bold text-green-700 mb-2">
-              Done! Your file(s) downloaded automatically 🎉
-            </p>
-            <p className="text-base text-gray-700">
-              {files.length === 1 
-                ? "Check your downloads for the editable Word file." 
-                : "Check your downloads – ZIP contains all converted DOCX files."}
-            </p>
+              <div className="mt-6 p-4 bg-green-50 border-2 border-green-200 rounded-xl text-center">
+                <CheckCircle className="w-12 h-12 text-green-600 mx-auto mb-3" />
+                <p className="text-xl font-bold text-green-700 mb-2">
+                  Done! Your file(s) downloaded automatically 🎉
+                </p>
+                <p className="text-base text-gray-700">
+                  {files.length === 1
+                    ? "Check your downloads for the editable Word file."
+                    : "Check your downloads – ZIP contains all converted DOCX files."}
+                </p>
+              </div>
+
+
+            )}
           </div>
-
-
-        )}
-    </div>
 
           {/* Footer */}
           <p className="text-center mt-6 text-gray-600 text-base">
@@ -680,42 +821,42 @@ const handleSubmit = async (e) => {
         </div>
 
 
-      {/* 🔗 Contextual Links (PDF to Word) */}
-      <div className="mt-10 bg-white p-6 md:p-8 shadow-sm">
-        <h3 className="text-lg md:text-xl font-bold text-slate-900">
-          Need to create a PDF too?
-        </h3>
-        <p className="mt-1 text-sm text-slate-600">
-          Many workflows go both ways — convert documents into PDF, then edit PDFs back in Word.
-        </p>
+        {/* 🔗 Contextual Links (PDF to Word) */}
+        <div className="mt-10 bg-white p-6 md:p-8 shadow-sm">
+          <h3 className="text-lg md:text-xl font-bold text-slate-900">
+            Need to create a PDF too?
+          </h3>
+          <p className="mt-1 text-sm text-slate-600">
+            Many workflows go both ways — convert documents into PDF, then edit PDFs back in Word.
+          </p>
 
-        <ul className="mt-4 space-y-2 text-sm">
-          <li>
-            <a href="/word-to-pdf" className="text-blue-700 font-semibold hover:underline">
-              convert Word to PDF
-            </a>{" "}
-            <span className="text-slate-600">— turn DOC/DOCX into PDF without losing formatting.</span>
-          </li>
-          <li>
-            <a href="/excel-to-pdf" className="text-blue-700 font-semibold hover:underline">
-              Excel to PDF Converter
-            </a>{" "}
-            <span className="text-slate-600">— convert XLS/XLSX spreadsheets to PDF.</span>
-          </li>
-          <li>
-            <a href="/ppt-to-pdf" className="text-blue-700 font-semibold hover:underline">
-              PPT to PDF Converter
-            </a>{" "}
-            <span className="text-slate-600">— export PowerPoint slides into PDF instantly.</span>
-          </li>
-          <li>
-            <a href="/free-pdf-tools" className="text-blue-700 font-semibold hover:underline">
-              Browse all PDF tools
-            </a>{" "}
-            <span className="text-slate-600">— merge, split, compress, protect & more.</span>
-          </li>
-        </ul>
-      </div>
+          <ul className="mt-4 space-y-2 text-sm">
+            <li>
+              <a href="/word-to-pdf" className="text-blue-700 font-semibold hover:underline">
+                convert Word to PDF
+              </a>{" "}
+              <span className="text-slate-600">— turn DOC/DOCX into PDF without losing formatting.</span>
+            </li>
+            <li>
+              <a href="/excel-to-pdf" className="text-blue-700 font-semibold hover:underline">
+                Excel to PDF Converter
+              </a>{" "}
+              <span className="text-slate-600">— convert XLS/XLSX spreadsheets to PDF.</span>
+            </li>
+            <li>
+              <a href="/ppt-to-pdf" className="text-blue-700 font-semibold hover:underline">
+                PPT to PDF Converter
+              </a>{" "}
+              <span className="text-slate-600">— export PowerPoint slides into PDF instantly.</span>
+            </li>
+            <li>
+              <a href="/free-pdf-tools" className="text-blue-700 font-semibold hover:underline">
+                Browse all PDF tools
+              </a>{" "}
+              <span className="text-slate-600">— merge, split, compress, protect & more.</span>
+            </li>
+          </ul>
+        </div>
 
         <p className="text-center mt-12 text-base text-gray-600 italic max-w-3xl mx-auto">
           Convert PDFs into editable Word files with PDF Linx — fast, accurate, and always free.
@@ -753,7 +894,7 @@ const handleSubmit = async (e) => {
         <h3 className="text-xl font-semibold text-slate-900 mb-3">
           Single file or multiple files — both supported
         </h3>
-        
+
         <ul className="space-y-2 mb-6 list-disc pl-6">
           <li><strong>Single PDF:</strong> converts and downloads as a Word (DOCX) file directly.</li>
           <li><strong>Multiple PDFs:</strong> converts all files and gives you a ZIP containing all DOCX files.</li>
@@ -791,46 +932,46 @@ const handleSubmit = async (e) => {
       </section>
 
 
-    {/* FAQ */}
-<section className="py-16 bg-gray-50">
-  <div className="max-w-4xl mx-auto px-4">
-    <h2 className="text-3xl font-bold text-center mb-10 text-slate-900">
-      Frequently Asked Questions
-    </h2>
+      {/* FAQ */}
+      <section className="py-16 bg-gray-50">
+        <div className="max-w-4xl mx-auto px-4">
+          <h2 className="text-3xl font-bold text-center mb-10 text-slate-900">
+            Frequently Asked Questions
+          </h2>
 
-    <div className="space-y-4">
-      {[
-        ...(seo?.faqs || []),
+          <div className="space-y-4">
+            {[
+              ...(seo?.faqs || []),
 
-        {
-          q: "Can I convert scanned PDFs to editable Word documents?",
-          a: "Yes. Enable OCR to extract text from image-based or scanned PDFs and convert them into an editable DOCX file. Printed text works best for accurate text recognition."
-        },
-        {
-          q: "Will formatting stay the same after OCR conversion?",
-          a: "OCR focuses on text extraction, so most text becomes editable, but complex layouts, columns, and tables may shift slightly. We aim to preserve formatting and maintain text clarity as much as possible."
-        },
-        {
-          q: "Does OCR work with handwritten text?",
-          a: "Handwritten text accuracy can vary. OCR works best on clear, printed text with good scan quality. For low-quality scans, results may need manual correction."
-        }
+              {
+                q: "Can I convert scanned PDFs to editable Word documents?",
+                a: "Yes. Enable OCR to extract text from image-based or scanned PDFs and convert them into an editable DOCX file. Printed text works best for accurate text recognition."
+              },
+              {
+                q: "Will formatting stay the same after OCR conversion?",
+                a: "OCR focuses on text extraction, so most text becomes editable, but complex layouts, columns, and tables may shift slightly. We aim to preserve formatting and maintain text clarity as much as possible."
+              },
+              {
+                q: "Does OCR work with handwritten text?",
+                a: "Handwritten text accuracy can vary. OCR works best on clear, printed text with good scan quality. For low-quality scans, results may need manual correction."
+              }
 
-      ].map((faq, i) => (
-        <details key={i} className="bg-white rounded-lg shadow-sm p-5">
-          <summary className="font-semibold cursor-pointer">
-            {faq.q}
-          </summary>
-          <p className="mt-2 text-gray-600">
-            {faq.a}
-          </p>
-        </details>
-      ))}
-    </div>
-  </div>
-</section>
+            ].map((faq, i) => (
+              <details key={i} className="bg-white rounded-lg shadow-sm p-5">
+                <summary className="font-semibold cursor-pointer">
+                  {faq.q}
+                </summary>
+                <p className="mt-2 text-gray-600">
+                  {faq.a}
+                </p>
+              </details>
+            ))}
+          </div>
+        </div>
+      </section>
 
       {/* FAQ */}
-{/* <section className="py-16 bg-gray-50">
+      {/* <section className="py-16 bg-gray-50">
   <div className="max-w-4xl mx-auto px-4">
     <h2 className="text-3xl font-bold text-center mb-10 text-slate-900">
       Frequently Asked Questions
@@ -884,7 +1025,7 @@ const handleSubmit = async (e) => {
       <RelatedToolsSection currentPage="pdf-to-word" />
 
 
-{/* 🔗 Comparison Links (Styled) */}
+      {/* 🔗 Comparison Links (Styled) */}
       <section className="max-w-4xl mx-auto mb-16 px-4">
         <div className="rounded-2xl border bg-white p-6 md:p-8 shadow-sm">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">

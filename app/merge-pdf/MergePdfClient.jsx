@@ -5,6 +5,8 @@ import { useState, useRef } from "react";
 import { Upload, FileText, Download, CheckCircle, X, Files } from "lucide-react";
 import Script from "next/script";
 import RelatedToolsSection from "@/components/RelatedTools";
+import { useProgressBar } from "@/hooks/useProgressBar";
+import ProgressButton from "@/components/ProgressButton";
 
 
 export default function MergePDF() {
@@ -13,6 +15,8 @@ export default function MergePDF() {
   const [downloadUrl, setDownloadUrl] = useState("");
   const [success, setSuccess] = useState(false);
   const fileInputRef = useRef(null);
+  const { progress, isLoading, startProgress, completeProgress, cancelProgress } = useProgressBar();
+
 
   const handleFileChange = (e) => {
     const selectedFiles = Array.from(e.target.files);
@@ -21,6 +25,7 @@ export default function MergePDF() {
     }
   };
 
+
   const handleMerge = async (e) => {
     e.preventDefault();
     if (files.length < 2) {
@@ -28,7 +33,7 @@ export default function MergePDF() {
       return;
     }
 
-    setLoading(true);
+    startProgress();        // ← setLoading(true) ki jagah
     setDownloadUrl("");
     setSuccess(false);
 
@@ -45,9 +50,10 @@ export default function MergePDF() {
 
       if (data.success) {
         setDownloadUrl(`/api${data.download}`);
+        completeProgress();   // ← setLoading(false) ki jagah
+
         setSuccess(true);
 
-        // ✅ YE 8 LINES ADD KARO
         setTimeout(() => {
           const downloadSection = document.getElementById('download-section');
           if (downloadSection) {
@@ -59,15 +65,65 @@ export default function MergePDF() {
         }, 300);
 
       } else {
+        cancelProgress();     // ← error pe
         alert("Merge failed: " + (data.error || "Unknown error"));
       }
     } catch (error) {
+      cancelProgress();       // ← catch pe
       alert("Error merging PDFs. Please try again.");
       console.error(error);
-    } finally {
-      setLoading(false);
     }
+    // finally hata diya — hook khud handle karta hai
   };
+
+  // const handleMerge = async (e) => {
+  //   e.preventDefault();
+  //   if (files.length < 2) {
+  //     alert("Please select at least 2 PDF files to merge.");
+  //     return;
+  //   }
+
+  //   setLoading(true);
+  //   setDownloadUrl("");
+  //   setSuccess(false);
+
+  //   const formData = new FormData();
+  //   files.forEach((file) => formData.append("files", file));
+
+  //   try {
+  //     const res = await fetch("/convert/merge-pdf", {
+  //       method: "POST",
+  //       body: formData,
+  //     });
+
+  //     const data = await res.json();
+
+  //     if (data.success) {
+  //       setDownloadUrl(`/api${data.download}`);
+  //       setSuccess(true);
+
+  //       // ✅ YE 8 LINES ADD KARO
+  //       setTimeout(() => {
+  //         const downloadSection = document.getElementById('download-section');
+  //         if (downloadSection) {
+  //           downloadSection.scrollIntoView({
+  //             behavior: 'smooth',
+  //             block: 'center'
+  //           });
+  //         }
+  //       }, 300);
+
+  //     } else {
+  //       alert("Merge failed: " + (data.error || "Unknown error"));
+  //     }
+  //   } catch (error) {
+  //     alert("Error merging PDFs. Please try again.");
+  //     console.error(error);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+
 
   const handleDownload = async () => {
     if (!downloadUrl) return;
@@ -227,12 +283,12 @@ export default function MergePDF() {
             {/* <p className="text-lg text-gray-600 max-w-2xl mx-auto">
               Need to combine a few PDFs into one? Drop them here – we’ll stitch them together perfectly. Fast, easy, and totally free!
             </p> */}
-          <p className="text-gray-600 mt-3 leading-7">
-          Merge multiple PDF files into a single document online for free. 
-          Our fast and secure PDF merger lets you combine PDF documents, 
-          arrange pages in the correct order, and download one organized PDF instantly. 
-          Perfect for joining reports, invoices, contracts, or scanned documents into one file.
-          </p>
+            <p className="text-gray-600 mt-3 leading-7">
+              Merge multiple PDF files into a single document online for free.
+              Our fast and secure PDF merger lets you combine PDF documents,
+              arrange pages in the correct order, and download one organized PDF instantly.
+              Perfect for joining reports, invoices, contracts, or scanned documents into one file.
+            </p>
           </div>
 
           {/* Main Card */}
@@ -281,7 +337,7 @@ export default function MergePDF() {
               </div>
 
               {/* Merge Button */}
-              <button
+              {/* <button
                 onClick={handleMerge}
                 disabled={loading || files.length < 2}
                 className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold text-lg py-4 rounded-xl hover:from-indigo-700 hover:to-purple-700 disabled:opacity-50 disabled:cursor-not-allowed transition shadow-md flex items-center justify-center gap-2"
@@ -294,7 +350,18 @@ export default function MergePDF() {
                     Merge PDFs Now
                   </>
                 )}
-              </button>
+              </button> */}
+
+              <ProgressButton
+                isLoading={isLoading}
+                progress={progress}
+                disabled={files.length < 2}   // ← 2 se kam pe disable
+                icon={<Files className="w-5 h-5" />}
+                label="Merge PDFs Now"
+                gradient="from-indigo-600 to-purple-600"  // ← bg-gradient-to-r hata diya
+                type="button"                  // ← form nahi hai toh button
+                onClick={handleMerge}          // ← seedha function pass karo
+              />
             </div>
 
             {/* Success State */}
@@ -436,13 +503,13 @@ export default function MergePDF() {
         <h3 className="text-xl font-semibold text-slate-900 mb-3">
           Why Merge Your PDF Files?
         </h3>
-        
+
         {/* ✅ NEW semantic paragraph */}
         <p className="leading-7 mb-4">
-        Merging PDF files is useful when you want to combine reports, invoices, forms, 
-        or scanned pages into a single document. Instead of sending multiple attachments, 
-        you can join PDF pages together to create one organized PDF file that is easier 
-        to share, upload, or archive.
+          Merging PDF files is useful when you want to combine reports, invoices, forms,
+          or scanned pages into a single document. Instead of sending multiple attachments,
+          you can join PDF pages together to create one organized PDF file that is easier
+          to share, upload, or archive.
         </p>
 
         <p className="leading-7 mb-4">

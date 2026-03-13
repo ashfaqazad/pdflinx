@@ -5,6 +5,9 @@ import { useState, useRef } from "react";
 import { Upload, Download, CheckCircle, FileDown, Scissors } from "lucide-react";
 import Script from "next/script";
 import RelatedToolsSection from "@/components/RelatedTools";
+import { useProgressBar } from "@/hooks/useProgressBar";
+import ProgressButton from "@/components/ProgressButton";
+// import { FileDown } from "lucide-react";
 
 
 
@@ -15,61 +18,114 @@ export default function CompressPDF() {
   const [downloadUrl, setDownloadUrl] = useState("");
   const [success, setSuccess] = useState(false);
   const fileInputRef = useRef(null);
+  const { progress, isLoading, startProgress, completeProgress, cancelProgress } = useProgressBar();
+
 
   // const handleFileChange = (e) => setFile(e.target.files[0] || null);
   const handleFileChange = (e) => setFiles(Array.from(e.target.files || []));
 
 
+  // const handleCompress = async (e) => {
+  //   e.preventDefault();
+  //   // if (!file) return alert("Please select a PDF file first");
+  //   if (!files.length) return alert("Please select PDF file(s) first");
+
+
+  //   setLoading(true);
+  //   setDownloadUrl("");
+  //   setSuccess(false);
+
+  //   // const formData = new FormData();
+  //   // formData.append("file", file);
+  //   const formData = new FormData();
+  //   files.forEach((f) => formData.append("files", f));
+
+  //   try {
+  //     const res = await fetch("/convert/compress-pdf", {
+  //       method: "POST",
+  //       body: formData,
+  //     });
+
+  //     const data = await res.json();
+
+  //     if (data.success) {
+  //       setDownloadUrl(`/api${data.download}`);
+  //       // setDownloadUrl(data.download);
+
+
+  //       setSuccess(true);
+  //       // ✅ YE 8 LINES ADD KARO
+  //       setTimeout(() => {
+  //         const downloadSection = document.getElementById('download-section');
+  //         if (downloadSection) {
+  //           downloadSection.scrollIntoView({
+  //             behavior: 'smooth',
+  //             block: 'center'
+  //           });
+  //         }
+  //       }, 300);
+
+  //     } else {
+  //       alert("Compression failed: " + (data.error || "Try again"));
+  //     }
+  //   } catch (error) {
+  //     alert("Something went wrong. Please try again.");
+  //     console.error(error);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+
   const handleCompress = async (e) => {
-    e.preventDefault();
-    // if (!file) return alert("Please select a PDF file first");
-    if (!files.length) return alert("Please select PDF file(s) first");
+  e.preventDefault();
+  if (!files.length) return alert("Please select PDF file(s) first");
 
+  startProgress();        // ← setLoading(true) ki jagah
 
-    setLoading(true);
-    setDownloadUrl("");
-    setSuccess(false);
+  setDownloadUrl("");
+  setSuccess(false);
 
-    // const formData = new FormData();
-    // formData.append("file", file);
-    const formData = new FormData();
-    files.forEach((f) => formData.append("files", f));
+  const formData = new FormData();
+  files.forEach((f) => formData.append("files", f));
 
-    try {
-      const res = await fetch("/convert/compress-pdf", {
-        method: "POST",
-        body: formData,
-      });
+  try {
+    const res = await fetch("/convert/compress-pdf", {
+      method: "POST",
+      body: formData,
+    });
 
-      const data = await res.json();
+    const data = await res.json();
 
-      if (data.success) {
-        setDownloadUrl(`/api${data.download}`);
-        // setDownloadUrl(data.download);
+    if (data.success) {
+      setDownloadUrl(`/api${data.download}`);
 
+      completeProgress();   // ← setLoading(false) ki jagah
 
-        setSuccess(true);
-        // ✅ YE 8 LINES ADD KARO
-        setTimeout(() => {
-          const downloadSection = document.getElementById('download-section');
-          if (downloadSection) {
-            downloadSection.scrollIntoView({
-              behavior: 'smooth',
-              block: 'center'
-            });
-          }
-        }, 300);
+      setSuccess(true);
 
-      } else {
-        alert("Compression failed: " + (data.error || "Try again"));
-      }
-    } catch (error) {
-      alert("Something went wrong. Please try again.");
-      console.error(error);
-    } finally {
-      setLoading(false);
+      // Scroll wali lines same rakhi
+      setTimeout(() => {
+        const downloadSection = document.getElementById('download-section');
+        if (downloadSection) {
+          downloadSection.scrollIntoView({
+            behavior: 'smooth',
+            block: 'center'
+          });
+        }
+      }, 300);
+
+    } else {
+      cancelProgress();     // ← error pe
+      alert("Compression failed: " + (data.error || "Try again"));
     }
-  };
+  } catch (error) {
+    cancelProgress();       // ← catch pe
+    alert("Something went wrong. Please try again.");
+    console.error(error);
+  }
+  // finally block hata diya — hook khud handle karta hai
+};
+
 
   const handleDownload = async () => {
     if (!downloadUrl) return;
@@ -276,7 +332,7 @@ export default function CompressPDF() {
               </div>
 
               {/* Compress Button */}
-              <button
+              {/* <button
                 type="submit"
                 // disabled={loading || !file}
                 disabled={loading || files.length === 0}
@@ -291,7 +347,20 @@ export default function CompressPDF() {
                     Compress PDF
                   </>
                 )}
-              </button>
+              </button> */}
+
+        {/* Compress Button - Updated with original color */}
+          <ProgressButton
+            isLoading={isLoading}
+            progress={progress}
+            disabled={!files.length}
+            icon={<FileDown className="w-5 h-5" />}     // ← original icon
+            label="Compress PDF"
+            gradient="from-blue-600 to-green-600"       // ← tumhara purana wala color
+            type="button"
+            onClick={handleCompress}
+          />
+
             </form>
 
             {/* Success State */}

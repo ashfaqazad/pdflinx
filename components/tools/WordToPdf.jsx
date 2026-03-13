@@ -5,19 +5,103 @@ import { useState } from "react";
 import { Upload, FileText, Download, CheckCircle } from "lucide-react";
 import Script from "next/script"; // schemas
 import RelatedToolsSection from "@/components/RelatedTools";
+import { useProgressBar } from "@/hooks/useProgressBar";
+import ProgressButton from "@/components/ProgressButton";
+
 
 export default function WordToPdf() {
   const [files, setFiles] = useState([]); // ✅ multiple
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
   // const [downloadUrl, setDownloadUrl] = useState(null); // ✅ only used for ZIP case
   const [success, setSuccess] = useState(false);
+  const { progress, isLoading, startProgress, completeProgress, cancelProgress } = useProgressBar();
+
+
+
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   if (!files.length) return alert("Please select a Word file first!");
+
+  //   setLoading(true);
+  //   setSuccess(false);
+
+  //   const formData = new FormData();
+  //   for (const f of files) formData.append("files", f);
+
+  //   try {
+  //     const res = await fetch("/convert/word-to-pdf", {
+  //       method: "POST",
+  //       body: formData,
+  //     });
+
+  //     if (!res.ok) {
+  //       // backend kabhi JSON error bhej sakta hai
+  //       let msg = "Conversion failed";
+  //       try {
+  //         const maybeJson = await res.json();
+  //         msg = maybeJson?.error || msg;
+  //       } catch { }
+  //       throw new Error(msg);
+  //     }
+
+  //     const contentType = (res.headers.get("content-type") || "").toLowerCase();
+
+  //     // ✅ SINGLE: PDF stream
+  //     if (contentType.includes("application/pdf")) {
+  //       const blob = await res.blob();
+  //       const url = window.URL.createObjectURL(blob);
+
+  //       const a = document.createElement("a");
+  //       a.href = url;
+  //       a.download = files[0].name.replace(/\.(doc|docx)$/i, ".pdf");
+  //       document.body.appendChild(a);
+  //       a.click();
+  //       a.remove();
+
+  //       window.URL.revokeObjectURL(url);
+
+  //       setSuccess(true);
+  //       setFiles([]);
+  //       return;
+  //     }
+
+  //     // ✅ MULTIPLE: ZIP stream (PK...)
+  //     if (contentType.includes("application/zip") || contentType.includes("application/octet-stream")) {
+  //       const blob = await res.blob();
+  //       const url = window.URL.createObjectURL(blob);
+
+  //       const a = document.createElement("a");
+  //       a.href = url;
+  //       // a.download = `pdflinx-word-to-pdf-${Date.now()}.zip`;
+  //       a.download = "pdflinx-word-to-pdf.zip";
+
+  //       document.body.appendChild(a);
+  //       a.click();
+  //       a.remove();
+
+  //       window.URL.revokeObjectURL(url);
+
+  //       setSuccess(true);
+  //       setFiles([]);
+  //       return;
+  //     }
+
+  //     // fallback: agar backend kuch aur bhej de
+  //     throw new Error("Unexpected response from server.");
+  //   } catch (err) {
+  //     alert(err.message || "Something went wrong, please try again.");
+  //     console.error(err);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!files.length) return alert("Please select a Word file first!");
 
-    setLoading(true);
+    startProgress();        // ← setLoading(true) ki jagah
     setSuccess(false);
 
     const formData = new FormData();
@@ -30,7 +114,6 @@ export default function WordToPdf() {
       });
 
       if (!res.ok) {
-        // backend kabhi JSON error bhej sakta hai
         let msg = "Conversion failed";
         try {
           const maybeJson = await res.json();
@@ -55,19 +138,19 @@ export default function WordToPdf() {
 
         window.URL.revokeObjectURL(url);
 
+        completeProgress();   // ← setLoading(false) ki jagah
         setSuccess(true);
         setFiles([]);
         return;
       }
 
-      // ✅ MULTIPLE: ZIP stream (PK...)
+      // ✅ MULTIPLE: ZIP stream
       if (contentType.includes("application/zip") || contentType.includes("application/octet-stream")) {
         const blob = await res.blob();
         const url = window.URL.createObjectURL(blob);
 
         const a = document.createElement("a");
         a.href = url;
-        // a.download = `pdflinx-word-to-pdf-${Date.now()}.zip`;
         a.download = "pdflinx-word-to-pdf.zip";
 
         document.body.appendChild(a);
@@ -76,21 +159,21 @@ export default function WordToPdf() {
 
         window.URL.revokeObjectURL(url);
 
+        completeProgress();   // ← setLoading(false) ki jagah
         setSuccess(true);
         setFiles([]);
         return;
       }
 
-      // fallback: agar backend kuch aur bhej de
       throw new Error("Unexpected response from server.");
+
     } catch (err) {
+      cancelProgress();       // ← error pe reset
       alert(err.message || "Something went wrong, please try again.");
       console.error(err);
-    } finally {
-      setLoading(false);
     }
+    // finally block hata diya — completeProgress/cancelProgress khud handle karte hain
   };
-
 
   return (
     <>
@@ -349,7 +432,7 @@ export default function WordToPdf() {
 
               {/* Convert Button */}
               {/* Convert Button */}
-              <button
+              {/* <button
                 type="submit"
                 disabled={loading || !files.length}
                 className="w-full bg-gradient-to-r from-blue-600 to-green-600 text-white font-semibold text-lg py-4 rounded-xl hover:from-blue-700 hover:to-green-700 disabled:opacity-60 disabled:cursor-not-allowed transition shadow-md flex items-center justify-center gap-2"
@@ -362,7 +445,16 @@ export default function WordToPdf() {
                     Convert to PDF
                   </>
                 )}
-              </button>
+              </button> */}
+
+              <ProgressButton
+                isLoading={isLoading}
+                progress={progress}
+                disabled={!files.length}
+                icon={<FileText className="w-5 h-5" />}
+                label="Convert to PDF"
+                gradient="from-blue-600 to-green-600"
+              />
 
               {/* ✅ ALWAYS show UX notice */}
               <div className="text-sm text-gray-600 text-center mt-4 space-y-1">

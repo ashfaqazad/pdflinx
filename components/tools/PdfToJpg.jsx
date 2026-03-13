@@ -9,6 +9,7 @@ export default function PdfToJpg() {
   const [files, setFiles] = useState([]); // Multiple files support
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [progress, setProgress] = useState(0);
 
   const handleFileChange = (e) => {
     const selectedFiles = Array.from(e.target.files);
@@ -17,20 +18,37 @@ export default function PdfToJpg() {
     setSuccess(false);
   };
 
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (files.length === 0) return alert("Please select at least one PDF file!");
 
     setLoading(true);
     setSuccess(false);
+    setProgress(0);                    // ← NEW
 
     const formData = new FormData();
     files.forEach((file) => {
-      formData.append("files", file); // "files" name – backend mein upload.array("files")
+      formData.append("files", file);
     });
 
+    // ==================== PROGRESS SIMULATION ====================
+    let progressInterval = setInterval(() => {
+      setProgress((prev) => {
+        if (prev >= 88) return prev;
+        const increment = prev < 40 ? 8 : prev < 70 ? 5 : 2;
+        return prev + increment;
+      });
+    }, 300);
+    // let progressInterval = setInterval(() => {
+    //   setProgress((prev) => {
+    //     const next = prev + Math.floor(Math.random() * 12) + 4;
+    //     return next > 92 ? 92 : next;
+    //   });
+    // }, 280);
+    // ============================================================
+
     try {
-      // const res = await fetch("/convert/pdf-to-jpg", {
       const res = await fetch("/convert/pdf-to-jpg", {
         method: "POST",
         body: formData,
@@ -40,10 +58,14 @@ export default function PdfToJpg() {
         const errorText = await res.text();
         alert("Conversion failed: " + errorText);
         setLoading(false);
+        clearInterval(progressInterval);
         return;
       }
 
-      // Backend direct ZIP ya single JPG stream karega
+      // Processing done → 100% kar do
+      clearInterval(progressInterval);
+      setProgress(100);
+
       const blob = await res.blob();
       const contentType = res.headers.get("content-type");
       const disposition = res.headers.get("content-disposition");
@@ -67,14 +89,78 @@ export default function PdfToJpg() {
       window.URL.revokeObjectURL(url);
 
       setSuccess(true);
-      
+
     } catch (err) {
       console.error(err);
       alert("Something went wrong. Please try again.");
     } finally {
-      setLoading(false);
+      clearInterval(progressInterval);
+      // 100% thoda der dikhane ke liye delay
+      setTimeout(() => {
+        setLoading(false);
+        setProgress(0);
+      }, 800);
     }
   };
+
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   if (files.length === 0) return alert("Please select at least one PDF file!");
+
+  //   setLoading(true);
+  //   setSuccess(false);
+
+  //   const formData = new FormData();
+  //   files.forEach((file) => {
+  //     formData.append("files", file); // "files" name – backend mein upload.array("files")
+  //   });
+
+  //   try {
+  //     // const res = await fetch("/convert/pdf-to-jpg", {
+  //     const res = await fetch("/convert/pdf-to-jpg", {
+  //       method: "POST",
+  //       body: formData,
+  //     });
+
+  //     if (!res.ok) {
+  //       const errorText = await res.text();
+  //       alert("Conversion failed: " + errorText);
+  //       setLoading(false);
+  //       return;
+  //     }
+
+  //     // Backend direct ZIP ya single JPG stream karega
+  //     const blob = await res.blob();
+  //     const contentType = res.headers.get("content-type");
+  //     const disposition = res.headers.get("content-disposition");
+  //     let filename = "converted_file";
+
+  //     if (disposition && disposition.includes("filename=")) {
+  //       filename = disposition.split("filename=")[1].replace(/"/g, "");
+  //     } else if (files.length === 1) {
+  //       filename = files[0].name.replace(/\.pdf$/i, contentType.includes("image") ? ".jpg" : "_jpgs.zip");
+  //     } else {
+  //       filename = "pdf_to_jpg_batch.zip";
+  //     }
+
+  //     const url = window.URL.createObjectURL(blob);
+  //     const a = document.createElement("a");
+  //     a.href = url;
+  //     a.download = filename;
+  //     document.body.appendChild(a);
+  //     a.click();
+  //     document.body.removeChild(a);
+  //     window.URL.revokeObjectURL(url);
+
+  //     setSuccess(true);
+
+  //   } catch (err) {
+  //     console.error(err);
+  //     alert("Something went wrong. Please try again.");
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
 
   return (
     <>
@@ -138,8 +224,8 @@ export default function PdfToJpg() {
                 <label className="block">
                   <div
                     className={`border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition-all ${files.length > 0
-                        ? "border-green-500 bg-green-50"
-                        : "border-gray-300 hover:border-orange-500 hover:bg-orange-50"
+                      ? "border-green-500 bg-green-50"
+                      : "border-gray-300 hover:border-orange-500 hover:bg-orange-50"
                       }`}
                   >
                     <Upload className="w-12 h-12 mx-auto mb-3 text-orange-600" />
@@ -162,7 +248,8 @@ export default function PdfToJpg() {
                 </label>
               </div>
 
-              <button
+
+              {/* <button
                 type="submit"
                 disabled={loading || files.length === 0}
                 className="w-full bg-gradient-to-r from-orange-600 to-amber-600 text-white font-bold text-lg py-4 rounded-xl hover:from-orange-700 hover:to-amber-700 disabled:opacity-60 disabled:cursor-not-allowed transition shadow-lg flex items-center justify-center gap-3"
@@ -175,7 +262,61 @@ export default function PdfToJpg() {
                     Convert to JPG
                   </>
                 )}
+              </button> */}
+
+              <button
+                type="submit"
+                disabled={loading || files.length === 0}
+                className="w-full bg-gradient-to-r from-orange-600 to-amber-600 text-white font-bold text-lg py-4 rounded-xl hover:from-orange-700 hover:to-amber-700 disabled:opacity-60 disabled:cursor-not-allowed transition shadow-lg flex items-center justify-center gap-3 min-h-[60px]"
+              >
+
+                {/* {loading ? (
+                  <div className="w-full flex flex-col items-center gap-2 px-4"> */}
+                {/* Progress Bar */}
+                {/* <div className="w-full bg-white/30 h-2.5 rounded-full overflow-hidden">
+                      <div
+                        className="bg-white h-2.5 rounded-full transition-all duration-300 ease-out"
+                        style={{ width: `${progress}%` }}
+                      ></div>
+                    </div> */}
+
+                {/* Percentage Text */}
+                {/* <div className="flex items-center justify-between w-full text-sm font-medium">
+                      <span>Converting...</span>
+                      <span className="tabular-nums">{progress}%</span>
+                    </div>
+                  </div>
+                ) : (
+                  <>
+                    <ImageIcon className="w-6 h-6" />
+                    Convert to JPG
+                  </>
+                )} */}
+
+                {loading ? (
+                  <div className="w-full flex flex-col items-center gap-1.5 px-4">
+                    <div className="flex items-center justify-between w-full text-sm font-medium">
+                      <span>Converting...</span>
+                      <span className="tabular-nums">{progress}%</span>
+                    </div>
+                    <div className="w-full bg-white/30 h-2 rounded-full overflow-hidden">
+                      <div
+                        className="bg-white h-2 rounded-full transition-all duration-500 ease-out"
+                        style={{ width: `${progress}%` }}
+                      ></div>
+                    </div>
+                  </div>
+                ) : (
+                  <>
+                    <ImageIcon className="w-6 h-6" />
+                    Convert to JPG
+                  </>
+                )}
+
               </button>
+
+
+
             </form>
 
             {/* Success Message */}
