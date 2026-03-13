@@ -28,7 +28,7 @@ const Footer = () => {
               <li><Link href="/merge-pdf" className="hover:text-indigo-400 transition">Merge PDF</Link></li>
               <li><Link href="/compress-pdf" className="hover:text-indigo-400 transition">Compress PDF</Link></li>
               <li><Link href="/image-to-pdf" className="hover:text-indigo-400 transition">Image to PDF</Link></li>
-              <li><Link href="/qr-generator" className="hover:text-indigo-400 transition">QR Code Generator</Link></li>
+              {/* <li><Link href="/qr-generator" className="hover:text-indigo-400 transition">QR Code Generator</Link></li> */}
             </ul>
           </div>
 

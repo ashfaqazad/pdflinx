@@ -13,7 +13,7 @@ export default function sitemap() {
     { url: "/terms-and-conditions", changeFrequency: "yearly", priority: 0.3 },
     { url: "/embed-code", changeFrequency: "monthly", priority: 0.9 },
 
-    // 🔹 Comparison Pages
+    // Comparison Pages
     { url: "/compare/pdflinx-vs-ilovepdf", changeFrequency: "monthly", priority: 0.8 },
     { url: "/compare/pdflinx-vs-smallpdf", changeFrequency: "monthly", priority: 0.8 },
   ];
@@ -36,7 +36,11 @@ export default function sitemap() {
     "/ocr-pdf",
     "/edit-pdf",
     "/add-watermark",
-  ].map((url) => ({ url, changeFrequency: "monthly", priority: 0.8 }));
+  ].map((url) => ({
+    url,
+    changeFrequency: "weekly",
+    priority: 0.85,
+  }));
 
   const blogRoutes = [
     "/blog/pdf-to-word",
@@ -46,10 +50,24 @@ export default function sitemap() {
     "/blog/split-pdf",
     "/blog/compress-pdf",
     "/blog/excel-pdf",
+    "/blog/pdf-to-jpg",
+    "/blog/ppt-to-pdf",
+    "/blog/protect-pdf",
+    "/blog/unlock-pdf",
+    "/blog/rotate-pdf",
+    "/blog/sign-pdf",
+    "/blog/ocr-pdf",
+    "/blog/edit-pdf",
+    "/blog/add-watermark",
     "/blog/pdf-to-word-formatting-messed-up",
     "/blog/how-to-edit-scanned-pdf-in-word",
     "/blog/convert-pdf-resume-to-editable-word",
-  ].map((url) => ({ url, changeFrequency: "weekly", priority: 0.7 }));
+    "/blog/best-tools-for-students",
+  ].map((url) => ({
+    url,
+    changeFrequency: "weekly",
+    priority: 0.75,
+  }));
 
   const allRoutes = [...staticRoutes, ...toolRoutes, ...blogRoutes];
 
@@ -60,12 +78,6 @@ export default function sitemap() {
     priority,
   }));
 }
-
-
-
-
-
-
 
 
 

@@ -71,7 +71,7 @@ export default function Navbar() {
                 />
               </button>
 
-              <div
+              {/* <div
                 className="
                   absolute top-14 right-0 w-[820px]
                   bg-white/95 backdrop-blur-md
@@ -81,7 +81,19 @@ export default function Navbar() {
                   transition-all duration-300
                   overflow-hidden
                 "
-              >
+              > */}
+
+                <div
+                  className="
+                    absolute top-14 right-[-250px] w-[820px]
+                    bg-white/95 backdrop-blur-md
+                    rounded-2xl border border-gray-100
+                    shadow-[0_20px_60px_-15px_rgba(0,0,0,0.15)]
+                    opacity-0 invisible group-hover:opacity-100 group-hover:visible
+                    transition-all duration-300
+                    overflow-hidden
+                  "
+                >
                 {/* Top accent line */}
                 <div className="h-1 bg-gradient-to-r from-indigo-500 to-purple-500" />
 
