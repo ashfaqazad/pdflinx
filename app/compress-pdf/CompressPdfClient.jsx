@@ -24,58 +24,6 @@ export default function CompressPDF() {
   // const handleFileChange = (e) => setFile(e.target.files[0] || null);
   const handleFileChange = (e) => setFiles(Array.from(e.target.files || []));
 
-
-  // const handleCompress = async (e) => {
-  //   e.preventDefault();
-  //   // if (!file) return alert("Please select a PDF file first");
-  //   if (!files.length) return alert("Please select PDF file(s) first");
-
-
-  //   setLoading(true);
-  //   setDownloadUrl("");
-  //   setSuccess(false);
-
-  //   // const formData = new FormData();
-  //   // formData.append("file", file);
-  //   const formData = new FormData();
-  //   files.forEach((f) => formData.append("files", f));
-
-  //   try {
-  //     const res = await fetch("/convert/compress-pdf", {
-  //       method: "POST",
-  //       body: formData,
-  //     });
-
-  //     const data = await res.json();
-
-  //     if (data.success) {
-  //       setDownloadUrl(`/api${data.download}`);
-  //       // setDownloadUrl(data.download);
-
-
-  //       setSuccess(true);
-  //       // ✅ YE 8 LINES ADD KARO
-  //       setTimeout(() => {
-  //         const downloadSection = document.getElementById('download-section');
-  //         if (downloadSection) {
-  //           downloadSection.scrollIntoView({
-  //             behavior: 'smooth',
-  //             block: 'center'
-  //           });
-  //         }
-  //       }, 300);
-
-  //     } else {
-  //       alert("Compression failed: " + (data.error || "Try again"));
-  //     }
-  //   } catch (error) {
-  //     alert("Something went wrong. Please try again.");
-  //     console.error(error);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
-
   const handleCompress = async (e) => {
   e.preventDefault();
   if (!files.length) return alert("Please select PDF file(s) first");
@@ -256,14 +204,12 @@ export default function CompressPDF() {
             <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent mb-4">
               Compress PDF Online (Free)
             </h1>
-            {/* <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Got a huge PDF that's too big to email or upload? We'll shrink it down (up to 90% smaller) while keeping it looking sharp. Super quick and totally free!
-            </p> */}
-
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Got a huge PDF that's too big to email or upload? We'll shrink it down (up to 90% smaller) while keeping it looking sharp. Super quick and totally free!
-              Instantly reduce PDF file size to meet strict upload size limits for email, WhatsApp, government portals, or online forms.
-            </p>
+              <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+                Reduce PDF file size by up to 90% while keeping text sharp and images
+                clear. Upload a single PDF or compress up to 15 files at once. Perfect
+                for email attachments, government portals, WhatsApp, and online
+                submissions. No signup, no watermark, completely free.
+              </p>
           </div>
 
           {/* Main Card */}
@@ -383,9 +329,11 @@ export default function CompressPDF() {
           </div>
 
           {/* Footer Note */}
-          <p className="text-center mt-6 text-gray-600 text-base">
-            No account • No watermark • Files gone after 1 hour • Completely free
-          </p>
+          
+            <p className="text-center mt-6 text-gray-600 text-base">
+              No account • No watermark • Auto-deleted after 1 hour • 100% free •
+              Single & batch compression • Works on Windows, Mac, Android & iOS
+            </p>
         </div>
       </main>
 
@@ -474,233 +422,386 @@ export default function CompressPDF() {
       </section>
 
 
-      <section className="max-w-4xl mx-auto px-4 py-14 text-slate-700">
-        {/* Heading */}
-        <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-6">
-          Compress PDF – Free Online PDF Compressor by PDFLinx
-        </h2>
+<section className="mt-16 max-w-4xl mx-auto px-6 pb-16">
+  {/* Main Heading */}
+  <div className="text-center mb-12">
+    <h2 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent mb-4">
+      Compress PDF Online Free – Reduce PDF File Size Without Losing Quality
+    </h2>
+    <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+      Need to shrink a PDF for email, WhatsApp, or an upload portal? Compress
+      it here in seconds — file size drops dramatically while text stays sharp
+      and images stay clear. Supports single file and batch compression up to
+      15 PDFs at once. Fast, free, and privacy-friendly on PDF Linx.
+    </p>
+  </div>
 
-        {/* Intro */}
-        <p className="text-base leading-7 mb-6">
-          Ever tried emailing a PDF only to get that annoying “file too large” error?
-          Or struggled to upload a document because it’s taking forever?
-          We’ve all been there. That’s why we created the <span className="font-medium text-slate-900">PDFLinx Compress PDF tool</span>—a completely free online compressor that shrinks your PDF files quickly while keeping the quality sharp. No software, no watermarks, no sign-up needed.
-        </p>
+  {/* Benefits Grid */}
+  <div className="grid md:grid-cols-3 gap-8 mb-16">
+    <div className="bg-gradient-to-br from-blue-50 to-white p-8 rounded-2xl shadow-lg border border-blue-100 text-center hover:shadow-xl transition">
+      <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
+        <Scissors className="w-8 h-8 text-white rotate-90" />
+      </div>
+      <h3 className="text-xl font-semibold text-gray-800 mb-3">Up to 90% Smaller</h3>
+      <p className="text-gray-600 text-sm">
+        Reduce large PDFs to a fraction of their original size — ideal for
+        email attachments, portal uploads, and storage saving.
+      </p>
+    </div>
 
-        {/* What is */}
-        <h3 className="text-xl font-semibold text-slate-900 mb-3">
-          What is PDF Compression?
-        </h3>
-        {/* <p className="leading-7 mb-6">
-          PDF compression reduces the file size of your document by removing unnecessary data—like embedded fonts, hidden layers, or high-resolution images—without ruining how it looks.
-          The result? A smaller, faster-loading PDF that’s perfect for emailing, uploading, or storing, while still looking clear and professional.
-        </p> */}
+    <div className="bg-gradient-to-br from-green-50 to-white p-8 rounded-2xl shadow-lg border border-green-100 text-center hover:shadow-xl transition">
+      <div className="w-16 h-16 bg-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
+        <CheckCircle className="w-8 h-8 text-white" />
+      </div>
+      <h3 className="text-xl font-semibold text-gray-800 mb-3">Quality Stays Sharp</h3>
+      <p className="text-gray-600 text-sm">
+        Smart compression preserves text clarity and image quality —
+        your compressed PDF looks professional and stays fully readable.
+      </p>
+    </div>
 
-        <p className="leading-7 mb-6">
-          PDF compression reduces the file size of your document by removing unnecessary data—like embedded fonts, hidden layers, or high-resolution images—without ruining how it looks.
-          The result? A smaller, faster-loading PDF that’s perfect for emailing, uploading, or storing, while still looking clear and professional.
+    <div className="bg-gradient-to-br from-purple-50 to-white p-8 rounded-2xl shadow-lg border border-purple-100 text-center hover:shadow-xl transition">
+      <div className="w-16 h-16 bg-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
+        <Download className="w-8 h-8 text-white" />
+      </div>
+      <h3 className="text-xl font-semibold text-gray-800 mb-3">Batch & Single Compression</h3>
+      <p className="text-gray-600 text-sm">
+        Compress one PDF or up to 15 files at once. Single file downloads
+        directly. Multiple files download as a ZIP — no signup, no watermark.
+      </p>
+    </div>
+  </div>
 
-          Our PDF compressor uses advanced compression algorithms including lossless and smart lossy compression techniques. 
-          It optimizes images through DPI reduction and image downsampling to achieve a better compression ratio without affecting readability.
-        </p>
-
-        {/* Why compress */}
-        <h3 className="text-xl font-semibold text-slate-900 mb-3">
-          Why Compress Your PDF Files?
-        </h3>
-        
-          <p className="leading-7 mb-4">
-            If you’re preparing documents for sharing, you can also{" "}
-            <a href="/merge-pdf" className="text-blue-700 font-semibold hover:underline">
-              merge PDF files
-            </a>{" "}
-            to combine multiple documents into one,{" "}
-            <a href="/split-pdf" className="text-blue-700 font-semibold hover:underline">
-              split PDF pages
-            </a>{" "}
-            to extract only what you need, or{" "}
-            <a href="/word-to-pdf" className="text-blue-700 font-semibold hover:underline">
-              convert Word to PDF
-            </a>{" "}
-            after you edit your document.
-          </p>
-
-          <ul className="space-y-2 mb-6 list-disc pl-6">
-          <li>Reduce file size dramatically—often by 50-90%</li>
-          <li>Send large PDFs via email without attachment limits</li>
-          <li>Upload documents faster to websites or cloud storage</li>
-          <li>Save storage space on your phone or computer</li>
-          <li>Maintain readable text and clear images</li>
-
-          {/* 🔥 Added Semantic Bullets */}
-          <li>Reduce PDF from 25MB to under 5MB easily</li>
-          <li>Meet strict email attachment size limits</li>
-          <li>Fit within 10MB upload size requirements</li>
-          <li>Compress PDF from 20MB to under 5MB to meet email attachment limits</li>
-          </ul>
-        {/* Steps */}
-        <h3 className="text-xl font-semibold text-slate-900 mb-3">
-          How to Compress PDF Online
-        </h3>
-        <ol className="space-y-2 mb-6 list-decimal pl-6">
-          <li>Upload your PDF file (drag & drop or click to select)</li>
-          <li>Choose your compression level (if options available)</li>
-          <li>Click “Compress PDF”</li>
-          <li>Download your smaller, optimized PDF instantly</li>
-        </ol>
-
-        <p className="mb-6">
-          No registration, no watermark, no installation—100% free and secure.
-        </p>
-
-        {/* Features box */}
-        <div className="bg-slate-50 border border-slate-200 rounded-xl p-6 mb-6">
-          <h3 className="text-xl font-semibold text-slate-900 mb-4">
-            Features of PDFLinx PDF Compressor
-          </h3>
-          <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 list-disc pl-5">
-            <li>100% free online compression</li>
-            <li>Significant file size reduction</li>
-            <li>Preserves text and image quality</li>
-            <li>Fast and reliable processing</li>
-            <li>Works on mobile & desktop</li>
-            <li>No file storage – complete privacy</li>
-            <li>No watermarks or limits</li>
-              {/* 🔥 Added Semantic Line */}
-            <li>Smart compression level automatically selected for best quality and size balance</li>
-
-          </ul>
+  {/* How To Steps */}
+  <div className="bg-white rounded-2xl shadow-lg p-8 md:p-12 border border-gray-100">
+    <h3 className="text-2xl md:text-3xl font-bold text-center mb-12 text-gray-800">
+      How to Compress a PDF — 3 Simple Steps
+    </h3>
+    <div className="grid md:grid-cols-3 gap-8">
+      <div className="text-center">
+        <div className="w-16 h-16 bg-gradient-to-r from-blue-600 to-blue-700 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold text-white shadow-lg">
+          1
         </div>
-
-        {/* Audience */}
-        <h3 className="text-xl font-semibold text-slate-900 mb-3">
-          Who Should Use This Tool?
-        </h3>
-        <ul className="space-y-2 mb-6 list-disc pl-6">
-          <li><strong>Students:</strong> Submit large scanned assignments or projects</li>
-          <li><strong>Professionals:</strong> Email reports, resumes, or contracts quickly</li>
-          <li><strong>Businesses:</strong> Share invoices, proposals, or brochures easily</li>
-          <li><strong>Job Applicants:</strong> Send CVs under email size limits</li>
-          <li><strong>Anyone:</strong> Free up space or speed up uploads with big PDFs</li>
-        </ul>
-
-        {/* Safety */}
-        <h3 className="text-xl font-semibold text-slate-900 mb-3">
-          Is PDFLinx Safe to Use?
-        </h3>
-        {/* <p className="leading-7 mb-6">
-          Absolutely. Your privacy is our priority.
-          Every PDF you upload is processed securely on our servers and automatically deleted shortly after compression.
-          We never store, share, or access your documents.
-        </p> */}
-        <p className="leading-7 mb-6">
-          Absolutely. Your privacy is our priority.
-          Every PDF you upload is processed through encrypted transfer and secure file processing on our servers.
-          Files are automatically deleted shortly after compression to ensure complete privacy.
-          We follow privacy-first compression practices and never store, share, or access your documents.
+        <h4 className="text-lg font-semibold mb-2">Upload Your PDF File(s)</h4>
+        <p className="text-gray-600 text-sm">
+          Select one PDF or upload up to 15 files at once for batch
+          compression. Drag and drop supported on all devices.
         </p>
+      </div>
+      <div className="text-center">
+        <div className="w-16 h-16 bg-gradient-to-r from-green-600 to-green-700 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold text-white shadow-lg">
+          2
+        </div>
+        <h4 className="text-lg font-semibold mb-2">Click Compress PDF</h4>
+        <p className="text-gray-600 text-sm">
+          Hit the Compress button and wait a few seconds. Smart compression
+          runs automatically to give the best size-to-quality balance.
+        </p>
+      </div>
+      <div className="text-center">
+        <div className="w-16 h-16 bg-gradient-to-r from-purple-600 to-purple-700 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold text-white shadow-lg">
+          3
+        </div>
+        <h4 className="text-lg font-semibold mb-2">Download Compressed PDF or ZIP</h4>
+        <p className="text-gray-600 text-sm">
+          Single file downloads as a compressed PDF instantly. Multiple
+          files are packaged into a ZIP with all compressed PDFs inside.
+        </p>
+      </div>
+    </div>
+  </div>
 
-        {/* Closing */}
+  {/* Contextual Links */}
+  <div className="mt-10 bg-white p-6 md:p-8 shadow-sm">
+    <h3 className="text-lg md:text-xl font-bold text-slate-900">
+      Need to do more with your PDF?
+    </h3>
+    <p className="mt-1 text-sm text-slate-600">
+      Compress is often just one step — combine, split, or convert your documents too.
+    </p>
+    <ul className="mt-4 space-y-2 text-sm">
+      <li>
+        <a href="/merge-pdf" className="text-blue-700 font-semibold hover:underline">
+          Merge PDF
+        </a>{" "}
+        <span className="text-slate-600">— combine multiple PDFs into one before compressing.</span>
+      </li>
+      <li>
+        <a href="/split-pdf" className="text-blue-700 font-semibold hover:underline">
+          Split PDF
+        </a>{" "}
+        <span className="text-slate-600">— extract only the pages you need, then compress.</span>
+      </li>
+      <li>
+        <a href="/word-to-pdf" className="text-blue-700 font-semibold hover:underline">
+          Word to PDF
+        </a>{" "}
+        <span className="text-slate-600">— convert your document to PDF, then compress for sharing.</span>
+      </li>
+      <li>
+        <a href="/free-pdf-tools" className="text-blue-700 font-semibold hover:underline">
+          Browse all PDF tools
+        </a>{" "}
+        <span className="text-slate-600">— merge, split, convert, protect & more.</span>
+      </li>
+    </ul>
+  </div>
+
+  <p className="text-center mt-12 text-base text-gray-600 italic max-w-3xl mx-auto">
+    Trusted by students, professionals, and businesses to reduce PDF file size —
+    fast, reliable, and always free.
+  </p>
+</section>
+
+{/* ── DEEP SEO CONTENT ── */}
+  <section className="max-w-4xl mx-auto px-4 py-14 text-slate-700">
+    <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-6">
+      PDF Compressor – Free Online Tool by PDFLinx
+    </h2>
+
+    <p className="text-base leading-7 mb-6">
+      Ever tried emailing a PDF only to get that "file too large" error? Or failed
+      to upload a document because the portal has a strict size limit? The{" "}
+      <span className="font-medium text-slate-900">PDFLinx Compress PDF tool</span>{" "}
+      shrinks your PDF files quickly and efficiently — reducing file size by up to
+      90% while keeping text sharp and images clear. No software, no watermarks,
+      no sign-up needed. Works on any device, in any browser.
+    </p>
+
+    <h3 className="text-xl font-semibold text-slate-900 mb-3">
+      What Is PDF Compression?
+    </h3>
+    <p className="leading-7 mb-6">
+      PDF compression reduces document file size by removing unnecessary data —
+      such as embedded duplicate fonts, hidden metadata, and oversized image data —
+      without visibly degrading the document. Our compressor uses smart lossy and
+      lossless compression techniques including image downsampling and DPI
+      optimization to achieve the best possible compression ratio while keeping
+      text readable and images clear.
+    </p>
+
+    <h3 className="text-xl font-semibold text-slate-900 mb-3">
+      Why Compress PDF Files?
+    </h3>
+    <ul className="space-y-2 mb-6 list-disc pl-6">
+      <li>Meet email attachment size limits — most email clients cap at 25MB</li>
+      <li>Upload to government portals and university systems with strict size limits</li>
+      <li>Share via WhatsApp, Telegram, or messaging apps with file size caps</li>
+      <li>Reduce storage usage on phone, computer, or cloud drive</li>
+      <li>Faster upload and download speeds for large documents</li>
+      <li>Compress PDF from 20MB+ down to under 5MB for easy sharing</li>
+      <li>Submit job applications and CVs within recruiter portal limits</li>
+      <li>Archive documents efficiently without losing content quality</li>
+    </ul>
+
+    <div className="mt-10 space-y-10">
+
+      <div>
         <h3 className="text-xl font-semibold text-slate-900 mb-3">
-          Compress PDF Anytime, Anywhere
+          Lossless vs Lossy PDF Compression — What Is the Difference?
         </h3>
         <p className="leading-7">
-          PDFLinx works smoothly on Windows, macOS, Linux, Android, and iOS.
-          Whether you're on your phone during a commute or at your desk, shrink any PDF in seconds with just a browser and internet connection.
+          <strong>Lossless compression</strong> removes redundant data (metadata,
+          duplicate font data, unused objects) without changing any visible content —
+          the PDF looks identical before and after. <strong>Lossy compression</strong>{" "}
+          goes further by reducing image resolution and applying stronger image
+          optimization — achieving much higher size reduction at the cost of slight
+          image quality reduction. PDF Linx uses a smart combination of both
+          techniques automatically, prioritizing text sharpness while optimizing
+          image data for the best compression ratio.
         </p>
-      </section>
+      </div>
+
+      <div>
+        <h3 className="text-xl font-semibold text-slate-900 mb-3">
+          How Much Can PDF File Size Be Reduced?
+        </h3>
+        <p className="leading-7">
+          Compression results depend heavily on PDF content. PDFs with many
+          high-resolution images typically compress the most — often{" "}
+          <strong>50–90% reduction</strong>. Text-heavy PDFs with minimal images
+          may compress less — typically <strong>20–50% reduction</strong>. PDFs
+          that are already optimized or contain mostly vector graphics may see
+          smaller gains. The tool automatically applies the best compression
+          strategy for each file.
+        </p>
+      </div>
+
+      <div>
+        <h3 className="text-xl font-semibold text-slate-900 mb-3">
+          Common Use Cases for PDF Compression
+        </h3>
+        <ul className="space-y-2 list-disc pl-6 leading-7">
+          <li>
+            <strong>Email attachments:</strong> Gmail, Outlook, and Yahoo Mail
+            have attachment size limits. Compress large PDF reports, invoices, or
+            brochures to send without rejection.
+          </li>
+          <li>
+            <strong>Government and university portals:</strong> Many official
+            portals require uploads under 2MB, 5MB, or 10MB. Compress documents
+            to meet these strict requirements easily.
+          </li>
+          <li>
+            <strong>WhatsApp and messaging apps:</strong> Compress PDFs to share
+            directly via WhatsApp, Telegram, or iMessage without file size errors.
+          </li>
+          <li>
+            <strong>Job applications:</strong> Compress resume PDFs and cover
+            letters to meet recruiter portal upload limits.
+          </li>
+          <li>
+            <strong>Cloud storage and archiving:</strong> Reduce PDF sizes before
+            uploading to Google Drive, Dropbox, or OneDrive to save storage space.
+          </li>
+          <li>
+            <strong>Client presentations and proposals:</strong> Compress
+            image-heavy proposal PDFs before emailing to clients.
+          </li>
+        </ul>
+      </div>
+
+      <div>
+        <h3 className="text-xl font-semibold text-slate-900 mb-3">
+          Batch PDF Compression
+        </h3>
+        <p className="leading-7">
+          Need to compress multiple PDFs at once? Upload up to{" "}
+          <strong>15 PDF files</strong> simultaneously — up to 25MB per file. The
+          tool compresses all files and delivers them as a{" "}
+          <strong>ZIP download</strong> containing all compressed PDFs. Ideal for
+          processing batches of invoices, reports, scanned documents, or assignment
+          submissions in one go. Single PDF uploads download as a compressed PDF
+          directly without any ZIP.
+        </p>
+      </div>
+
+      <div>
+        <h3 className="text-xl font-semibold text-slate-900 mb-3">
+          Privacy and File Security
+        </h3>
+        <p className="leading-7">
+          PDF Linx is built with privacy as a core priority. Uploaded PDF files are
+          transferred over encrypted connections and processed securely.{" "}
+          <strong>Files are permanently deleted after compression</strong> — never
+          stored long-term, never shared with third parties, and never used for any
+          other purpose. No account creation is required — no email, no password, no
+          personal data collected. Your documents remain completely private.
+        </p>
+      </div>
+
+      <div>
+        <h3 className="text-xl font-semibold text-slate-900 mb-3">
+          Compress PDF on Any Device
+        </h3>
+        <p className="leading-7">
+          PDF Linx works on <strong>Windows, macOS, Linux, Android, and iOS</strong> —
+          in any modern browser. No app download, no software installation. Whether
+          you are at your desk, on a laptop, or on your phone during a commute, you
+          can compress any PDF in seconds. Fully responsive with drag-and-drop file
+          upload supported on all devices including touchscreens.
+        </p>
+      </div>
+
+    </div>
+
+    <div className="bg-slate-50 border border-slate-200 rounded-xl p-6 mt-10 mb-6">
+      <h3 className="text-xl font-semibold text-slate-900 mb-4">
+        PDFLinx PDF Compressor — Feature Summary
+      </h3>
+      <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 list-disc pl-5 text-sm">
+        <li>Free online PDF compressor — no hidden fees</li>
+        <li>Up to 90% file size reduction</li>
+        <li>Smart lossless + lossy compression</li>
+        <li>Batch compression — up to 15 files at once</li>
+        <li>Max 25MB per file</li>
+        <li>ZIP download for multiple file compressions</li>
+        <li>Text sharpness and image clarity preserved</li>
+        <li>Fast processing — compression in seconds</li>
+        <li>No watermark added to compressed files</li>
+        <li>Works on desktop and mobile browsers</li>
+        <li>Files auto-deleted after compression — privacy protected</li>
+        <li>No signup or account required</li>
+      </ul>
+    </div>
+
+    <h3 className="text-xl font-semibold text-slate-900 mb-3">
+      Who Should Use This Tool?
+    </h3>
+    <ul className="space-y-2 mb-6 list-disc pl-6">
+      <li><strong>Students:</strong> Compress scanned assignments, thesis documents, and project submissions to meet portal size limits</li>
+      <li><strong>Job seekers:</strong> Reduce resume and cover letter PDF size for recruiter portal uploads</li>
+      <li><strong>Professionals:</strong> Compress reports, proposals, and contracts before emailing to clients</li>
+      <li><strong>Businesses:</strong> Reduce invoice, brochure, and presentation PDF sizes for easy distribution</li>
+      <li><strong>Administrative staff:</strong> Compress scanned document batches for archiving and filing systems</li>
+      <li><strong>Anyone:</strong> Shrink any oversized PDF to share via email, WhatsApp, or upload to any portal</li>
+    </ul>
+
+    <h3 className="text-xl font-semibold text-slate-900 mb-3">
+      Frequently Asked Questions — Compress PDF
+    </h3>
+  </section>
 
 
-      <section className="py-16 bg-gray-50">
-        <div className="max-w-4xl mx-auto px-4">
-
-          <h2 className="text-3xl font-bold text-center mb-10 text-slate-900">
-            Frequently Asked Questions
-          </h2>
-
-          <div className="space-y-4">
-
-            <details className="bg-white rounded-lg shadow-sm p-5">
-              <summary className="font-semibold cursor-pointer">
-                Is the PDF compressor free to use?
-              </summary>
-              <p className="mt-2 text-gray-600">
-                Yes — completely free with no hidden fees or limits.
-              </p>
-            </details>
-
-            <details className="bg-white rounded-lg shadow-sm p-5">
-              <summary className="font-semibold cursor-pointer">
-                Do I need to install any software?
-              </summary>
-              <p className="mt-2 text-gray-600">
-                No — everything works directly in your browser.
-              </p>
-            </details>
-
-            <details className="bg-white rounded-lg shadow-sm p-5">
-              <summary className="font-semibold cursor-pointer">
-                Will compressing affect the quality of my PDF?
-              </summary>
-              <p className="mt-2 text-gray-600">
-                We use smart compression to reduce size while keeping text sharp and images clear.
-                You’ll notice the smaller file size, not the difference in quality.
-              </p>
-            </details>
-
-            <details className="bg-white rounded-lg shadow-sm p-5">
-              <summary className="font-semibold cursor-pointer">
-                Are my files safe and private?
-              </summary>
-              <p className="mt-2 text-gray-600">
-                100% safe — your PDFs are deleted automatically shortly after processing.
-              </p>
-            </details>
-
-            <details className="bg-white rounded-lg shadow-sm p-5">
-              <summary className="font-semibold cursor-pointer">
-                Can I compress PDF on my phone?
-              </summary>
-              <p className="mt-2 text-gray-600">
-                Yes! Works perfectly on mobile phones, tablets, and desktops.
-              </p>
-            </details>
-
-            <details className="bg-white rounded-lg shadow-sm p-5">
-              <summary className="font-semibold cursor-pointer">
-                How much can the file size be reduced?
-              </summary>
-              <p className="mt-2 text-gray-600">
-                It depends on the original PDF, but most files shrink by 40-90% while staying fully readable.
-              </p>
-            </details>
-
-            <details className="bg-white rounded-lg shadow-sm p-5">
-              <summary className="font-semibold cursor-pointer">
-                What is the best compression ratio for PDF?
-              </summary>
-              <p className="mt-2 text-gray-600">
-                The best compression ratio depends on your needs. If you need to meet a strict file size limit for email or online uploads, a higher compression ratio may help.
-                Our tool automatically balances size reduction while maintaining text clarity and document readability.
-              </p>
-            </details>
-
-            <details className="bg-white rounded-lg shadow-sm p-5">
-              <summary className="font-semibold cursor-pointer">
-                Does PDF compression reduce image resolution?
-              </summary>
-              <p className="mt-2 text-gray-600">
-                In some cases, PDF compression may slightly reduce resolution to optimize images and shrink file size.
-                However, our smart compression ensures visual quality remains high while reducing unnecessary data.
-                The goal is to reduce resolution only where needed while keeping text sharp and clear.
-              </p>
-            </details>
-
-
-          </div>
-        </div>
-      </section>
-
+<section className="py-16 bg-gray-50">
+  <div className="max-w-4xl mx-auto px-4">
+    <h2 className="text-3xl font-bold text-center mb-10 text-slate-900">
+      Frequently Asked Questions
+    </h2>
+    <div className="space-y-4">
+      {[
+        {
+          q: "Is the PDF compressor free to use?",
+          a: "Yes. PDFLinx Compress PDF is completely free — no hidden charges, no subscription, no premium tier required.",
+        },
+        {
+          q: "Do I need to install any software?",
+          a: "No. Everything works directly in your browser. No desktop software, no app download, no plugins needed.",
+        },
+        {
+          q: "Will compressing affect the quality of my PDF?",
+          a: "Text sharpness is always preserved. Images may be optimized slightly for maximum size reduction, but the document remains fully readable and professional-looking.",
+        },
+        {
+          q: "How much can the PDF file size be reduced?",
+          a: "Most PDFs shrink by 40–90%. Image-heavy PDFs compress the most. Text-only PDFs may compress less. Results depend on the original file content and structure.",
+        },
+        {
+          q: "Are my uploaded PDF files safe and private?",
+          a: "Yes. Files are transferred over encrypted connections, processed securely, and permanently deleted after compression. They are never stored long-term or shared with third parties.",
+        },
+        {
+          q: "Can I compress multiple PDF files at once?",
+          a: "Yes. Upload up to 15 PDF files simultaneously — up to 25MB per file. All compressed PDFs are delivered as a single ZIP download.",
+        },
+        {
+          q: "What happens if I upload only one PDF?",
+          a: "Single file uploads compress and download directly as a PDF — no ZIP, no extra steps.",
+        },
+        {
+          q: "Does PDF compression reduce image resolution?",
+          a: "Smart compression may slightly reduce image DPI to optimize file size. Text clarity is always maintained. The goal is to reduce file size while keeping the document visually clear.",
+        },
+        {
+          q: "Can I compress a PDF on my phone?",
+          a: "Yes. PDFLinx works on Android and iOS mobile devices, tablets, and all desktop browsers — no app required.",
+        },
+        {
+          q: "What is the maximum file size I can upload?",
+          a: "Each PDF file can be up to 25MB. You can upload up to 15 files at once for batch compression.",
+        },
+      ].map((faq, i) => (
+        <details key={i} className="bg-white rounded-lg shadow-sm p-5 group">
+          <summary className="font-semibold cursor-pointer list-none flex justify-between items-center">
+            {faq.q}
+            <span className="text-blue-500 ml-3 text-lg group-open:rotate-45 transition-transform">+</span>
+          </summary>
+          <p className="mt-2 text-gray-600">{faq.a}</p>
+        </details>
+      ))}
+    </div>
+  </div>
+</section>
       
 
       <RelatedToolsSection currentPage="compress-pdf" />

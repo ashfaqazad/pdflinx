@@ -280,14 +280,12 @@ export default function MergePDF() {
             <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent mb-4">
               Merge PDF Files Online (Free)
             </h1>
-            {/* <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Need to combine a few PDFs into one? Drop them here – we’ll stitch them together perfectly. Fast, easy, and totally free!
-            </p> */}
             <p className="text-gray-600 mt-3 leading-7">
-              Merge multiple PDF files into a single document online for free.
-              Our fast and secure PDF merger lets you combine PDF documents,
-              arrange pages in the correct order, and download one organized PDF instantly.
-              Perfect for joining reports, invoices, contracts, or scanned documents into one file.
+              Combine multiple PDF files into one organized document instantly — page
+              order, formatting, and quality stay exactly as they were. Upload 2 or
+              more PDFs, arrange them in the right sequence, and download a single
+              merged PDF. Perfect for reports, invoices, contracts, certificates, and
+              scanned documents. No signup, no watermark, completely free.
             </p>
           </div>
 
@@ -386,7 +384,8 @@ export default function MergePDF() {
 
           {/* Trust Footer */}
           <p className="text-center mt-6 text-gray-600 text-base">
-            No sign-up • No limits • Files gone after 1 hour • 100% free & secure
+            No sign-up • No watermark • Auto-deleted after 1 hour • 100% free •
+            Unlimited files • Works on Windows, Mac, Android & iOS
           </p>
         </div>
       </main>
@@ -396,10 +395,13 @@ export default function MergePDF() {
         {/* Main Heading */}
         <div className="text-center mb-12">
           <h2 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent mb-4">
-            Merge PDF Online Free – Combine Files in Seconds
+            Merge PDF Online Free – Combine PDF Files in Seconds
           </h2>
           <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-            Got multiple PDFs that belong together? Merge them into one clean document here – order stays perfect, super fast, and always free on PDF Linx!
+            Got multiple PDFs that belong together? Merge them into one clean,
+            organized document here — page order stays perfect, original quality
+            preserved, and your combined PDF is ready to download in seconds.
+            Fast, free, and privacy-friendly on PDF Linx.
           </p>
         </div>
 
@@ -411,9 +413,10 @@ export default function MergePDF() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
               </svg>
             </div>
-            <h3 className="text-xl font-semibold text-gray-800 mb-3">Merge as Many as You Want</h3>
+            <h3 className="text-xl font-semibold text-gray-800 mb-3">Unlimited Files</h3>
             <p className="text-gray-600 text-sm">
-              Combine 2 or 200 PDFs – no limits, no fees.
+              Combine 2 files or dozens — no file count limits, no fees, no
+              restrictions on how many PDFs you merge at once.
             </p>
           </div>
 
@@ -421,9 +424,10 @@ export default function MergePDF() {
             <div className="w-16 h-16 bg-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
               <CheckCircle className="w-8 h-8 text-white" />
             </div>
-            <h3 className="text-xl font-semibold text-gray-800 mb-3">Everything Stays Perfect</h3>
+            <h3 className="text-xl font-semibold text-gray-800 mb-3">Quality & Order Preserved</h3>
             <p className="text-gray-600 text-sm">
-              Formatting, quality, order – just like the originals.
+              Formatting, images, text, and page order stay exactly as they were
+              — your merged PDF looks identical to the originals, combined.
             </p>
           </div>
 
@@ -433,7 +437,8 @@ export default function MergePDF() {
             </div>
             <h3 className="text-xl font-semibold text-gray-800 mb-3">Fast & Private</h3>
             <p className="text-gray-600 text-sm">
-              Works instantly – files deleted after 1 hour, no sign-up needed.
+              Merges in seconds — no sign-up, no watermark, files permanently
+              deleted after processing to protect your privacy.
             </p>
           </div>
         </div>
@@ -441,41 +446,254 @@ export default function MergePDF() {
         {/* How To Steps */}
         <div className="bg-white rounded-2xl shadow-lg p-8 md:p-12 border border-gray-100">
           <h3 className="text-2xl md:text-3xl font-bold text-center mb-12 text-gray-800">
-            Merge PDFs in 3 Easy Steps
+            How to Merge PDF Files — 3 Simple Steps
           </h3>
           <div className="grid md:grid-cols-3 gap-8">
             <div className="text-center">
               <div className="w-16 h-16 bg-gradient-to-r from-indigo-600 to-indigo-700 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold text-white shadow-lg">
                 1
               </div>
-              <h4 className="text-lg font-semibold mb-2">Upload Your PDFs</h4>
-              <p className="text-gray-600 text-sm">Drop multiple files – easy preview.</p>
+              <h4 className="text-lg font-semibold mb-2">Upload Your PDF Files</h4>
+              <p className="text-gray-600 text-sm">
+                Select 2 or more PDF files from your device. Drag and drop
+                supported — upload as many files as you need.
+              </p>
             </div>
-
             <div className="text-center">
               <div className="w-16 h-16 bg-gradient-to-r from-purple-600 to-purple-700 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold text-white shadow-lg">
                 2
               </div>
-              <h4 className="text-lg font-semibold mb-2">Remove if Needed</h4>
-              <p className="text-gray-600 text-sm">Click X on any you don’t want.</p>
+              <h4 className="text-lg font-semibold mb-2">Arrange & Remove Files</h4>
+              <p className="text-gray-600 text-sm">
+                Files merge in the order you upload them. Remove any unwanted
+                files by clicking the X before merging.
+              </p>
             </div>
-
             <div className="text-center">
               <div className="w-16 h-16 bg-gradient-to-r from-green-600 to-green-700 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold text-white shadow-lg">
                 3
               </div>
               <h4 className="text-lg font-semibold mb-2">Merge & Download</h4>
-              <p className="text-gray-600 text-sm">Your combined PDF is ready!</p>
+              <p className="text-gray-600 text-sm">
+                Click Merge PDFs Now and download your combined PDF instantly —
+                one clean, organized file ready to share or submit.
+              </p>
             </div>
           </div>
         </div>
 
-        {/* Final CTA */}
+        {/* Contextual Links */}
+        <div className="mt-10 bg-white p-6 md:p-8 shadow-sm">
+          <h3 className="text-lg md:text-xl font-bold text-slate-900">
+            Need to do more with your PDFs?
+          </h3>
+          <p className="mt-1 text-sm text-slate-600">
+            Merge is often just one step — split, compress, or convert your documents too.
+          </p>
+          <ul className="mt-4 space-y-2 text-sm">
+            <li>
+              <a href="/split-pdf" className="text-indigo-700 font-semibold hover:underline">
+                Split PDF
+              </a>{" "}
+              <span className="text-slate-600">— extract specific pages before merging into the final document.</span>
+            </li>
+            <li>
+              <a href="/compress-pdf" className="text-indigo-700 font-semibold hover:underline">
+                Compress PDF
+              </a>{" "}
+              <span className="text-slate-600">— reduce the merged PDF file size for easy email sharing.</span>
+            </li>
+            <li>
+              <a href="/word-to-pdf" className="text-indigo-700 font-semibold hover:underline">
+                Word to PDF
+              </a>{" "}
+              <span className="text-slate-600">— convert Word documents to PDF first, then merge them together.</span>
+            </li>
+            <li>
+              <a href="/free-pdf-tools" className="text-indigo-700 font-semibold hover:underline">
+                Browse all PDF tools
+              </a>{" "}
+              <span className="text-slate-600">— compress, split, convert, protect & more.</span>
+            </li>
+          </ul>
+        </div>
+
         <p className="text-center mt-12 text-base text-gray-600 italic max-w-3xl mx-auto">
-          Thousands merge PDFs daily with PDF Linx – simple, reliable, and always free.
+          Trusted by students, professionals, and businesses to combine PDF files —
+          fast, reliable, and always free.
         </p>
       </section>
 
+      {/* ── DEEP SEO CONTENT ── */}
+      <section className="max-w-4xl mx-auto px-4 py-14 text-slate-700">
+        <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-6">
+          PDF Merger – Free Online Tool by PDFLinx
+        </h2>
+
+        <p className="text-base leading-7 mb-6">
+          Ended up with a stack of separate PDFs — invoices, reports, scanned pages,
+          certificates — that should really be one document? The{" "}
+          <span className="font-medium text-slate-900">PDFLinx Merge PDF tool</span>{" "}
+          combines multiple PDF files into a single, organized document in seconds.
+          No software installation, no watermarks, no sign-up required. Upload your
+          files, set the order, and download one clean merged PDF instantly.
+        </p>
+
+        <h3 className="text-xl font-semibold text-slate-900 mb-3">
+          What Is PDF Merging?
+        </h3>
+        <p className="leading-7 mb-6">
+          PDF merging — also called combining or joining PDFs — takes two or more
+          separate PDF files and joins them into one seamless document. The merged
+          file preserves the original formatting, images, text quality, and page
+          layout of every source document. You control the order — the final merged
+          PDF flows exactly as you arrange the files before merging.
+        </p>
+
+        <h3 className="text-xl font-semibold text-slate-900 mb-3">
+          Why Merge PDF Files?
+        </h3>
+        <ul className="space-y-2 mb-6 list-disc pl-6">
+          <li>Send one file instead of multiple attachments in an email</li>
+          <li>Combine invoices, receipts, or statements into one monthly document</li>
+          <li>Join chapters, sections, or reports into a single organized PDF</li>
+          <li>Attach cover letter, resume, and certificates as one application file</li>
+          <li>Merge scanned document pages into one complete file</li>
+          <li>Combine contracts, annexures, and appendices for clean delivery</li>
+          <li>Simplify cloud storage — one file instead of a disorganized folder</li>
+          <li>Submit multi-part assignments or project reports as a single PDF</li>
+        </ul>
+
+        <div className="mt-10 space-y-10">
+
+          <div>
+            <h3 className="text-xl font-semibold text-slate-900 mb-3">
+              Does Merging PDFs Affect Quality?
+            </h3>
+            <p className="leading-7">
+              No. PDF Linx merges files by joining the original page data directly —
+              there is no re-rendering, re-compression, or quality loss. Text stays
+              sharp, images stay clear, and formatting remains exactly as it was in
+              the original documents. The merged PDF is simply the source pages
+              combined into one file in the order you specified.
+            </p>
+          </div>
+
+          <div>
+            <h3 className="text-xl font-semibold text-slate-900 mb-3">
+              How to Control Page Order When Merging
+            </h3>
+            <p className="leading-7">
+              Files are merged in the order you upload them — the first file uploaded
+              becomes the first section of the merged PDF, the second file follows,
+              and so on. To change the order, remove files using the X button and
+              re-upload them in the correct sequence. If you need to extract specific
+              pages before merging, use the{" "}
+              <a href="/split-pdf" className="text-indigo-700 font-medium hover:underline">
+                Split PDF tool
+              </a>{" "}
+              first to isolate the pages you need.
+            </p>
+          </div>
+
+          <div>
+            <h3 className="text-xl font-semibold text-slate-900 mb-3">
+              Common Use Cases for PDF Merging
+            </h3>
+            <ul className="space-y-2 list-disc pl-6 leading-7">
+              <li>
+                <strong>Job applications:</strong> Combine your resume, cover letter,
+                and supporting certificates into one professional PDF submission.
+              </li>
+              <li>
+                <strong>Invoice and receipt management:</strong> Merge monthly
+                invoices or expense receipts into one organized PDF for accounting.
+              </li>
+              <li>
+                <strong>Academic submissions:</strong> Join assignment sections,
+                appendices, and reference lists into one submission-ready PDF.
+              </li>
+              <li>
+                <strong>Legal and contract documents:</strong> Combine main
+                agreements, annexures, and exhibit pages into one complete contract PDF.
+              </li>
+              <li>
+                <strong>Business reports and proposals:</strong> Merge report sections,
+                charts, and appendices into one polished client-ready document.
+              </li>
+              <li>
+                <strong>Scanned document assembly:</strong> Combine individually
+                scanned pages into one complete multi-page PDF document.
+              </li>
+            </ul>
+          </div>
+
+          <div>
+            <h3 className="text-xl font-semibold text-slate-900 mb-3">
+              Privacy and File Security
+            </h3>
+            <p className="leading-7">
+              PDF Linx is built with privacy as a core priority. Uploaded PDF files
+              are processed securely and{" "}
+              <strong>permanently deleted after merging</strong> — never stored
+              long-term, never shared with third parties, and never used for any other
+              purpose. No account creation is required — no email, no password, no
+              personal data collected. Your documents remain completely private.
+            </p>
+          </div>
+
+          <div>
+            <h3 className="text-xl font-semibold text-slate-900 mb-3">
+              Merge PDFs on Any Device
+            </h3>
+            <p className="leading-7">
+              PDF Linx works on <strong>Windows, macOS, Linux, Android, and iOS</strong> —
+              in any modern browser. No app download, no software installation. Whether
+              you are at your desk, on a laptop, or on your phone, you can merge PDF
+              files in seconds. Fully responsive with drag-and-drop file upload
+              supported on all devices including touchscreens.
+            </p>
+          </div>
+
+        </div>
+
+        <div className="bg-slate-50 border border-slate-200 rounded-xl p-6 mt-10 mb-6">
+          <h3 className="text-xl font-semibold text-slate-900 mb-4">
+            PDFLinx PDF Merger — Feature Summary
+          </h3>
+          <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 list-disc pl-5 text-sm">
+            <li>Free online PDF merger — no hidden fees</li>
+            <li>Combine unlimited PDF files in one merge</li>
+            <li>Original quality and formatting fully preserved</li>
+            <li>Page order controlled by upload sequence</li>
+            <li>Remove unwanted files before merging</li>
+            <li>Fast processing — merged PDF ready in seconds</li>
+            <li>No watermark added to merged files</li>
+            <li>Works on desktop and mobile browsers</li>
+            <li>Files auto-deleted after merging — privacy protected</li>
+            <li>No signup or account required</li>
+            <li>Cross-platform: Windows, macOS, Android, iOS</li>
+            <li>Drag-and-drop upload supported</li>
+          </ul>
+        </div>
+
+        <h3 className="text-xl font-semibold text-slate-900 mb-3">
+          Who Should Use This Tool?
+        </h3>
+        <ul className="space-y-2 mb-6 list-disc pl-6">
+          <li><strong>Students:</strong> Combine assignment sections, appendices, and references into one submission PDF</li>
+          <li><strong>Job seekers:</strong> Merge resume, cover letter, and certificates into one professional application file</li>
+          <li><strong>Professionals:</strong> Join report sections, charts, and appendices into one client-ready document</li>
+          <li><strong>Businesses:</strong> Combine invoices, contracts, and correspondence into organized single PDFs</li>
+          <li><strong>Legal professionals:</strong> Merge agreements, annexures, and exhibit pages into complete contract documents</li>
+          <li><strong>Administrative staff:</strong> Assemble scanned document pages into complete multi-page PDF files</li>
+          <li><strong>Anyone:</strong> Combine any separate PDFs into one organized, easy-to-share document</li>
+        </ul>
+
+        <h3 className="text-xl font-semibold text-slate-900 mb-3">
+          Frequently Asked Questions — Merge PDF
+        </h3>
+      </section>
 
       <section className="max-w-4xl mx-auto px-4 py-14 text-slate-700">
         {/* Heading */}
@@ -602,70 +820,65 @@ export default function MergePDF() {
 
       <section className="py-16 bg-gray-50">
         <div className="max-w-4xl mx-auto px-4">
-
           <h2 className="text-3xl font-bold text-center mb-10 text-slate-900">
             Frequently Asked Questions
           </h2>
-
           <div className="space-y-4">
-
-            <details className="bg-white rounded-lg shadow-sm p-5">
-              <summary className="font-semibold cursor-pointer">
-                Is the PDF merger free to use?
-              </summary>
-              <p className="mt-2 text-gray-600">
-                Yes — completely free with no limits or hidden charges.
-              </p>
-            </details>
-
-            <details className="bg-white rounded-lg shadow-sm p-5">
-              <summary className="font-semibold cursor-pointer">
-                Do I need to install any software?
-              </summary>
-              <p className="mt-2 text-gray-600">
-                No — everything works directly in your browser.
-              </p>
-            </details>
-
-            <details className="bg-white rounded-lg shadow-sm p-5">
-              <summary className="font-semibold cursor-pointer">
-                Can I rearrange the pages before merging?
-              </summary>
-              <p className="mt-2 text-gray-600">
-                Yes! Just drag and drop files or pages to get the perfect order.
-              </p>
-            </details>
-
-            <details className="bg-white rounded-lg shadow-sm p-5">
-              <summary className="font-semibold cursor-pointer">
-                Will the quality of my PDFs be affected?
-              </summary>
-              <p className="mt-2 text-gray-600">
-                No — we preserve the original formatting, images, and text quality.
-              </p>
-            </details>
-
-            <details className="bg-white rounded-lg shadow-sm p-5">
-              <summary className="font-semibold cursor-pointer">
-                Are my files safe and private?
-              </summary>
-              <p className="mt-2 text-gray-600">
-                100% safe — all files are deleted automatically after processing.
-              </p>
-            </details>
-
-            <details className="bg-white rounded-lg shadow-sm p-5">
-              <summary className="font-semibold cursor-pointer">
-                Can I merge PDFs on my phone?
-              </summary>
-              <p className="mt-2 text-gray-600">
-                Yes! Works smoothly on mobile phones, tablets, and desktops.
-              </p>
-            </details>
-
+            {[
+              {
+                q: "Is the PDF merger free to use?",
+                a: "Yes. PDFLinx Merge PDF is completely free — no hidden charges, no subscription, no premium tier required.",
+              },
+              {
+                q: "Do I need to install any software to merge PDFs?",
+                a: "No. Everything works directly in your browser. No desktop software, no app download, no plugins needed.",
+              },
+              {
+                q: "How many PDF files can I merge at once?",
+                a: "There is no strict file count limit — you can merge 2 files or dozens in a single merge. Upload as many PDFs as you need to combine.",
+              },
+              {
+                q: "Will the quality of my PDFs be affected by merging?",
+                a: "No. PDF Linx joins the original page data directly — no re-rendering or compression. Text, images, and formatting stay exactly as they were in the original files.",
+              },
+              {
+                q: "Can I control the page order of the merged PDF?",
+                a: "Yes. Files are merged in the order you upload them. Remove files using the X button and re-upload them in the correct sequence to control the final page order.",
+              },
+              {
+                q: "Are my uploaded PDF files safe and private?",
+                a: "Yes. Files are processed securely and permanently deleted after merging. They are never stored long-term or shared with third parties.",
+              },
+              {
+                q: "Can I merge PDFs on my phone?",
+                a: "Yes. PDFLinx works on Android and iOS mobile devices, tablets, and all desktop browsers — no app required.",
+              },
+              {
+                q: "What is the difference between merging and combining PDFs?",
+                a: "Merging and combining PDFs mean the same thing — joining two or more separate PDF files into one single document. The terms are used interchangeably.",
+              },
+              {
+                q: "Can I merge a scanned PDF with a regular PDF?",
+                a: "Yes. PDF Linx merges any PDF files together regardless of whether they are scanned documents, regular text PDFs, or image-based files.",
+              },
+              {
+                q: "What should I do after merging if the file is too large?",
+                a: "After merging, use the Compress PDF tool on PDF Linx to reduce the merged file size — useful when emailing or uploading to portals with strict size limits.",
+              },
+            ].map((faq, i) => (
+              <details key={i} className="bg-white rounded-lg shadow-sm p-5 group">
+                <summary className="font-semibold cursor-pointer list-none flex justify-between items-center">
+                  {faq.q}
+                  <span className="text-indigo-500 ml-3 text-lg group-open:rotate-45 transition-transform">+</span>
+                </summary>
+                <p className="mt-2 text-gray-600">{faq.a}</p>
+              </details>
+            ))}
           </div>
         </div>
       </section>
+
+
       <RelatedToolsSection currentPage="merge-pdf" />
 
       {/* 🔗 Comparison Links */}

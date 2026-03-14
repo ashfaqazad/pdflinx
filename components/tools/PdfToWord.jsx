@@ -558,11 +558,18 @@ export default function PdfToWord({ seo }) {
               {seo?.h1 || "PDF to Word Converter (Free & Online)"}
             </h1>
 
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            {/* <p className="text-lg text-gray-600 max-w-2xl mx-auto">
               {seo?.hero?.subtitle || "Upload a PDF and convert it to an editable Word (DOCX). Clean output, no watermark, no signup. Single + bulk supported."}
               <span className="block mt-1">
                 Convert scanned/image-based PDFs to editable Word documents using built-in OCR text recognition.
               </span>
+            </p> */}
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+              Convert PDF to editable Word (DOCX) instantly — text, tables, images,
+              and formatting stay intact. Upload a single PDF or batch convert up to
+              10 files at once. Supports scanned PDFs via built-in OCR. Perfect for
+              contracts, reports, resumes, and assignments. No signup, no watermark,
+              completely free.
             </p>
 
             {/* <p className="text-lg text-gray-600 max-w-2xl mx-auto">
@@ -732,20 +739,27 @@ export default function PdfToWord({ seo }) {
 
           {/* Footer */}
           <p className="text-center mt-6 text-gray-600 text-base">
-            No account • No watermark • Files gone after 1 hour • Completely free • Single & bulk conversions supported
+            No account • No watermark • Auto-deleted after 1 hour • 100% free •
+            Single & batch conversion • OCR for scanned PDFs • Works on Windows, Mac, Android & iOS
           </p>
+          {/* <p className="text-center mt-6 text-gray-600 text-base">
+            No account • No watermark • Files gone after 1 hour • Completely free • Single & bulk conversions supported
+          </p> */}
         </div>
       </main>
 
       {/* ==================== SEO CONTENT SECTION ==================== */}
       <section className="mt-16 max-w-4xl mx-auto px-6 pb-16">
+        {/* Main Heading */}
         <div className="text-center mb-12">
           <h2 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent mb-4">
-            PDF to Word Online Free – Make Your PDFs Editable
+            PDF to Word Online Free – Convert PDF to Editable DOCX in Seconds
           </h2>
           <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-            Need to tweak a PDF? Convert it to Word here — text, tables, images, everything stays in place so you can edit easily.
-            Converting a bunch of PDFs? Upload multiple files together and download a ZIP with all DOCX files inside.
+            Need to edit a PDF? Convert it to Word here — text, tables, images,
+            and layout move over cleanly so you can edit straight away. Supports
+            single file and batch conversion. Scanned PDFs supported via OCR.
+            Fast, free, and privacy-friendly on PDF Linx.
           </p>
         </div>
 
@@ -757,9 +771,10 @@ export default function PdfToWord({ seo }) {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
               </svg>
             </div>
-            <h3 className="text-xl font-semibold text-gray-800 mb-3">Super Accurate</h3>
+            <h3 className="text-xl font-semibold text-gray-800 mb-3">Accurate Text & Layout</h3>
             <p className="text-gray-600 text-sm">
-              Text, tables, and layout move over neatly so editing feels easy.
+              Text, tables, headings, images, and spacing transfer cleanly into
+              Word — ready to edit without major cleanup for most standard PDFs.
             </p>
           </div>
 
@@ -767,9 +782,10 @@ export default function PdfToWord({ seo }) {
             <div className="w-16 h-16 bg-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
               <CheckCircle className="w-8 h-8 text-white" />
             </div>
-            <h3 className="text-xl font-semibold text-gray-800 mb-3">Single + Bulk Support</h3>
+            <h3 className="text-xl font-semibold text-gray-800 mb-3">OCR for Scanned PDFs</h3>
             <p className="text-gray-600 text-sm">
-              Convert one PDF to DOCX or upload multiple PDFs and download a ZIP — your choice.
+              Enable OCR to extract text from image-based and scanned PDFs —
+              turning non-editable scans into fully editable DOCX documents.
             </p>
           </div>
 
@@ -777,9 +793,10 @@ export default function PdfToWord({ seo }) {
             <div className="w-16 h-16 bg-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
               <Download className="w-8 h-8 text-white" />
             </div>
-            <h3 className="text-xl font-semibold text-gray-800 mb-3">Fast & Private</h3>
+            <h3 className="text-xl font-semibold text-gray-800 mb-3">Batch & Single Conversion</h3>
             <p className="text-gray-600 text-sm">
-              No sign-up, no watermark, and files are removed after 1 hour.
+              Convert one PDF to DOCX directly, or upload up to 10 PDFs at once
+              and download all converted Word files as a single ZIP.
             </p>
           </div>
         </div>
@@ -787,41 +804,43 @@ export default function PdfToWord({ seo }) {
         {/* How To Steps */}
         <div className="bg-white rounded-2xl shadow-lg p-8 md:p-12 border border-gray-100">
           <h3 className="text-2xl md:text-3xl font-bold text-center mb-12 text-gray-800">
-            Convert PDF to Word in 3 Easy Steps
+            How to Convert PDF to Word — 3 Simple Steps
           </h3>
           <div className="grid md:grid-cols-3 gap-8">
             <div className="text-center">
               <div className="w-16 h-16 bg-gradient-to-r from-blue-600 to-blue-700 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold text-white shadow-lg">
                 1
               </div>
-              <h4 className="text-lg font-semibold mb-2">Upload PDF File(s)</h4>
+              <h4 className="text-lg font-semibold mb-2">Upload Your PDF File(s)</h4>
               <p className="text-gray-600 text-sm">
-                Upload a single PDF — or select multiple PDFs at once.
+                Select one PDF or upload multiple files at once for batch
+                conversion. Drag and drop supported on all devices.
               </p>
             </div>
-
             <div className="text-center">
               <div className="w-16 h-16 bg-gradient-to-r from-green-600 to-green-700 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold text-white shadow-lg">
                 2
               </div>
-              <h4 className="text-lg font-semibold mb-2">Hit Convert</h4>
-              <p className="text-gray-600 text-sm">We extract content and keep it editable.</p>
+              <h4 className="text-lg font-semibold mb-2">Enable OCR if Needed & Convert</h4>
+              <p className="text-gray-600 text-sm">
+                For scanned PDFs, enable the OCR option first. Then click
+                Convert — the tool processes your file and preserves formatting.
+              </p>
             </div>
-
             <div className="text-center">
               <div className="w-16 h-16 bg-gradient-to-r from-purple-600 to-purple-700 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold text-white shadow-lg">
                 3
               </div>
-              <h4 className="text-lg font-semibold mb-2">Download DOCX (or ZIP)</h4>
+              <h4 className="text-lg font-semibold mb-2">Download DOCX or ZIP</h4>
               <p className="text-gray-600 text-sm">
-                Single file downloads as DOCX. Multiple files download as a ZIP.
+                Single file downloads as DOCX instantly. Multiple files are
+                packaged into a ZIP containing all converted Word documents.
               </p>
             </div>
           </div>
         </div>
 
-
-        {/* 🔗 Contextual Links (PDF to Word) */}
+        {/* Contextual Links */}
         <div className="mt-10 bg-white p-6 md:p-8 shadow-sm">
           <h3 className="text-lg md:text-xl font-bold text-slate-900">
             Need to create a PDF too?
@@ -829,25 +848,24 @@ export default function PdfToWord({ seo }) {
           <p className="mt-1 text-sm text-slate-600">
             Many workflows go both ways — convert documents into PDF, then edit PDFs back in Word.
           </p>
-
           <ul className="mt-4 space-y-2 text-sm">
             <li>
               <a href="/word-to-pdf" className="text-blue-700 font-semibold hover:underline">
-                convert Word to PDF
+                Word to PDF Converter
               </a>{" "}
-              <span className="text-slate-600">— turn DOC/DOCX into PDF without losing formatting.</span>
+              <span className="text-slate-600">— export your edited DOCX back to PDF instantly.</span>
             </li>
             <li>
-              <a href="/excel-to-pdf" className="text-blue-700 font-semibold hover:underline">
-                Excel to PDF Converter
+              <a href="/merge-pdf" className="text-blue-700 font-semibold hover:underline">
+                Merge PDF
               </a>{" "}
-              <span className="text-slate-600">— convert XLS/XLSX spreadsheets to PDF.</span>
+              <span className="text-slate-600">— combine multiple PDFs into one before converting.</span>
             </li>
             <li>
-              <a href="/ppt-to-pdf" className="text-blue-700 font-semibold hover:underline">
-                PPT to PDF Converter
+              <a href="/compress-pdf" className="text-blue-700 font-semibold hover:underline">
+                Compress PDF
               </a>{" "}
-              <span className="text-slate-600">— export PowerPoint slides into PDF instantly.</span>
+              <span className="text-slate-600">— reduce PDF file size before or after conversion.</span>
             </li>
             <li>
               <a href="/free-pdf-tools" className="text-blue-700 font-semibold hover:underline">
@@ -859,9 +877,211 @@ export default function PdfToWord({ seo }) {
         </div>
 
         <p className="text-center mt-12 text-base text-gray-600 italic max-w-3xl mx-auto">
-          Convert PDFs into editable Word files with PDF Linx — fast, accurate, and always free.
+          Trusted by students, professionals, and businesses to convert PDFs into
+          editable Word documents — fast, accurate, and always free.
         </p>
       </section>
+
+      {/* ── DEEP SEO CONTENT ── */}
+      <section className="max-w-4xl mx-auto px-4 py-14 text-slate-700">
+        <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-6">
+          PDF to Word Converter – Free Online Tool by PDFLinx
+        </h2>
+
+        <p className="text-base leading-7 mb-6">
+          Ever had a PDF you needed to edit right now — but couldn't? That's exactly
+          what this tool solves. The{" "}
+          <span className="font-medium text-slate-900">PDFLinx PDF to Word Converter</span>{" "}
+          extracts text, tables, images, and layout from any PDF and delivers a
+          clean, editable Word (DOCX) file in seconds — with no software installation
+          and no account required. Upload multiple PDFs and get everything in one ZIP.
+        </p>
+
+        <h3 className="text-xl font-semibold text-slate-900 mb-3">
+          What Is PDF to Word Conversion?
+        </h3>
+        <p className="leading-7 mb-6">
+          PDF to Word conversion transforms a fixed, non-editable PDF file into a
+          Microsoft Word document (DOCX format) that you can freely edit — update
+          text, fix typos, modify tables, or reuse content in your own templates.
+          Our converter preserves the original text flow, heading structure, table
+          layouts, and embedded images as accurately as possible, including support
+          for scanned PDFs via OCR (Optical Character Recognition).
+        </p>
+
+        <h3 className="text-xl font-semibold text-slate-900 mb-3">
+          Why Convert PDF to Word?
+        </h3>
+        <ul className="space-y-2 mb-6 list-disc pl-6">
+          <li>Edit text, correct errors, and update content in any PDF</li>
+          <li>Reuse content from PDFs in your own Word templates</li>
+          <li>Extract and modify tables, figures, and formatted text</li>
+          <li>Convert scanned documents to editable text using OCR</li>
+          <li>Collaborate by sharing an editable DOCX instead of a locked PDF</li>
+          <li>Update contracts, invoices, or reports without recreating from scratch</li>
+          <li>Copy paragraphs, data, or sections into other documents</li>
+        </ul>
+
+        <div className="mt-10 space-y-10">
+
+          <div>
+            <h3 className="text-xl font-semibold text-slate-900 mb-3">
+              Standard PDFs vs Scanned PDFs — What Is the Difference?
+            </h3>
+            <p className="leading-7">
+              A <strong>standard PDF</strong> contains actual digital text that can be
+              selected and copied — these convert to Word with high accuracy. A{" "}
+              <strong>scanned PDF</strong> is essentially an image of a document — text
+              appears visible but is not selectable. To convert scanned PDFs to editable
+              Word, enable the <strong>OCR option</strong> on PDF Linx. OCR (Optical
+              Character Recognition) reads the image and extracts the text, making it
+              editable in Word. Complex layouts, columns, and tables in scanned documents
+              may need minor adjustments after conversion.
+            </p>
+          </div>
+
+          <div>
+            <h3 className="text-xl font-semibold text-slate-900 mb-3">
+              How to Convert PDF to Word Without Losing Formatting
+            </h3>
+            <ul className="space-y-2 list-disc pl-6 leading-7 mb-3">
+              <li>Use <strong>standard PDFs</strong> where possible — they convert with higher accuracy than scanned files</li>
+              <li>Enable <strong>OCR</strong> only when the PDF is scanned or image-based</li>
+              <li>PDFs with simple, single-column layouts convert most cleanly</li>
+              <li>Multi-column layouts and complex tables may need minor cleanup after conversion</li>
+              <li>After conversion, open in <strong>Microsoft Word 2013 or newer</strong> for best compatibility</li>
+              <li>Click <strong>"Enable Editing"</strong> when prompted — this is a standard Word security step</li>
+            </ul>
+            <p className="leading-7">
+              PDF Linx is built to preserve <strong>text, tables, images, headings, and page
+                structure</strong> — your converted Word document should be ready to edit with
+              minimal corrections.
+            </p>
+          </div>
+
+          <div>
+            <h3 className="text-xl font-semibold text-slate-900 mb-3">
+              Common Use Cases for PDF to Word Conversion
+            </h3>
+            <ul className="space-y-2 list-disc pl-6 leading-7">
+              <li>
+                <strong>Editing contracts and agreements:</strong> Convert a received PDF
+                contract to Word, make changes, and send back as an updated document.
+              </li>
+              <li>
+                <strong>Updating resumes and CVs:</strong> Lost the original DOCX? Convert
+                your PDF resume back to Word and edit it directly.
+              </li>
+              <li>
+                <strong>Extracting content from reports:</strong> Pull text, data, and tables
+                from PDF reports into editable Word documents for reuse or analysis.
+              </li>
+              <li>
+                <strong>Academic and research documents:</strong> Convert PDF papers,
+                theses, or assignments to Word for annotation, editing, or reformatting.
+              </li>
+              <li>
+                <strong>Scanned document digitization:</strong> Use OCR to convert scanned
+                paper documents, receipts, or forms into searchable, editable DOCX files.
+              </li>
+              <li>
+                <strong>Invoice and form editing:</strong> Convert received PDF invoices or
+                forms to Word to update figures, dates, or reference numbers.
+              </li>
+            </ul>
+          </div>
+
+          <div>
+            <h3 className="text-xl font-semibold text-slate-900 mb-3">
+              Batch PDF to Word Conversion
+            </h3>
+            <p className="leading-7">
+              Need to convert multiple PDFs at once? Upload up to{" "}
+              <strong>10 PDF files</strong> simultaneously. The tool converts all files
+              and delivers them as a <strong>ZIP download</strong> containing individual
+              DOCX files — ideal for processing multiple contracts, reports, assignments,
+              or scanned documents in one go. Single PDF uploads download as a DOCX
+              directly without any ZIP.
+            </p>
+            <p className="leading-7 mt-3">
+              After converting, if you want to combine pages use{" "}
+              <a href="/merge-pdf" className="text-blue-700 font-medium hover:underline">
+                Merge PDF
+              </a>
+              . To export the edited Word file back as PDF, use{" "}
+              <a href="/word-to-pdf" className="text-blue-700 font-medium hover:underline">
+                Word to PDF
+              </a>.
+            </p>
+          </div>
+
+          <div>
+            <h3 className="text-xl font-semibold text-slate-900 mb-3">
+              Privacy and File Security
+            </h3>
+            <p className="leading-7">
+              PDF Linx is built with privacy as a priority. Uploaded PDF files are
+              processed automatically and <strong>permanently deleted after conversion</strong> —
+              never stored long-term, never shared with third parties, and never used
+              for any other purpose. No account creation is required — no email, no
+              password, no personal data collected. Your documents stay completely private.
+            </p>
+          </div>
+
+          <div>
+            <h3 className="text-xl font-semibold text-slate-900 mb-3">
+              Convert PDF to Word on Any Device
+            </h3>
+            <p className="leading-7">
+              PDF Linx works on <strong>Windows, macOS, Linux, Android, and iOS</strong> —
+              in any modern browser. No app download, no software installation required.
+              Whether you are on a desktop at the office, a laptop at university, or a
+              phone on the go, you can convert PDFs to editable Word documents in seconds.
+              Fully responsive with drag-and-drop file upload supported on all devices
+              including touchscreens.
+            </p>
+          </div>
+
+        </div>
+
+        <div className="bg-slate-50 border border-slate-200 rounded-xl p-6 mt-10 mb-6">
+          <h3 className="text-xl font-semibold text-slate-900 mb-4">
+            PDFLinx PDF to Word Converter — Feature Summary
+          </h3>
+          <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 list-disc pl-5 text-sm">
+            <li>Free online PDF to Word converter — no hidden fees</li>
+            <li>Converts PDF to editable DOCX format</li>
+            <li>OCR support for scanned and image-based PDFs</li>
+            <li>Batch conversion — up to 10 files at once</li>
+            <li>ZIP download for multiple file conversions</li>
+            <li>Text, tables, images, and layout preserved</li>
+            <li>Fast processing — conversion in seconds</li>
+            <li>No watermark added to converted files</li>
+            <li>Works on desktop and mobile browsers</li>
+            <li>Files auto-deleted after conversion — privacy protected</li>
+            <li>No signup or account required</li>
+            <li>Cross-platform: Windows, macOS, Android, iOS</li>
+          </ul>
+        </div>
+
+        <h3 className="text-xl font-semibold text-slate-900 mb-3">
+          Who Should Use This Tool?
+        </h3>
+        <ul className="space-y-2 mb-6 list-disc pl-6">
+          <li><strong>Students:</strong> Convert PDF study material, papers, and assignments to Word for annotation and editing</li>
+          <li><strong>Job seekers:</strong> Convert a PDF resume back to DOCX when the original Word file is lost</li>
+          <li><strong>Professionals:</strong> Edit received PDF contracts, proposals, and reports in Word</li>
+          <li><strong>Businesses:</strong> Convert PDF invoices, forms, and correspondence to editable Word documents</li>
+          <li><strong>Researchers:</strong> Extract and reformat content from academic PDFs and papers</li>
+          <li><strong>Administrative staff:</strong> Digitize scanned forms and documents using OCR to Word conversion</li>
+          <li><strong>Freelancers:</strong> Update and repurpose PDF content for client deliverables in Word format</li>
+        </ul>
+
+        <h3 className="text-xl font-semibold text-slate-900 mb-3">
+          Frequently Asked Questions — PDF to Word
+        </h3>
+      </section>
+
 
       {/* Long-form content (Human touch + bulk mention) */}
       <section className="max-w-4xl mx-auto px-4 py-14 text-slate-700">
@@ -933,7 +1153,71 @@ export default function PdfToWord({ seo }) {
 
 
       {/* FAQ */}
+
       <section className="py-16 bg-gray-50">
+        <div className="max-w-4xl mx-auto px-4">
+          <h2 className="text-3xl font-bold text-center mb-10 text-slate-900">
+            Frequently Asked Questions
+          </h2>
+          <div className="space-y-4">
+            {[
+              ...(seo?.faqs || []),
+              {
+                q: "Is the PDF to Word converter free to use?",
+                a: "Yes. PDFLinx PDF to Word converter is completely free — no hidden charges, no subscription, no premium tier required.",
+              },
+              {
+                q: "Do I need to install any software?",
+                a: "No. Everything works directly in your browser. No desktop software, no app download, no plugins needed.",
+              },
+              {
+                q: "Will my PDF formatting be preserved after conversion?",
+                a: "Yes for standard PDFs — text, tables, images, and layout transfer cleanly into Word. Very complex layouts may need minor cleanup. Scanned PDFs converted via OCR may have slight formatting shifts.",
+              },
+              {
+                q: "Are my uploaded PDF files safe and private?",
+                a: "Yes. Files are processed securely and permanently deleted after conversion. They are never stored long-term or shared with third parties.",
+              },
+              {
+                q: "Can I convert scanned PDFs to editable Word documents?",
+                a: "Yes. Enable the OCR option before converting. OCR reads image-based and scanned PDFs and extracts the text into an editable DOCX file. Printed text works best for accurate OCR results.",
+              },
+              {
+                q: "Does OCR work with handwritten text?",
+                a: "OCR works best on clear, printed text. Handwritten text accuracy varies depending on scan quality and handwriting clarity — results may need manual correction.",
+              },
+              {
+                q: "Can I convert multiple PDFs to Word at the same time?",
+                a: "Yes. Upload up to 10 PDF files at the same time. All converted DOCX files are delivered as a single ZIP download.",
+              },
+              {
+                q: "What happens if I upload only one PDF?",
+                a: "Single file uploads convert and download directly as a DOCX file — no ZIP, no extra steps.",
+              },
+              {
+                q: "Why does Microsoft Word ask me to 'Enable Editing'?",
+                a: "This is a standard Word security prompt for downloaded files. Click 'Enable Editing' to start editing your converted document — it is completely normal and safe.",
+              },
+              {
+                q: "Can I convert PDF to Word on my phone?",
+                a: "Yes. PDFLinx works on Android and iOS mobile devices, tablets, and all desktop browsers — no app required.",
+              },
+            ].map((faq, i) => (
+              <details key={i} className="bg-white rounded-lg shadow-sm p-5 group">
+                <summary className="font-semibold cursor-pointer list-none flex justify-between items-center">
+                  {faq.q}
+                  <span className="text-blue-500 ml-3 text-lg group-open:rotate-45 transition-transform">+</span>
+                </summary>
+                <p className="mt-2 text-gray-600">{faq.a}</p>
+              </details>
+            ))}
+          </div>
+        </div>
+      </section>
+
+
+      {/* FAQ */}
+      {/* <section className="py-16 bg-gray-50">
         <div className="max-w-4xl mx-auto px-4">
           <h2 className="text-3xl font-bold text-center mb-10 text-slate-900">
             Frequently Asked Questions
@@ -968,51 +1252,10 @@ export default function PdfToWord({ seo }) {
             ))}
           </div>
         </div>
-      </section>
+      </section> */}
 
-      {/* FAQ */}
-      {/* <section className="py-16 bg-gray-50">
-  <div className="max-w-4xl mx-auto px-4">
-    <h2 className="text-3xl font-bold text-center mb-10 text-slate-900">
-      Frequently Asked Questions
-    </h2>
 
-    <div className="space-y-4">
-      {(seo?.faqs || [
-        { q: "Is the PDF to Word converter free to use?", a: "Yes — it's completely free with no hidden charges." },
-        { q: "Do I need to install any software?", a: "No. Everything works directly in your browser." },
-        { q: "Will the formatting from my PDF be preserved?", a: "We try to keep formatting (tables, spacing, headings) as close as possible. Very complex PDFs may need minor cleanup afterward." },
-        { q: "Are my files safe and private?", a: "Yes — files are processed securely and removed after conversion." },
-        { q: "Can I convert multiple PDFs to Word at the same time?", a: "Yes. Upload multiple PDFs together and you'll get a ZIP containing all converted DOCX files." },
-        { q: "What happens if I upload only one PDF?", a: "If you upload a single PDF, it downloads as a DOCX directly — no ZIP." },
-        { q: "Can I use this on my phone?", a: "Absolutely. It works smoothly on mobile, tablet, and desktop." },
-        { q: "Why does Word ask me to \"Enable Editing\"?", a: "This is a normal Microsoft Word security prompt for downloaded files. Click \"Enable Editing\" to start editing your converted document." },
-        { 
-          q: "Can you convert scanned PDFs to editable Word documents?", 
-          a: "Yes. Our tool uses OCR (Optical Character Recognition) to recognize text inside scanned PDFs and convert them into editable DOCX files while maintaining layout and text clarity." 
-        },
 
-        {
-          q: "Can I convert scanned PDFs to editable Word documents?",
-          a: "Yes. Enable OCR to extract text from image-based or scanned PDFs and convert it into an editable DOCX file. Printed text works best for accurate text recognition."
-        },
-        {
-          q: "Will formatting stay the same after OCR conversion?",
-          a: "OCR focuses on text extraction, so most text becomes editable, but complex layouts, columns, and tables may shift slightly. We aim to preserve formatting and maintain text clarity as much as possible."
-        },
-        {
-          q: "Does OCR work with handwritten text?",
-          a: "Handwritten text accuracy can vary. OCR works best on clear, printed text with good scan quality. For low-quality scans, results may need manual correction."
-        },
-      ]).map((faq, i) => (
-        <details key={i} className="bg-white rounded-lg shadow-sm p-5">
-          <summary className="font-semibold cursor-pointer">{faq.q}</summary>
-          <p className="mt-2 text-gray-600">{faq.a}</p>
-        </details>
-      ))}
-    </div>
-  </div>
-</section> */}
 
       {seo?.extraContent && (
         <section className="max-w-4xl mx-auto px-4 py-10">

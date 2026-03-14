@@ -14,6 +14,9 @@ import {
   ScanLine,
   FileEdit,
 } from "lucide-react";
+import Image from "next/image";
+// import Link from "next/link";
+
 
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -23,13 +26,24 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-6">
         <div className="flex justify-between items-center h-18">
           {/* Logo */}
-          <Link href="/" className="flex items-center py-3">
+          {/* <Link href="/" className="flex items-center py-3">
             <img
               src="/pdflinx-logo.svg"
               alt="PDF Linx logo"
               className="h-11 w-auto"
             />
-          </Link>
+          </Link> */}
+
+    <Link href="/" className="flex items-center gap-2">
+      <Image
+        src="/pdflinx_logo.svg"
+        alt="PDFLinx Logo"
+        width={36}
+        height={36}
+      />
+      <span className="font-semibold text-xl italic">pdflinx</span>
+    </Link>
+
 
           {/* Desktop Menu */}
           <div className="hidden lg:flex items-center gap-8">
