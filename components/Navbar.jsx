@@ -34,16 +34,17 @@ export default function Navbar() {
             />
           </Link> */}
 
-    <Link href="/" className="flex items-center gap-2">
-      <Image
-        src="/pdflinx_logo.svg"
-        alt="PDFLinx Logo"
-        width={36}
-        height={36}
-      />
-      <span className="font-semibold text-xl italic">pdflinx</span>
-    </Link>
-
+          <Link href="/" className="flex items-center gap-2">
+            <Image
+              src="/pdflinx_logo.svg"
+              alt="PDFLinx Logo"
+              width={36}
+              height={36}
+              priority={true}
+              fetchPriority="high"
+            />
+            <span className="font-semibold text-xl italic">pdflinx</span>
+          </Link>
 
           {/* Desktop Menu */}
           <div className="hidden lg:flex items-center gap-8">
