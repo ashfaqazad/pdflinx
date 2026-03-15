@@ -76,54 +76,6 @@ export default function MergePDF() {
     // finally hata diya — hook khud handle karta hai
   };
 
-  // const handleMerge = async (e) => {
-  //   e.preventDefault();
-  //   if (files.length < 2) {
-  //     alert("Please select at least 2 PDF files to merge.");
-  //     return;
-  //   }
-
-  //   setLoading(true);
-  //   setDownloadUrl("");
-  //   setSuccess(false);
-
-  //   const formData = new FormData();
-  //   files.forEach((file) => formData.append("files", file));
-
-  //   try {
-  //     const res = await fetch("/convert/merge-pdf", {
-  //       method: "POST",
-  //       body: formData,
-  //     });
-
-  //     const data = await res.json();
-
-  //     if (data.success) {
-  //       setDownloadUrl(`/api${data.download}`);
-  //       setSuccess(true);
-
-  //       // ✅ YE 8 LINES ADD KARO
-  //       setTimeout(() => {
-  //         const downloadSection = document.getElementById('download-section');
-  //         if (downloadSection) {
-  //           downloadSection.scrollIntoView({
-  //             behavior: 'smooth',
-  //             block: 'center'
-  //           });
-  //         }
-  //       }, 300);
-
-  //     } else {
-  //       alert("Merge failed: " + (data.error || "Unknown error"));
-  //     }
-  //   } catch (error) {
-  //     alert("Error merging PDFs. Please try again.");
-  //     console.error(error);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
-
 
   const handleDownload = async () => {
     if (!downloadUrl) return;
@@ -335,20 +287,6 @@ export default function MergePDF() {
               </div>
 
               {/* Merge Button */}
-              {/* <button
-                onClick={handleMerge}
-                disabled={loading || files.length < 2}
-                className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold text-lg py-4 rounded-xl hover:from-indigo-700 hover:to-purple-700 disabled:opacity-50 disabled:cursor-not-allowed transition shadow-md flex items-center justify-center gap-2"
-              >
-                {loading ? (
-                  "Merging your PDFs..."
-                ) : (
-                  <>
-                    <Upload className="w-5 h-5" />
-                    Merge PDFs Now
-                  </>
-                )}
-              </button> */}
 
               <ProgressButton
                 isLoading={isLoading}

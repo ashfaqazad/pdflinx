@@ -27,6 +27,13 @@ export const relatedToolsData = {
     { title: 'Compress PDF', emoji: '🗜️', url: '/compress-pdf', desc: 'Reduce PDF file size' },
   ],
 
+  'ppt-to-pdf': [
+    { title: 'Split PDF', emoji: '✂️', url: '/split-pdf', desc: 'Separate PDF into multiple files' },
+    { title: 'Unlock PDF', emoji: '🔓', url: '/unlock-pdf', desc: 'Remove password protection from PDFs' },
+    { title: 'Compress PDF', emoji: '🗜️', url: '/compress-pdf', desc: 'Reduce PDF file size' },
+  ],
+
+
 
   // PDF Manipulation Tools
   'merge-pdf': [
@@ -94,63 +101,65 @@ export const relatedToolsData = {
 
 
   // Image Tools
-  'image-compressor': [
-    { title: 'HEIC to JPG', emoji: '🔄', url: '/heic-to-jpg', desc: 'Convert iPhone photos to JPG' },
-    { title: 'Image Converter', emoji: '🎨', url: '/image-converter', desc: 'Convert between image formats' },
-    { title: 'Add Watermark', emoji: '💧', url: '/add-watermark', desc: 'Protect images with watermark' },
-  ],
-  'heic-to-jpg': [
-    { title: 'Image Compressor', emoji: '📦', url: '/image-compressor', desc: 'Reduce image file size' },
-    { title: 'Image to PDF', emoji: '🖼️', url: '/image-to-pdf', desc: 'Convert images to PDF' },
-    { title: 'Image Converter', emoji: '🎨', url: '/image-converter', desc: 'Convert image formats' },
-  ],
-  'image-to-text': [
-    { title: 'Image to PDF', emoji: '🖼️', url: '/image-to-pdf', desc: 'Convert images to PDF' },
-    { title: 'PDF to Word', emoji: '📄', url: '/pdf-to-word', desc: 'Convert PDF to Word' },
-    { title: 'Image Compressor', emoji: '📦', url: '/image-compressor', desc: 'Compress images' },
-  ],
-  'add-watermark': [
-    { title: 'Image Compressor', emoji: '📦', url: '/image-compressor', desc: 'Reduce image size' },
-    { title: 'Image Converter', emoji: '🎨', url: '/image-converter', desc: 'Convert formats' },
-    { title: 'Signature Maker', emoji: '✍️', url: '/signature-maker', desc: 'Create digital signatures' },
-  ],
-  'image-converter': [
-    { title: 'HEIC to JPG', emoji: '🔄', url: '/heic-to-jpg', desc: 'Convert HEIC to JPG' },
-    { title: 'Image Compressor', emoji: '📦', url: '/image-compressor', desc: 'Reduce image size' },
-    { title: 'Image to PDF', emoji: '🖼️', url: '/image-to-pdf', desc: 'Create PDF from images' },
-  ],
+  // 'image-compressor': [
+  //   { title: 'HEIC to JPG', emoji: '🔄', url: '/heic-to-jpg', desc: 'Convert iPhone photos to JPG' },
+  //   { title: 'Image Converter', emoji: '🎨', url: '/image-converter', desc: 'Convert between image formats' },
+  //   { title: 'Add Watermark', emoji: '💧', url: '/add-watermark', desc: 'Protect images with watermark' },
+  // ],
+  // 'heic-to-jpg': [
+  //   { title: 'Image Compressor', emoji: '📦', url: '/image-compressor', desc: 'Reduce image file size' },
+  //   { title: 'Image to PDF', emoji: '🖼️', url: '/image-to-pdf', desc: 'Convert images to PDF' },
+  //   { title: 'Image Converter', emoji: '🎨', url: '/image-converter', desc: 'Convert image formats' },
+  // ],
+  // 'image-to-text': [
+  //   { title: 'Image to PDF', emoji: '🖼️', url: '/image-to-pdf', desc: 'Convert images to PDF' },
+  //   { title: 'PDF to Word', emoji: '📄', url: '/pdf-to-word', desc: 'Convert PDF to Word' },
+  //   { title: 'Image Compressor', emoji: '📦', url: '/image-compressor', desc: 'Compress images' },
+  // ],
+  // 'add-watermark': [
+  //   { title: 'Image Compressor', emoji: '📦', url: '/image-compressor', desc: 'Reduce image size' },
+  //   { title: 'Image Converter', emoji: '🎨', url: '/image-converter', desc: 'Convert formats' },
+  //   { title: 'Signature Maker', emoji: '✍️', url: '/signature-maker', desc: 'Create digital signatures' },
+  // ],
+  // 'image-converter': [
+  //   { title: 'HEIC to JPG', emoji: '🔄', url: '/heic-to-jpg', desc: 'Convert HEIC to JPG' },
+  //   { title: 'Image Compressor', emoji: '📦', url: '/image-compressor', desc: 'Reduce image size' },
+  //   { title: 'Image to PDF', emoji: '🖼️', url: '/image-to-pdf', desc: 'Create PDF from images' },
+  // ],
 
   // Utility Tools
-  'qr-generator': [
-    { title: 'Password Generator', emoji: '🔐', url: '/password-gen', desc: 'Create secure passwords' },
-    { title: 'Signature Maker', emoji: '✍️', url: '/signature-maker', desc: 'Design digital signatures' },
-    { title: 'Unit Converter', emoji: '📏', url: '/unit-converter', desc: 'Convert measurements' },
-  ],
-  'password-gen': [
-    { title: 'QR Generator', emoji: '📱', url: '/qr-generator', desc: 'Create QR codes instantly' },
-    { title: 'Signature Maker', emoji: '✍️', url: '/signature-maker', desc: 'Make digital signatures' },
-    { title: 'Text to PDF', emoji: '📝', url: '/text-to-pdf', desc: 'Convert text to PDF' },
-  ],
-  'signature-maker': [
-    { title: 'Add Watermark', emoji: '💧', url: '/add-watermark', desc: 'Add watermarks to images' },
-    { title: 'PDF to Word', emoji: '📄', url: '/pdf-to-word', desc: 'Convert PDF to Word' },
-    { title: 'Text to PDF', emoji: '📝', url: '/text-to-pdf', desc: 'Create PDF from text' },
-  ],
-  'unit-converter': [
-    { title: 'QR Generator', emoji: '📱', url: '/qr-generator', desc: 'Generate QR codes' },
-    { title: 'Password Generator', emoji: '🔐', url: '/password-gen', desc: 'Create strong passwords' },
-    { title: 'Text to PDF', emoji: '📝', url: '/text-to-pdf', desc: 'Convert text to PDF' },
-  ],
-  'youtube-thumbnail': [
-    { title: 'Image Compressor', emoji: '📦', url: '/image-compressor', desc: 'Compress images' },
-    { title: 'Image Converter', emoji: '🎨', url: '/image-converter', desc: 'Convert image formats' },
-    { title: 'Image to PDF', emoji: '🖼️', url: '/image-to-pdf', desc: 'Create PDF from images' },
-  ],
-  'text-to-pdf': [
-    { title: 'Word to PDF', emoji: '📄', url: '/word-to-pdf', desc: 'Convert Word documents' },
-    { title: 'Signature Maker', emoji: '✍️', url: '/signature-maker', desc: 'Create signatures' },
-    { title: 'Add Watermark', emoji: '💧', url: '/add-watermark', desc: 'Add watermarks' },
-  ],
+  // 'qr-generator': [
+  //   { title: 'Password Generator', emoji: '🔐', url: '/password-gen', desc: 'Create secure passwords' },
+  //   { title: 'Signature Maker', emoji: '✍️', url: '/signature-maker', desc: 'Design digital signatures' },
+  //   { title: 'Unit Converter', emoji: '📏', url: '/unit-converter', desc: 'Convert measurements' },
+  // ],
+  // 'password-gen': [
+  //   { title: 'QR Generator', emoji: '📱', url: '/qr-generator', desc: 'Create QR codes instantly' },
+  //   { title: 'Signature Maker', emoji: '✍️', url: '/signature-maker', desc: 'Make digital signatures' },
+  //   { title: 'Text to PDF', emoji: '📝', url: '/text-to-pdf', desc: 'Convert text to PDF' },
+  // ],
+  // 'signature-maker': [
+  //   { title: 'Add Watermark', emoji: '💧', url: '/add-watermark', desc: 'Add watermarks to images' },
+  //   { title: 'PDF to Word', emoji: '📄', url: '/pdf-to-word', desc: 'Convert PDF to Word' },
+  //   { title: 'Text to PDF', emoji: '📝', url: '/text-to-pdf', desc: 'Create PDF from text' },
+  // ],
+  // 'unit-converter': [
+  //   { title: 'QR Generator', emoji: '📱', url: '/qr-generator', desc: 'Generate QR codes' },
+  //   { title: 'Password Generator', emoji: '🔐', url: '/password-gen', desc: 'Create strong passwords' },
+  //   { title: 'Text to PDF', emoji: '📝', url: '/text-to-pdf', desc: 'Convert text to PDF' },
+  // ],
+  // 'youtube-thumbnail': [
+  //   { title: 'Image Compressor', emoji: '📦', url: '/image-compressor', desc: 'Compress images' },
+  //   { title: 'Image Converter', emoji: '🎨', url: '/image-converter', desc: 'Convert image formats' },
+  //   { title: 'Image to PDF', emoji: '🖼️', url: '/image-to-pdf', desc: 'Create PDF from images' },
+  // ],
+  // 'text-to-pdf': [
+  //   { title: 'Word to PDF', emoji: '📄', url: '/word-to-pdf', desc: 'Convert Word documents' },
+  //   { title: 'Signature Maker', emoji: '✍️', url: '/signature-maker', desc: 'Create signatures' },
+  //   { title: 'Add Watermark', emoji: '💧', url: '/add-watermark', desc: 'Add watermarks' },
+  // ],
+
+
 };
 
 

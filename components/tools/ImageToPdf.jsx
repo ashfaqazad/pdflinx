@@ -192,9 +192,6 @@ export default function ImageToPdf() {
             <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mb-4">
               Image to PDF Converter <br /> Online (Free)
             </h1>
-            {/* <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Got a bunch of photos or screenshots? Turn them into one neat PDF in seconds – perfect quality, super easy, and totally free!
-            </p> */}
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
               Convert JPG, PNG, or WebP images into a professional PDF instantly —
               each image on its own page, full quality preserved. Upload a single
@@ -299,9 +296,6 @@ export default function ImageToPdf() {
           </div>
 
           {/* Trust Footer */}
-          {/* <p className="text-center mt-6 text-gray-600 text-base">
-            No sign-up • No watermark • Files gone after 1 hour • 100% free & secure
-          </p> */}
           <p className="text-center mt-6 text-gray-600 text-base">
             No sign-up • No watermark • Auto-deleted after 1 hour • 100% free •
             Up to 50 images • Works on Windows, Mac, Android & iOS

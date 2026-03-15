@@ -325,49 +325,6 @@ export default function WordToPdf() {
               </div>
 
               {/* Convert Button */}
-              {/* <button
-                type="submit"
-                disabled={loading || !files.length}
-                className="w-full bg-gradient-to-r from-blue-600 to-green-600 text-white font-semibold text-lg py-4 rounded-xl hover:from-blue-700 hover:to-green-700 disabled:opacity-60 disabled:cursor-not-allowed transition shadow-md flex items-center justify-center gap-2"
-              >
-                {loading ? (
-                  <>Converting... hang tight!</>
-                ) : (
-                  <>
-                    <FileText className="w-5 h-5" />
-                    Convert to PDF
-                  </>
-                )}
-              </button>
-
-              {files.length > 1 && (
-                <div className="text-sm text-gray-600 text-center mt-4 space-y-1">
-                  <p>
-                    ⏱️ <strong>Multiple files conversion may take up to 1 minute.</strong> Please don’t close this tab.
-                  </p>
-                  <p>
-                    🔢 You can convert up to <strong>10 Word files at once</strong>.
-                  </p>
-                </div>
-              )} */}
-
-              {/* Convert Button */}
-              {/* Convert Button */}
-              {/* <button
-                type="submit"
-                disabled={loading || !files.length}
-                className="w-full bg-gradient-to-r from-blue-600 to-green-600 text-white font-semibold text-lg py-4 rounded-xl hover:from-blue-700 hover:to-green-700 disabled:opacity-60 disabled:cursor-not-allowed transition shadow-md flex items-center justify-center gap-2"
-              >
-                {loading ? (
-                  <>Converting... hang tight!</>
-                ) : (
-                  <>
-                    <FileText className="w-5 h-5" />
-                    Convert to PDF
-                  </>
-                )}
-              </button> */}
-
               <ProgressButton
                 isLoading={isLoading}
                 progress={progress}
@@ -391,29 +348,6 @@ export default function WordToPdf() {
             </form>
 
             {/* Success State */}
-            {/* {success && (
-              <div className="mt-6 p-4 bg-green-50 border-2 border-green-200 rounded-xl text-center">
-                <CheckCircle className="w-12 h-12 text-green-600 mx-auto mb-3" />
-                <p className="text-xl font-bold text-green-700 mb-3">
-                  Done! Your {files.length === 1 ? "PDF" : "ZIP"} is ready
-                </p> */}
-
-            {/* ✅ Only show download button for ZIP */}
-            {/* {files.length > 1 && downloadUrl && (
-                  <button
-                    onClick={handleDownloadZip}
-                    className="bg-green-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-green-700 transition shadow-md flex items-center gap-2 mx-auto text-base"
-                  >
-                    <Download className="w-5 h-5" />
-                    Download ZIP
-                  </button>
-                )} */}
-
-
-            {/* </div>
-            )} */}
-
-
             {success && (
               <div className="mt-6 p-4 bg-green-50 border-2 border-green-200 rounded-xl text-center">
                 <CheckCircle className="w-12 h-12 text-green-600 mx-auto mb-3" />

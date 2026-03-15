@@ -225,17 +225,6 @@ export default function CompressPDF() {
                           `}>
                     <FileDown className="w-12 h-12 mx-auto mb-3 text-blue-600" />
 
-                    {/* <p className="text-lg font-semibold text-gray-700"> */}
-                      {/* {file ? file.name : "Drop your PDF here or click to upload"} */}
-                      {/* {files.length > 0 && (
-                        <ul className="mt-3 text-left text-sm text-gray-700 space-y-1">
-                          {files.map((f) => (
-                            <li key={f.name} className="truncate">• {f.name}</li>
-                          ))}
-                        </ul>
-                      )}
-                    </p> */}
-
                     <p className="text-lg font-semibold text-gray-700">
                       {files.length === 0
                         ? "Drop your PDF here or click to upload"
@@ -257,14 +246,6 @@ export default function CompressPDF() {
                     </p>
 
                   </div>
-                  {/* <input
-                    type="file"
-                    accept="application/pdf"
-                    onChange={handleFileChange}
-                    ref={fileInputRef}
-                    className="hidden"
-                  /> */}
-
                     <input
                       type="file"
                       accept="application/pdf"
@@ -278,24 +259,6 @@ export default function CompressPDF() {
               </div>
 
               {/* Compress Button */}
-              {/* <button
-                type="submit"
-                // disabled={loading || !file}
-                disabled={loading || files.length === 0}
-
-                className="w-full bg-gradient-to-r from-blue-600 to-green-600 text-white font-semibold text-lg py-4 rounded-xl hover:from-blue-700 hover:to-green-700 disabled:opacity-60 disabled:cursor-not-allowed transition shadow-md flex items-center justify-center gap-2"
-              >
-                {loading ? (
-                  <>Compressing... almost done!</>
-                ) : (
-                  <>
-                    <FileDown className="w-5 h-5" />
-                    Compress PDF
-                  </>
-                )}
-              </button> */}
-
-        {/* Compress Button - Updated with original color */}
           <ProgressButton
             isLoading={isLoading}
             progress={progress}

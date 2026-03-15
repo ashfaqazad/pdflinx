@@ -369,12 +369,6 @@ export default function PdfToWord({ seo }) {
               {seo?.h1 || "PDF to Word Converter (Free & Online)"}
             </h1>
 
-            {/* <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              {seo?.hero?.subtitle || "Upload a PDF and convert it to an editable Word (DOCX). Clean output, no watermark, no signup. Single + bulk supported."}
-              <span className="block mt-1">
-                Convert scanned/image-based PDFs to editable Word documents using built-in OCR text recognition.
-              </span>
-            </p> */}
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
               Convert PDF to editable Word (DOCX) instantly — text, tables, images,
               and formatting stay intact. Upload a single PDF or batch convert up to
@@ -382,34 +376,7 @@ export default function PdfToWord({ seo }) {
               contracts, reports, resumes, and assignments. No signup, no watermark,
               completely free.
             </p>
-
-            {/* <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-                {seo?.hero?.subtitle || "Got a PDF you need to edit? Upload one file for a quick DOCX..."}
-              </p> */}
-
-
-            {/* <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent mb-4">
-            
-              PDF to Word Converter <br />(Free & Online)
-            </h1>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Got a PDF you need to edit? Upload one file for a quick DOCX — or select multiple PDFs together and download
-              everything in one ZIP. Clean output, no watermark, no signup.
-            </p> */}
-
           </div>
-
-          {/* <div className="mb-4 rounded-lg border border-yellow-300 bg-yellow-50 px-4 py-3 text-center">
-            <h3 className="mb-1 text-sm font-semibold text-yellow-800">
-              🚧 Tool Under Maintenance
-            </h3>
-            <p className="text-sm text-yellow-700">
-              We’re fixing an issue to make conversions faster and more accurate.
-              <br />
-              Please check back shortly — <strong>PDFLinx</strong> will be ready for you.
-            </p>
-          </div>  */}
-
 
           {/* Main Card */}
           <div className="bg-white rounded-2xl shadow-lg p-8 border border-gray-100">
@@ -465,22 +432,6 @@ export default function PdfToWord({ seo }) {
               </div>
 
               {/* Convert Button */}
-
-              {/* <button
-                  type="submit"
-                  disabled={loading || !files.length}
-                  className="w-full bg-gradient-to-r from-blue-600 to-green-600 text-white font-semibold text-lg py-4 rounded-xl hover:from-blue-700 hover:to-green-700 disabled:opacity-60 disabled:cursor-not-allowed transition shadow-md flex items-center justify-center gap-2"
-                >
-                   {loading ? (
-                    <>Converting… please wait</>
-                  ) : (
-                    <>
-                      <FileText className="w-5 h-5" />
-                      Convert to Word
-                    </>
-                  )} 
-                 </button>  */}
-
               <ProgressButton
                 isLoading={isLoading}
                 progress={progress}
@@ -489,16 +440,6 @@ export default function PdfToWord({ seo }) {
                 label="Convert to Word"
                 gradient="from-blue-600 to-green-600"
               />
-
-
-              {/* <button
-                  disabled
-                  className="w-full cursor-not-allowed rounded-lg bg-gray-300 py-3 text-sm font-semibold text-gray-600"
-                >
-                  Temporarily Unavailable
-                </button>
- */}
-
 
               {/* UX Notice (✅ button ke neeche, form ke andar) */}
               <div className="text-sm text-gray-600 text-center mt-4 space-y-1">
@@ -553,9 +494,7 @@ export default function PdfToWord({ seo }) {
             No account • No watermark • Auto-deleted after 1 hour • 100% free •
             Single & batch conversion • OCR for scanned PDFs • Works on Windows, Mac, Android & iOS
           </p>
-          {/* <p className="text-center mt-6 text-gray-600 text-base">
-            No account • No watermark • Files gone after 1 hour • Completely free • Single & bulk conversions supported
-          </p> */}
+         
         </div>
       </main>
 
@@ -909,10 +848,6 @@ export default function PdfToWord({ seo }) {
         <h3 className="text-xl font-semibold text-slate-900 mb-3">
           What is PDF to Word conversion?
         </h3>
-        {/* <p className="leading-7 mb-6">
-          PDF to Word conversion means taking a PDF (which is usually fixed and hard to edit) and turning it into a Word document
-          you can change freely — edit text, fix typos, update tables, or copy content into your own template.
-        </p> */}
 
         <p className="leading-7 mb-6">
           PDF to Word conversion means taking a PDF (which is usually fixed and hard to edit) and turning it into an editable Word document (DOCX format).
@@ -1025,48 +960,6 @@ export default function PdfToWord({ seo }) {
           </div>
         </div>
       </section>
-
-
-      {/* FAQ */}
-      {/* <section className="py-16 bg-gray-50">
-        <div className="max-w-4xl mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center mb-10 text-slate-900">
-            Frequently Asked Questions
-          </h2>
-
-          <div className="space-y-4">
-            {[
-              ...(seo?.faqs || []),
-
-              {
-                q: "Can I convert scanned PDFs to editable Word documents?",
-                a: "Yes. Enable OCR to extract text from image-based or scanned PDFs and convert them into an editable DOCX file. Printed text works best for accurate text recognition."
-              },
-              {
-                q: "Will formatting stay the same after OCR conversion?",
-                a: "OCR focuses on text extraction, so most text becomes editable, but complex layouts, columns, and tables may shift slightly. We aim to preserve formatting and maintain text clarity as much as possible."
-              },
-              {
-                q: "Does OCR work with handwritten text?",
-                a: "Handwritten text accuracy can vary. OCR works best on clear, printed text with good scan quality. For low-quality scans, results may need manual correction."
-              }
-
-            ].map((faq, i) => (
-              <details key={i} className="bg-white rounded-lg shadow-sm p-5">
-                <summary className="font-semibold cursor-pointer">
-                  {faq.q}
-                </summary>
-                <p className="mt-2 text-gray-600">
-                  {faq.a}
-                </p>
-              </details>
-            ))}
-          </div>
-        </div>
-      </section> */}
-
-
-
 
       {seo?.extraContent && (
         <section className="max-w-4xl mx-auto px-4 py-10">

@@ -201,9 +201,6 @@ export default function SplitPDF() {
             <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent mb-4">
               Split PDF Online (Free)
             </h1>
-            {/* <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Need just one or a few pages from a big PDF? Drop it here – we’ll split it into separate pages for you in seconds. Super simple and totally free!
-            </p> */}
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
               Split any PDF into individual pages instantly — every page becomes its
               own separate PDF file, downloaded together in a ZIP. Perfect for
@@ -236,20 +233,6 @@ export default function SplitPDF() {
               </div>
 
               {/* Split Button */}
-              {/* <button
-                type="submit"
-                disabled={loading || !file}
-                className="w-full bg-gradient-to-r from-blue-600 to-green-600 text-white font-semibold text-lg py-4 rounded-xl hover:from-blue-700 hover:to-green-700 disabled:opacity-60 disabled:cursor-not-allowed transition shadow-md flex items-center justify-center gap-2"
-              >
-                {loading ? (
-                  <>Splitting your PDF...</>
-                ) : (
-                  <>
-                    <Scissors className="w-5 h-5" />
-                    Split PDF
-                  </>
-                )}
-              </button> */}
               <ProgressButton
                 isLoading={isLoading}
                 progress={progress}
@@ -282,9 +265,6 @@ export default function SplitPDF() {
           </div>
 
           {/* Footer Note */}
-          {/* <p className="text-center mt-6 text-gray-600 text-base">
-            No account • No watermark • Files gone after 1 hour • Completely free
-          </p> */}
           <p className="text-center mt-6 text-gray-600 text-base">
             No account • No watermark • Auto-deleted after 1 hour • 100% free •
             All pages in one ZIP • Works on Windows, Mac, Android & iOS
