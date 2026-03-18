@@ -5,6 +5,8 @@ import { useState } from "react";
 import { Upload, Image, Download, CheckCircle, X } from "lucide-react";
 import Script from "next/script";
 import RelatedToolsSection from "@/components/RelatedTools";
+import { useProgressBar } from "@/hooks/useProgressBar";
+import ProgressButton from "@/components/ProgressButton";
 
 
 
@@ -13,6 +15,8 @@ export default function ImageToPdf() {
   const [loading, setLoading] = useState(false);
   const [downloadUrl, setDownloadUrl] = useState(null);
   const [success, setSuccess] = useState(false);
+  const { progress, isLoading, startProgress, completeProgress, cancelProgress } = useProgressBar();
+
 
 
   const handleSubmit = async (e) => {
@@ -23,7 +27,8 @@ export default function ImageToPdf() {
       return;
     }
 
-    setLoading(true);
+    startProgress();        // ← setLoading(true) ki jagah
+
     setDownloadUrl(null);
     setSuccess(false);
 
@@ -50,15 +55,18 @@ export default function ImageToPdf() {
 
       // If server returned error status OR success false
       if (!res.ok || !data?.success) {
+        cancelProgress();     // ← error pe
         alert("Conversion failed: " + (data?.error || `HTTP ${res.status}`));
         return;
       }
 
       // Success
       setDownloadUrl(data.download);
+      completeProgress();     // ← setLoading(false) ki jagah
+
       setSuccess(true);
 
-      // ✅ YE 8 LINES ADD KARO
+      // ✅ Scroll wali lines same rakhi
       setTimeout(() => {
         const downloadSection = document.getElementById('download-section');
         if (downloadSection) {
@@ -70,12 +78,75 @@ export default function ImageToPdf() {
       }, 300);
 
     } catch (err) {
+      cancelProgress();       // ← catch pe
       console.error(err);
       alert("Something went wrong. Please try again.");
-    } finally {
-      setLoading(false);
     }
+    // finally block hata diya — hook khud handle karta hai
   };
+
+
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+
+  //   if (files.length === 0) {
+  //     alert("Please select at least one image");
+  //     return;
+  //   }
+
+  //   setLoading(true);
+  //   setDownloadUrl(null);
+  //   setSuccess(false);
+
+  //   const formData = new FormData();
+  //   files.forEach((file) => formData.append("images", file));
+
+  //   try {
+  //     const res = await fetch("/convert/image-to-pdf", {
+  //       method: "POST",
+  //       body: formData,
+  //     });
+
+  //     // Read as text first (because 500 responses are often not JSON)
+  //     const text = await res.text();
+  //     console.log("RAW RESPONSE:", text);
+
+  //     // Try to parse JSON, otherwise treat it as plain error text
+  //     let data;
+  //     try {
+  //       data = JSON.parse(text);
+  //     } catch {
+  //       data = { success: false, error: text || "Internal Server Error" };
+  //     }
+
+  //     // If server returned error status OR success false
+  //     if (!res.ok || !data?.success) {
+  //       alert("Conversion failed: " + (data?.error || `HTTP ${res.status}`));
+  //       return;
+  //     }
+
+  //     // Success
+  //     setDownloadUrl(data.download);
+  //     setSuccess(true);
+
+  //     // ✅ YE 8 LINES ADD KARO
+  //     setTimeout(() => {
+  //       const downloadSection = document.getElementById('download-section');
+  //       if (downloadSection) {
+  //         downloadSection.scrollIntoView({
+  //           behavior: 'smooth',
+  //           block: 'center'
+  //         });
+  //       }
+  //     }, 300);
+
+  //   } catch (err) {
+  //     console.error(err);
+  //     alert("Something went wrong. Please try again.");
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
 
 
   const handleFileChange = (e) => {
@@ -243,6 +314,7 @@ export default function ImageToPdf() {
                           alt={file.name}
                           className="w-full h-28 object-cover rounded-lg shadow"
                         />
+
                         <button
                           onClick={() => removeFile(index)}
                           className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition"
@@ -257,7 +329,7 @@ export default function ImageToPdf() {
               </div>
 
               {/* Convert Button */}
-              <button
+              {/* <button
                 type="submit"
                 disabled={loading || files.length === 0}
                 className="w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white font-semibold text-lg py-4 rounded-xl hover:from-purple-700 hover:to-pink-700 disabled:opacity-50 disabled:cursor-not-allowed transition shadow-md flex items-center justify-center gap-2"
@@ -270,7 +342,18 @@ export default function ImageToPdf() {
                     Convert to PDF
                   </>
                 )}
-              </button>
+              </button> */}
+
+              <ProgressButton
+                isLoading={isLoading}
+                progress={progress}
+                disabled={!files.length}
+                icon={<Image className="w-5 h-5" />}           // ← Image to PDF ke liye best icon
+                label="Convert Images to PDF"
+                gradient="from-purple-600 to-violet-600"       // ← image tool ke liye perfect color
+                type="button"
+                onClick={handleSubmit}
+              />
             </form>
 
 
@@ -775,7 +858,7 @@ export default function ImageToPdf() {
         </div>
       </section>
 
-      
+
       <RelatedToolsSection currentPage="image-to-pdf" />
 
     </>

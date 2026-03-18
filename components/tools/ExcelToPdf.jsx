@@ -24,57 +24,108 @@ export default function ExcelToPDF() {
     setDownloadUrl("");
   };
 
+  // const handleConvert = async (e) => {
+  //   e.preventDefault();
+  //   if (!files.length) return alert("Please select an Excel file (or multiple files) first");
+
+  //   setLoading(true);
+  //   setDownloadUrl("");
+  //   setSuccess(false);
+
+  //   const formData = new FormData();
+
+  //   // ✅ Multiple + Single: same loop (1 file ho to loop 1 bar chalega)
+  //   files.forEach((f) => formData.append("files", f));
+
+  //   // Optional: backend ko hint de do
+  //   formData.append("mode", isSingle ? "single" : "multiple");
+
+  //   try {
+  //     const res = await fetch("/convert/excel-pdf", {
+  //       method: "POST",
+  //       body: formData,
+  //     });
+
+  //     const data = await res.json();
+
+  //     if (data.success) {
+  //       // ✅ Backend recommended behavior:
+  //       // - single file => data.download => "/convert/xyz.pdf"
+  //       // - multiple files => data.download => "/convert/xyz.zip"
+  //       setDownloadUrl(`/api${data.download}`);
+  //       setSuccess(true);
+  //       // ✅ YE 8 LINES ADD KARO
+  //       setTimeout(() => {
+  //         const downloadSection = document.getElementById('download-section');
+  //         if (downloadSection) {
+  //           downloadSection.scrollIntoView({
+  //             behavior: 'smooth',
+  //             block: 'center'
+  //           });
+  //         }
+  //       }, 300);
+
+  //     } else {
+  //       alert("Conversion failed: " + (data.error || "Try again"));
+  //     }
+  //   } catch (error) {
+  //     alert("Oops! Something went wrong. Please try again.");
+  //     console.error(error);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+
   const handleConvert = async (e) => {
-    e.preventDefault();
-    if (!files.length) return alert("Please select an Excel file (or multiple files) first");
+  e.preventDefault();
+  if (!files.length) return alert("Please select an Excel file (or multiple files) first");
 
-    setLoading(true);
-    setDownloadUrl("");
-    setSuccess(false);
+  setLoading(true);
+  setDownloadUrl("");
+  setSuccess(false);
 
-    const formData = new FormData();
+  const formData = new FormData();
+  files.forEach((f) => formData.append("files", f));
+  formData.append("mode", isSingle ? "single" : "multiple");
 
-    // ✅ Multiple + Single: same loop (1 file ho to loop 1 bar chalega)
-    files.forEach((f) => formData.append("files", f));
+  try {
+    const res = await fetch("/convert/excel-pdf", {
+      method: "POST",
+      body: formData,
+    });
 
-    // Optional: backend ko hint de do
-    formData.append("mode", isSingle ? "single" : "multiple");
-
+    // ✅ FIX: pehle text lo, phir parse karo
+    const text = await res.text();
+    let data;
     try {
-      const res = await fetch("/convert/excel-pdf", {
-        method: "POST",
-        body: formData,
-      });
-
-      const data = await res.json();
-
-      if (data.success) {
-        // ✅ Backend recommended behavior:
-        // - single file => data.download => "/convert/xyz.pdf"
-        // - multiple files => data.download => "/convert/xyz.zip"
-        setDownloadUrl(`/api${data.download}`);
-        setSuccess(true);
-        // ✅ YE 8 LINES ADD KARO
-        setTimeout(() => {
-          const downloadSection = document.getElementById('download-section');
-          if (downloadSection) {
-            downloadSection.scrollIntoView({
-              behavior: 'smooth',
-              block: 'center'
-            });
-          }
-        }, 300);
-
-      } else {
-        alert("Conversion failed: " + (data.error || "Try again"));
-      }
-    } catch (error) {
-      alert("Oops! Something went wrong. Please try again.");
-      console.error(error);
-    } finally {
-      setLoading(false);
+      data = JSON.parse(text);
+    } catch {
+      console.error("Non-JSON server response:", text);
+      alert("Server error. Please try again.");
+      return;
     }
-  };
+
+    if (!res.ok || !data.success) {
+      alert("Conversion failed: " + (data?.error || "Try again"));
+      return;
+    }
+
+    setDownloadUrl(`/api${data.download}`);
+    setSuccess(true);
+    setTimeout(() => {
+      const downloadSection = document.getElementById("download-section");
+      if (downloadSection) {
+        downloadSection.scrollIntoView({ behavior: "smooth", block: "center" });
+      }
+    }, 300);
+
+  } catch (error) {
+    alert("Oops! Something went wrong. Please try again.");
+    console.error(error);
+  } finally {
+    setLoading(false);
+  }
+};
 
   const getDownloadName = () => {
     if (isSingle) {
@@ -180,11 +231,9 @@ export default function ExcelToPDF() {
               Excel to PDF Converter <br /> Online (Free)
             </h1>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Convert Excel spreadsheets to PDF instantly — tables, charts, formulas,
-              and formatting stay exactly as they were. Upload a single XLS or XLSX
-              file, or batch convert multiple Excel files at once. Perfect for
-              financial reports, invoices, budgets, and data presentations. No signup,
-              no watermark, completely free.
+              Got an Excel sheet you want to share as PDF? Drop it here — tables, formulas, charts stay perfect.
+              <span className="font-semibold text-gray-800"> You can upload a single file or select multiple files together.</span>{" "}
+              Quick and totally free!
             </p>
           </div>
 
@@ -196,8 +245,8 @@ export default function ExcelToPDF() {
                 <label className="block">
                   <div
                     className={`border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition-all ${files.length
-                      ? "border-green-500 bg-green-50"
-                      : "border-gray-300 hover:border-blue-500 hover:bg-blue-50"
+                        ? "border-green-500 bg-green-50"
+                        : "border-gray-300 hover:border-blue-500 hover:bg-blue-50"
                       }`}
                   >
                     <FileSpreadsheet className="w-12 h-12 mx-auto mb-3 text-blue-600" />
@@ -267,8 +316,8 @@ export default function ExcelToPDF() {
             {/* Success State */}
             {success && (
               <div
-                id="download-section"  // ✅ BAS YE EK LINE ADD KARO
-                className="mt-6 p-4 bg-green-50 border-2 border-green-200 rounded-xl text-center">
+              id="download-section"  // ✅ BAS YE EK LINE ADD KARO
+              className="mt-6 p-4 bg-green-50 border-2 border-green-200 rounded-xl text-center">
                 <CheckCircle className="w-12 h-12 text-green-600 mx-auto mb-3" />
 
                 <p className="text-xl font-bold text-green-700 mb-2">All set!</p>
@@ -295,12 +344,10 @@ export default function ExcelToPDF() {
             )}
           </div>
 
+          {/* Footer Note */}
           <p className="text-center mt-6 text-gray-600 text-base">
-            No account • No watermark • Auto-deleted after 1 hour • 100% free •
-            Single & batch conversion • Works on Windows, Mac, Android & iOS
+            No account • No watermark • Single + multiple uploads supported • Files gone after 1 hour • Completely free
           </p>
-
-
         </div>
       </main>
 
@@ -309,14 +356,13 @@ export default function ExcelToPDF() {
         {/* Main Heading */}
         <div className="text-center mb-12">
           <h2 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent mb-4">
-            Excel to PDF Online Free – Convert XLS & XLSX to PDF in Seconds
+            Excel to PDF Online Free – Spreadsheets Made Shareable
           </h2>
           <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-            Need to share an Excel spreadsheet that looks identical on every
-            device? Convert XLS or XLSX to PDF here — tables, charts, formulas,
-            colors, and grid lines stay pixel-perfect. Upload a single file or
-            batch convert multiple Excel files at once. Fast, free, and
-            privacy-friendly on PDF Linx.
+            Turn your Excel files into clean PDFs — tables, charts, formulas stay exactly as they are. Whether you have{" "}
+            <span className="font-semibold text-gray-800">one file</span> or{" "}
+            <span className="font-semibold text-gray-800">multiple Excel files</span>, you can upload and convert in one go.
+            Great for reports, invoices, or sharing without worries. Fast and free on PDF Linx!
           </p>
         </div>
 
@@ -324,12 +370,13 @@ export default function ExcelToPDF() {
         <div className="grid md:grid-cols-3 gap-8 mb-16">
           <div className="bg-gradient-to-br from-blue-50 to-white p-8 rounded-2xl shadow-lg border border-blue-100 text-center hover:shadow-xl transition">
             <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
-              <FileSpreadsheet className="w-8 h-8 text-white" />
+              <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 7h2l1 10h10l1-10h2M7 7v10m4-10v10m4-10v10" />
+              </svg>
             </div>
-            <h3 className="text-xl font-semibold text-gray-800 mb-3">Formatting Stays Perfect</h3>
+            <h3 className="text-xl font-semibold text-gray-800 mb-3">Everything Looks Perfect</h3>
             <p className="text-gray-600 text-sm">
-              Tables, charts, formulas, colors, and grid lines — your Excel
-              spreadsheet looks exactly the same after converting to PDF.
+              Tables, charts, formulas — your sheet stays beautiful in PDF (single file or batch conversion).
             </p>
           </div>
 
@@ -337,10 +384,9 @@ export default function ExcelToPDF() {
             <div className="w-16 h-16 bg-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
               <CheckCircle className="w-8 h-8 text-white" />
             </div>
-            <h3 className="text-xl font-semibold text-gray-800 mb-3">XLS & XLSX Supported</h3>
+            <h3 className="text-xl font-semibold text-gray-800 mb-3">XLS & XLSX Ready</h3>
             <p className="text-gray-600 text-sm">
-              Works with both old XLS and modern XLSX formats — including
-              multi-sheet workbooks, embedded charts, and complex data tables.
+              Works with any Excel file — even multi-sheet ones. You can upload one or multiple files.
             </p>
           </div>
 
@@ -348,10 +394,9 @@ export default function ExcelToPDF() {
             <div className="w-16 h-16 bg-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
               <Download className="w-8 h-8 text-white" />
             </div>
-            <h3 className="text-xl font-semibold text-gray-800 mb-3">Batch & Single Conversion</h3>
+            <h3 className="text-xl font-semibold text-gray-800 mb-3">Fast & Private</h3>
             <p className="text-gray-600 text-sm">
-              Convert one Excel file or multiple files at once. Single file
-              downloads as PDF directly. Multiple files download as a ZIP.
+              Instant conversion — no sign-up, no watermark, files deleted after 1 hour (single + multiple supported).
             </p>
           </div>
         </div>
@@ -359,354 +404,199 @@ export default function ExcelToPDF() {
         {/* How To Steps */}
         <div className="bg-white rounded-2xl shadow-lg p-8 md:p-12 border border-gray-100">
           <h3 className="text-2xl md:text-3xl font-bold text-center mb-12 text-gray-800">
-            How to Convert Excel to PDF — 3 Simple Steps
+            Convert Excel to PDF in 3 Easy Steps
           </h3>
           <div className="grid md:grid-cols-3 gap-8">
             <div className="text-center">
               <div className="w-16 h-16 bg-gradient-to-r from-blue-600 to-blue-700 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold text-white shadow-lg">
                 1
               </div>
-              <h4 className="text-lg font-semibold mb-2">Upload Your Excel File(s)</h4>
+              <h4 className="text-lg font-semibold mb-2">Upload Your Sheet(s)</h4>
               <p className="text-gray-600 text-sm">
-                Select one XLS or XLSX file, or upload multiple Excel files at
-                once for batch conversion. Drag and drop supported.
+                Drop your XLS or XLSX file — or select multiple Excel files together.
               </p>
             </div>
+
             <div className="text-center">
               <div className="w-16 h-16 bg-gradient-to-r from-green-600 to-green-700 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold text-white shadow-lg">
                 2
               </div>
-              <h4 className="text-lg font-semibold mb-2">Click Convert to PDF</h4>
+              <h4 className="text-lg font-semibold mb-2">Hit Convert</h4>
               <p className="text-gray-600 text-sm">
-                Hit Convert and wait a few seconds. Tables, charts, and
-                formatting are preserved automatically in the output PDF.
+                We keep the layout spot-on (single file or batch conversion).
               </p>
             </div>
+
             <div className="text-center">
               <div className="w-16 h-16 bg-gradient-to-r from-purple-600 to-purple-700 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold text-white shadow-lg">
                 3
               </div>
-              <h4 className="text-lg font-semibold mb-2">Download PDF or ZIP</h4>
+              <h4 className="text-lg font-semibold mb-2">Download</h4>
               <p className="text-gray-600 text-sm">
-                Single file downloads as a clean PDF instantly. Multiple files
-                are packaged into a ZIP with all converted PDFs inside.
+                Download your PDF — for multiple files, download a ZIP with all PDFs.
               </p>
             </div>
           </div>
         </div>
 
-        {/* Contextual Links */}
-        <div className="mt-10 bg-white p-6 md:p-8 shadow-sm">
-          <h3 className="text-lg md:text-xl font-bold text-slate-900">
-            Need to do more with your PDF?
-          </h3>
-          <p className="mt-1 text-sm text-slate-600">
-            After converting Excel to PDF, these tools can help you organize and share your document.
-          </p>
-          <ul className="mt-4 space-y-2 text-sm">
-            <li>
-              <a href="/merge-pdf" className="text-blue-700 font-semibold hover:underline">
-                Merge PDF
-              </a>{" "}
-              <span className="text-slate-600">— combine your Excel PDF with other documents into one file.</span>
-            </li>
-            <li>
-              <a href="/compress-pdf" className="text-blue-700 font-semibold hover:underline">
-                Compress PDF
-              </a>{" "}
-              <span className="text-slate-600">— reduce the converted PDF file size for easy email sharing.</span>
-            </li>
-            <li>
-              <a href="/word-to-pdf" className="text-blue-700 font-semibold hover:underline">
-                Word to PDF
-              </a>{" "}
-              <span className="text-slate-600">— convert Word documents to PDF alongside your Excel files.</span>
-            </li>
-            <li>
-              <a href="/free-pdf-tools" className="text-blue-700 font-semibold hover:underline">
-                Browse all PDF tools
-              </a>{" "}
-              <span className="text-slate-600">— merge, split, compress, convert & more.</span>
-            </li>
-          </ul>
-        </div>
-
+        {/* Final CTA */}
         <p className="text-center mt-12 text-base text-gray-600 italic max-w-3xl mx-auto">
-          Trusted by accountants, analysts, and businesses to convert Excel
-          spreadsheets to PDF — fast, reliable, and always free.
+          Thousands turn to PDF Linx daily to make Excel into perfect PDFs — fast, reliable, and always free (single + multiple uploads supported).
         </p>
       </section>
 
-      {/* ── DEEP SEO CONTENT ── */}
       <section className="max-w-4xl mx-auto px-4 py-14 text-slate-700">
+        {/* Heading */}
         <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-6">
           Excel to PDF Converter – Free Online Tool by PDFLinx
         </h2>
 
+        {/* Intro */}
         <p className="text-base leading-7 mb-6">
-          Need to share an Excel spreadsheet but worried it will look different
-          on someone else's device? Or want to lock down formulas and formatting
-          so nothing gets accidentally changed? The{" "}
-          <span className="font-medium text-slate-900">PDFLinx Excel to PDF Converter</span>{" "}
-          transforms XLS and XLSX files into clean, professional PDFs in seconds —
-          tables, charts, formulas, colors, and grid lines preserved exactly as
-          designed. No software installation, no watermarks, no sign-up required.
+          Ever needed to share an Excel spreadsheet but worried it’ll look different on someone else’s computer?
+          Or maybe you want to lock down those formulas and formatting so nothing gets accidentally changed?
+          That’s where our <span className="font-medium text-slate-900">PDFLinx Excel to PDF Converter</span> comes in.
+          It’s a 100% free online tool that turns your Excel files (XLS or XLSX) into clean, professional PDFs in seconds—no installation, no watermarks, no fuss.
+          <span className="font-semibold text-slate-900"> Best part:</span> you can upload a single file or select multiple Excel files together.
         </p>
 
-        <h3 className="text-xl font-semibold text-slate-900 mb-3">
-          What Is Excel to PDF Conversion?
-        </h3>
+        {/* What is */}
+        <h3 className="text-xl font-semibold text-slate-900 mb-3">What is Excel to PDF Conversion?</h3>
         <p className="leading-7 mb-6">
-          Excel to PDF conversion takes your editable spreadsheet and transforms
-          it into a fixed-layout PDF document. Everything — formulas, charts,
-          data tables, conditional formatting, colors, and column widths — stays
-          exactly as you designed it, regardless of what device or software the
-          recipient uses. PDFs are universally compatible and open identically on
-          Windows, macOS, Android, and iOS without requiring Microsoft Excel.
+          Excel to PDF conversion takes your editable spreadsheet and transforms it into a fixed-layout PDF document.
+          Everything—formulas, charts, tables, colors, and formatting—stays exactly as you designed it,
+          no matter what device or software the recipient uses. It’s the perfect way to share reports, budgets, invoices, or data tables professionally.
+          And if you have multiple spreadsheets, you can convert them together in one batch.
         </p>
 
-        <h3 className="text-xl font-semibold text-slate-900 mb-3">
-          Why Convert Excel Files to PDF?
-        </h3>
+        {/* Why convert */}
+        <h3 className="text-xl font-semibold text-slate-900 mb-3">Why Convert Excel Files to PDF?</h3>
         <ul className="space-y-2 mb-6 list-disc pl-6">
-          <li>Preserves tables, charts, formulas, colors, and grid lines perfectly</li>
-          <li>Opens identically on every device — no missing fonts or shifted columns</li>
-          <li>Protects data and formulas from accidental edits — read-only format</li>
-          <li>Print-ready output with consistent page layout</li>
-          <li>Professional format for financial reports, invoices, and data presentations</li>
-          <li>Required format for many client deliverables, portals, and official submissions</li>
-          <li>Smaller, optimized file size for easy email sharing and uploading</li>
-          <li>Batch convert multiple Excel files to PDF simultaneously</li>
+          <li>Preserves all formatting, charts, colors, and grid lines perfectly</li>
+          <li>Looks identical on any device—no missing fonts or shifted columns</li>
+          <li>Protects your data and formulas from accidental edits</li>
+          <li>Ideal for sharing financial reports, invoices, budgets, or dashboards</li>
+          <li>Convert single file or multiple Excel files at once (batch conversion)</li>
         </ul>
 
-        <div className="mt-10 space-y-10">
+        {/* Steps */}
+        <h3 className="text-xl font-semibold text-slate-900 mb-3">How to Convert Excel to PDF Online</h3>
+        <ol className="space-y-2 mb-6 list-decimal pl-6">
+          <li>Upload your Excel file (XLS or XLSX) — or select multiple files together</li>
+          <li>Click the “Convert to PDF” button</li>
+          <li>Wait a few seconds while we process it</li>
+          <li>Download your PDF instantly (for multiple files, download a ZIP containing all PDFs)</li>
+        </ol>
 
-          <div>
-            <h3 className="text-xl font-semibold text-slate-900 mb-3">
-              XLS vs XLSX — Which Format Converts Better?
-            </h3>
-            <p className="leading-7">
-              <strong>XLSX</strong> is the modern Excel format introduced with
-              Microsoft Office 2007 and generally converts to PDF with higher
-              accuracy — better support for charts, conditional formatting,
-              embedded images, and complex multi-sheet workbooks.{" "}
-              <strong>XLS</strong> is the older format and also fully supported,
-              but XLSX to PDF conversion tends to produce the cleanest output for
-              spreadsheets with advanced formatting. If you have a choice, save
-              your file as XLSX before converting.
-            </p>
-          </div>
+        <p className="mb-6">No registration, no watermark, no software needed—completely free and fast.</p>
 
-          <div>
-            <h3 className="text-xl font-semibold text-slate-900 mb-3">
-              How to Convert Excel to PDF Without Losing Formatting
-            </h3>
-            <ul className="space-y-2 list-disc pl-6 leading-7 mb-3">
-              <li>Use <strong>XLSX format</strong> where possible — better layout support than XLS</li>
-              <li>Set <strong>print area</strong> in Excel before converting — controls which data appears in the PDF</li>
-              <li>Use <strong>Page Layout view</strong> in Excel to check column widths fit within the page before converting</li>
-              <li>Freeze headers in Excel — these transfer cleanly into the PDF output</li>
-              <li>Avoid very wide tables that exceed the page width — split across sheets if needed</li>
-            </ul>
-            <p className="leading-7">
-              PDF Linx preserves <strong>tables, charts, formulas, conditional
-                formatting, and page structure</strong> — your Excel spreadsheet
-              should look identical after PDF conversion.
-            </p>
-          </div>
-
-          <div>
-            <h3 className="text-xl font-semibold text-slate-900 mb-3">
-              Common Use Cases for Excel to PDF Conversion
-            </h3>
-            <ul className="space-y-2 list-disc pl-6 leading-7">
-              <li>
-                <strong>Financial reports and budgets:</strong> Convert monthly
-                P&L reports, budget sheets, and financial summaries to PDF for
-                client or management distribution.
-              </li>
-              <li>
-                <strong>Invoices and quotations:</strong> Send Excel invoices and
-                price quotes as PDF to prevent accidental edits and ensure
-                consistent formatting across all recipients.
-              </li>
-              <li>
-                <strong>Data analysis and dashboards:</strong> Convert Excel
-                dashboards and pivot table reports to PDF for presentation to
-                stakeholders without requiring Excel.
-              </li>
-              <li>
-                <strong>Academic and research data:</strong> Convert data tables,
-                statistical analysis, and research spreadsheets to PDF for
-                academic submission or publication.
-              </li>
-              <li>
-                <strong>Inventory and product lists:</strong> Convert product
-                catalogs, inventory sheets, and price lists to PDF for
-                distribution to buyers or distributors.
-              </li>
-              <li>
-                <strong>HR and payroll documents:</strong> Convert salary sheets,
-                attendance records, and HR reports to PDF for secure distribution
-                and archiving.
-              </li>
-            </ul>
-          </div>
-
-          <div>
-            <h3 className="text-xl font-semibold text-slate-900 mb-3">
-              Batch Excel to PDF Conversion
-            </h3>
-            <p className="leading-7">
-              Need to convert multiple Excel files at once? Upload multiple XLS
-              or XLSX files simultaneously. The tool converts all files and
-              delivers them as a <strong>ZIP download</strong> containing
-              individual PDFs — ideal for batch processing monthly reports,
-              invoice sets, or data exports. Single file uploads download as a
-              PDF directly without any ZIP.
-            </p>
-            <p className="leading-7 mt-3">
-              After batch conversion, to combine the PDFs into one document use
-              the{" "}
-              <a href="/merge-pdf" className="text-blue-700 font-medium hover:underline">
-                Merge PDF tool
-              </a>
-              . To reduce file size before emailing, use{" "}
-              <a href="/compress-pdf" className="text-blue-700 font-medium hover:underline">
-                Compress PDF
-              </a>.
-            </p>
-          </div>
-
-          <div>
-            <h3 className="text-xl font-semibold text-slate-900 mb-3">
-              Privacy and File Security
-            </h3>
-            <p className="leading-7">
-              PDF Linx is built with privacy as a core priority. Uploaded Excel
-              files are processed securely and{" "}
-              <strong>permanently deleted after conversion</strong> — never stored
-              long-term, never shared with third parties, and never used for any
-              other purpose. No account creation is required — no email, no
-              password, no personal data collected. Your spreadsheets and
-              financial data remain completely private.
-            </p>
-          </div>
-
-          <div>
-            <h3 className="text-xl font-semibold text-slate-900 mb-3">
-              Convert Excel to PDF on Any Device
-            </h3>
-            <p className="leading-7">
-              PDF Linx works on <strong>Windows, macOS, Linux, Android, and iOS</strong> —
-              in any modern browser. No app download, no Microsoft Excel required
-              on the recipient's device. Whether you are at your desk, on a
-              laptop, or on your phone, you can convert Excel spreadsheets to PDF
-              in seconds. Fully responsive with drag-and-drop file upload
-              supported on all devices.
-            </p>
-          </div>
-
-        </div>
-
-        <div className="bg-slate-50 border border-slate-200 rounded-xl p-6 mt-10 mb-6">
+        {/* Features box */}
+        <div className="bg-slate-50 border border-slate-200 rounded-xl p-6 mb-6">
           <h3 className="text-xl font-semibold text-slate-900 mb-4">
-            PDFLinx Excel to PDF Converter — Feature Summary
+            Features of PDFLinx Excel to PDF Converter
           </h3>
-          <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 list-disc pl-5 text-sm">
-            <li>Free online Excel to PDF converter — no hidden fees</li>
-            <li>Supports XLS and XLSX file formats</li>
-            <li>Tables, charts, and formatting fully preserved</li>
-            <li>Batch conversion — multiple files at once</li>
-            <li>ZIP download for multiple file conversions</li>
-            <li>High-quality, print-ready PDF output</li>
-            <li>Fast processing — conversion in seconds</li>
-            <li>No watermark added to converted files</li>
-            <li>Works on desktop and mobile browsers</li>
-            <li>Files auto-deleted after conversion — privacy protected</li>
-            <li>No signup or account required</li>
-            <li>Cross-platform: Windows, macOS, Android, iOS</li>
+          <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 list-disc pl-5">
+            <li>100% free online converter</li>
+            <li>Supports XLS and XLSX formats</li>
+            <li>Full preservation of charts & formulas</li>
+            <li>High-quality, print-ready output</li>
+            <li>Single & multiple file upload support</li>
+            <li>Works on mobile & desktop</li>
+            <li>No file storage – complete privacy</li>
           </ul>
         </div>
 
-        <h3 className="text-xl font-semibold text-slate-900 mb-3">
-          Who Should Use This Tool?
-        </h3>
+        {/* Audience */}
+        <h3 className="text-xl font-semibold text-slate-900 mb-3">Who Should Use This Tool?</h3>
         <ul className="space-y-2 mb-6 list-disc pl-6">
-          <li><strong>Accountants & finance teams:</strong> Convert monthly reports, P&L statements, and budget sheets to PDF for distribution</li>
-          <li><strong>Business owners:</strong> Send professional invoices and quotations as read-only PDFs</li>
-          <li><strong>Data analysts:</strong> Convert dashboards, pivot tables, and data reports to PDF for stakeholder presentations</li>
-          <li><strong>Students:</strong> Submit data analysis, research tables, and project spreadsheets as PDF</li>
-          <li><strong>HR professionals:</strong> Convert salary sheets and attendance records to PDF for secure distribution</li>
-          <li><strong>Anyone with Excel:</strong> Lock in formatting and share spreadsheets confidently on any device</li>
+          <li><strong>Accountants & Finance Teams:</strong> Share monthly reports and budgets securely</li>
+          <li><strong>Business Owners:</strong> Send professional invoices and quotes</li>
+          <li><strong>Students:</strong> Submit data analysis or project spreadsheets neatly</li>
+          <li><strong>Analysts:</strong> Present dashboards and charts without formatting issues</li>
+          <li><strong>Anyone with Excel:</strong> Lock in your hard work and share confidently</li>
         </ul>
 
-        {/* <h3 className="text-xl font-semibold text-slate-900 mb-3">
-          Frequently Asked Questions — Excel to PDF
-        </h3> */}
+        {/* Safety */}
+        <h3 className="text-xl font-semibold text-slate-900 mb-3">Is PDFLinx Safe to Use?</h3>
+        <p className="leading-7 mb-6">
+          Yes — completely safe. We take your privacy seriously.
+          Your uploaded files are processed securely and automatically deleted from our servers shortly after conversion.
+          We never store or share your documents. This applies to both single-file and multiple-file uploads.
+        </p>
+
+        {/* Closing */}
+        <h3 className="text-xl font-semibold text-slate-900 mb-3">Convert Excel to PDF Anytime, Anywhere</h3>
+        <p className="leading-7">
+          PDFLinx works perfectly on Windows, macOS, Linux, Android, and iOS devices.
+          All you need is a browser and an internet connection—turn any Excel spreadsheet (single or multiple) into polished PDFs in just a few clicks.
+        </p>
       </section>
 
-      {/* FAQ */}
       <section className="py-16 bg-gray-50">
         <div className="max-w-4xl mx-auto px-4">
           <h2 className="text-3xl font-bold text-center mb-10 text-slate-900">
             Frequently Asked Questions
           </h2>
+
           <div className="space-y-4">
-            {[
-              {
-                q: "Is the Excel to PDF converter free to use?",
-                a: "Yes. PDFLinx Excel to PDF converter is completely free — no hidden charges, no subscription, no premium tier required.",
-              },
-              {
-                q: "Do I need to install any software?",
-                a: "No. Everything works directly in your browser. No desktop software, no Microsoft Excel required, no plugins needed.",
-              },
-              {
-                q: "Will my charts and formatting be preserved after conversion?",
-                a: "Yes. Tables, charts, formulas, colors, conditional formatting, and grid lines are all preserved accurately in the converted PDF.",
-              },
-              {
-                q: "Can I convert multiple Excel files to PDF at once?",
-                a: "Yes. Upload multiple XLS or XLSX files simultaneously. All converted PDFs are delivered as a single ZIP download.",
-              },
-              {
-                q: "What happens if I upload only one Excel file?",
-                a: "Single file uploads convert and download directly as a PDF — no ZIP file, no extra steps.",
-              },
-              {
-                q: "What is the difference between XLS and XLSX?",
-                a: "XLS is the older Microsoft Excel format. XLSX is the modern format introduced with Office 2007. Both are supported, but XLSX generally converts with higher accuracy for complex formatting and charts.",
-              },
-              {
-                q: "Are my uploaded Excel files safe and private?",
-                a: "Yes. Files are processed securely and permanently deleted after conversion. They are never stored long-term or shared with third parties. Your financial data remains completely private.",
-              },
-              {
-                q: "Can I convert Excel to PDF on my phone?",
-                a: "Yes. PDFLinx works on Android and iOS mobile devices, tablets, and all desktop browsers — no app required.",
-              },
-              {
-                q: "Why are my columns cut off in the converted PDF?",
-                a: "This happens when the Excel sheet is wider than the PDF page. Before converting, set the print area in Excel or use Page Layout view to fit columns within the page width.",
-              },
-              {
-                q: "Can I combine the converted Excel PDFs into one document?",
-                a: "Yes. After converting, use the Merge PDF tool on PDF Linx to combine multiple converted PDFs into one organized document.",
-              },
-            ].map((faq, i) => (
-              <details key={i} className="bg-white rounded-lg shadow-sm p-5 group">
-                <summary className="font-semibold cursor-pointer list-none flex justify-between items-center">
-                  {faq.q}
-                  <span className="text-blue-500 ml-3 text-lg group-open:rotate-45 transition-transform">+</span>
-                </summary>
-                <p className="mt-2 text-gray-600">{faq.a}</p>
-              </details>
-            ))}
+            <details className="bg-white rounded-lg shadow-sm p-5">
+              <summary className="font-semibold cursor-pointer">
+                Is the Excel to PDF converter free to use?
+              </summary>
+              <p className="mt-2 text-gray-600">Yes — totally free, no hidden charges or limits.</p>
+            </details>
+
+            <details className="bg-white rounded-lg shadow-sm p-5">
+              <summary className="font-semibold cursor-pointer">
+                Can I upload multiple Excel files together?
+              </summary>
+              <p className="mt-2 text-gray-600">
+                Yes. You can select a single Excel file or select multiple files at once. If you upload multiple files,
+                you can download them together as a ZIP.
+              </p>
+            </details>
+
+            <details className="bg-white rounded-lg shadow-sm p-5">
+              <summary className="font-semibold cursor-pointer">
+                Do I need to install any software?
+              </summary>
+              <p className="mt-2 text-gray-600">No — everything works directly in your browser.</p>
+            </details>
+
+            <details className="bg-white rounded-lg shadow-sm p-5">
+              <summary className="font-semibold cursor-pointer">
+                Will my charts and formatting be preserved?
+              </summary>
+              <p className="mt-2 text-gray-600">
+                Absolutely. Tables, charts, colors, fonts, and layout are preserved with high accuracy.
+              </p>
+            </details>
+
+            <details className="bg-white rounded-lg shadow-sm p-5">
+              <summary className="font-semibold cursor-pointer">
+                Are my files safe and private?
+              </summary>
+              <p className="mt-2 text-gray-600">
+                Yes — files are securely processed and deleted automatically after conversion (single or multiple uploads).
+              </p>
+            </details>
+
+            <details className="bg-white rounded-lg shadow-sm p-5">
+              <summary className="font-semibold cursor-pointer">
+                Can I convert Excel to PDF on my phone?
+              </summary>
+              <p className="mt-2 text-gray-600">Yes! It works smoothly on mobile phones, tablets, and desktops.</p>
+            </details>
+
+            <details className="bg-white rounded-lg shadow-sm p-5">
+              <summary className="font-semibold cursor-pointer">
+                Does it support older XLS files?
+              </summary>
+              <p className="mt-2 text-gray-600">Yes — both XLS and XLSX formats are fully supported.</p>
+            </details>
           </div>
         </div>
       </section>
-
 
       <RelatedToolsSection currentPage="excel-pdf" />
     </>
