@@ -14,12 +14,18 @@ import {
 } from "lucide-react";
 import Script from "next/script";
 import RelatedToolsSection from "@/components/RelatedTools";
+import { useProgressBar } from "@/hooks/useProgressBar";
+import ProgressButton from "@/components/ProgressButton";
+
+
 
 export default function ProtectPdf() {
   const [files, setFiles] = useState([]);
   const [userPassword, setUserPassword] = useState("");
   const [ownerPassword, setOwnerPassword] = useState("");
   const [showAdvanced, setShowAdvanced] = useState(false);
+  const { progress, isLoading, startProgress, completeProgress, cancelProgress } = useProgressBar();
+
 
   // Permissions (owner password controls these)
   const [allowPrint, setAllowPrint] = useState(true);
@@ -69,6 +75,89 @@ export default function ProtectPdf() {
     return null;
   };
 
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+
+  //   if (!files.length) {
+  //     setError("Please select at least one PDF file first!");
+  //     return;
+  //   }
+
+  //   const pwErr = validatePassword(userPassword);
+  //   if (pwErr) {
+  //     setError(pwErr);
+  //     return;
+  //   }
+
+  //   setLoading(true);
+  //   setSuccess(false);
+  //   setError("");
+
+  //   const formData = new FormData();
+  //   for (const f of files) formData.append("files", f);
+
+  //   // Required user/open password
+  //   formData.append("userPassword", userPassword.trim());
+
+  //   // Optional owner password (if blank, backend should auto-generate)
+  //   if (ownerPassword.trim()) formData.append("ownerPassword", ownerPassword.trim());
+
+  //   // Permissions
+  //   formData.append("allowPrint", String(allowPrint));
+  //   formData.append("allowCopy", String(allowCopy));
+  //   formData.append("allowEdit", String(allowEdit));
+
+  //   try {
+  //     // NOTE: backend route you'll create: POST /convert/protect-pdf
+  //     const res = await fetch("/convert/protect-pdf", {
+  //       method: "POST",
+  //       body: formData,
+  //     });
+
+  //     if (!res.ok) {
+  //       let msg = "Protection failed";
+  //       try {
+  //         const j = await res.json();
+  //         msg = j?.error || msg;
+  //       } catch { }
+  //       throw new Error(msg);
+  //     }
+
+  //     const contentType = res.headers.get("content-type") || "";
+
+  //     // ✅ SINGLE => PDF
+  //     if (contentType.includes("application/pdf")) {
+  //       const blob = await res.blob();
+  //       const outName = files[0].name.replace(/\.pdf$/i, "") + "-protected.pdf";
+  //       downloadBlob(blob, outName);
+  //       setSuccess(true);
+  //       return;
+  //     }
+
+  //     // ✅ MULTIPLE => ZIP
+  //     if (contentType.includes("application/zip")) {
+  //       const blob = await res.blob();
+  //       downloadBlob(blob, "pdflinx-protected-pdfs.zip");
+  //       setSuccess(true);
+  //       return;
+  //     }
+
+  //     // fallback
+  //     let data = null;
+  //     try {
+  //       data = await res.json();
+  //     } catch { }
+  //     throw new Error(data?.error || "Unexpected response from server");
+  //   } catch (err) {
+  //     const msg = (err?.message || "Something went wrong. Please try again.").toString();
+  //     setError(msg);
+  //     console.error(err);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -83,7 +172,8 @@ export default function ProtectPdf() {
       return;
     }
 
-    setLoading(true);
+    startProgress();        // ← setLoading(true) ki jagah
+
     setSuccess(false);
     setError("");
 
@@ -93,7 +183,7 @@ export default function ProtectPdf() {
     // Required user/open password
     formData.append("userPassword", userPassword.trim());
 
-    // Optional owner password (if blank, backend should auto-generate)
+    // Optional owner password
     if (ownerPassword.trim()) formData.append("ownerPassword", ownerPassword.trim());
 
     // Permissions
@@ -102,7 +192,6 @@ export default function ProtectPdf() {
     formData.append("allowEdit", String(allowEdit));
 
     try {
-      // NOTE: backend route you'll create: POST /convert/protect-pdf
       const res = await fetch("/convert/protect-pdf", {
         method: "POST",
         body: formData,
@@ -119,19 +208,21 @@ export default function ProtectPdf() {
 
       const contentType = res.headers.get("content-type") || "";
 
-      // ✅ SINGLE => PDF
+      // SINGLE => PDF
       if (contentType.includes("application/pdf")) {
         const blob = await res.blob();
         const outName = files[0].name.replace(/\.pdf$/i, "") + "-protected.pdf";
         downloadBlob(blob, outName);
+        completeProgress();   // ← success pe
         setSuccess(true);
         return;
       }
 
-      // ✅ MULTIPLE => ZIP
+      // MULTIPLE => ZIP
       if (contentType.includes("application/zip")) {
         const blob = await res.blob();
         downloadBlob(blob, "pdflinx-protected-pdfs.zip");
+        completeProgress();   // ← success pe
         setSuccess(true);
         return;
       }
@@ -142,13 +233,14 @@ export default function ProtectPdf() {
         data = await res.json();
       } catch { }
       throw new Error(data?.error || "Unexpected response from server");
+
     } catch (err) {
       const msg = (err?.message || "Something went wrong. Please try again.").toString();
       setError(msg);
+      cancelProgress();       // ← error / catch pe reset
       console.error(err);
-    } finally {
-      setLoading(false);
     }
+    // finally hata diya — hook khud manage karega loading/progress
   };
 
   return (
@@ -299,8 +391,8 @@ export default function ProtectPdf() {
                 <label className="block">
                   <div
                     className={`border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition-all ${files.length
-                        ? "border-green-500 bg-green-50"
-                        : "border-gray-300 hover:border-blue-500 hover:bg-blue-50"
+                      ? "border-green-500 bg-green-50"
+                      : "border-gray-300 hover:border-blue-500 hover:bg-blue-50"
                       }`}
                   >
                     <Upload className="w-12 h-12 mx-auto mb-3 text-blue-600" />
@@ -478,7 +570,7 @@ export default function ProtectPdf() {
               )}
 
               {/* Button */}
-              <button
+              {/* <button
                 type="submit"
                 disabled={loading || !files.length}
                 className="w-full bg-gradient-to-r from-blue-600 to-green-600 text-white font-semibold text-lg py-4 rounded-xl hover:from-blue-700 hover:to-green-700 disabled:opacity-60 disabled:cursor-not-allowed transition shadow-md flex items-center justify-center gap-2"
@@ -494,7 +586,18 @@ export default function ProtectPdf() {
                     Protect PDF
                   </>
                 )}
-              </button>
+              </button> */}
+
+              <ProgressButton
+                isLoading={isLoading}
+                progress={progress}
+                disabled={!files.length}
+                icon={<Lock className="w-5 h-5" />}              // ← Protect / Lock icon best lagega
+                label="Protect PDF Now"
+                gradient="bg-gradient-to-r from-blue-600 to-green-600"            // ← Security feel ke liye dark/professional
+                type="button"
+                onClick={handleSubmit}
+              />
             </form>
 
             {/* Success */}

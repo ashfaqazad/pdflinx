@@ -92,6 +92,12 @@ export const relatedToolsData = {
     { title: 'Compress PDF', emoji: '🗜️', url: '/compress-pdf', desc: 'Reduce file size after watermarking' },
     { title: 'Sign PDF', emoji: '✍️', url: '/sign-pdf', desc: 'Add your signature to the PDF' },
   ],
+    'text-to-pdf': [
+    { title: 'Protect PDF', emoji: '🔐', url: '/protect-pdf', desc: 'Secure your watermarked PDF with a password' },
+    { title: 'OCR PDF', emoji: '🧠', url: '/ocr-pdf', desc: 'Extract text from scanned PDFs' },
+    { title: 'Split PDF', emoji: '✂️', url: '/split-pdf', desc: 'Split rotated PDF into separate pages' },
+  ],
+
 };
 
 

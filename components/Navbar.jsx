@@ -147,6 +147,12 @@ export default function Navbar() {
                           <FilePlus size={20} className="text-emerald-600" />
                           <span className="font-medium text-gray-700 whitespace-nowrap">Add Watermark</span>
                         </Link>
+
+                        <Link href="/text-to-pdf" onClick={closeDropdown} className="flex items-center gap-3 px-3 py-2 rounded-xl text-sm hover:bg-indigo-50 transition-all duration-200 hover:translate-x-1">
+                          {/* <FilePlus size={20} className="text-emerald-600" /> */}
+                          <FileText size={16} className="text-purple-600" />
+                          <span className="font-medium text-gray-700 whitespace-nowrap">Text to PDF</span>
+                        </Link>
                       </div>
                     </div>
 
@@ -224,6 +230,9 @@ export default function Navbar() {
                       <Link href="/ocr-pdf" onClick={closeMobile} className="flex items-center gap-2 text-gray-600 hover:text-indigo-600 py-1"><ScanLine size={16} className="text-blue-600" />OCR PDF</Link>
                       <Link href="/edit-pdf" onClick={closeMobile} className="flex items-center gap-2 text-gray-600 hover:text-indigo-600 py-1"><FileEdit size={16} className="text-orange-600" />Edit PDF</Link>
                       <Link href="/add-watermark" onClick={closeMobile} className="flex items-center gap-2 text-gray-600 hover:text-indigo-600 py-1"><FilePlus size={16} className="text-emerald-600" />Add Watermark</Link>
+                      <Link href="/text-to-pdf" onClick={closeMobile} className="flex items-center gap-2 text-gray-600 hover:text-indigo-600 py-1"><FileText size={16} className="text-purple-600" />Text to PDF</Link>
+                      
+
                     </div>
                   </div>
                 </div>

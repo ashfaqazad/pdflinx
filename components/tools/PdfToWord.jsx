@@ -2,6 +2,7 @@
 
 "use client";
 import { useState } from "react";
+import Link from "next/link";
 import { Upload, Download, CheckCircle, FileText } from "lucide-react";
 import Script from "next/script";
 import RelatedToolsSection from "@/components/RelatedTools";
@@ -494,7 +495,7 @@ export default function PdfToWord({ seo }) {
             No account • No watermark • Auto-deleted after 1 hour • 100% free •
             Single & batch conversion • OCR for scanned PDFs • Works on Windows, Mac, Android & iOS
           </p>
-         
+
         </div>
       </main>
 
@@ -591,10 +592,10 @@ export default function PdfToWord({ seo }) {
         </div>
 
         {/* Contextual Links */}
-        <div className="mt-10 bg-white p-6 md:p-8 shadow-sm">
+        {/* <div className="mt-10 bg-white p-6 md:p-8 shadow-sm">
           <h3 className="text-lg md:text-xl font-bold text-slate-900">
-            Need to create a PDF too?
-          </h3>
+            Need to create a PDF too? */}
+        {/* </h3>
           <p className="mt-1 text-sm text-slate-600">
             Many workflows go both ways — convert documents into PDF, then edit PDFs back in Word.
           </p>
@@ -621,6 +622,42 @@ export default function PdfToWord({ seo }) {
               <a href="/free-pdf-tools" className="text-blue-700 font-semibold hover:underline">
                 Browse all PDF tools
               </a>{" "}
+              <span className="text-slate-600">— merge, split, compress, protect & more.</span>
+            </li>
+          </ul>
+        </div> */}
+
+        {/* Contextual Links */}
+        <div className="mt-10 bg-white p-6 md:p-8 shadow-sm">
+          <h3 className="text-lg md:text-xl font-bold text-slate-900">
+            Need to create a PDF too?
+          </h3>
+          <p className="mt-1 text-sm text-slate-600">
+            Many workflows go both ways — convert documents into PDF, then edit PDFs back in Word.
+          </p>
+          <ul className="mt-4 space-y-2 text-sm">
+            <li>
+              <Link href="/word-to-pdf" className="text-blue-700 font-semibold hover:underline">
+                Word to PDF Converter
+              </Link>{" "}
+              <span className="text-slate-600">— export your edited DOCX back to PDF instantly.</span>
+            </li>
+            <li>
+              <Link href="/merge-pdf" className="text-blue-700 font-semibold hover:underline">
+                Merge PDF
+              </Link>{" "}
+              <span className="text-slate-600">— combine multiple PDFs into one before converting.</span>
+            </li>
+            <li>
+              <Link href="/compress-pdf" className="text-blue-700 font-semibold hover:underline">
+                Compress PDF
+              </Link>{" "}
+              <span className="text-slate-600">— reduce PDF file size before or after conversion.</span>
+            </li>
+            <li>
+              <Link href="/free-pdf-tools" className="text-blue-700 font-semibold hover:underline">
+                Browse all PDF tools
+              </Link>{" "}
               <span className="text-slate-600">— merge, split, compress, protect & more.</span>
             </li>
           </ul>

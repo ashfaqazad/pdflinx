@@ -4,6 +4,9 @@ import { useMemo, useState } from "react";
 import { Upload, FileText, Download, CheckCircle, X, Key, LockOpen } from "lucide-react";
 import Script from "next/script";
 import RelatedToolsSection from "@/components/RelatedTools";
+import { useProgressBar } from "@/hooks/useProgressBar";
+import ProgressButton from "@/components/ProgressButton";
+
 
 export default function UnlockPdf() {
   const [files, setFiles] = useState([]);
@@ -11,6 +14,9 @@ export default function UnlockPdf() {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState("");
+  const { progress, isLoading, startProgress, completeProgress, cancelProgress } = useProgressBar();
+
+
 
   const totalSizeMb = useMemo(() => {
     return files.reduce((sum, f) => sum + (f?.size || 0), 0) / 1024 / 1024;
@@ -38,6 +44,7 @@ export default function UnlockPdf() {
     window.URL.revokeObjectURL(url);
   };
 
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!files.length) {
@@ -45,12 +52,14 @@ export default function UnlockPdf() {
       return;
     }
 
-    setLoading(true);
+    startProgress();        // ← setLoading(true) ki jagah
+
     setSuccess(false);
     setError("");
 
     const formData = new FormData();
     for (const f of files) formData.append("files", f);
+
     // optional password (send only if user entered)
     if (password.trim()) formData.append("password", password.trim());
 
@@ -71,19 +80,21 @@ export default function UnlockPdf() {
 
       const contentType = res.headers.get("content-type") || "";
 
-      // ✅ SINGLE => PDF
+      // SINGLE => PDF
       if (contentType.includes("application/pdf")) {
         const blob = await res.blob();
         const outName = files[0].name.replace(/\.pdf$/i, "") + "-unlocked.pdf";
         downloadBlob(blob, outName);
+        completeProgress();   // ← success pe
         setSuccess(true);
         return;
       }
 
-      // ✅ MULTIPLE => ZIP
+      // MULTIPLE => ZIP
       if (contentType.includes("application/zip")) {
         const blob = await res.blob();
         downloadBlob(blob, "pdflinx-unlocked-pdfs.zip");
+        completeProgress();   // ← success pe
         setSuccess(true);
         return;
       }
@@ -94,6 +105,7 @@ export default function UnlockPdf() {
         data = await res.json();
       } catch { }
       throw new Error(data?.error || "Unexpected response from server");
+
     } catch (err) {
       const msg = (err?.message || "Something went wrong. Please try again.").toString();
 
@@ -106,11 +118,85 @@ export default function UnlockPdf() {
         setError(msg);
       }
 
+      cancelProgress();       // ← error / catch pe reset
       console.error(err);
-    } finally {
-      setLoading(false);
     }
+    // finally hata diya — hook khud manage karega
   };
+
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   if (!files.length) {
+  //     setError("Please select at least one PDF file first!");
+  //     return;
+  //   }
+
+  //   setLoading(true);
+  //   setSuccess(false);
+  //   setError("");
+
+  //   const formData = new FormData();
+  //   for (const f of files) formData.append("files", f);
+  //   // optional password (send only if user entered)
+  //   if (password.trim()) formData.append("password", password.trim());
+
+  //   try {
+  //     const res = await fetch("/convert/unlock-pdf", {
+  //       method: "POST",
+  //       body: formData,
+  //     });
+
+  //     if (!res.ok) {
+  //       let msg = "Unlock failed";
+  //       try {
+  //         const j = await res.json();
+  //         msg = j?.error || msg;
+  //       } catch { }
+  //       throw new Error(msg);
+  //     }
+
+  //     const contentType = res.headers.get("content-type") || "";
+
+  //     // ✅ SINGLE => PDF
+  //     if (contentType.includes("application/pdf")) {
+  //       const blob = await res.blob();
+  //       const outName = files[0].name.replace(/\.pdf$/i, "") + "-unlocked.pdf";
+  //       downloadBlob(blob, outName);
+  //       setSuccess(true);
+  //       return;
+  //     }
+
+  //     // ✅ MULTIPLE => ZIP
+  //     if (contentType.includes("application/zip")) {
+  //       const blob = await res.blob();
+  //       downloadBlob(blob, "pdflinx-unlocked-pdfs.zip");
+  //       setSuccess(true);
+  //       return;
+  //     }
+
+  //     // fallback
+  //     let data = null;
+  //     try {
+  //       data = await res.json();
+  //     } catch { }
+  //     throw new Error(data?.error || "Unexpected response from server");
+  //   } catch (err) {
+  //     const msg = (err?.message || "Something went wrong. Please try again.").toString();
+
+  //     // Friendly hints
+  //     if (msg.toLowerCase().includes("password")) {
+  //       setError(
+  //         "This PDF requires a password to open (user password). Please enter the correct password and try again."
+  //       );
+  //     } else {
+  //       setError(msg);
+  //     }
+
+  //     console.error(err);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
 
   return (
     <>
@@ -251,8 +337,8 @@ export default function UnlockPdf() {
                 <label className="block">
                   <div
                     className={`border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition-all ${files.length
-                        ? "border-green-500 bg-green-50"
-                        : "border-gray-300 hover:border-blue-500 hover:bg-blue-50"
+                      ? "border-green-500 bg-green-50"
+                      : "border-gray-300 hover:border-blue-500 hover:bg-blue-50"
                       }`}
                   >
                     <Upload className="w-12 h-12 mx-auto mb-3 text-blue-600" />
@@ -361,7 +447,7 @@ export default function UnlockPdf() {
               )}
 
               {/* Button */}
-              <button
+              {/* <button
                 type="submit"
                 disabled={loading || !files.length}
                 className="w-full bg-gradient-to-r from-blue-600 to-green-600 text-white font-semibold text-lg py-4 rounded-xl hover:from-blue-700 hover:to-green-700 disabled:opacity-60 disabled:cursor-not-allowed transition shadow-md flex items-center justify-center gap-2"
@@ -374,7 +460,19 @@ export default function UnlockPdf() {
                     Unlock PDF
                   </>
                 )}
-              </button>
+                  
+              </button> */}
+
+              <ProgressButton
+                isLoading={isLoading}
+                progress={progress}
+                disabled={!files.length}
+                icon={<Key className="w-5 h-5" />}               // ← Unlock / Key icon best lagega
+                label="Unlock PDF Now"
+                gradient="from-cyan-600 to-teal-600"             // ← Unlock feel ke liye fresh / open color
+                type="button"
+                onClick={handleSubmit}
+              />
             </form>
 
             {/* Success */}

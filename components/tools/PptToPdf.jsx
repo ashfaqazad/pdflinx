@@ -3,6 +3,9 @@ import { useState, useRef } from "react";
 import { Upload, Download, CheckCircle, Presentation } from "lucide-react";
 import Script from "next/script";
 import RelatedToolsSection from "@/components/RelatedTools";
+import { useProgressBar } from "@/hooks/useProgressBar";
+import ProgressButton from "@/components/ProgressButton";
+
 
 export default function PptToPdf() {
   // ✅ Single + Multiple dono support (same input)
@@ -11,6 +14,8 @@ export default function PptToPdf() {
   const [downloadUrl, setDownloadUrl] = useState(null); // single pdf OR zip link
   const [success, setSuccess] = useState(false);
   const fileInputRef = useRef(null);
+  const { progress, isLoading, startProgress, completeProgress, cancelProgress } = useProgressBar();
+
 
   const isSingle = files.length === 1;
   const isMultiple = files.length > 1;
@@ -22,45 +27,102 @@ export default function PptToPdf() {
     setDownloadUrl(null);
   };
 
+
+
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   if (!files.length) return alert("Please select a PowerPoint file (or multiple files) first!");
+
+  //   setLoading(true);
+  //   setDownloadUrl(null);
+  //   setSuccess(false);
+
+  //   const formData = new FormData();
+
+  //   // ✅ Single + multiple (same loop) — field name "files"
+  //   files.forEach((f) => formData.append("files", f));
+
+  //   // optional hint
+  //   formData.append("mode", isSingle ? "single" : "multiple");
+
+  //   try {
+  //     // 🔹 API call
+  //     const res = await fetch("/convert/ppt-to-pdf", {
+  //       method: "POST",
+  //       body: formData,
+  //     });
+
+  //     // safer: read JSON only if ok
+  //     if (!res.ok) {
+  //       const text = await res.text().catch(() => "");
+  //       throw new Error(`Server error: ${res.status} ${text?.slice(0, 200)}`);
+  //     }
+
+  //     const data = await res.json();
+
+  //     if (data.success) {
+  //       // ✅ same pattern as excel: backend returns relative download path
+  //       // recommended: backend returns "/converted/xxx.pdf" for single
+  //       // and "/converted/xxx.zip" for multiple
+  //       setDownloadUrl(`/api${data.download}`);
+  //       setSuccess(true);
+
+  //       // ✅ YE 8 LINES ADD KARO
+  //       setTimeout(() => {
+  //         const downloadSection = document.getElementById('download-section');
+  //         if (downloadSection) {
+  //           downloadSection.scrollIntoView({
+  //             behavior: 'smooth',
+  //             block: 'center'
+  //           });
+  //         }
+  //       }, 300);
+
+  //     } else {
+  //       alert("Conversion failed: " + (data.error || "Unknown error"));
+  //     }
+  //   } catch (err) {
+  //     console.error("Error:", err);
+  //     alert("Something went wrong, please try again.");
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!files.length) return alert("Please select a PowerPoint file (or multiple files) first!");
 
-    setLoading(true);
+    startProgress();        // ← setLoading(true) ki jagah
+
     setDownloadUrl(null);
     setSuccess(false);
 
     const formData = new FormData();
-
-    // ✅ Single + multiple (same loop) — field name "files"
     files.forEach((f) => formData.append("files", f));
-
-    // optional hint
     formData.append("mode", isSingle ? "single" : "multiple");
 
     try {
-      // 🔹 API call
       const res = await fetch("/convert/ppt-to-pdf", {
         method: "POST",
         body: formData,
       });
 
-      // safer: read JSON only if ok
       if (!res.ok) {
         const text = await res.text().catch(() => "");
+        cancelProgress();     // ← error pe
         throw new Error(`Server error: ${res.status} ${text?.slice(0, 200)}`);
       }
 
       const data = await res.json();
 
       if (data.success) {
-        // ✅ same pattern as excel: backend returns relative download path
-        // recommended: backend returns "/converted/xxx.pdf" for single
-        // and "/converted/xxx.zip" for multiple
         setDownloadUrl(`/api${data.download}`);
+        completeProgress();   // ← setLoading(false) ki jagah
+
         setSuccess(true);
 
-        // ✅ YE 8 LINES ADD KARO
+        // Scroll wali lines same rakhi
         setTimeout(() => {
           const downloadSection = document.getElementById('download-section');
           if (downloadSection) {
@@ -72,15 +134,17 @@ export default function PptToPdf() {
         }, 300);
 
       } else {
+        cancelProgress();     // ← error pe
         alert("Conversion failed: " + (data.error || "Unknown error"));
       }
     } catch (err) {
+      cancelProgress();       // ← catch pe
       console.error("Error:", err);
       alert("Something went wrong, please try again.");
-    } finally {
-      setLoading(false);
     }
+    // finally block hata diya — hook khud handle karta hai
   };
+
 
   const getDownloadName = () => {
     if (isSingle) {
@@ -243,7 +307,7 @@ export default function PptToPdf() {
                 </label>
               </div>
 
-              <button
+              {/* <button
                 type="submit"
                 disabled={loading || files.length === 0}
                 className="w-full bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-semibold text-lg py-4 rounded-xl hover:from-purple-700 hover:to-indigo-700 disabled:opacity-60 disabled:cursor-not-allowed transition shadow-md flex items-center justify-center gap-2"
@@ -256,7 +320,18 @@ export default function PptToPdf() {
                     Convert to PDF
                   </>
                 )}
-              </button>
+              </button> */}
+
+              <ProgressButton
+                isLoading={isLoading}
+                progress={progress}
+                disabled={!files.length}
+                icon={<Presentation className="w-5 h-5" />}     // ← PPT ke liye best icon (Presentation)
+                label="Convert PPT to PDF"
+                gradient="from-indigo-600 to-purple-600"        // ← PPT tool ke liye acha professional color
+                type="button"
+                onClick={handleSubmit}
+              />
 
               {/* helper note */}
               <p className="text-center text-sm text-gray-500">
@@ -644,69 +719,69 @@ export default function PptToPdf() {
 
 
 
-<section className="py-16 bg-gray-50">
-  <div className="max-w-4xl mx-auto px-4">
-    <h2 className="text-3xl font-bold text-center mb-10 text-slate-900">
-      Frequently Asked Questions
-    </h2>
-    <div className="space-y-4">
-      {[
-        {
-          q: "Is the PowerPoint to PDF converter free to use?",
-          a: "Yes. PDFLinx PowerPoint to PDF converter is completely free — no hidden charges, no subscription, no premium tier required.",
-        },
-        {
-          q: "Do I need to install any software?",
-          a: "No. Everything works directly in your browser. No desktop software, no Microsoft PowerPoint required, no plugins needed.",
-        },
-        {
-          q: "Will my slide layouts and fonts be preserved after conversion?",
-          a: "Yes. Slide layouts, fonts, images, backgrounds, and design elements are all preserved accurately in the converted PDF.",
-        },
-        {
-          q: "What happens to animations when converting to PDF?",
-          a: "PDF is a static format — animations and transitions cannot be preserved. Each animated slide appears as a static frame showing the slide in its final state. All text and images remain fully visible.",
-        },
-        {
-          q: "Can I convert multiple PowerPoint files to PDF at once?",
-          a: "Yes. Upload multiple PPT or PPTX files simultaneously. All converted PDFs are delivered as a single ZIP download.",
-        },
-        {
-          q: "What happens if I upload only one PowerPoint file?",
-          a: "Single file uploads convert and download directly as a PDF — no ZIP file, no extra steps.",
-        },
-        {
-          q: "What is the difference between PPT and PPTX?",
-          a: "PPT is the older Microsoft PowerPoint format. PPTX is the modern format introduced with Office 2007. Both are supported, but PPTX generally converts with higher accuracy for presentations with advanced design and custom fonts.",
-        },
-        {
-          q: "Are my uploaded PowerPoint files safe and private?",
-          a: "Yes. Files are processed securely and permanently deleted after conversion. They are never stored long-term or shared with third parties.",
-        },
-        {
-          q: "Can I convert PowerPoint to PDF on my phone?",
-          a: "Yes. PDFLinx works on Android and iOS mobile devices, tablets, and all desktop browsers — no app required.",
-        },
-        {
-          q: "Can I combine the converted presentation PDFs into one document?",
-          a: "Yes. After converting, use the Merge PDF tool on PDF Linx to combine multiple converted PDFs into one organized document.",
-        },
-      ].map((faq, i) => (
-        <details key={i} className="bg-white rounded-lg shadow-sm p-5 group">
-          <summary className="font-semibold cursor-pointer list-none flex justify-between items-center">
-            {faq.q}
-            <span className="text-purple-500 ml-3 text-lg group-open:rotate-45 transition-transform">+</span>
-          </summary>
-          <p className="mt-2 text-gray-600">{faq.a}</p>
-        </details>
-      ))}
-    </div>
-  </div>
-</section>   
+      <section className="py-16 bg-gray-50">
+        <div className="max-w-4xl mx-auto px-4">
+          <h2 className="text-3xl font-bold text-center mb-10 text-slate-900">
+            Frequently Asked Questions
+          </h2>
+          <div className="space-y-4">
+            {[
+              {
+                q: "Is the PowerPoint to PDF converter free to use?",
+                a: "Yes. PDFLinx PowerPoint to PDF converter is completely free — no hidden charges, no subscription, no premium tier required.",
+              },
+              {
+                q: "Do I need to install any software?",
+                a: "No. Everything works directly in your browser. No desktop software, no Microsoft PowerPoint required, no plugins needed.",
+              },
+              {
+                q: "Will my slide layouts and fonts be preserved after conversion?",
+                a: "Yes. Slide layouts, fonts, images, backgrounds, and design elements are all preserved accurately in the converted PDF.",
+              },
+              {
+                q: "What happens to animations when converting to PDF?",
+                a: "PDF is a static format — animations and transitions cannot be preserved. Each animated slide appears as a static frame showing the slide in its final state. All text and images remain fully visible.",
+              },
+              {
+                q: "Can I convert multiple PowerPoint files to PDF at once?",
+                a: "Yes. Upload multiple PPT or PPTX files simultaneously. All converted PDFs are delivered as a single ZIP download.",
+              },
+              {
+                q: "What happens if I upload only one PowerPoint file?",
+                a: "Single file uploads convert and download directly as a PDF — no ZIP file, no extra steps.",
+              },
+              {
+                q: "What is the difference between PPT and PPTX?",
+                a: "PPT is the older Microsoft PowerPoint format. PPTX is the modern format introduced with Office 2007. Both are supported, but PPTX generally converts with higher accuracy for presentations with advanced design and custom fonts.",
+              },
+              {
+                q: "Are my uploaded PowerPoint files safe and private?",
+                a: "Yes. Files are processed securely and permanently deleted after conversion. They are never stored long-term or shared with third parties.",
+              },
+              {
+                q: "Can I convert PowerPoint to PDF on my phone?",
+                a: "Yes. PDFLinx works on Android and iOS mobile devices, tablets, and all desktop browsers — no app required.",
+              },
+              {
+                q: "Can I combine the converted presentation PDFs into one document?",
+                a: "Yes. After converting, use the Merge PDF tool on PDF Linx to combine multiple converted PDFs into one organized document.",
+              },
+            ].map((faq, i) => (
+              <details key={i} className="bg-white rounded-lg shadow-sm p-5 group">
+                <summary className="font-semibold cursor-pointer list-none flex justify-between items-center">
+                  {faq.q}
+                  <span className="text-purple-500 ml-3 text-lg group-open:rotate-45 transition-transform">+</span>
+                </summary>
+                <p className="mt-2 text-gray-600">{faq.a}</p>
+              </details>
+            ))}
+          </div>
+        </div>
+      </section>
 
-  <RelatedToolsSection currentPage="ppt-to-pdf" />
+      <RelatedToolsSection currentPage="ppt-to-pdf" />
 
- </>
+    </>
   );
 }
 

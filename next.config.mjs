@@ -82,11 +82,12 @@ const nextConfig = {
         destination: "https://convertlinx.com/signature-maker",
         permanent: true,
       },
-      {
-        source: "/text-to-pdf",
-        destination: "https://convertlinx.com/text-to-pdf",
-        permanent: true,
-      },
+
+      // {
+      //   source: "/text-to-pdf",
+      //   destination: "https://convertlinx.com/text-to-pdf",
+      //   permanent: true,
+      // },
       {
         source: "/heic-to-jpg",
         destination: "https://convertlinx.com/heic-to-jpg",
@@ -134,11 +135,12 @@ const nextConfig = {
         destination: "https://convertlinx.com/blog/signature-maker",
         permanent: true,
       },
-      {
-        source: "/blog/text-to-pdf",
-        destination: "https://convertlinx.com/blog/text-to-pdf",
-        permanent: true,
-      },
+
+      // {
+      //   source: "/blog/text-to-pdf",
+      //   destination: "https://convertlinx.com/blog/text-to-pdf",
+      //   permanent: true,
+      // },
       {
         source: "/blog/heic-to-jpg",
         destination: "https://convertlinx.com/blog/heic-to-jpg",
