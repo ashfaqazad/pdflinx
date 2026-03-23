@@ -231,7 +231,6 @@ export default function Navbar() {
                       <Link href="/edit-pdf" onClick={closeMobile} className="flex items-center gap-2 text-gray-600 hover:text-indigo-600 py-1"><FileEdit size={16} className="text-orange-600" />Edit PDF</Link>
                       <Link href="/add-watermark" onClick={closeMobile} className="flex items-center gap-2 text-gray-600 hover:text-indigo-600 py-1"><FilePlus size={16} className="text-emerald-600" />Add Watermark</Link>
                       <Link href="/text-to-pdf" onClick={closeMobile} className="flex items-center gap-2 text-gray-600 hover:text-indigo-600 py-1"><FileText size={16} className="text-purple-600" />Text to PDF</Link>
-                      
 
                     </div>
                   </div>

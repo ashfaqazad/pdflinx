@@ -243,7 +243,7 @@ export default function WordToPdf() {
               "name": "Word to PDF Converter - PDFLinx",
               "applicationCategory": "BusinessApplication",
               "operatingSystem": "Web Browser",
-              "description": "Free online Word to PDF converter. Convert DOC and DOCX files to high-quality PDF without losing formatting. No signup required.",
+              "description": "Convert Word to PDF online free — no signup, no watermark. Upload DOC or DOCX and get a clean PDF instantly. Batch convert up to 10 files. Works on Windows, Mac, Android, iOS.",
               "url": "https://pdflinx.com/word-to-pdf",
               "offers": {
                 "@type": "Offer",
@@ -275,13 +275,16 @@ export default function WordToPdf() {
           {/* Header */}
           <div className="text-center mb-8">
             <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent mb-4">
-              Word to PDF Converter <br /> Online (Free)
+              Convert Word to PDF Online Free
+              <br />
+              <span className="text-2xl md:text-3xl font-medium">
+                No Signup · No Watermark · Instant Download
+              </span>
             </h1>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Convert Word documents to PDF instantly — formatting, fonts, tables, and
-              images stay exactly the same. Upload a single DOC or DOCX file, or batch
-              convert up to 10 files at once. Perfect for resumes, invoices, contracts,
-              and assignments. No signup, no watermark, completely free.
+              Convert DOC or DOCX to PDF online free — no signup, no watermark, no software needed.
+              Works on Windows, Mac, Android and iOS. Perfect for resumes, assignments, invoices,
+              and contracts. Upload one file or batch convert up to 10 Word files at once.
             </p>
           </div>
 
@@ -376,7 +379,7 @@ export default function WordToPdf() {
         {/* Main Heading */}
         <div className="text-center mb-12">
           <h2 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent mb-4">
-            Word to PDF Online Free – Convert DOC/DOCX to PDF in Seconds
+            Free Word to PDF Converter — Convert DOC & DOCX Without Losing Formatting
           </h2>
           <p className="text-lg text-gray-600 max-w-3xl mx-auto">
             Need to share a Word file that looks identical on every device? Convert
@@ -467,217 +470,6 @@ export default function WordToPdf() {
           Trusted by students, professionals, and businesses to convert Word documents
           to PDF — fast, reliable, and always free.
         </p>
-      </section>
-
-      {/* ── DEEP SEO CONTENT ── */}
-      <section className="max-w-4xl mx-auto px-4 py-14 text-slate-700">
-        <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-6">
-          Word to PDF Converter – Free Online Tool by PDFLinx
-        </h2>
-
-        <p className="text-base leading-7 mb-6">
-          A Word to PDF converter is an essential tool for anyone who needs to share
-          documents professionally. Converting a Word file (DOC or DOCX) to PDF ensures
-          that fonts, margins, tables, images, and the overall layout remain consistent
-          across every device, operating system, and screen size — whether the recipient
-          is on Windows, macOS, Android, or iOS. The{" "}
-          <span className="font-medium text-slate-900">PDFLinx Word to PDF Converter</span>{" "}
-          handles the conversion instantly in your browser with no software installation
-          and no account required.
-        </p>
-
-        <h3 className="text-xl font-semibold text-slate-900 mb-3">
-          What Is Word to PDF Conversion?
-        </h3>
-        <p className="leading-7 mb-6">
-          Word to PDF conversion transforms an editable Microsoft Word document into a
-          fixed-layout, read-only PDF file. PDFs are universally compatible — they open
-          identically on every device without requiring Microsoft Word or any other word
-          processor. This makes PDF the preferred format for sharing resumes, invoices,
-          contracts, reports, and academic assignments.
-        </p>
-
-        <h3 className="text-xl font-semibold text-slate-900 mb-3">
-          Why Convert Word Files to PDF?
-        </h3>
-        <ul className="space-y-2 mb-6 list-disc pl-6">
-          <li>Preserves fonts, margins, tables, images, and embedded graphics</li>
-          <li>Opens on every device without Microsoft Word installed</li>
-          <li>Cross-platform compatible — Windows, macOS, Linux, Android, iOS</li>
-          <li>Print-ready format with consistent page layout</li>
-          <li>Professional and polished appearance for client deliverables</li>
-          <li>Read-only by default — protects document content from accidental edits</li>
-          <li>Smaller, optimized file size for easy email sharing and uploading</li>
-          <li>Required format for most job portals, university submissions, and official forms</li>
-        </ul>
-
-        <div className="mt-10 space-y-10">
-
-          <div>
-            <h3 className="text-xl font-semibold text-slate-900 mb-3">
-              Word vs PDF – What Is the Difference?
-            </h3>
-            <p className="leading-7">
-              A <strong>Word document (DOC/DOCX)</strong> is an editable file — ideal for
-              drafting, revising, and collaborating. A <strong>PDF (Portable Document Format)</strong>{" "}
-              is a fixed-layout format designed for sharing, printing, and archiving. When you
-              convert a Word file to PDF, the document becomes read-only with a locked layout —
-              meaning fonts, spacing, and structure look identical on every device. This is why
-              professionals convert Microsoft Word files to PDF before sending resumes, contracts,
-              invoices, and reports.
-            </p>
-          </div>
-
-          <div>
-            <h3 className="text-xl font-semibold text-slate-900 mb-3">
-              DOC vs DOCX – Which Format Converts Better?
-            </h3>
-            <p className="leading-7">
-              <strong>DOCX</strong> is the modern Word format introduced with Microsoft Office 2007
-              and generally converts to PDF with higher accuracy — better support for styles,
-              embedded fonts, images, and complex layouts. <strong>DOC</strong> is the older format
-              and also supported, but DOCX to PDF conversion tends to produce the cleanest output
-              for documents with advanced formatting. If you have a choice, save your file as DOCX
-              before converting.
-            </p>
-          </div>
-
-          <div>
-            <h3 className="text-xl font-semibold text-slate-900 mb-3">
-              How to Convert Word to PDF Without Losing Formatting
-            </h3>
-            <ul className="space-y-2 list-disc pl-6 leading-7 mb-3">
-              <li>Use <strong>DOCX format</strong> where possible — better layout support than DOC</li>
-              <li>Use standard, widely available fonts (Calibri, Arial, Times New Roman, Georgia)</li>
-              <li>Keep page size consistent — A4 or Letter — to avoid layout shifts</li>
-              <li>Ensure tables and images are within page margins before converting</li>
-              <li>Avoid text boxes with unusual positioning — these sometimes shift during conversion</li>
-            </ul>
-            <p className="leading-7">
-              PDF Linx is built to preserve <strong>fonts, headings, tables, images, and page
-                structure</strong> — your Word document should look identical after PDF conversion.
-            </p>
-          </div>
-
-          <div>
-            <h3 className="text-xl font-semibold text-slate-900 mb-3">
-              Common Use Cases for Word to PDF Conversion
-            </h3>
-            <ul className="space-y-2 list-disc pl-6 leading-7">
-              <li>
-                <strong>Resume and CV submission:</strong> Job portals and ATS systems prefer PDF.
-                Converting your resume from DOCX to PDF ensures layout stays intact for recruiters.
-              </li>
-              <li>
-                <strong>Invoice and contract sharing:</strong> Send invoices and client agreements
-                as PDF to prevent accidental edits and ensure consistent formatting.
-              </li>
-              <li>
-                <strong>Academic assignment submission:</strong> Universities and online learning
-                platforms typically require PDF for assignment and thesis submissions.
-              </li>
-              <li>
-                <strong>Business reports and proposals:</strong> Convert Word reports to PDF for
-                professional client presentations and internal distribution.
-              </li>
-              <li>
-                <strong>Legal documents:</strong> Convert agreements, NDAs, and official
-                correspondence to PDF to preserve formatting and prevent modifications.
-              </li>
-              <li>
-                <strong>Print-ready documents:</strong> PDF is the standard format for print
-                shops and professional printing — consistent page layout guaranteed.
-              </li>
-            </ul>
-          </div>
-
-          <div>
-            <h3 className="text-xl font-semibold text-slate-900 mb-3">
-              Batch Word to PDF Conversion
-            </h3>
-            <p className="leading-7">
-              Need to convert multiple Word files at once? Upload up to{" "}
-              <strong>10 DOC or DOCX files</strong> simultaneously. The tool converts all files
-              and delivers them as a <strong>ZIP download</strong> containing individual PDFs —
-              ideal for batch processing resumes, office documents, assignments, or client
-              deliverables. Single file uploads download as a PDF directly without any ZIP.
-            </p>
-            <p className="leading-7 mt-3">
-              After batch conversion, if you need to combine the PDFs into one document, use the{" "}
-              <a href="/merge-pdf" className="text-blue-700 font-medium hover:underline">
-                Merge PDF tool
-              </a>
-              . To reduce file size before emailing, use{" "}
-              <a href="/compress-pdf" className="text-blue-700 font-medium hover:underline">
-                Compress PDF
-              </a>.
-            </p>
-          </div>
-
-          <div>
-            <h3 className="text-xl font-semibold text-slate-900 mb-3">
-              Privacy and File Security
-            </h3>
-            <p className="leading-7">
-              PDF Linx is designed with privacy in mind. Uploaded Word files are processed
-              automatically and <strong>permanently deleted after conversion</strong> — they are
-              never stored long-term, shared with third parties, or used for any other purpose.
-              No account creation is required, which means no email address, no password, and
-              no personal data collected. Your documents stay private.
-            </p>
-          </div>
-
-          <div>
-            <h3 className="text-xl font-semibold text-slate-900 mb-3">
-              Convert Word to PDF on Any Device
-            </h3>
-            <p className="leading-7">
-              PDF Linx works on <strong>Windows, macOS, Linux, Android, and iOS</strong> — in
-              any modern browser. No app download, no software installation. Whether you're on a
-              desktop at work, a laptop at university, or a phone on the go, you can convert
-              Word documents to PDF in seconds. The tool is fully responsive and supports
-              drag-and-drop file upload on all devices including touchscreens.
-            </p>
-          </div>
-
-        </div>
-
-        <div className="bg-slate-50 border border-slate-200 rounded-xl p-6 mt-10 mb-6">
-          <h3 className="text-xl font-semibold text-slate-900 mb-4">
-            PDFLinx Word to PDF Converter — Feature Summary
-          </h3>
-          <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 list-disc pl-5 text-sm">
-            <li>Free online Word to PDF converter — no hidden fees</li>
-            <li>Supports DOC and DOCX file formats</li>
-            <li>Batch conversion — up to 10 files at once</li>
-            <li>ZIP download for multiple file conversions</li>
-            <li>Formatting, fonts, and layout fully preserved</li>
-            <li>High-quality, print-ready PDF output</li>
-            <li>Fast processing — conversion in seconds</li>
-            <li>No watermark added to converted files</li>
-            <li>Works on desktop and mobile browsers</li>
-            <li>Files auto-deleted after conversion — privacy protected</li>
-            <li>No signup or account required</li>
-            <li>Cross-platform: Windows, macOS, Android, iOS</li>
-          </ul>
-        </div>
-
-        <h3 className="text-xl font-semibold text-slate-900 mb-3">
-          Who Should Use This Tool?
-        </h3>
-        <ul className="space-y-2 mb-6 list-disc pl-6">
-          <li><strong>Students:</strong> Convert assignments, essays, and thesis documents to PDF for university submission portals</li>
-          <li><strong>Job seekers:</strong> Convert resumes and cover letters from DOCX to PDF for job applications and ATS systems</li>
-          <li><strong>Professionals:</strong> Share reports, proposals, and meeting minutes as read-only PDFs</li>
-          <li><strong>Businesses:</strong> Convert invoices, contracts, and official correspondence to PDF format</li>
-          <li><strong>Freelancers:</strong> Deliver polished, professional documents to clients as PDFs</li>
-          <li><strong>Teachers:</strong> Distribute learning material, assignments, and handouts in PDF format</li>
-          <li><strong>Legal professionals:</strong> Convert agreements and legal documents to fixed-layout PDF for archiving</li>
-        </ul>
-
-        <h3 className="text-xl font-semibold text-slate-900 mb-3">
-          Frequently Asked Questions — Word to PDF
-        </h3>
       </section>
 
       <section className="max-w-4xl mx-auto px-4 py-14 text-slate-700">

@@ -2,7 +2,7 @@
 
 "use client";
 import { useState, useRef } from "react";
-import { Download, CheckCircle, FileSpreadsheet,Table } from "lucide-react";
+import { Download, CheckCircle, FileSpreadsheet, Table } from "lucide-react";
 import Script from "next/script";
 import RelatedToolsSection from "@/components/RelatedTools";
 import { useProgressBar } from "@/hooks/useProgressBar";
@@ -30,57 +30,6 @@ export default function ExcelToPDF() {
     setDownloadUrl("");
   };
 
-
-  // const handleConvert = async (e) => {
-  //   e.preventDefault();
-  //   if (!files.length) return alert("Please select an Excel file (or multiple files) first");
-
-  //   setLoading(true);
-  //   setDownloadUrl("");
-  //   setSuccess(false);
-
-  //   const formData = new FormData();
-  //   files.forEach((f) => formData.append("files", f));
-  //   formData.append("mode", isSingle ? "single" : "multiple");
-
-  //   try {
-  //     const res = await fetch("/convert/excel-pdf", {
-  //       method: "POST",
-  //       body: formData,
-  //     });
-
-  //     // ✅ FIX: pehle text lo, phir parse karo
-  //     const text = await res.text();
-  //     let data;
-  //     try {
-  //       data = JSON.parse(text);
-  //     } catch {
-  //       console.error("Non-JSON server response:", text);
-  //       alert("Server error. Please try again.");
-  //       return;
-  //     }
-
-  //     if (!res.ok || !data.success) {
-  //       alert("Conversion failed: " + (data?.error || "Try again"));
-  //       return;
-  //     }
-
-  //     setDownloadUrl(`/api${data.download}`);
-  //     setSuccess(true);
-  //     setTimeout(() => {
-  //       const downloadSection = document.getElementById("download-section");
-  //       if (downloadSection) {
-  //         downloadSection.scrollIntoView({ behavior: "smooth", block: "center" });
-  //       }
-  //     }, 300);
-
-  //   } catch (error) {
-  //     alert("Oops! Something went wrong. Please try again.");
-  //     console.error(error);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
 
   const handleConvert = async (e) => {
     e.preventDefault();
@@ -178,7 +127,7 @@ export default function ExcelToPDF() {
               "@type": "HowTo",
               name: "How to Convert Excel to PDF Online for Free (Single or Multiple Files)",
               description:
-                "Convert Excel spreadsheets (XLSX, XLS) to PDF in seconds. You can upload a single file or select multiple files together — free, no signup required.",
+                "Convert Excel to PDF online free — no signup, no watermark. Tables, charts, and formatting preserved. Batch convert multiple XLS or XLSX files at once. Works on Windows, Mac, Android, iOS.",
               url: "https://pdflinx.com/excel-pdf",
               step: [
                 {
@@ -228,26 +177,75 @@ export default function ExcelToPDF() {
         }}
       />
 
+      <Script
+        id="faq-schema-excel-pdf"
+        type="application/ld+json"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            "mainEntity": [
+              {
+                "@type": "Question",
+                "name": "Is the Excel to PDF converter free?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Yes. PDFLinx Excel to PDF converter is completely free — no hidden charges, no subscription required."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Will charts and formatting be preserved?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Yes. Tables, charts, formulas, colors, and grid lines are all preserved accurately in the converted PDF."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Can I convert multiple Excel files at once?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Yes. Upload multiple XLS or XLSX files simultaneously. All converted PDFs are delivered as a single ZIP download."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Are my files safe and private?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Yes. Files are processed securely and permanently deleted after conversion. Never stored or shared."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Can I convert Excel to PDF on mobile?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Yes. PDFLinx works on Android and iOS mobile browsers — no app required."
+                }
+              }
+            ]
+          }, null, 2)
+        }}
+      />
+
       {/* ==================== MAIN TOOL SECTION ==================== */}
       <main className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50 py-8 px-4">
         <div className="max-w-4xl mx-auto">
           {/* Header */}
           <div className="text-center mb-8">
             <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent mb-4">
-              Excel to PDF Converter <br /> Online (Free)
+              Convert Excel to PDF Online Free
+              <br />
+              <span className="text-2xl md:text-3xl font-medium">
+                No Signup · No Watermark · Instant Download
+              </span>
             </h1>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Convert Excel spreadsheets to PDF instantly — tables, charts, formulas,
-              and formatting stay exactly as they were. Upload a single XLS or XLSX
-              file, or batch convert multiple Excel files at once. Perfect for
-              financial reports, invoices, budgets, and data presentations. No signup,
-              no watermark, completely free.
+              Convert Excel to PDF online free — no signup, no watermark, no software needed. Tables, charts, formulas, and formatting stay exactly as they were. Works on Windows, Mac, Android and iOS. Upload one XLS or XLSX file or batch convert multiple Excel files at once.
             </p>
-            {/* <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Got an Excel sheet you want to share as PDF? Drop it here — tables, formulas, charts stay perfect.
-              <span className="font-semibold text-gray-800"> You can upload a single file or select multiple files together.</span>{" "}
-              Quick and totally free!
-            </p> */}
           </div>
 
           {/* Main Card */}
@@ -384,7 +382,7 @@ export default function ExcelToPDF() {
         {/* Main Heading */}
         <div className="text-center mb-12">
           <h2 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent mb-4">
-            Excel to PDF Online Free – Convert XLS & XLSX to PDF in Seconds
+            Free Excel to PDF Converter — Convert XLS & XLSX Without Losing Formatting
           </h2>
           <p className="text-lg text-gray-600 max-w-3xl mx-auto">
             Need to share an Excel spreadsheet that looks identical on every

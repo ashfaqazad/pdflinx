@@ -243,7 +243,7 @@ export default function PdfToWord({ seo }) {
               "@type": "HowTo",
               name: "How to Convert PDF to Word Online for Free",
               description:
-                "Convert one or multiple PDF files into editable Word (DOCX) in seconds with PDFLinx — free, fast, and no signup required.",
+                "Convert PDF to editable Word DOCX online free — no signup, no watermark. Supports scanned PDFs via OCR. Batch convert up to 10 files. Works on Windows, Mac, Android, iOS.",
               url: "https://pdflinx.com/pdf-to-word",
               step: [
                 {
@@ -367,15 +367,18 @@ export default function PdfToWord({ seo }) {
 
             <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent mb-4">
 
-              {seo?.h1 || "PDF to Word Converter (Free & Online)"}
+              {seo?.h1 || "Convert PDF to Word Online Free"}
+              <br />
+              <span className="text-2xl md:text-3xl font-medium">
+                No Signup · No Watermark · Instant Download
+              </span>
+
             </h1>
 
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Convert PDF to editable Word (DOCX) instantly — text, tables, images,
-              and formatting stay intact. Upload a single PDF or batch convert up to
-              10 files at once. Supports scanned PDFs via built-in OCR. Perfect for
-              contracts, reports, resumes, and assignments. No signup, no watermark,
-              completely free.
+              Convert PDF to editable Word (DOCX) free — no signup, no watermark, no software needed.
+              Works on Windows, Mac, Android and iOS. Supports scanned PDFs via OCR.
+              Upload one file or batch convert up to 10 PDFs at once.
             </p>
           </div>
 
@@ -504,7 +507,7 @@ export default function PdfToWord({ seo }) {
         {/* Main Heading */}
         <div className="text-center mb-12">
           <h2 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent mb-4">
-            PDF to Word Online Free – Convert PDF to Editable DOCX in Seconds
+            Free PDF to Word Converter — Convert Scanned & Standard PDFs to Editable DOCX
           </h2>
           <p className="text-lg text-gray-600 max-w-3xl mx-auto">
             Need to edit a PDF? Convert it to Word here — text, tables, images,
@@ -590,42 +593,6 @@ export default function PdfToWord({ seo }) {
             </div>
           </div>
         </div>
-
-        {/* Contextual Links */}
-        {/* <div className="mt-10 bg-white p-6 md:p-8 shadow-sm">
-          <h3 className="text-lg md:text-xl font-bold text-slate-900">
-            Need to create a PDF too? */}
-        {/* </h3>
-          <p className="mt-1 text-sm text-slate-600">
-            Many workflows go both ways — convert documents into PDF, then edit PDFs back in Word.
-          </p>
-          <ul className="mt-4 space-y-2 text-sm">
-            <li>
-              <a href="/word-to-pdf" className="text-blue-700 font-semibold hover:underline">
-                Word to PDF Converter
-              </a>{" "}
-              <span className="text-slate-600">— export your edited DOCX back to PDF instantly.</span>
-            </li>
-            <li>
-              <a href="/merge-pdf" className="text-blue-700 font-semibold hover:underline">
-                Merge PDF
-              </a>{" "}
-              <span className="text-slate-600">— combine multiple PDFs into one before converting.</span>
-            </li>
-            <li>
-              <a href="/compress-pdf" className="text-blue-700 font-semibold hover:underline">
-                Compress PDF
-              </a>{" "}
-              <span className="text-slate-600">— reduce PDF file size before or after conversion.</span>
-            </li>
-            <li>
-              <a href="/free-pdf-tools" className="text-blue-700 font-semibold hover:underline">
-                Browse all PDF tools
-              </a>{" "}
-              <span className="text-slate-600">— merge, split, compress, protect & more.</span>
-            </li>
-          </ul>
-        </div> */}
 
         {/* Contextual Links */}
         <div className="mt-10 bg-white p-6 md:p-8 shadow-sm">
@@ -867,71 +834,6 @@ export default function PdfToWord({ seo }) {
         <h3 className="text-xl font-semibold text-slate-900 mb-3">
           Frequently Asked Questions — PDF to Word
         </h3>
-      </section>
-
-
-      {/* Long-form content (Human touch + bulk mention) */}
-      <section className="max-w-4xl mx-auto px-4 py-14 text-slate-700">
-        <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-6">
-          PDF to Word Converter – Free Online Tool by PDFLinx
-        </h2>
-
-        <p className="text-base leading-7 mb-6">
-          Ever had a PDF that you needed to edit “right now” — but it wouldn’t let you? That’s the exact pain this tool solves.
-          The <span className="font-medium text-slate-900">PDFLinx PDF to Word Converter</span> turns PDFs into editable Word (DOCX)
-          in seconds. And the best part? If you have a bunch of PDFs, you can upload multiple files at once and download everything in a single ZIP.
-        </p>
-
-        <h3 className="text-xl font-semibold text-slate-900 mb-3">
-          What is PDF to Word conversion?
-        </h3>
-
-        <p className="leading-7 mb-6">
-          PDF to Word conversion means taking a PDF (which is usually fixed and hard to edit) and turning it into an editable Word document (DOCX format).
-          Our converter extracts text, tables, and images while preserving formatting, layout structure, and font styles as accurately as possible.
-          It also works with scanned PDFs using smart text recognition (OCR) to convert scanned documents into editable Word files.
-          With OCR enabled, the converter can also extract text from images in scanned PDFs and turn it into an editable DOCX file.
-          Complex layouts, columns, or tables may need minor cleanup to preserve formatting and maintain layout structure.
-        </p>
-
-        <h3 className="text-xl font-semibold text-slate-900 mb-3">
-          Single file or multiple files — both supported
-        </h3>
-
-        <ul className="space-y-2 mb-6 list-disc pl-6">
-          <li><strong>Single PDF:</strong> converts and downloads as a Word (DOCX) file directly.</li>
-          <li><strong>Multiple PDFs:</strong> converts all files and gives you a ZIP containing all DOCX files.</li>
-        </ul>
-
-        <p className="leading-7 mb-4">
-          After converting to DOCX, you may want to send or print the edited file as a PDF again.
-          Use our{" "}
-          <a href="/word-to-pdf" className="text-blue-700 font-semibold hover:underline">
-            Word to PDF converter
-          </a>{" "}
-          to export the updated document back into PDF. If you’re working with multiple PDFs, you can combine them using{" "}
-          <a href="/merge-pdf" className="text-blue-700 font-semibold hover:underline">
-            merge PDF files
-          </a>{" "}
-          or reduce file size using{" "}
-          <a href="/compress-pdf" className="text-blue-700 font-semibold hover:underline">
-            Compress PDF
-          </a>.
-        </p>
-
-
-        <h3 className="text-xl font-semibold text-slate-900 mb-3">
-          Why use PDFLinx?
-        </h3>
-        <ul className="space-y-2 mb-6 list-disc pl-6">
-          <li>Fast conversion with clean, editable output</li>
-          <li>No watermark, no signup, no annoying limits</li>
-          <li>Great for resumes, reports, contracts, and assignments</li>
-          <li>Supports bulk conversion when you’re working with many files</li>
-          <li>Privacy-first: files are removed after processing</li>
-          <li>Preserves original formatting, tables, fonts, and images</li>
-          <li>Supports scanned PDF to Word conversion with OCR technology</li>
-        </ul>
       </section>
 
 

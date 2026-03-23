@@ -107,7 +107,7 @@ export default function CompressPDF() {
             "@context": "https://schema.org",
             "@type": "HowTo",
             name: "How to Compress PDF Online for Free",
-            description: "Reduce PDF file size up to 90% while keeping quality intact. Completely free, no signup needed.",
+            description: "Compress PDF files online free — no signup, no watermark. Reduce file size up to 90% for email, WhatsApp, and portal uploads. Batch compress up to 15 files. Works on Windows, Mac, Android, iOS",
             url: "https://pdflinx.com/compress-pdf",
             step: [
               { "@type": "HowToStep", name: "Upload PDF", text: "Click the upload area and select your PDF file." },
@@ -202,13 +202,17 @@ export default function CompressPDF() {
           {/* Header */}
           <div className="text-center mb-8">
             <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent mb-4">
-              Compress PDF Online (Free)
+              Compress PDF Online Free
+              <br />
+              <span className="text-2xl md:text-3xl font-medium">
+                No Signup · No Watermark · Instant Download
+              </span>
             </h1>
               <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-                Reduce PDF file size by up to 90% while keeping text sharp and images
-                clear. Upload a single PDF or compress up to 15 files at once. Perfect
-                for email attachments, government portals, WhatsApp, and online
-                submissions. No signup, no watermark, completely free.
+                Compress PDF files online free — no signup, no watermark, no software needed. 
+                Reduce file size up to 90% for email, WhatsApp, government portals, and university 
+                uploads. Works on Windows, Mac, Android and iOS. Upload one file or batch compress 
+                up to 15 PDFs at once.
               </p>
           </div>
 
@@ -301,95 +305,11 @@ export default function CompressPDF() {
       </main>
 
       {/* ==================== SEO CONTENT SECTION ==================== */}
-      <section className="mt-16 max-w-4xl mx-auto px-6 pb-16">
-        {/* Main Heading */}
-        <div className="text-center mb-12">
-          <h2 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent mb-4">
-            Compress PDF Online Free – Shrink Files Without Losing Quality
-          </h2>
-          <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-            Big PDFs slowing you down? Compress them here in seconds – make files tiny (up to 90% smaller) but still crystal clear. Perfect for emails, uploads, or just saving space. All free on PDF Linx!
-          </p>
-        </div>
-
-        {/* Benefits Grid */}
-        <div className="grid md:grid-cols-3 gap-8 mb-16">
-          <div className="bg-gradient-to-br from-blue-50 to-white p-8 rounded-2xl shadow-lg border border-blue-100 text-center hover:shadow-xl transition">
-            <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
-              <Scissors className="w-8 h-8 text-white rotate-90" />
-            </div>
-            <h3 className="text-xl font-semibold text-gray-800 mb-3">Shrink Up To 90%</h3>
-            <p className="text-gray-600 text-sm">
-              Turn massive PDFs into lightweight ones – easy to share anywhere.
-            </p>
-          </div>
-
-          <div className="bg-gradient-to-br from-green-50 to-white p-8 rounded-2xl shadow-lg border border-green-100 text-center hover:shadow-xl transition">
-            <div className="w-16 h-16 bg-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
-              <CheckCircle className="w-8 h-8 text-white" />
-            </div>
-            <h3 className="text-xl font-semibold text-gray-800 mb-3">Quality Stays Sharp</h3>
-            <p className="text-gray-600 text-sm">
-              Text and images look just as good – smart compression magic.
-            </p>
-          </div>
-
-          <div className="bg-gradient-to-br from-purple-50 to-white p-8 rounded-2xl shadow-lg border border-purple-100 text-center hover:shadow-xl transition">
-            <div className="w-16 h-16 bg-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
-              <Download className="w-8 h-8 text-white" />
-            </div>
-            <h3 className="text-xl font-semibold text-gray-800 mb-3">Fast & Private</h3>
-            <p className="text-gray-600 text-sm">
-              Works instantly – no sign-up, files deleted after 1 hour.
-            </p>
-          </div>
-        </div>
-
-        {/* How To Steps */}
-        <div className="bg-white rounded-2xl shadow-lg p-8 md:p-12 border border-gray-100">
-          <h3 className="text-2xl md:text-3xl font-bold text-center mb-12 text-gray-800">
-            Compress PDF in 3 Easy Steps
-          </h3>
-          <div className="grid md:grid-cols-3 gap-8">
-            <div className="text-center">
-              <div className="w-16 h-16 bg-gradient-to-r from-blue-600 to-blue-700 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold text-white shadow-lg">
-                1
-              </div>
-              <h4 className="text-lg font-semibold mb-2">Upload Your PDF</h4>
-              <p className="text-gray-600 text-sm">Drop it in or click to pick any file.</p>
-            </div>
-
-            <div className="text-center">
-              <div className="w-16 h-16 bg-gradient-to-r from-green-600 to-green-700 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold text-white shadow-lg">
-                2
-              </div>
-              <h4 className="text-lg font-semibold mb-2">Hit Compress</h4>
-              <p className="text-gray-600 text-sm">We shrink it smartly in seconds.</p>
-            </div>
-
-            <div className="text-center">
-              <div className="w-16 h-16 bg-gradient-to-r from-purple-600 to-purple-700 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold text-white shadow-lg">
-                3
-              </div>
-              <h4 className="text-lg font-semibold mb-2">Download Smaller PDF</h4>
-              <p className="text-gray-600 text-sm">Your lighter file is ready to go!</p>
-            </div>
-          </div>
-        </div>
-
-        {/* Final CTA */}
-        <p className="text-center mt-12 text-base text-gray-600 italic max-w-3xl mx-auto">
-          Folks compress PDFs daily with PDF Linx – smaller files, faster sharing, zero hassle.
-        </p>
-
-      </section>
-
-
 <section className="mt-16 max-w-4xl mx-auto px-6 pb-16">
   {/* Main Heading */}
   <div className="text-center mb-12">
     <h2 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent mb-4">
-      Compress PDF Online Free – Reduce PDF File Size Without Losing Quality
+      Free PDF Compressor — Reduce PDF File Size for Email, WhatsApp & Portal Uploads
     </h2>
     <p className="text-lg text-gray-600 max-w-3xl mx-auto">
       Need to shrink a PDF for email, WhatsApp, or an upload portal? Compress
