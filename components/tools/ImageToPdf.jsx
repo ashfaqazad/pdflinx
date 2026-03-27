@@ -150,7 +150,7 @@ export default function ImageToPdf() {
             "@context": "https://schema.org",
             "@type": "HowTo",
             name: "How to Convert Images to PDF Online for Free",
-            description: "Convert multiple JPG, PNG, WebP, or GIF images into a single PDF file in just 3 easy steps - 100% free, no signup required.",
+            description: "Convert JPG, PNG, or WebP images to PDF online free — no signup, no watermark. Up to 50 images combined into one PDF. Works on Windows, Mac, Android, iOS.",
             url: "https://pdflinx.com/image-to-pdf",
             step: [
               {
@@ -192,20 +192,98 @@ export default function ImageToPdf() {
           }, null, 2),
         }}
       />
+
+      <Script
+        id="faq-schema-image-to-pdf"
+        type="application/ld+json"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            mainEntity: [
+              {
+                "@type": "Question",
+                name: "Is the Image to PDF converter free to use?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "Yes. PDFLinx Image to PDF converter is completely free — no hidden charges, no subscription, no premium tier required."
+                }
+              },
+              {
+                "@type": "Question",
+                name: "Do I need to install any software?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "No. Everything works directly in your browser. No desktop software, no app download, no plugins needed."
+                }
+              },
+              {
+                "@type": "Question",
+                name: "Which image formats are supported?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "JPG, JPEG, PNG, and WebP are all supported. These cover the most common photo and screenshot formats used on phones, cameras, and computers."
+                }
+              },
+              {
+                "@type": "Question",
+                name: "Can I convert multiple images into one PDF?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "Yes. Upload up to 50 images at once — all images are combined into one PDF with each image on its own page."
+                }
+              },
+              {
+                "@type": "Question",
+                name: "Are my uploaded images safe and private?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "Yes. Files are processed securely and permanently deleted after conversion. They are never stored long-term or shared with third parties."
+                }
+              },
+              {
+                "@type": "Question",
+                name: "Can I convert images to PDF on my phone?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "Yes. PDFLinx works on Android and iOS mobile devices, tablets, and all desktop browsers — no app required."
+                }
+              },
+              {
+                "@type": "Question",
+                name: "Will my image quality be preserved after conversion?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "Yes. Images are embedded into the PDF at full resolution — colors, sharpness, and detail stay exactly as they were in the original file."
+                }
+              },
+              {
+                "@type": "Question",
+                name: "What should I do if the converted PDF file is too large?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "Use the Compress PDF tool on PDF Linx to reduce the file size after conversion — useful when emailing or uploading to portals with strict size limits."
+                }
+              }
+            ]
+          }, null, 2)
+        }}
+      />
       {/* ==================== MAIN TOOL SECTION ==================== */}
       <main className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-blue-50 py-8 px-4">
         <div className="max-w-4xl mx-auto">
           {/* Header */}
           <div className="text-center mb-8">
             <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mb-4">
-              Image to PDF Converter <br /> Online (Free)
+              Image to PDF Converter Online Free
+              <br />
+              <span className="text-2xl md:text-3xl font-medium">
+                No Signup · No Watermark · Instant Download
+              </span>
             </h1>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Convert JPG, PNG, or WebP images into a professional PDF instantly —
-              each image on its own page, full quality preserved. Upload a single
-              photo or combine up to 50 images into one PDF. Perfect for portfolios,
-              receipts, certificates, and scanned documents. No signup, no watermark,
-              completely free.
+              Convert JPG, PNG, or WebP images into a professional PDF online free — no signup, no watermark, no software needed. Each image placed on its own page at full quality preserved. Upload a single photo or combine up to 50 images into one PDF. Works on Windows, Mac, Android and iOS. Perfect for portfolios, receipts, certificates, and scanned documents.
             </p>
           </div>
 
@@ -596,24 +674,48 @@ export default function ImageToPdf() {
 
         </div>
 
-        <div className="bg-slate-50 border border-slate-200 rounded-xl p-6 mt-10 mb-6">
-          <h3 className="text-xl font-semibold text-slate-900 mb-4">
-            PDFLinx Image to PDF Converter — Feature Summary
-          </h3>
-          <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 list-disc pl-5 text-sm">
-            <li>Free online image to PDF converter — no hidden fees</li>
-            <li>Supports JPG, JPEG, PNG, and WebP formats</li>
-            <li>Up to 50 images converted in one go</li>
-            <li>Each image placed on its own PDF page</li>
-            <li>Full image resolution and quality preserved</li>
-            <li>Fast processing — PDF ready in seconds</li>
-            <li>No watermark added to converted PDF</li>
-            <li>Image preview before conversion</li>
-            <li>Works on desktop and mobile browsers</li>
-            <li>Files auto-deleted after conversion — privacy protected</li>
-            <li>No signup or account required</li>
-            <li>Cross-platform: Windows, macOS, Android, iOS</li>
-          </ul>
+        <div className="overflow-x-auto my-6">
+          <table className="w-full text-sm text-left border border-gray-200 rounded-lg overflow-hidden">
+            <thead className="bg-purple-50 text-purple-800 font-semibold">
+              <tr>
+                <th className="px-4 py-3">Feature</th>
+                <th className="px-4 py-3">PDF Linx</th>
+                <th className="px-4 py-3">Desktop Software</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-gray-100">
+              <tr className="bg-white">
+                <td className="px-4 py-3">Free to use</td>
+                <td className="px-4 py-3 text-green-600">✅ Always free</td>
+                <td className="px-4 py-3 text-red-500">❌ Paid license</td>
+              </tr>
+              <tr className="bg-gray-50">
+                <td className="px-4 py-3">No installation needed</td>
+                <td className="px-4 py-3 text-green-600">✅ Browser-based</td>
+                <td className="px-4 py-3 text-red-500">❌ Download required</td>
+              </tr>
+              <tr className="bg-white">
+                <td className="px-4 py-3">Works on mobile</td>
+                <td className="px-4 py-3 text-green-600">✅ Android & iOS</td>
+                <td className="px-4 py-3 text-red-500">❌ Desktop only</td>
+              </tr>
+              <tr className="bg-gray-50">
+                <td className="px-4 py-3">No watermark</td>
+                <td className="px-4 py-3 text-green-600">✅ Clean output</td>
+                <td className="px-4 py-3 text-yellow-500">⚠️ Sometimes</td>
+              </tr>
+              <tr className="bg-white">
+                <td className="px-4 py-3">Up to 50 images</td>
+                <td className="px-4 py-3 text-green-600">✅ Batch supported</td>
+                <td className="px-4 py-3 text-yellow-500">⚠️ Varies</td>
+              </tr>
+              <tr className="bg-gray-50">
+                <td className="px-4 py-3">Files auto-deleted</td>
+                <td className="px-4 py-3 text-green-600">✅ Privacy first</td>
+                <td className="px-4 py-3 text-yellow-500">⚠️ Stored locally</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
 
         <h3 className="text-xl font-semibold text-slate-900 mb-3">
@@ -631,107 +733,6 @@ export default function ImageToPdf() {
         <h3 className="text-xl font-semibold text-slate-900 mb-3">
           Frequently Asked Questions — Image to PDF
         </h3>
-      </section>
-
-
-      <section className="max-w-4xl mx-auto px-4 py-14 text-slate-700">
-        {/* Heading */}
-        <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-6">
-          JPG to PDF Converter – Free Online Tool by PDFLinx
-        </h2>
-
-        {/* Intro */}
-        <p className="text-base leading-7 mb-6">
-          Got a bunch of photos or screenshots in JPG format that you need to share as a single, professional document?
-          Maybe receipts, certificates, or product images?
-          Our <span className="font-medium text-slate-900">PDFLinx JPG to PDF Converter</span> makes it super easy.
-          It’s a 100% free online tool that combines one or multiple JPG images into a clean, high-quality PDF in seconds—no software, no watermarks, no complications.
-        </p>
-
-        {/* What is */}
-        <h3 className="text-xl font-semibold text-slate-900 mb-3">
-          What is JPG to PDF Conversion?
-        </h3>
-        <p className="leading-7 mb-6">
-          JPG to PDF conversion takes your image files (JPEG/JPG) and places them neatly into a portable PDF document.
-          Each image becomes a full page (or you can fit multiple per page), preserving original quality, colors, and sharpness.
-          The result is a professional, easy-to-share file that opens perfectly on any device.
-        </p>
-
-        {/* Why convert */}
-        <h3 className="text-xl font-semibold text-slate-900 mb-3">
-          Why Convert JPG Images to PDF?
-        </h3>
-        <ul className="space-y-2 mb-6 list-disc pl-6">
-          <li>Combine multiple photos into one organized PDF file</li>
-          <li>Preserves image quality, colors, and resolution</li>
-          <li>Easier to share, print, or archive than separate image files</li>
-          <li>Perfect for portfolios, reports, receipts, certificates, or scanned documents</li>
-          <li>More professional and universally compatible format</li>
-        </ul>
-
-        {/* Steps */}
-        <h3 className="text-xl font-semibold text-slate-900 mb-3">
-          How to Convert JPG to PDF Online
-        </h3>
-        <ol className="space-y-2 mb-6 list-decimal pl-6">
-          <li>Upload one or more JPG images (drag & drop or click to select)</li>
-          <li>Arrange the order if needed</li>
-          <li>Click the “Convert to PDF” button</li>
-          <li>Download your ready PDF in seconds</li>
-        </ol>
-
-        <p className="mb-6">
-          No sign-up, no watermark, no installation required—completely free and instant.
-        </p>
-
-        {/* Features box */}
-        <div className="bg-slate-50 border border-slate-200 rounded-xl p-6 mb-6">
-          <h3 className="text-xl font-semibold text-slate-900 mb-4">
-            Features of PDFLinx JPG to PDF Converter
-          </h3>
-          <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 list-disc pl-5">
-            <li>100% free online converter</li>
-            <li>Supports single or multiple JPG files</li>
-            <li>High-quality image preservation</li>
-            <li>Adjustable page layout options</li>
-            <li>Lightning-fast processing</li>
-            <li>Works on mobile & desktop</li>
-            <li>No file storage – full privacy</li>
-          </ul>
-        </div>
-
-        {/* Audience */}
-        <h3 className="text-xl font-semibold text-slate-900 mb-3">
-          Who Should Use This Tool?
-        </h3>
-        <ul className="space-y-2 mb-6 list-disc pl-6">
-          <li><strong>Students:</strong> Compile assignment scans or project images</li>
-          <li><strong>Business Owners:</strong> Create product catalogs or invoice attachments</li>
-          <li><strong>Photographers:</strong> Share proof sheets or portfolios professionally</li>
-          <li><strong>Professionals:</strong> Submit expense receipts or ID proofs in one file</li>
-          <li><strong>Anyone:</strong> Turn phone photos into organized, printable PDFs</li>
-        </ul>
-
-        {/* Safety */}
-        <h3 className="text-xl font-semibold text-slate-900 mb-3">
-          Is PDFLinx Safe to Use?
-        </h3>
-        <p className="leading-7 mb-6">
-          Yes — completely safe and private.
-          We respect your images and documents.
-          All uploaded files are processed securely and automatically deleted from our servers shortly after conversion.
-          Nothing is stored or shared.
-        </p>
-
-        {/* Closing */}
-        <h3 className="text-xl font-semibold text-slate-900 mb-3">
-          Convert JPG to PDF Anytime, Anywhere
-        </h3>
-        <p className="leading-7">
-          PDFLinx works perfectly on Windows, macOS, Linux, Android, and iOS.
-          Whether you’re on your phone or laptop, just upload your JPGs and get a polished PDF in moments—no app needed.
-        </p>
       </section>
 
       {/* FAQ */}

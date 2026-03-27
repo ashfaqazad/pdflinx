@@ -36,6 +36,15 @@ export default function sitemap() {
     "/ocr-pdf",
     "/edit-pdf",
     "/add-watermark",
+  // 🔥 NEW WORD TO PDF CLUSTER BLOGS
+  "/blog/how-to-convert-word-to-pdf",
+  "/blog/convert-word-to-pdf-without-losing-formatting",
+  "/blog/word-to-pdf-on-mobile",
+  "/blog/word-to-pdf-not-working-fix",
+  "/blog/why-formatting-breaks-in-word-to-pdf",
+  "/blog/free-vs-paid-word-to-pdf-tools",
+  "/blog/word-to-pdf-for-students",
+
   ].map((url) => ({
     url,
     changeFrequency: "weekly",

@@ -124,79 +124,6 @@ export default function UnlockPdf() {
     // finally hata diya — hook khud manage karega
   };
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   if (!files.length) {
-  //     setError("Please select at least one PDF file first!");
-  //     return;
-  //   }
-
-  //   setLoading(true);
-  //   setSuccess(false);
-  //   setError("");
-
-  //   const formData = new FormData();
-  //   for (const f of files) formData.append("files", f);
-  //   // optional password (send only if user entered)
-  //   if (password.trim()) formData.append("password", password.trim());
-
-  //   try {
-  //     const res = await fetch("/convert/unlock-pdf", {
-  //       method: "POST",
-  //       body: formData,
-  //     });
-
-  //     if (!res.ok) {
-  //       let msg = "Unlock failed";
-  //       try {
-  //         const j = await res.json();
-  //         msg = j?.error || msg;
-  //       } catch { }
-  //       throw new Error(msg);
-  //     }
-
-  //     const contentType = res.headers.get("content-type") || "";
-
-  //     // ✅ SINGLE => PDF
-  //     if (contentType.includes("application/pdf")) {
-  //       const blob = await res.blob();
-  //       const outName = files[0].name.replace(/\.pdf$/i, "") + "-unlocked.pdf";
-  //       downloadBlob(blob, outName);
-  //       setSuccess(true);
-  //       return;
-  //     }
-
-  //     // ✅ MULTIPLE => ZIP
-  //     if (contentType.includes("application/zip")) {
-  //       const blob = await res.blob();
-  //       downloadBlob(blob, "pdflinx-unlocked-pdfs.zip");
-  //       setSuccess(true);
-  //       return;
-  //     }
-
-  //     // fallback
-  //     let data = null;
-  //     try {
-  //       data = await res.json();
-  //     } catch { }
-  //     throw new Error(data?.error || "Unexpected response from server");
-  //   } catch (err) {
-  //     const msg = (err?.message || "Something went wrong. Please try again.").toString();
-
-  //     // Friendly hints
-  //     if (msg.toLowerCase().includes("password")) {
-  //       setError(
-  //         "This PDF requires a password to open (user password). Please enter the correct password and try again."
-  //       );
-  //     } else {
-  //       setError(msg);
-  //     }
-
-  //     console.error(err);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
 
   return (
     <>
@@ -206,38 +133,22 @@ export default function UnlockPdf() {
         type="application/ld+json"
         strategy="afterInteractive"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(
-            {
-              "@context": "https://schema.org",
-              "@type": "HowTo",
-              name: "How to Unlock a PDF Online for Free",
-              description:
-                "Unlock PDFs online by removing printing/copying/editing restrictions. If your PDF requires a password to open, enter it to unlock.",
-              url: "https://pdflinx.com/unlock-pdf",
-              step: [
-                {
-                  "@type": "HowToStep",
-                  name: "Upload PDF file(s)",
-                  text: "Upload a single PDF or select multiple PDFs at the same time.",
-                },
-                {
-                  "@type": "HowToStep",
-                  name: "Enter password (only if required)",
-                  text: "If your PDF requires a password to open, enter it. Otherwise leave it blank.",
-                },
-                {
-                  "@type": "HowToStep",
-                  name: "Unlock and download",
-                  text: "Click Unlock. Download the unlocked PDF (or ZIP if multiple files).",
-                },
-              ],
-              totalTime: "PT20S",
-              estimatedCost: { "@type": "MonetaryAmount", value: "0", currency: "USD" },
-              image: "https://pdflinx.com/og-image.png",
-            },
-            null,
-            2
-          ),
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "HowTo",
+            name: "How to Unlock a PDF Online for Free",
+            description:
+              "Unlock PDF online free — remove printing, copying, and editing restrictions instantly. No signup, no watermark, no software needed. Works on Windows, Mac, Android, iOS.",
+            url: "https://pdflinx.com/unlock-pdf",
+            step: [
+              { "@type": "HowToStep", name: "Upload PDF file(s)", text: "Upload a single PDF or select multiple PDFs at the same time." },
+              { "@type": "HowToStep", name: "Enter password (only if required)", text: "If your PDF requires a password to open, enter it. Otherwise leave it blank." },
+              { "@type": "HowToStep", name: "Unlock and download", text: "Click Unlock PDF Now. Download the unlocked PDF or ZIP if multiple files." },
+            ],
+            totalTime: "PT20S",
+            estimatedCost: { "@type": "MonetaryAmount", value: "0", currency: "USD" },
+            image: "https://pdflinx.com/og-image.png",
+          }, null, 2),
         }}
       />
 
@@ -246,18 +157,14 @@ export default function UnlockPdf() {
         type="application/ld+json"
         strategy="afterInteractive"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(
-            {
-              "@context": "https://schema.org",
-              "@type": "BreadcrumbList",
-              itemListElement: [
-                { "@type": "ListItem", position: 1, name: "Home", item: "https://pdflinx.com" },
-                { "@type": "ListItem", position: 2, name: "Unlock PDF", item: "https://pdflinx.com/unlock-pdf" },
-              ],
-            },
-            null,
-            2
-          ),
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            itemListElement: [
+              { "@type": "ListItem", position: 1, name: "Home", item: "https://pdflinx.com" },
+              { "@type": "ListItem", position: 2, name: "Unlock PDF", item: "https://pdflinx.com/unlock-pdf" },
+            ],
+          }, null, 2),
         }}
       />
 
@@ -266,52 +173,52 @@ export default function UnlockPdf() {
         type="application/ld+json"
         strategy="afterInteractive"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(
-            {
-              "@context": "https://schema.org",
-              "@type": "FAQPage",
-              mainEntity: [
-                {
-                  "@type": "Question",
-                  name: "Can I unlock a PDF without a password?",
-                  acceptedAnswer: {
-                    "@type": "Answer",
-                    text:
-                      "Yes, if the PDF only has printing/copying/editing restrictions (owner password). If the PDF requires a password to open (user password), you must enter the correct password.",
-                  },
-                },
-                {
-                  "@type": "Question",
-                  name: "What is the difference between user password and owner password?",
-                  acceptedAnswer: {
-                    "@type": "Answer",
-                    text:
-                      "A user password is required to open the PDF. An owner password typically restricts actions like printing, copying, or editing. Owner restrictions can often be removed without needing a password.",
-                  },
-                },
-                {
-                  "@type": "Question",
-                  name: "Is PDFLinx demonstrating or cracking passwords?",
-                  acceptedAnswer: {
-                    "@type": "Answer",
-                    text:
-                      "No. PDFLinx unlocks PDFs by removing permission restrictions or by using the password you provide. PDFs that require an opening password cannot be unlocked without the correct password.",
-                  },
-                },
-                {
-                  "@type": "Question",
-                  name: "Are my files safe?",
-                  acceptedAnswer: {
-                    "@type": "Answer",
-                    text:
-                      "Yes. Files are processed automatically and deleted shortly after processing. No sign-up required.",
-                  },
-                },
-              ],
-            },
-            null,
-            2
-          ),
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            mainEntity: [
+              {
+                "@type": "Question",
+                name: "Can I unlock a PDF without a password?",
+                acceptedAnswer: { "@type": "Answer", text: "Yes — if the PDF only has printing, copying, or editing restrictions (owner lock). If it requires a password to open (user lock), you must enter the correct password." },
+              },
+              {
+                "@type": "Question",
+                name: "What is the difference between user password and owner password?",
+                acceptedAnswer: { "@type": "Answer", text: "User password is required to open and view the PDF. Owner password restricts actions like printing, copying, or editing. Owner restrictions can often be removed without needing any password." },
+              },
+              {
+                "@type": "Question",
+                name: "Will my unlocked PDF look the same after conversion?",
+                acceptedAnswer: { "@type": "Answer", text: "Yes. Unlocking only removes restrictions — it does not change text, images, layout, or quality in any way." },
+              },
+              {
+                "@type": "Question",
+                name: "Are my files safe and private?",
+                acceptedAnswer: { "@type": "Answer", text: "Yes. Files are processed securely over encrypted connections and permanently deleted after unlocking. They are never stored long-term or shared with third parties." },
+              },
+              {
+                "@type": "Question",
+                name: "Can I unlock multiple PDFs at once?",
+                acceptedAnswer: { "@type": "Answer", text: "Yes. Upload up to 10 PDF files simultaneously. All unlocked PDFs are delivered as a single ZIP download." },
+              },
+              {
+                "@type": "Question",
+                name: "Is PDFLinx cracking or bypassing passwords?",
+                acceptedAnswer: { "@type": "Answer", text: "No. PDFLinx removes owner permission restrictions, or unlocks files using the password you provide. PDFs that require an opening password cannot be unlocked without the correct password." },
+              },
+              {
+                "@type": "Question",
+                name: "Can I unlock a PDF on my phone?",
+                acceptedAnswer: { "@type": "Answer", text: "Yes. PDFLinx works on Android and iOS mobile browsers — no app download required." },
+              },
+              {
+                "@type": "Question",
+                name: "What should I do after unlocking a PDF?",
+                acceptedAnswer: { "@type": "Answer", text: "After unlocking, you can protect it again with a new password using the Protect PDF tool, merge it with other documents, compress it for sharing, or split it into individual pages." },
+              },
+            ],
+          }, null, 2),
         }}
       />
 
@@ -321,11 +228,17 @@ export default function UnlockPdf() {
           {/* Header */}
           <div className="text-center mb-8">
             <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent mb-4">
-              Unlock PDF <br /> Online (Free)
+              Unlock PDF Online Free
+              <br />
+              <span className="text-2xl md:text-3xl font-medium">
+                No Signup · No Watermark · Instant Download
+              </span>
             </h1>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Remove printing, copying, and editing restrictions from PDF files.
-              Upload one PDF or multiple PDFs — and if your file needs an opening password, enter it to continue.
+              Unlock PDF online free — remove printing, copying, and editing restrictions
+              instantly. No signup, no watermark, no software needed. If your PDF requires
+              a password to open, enter it to unlock. Works on Windows, Mac, Android and
+              iOS. Single or multiple PDFs supported.
             </p>
           </div>
 
@@ -335,40 +248,26 @@ export default function UnlockPdf() {
               {/* File Input */}
               <div className="relative">
                 <label className="block">
-                  <div
-                    className={`border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition-all ${files.length
-                      ? "border-green-500 bg-green-50"
-                      : "border-gray-300 hover:border-blue-500 hover:bg-blue-50"
-                      }`}
-                  >
+                  <div className={`border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition-all ${files.length ? "border-green-500 bg-green-50" : "border-gray-300 hover:border-blue-500 hover:bg-blue-50"}`}>
                     <Upload className="w-12 h-12 mx-auto mb-3 text-blue-600" />
                     <p className="text-lg font-semibold text-gray-700">
                       {files.length ? `${files.length} file(s) selected` : "Drop your PDF file(s) here or click to upload"}
                     </p>
-
                     <p className="text-sm text-gray-500 mt-1">Only .pdf files • Max 10 files • 25MB each</p>
-
                     {!!files.length && (
-                      <p className="text-xs text-gray-500 mt-2">
-                        Total selected: {totalSizeMb.toFixed(2)} MB
-                      </p>
+                      <p className="text-xs text-gray-500 mt-2">Total selected: {totalSizeMb.toFixed(2)} MB</p>
                     )}
-
                     <p className="text-xs text-gray-500 mt-2">
                       Tip: Single file downloads as PDF. Multiple files download as a ZIP.
                     </p>
                   </div>
-
                   <input
                     type="file"
                     multiple
                     accept=".pdf,application/pdf"
                     onChange={(e) => {
                       const picked = Array.from(e.target.files || []);
-                      if (picked.length > 10) {
-                        setError("Maximum 10 files allowed.");
-                        return;
-                      }
+                      if (picked.length > 10) { setError("Maximum 10 files allowed."); return; }
                       setFiles(picked);
                       setSuccess(false);
                       setError("");
@@ -383,34 +282,19 @@ export default function UnlockPdf() {
               {files.length > 0 && (
                 <div className="space-y-2">
                   {files.map((file, idx) => (
-                    <div
-                      key={`${file.name}-${file.size}-${idx}`}
-                      className="flex items-center justify-between bg-gray-50 p-3 rounded-lg"
-                    >
+                    <div key={`${file.name}-${file.size}-${idx}`} className="flex items-center justify-between bg-gray-50 p-3 rounded-lg">
                       <div className="flex items-center gap-2 min-w-0">
                         <FileText className="w-5 h-5 text-red-600 shrink-0" />
                         <span className="text-sm font-medium truncate max-w-xs">{file.name}</span>
-                        <span className="text-xs text-gray-500 shrink-0">
-                          ({(file.size / 1024 / 1024).toFixed(2)} MB)
-                        </span>
+                        <span className="text-xs text-gray-500 shrink-0">({(file.size / 1024 / 1024).toFixed(2)} MB)</span>
                       </div>
-                      <button
-                        type="button"
-                        onClick={() => removeFile(idx)}
-                        className="text-red-500 hover:bg-red-100 p-1 rounded"
-                        aria-label="Remove file"
-                      >
+                      <button type="button" onClick={() => removeFile(idx)} className="text-red-500 hover:bg-red-100 p-1 rounded" aria-label="Remove file">
                         <X className="w-5 h-5" />
                       </button>
                     </div>
                   ))}
-
                   <div className="flex justify-end">
-                    <button
-                      type="button"
-                      onClick={clearAll}
-                      className="text-sm font-semibold text-gray-700 hover:text-gray-900 underline"
-                    >
+                    <button type="button" onClick={clearAll} className="text-sm font-semibold text-gray-700 hover:text-gray-900 underline">
                       Clear all
                     </button>
                   </div>
@@ -427,10 +311,7 @@ export default function UnlockPdf() {
                   type="password"
                   placeholder="Enter only if PDF requires a password to open"
                   value={password}
-                  onChange={(e) => {
-                    setPassword(e.target.value);
-                    setSuccess(false);
-                  }}
+                  onChange={(e) => { setPassword(e.target.value); setSuccess(false); }}
                   className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
                 />
                 <p className="text-xs text-gray-500">
@@ -446,30 +327,13 @@ export default function UnlockPdf() {
                 </div>
               )}
 
-              {/* Button */}
-              {/* <button
-                type="submit"
-                disabled={loading || !files.length}
-                className="w-full bg-gradient-to-r from-blue-600 to-green-600 text-white font-semibold text-lg py-4 rounded-xl hover:from-blue-700 hover:to-green-700 disabled:opacity-60 disabled:cursor-not-allowed transition shadow-md flex items-center justify-center gap-2"
-              >
-                {loading ? (
-                  <>Unlocking... hang tight!</>
-                ) : (
-                  <>
-                    <LockOpen className="w-5 h-5" />
-                    Unlock PDF
-                  </>
-                )}
-                  
-              </button> */}
-
               <ProgressButton
                 isLoading={isLoading}
                 progress={progress}
                 disabled={!files.length}
-                icon={<Key className="w-5 h-5" />}               // ← Unlock / Key icon best lagega
+                icon={<Key className="w-5 h-5" />}
                 label="Unlock PDF Now"
-                gradient="from-cyan-600 to-teal-600"             // ← Unlock feel ke liye fresh / open color
+                gradient="from-cyan-600 to-teal-600"
                 type="button"
                 onClick={handleSubmit}
               />
@@ -480,17 +344,16 @@ export default function UnlockPdf() {
               <div className="mt-6 p-4 bg-green-50 border-2 border-green-200 rounded-xl text-center">
                 <CheckCircle className="w-12 h-12 text-green-600 mx-auto mb-3" />
                 <p className="text-xl font-bold text-green-700 mb-2">
-                  Done! Your {files.length === 1 ? "PDF" : "ZIP"} is ready
+                  Done! Your {files.length === 1 ? "unlocked PDF" : "ZIP"} is ready
                 </p>
-                <p className="text-sm text-green-700">
-                  Download started automatically.
-                </p>
+                <p className="text-sm text-green-700">Download started automatically.</p>
               </div>
             )}
           </div>
 
           <p className="text-center mt-6 text-gray-600 text-base">
-            No account • No watermark • Files auto delete • Completely free • Supports single & bulk uploads
+            No account • No watermark • Files auto-deleted after 1 hour • 100% free •
+            Single & batch unlock • Works on Windows, Mac, Android & iOS
           </p>
         </div>
       </main>
@@ -499,12 +362,13 @@ export default function UnlockPdf() {
       <section className="mt-16 max-w-4xl mx-auto px-6 pb-16">
         <div className="text-center mb-12">
           <h2 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent mb-4">
-            Unlock PDF Online Free – Remove Restrictions in Seconds
+            Free PDF Unlocker — Remove PDF Restrictions Online Instantly
           </h2>
           <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-            Some PDFs restrict printing, copying, or editing. PDFLinx Unlock PDF removes these restrictions fast.
-            If your PDF requires a password to open, just enter the password — and we’ll unlock it for you.
-            No sign-up, no watermark, and your files are processed securely.
+            Some PDFs restrict printing, copying, or editing. PDFLinx Unlock PDF removes
+            these restrictions fast — no signup, no watermark, no software needed. If your
+            PDF requires a password to open, just enter it and we'll unlock it for you.
+            Works for single and bulk files on any device.
           </p>
         </div>
 
@@ -516,7 +380,8 @@ export default function UnlockPdf() {
             </div>
             <h3 className="text-xl font-semibold text-gray-800 mb-3">Remove Restrictions</h3>
             <p className="text-gray-600 text-sm">
-              Unlock printing/copying/editing restrictions (owner protection) in one click.
+              Unlock printing, copying, and editing restrictions (owner protection) in one
+              click — no password needed for owner-locked PDFs.
             </p>
           </div>
 
@@ -526,7 +391,8 @@ export default function UnlockPdf() {
             </div>
             <h3 className="text-xl font-semibold text-gray-800 mb-3">Password When Needed</h3>
             <p className="text-gray-600 text-sm">
-              If your PDF requires a password to open (user protection), enter it to unlock safely.
+              If your PDF requires a password to open (user protection), enter it to unlock
+              safely — content and layout stay exactly as original.
             </p>
           </div>
 
@@ -534,199 +400,340 @@ export default function UnlockPdf() {
             <div className="w-16 h-16 bg-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
               <Download className="w-8 h-8 text-white" />
             </div>
-            <h3 className="text-xl font-semibold text-gray-800 mb-3">Fast Downloads</h3>
+            <h3 className="text-xl font-semibold text-gray-800 mb-3">Batch & Single Unlock</h3>
             <p className="text-gray-600 text-sm">
-              Single file downloads as PDF. Multiple files download as a ZIP — quick and clean.
+              Unlock one PDF or up to 10 files at once. Single file downloads as PDF
+              directly. Multiple files download as a ZIP.
             </p>
           </div>
         </div>
 
-        {/* Steps */}
+        {/* How To Steps */}
         <div className="bg-white rounded-2xl shadow-lg p-8 md:p-12 border border-gray-100">
           <h3 className="text-2xl md:text-3xl font-bold text-center mb-12 text-gray-800">
-            Unlock PDF in 3 Easy Steps
+            How to Unlock a PDF — 3 Simple Steps
           </h3>
           <div className="grid md:grid-cols-3 gap-8">
             <div className="text-center">
-              <div className="w-16 h-16 bg-gradient-to-r from-blue-600 to-blue-700 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold text-white shadow-lg">
-                1
-              </div>
-              <h4 className="text-lg font-semibold mb-2">Upload PDF(s)</h4>
-              <p className="text-gray-600 text-sm">
-                Upload one PDF or multiple PDFs at once.
-              </p>
+              <div className="w-16 h-16 bg-gradient-to-r from-blue-600 to-blue-700 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold text-white shadow-lg">1</div>
+              <h4 className="text-lg font-semibold mb-2">Upload Your PDF File(s)</h4>
+              <p className="text-gray-600 text-sm">Select one PDF or upload up to 10 files at once for batch unlock. Drag and drop supported on all devices.</p>
             </div>
-
             <div className="text-center">
-              <div className="w-16 h-16 bg-gradient-to-r from-green-600 to-green-700 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold text-white shadow-lg">
-                2
-              </div>
-              <h4 className="text-lg font-semibold mb-2">Enter Password (Optional)</h4>
-              <p className="text-gray-600 text-sm">
-                Only needed if the PDF requires a password to open.
-              </p>
+              <div className="w-16 h-16 bg-gradient-to-r from-green-600 to-green-700 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold text-white shadow-lg">2</div>
+              <h4 className="text-lg font-semibold mb-2">Enter Password (If Required)</h4>
+              <p className="text-gray-600 text-sm">Leave blank for owner-locked PDFs with print/copy restrictions. Enter password only if the PDF requires one to open.</p>
             </div>
-
             <div className="text-center">
-              <div className="w-16 h-16 bg-gradient-to-r from-purple-600 to-purple-700 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold text-white shadow-lg">
-                3
-              </div>
-              <h4 className="text-lg font-semibold mb-2">Download</h4>
-              <p className="text-gray-600 text-sm">
-                Download unlocked PDF (or ZIP if multiple).
-              </p>
+              <div className="w-16 h-16 bg-gradient-to-r from-purple-600 to-purple-700 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold text-white shadow-lg">3</div>
+              <h4 className="text-lg font-semibold mb-2">Download Unlocked PDF</h4>
+              <p className="text-gray-600 text-sm">Single file downloads as unlocked PDF instantly. Multiple files are packaged into a ZIP with all unlocked PDFs inside.</p>
             </div>
           </div>
         </div>
 
+        {/* Contextual Links */}
+        <div className="mt-10 bg-white p-6 md:p-8 shadow-sm">
+          <h3 className="text-lg md:text-xl font-bold text-slate-900">
+            Need to do more with your PDF?
+          </h3>
+          <p className="mt-1 text-sm text-slate-600">
+            Unlock is often the first step — manage your document further with these tools.
+          </p>
+          <ul className="mt-4 space-y-2 text-sm">
+            <li>
+              <a href="/protect-pdf" className="text-blue-700 font-semibold hover:underline">Protect PDF</a>{" "}
+              <span className="text-slate-600">— add a new password back to your PDF after editing.</span>
+            </li>
+            <li>
+              <a href="/merge-pdf" className="text-blue-700 font-semibold hover:underline">Merge PDF</a>{" "}
+              <span className="text-slate-600">— combine your unlocked PDF with other documents into one file.</span>
+            </li>
+            <li>
+              <a href="/compress-pdf" className="text-blue-700 font-semibold hover:underline">Compress PDF</a>{" "}
+              <span className="text-slate-600">— reduce file size after unlocking for easy email sharing.</span>
+            </li>
+            <li>
+              <a href="/split-pdf" className="text-blue-700 font-semibold hover:underline">Split PDF</a>{" "}
+              <span className="text-slate-600">— extract specific pages from your unlocked PDF.</span>
+            </li>
+            <li>
+              <a href="/free-pdf-tools" className="text-blue-700 font-semibold hover:underline">Browse all PDF tools</a>{" "}
+              <span className="text-slate-600">— merge, split, compress, convert & more.</span>
+            </li>
+          </ul>
+        </div>
+
         <p className="text-center mt-12 text-base text-gray-600 italic max-w-3xl mx-auto">
-          PDFLinx helps you unlock permission-restricted PDFs fast — safe, simple, and always free.
+          Trusted by professionals, businesses, and students to unlock PDF files —
+          fast, secure, and always free.
         </p>
       </section>
 
+      {/* ── DEEP SEO CONTENT ── */}
       <section className="max-w-4xl mx-auto px-4 py-14 text-slate-700">
         <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-6">
-          Unlock PDF Online – Remove PDF Password Free with PDFLinx
+          PDF Unlock Tool – Free Online PDF Restriction Remover by PDFLinx
         </h2>
 
         <p className="text-base leading-7 mb-6">
-          Password-protected PDF files can be difficult to access when you forget the password or
-          receive a secured document for legitimate use.
-          <span className="font-medium text-slate-900"> PDFLinx Unlock PDF tool</span>{" "}
-          allows you to remove password protection from PDF files online so you can open, view,
-          and edit them freely.
+          Need to remove restrictions from a PDF without Adobe Acrobat? The{" "}
+          <span className="font-medium text-slate-900">PDFLinx Unlock PDF tool</span>{" "}
+          lets you remove printing, copying, and editing restrictions from any PDF online
+          free — no software installation, no signup, no watermark. Upload your PDF, enter
+          a password if required, and download a fully unlocked file in seconds.
         </p>
 
         <h3 className="text-xl font-semibold text-slate-900 mb-3">
           What Does Unlocking a PDF Mean?
         </h3>
         <p className="leading-7 mb-6">
-          Unlocking a PDF means removing its password protection so the file can be accessed without
-          entering a password each time. Once unlocked, the PDF behaves like a normal document,
-          allowing you to read, print, or edit it without restrictions.
+          Unlocking a PDF means removing its restrictions so the file can be accessed,
+          printed, copied, or edited freely. There are two types of PDF locks: an
+          <strong> owner lock</strong> that restricts actions like printing and copying
+          (removable without a password), and a <strong>user lock</strong> that requires a
+          password to open the file. PDFLinx handles both — owner locks are removed
+          automatically, and user locks are removed when you provide the correct password.
         </p>
 
         <h3 className="text-xl font-semibold text-slate-900 mb-3">
           Why Would You Need to Unlock a PDF?
         </h3>
         <ul className="space-y-2 mb-6 list-disc pl-6">
+          <li>You want to print a PDF that has printing restrictions applied</li>
+          <li>You need to copy text or extract content from a restricted PDF</li>
+          <li>You received a secured PDF for authorized use and need to edit it</li>
           <li>You forgot the password of your own PDF file</li>
-          <li>You received a password-protected PDF for authorized use</li>
-          <li>You want to edit or extract content from a secured PDF</li>
-          <li>You need to print or share the PDF without restrictions</li>
-          <li>You want easier access to frequently used documents</li>
+          <li>You need to merge or split a restricted PDF using another tool</li>
+          <li>You want easier access to frequently used locked documents</li>
         </ul>
 
-        <h3 className="text-xl font-semibold text-slate-900 mb-3">
-          How to Unlock a PDF Online
-        </h3>
-        <ol className="space-y-2 mb-6 list-decimal pl-6">
-          <li>Upload the password-protected PDF file</li>
-          <li>Enter the correct PDF password</li>
-          <li>Click the “Unlock PDF” button</li>
-          <li>Download your unlocked PDF instantly</li>
-        </ol>
+        <div className="mt-10 space-y-10">
 
-        <p className="mb-6">
-          No registration required. Files are processed securely and deleted shortly after unlocking.
-        </p>
+          <div>
+            <h3 className="text-xl font-semibold text-slate-900 mb-3">
+              User Password vs Owner Password — What Is the Difference?
+            </h3>
+            <p className="leading-7">
+              A <strong>user password</strong> (open password) is required to open and view
+              the PDF — anyone without this password cannot access the file at all. An{" "}
+              <strong>owner password</strong> controls permissions — it determines whether
+              the recipient can print, copy, or edit the PDF after opening it. PDFLinx
+              removes owner restrictions automatically without needing the owner password,
+              and removes user password protection when you supply the correct open password.
+            </p>
+          </div>
 
-        <div className="bg-slate-50 border border-slate-200 rounded-xl p-6 mb-6">
-          <h3 className="text-xl font-semibold text-slate-900 mb-4">
-            Features of PDFLinx Unlock PDF Tool
-          </h3>
-          <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 list-disc pl-5">
-            <li>Free online PDF password remover</li>
-            <li>Unlock PDFs securely using correct password</li>
-            <li>No software installation required</li>
-            <li>Fast and easy PDF unlocking</li>
-            <li>Works on desktop and mobile devices</li>
-            <li>No watermark added</li>
-            <li>Privacy-focused file processing</li>
-            <li>Supports most encrypted PDF files</li>
-            <li>Simple and clean user interface</li>
-          </ul>
+          <div>
+            <h3 className="text-xl font-semibold text-slate-900 mb-3">
+              How to Unlock a PDF Without Adobe Acrobat
+            </h3>
+            <ul className="space-y-2 list-disc pl-6 leading-7 mb-3">
+              <li>Upload your PDF to the <a href="/unlock-pdf" className="text-blue-700 font-medium hover:underline">Unlock PDF tool</a></li>
+              <li>If the PDF requires a password to open, enter it in the password field</li>
+              <li>Leave the password field blank if the PDF only has print/copy restrictions</li>
+              <li>Click <strong>Unlock PDF Now</strong></li>
+              <li>Download your unlocked PDF instantly — restrictions removed</li>
+            </ul>
+            <p className="leading-7">
+              No Adobe Acrobat, no Microsoft software, no desktop app needed — everything
+              runs directly in your browser on any device.
+            </p>
+          </div>
+
+          <div>
+            <h3 className="text-xl font-semibold text-slate-900 mb-3">
+              Common Use Cases for PDF Unlocking
+            </h3>
+            <ul className="space-y-2 list-disc pl-6 leading-7">
+              <li><strong>Legal documents:</strong> Remove restrictions from contracts or agreements you are authorized to edit or reuse.</li>
+              <li><strong>Academic materials:</strong> Unlock lecture notes, study guides, or eBooks for printing and annotation.</li>
+              <li><strong>Business reports:</strong> Access archived reports with outdated permission locks to copy data or reformat content.</li>
+              <li><strong>Personal documents:</strong> Regain full access to your own PDFs when you have forgotten the password.</li>
+              <li><strong>Client files:</strong> Unlock client-shared protected files when authorized to make changes or extract content.</li>
+              <li><strong>Government forms:</strong> Remove restrictions from official PDF forms to fill, print, or save them properly.</li>
+            </ul>
+          </div>
+
+          <div>
+            <h3 className="text-xl font-semibold text-slate-900 mb-3">
+              Batch PDF Unlocking
+            </h3>
+            <p className="leading-7">
+              Need to unlock multiple PDFs at once? Upload up to{" "}
+              <strong>10 PDF files</strong> simultaneously — all unlocked with the same
+              password if provided. All unlocked PDFs are delivered as a{" "}
+              <strong>ZIP download</strong>. Single PDF uploads download directly as an
+              unlocked PDF without any ZIP. After unlocking, you may want to{" "}
+              <a href="/protect-pdf" className="text-blue-700 font-medium hover:underline">
+                protect the PDF again
+              </a>{" "}
+              with a new password, or{" "}
+              <a href="/merge-pdf" className="text-blue-700 font-medium hover:underline">
+                merge it
+              </a>{" "}
+              with other documents.
+            </p>
+          </div>
+
+          <div>
+            <h3 className="text-xl font-semibold text-slate-900 mb-3">
+              Privacy and File Security
+            </h3>
+            <p className="leading-7">
+              PDF Linx is built with privacy as a core priority. Uploaded PDF files are
+              processed over encrypted connections and{" "}
+              <strong>permanently deleted after unlocking</strong> — never stored long-term,
+              never shared with third parties, and never used for any other purpose. No
+              account creation is required — no email, no password stored on our end, no
+              personal data collected. Your documents remain completely private.
+            </p>
+          </div>
+
+          <div>
+            <h3 className="text-xl font-semibold text-slate-900 mb-3">
+              Unlock PDF on Any Device
+            </h3>
+            <p className="leading-7">
+              PDFLinx works on{" "}
+              <strong>Windows, macOS, Linux, Android, and iOS</strong> — in any modern
+              browser. No app download, no software installation. Whether you are at your
+              desk, on a laptop, or on your phone, you can unlock any PDF in seconds. Fully
+              responsive with drag-and-drop file upload supported on all devices.
+            </p>
+          </div>
+
+        </div>
+
+        {/* Comparison Table */}
+        <div className="overflow-x-auto my-10">
+          <table className="w-full text-sm text-left border border-gray-200 rounded-lg overflow-hidden">
+            <thead className="bg-blue-50 text-blue-800 font-semibold">
+              <tr>
+                <th className="px-4 py-3">Feature</th>
+                <th className="px-4 py-3">PDF Linx</th>
+                <th className="px-4 py-3">Desktop Software</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-gray-100">
+              <tr className="bg-white">
+                <td className="px-4 py-3">Free to use</td>
+                <td className="px-4 py-3 text-green-600">✅ Always free</td>
+                <td className="px-4 py-3 text-red-500">❌ Paid license</td>
+              </tr>
+              <tr className="bg-gray-50">
+                <td className="px-4 py-3">No installation needed</td>
+                <td className="px-4 py-3 text-green-600">✅ Browser-based</td>
+                <td className="px-4 py-3 text-red-500">❌ Download required</td>
+              </tr>
+              <tr className="bg-white">
+                <td className="px-4 py-3">Works on mobile</td>
+                <td className="px-4 py-3 text-green-600">✅ Android & iOS</td>
+                <td className="px-4 py-3 text-red-500">❌ Desktop only</td>
+              </tr>
+              <tr className="bg-gray-50">
+                <td className="px-4 py-3">No watermark</td>
+                <td className="px-4 py-3 text-green-600">✅ Clean output</td>
+                <td className="px-4 py-3 text-yellow-500">⚠️ Sometimes</td>
+              </tr>
+              <tr className="bg-white">
+                <td className="px-4 py-3">Batch unlock (up to 10)</td>
+                <td className="px-4 py-3 text-green-600">✅ Supported</td>
+                <td className="px-4 py-3 text-yellow-500">⚠️ Varies</td>
+              </tr>
+              <tr className="bg-gray-50">
+                <td className="px-4 py-3">Files auto-deleted</td>
+                <td className="px-4 py-3 text-green-600">✅ Privacy first</td>
+                <td className="px-4 py-3 text-yellow-500">⚠️ Stored locally</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
 
         <h3 className="text-xl font-semibold text-slate-900 mb-3">
-          Who Should Use the Unlock PDF Tool?
+          Who Should Use This Tool?
         </h3>
         <ul className="space-y-2 mb-6 list-disc pl-6">
-          <li><strong>Professionals:</strong> Edit and reuse secured documents</li>
-          <li><strong>Businesses:</strong> Access archived or shared PDFs easily</li>
-          <li><strong>Students:</strong> Unlock study materials and notes</li>
-          <li><strong>Freelancers:</strong> Modify client-shared protected files</li>
-          <li><strong>Individuals:</strong> Regain access to personal PDFs</li>
+          <li><strong>Professionals:</strong> Remove restrictions from secured reports, contracts, or presentations to edit and reuse them freely</li>
+          <li><strong>Businesses:</strong> Access archived or shared PDFs that have outdated permission locks applied</li>
+          <li><strong>Students:</strong> Unlock study materials, lecture notes, or eBooks for printing and annotation</li>
+          <li><strong>Freelancers:</strong> Modify client-shared protected files when authorized to make changes</li>
+          <li><strong>Individuals:</strong> Regain access to personal PDFs where the password has been forgotten</li>
+          <li><strong>Anyone:</strong> Remove PDF restrictions to print, copy, or edit any document you are authorized to use</li>
         </ul>
 
-        <h3 className="text-xl font-semibold text-slate-900 mb-3">
-          Is PDFLinx Unlock PDF Safe?
-        </h3>
-        <p className="leading-7 mb-6">
-          Yes. PDFLinx prioritizes your privacy and security. Files are unlocked only after
-          the correct password is provided and are automatically deleted after processing.
-          Your documents are never stored or shared.
-        </p>
+        {/* Comparison Section */}
+        <div className="bg-blue-50 border border-blue-200 rounded-xl p-6 mt-10 mb-6">
+          <h3 className="text-xl font-semibold text-slate-900 mb-3">
+            PDFLinx vs Other PDF Unlock Tools
+          </h3>
+          <p className="leading-7 text-slate-700">
+            Unlike many PDF unlock tools that require account creation, charge for batch
+            processing, or add watermarks to unlocked files — PDFLinx provides fast, secure
+            PDF unlocking completely free, with no login and no watermark. Files are
+            permanently deleted after processing, and batch unlock for up to 10 files is
+            available at no cost.
+          </p>
+        </div>
 
-        <h3 className="text-xl font-semibold text-slate-900 mb-3">
-          Unlock PDFs Anytime, Anywhere
-        </h3>
-        <p className="leading-7">
-          PDFLinx works on Windows, macOS, Linux, Android, and iOS devices.
-          With just a browser and internet connection, you can unlock PDF files
-          anytime and anywhere without installing any software.
-        </p>
       </section>
 
-
-      {/* FAQs */}
-      <section className="py-16">
+      {/* FAQ */}
+      <section className="py-16 bg-gray-50">
         <div className="max-w-4xl mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center mb-10">Frequently Asked Questions</h2>
-
+          <h2 className="text-3xl font-bold text-center mb-10 text-slate-900">
+            Frequently Asked Questions
+          </h2>
           <div className="space-y-4">
-            <details className="bg-white rounded-lg shadow-sm p-5">
-              <summary className="font-semibold cursor-pointer">Can I unlock a PDF without a password?</summary>
-              <p className="mt-2 text-gray-600">
-                Yes — if it only has printing/copying/editing restrictions (owner lock). If it requires a password to open (user lock),
-                you must enter the correct password.
-              </p>
-            </details>
-
-            <details className="bg-white rounded-lg shadow-sm p-5">
-              <summary className="font-semibold cursor-pointer">What’s the difference between user password and owner password?</summary>
-              <p className="mt-2 text-gray-600">
-                User password is required to open the PDF. Owner password is usually for permissions (print/copy/edit). Owner restrictions
-                can often be removed without a password.
-              </p>
-            </details>
-
-            <details className="bg-white rounded-lg shadow-sm p-5">
-              <summary className="font-semibold cursor-pointer">Will my unlocked PDF look the same?</summary>
-              <p className="mt-2 text-gray-600">
-                Yes. Unlocking removes restrictions — it does not change your content or layout.
-              </p>
-            </details>
-
-            <details className="bg-white rounded-lg shadow-sm p-5">
-              <summary className="font-semibold cursor-pointer">Are my files safe and private?</summary>
-              <p className="mt-2 text-gray-600">
-                Yes. Files are processed securely and deleted automatically after processing.
-              </p>
-            </details>
-
-            <details className="bg-white rounded-lg shadow-sm p-5">
-              <summary className="font-semibold cursor-pointer">Can I unlock multiple PDFs at once?</summary>
-              <p className="mt-2 text-gray-600">
-                Yes. Upload up to 10 PDFs. If you upload multiple files, you’ll download a ZIP with all unlocked PDFs.
-              </p>
-            </details>
+            {[
+              {
+                q: "Can I unlock a PDF without a password?",
+                a: "Yes — if the PDF only has printing, copying, or editing restrictions (owner lock). If it requires a password to open (user lock), you must enter the correct password.",
+              },
+              {
+                q: "What is the difference between user password and owner password?",
+                a: "User password is required to open and view the PDF. Owner password restricts actions like printing, copying, or editing. Owner restrictions can often be removed without needing any password.",
+              },
+              {
+                q: "Will my unlocked PDF look the same after conversion?",
+                a: "Yes. Unlocking only removes restrictions — it does not change text, images, layout, or quality in any way.",
+              },
+              {
+                q: "Are my files safe and private?",
+                a: "Yes. Files are processed securely over encrypted connections and permanently deleted after unlocking. They are never stored long-term or shared with third parties.",
+              },
+              {
+                q: "Can I unlock multiple PDFs at once?",
+                a: "Yes. Upload up to 10 PDF files simultaneously. All unlocked PDFs are delivered as a single ZIP download.",
+              },
+              {
+                q: "Is PDFLinx cracking or bypassing passwords?",
+                a: "No. PDFLinx removes owner permission restrictions, or unlocks files using the password you provide. PDFs that require an opening password cannot be unlocked without the correct password.",
+              },
+              {
+                q: "Can I unlock a PDF on my phone?",
+                a: "Yes. PDFLinx works on Android and iOS mobile browsers — no app download required.",
+              },
+              {
+                q: "What should I do after unlocking a PDF?",
+                a: "After unlocking, you can protect it again with a new password using the Protect PDF tool, merge it with other documents using Merge PDF, compress it for sharing, or split it into individual pages.",
+              },
+            ].map((faq, i) => (
+              <details key={i} className="bg-white rounded-lg shadow-sm p-5 group">
+                <summary className="font-semibold cursor-pointer list-none flex justify-between items-center">
+                  {faq.q}
+                  <span className="text-blue-500 ml-3 text-lg group-open:rotate-45 transition-transform">+</span>
+                </summary>
+                <p className="mt-2 text-gray-600">{faq.a}</p>
+              </details>
+            ))}
           </div>
         </div>
       </section>
 
       <RelatedToolsSection currentPage="unlock-pdf" />
     </>
+
   );
 }
 

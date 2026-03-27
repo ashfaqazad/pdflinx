@@ -75,88 +75,6 @@ export default function ProtectPdf() {
     return null;
   };
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-
-  //   if (!files.length) {
-  //     setError("Please select at least one PDF file first!");
-  //     return;
-  //   }
-
-  //   const pwErr = validatePassword(userPassword);
-  //   if (pwErr) {
-  //     setError(pwErr);
-  //     return;
-  //   }
-
-  //   setLoading(true);
-  //   setSuccess(false);
-  //   setError("");
-
-  //   const formData = new FormData();
-  //   for (const f of files) formData.append("files", f);
-
-  //   // Required user/open password
-  //   formData.append("userPassword", userPassword.trim());
-
-  //   // Optional owner password (if blank, backend should auto-generate)
-  //   if (ownerPassword.trim()) formData.append("ownerPassword", ownerPassword.trim());
-
-  //   // Permissions
-  //   formData.append("allowPrint", String(allowPrint));
-  //   formData.append("allowCopy", String(allowCopy));
-  //   formData.append("allowEdit", String(allowEdit));
-
-  //   try {
-  //     // NOTE: backend route you'll create: POST /convert/protect-pdf
-  //     const res = await fetch("/convert/protect-pdf", {
-  //       method: "POST",
-  //       body: formData,
-  //     });
-
-  //     if (!res.ok) {
-  //       let msg = "Protection failed";
-  //       try {
-  //         const j = await res.json();
-  //         msg = j?.error || msg;
-  //       } catch { }
-  //       throw new Error(msg);
-  //     }
-
-  //     const contentType = res.headers.get("content-type") || "";
-
-  //     // ✅ SINGLE => PDF
-  //     if (contentType.includes("application/pdf")) {
-  //       const blob = await res.blob();
-  //       const outName = files[0].name.replace(/\.pdf$/i, "") + "-protected.pdf";
-  //       downloadBlob(blob, outName);
-  //       setSuccess(true);
-  //       return;
-  //     }
-
-  //     // ✅ MULTIPLE => ZIP
-  //     if (contentType.includes("application/zip")) {
-  //       const blob = await res.blob();
-  //       downloadBlob(blob, "pdflinx-protected-pdfs.zip");
-  //       setSuccess(true);
-  //       return;
-  //     }
-
-  //     // fallback
-  //     let data = null;
-  //     try {
-  //       data = await res.json();
-  //     } catch { }
-  //     throw new Error(data?.error || "Unexpected response from server");
-  //   } catch (err) {
-  //     const msg = (err?.message || "Something went wrong. Please try again.").toString();
-  //     setError(msg);
-  //     console.error(err);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
-
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -245,601 +163,675 @@ export default function ProtectPdf() {
 
   return (
     <>
-      {/* ==================== SEO SCHEMAS ==================== */}
-      <Script
-        id="howto-schema-protect"
-        type="application/ld+json"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(
-            {
-              "@context": "https://schema.org",
-              "@type": "HowTo",
-              name: "How to Password Protect a PDF Online for Free",
-              description:
-                "Protect one or multiple PDF files with a password. Add an open password and optionally set permissions like printing, copying, and editing.",
-              url: "https://pdflinx.com/protect-pdf",
-              step: [
-                {
-                  "@type": "HowToStep",
-                  name: "Upload PDF file(s)",
-                  text: "Upload a single PDF or select multiple PDFs at the same time.",
-                },
-                {
-                  "@type": "HowToStep",
-                  name: "Set a password",
-                  text: "Enter a password that will be required to open the PDF.",
-                },
-                {
-                  "@type": "HowToStep",
-                  name: "Protect and download",
-                  text: "Click Protect PDF. Download the protected PDF (or ZIP if multiple files).",
-                },
-              ],
-              totalTime: "PT20S",
-              estimatedCost: { "@type": "MonetaryAmount", value: "0", currency: "USD" },
-              image: "https://pdflinx.com/og-image.png",
-            },
-            null,
-            2
-          ),
-        }}
-      />
+  {/* ==================== SEO SCHEMAS ==================== */}
+  <Script
+    id="howto-schema-protect"
+    type="application/ld+json"
+    strategy="afterInteractive"
+    dangerouslySetInnerHTML={{
+      __html: JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "HowTo",
+        name: "How to Password Protect a PDF Online for Free",
+        description:
+          "Add a password to your PDF online free — no signup, no watermark. Protect single or multiple PDFs instantly. Works on Windows, Mac, Android, iOS.",
+        url: "https://pdflinx.com/protect-pdf",
+        step: [
+          {
+            "@type": "HowToStep",
+            name: "Upload PDF file(s)",
+            text: "Upload a single PDF or select multiple PDFs at the same time.",
+          },
+          {
+            "@type": "HowToStep",
+            name: "Set a password",
+            text: "Enter a password that will be required to open the PDF.",
+          },
+          {
+            "@type": "HowToStep",
+            name: "Protect and download",
+            text: "Click Protect PDF. Download the protected PDF or ZIP if multiple files.",
+          },
+        ],
+        totalTime: "PT20S",
+        estimatedCost: { "@type": "MonetaryAmount", value: "0", currency: "USD" },
+        image: "https://pdflinx.com/og-image.png",
+      }, null, 2),
+    }}
+  />
 
-      <Script
-        id="breadcrumb-schema-protect"
-        type="application/ld+json"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(
-            {
-              "@context": "https://schema.org",
-              "@type": "BreadcrumbList",
-              itemListElement: [
-                { "@type": "ListItem", position: 1, name: "Home", item: "https://pdflinx.com" },
-                { "@type": "ListItem", position: 2, name: "Protect PDF", item: "https://pdflinx.com/protect-pdf" },
-              ],
-            },
-            null,
-            2
-          ),
-        }}
-      />
+  <Script
+    id="breadcrumb-schema-protect"
+    type="application/ld+json"
+    strategy="afterInteractive"
+    dangerouslySetInnerHTML={{
+      __html: JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Home", item: "https://pdflinx.com" },
+          { "@type": "ListItem", position: 2, name: "Protect PDF", item: "https://pdflinx.com/protect-pdf" },
+        ],
+      }, null, 2),
+    }}
+  />
 
-      <Script
-        id="faq-schema-protect"
-        type="application/ld+json"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(
-            {
-              "@context": "https://schema.org",
-              "@type": "FAQPage",
-              mainEntity: [
-                {
-                  "@type": "Question",
-                  name: "What does Protect PDF mean?",
-                  acceptedAnswer: {
-                    "@type": "Answer",
-                    text:
-                      "Protect PDF means adding a password so the file can’t be opened without it. You can also restrict actions like copying, editing, or printing using permission settings.",
-                  },
-                },
-                {
-                  "@type": "Question",
-                  name: "Is the password required to open the PDF?",
-                  acceptedAnswer: {
-                    "@type": "Answer",
-                    text:
-                      "Yes. The main password you set is an open (user) password, which is required to open the PDF.",
-                  },
-                },
-                {
-                  "@type": "Question",
-                  name: "Can I protect multiple PDFs at once?",
-                  acceptedAnswer: {
-                    "@type": "Answer",
-                    text:
-                      "Yes. Upload up to 10 PDFs. If you upload multiple files, you’ll download a ZIP that contains all protected PDFs.",
-                  },
-                },
-                {
-                  "@type": "Question",
-                  name: "Will protecting a PDF change my content?",
-                  acceptedAnswer: {
-                    "@type": "Answer",
-                    text:
-                      "No. Adding password protection does not change your text, images, or layout. It only adds security settings.",
-                  },
-                },
-                {
-                  "@type": "Question",
-                  name: "Are my files safe?",
-                  acceptedAnswer: {
-                    "@type": "Answer",
-                    text:
-                      "Yes. Files are processed automatically and deleted after processing. No sign-up required.",
-                  },
-                },
-              ],
+  <Script
+    id="faq-schema-protect"
+    type="application/ld+json"
+    strategy="afterInteractive"
+    dangerouslySetInnerHTML={{
+      __html: JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        mainEntity: [
+          {
+            "@type": "Question",
+            name: "Is this free PDF password protection tool safe to use online?",
+            acceptedAnswer: {
+              "@type": "Answer",
+              text: "Yes. PDFLinx Protect PDF is completely free and safe. Files are processed securely and permanently deleted after protection. No signup required.",
             },
-            null,
-            2
-          ),
-        }}
-      />
+          },
+          {
+            "@type": "Question",
+            name: "How do I password protect a PDF without Adobe?",
+            acceptedAnswer: {
+              "@type": "Answer",
+              text: "Upload your PDF to PDFLinx, enter a password, and click Protect PDF. No Adobe Acrobat or any software needed — works directly in your browser.",
+            },
+          },
+          {
+            "@type": "Question",
+            name: "Can I protect multiple PDFs with a password at once?",
+            acceptedAnswer: {
+              "@type": "Answer",
+              text: "Yes. Upload up to 10 PDFs simultaneously. All protected PDFs are delivered as a single ZIP download.",
+            },
+          },
+          {
+            "@type": "Question",
+            name: "Will password protecting a PDF change its content or quality?",
+            acceptedAnswer: {
+              "@type": "Answer",
+              text: "No. Adding password protection does not change text, images, or layout. It only adds security encryption to the file.",
+            },
+          },
+          {
+            "@type": "Question",
+            name: "What is the difference between user password and owner password?",
+            acceptedAnswer: {
+              "@type": "Answer",
+              text: "User password is required to open and view the PDF. Owner password controls permissions like printing, copying, and editing. Both can be set separately.",
+            },
+          },
+          {
+            "@type": "Question",
+            name: "Can I restrict printing and copying of a PDF?",
+            acceptedAnswer: {
+              "@type": "Answer",
+              text: "Yes. Use the Advanced Permissions section to control whether printing, copying, or editing is allowed in the protected PDF.",
+            },
+          },
+        ],
+      }, null, 2),
+    }}
+  />
 
-      {/* ==================== MAIN TOOL SECTION ==================== */}
-      <main className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50 py-8 px-4">
-        <div className="max-w-4xl mx-auto">
-          {/* Header */}
-          <div className="text-center mb-8">
-            <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent mb-4">
-              Protect PDF <br /> Online (Free)
-            </h1>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Add a password to your PDF so it can’t be opened without it.
-              Upload one PDF or multiple PDFs — set a password — and download your protected file in seconds.
+  {/* ==================== MAIN TOOL SECTION ==================== */}
+  <main className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50 py-8 px-4">
+    <div className="max-w-4xl mx-auto">
+      {/* Header */}
+      <div className="text-center mb-8">
+        <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent mb-4">
+          Password Protect PDF Online Free
+          <br />
+          <span className="text-2xl md:text-3xl font-medium">
+            No Signup · No Watermark · Instant Download
+          </span>
+        </h1>
+        <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+          Add a password to your PDF online free — no signup, no watermark, no software needed.
+          Protect single or multiple PDFs instantly. Set open password and optional permissions
+          for printing, copying, and editing. Works on Windows, Mac, Android and iOS.
+        </p>
+      </div>
+
+      {/* Upload Card */}
+      <div className="bg-white rounded-2xl shadow-lg p-8 border border-gray-100">
+        <form onSubmit={handleSubmit} className="space-y-6">
+          {/* File Input */}
+          <div className="relative">
+            <label className="block">
+              <div className={`border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition-all ${files.length ? "border-green-500 bg-green-50" : "border-gray-300 hover:border-blue-500 hover:bg-blue-50"}`}>
+                <Upload className="w-12 h-12 mx-auto mb-3 text-blue-600" />
+                <p className="text-lg font-semibold text-gray-700">
+                  {files.length ? `${files.length} file(s) selected` : "Drop your PDF file(s) here or click to upload"}
+                </p>
+                <p className="text-sm text-gray-500 mt-1">Only .pdf files • Max 10 files • 25MB each</p>
+                {!!files.length && (
+                  <p className="text-xs text-gray-500 mt-2">
+                    Total selected: {totalSizeMb.toFixed(2)} MB
+                  </p>
+                )}
+                <p className="text-xs text-gray-500 mt-2">
+                  Tip: Single file downloads as PDF. Multiple files download as a ZIP.
+                </p>
+              </div>
+              <input
+                type="file"
+                multiple
+                accept=".pdf,application/pdf"
+                onChange={(e) => {
+                  const picked = Array.from(e.target.files || []);
+                  if (picked.length > 10) {
+                    setError("Maximum 10 files allowed.");
+                    return;
+                  }
+                  setFiles(picked);
+                  setSuccess(false);
+                  setError("");
+                }}
+                className="hidden"
+                required
+              />
+            </label>
+          </div>
+
+          {/* Selected Files List */}
+          {files.length > 0 && (
+            <div className="space-y-2">
+              {files.map((file, idx) => (
+                <div key={`${file.name}-${file.size}-${idx}`} className="flex items-center justify-between bg-gray-50 p-3 rounded-lg">
+                  <div className="flex items-center gap-2 min-w-0">
+                    <FileText className="w-5 h-5 text-red-600 shrink-0" />
+                    <span className="text-sm font-medium truncate max-w-xs">{file.name}</span>
+                    <span className="text-xs text-gray-500 shrink-0">({(file.size / 1024 / 1024).toFixed(2)} MB)</span>
+                  </div>
+                  <button type="button" onClick={() => removeFile(idx)} className="text-red-500 hover:bg-red-100 p-1 rounded" aria-label="Remove file">
+                    <X className="w-5 h-5" />
+                  </button>
+                </div>
+              ))}
+              <div className="flex justify-end">
+                <button type="button" onClick={clearAll} className="text-sm font-semibold text-gray-700 hover:text-gray-900 underline">
+                  Clear all
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* Required Password */}
+          <div className="space-y-2">
+            <label className="block text-sm font-medium text-gray-700 flex items-center gap-2">
+              <Key className="w-5 h-5 text-blue-600" />
+              Password to open PDF (required)
+            </label>
+            <input
+              type="password"
+              placeholder="Set a password to open this PDF"
+              value={userPassword}
+              onChange={(e) => { setUserPassword(e.target.value); setSuccess(false); }}
+              className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
+              required
+            />
+            <p className="text-xs text-gray-500">
+              This password will be required to open the PDF. Use something you can remember.
             </p>
           </div>
 
-          {/* Upload Card */}
-          <div className="bg-white rounded-2xl shadow-lg p-8 border border-gray-100">
-            <form onSubmit={handleSubmit} className="space-y-6">
-              {/* File Input */}
-              <div className="relative">
-                <label className="block">
-                  <div
-                    className={`border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition-all ${files.length
-                      ? "border-green-500 bg-green-50"
-                      : "border-gray-300 hover:border-blue-500 hover:bg-blue-50"
-                      }`}
-                  >
-                    <Upload className="w-12 h-12 mx-auto mb-3 text-blue-600" />
-                    <p className="text-lg font-semibold text-gray-700">
-                      {files.length ? `${files.length} file(s) selected` : "Drop your PDF file(s) here or click to upload"}
-                    </p>
+          {/* Advanced */}
+          <div className="border border-gray-200 rounded-xl p-5 bg-gray-50">
+            <button type="button" onClick={() => setShowAdvanced((v) => !v)} className="w-full flex items-center justify-between font-semibold text-gray-800">
+              <span className="flex items-center gap-2">
+                <ShieldCheck className="w-5 h-5 text-green-600" />
+                Advanced permissions (optional)
+              </span>
+              <span className="text-sm text-gray-600">{showAdvanced ? "Hide" : "Show"}</span>
+            </button>
 
-                    <p className="text-sm text-gray-500 mt-1">Only .pdf files • Max 10 files • 25MB each</p>
-
-                    {!!files.length && (
-                      <p className="text-xs text-gray-500 mt-2">
-                        Total selected: {totalSizeMb.toFixed(2)} MB
-                      </p>
-                    )}
-
-                    <p className="text-xs text-gray-500 mt-2">
-                      Tip: Single file downloads as PDF. Multiple files download as a ZIP.
-                    </p>
-                  </div>
-
-                  <input
-                    type="file"
-                    multiple
-                    accept=".pdf,application/pdf"
-                    onChange={(e) => {
-                      const picked = Array.from(e.target.files || []);
-                      if (picked.length > 10) {
-                        setError("Maximum 10 files allowed.");
-                        return;
-                      }
-                      setFiles(picked);
-                      setSuccess(false);
-                      setError("");
-                    }}
-                    className="hidden"
-                    required
-                  />
-                </label>
-              </div>
-
-              {/* Selected Files List */}
-              {files.length > 0 && (
+            {showAdvanced && (
+              <div className="mt-4 space-y-4">
                 <div className="space-y-2">
-                  {files.map((file, idx) => (
-                    <div
-                      key={`${file.name}-${file.size}-${idx}`}
-                      className="flex items-center justify-between bg-gray-50 p-3 rounded-lg"
-                    >
-                      <div className="flex items-center gap-2 min-w-0">
-                        <FileText className="w-5 h-5 text-red-600 shrink-0" />
-                        <span className="text-sm font-medium truncate max-w-xs">{file.name}</span>
-                        <span className="text-xs text-gray-500 shrink-0">
-                          ({(file.size / 1024 / 1024).toFixed(2)} MB)
-                        </span>
-                      </div>
-                      <button
-                        type="button"
-                        onClick={() => removeFile(idx)}
-                        className="text-red-500 hover:bg-red-100 p-1 rounded"
-                        aria-label="Remove file"
-                      >
-                        <X className="w-5 h-5" />
-                      </button>
-                    </div>
-                  ))}
-
-                  <div className="flex justify-end">
-                    <button
-                      type="button"
-                      onClick={clearAll}
-                      className="text-sm font-semibold text-gray-700 hover:text-gray-900 underline"
-                    >
-                      Clear all
-                    </button>
-                  </div>
+                  <label className="block text-sm font-medium text-gray-700 flex items-center gap-2">
+                    <Lock className="w-5 h-5 text-blue-600" />
+                    Owner password (optional)
+                  </label>
+                  <input
+                    type="password"
+                    placeholder="Optional: set an owner password for permissions"
+                    value={ownerPassword}
+                    onChange={(e) => setOwnerPassword(e.target.value)}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
+                  />
+                  <p className="text-xs text-gray-500">
+                    If left blank, we'll auto-generate a secure owner password on the server.
+                  </p>
                 </div>
-              )}
 
-              {/* Required Password */}
-              <div className="space-y-2">
-                <label className="block text-sm font-medium text-gray-700 flex items-center gap-2">
-                  <Key className="w-5 h-5 text-blue-600" />
-                  Password to open PDF (required)
-                </label>
-                <input
-                  type="password"
-                  placeholder="Set a password to open this PDF"
-                  value={userPassword}
-                  onChange={(e) => {
-                    setUserPassword(e.target.value);
-                    setSuccess(false);
-                  }}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
-                  required
-                />
+                <div className="grid sm:grid-cols-3 gap-3">
+                  <label className="flex items-center gap-2 bg-white border border-gray-200 rounded-xl p-3 cursor-pointer">
+                    <input type="checkbox" checked={allowPrint} onChange={(e) => setAllowPrint(e.target.checked)} />
+                    <span className="text-sm text-gray-800">Allow printing</span>
+                  </label>
+                  <label className="flex items-center gap-2 bg-white border border-gray-200 rounded-xl p-3 cursor-pointer">
+                    <input type="checkbox" checked={allowCopy} onChange={(e) => setAllowCopy(e.target.checked)} />
+                    <span className="text-sm text-gray-800">Allow copy</span>
+                  </label>
+                  <label className="flex items-center gap-2 bg-white border border-gray-200 rounded-xl p-3 cursor-pointer">
+                    <input type="checkbox" checked={allowEdit} onChange={(e) => setAllowEdit(e.target.checked)} />
+                    <span className="text-sm text-gray-800">Allow editing</span>
+                  </label>
+                </div>
+
                 <p className="text-xs text-gray-500">
-                  This password will be required to open the PDF. Use something you can remember.
+                  Permissions are controlled by the owner password. The open password is still required to open the file.
                 </p>
-              </div>
-
-              {/* Advanced */}
-              <div className="border border-gray-200 rounded-xl p-5 bg-gray-50">
-                <button
-                  type="button"
-                  onClick={() => setShowAdvanced((v) => !v)}
-                  className="w-full flex items-center justify-between font-semibold text-gray-800"
-                >
-                  <span className="flex items-center gap-2">
-                    <ShieldCheck className="w-5 h-5 text-green-600" />
-                    Advanced permissions (optional)
-                  </span>
-                  <span className="text-sm text-gray-600">{showAdvanced ? "Hide" : "Show"}</span>
-                </button>
-
-                {showAdvanced && (
-                  <div className="mt-4 space-y-4">
-                    <div className="space-y-2">
-                      <label className="block text-sm font-medium text-gray-700 flex items-center gap-2">
-                        <Lock className="w-5 h-5 text-blue-600" />
-                        Owner password (optional)
-                      </label>
-                      <input
-                        type="password"
-                        placeholder="Optional: set an owner password for permissions"
-                        value={ownerPassword}
-                        onChange={(e) => setOwnerPassword(e.target.value)}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
-                      />
-                      <p className="text-xs text-gray-500">
-                        If left blank, we’ll auto-generate a secure owner password on the server.
-                      </p>
-                    </div>
-
-                    <div className="grid sm:grid-cols-3 gap-3">
-                      <label className="flex items-center gap-2 bg-white border border-gray-200 rounded-xl p-3 cursor-pointer">
-                        <input
-                          type="checkbox"
-                          checked={allowPrint}
-                          onChange={(e) => setAllowPrint(e.target.checked)}
-                        />
-                        <span className="text-sm text-gray-800">Allow printing</span>
-                      </label>
-
-                      <label className="flex items-center gap-2 bg-white border border-gray-200 rounded-xl p-3 cursor-pointer">
-                        <input
-                          type="checkbox"
-                          checked={allowCopy}
-                          onChange={(e) => setAllowCopy(e.target.checked)}
-                        />
-                        <span className="text-sm text-gray-800">Allow copy</span>
-                      </label>
-
-                      <label className="flex items-center gap-2 bg-white border border-gray-200 rounded-xl p-3 cursor-pointer">
-                        <input
-                          type="checkbox"
-                          checked={allowEdit}
-                          onChange={(e) => setAllowEdit(e.target.checked)}
-                        />
-                        <span className="text-sm text-gray-800">Allow editing</span>
-                      </label>
-                    </div>
-
-                    <p className="text-xs text-gray-500">
-                      Permissions are controlled by the owner password. The “open password” is still required to open the file.
-                    </p>
-                  </div>
-                )}
-              </div>
-
-              {/* Error */}
-              {error && (
-                <div className="bg-red-50 border-2 border-red-200 rounded-xl p-4 text-red-700">
-                  <p className="font-semibold">{error}</p>
-                </div>
-              )}
-
-              {/* Button */}
-              {/* <button
-                type="submit"
-                disabled={loading || !files.length}
-                className="w-full bg-gradient-to-r from-blue-600 to-green-600 text-white font-semibold text-lg py-4 rounded-xl hover:from-blue-700 hover:to-green-700 disabled:opacity-60 disabled:cursor-not-allowed transition shadow-md flex items-center justify-center gap-2"
-              >
-                {loading ? (
-                  <>
-                    <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                    Protecting... hang tight!
-                  </>
-                ) : (
-                  <>
-                    <Lock className="w-5 h-5" />
-                    Protect PDF
-                  </>
-                )}
-              </button> */}
-
-              <ProgressButton
-                isLoading={isLoading}
-                progress={progress}
-                disabled={!files.length}
-                icon={<Lock className="w-5 h-5" />}              // ← Protect / Lock icon best lagega
-                label="Protect PDF Now"
-                gradient="bg-gradient-to-r from-blue-600 to-green-600"            // ← Security feel ke liye dark/professional
-                type="button"
-                onClick={handleSubmit}
-              />
-            </form>
-
-            {/* Success */}
-            {success && (
-              <div className="mt-6 p-4 bg-green-50 border-2 border-green-200 rounded-xl text-center">
-                <CheckCircle className="w-12 h-12 text-green-600 mx-auto mb-3" />
-                <p className="text-xl font-bold text-green-700 mb-2">
-                  Done! Your {files.length === 1 ? "protected PDF" : "ZIP"} is ready
-                </p>
-                <p className="text-sm text-green-700">Download started automatically.</p>
               </div>
             )}
           </div>
 
-          <p className="text-center mt-6 text-gray-600 text-base">
-            No account • No watermark • Files auto delete • Completely free • Supports single & bulk uploads
-          </p>
-        </div>
-      </main>
-
-      {/* ==================== SEO CONTENT SECTION ==================== */}
-      <section className="mt-16 max-w-4xl mx-auto px-6 pb-16">
-        <div className="text-center mb-12">
-          <h2 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent mb-4">
-            Protect PDF Online Free – Add a Password in Seconds
-          </h2>
-          <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-            Want to share a PDF but keep it private? PDFLinx Protect PDF lets you add a password so your file can’t be opened without it.
-            You can also set optional permissions (printing, copying, editing) for extra control. Works for single and bulk files.
-          </p>
-        </div>
-
-        {/* Benefits Grid */}
-        <div className="grid md:grid-cols-3 gap-8 mb-16">
-          <div className="bg-gradient-to-br from-blue-50 to-white p-8 rounded-2xl shadow-lg border border-blue-100 text-center hover:shadow-xl transition">
-            <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
-              <Lock className="w-8 h-8 text-white" />
+          {error && (
+            <div className="bg-red-50 border-2 border-red-200 rounded-xl p-4 text-red-700">
+              <p className="font-semibold">{error}</p>
             </div>
-            <h3 className="text-xl font-semibold text-gray-800 mb-3">Password Protected</h3>
-            <p className="text-gray-600 text-sm">
-              Set an open password so only the right people can view the PDF.
+          )}
+
+          <ProgressButton
+            isLoading={isLoading}
+            progress={progress}
+            disabled={!files.length}
+            icon={<Lock className="w-5 h-5" />}
+            label="Protect PDF Now"
+            gradient="from-blue-600 to-green-600"
+            type="button"
+            onClick={handleSubmit}
+          />
+        </form>
+
+        {success && (
+          <div className="mt-6 p-4 bg-green-50 border-2 border-green-200 rounded-xl text-center">
+            <CheckCircle className="w-12 h-12 text-green-600 mx-auto mb-3" />
+            <p className="text-xl font-bold text-green-700 mb-2">
+              Done! Your {files.length === 1 ? "protected PDF" : "ZIP"} is ready
             </p>
+            <p className="text-sm text-green-700">Download started automatically.</p>
           </div>
+        )}
+      </div>
 
-          <div className="bg-gradient-to-br from-green-50 to-white p-8 rounded-2xl shadow-lg border border-green-100 text-center hover:shadow-xl transition">
-            <div className="w-16 h-16 bg-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
-              <ShieldCheck className="w-8 h-8 text-white" />
-            </div>
-            <h3 className="text-xl font-semibold text-gray-800 mb-3">Optional Permissions</h3>
-            <p className="text-gray-600 text-sm">
-              Control printing, copying, and editing using owner permissions.
-            </p>
-          </div>
+      <p className="text-center mt-6 text-gray-600 text-base">
+        No account • No watermark • Files auto-deleted after 1 hour • 100% free •
+        Single & batch protection • Works on Windows, Mac, Android & iOS
+      </p>
+    </div>
+  </main>
 
-          <div className="bg-gradient-to-br from-purple-50 to-white p-8 rounded-2xl shadow-lg border border-purple-100 text-center hover:shadow-xl transition">
-            <div className="w-16 h-16 bg-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
-              <Download className="w-8 h-8 text-white" />
-            </div>
-            <h3 className="text-xl font-semibold text-gray-800 mb-3">Fast Downloads</h3>
-            <p className="text-gray-600 text-sm">
-              Single file downloads as PDF. Multiple files download as a ZIP.
-            </p>
-          </div>
+  {/* ==================== SEO CONTENT SECTION ==================== */}
+  <section className="mt-16 max-w-4xl mx-auto px-6 pb-16">
+    <div className="text-center mb-12">
+      <h2 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent mb-4">
+        Free PDF Password Protection — Secure Your PDF Files Online Instantly
+      </h2>
+      <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+        Need to share a PDF but keep it private? Add a password to your PDF online free —
+        no signup, no watermark, no software needed. Set open password and optional
+        permissions for printing, copying, and editing. Works for single and bulk files.
+      </p>
+    </div>
+
+    {/* Benefits Grid */}
+    <div className="grid md:grid-cols-3 gap-8 mb-16">
+      <div className="bg-gradient-to-br from-blue-50 to-white p-8 rounded-2xl shadow-lg border border-blue-100 text-center hover:shadow-xl transition">
+        <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
+          <Lock className="w-8 h-8 text-white" />
         </div>
+        <h3 className="text-xl font-semibold text-gray-800 mb-3">Password Protected</h3>
+        <p className="text-gray-600 text-sm">
+          Set an open password so only authorized people can view the PDF —
+          no password, no access.
+        </p>
+      </div>
 
-        {/* Steps */}
-        <div className="bg-white rounded-2xl shadow-lg p-8 md:p-12 border border-gray-100">
-          <h3 className="text-2xl md:text-3xl font-bold text-center mb-12 text-gray-800">
-            Protect PDF in 3 Easy Steps
-          </h3>
-          <div className="grid md:grid-cols-3 gap-8">
-            <div className="text-center">
-              <div className="w-16 h-16 bg-gradient-to-r from-blue-600 to-blue-700 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold text-white shadow-lg">
-                1
-              </div>
-              <h4 className="text-lg font-semibold mb-2">Upload PDF(s)</h4>
-              <p className="text-gray-600 text-sm">Upload one PDF or multiple PDFs at once.</p>
-            </div>
-
-            <div className="text-center">
-              <div className="w-16 h-16 bg-gradient-to-r from-green-600 to-green-700 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold text-white shadow-lg">
-                2
-              </div>
-              <h4 className="text-lg font-semibold mb-2">Set Password</h4>
-              <p className="text-gray-600 text-sm">Enter the password required to open the PDF.</p>
-            </div>
-
-            <div className="text-center">
-              <div className="w-16 h-16 bg-gradient-to-r from-purple-600 to-purple-700 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold text-white shadow-lg">
-                3
-              </div>
-              <h4 className="text-lg font-semibold mb-2">Download</h4>
-              <p className="text-gray-600 text-sm">Download protected PDF (or ZIP if multiple files).</p>
-            </div>
-          </div>
+      <div className="bg-gradient-to-br from-green-50 to-white p-8 rounded-2xl shadow-lg border border-green-100 text-center hover:shadow-xl transition">
+        <div className="w-16 h-16 bg-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
+          <ShieldCheck className="w-8 h-8 text-white" />
         </div>
-
-        <p className="text-center mt-12 text-base text-gray-600 italic max-w-3xl mx-auto">
-          PDFLinx helps you protect PDFs quickly — private sharing, simple controls, always free.
+        <h3 className="text-xl font-semibold text-gray-800 mb-3">Permission Controls</h3>
+        <p className="text-gray-600 text-sm">
+          Restrict printing, copying, and editing using advanced owner password
+          permissions — full control over how your PDF is used.
         </p>
-      </section>
+      </div>
 
-
-      <section className="max-w-4xl mx-auto px-4 py-14 text-slate-700">
-        <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-6">
-          Protect PDF with Password – Secure PDF Online by PDFLinx
-        </h2>
-
-        <p className="text-base leading-7 mb-6">
-          Protecting PDF files with a password is essential when you want to keep sensitive information private.
-          PDF documents often contain personal, financial, legal, or business data that should not be accessible to everyone.
-          <span className="font-medium text-slate-900"> PDFLinx Protect PDF tool</span>{" "}
-          allows you to add password protection to your PDF files online, ensuring only authorized users can open or view them.
-        </p>
-
-        <h3 className="text-xl font-semibold text-slate-900 mb-3">
-          What Does Protecting a PDF Mean?
-        </h3>
-        <p className="leading-7 mb-6">
-          Protecting a PDF means encrypting the file with a password so unauthorized users cannot open, view, or modify its contents.
-          Once protected, the PDF requires a password to access, making it much safer for sharing over email, cloud storage,
-          or messaging platforms.
-        </p>
-
-        <h3 className="text-xl font-semibold text-slate-900 mb-3">
-          Why Should You Protect PDF Files?
-        </h3>
-        <ul className="space-y-2 mb-6 list-disc pl-6">
-          <li>Prevents unauthorized access to sensitive documents</li>
-          <li>Protects confidential business, legal, or financial data</li>
-          <li>Adds an extra layer of security when sharing PDFs online</li>
-          <li>Helps maintain data privacy and compliance</li>
-          <li>Prevents accidental editing or misuse of documents</li>
-        </ul>
-
-        <h3 className="text-xl font-semibold text-slate-900 mb-3">
-          How to Protect a PDF with Password Online
-        </h3>
-        <ol className="space-y-2 mb-6 list-decimal pl-6">
-          <li>Upload your PDF file using the Protect PDF tool</li>
-          <li>Enter a strong password to secure the PDF</li>
-          <li>Click the “Protect PDF” button</li>
-          <li>Download your password-protected PDF instantly</li>
-        </ol>
-
-        <p className="mb-6">
-          No registration required. Your files are processed securely and never stored permanently.
-        </p>
-
-        <div className="bg-slate-50 border border-slate-200 rounded-xl p-6 mb-6">
-          <h3 className="text-xl font-semibold text-slate-900 mb-4">
-            Features of PDFLinx Protect PDF Tool
-          </h3>
-          <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 list-disc pl-5">
-            <li>Free online PDF password protection</li>
-            <li>Strong encryption for secure PDFs</li>
-            <li>Protect PDFs without installing software</li>
-            <li>Fast and easy password setup</li>
-            <li>Works on all devices and browsers</li>
-            <li>No watermark added to your files</li>
-            <li>No file storage – privacy focused</li>
-            <li>Secure sharing of sensitive documents</li>
-            <li>Simple and user-friendly interface</li>
-          </ul>
+      <div className="bg-gradient-to-br from-purple-50 to-white p-8 rounded-2xl shadow-lg border border-purple-100 text-center hover:shadow-xl transition">
+        <div className="w-16 h-16 bg-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
+          <Download className="w-8 h-8 text-white" />
         </div>
-
-        <h3 className="text-xl font-semibold text-slate-900 mb-3">
-          Who Should Use the Protect PDF Tool?
-        </h3>
-        <ul className="space-y-2 mb-6 list-disc pl-6">
-          <li><strong>Businesses:</strong> Secure contracts, invoices, and reports</li>
-          <li><strong>Professionals:</strong> Protect resumes and confidential files</li>
-          <li><strong>Students:</strong> Secure academic documents and projects</li>
-          <li><strong>Freelancers:</strong> Share work safely with clients</li>
-          <li><strong>Individuals:</strong> Protect personal or financial documents</li>
-        </ul>
-
-        <h3 className="text-xl font-semibold text-slate-900 mb-3">
-          Is PDFLinx Protect PDF Safe?
-        </h3>
-        <p className="leading-7 mb-6">
-          Yes. PDFLinx is designed with privacy in mind. Uploaded PDF files are processed automatically
-          and removed shortly after protection. Your files are never shared or saved permanently.
+        <h3 className="text-xl font-semibold text-gray-800 mb-3">Batch & Single Protection</h3>
+        <p className="text-gray-600 text-sm">
+          Protect one PDF or up to 10 files at once. Single file downloads as
+          PDF directly. Multiple files download as a ZIP.
         </p>
+      </div>
+    </div>
 
+    {/* How To Steps */}
+    <div className="bg-white rounded-2xl shadow-lg p-8 md:p-12 border border-gray-100">
+      <h3 className="text-2xl md:text-3xl font-bold text-center mb-12 text-gray-800">
+        How to Password Protect a PDF — 3 Simple Steps
+      </h3>
+      <div className="grid md:grid-cols-3 gap-8">
+        <div className="text-center">
+          <div className="w-16 h-16 bg-gradient-to-r from-blue-600 to-blue-700 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold text-white shadow-lg">1</div>
+          <h4 className="text-lg font-semibold mb-2">Upload Your PDF File(s)</h4>
+          <p className="text-gray-600 text-sm">Select one PDF or upload up to 10 files at once for batch protection. Drag and drop supported.</p>
+        </div>
+        <div className="text-center">
+          <div className="w-16 h-16 bg-gradient-to-r from-green-600 to-green-700 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold text-white shadow-lg">2</div>
+          <h4 className="text-lg font-semibold mb-2">Set Password & Permissions</h4>
+          <p className="text-gray-600 text-sm">Enter the open password required to view the PDF. Optionally set permissions to restrict printing, copying, or editing.</p>
+        </div>
+        <div className="text-center">
+          <div className="w-16 h-16 bg-gradient-to-r from-purple-600 to-purple-700 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold text-white shadow-lg">3</div>
+          <h4 className="text-lg font-semibold mb-2">Download Protected PDF</h4>
+          <p className="text-gray-600 text-sm">Single file downloads as a protected PDF instantly. Multiple files are packaged into a ZIP with all protected PDFs inside.</p>
+        </div>
+      </div>
+    </div>
+
+    {/* Contextual Links */}
+    <div className="mt-10 bg-white p-6 md:p-8 shadow-sm">
+      <h3 className="text-lg md:text-xl font-bold text-slate-900">
+        Need to do more with your PDF before protecting?
+      </h3>
+      <p className="mt-1 text-sm text-slate-600">
+        Protect is often the final step — prepare your document first with these tools.
+      </p>
+      <ul className="mt-4 space-y-2 text-sm">
+        <li>
+          <a href="/merge-pdf" className="text-blue-700 font-semibold hover:underline">Merge PDF</a>{" "}
+          <span className="text-slate-600">— combine multiple PDFs into one document before adding password protection.</span>
+        </li>
+        <li>
+          <a href="/compress-pdf" className="text-blue-700 font-semibold hover:underline">Compress PDF</a>{" "}
+          <span className="text-slate-600">— reduce file size before protecting and sharing via email.</span>
+        </li>
+        <li>
+          <a href="/split-pdf" className="text-blue-700 font-semibold hover:underline">Split PDF</a>{" "}
+          <span className="text-slate-600">— extract only the sensitive pages before adding password protection.</span>
+        </li>
+        <li>
+          <a href="/word-to-pdf" className="text-blue-700 font-semibold hover:underline">Word to PDF</a>{" "}
+          <span className="text-slate-600">— convert your document to PDF first, then protect it with a password.</span>
+        </li>
+        <li>
+          <a href="/free-pdf-tools" className="text-blue-700 font-semibold hover:underline">Browse all PDF tools</a>{" "}
+          <span className="text-slate-600">— merge, split, compress, convert & more.</span>
+        </li>
+      </ul>
+    </div>
+
+    <p className="text-center mt-12 text-base text-gray-600 italic max-w-3xl mx-auto">
+      Trusted by professionals, businesses, and students to protect PDF files —
+      fast, secure, and always free.
+    </p>
+  </section>
+
+  {/* ── DEEP SEO CONTENT ── */}
+  <section className="max-w-4xl mx-auto px-4 py-14 text-slate-700">
+    <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-6">
+      PDF Password Protection – Free Online Tool by PDFLinx
+    </h2>
+
+    <p className="text-base leading-7 mb-6">
+      Need to password protect a PDF without Adobe Acrobat? The{" "}
+      <span className="font-medium text-slate-900">PDFLinx Protect PDF tool</span>{" "}
+      lets you add a password to any PDF file online free — no software installation,
+      no signup, no watermark. Upload your PDF, set a password, and download a
+      fully encrypted, protected file in seconds.
+    </p>
+
+    <h3 className="text-xl font-semibold text-slate-900 mb-3">
+      What Does Password Protecting a PDF Mean?
+    </h3>
+    <p className="leading-7 mb-6">
+      Password protecting a PDF means encrypting the file so it cannot be opened
+      without the correct password. Once protected, anyone who receives the PDF
+      must enter the password before viewing the content — making it safe to share
+      over email, cloud storage, WhatsApp, or any messaging platform.
+    </p>
+
+    <h3 className="text-xl font-semibold text-slate-900 mb-3">
+      Why You Should Password Protect PDF Files
+    </h3>
+    <ul className="space-y-2 mb-6 list-disc pl-6">
+      <li>Prevents unauthorized access to sensitive documents</li>
+      <li>Protects confidential business, legal, or financial data</li>
+      <li>Secures personal documents shared over email or messaging apps</li>
+      <li>Helps maintain data privacy and regulatory compliance</li>
+      <li>Prevents accidental editing, copying, or printing by recipients</li>
+      <li>Required by many organizations for sharing confidential PDFs externally</li>
+    </ul>
+
+    <div className="mt-10 space-y-10">
+
+      <div>
         <h3 className="text-xl font-semibold text-slate-900 mb-3">
-          Protect Your PDFs Anytime, Anywhere
+          User Password vs Owner Password — What Is the Difference?
         </h3>
         <p className="leading-7">
-          PDFLinx works seamlessly on Windows, macOS, Linux, Android, and iOS.
-          All you need is an internet connection and a modern browser to protect your PDFs with a password
-          anytime, anywhere.
+          A <strong>user password</strong> (open password) is required to open
+          and view the PDF — anyone without this password cannot access the file.
+          An <strong>owner password</strong> controls permissions — it determines
+          whether the recipient can print, copy, or edit the PDF after opening it.
+          PDFLinx lets you set both independently: the user password for access
+          control, and the owner password for permission restrictions.
         </p>
-      </section>
+      </div>
 
-      {/* FAQs (UI) */}
-      <section className="py-16">
-        <div className="max-w-4xl mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center mb-10">Frequently Asked Questions</h2>
+      <div>
+        <h3 className="text-xl font-semibold text-slate-900 mb-3">
+          How to Password Protect a PDF Without Adobe Acrobat
+        </h3>
+        <ul className="space-y-2 list-disc pl-6 leading-7 mb-3">
+          <li>Upload your PDF to the <a href="/protect-pdf" className="text-blue-700 font-medium hover:underline">Protect PDF tool</a></li>
+          <li>Enter a strong open password — minimum 4 characters recommended</li>
+          <li>Optionally expand Advanced Permissions to restrict printing, copying, or editing</li>
+          <li>Click <strong>Protect PDF Now</strong></li>
+          <li>Download your encrypted, password-protected PDF instantly</li>
+        </ul>
+        <p className="leading-7">
+          No Adobe Acrobat, no Microsoft software, no desktop app needed — everything
+          runs directly in your browser on any device.
+        </p>
+      </div>
 
-          <div className="space-y-4">
-            <details className="bg-white rounded-lg shadow-sm p-5">
-              <summary className="font-semibold cursor-pointer">Is the Protect PDF tool free?</summary>
-              <p className="mt-2 text-gray-600">
-                Yes. PDFLinx Protect PDF is free to use — no sign-up, no watermark.
-              </p>
-            </details>
+      <div>
+        <h3 className="text-xl font-semibold text-slate-900 mb-3">
+          How to Restrict Printing and Copying of a PDF
+        </h3>
+        <p className="leading-7">
+          Use the <strong>Advanced Permissions</strong> section to control exactly
+          what recipients can do after opening the PDF. You can allow or restrict:
+        </p>
+        <ul className="space-y-2 list-disc pl-6 leading-7 mt-3">
+          <li><strong>Printing</strong> — allow or prevent the PDF from being printed</li>
+          <li><strong>Copying</strong> — allow or block text selection and copying</li>
+          <li><strong>Editing</strong> — allow or prevent modifications to the PDF content</li>
+        </ul>
+        <p className="leading-7 mt-3">
+          These restrictions are enforced by the owner password encryption — they
+          apply to all standard PDF viewers including Adobe Reader, Chrome, and Edge.
+        </p>
+      </div>
 
-            <details className="bg-white rounded-lg shadow-sm p-5">
-              <summary className="font-semibold cursor-pointer">What password do I need to remember?</summary>
-              <p className="mt-2 text-gray-600">
-                The “open password” (user password) is required to open the PDF. If you set an owner password, keep it only if you
-                want to change permissions later.
-              </p>
-            </details>
+      <div>
+        <h3 className="text-xl font-semibold text-slate-900 mb-3">
+          Common Use Cases for PDF Password Protection
+        </h3>
+        <ul className="space-y-2 list-disc pl-6 leading-7">
+          <li><strong>Legal documents:</strong> Protect contracts, NDAs, and agreements before sending to clients or partners.</li>
+          <li><strong>Financial reports:</strong> Secure salary sheets, invoices, and financial summaries before emailing.</li>
+          <li><strong>Academic submissions:</strong> Protect thesis documents, research papers, and project reports.</li>
+          <li><strong>Business proposals:</strong> Lock down pricing, strategy, and confidential data in client proposals.</li>
+          <li><strong>Personal documents:</strong> Protect ID scans, certificates, and personal records shared digitally.</li>
+          <li><strong>Medical records:</strong> Secure patient documents and health reports before sharing with providers.</li>
+        </ul>
+      </div>
 
-            <details className="bg-white rounded-lg shadow-sm p-5">
-              <summary className="font-semibold cursor-pointer">Can I protect multiple PDFs at once?</summary>
-              <p className="mt-2 text-gray-600">
-                Yes. Upload up to 10 PDFs. Multiple files download as a ZIP.
-              </p>
-            </details>
+      <div>
+        <h3 className="text-xl font-semibold text-slate-900 mb-3">
+          Batch PDF Password Protection
+        </h3>
+        <p className="leading-7">
+          Need to protect multiple PDFs at once? Upload up to{" "}
+          <strong>10 PDF files</strong> simultaneously — all protected with the
+          same password and permission settings. All protected PDFs are delivered
+          as a <strong>ZIP download</strong>. Single PDF uploads download directly
+          as a protected PDF without any ZIP.
+        </p>
+        <p className="leading-7 mt-3">
+          Before protecting, you may want to{" "}
+          <a href="/merge-pdf" className="text-blue-700 font-medium hover:underline">merge multiple PDFs</a>{" "}
+          into one document, or{" "}
+          <a href="/compress-pdf" className="text-blue-700 font-medium hover:underline">compress the PDF</a>{" "}
+          to reduce file size before sending.
+        </p>
+      </div>
 
-            <details className="bg-white rounded-lg shadow-sm p-5">
-              <summary className="font-semibold cursor-pointer">Will protecting a PDF change content or quality?</summary>
-              <p className="mt-2 text-gray-600">
-                No. Adding password protection does not change the text, images, or layout — it only adds security settings.
-              </p>
-            </details>
+      <div>
+        <h3 className="text-xl font-semibold text-slate-900 mb-3">
+          Privacy and File Security
+        </h3>
+        <p className="leading-7">
+          PDF Linx is built with privacy as a core priority. Uploaded PDF files
+          are processed over encrypted connections and{" "}
+          <strong>permanently deleted after protection</strong> — never stored
+          long-term, never shared with third parties, and never used for any
+          other purpose. No account creation is required — no email, no password
+          stored on our end, no personal data collected.
+        </p>
+      </div>
 
-            <details className="bg-white rounded-lg shadow-sm p-5">
-              <summary className="font-semibold cursor-pointer">Are my files safe?</summary>
-              <p className="mt-2 text-gray-600">
-                Yes. Files are processed automatically and deleted after processing.
-              </p>
-            </details>
-          </div>
-        </div>
-      </section>
+      <div>
+        <h3 className="text-xl font-semibold text-slate-900 mb-3">
+          Protect PDF on Any Device
+        </h3>
+        <p className="leading-7">
+          PDFLinx works on <strong>Windows, macOS, Linux, Android, and iOS</strong> —
+          in any modern browser. No app download, no software installation. Whether
+          you are at your desk, on a laptop, or on your phone, you can password
+          protect any PDF in seconds. Fully responsive with drag-and-drop file
+          upload supported on all devices.
+        </p>
+      </div>
 
-      <RelatedToolsSection currentPage="protect-pdf" />
-    </>
+    </div>
+
+    <div className="bg-slate-50 border border-slate-200 rounded-xl p-6 mt-10 mb-6">
+      <h3 className="text-xl font-semibold text-slate-900 mb-4">
+        PDFLinx Protect PDF — Feature Summary
+      </h3>
+      <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 list-disc pl-5 text-sm">
+        <li>Free online PDF password protection — no hidden fees</li>
+        <li>Strong encryption — user and owner password support</li>
+        <li>Restrict printing, copying, and editing permissions</li>
+        <li>Batch protection — up to 10 files at once</li>
+        <li>ZIP download for multiple file protection</li>
+        <li>Content, layout, and quality unchanged after protection</li>
+        <li>Fast processing — protected PDF ready in seconds</li>
+        <li>No watermark added to protected files</li>
+        <li>Works on desktop and mobile browsers</li>
+        <li>Files auto-deleted after processing — privacy protected</li>
+        <li>No signup or account required</li>
+        <li>Cross-platform: Windows, macOS, Android, iOS</li>
+      </ul>
+    </div>
+
+    <h3 className="text-xl font-semibold text-slate-900 mb-3">
+      Who Should Use This Tool?
+    </h3>
+    <ul className="space-y-2 mb-6 list-disc pl-6">
+      <li><strong>Businesses:</strong> Protect contracts, invoices, proposals, and confidential reports before sharing</li>
+      <li><strong>Legal professionals:</strong> Secure NDAs, agreements, and legal correspondence with password encryption</li>
+      <li><strong>Students:</strong> Protect academic documents, research papers, and thesis files before submission</li>
+      <li><strong>Professionals:</strong> Lock down salary sheets, financial reports, and sensitive business documents</li>
+      <li><strong>Freelancers:</strong> Share work securely with clients — restrict copying or editing of delivered files</li>
+      <li><strong>Anyone:</strong> Add a password to any PDF before sharing over email, WhatsApp, or cloud storage</li>
+    </ul>
+
+    {/* Comparison Section */}
+    <div className="bg-blue-50 border border-blue-200 rounded-xl p-6 mt-10 mb-6">
+      <h3 className="text-xl font-semibold text-slate-900 mb-3">
+        PDFLinx vs Other PDF Protection Tools
+      </h3>
+      <p className="leading-7 text-slate-700">
+        Unlike many PDF tools that require a paid subscription, force you to create
+        an account, or add watermarks to your files — PDFLinx provides fast, secure
+        PDF password protection completely free, with no login and no watermark.
+        Your files are permanently deleted after processing, and permission controls
+        (printing, copying, editing) are available at no cost.
+      </p>
+    </div>
+
+  </section>
+
+  {/* FAQ */}
+  <section className="py-16 bg-gray-50">
+    <div className="max-w-4xl mx-auto px-4">
+      <h2 className="text-3xl font-bold text-center mb-10 text-slate-900">
+        Frequently Asked Questions
+      </h2>
+      <div className="space-y-4">
+        {[
+          {
+            q: "Is this free PDF password protection tool safe to use online?",
+            a: "Yes. PDFLinx Protect PDF is completely free and safe. Files are processed over encrypted connections and permanently deleted after protection. No signup required.",
+          },
+          {
+            q: "How do I password protect a PDF without Adobe Acrobat?",
+            a: "Upload your PDF to PDFLinx, enter a password, and click Protect PDF Now. No Adobe or any software needed — works directly in your browser on any device.",
+          },
+          {
+            q: "Can I protect multiple PDFs with a password at once?",
+            a: "Yes. Upload up to 10 PDF files simultaneously. All protected PDFs are delivered as a single ZIP download.",
+          },
+          {
+            q: "Will password protecting a PDF change its content or quality?",
+            a: "No. Adding password protection does not change text, images, layout, or quality. It only adds security encryption to the file.",
+          },
+          {
+            q: "What is the difference between user password and owner password in a PDF?",
+            a: "User password is required to open and view the PDF. Owner password controls permissions like printing, copying, and editing. PDFLinx lets you set both separately.",
+          },
+          {
+            q: "Can I restrict printing and copying of a protected PDF?",
+            a: "Yes. Use the Advanced Permissions section to allow or restrict printing, copying, and editing in the protected PDF.",
+          },
+          {
+            q: "Can I password protect a PDF on my phone?",
+            a: "Yes. PDFLinx works on Android and iOS mobile browsers — no app required.",
+          },
+          {
+            q: "What should I do before protecting a PDF?",
+            a: "If you need to combine multiple documents, use the Merge PDF tool first. To reduce file size before protecting and sharing, use Compress PDF. To extract only specific pages, use Split PDF.",
+          },
+        ].map((faq, i) => (
+          <details key={i} className="bg-white rounded-lg shadow-sm p-5 group">
+            <summary className="font-semibold cursor-pointer list-none flex justify-between items-center">
+              {faq.q}
+              <span className="text-blue-500 ml-3 text-lg group-open:rotate-45 transition-transform">+</span>
+            </summary>
+            <p className="mt-2 text-gray-600">{faq.a}</p>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <RelatedToolsSection currentPage="protect-pdf" />
+</>
   );
 }
 
