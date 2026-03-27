@@ -56,6 +56,13 @@ export default function PrivacyPolicy() {
           marketing purposes.
         </p>
 
+        <h2 className="text-xl font-semibold mt-6 mb-2">Analytics</h2>
+        <p className="mb-4">
+          We use Histats, a visitor analytics service, to collect anonymous visit
+          counts and basic traffic data. No personal data is stored or shared through
+          this service.
+        </p>
+
         <h2 className="text-xl font-semibold mt-6 mb-2">Cookies</h2>
         <p className="mb-4">
           We use cookies to improve website performance and to display relevant

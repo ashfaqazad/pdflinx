@@ -86,69 +86,6 @@ export default function ImageToPdf() {
   };
 
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-
-  //   if (files.length === 0) {
-  //     alert("Please select at least one image");
-  //     return;
-  //   }
-
-  //   setLoading(true);
-  //   setDownloadUrl(null);
-  //   setSuccess(false);
-
-  //   const formData = new FormData();
-  //   files.forEach((file) => formData.append("images", file));
-
-  //   try {
-  //     const res = await fetch("/convert/image-to-pdf", {
-  //       method: "POST",
-  //       body: formData,
-  //     });
-
-  //     // Read as text first (because 500 responses are often not JSON)
-  //     const text = await res.text();
-  //     console.log("RAW RESPONSE:", text);
-
-  //     // Try to parse JSON, otherwise treat it as plain error text
-  //     let data;
-  //     try {
-  //       data = JSON.parse(text);
-  //     } catch {
-  //       data = { success: false, error: text || "Internal Server Error" };
-  //     }
-
-  //     // If server returned error status OR success false
-  //     if (!res.ok || !data?.success) {
-  //       alert("Conversion failed: " + (data?.error || `HTTP ${res.status}`));
-  //       return;
-  //     }
-
-  //     // Success
-  //     setDownloadUrl(data.download);
-  //     setSuccess(true);
-
-  //     // ✅ YE 8 LINES ADD KARO
-  //     setTimeout(() => {
-  //       const downloadSection = document.getElementById('download-section');
-  //       if (downloadSection) {
-  //         downloadSection.scrollIntoView({
-  //           behavior: 'smooth',
-  //           block: 'center'
-  //         });
-  //       }
-  //     }, 300);
-
-  //   } catch (err) {
-  //     console.error(err);
-  //     alert("Something went wrong. Please try again.");
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
-
-
   const handleFileChange = (e) => {
     const selectedFiles = Array.from(e.target.files || []);
 

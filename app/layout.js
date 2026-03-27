@@ -29,7 +29,7 @@ export const metadata = {
   metadataBase: new URL("https://pdflinx.com"),
 
   title: {
-    default: "PDF Linx - Free Online PDF Tools (Convert, Merge, Split, Compress)",
+    default: "Free Online PDF Tools — Convert, Merge, Compress & Split | PDF Linx",
     template: "%s | PDF Linx",
   },
 

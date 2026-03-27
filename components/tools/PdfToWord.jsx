@@ -848,10 +848,6 @@ export default function PdfToWord({ seo }) {
             {[
               ...(seo?.faqs || []),
               {
-                q: "Is the PDF to Word converter free to use?",
-                a: "Yes. PDFLinx PDF to Word converter is completely free — no hidden charges, no subscription, no premium tier required.",
-              },
-              {
                 q: "Do I need to install any software?",
                 a: "No. Everything works directly in your browser. No desktop software, no app download, no plugins needed.",
               },

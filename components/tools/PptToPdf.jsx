@@ -191,7 +191,7 @@ export default function PptToPdf() {
               "@type": "HowTo",
               name: "How to Convert PowerPoint to PDF Online for Free (Single or Multiple Files)",
               description:
-                "Convert PPT or PPTX presentations to PDF in seconds. You can upload a single file or select multiple files together — slides preserved perfectly.",
+                "Convert PowerPoint to PDF online free — no signup, no watermark. Every slide, font, and layout preserved. Batch convert multiple PPT or PPTX files at once. Works on Windows, Mac, Android, iOS.",
               url: "https://pdflinx.com/ppt-to-pdf",
               step: [
                 {
@@ -240,20 +240,82 @@ export default function PptToPdf() {
         }}
       />
 
+      <Script
+  id="faq-schema-ppt-to-pdf"
+  type="application/ld+json"
+  strategy="afterInteractive"
+  dangerouslySetInnerHTML={{
+    __html: JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Is the PowerPoint to PDF converter free?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. PDFLinx PowerPoint to PDF converter is completely free — no hidden charges, no subscription required."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Will slide layouts and fonts be preserved?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Slide layouts, fonts, images, backgrounds, and design elements are all preserved accurately in the converted PDF."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What happens to animations when converting to PDF?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "PDF is a static format — animations cannot be preserved. Each slide appears as a static frame showing the final state. All text and images remain fully visible."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I convert multiple PowerPoint files at once?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Upload multiple PPT or PPTX files simultaneously. All converted PDFs are delivered as a single ZIP download."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Are my files safe and private?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Files are processed securely and permanently deleted after conversion. Never stored or shared."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I convert PowerPoint to PDF on mobile?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. PDFLinx works on Android and iOS mobile browsers — no app required."
+          }
+        }
+      ]
+    }, null, 2)
+  }}
+/>
+
       {/* ==================== MAIN TOOL ==================== */}
       <main className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-indigo-50 py-8 px-4">
         <div className="max-w-4xl mx-auto">
           {/* Header */}
           <div className="text-center mb-8">
             <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent mb-4">
-              PowerPoint to PDF Converter <br /> Online (Free)
+              Convert PowerPoint to PDF Online Free
+              <br />
+              <span className="text-2xl md:text-3xl font-medium">
+                No Signup · No Watermark · Instant Download
+              </span>
             </h1>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Convert PowerPoint presentations to PDF instantly — every slide, font,
-              image, and layout stays exactly as designed. Upload a single PPT or
-              PPTX file, or batch convert multiple presentations at once. Perfect for
-              sharing decks, handouts, proposals, and portfolios. No signup, no
-              watermark, completely free.
+              Convert PowerPoint to PDF online free — no signup, no watermark, no software needed. Every slide, font, image, and layout stays exactly as designed. Works on Windows, Mac, Android and iOS. Upload one PPT or PPTX file or batch convert multiple presentations at once.
             </p>
           </div>
 
@@ -387,7 +449,7 @@ export default function PptToPdf() {
         {/* Main Heading */}
         <div className="text-center mb-12">
           <h2 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent mb-4">
-            PowerPoint to PDF Online Free – Convert PPT & PPTX to PDF in Seconds
+            Free PowerPoint to PDF Converter — Convert PPT & PPTX Without Losing Slide Layouts
           </h2>
           <p className="text-lg text-gray-600 max-w-3xl mx-auto">
             Need to share a presentation that looks identical on every device?

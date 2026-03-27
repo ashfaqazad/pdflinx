@@ -174,7 +174,7 @@ export default function PdfToJpg() {
             "@context": "https://schema.org",
             "@type": "HowTo",
             name: "How to Convert PDF to JPG Online for Free",
-            description: "Convert one or multiple PDFs to high-quality JPG images instantly – single page gets JPG, multi-page gets ZIP.",
+            description: "Convert PDF pages to high-quality JPG images online free — no signup, no watermark. Single-page PDF downloads as JPG, multi-page as ZIP. Works on Windows, Mac, Android, iOS.",
             url: "https://pdflinx.com/pdf-to-jpg",
             step: [
               { "@type": "HowToStep", name: "Upload PDFs", text: "Select one or multiple PDF files." },
@@ -210,14 +210,14 @@ export default function PdfToJpg() {
           {/* Header */}
           <div className="text-center mb-8">
             <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-orange-600 to-amber-600 bg-clip-text text-transparent mb-4">
-              PDF to JPG Converter <br /> Online (Free)
+              PDF to JPG Converter Online Free
+              <br />
+              <span className="text-2xl md:text-3xl font-medium">
+                No Signup · No Watermark · Instant Download
+              </span>
             </h1>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Convert PDF pages to high-quality JPG images instantly — every page
-              extracted at full resolution, colors and text stay sharp. Upload a
-              single PDF or batch convert multiple PDFs at once. Perfect for social
-              media, presentations, websites, and image editing. No signup, no
-              watermark, completely free.
+              Convert PDF pages to high-quality JPG images online free — no signup, no watermark, no software needed. Every page extracted at full resolution, colors and text stay sharp. Single-page PDF downloads as one JPG directly. Multi-page PDF downloads as a ZIP with all images inside. Works on Windows, Mac, Android and iOS.
             </p>
           </div>
 
@@ -354,7 +354,7 @@ export default function PdfToJpg() {
         {/* Main Heading */}
         <div className="text-center mb-12">
           <h2 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-orange-600 to-amber-600 bg-clip-text text-transparent mb-4">
-            PDF to JPG Online Free – Convert PDF Pages to Images in Seconds
+            Free PDF to JPG Converter — Extract Every PDF Page as a High-Quality Image
           </h2>
           <p className="text-lg text-gray-600 max-w-3xl mx-auto">
             Need PDF pages as images? Convert here — every page extracted as a
@@ -508,20 +508,6 @@ export default function PdfToJpg() {
           download as a ZIP file containing all extracted images, one per page.
         </p>
 
-        <h3 className="text-xl font-semibold text-slate-900 mb-3">
-          Why Convert PDF to JPG?
-        </h3>
-        <ul className="space-y-2 mb-6 list-disc pl-6">
-          <li>Share individual PDF pages as images on social media or websites</li>
-          <li>Use PDF pages in PowerPoint, Canva, or photo editing apps</li>
-          <li>Extract visuals, charts, or figures from PDF reports and ebooks</li>
-          <li>Create thumbnails or preview images of PDF documents</li>
-          <li>Insert PDF pages into Word documents or email newsletters as images</li>
-          <li>Convert scanned PDF pages to JPG for image editing or archiving</li>
-          <li>Share PDF content on platforms that do not support PDF uploads</li>
-          <li>Create image-based portfolios or lookbooks from PDF designs</li>
-        </ul>
-
         <div className="mt-10 space-y-10">
 
           <div>
@@ -640,24 +626,48 @@ export default function PdfToJpg() {
 
         </div>
 
-        <div className="bg-slate-50 border border-slate-200 rounded-xl p-6 mt-10 mb-6">
-          <h3 className="text-xl font-semibold text-slate-900 mb-4">
-            PDFLinx PDF to JPG Converter — Feature Summary
-          </h3>
-          <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 list-disc pl-5 text-sm">
-            <li>Free online PDF to JPG converter — no hidden fees</li>
-            <li>High-resolution JPG output — full quality preserved</li>
-            <li>Single-page PDF → direct JPG download</li>
-            <li>Multi-page PDF → ZIP with all JPG images</li>
-            <li>Batch conversion — multiple PDFs at once</li>
-            <li>Fast processing — conversion in seconds</li>
-            <li>No watermark added to converted images</li>
-            <li>Works on desktop and mobile browsers</li>
-            <li>Files auto-deleted after conversion — privacy protected</li>
-            <li>No signup or account required</li>
-            <li>Cross-platform: Windows, macOS, Android, iOS</li>
-            <li>Drag-and-drop upload supported</li>
-          </ul>
+        <div className="overflow-x-auto my-6">
+          <table className="w-full text-sm text-left border border-gray-200 rounded-lg overflow-hidden">
+            <thead className="bg-orange-50 text-orange-800 font-semibold">
+              <tr>
+                <th className="px-4 py-3">Feature</th>
+                <th className="px-4 py-3">PDF Linx</th>
+                <th className="px-4 py-3">Desktop Software</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-gray-100">
+              <tr className="bg-white">
+                <td className="px-4 py-3">Free to use</td>
+                <td className="px-4 py-3 text-green-600">✅ Always free</td>
+                <td className="px-4 py-3 text-red-500">❌ Paid license</td>
+              </tr>
+              <tr className="bg-gray-50">
+                <td className="px-4 py-3">No installation needed</td>
+                <td className="px-4 py-3 text-green-600">✅ Browser-based</td>
+                <td className="px-4 py-3 text-red-500">❌ Download required</td>
+              </tr>
+              <tr className="bg-white">
+                <td className="px-4 py-3">Works on mobile</td>
+                <td className="px-4 py-3 text-green-600">✅ Android & iOS</td>
+                <td className="px-4 py-3 text-red-500">❌ Desktop only</td>
+              </tr>
+              <tr className="bg-gray-50">
+                <td className="px-4 py-3">No watermark</td>
+                <td className="px-4 py-3 text-green-600">✅ Clean output</td>
+                <td className="px-4 py-3 text-yellow-500">⚠️ Sometimes</td>
+              </tr>
+              <tr className="bg-white">
+                <td className="px-4 py-3">Batch conversion</td>
+                <td className="px-4 py-3 text-green-600">✅ Multiple PDFs</td>
+                <td className="px-4 py-3 text-yellow-500">⚠️ Varies</td>
+              </tr>
+              <tr className="bg-gray-50">
+                <td className="px-4 py-3">Files auto-deleted</td>
+                <td className="px-4 py-3 text-green-600">✅ Privacy first</td>
+                <td className="px-4 py-3 text-yellow-500">⚠️ Stored locally</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
 
         <h3 className="text-xl font-semibold text-slate-900 mb-3">

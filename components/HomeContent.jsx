@@ -239,9 +239,6 @@ export default function HomeContent() {
                     </h1>
 
                     <p className={styles.heroSub}>
-                        {/* PDF to Word converter, merge PDF, compress PDF, split, sign, OCR,
-                        and 10+ more tools — all free, all in your browser.
-                        Your files never leave your device. */}
                         Free online PDF tools to convert PDF to Word, compress PDF, merge PDF files,
                         split PDF pages, and edit PDF documents directly in your browser.
                         Fast, secure, and completely private — no uploads to servers.
@@ -249,7 +246,8 @@ export default function HomeContent() {
                     </p>
 
                     <div className={styles.heroPills}>
-                        <span className={styles.heroPill}>🔒 No file uploads to server</span>
+                        {/* <span className={styles.heroPill}>🔒 No file uploads to server</span> */}
+                        <span className={styles.heroPill}>🔒 Files never stored on server</span>
                         <span className={styles.heroPill}>⚡ Converts in seconds</span>
                         <span className={styles.heroPill}>🆓 100% free forever</span>
                         <span className={styles.heroPill}>📄 No watermarks added</span>
@@ -277,7 +275,7 @@ export default function HomeContent() {
                 <div className={styles.statsInner}>
                     {[
                         { num: "16+", label: "Free PDF Tools" },
-                        { num: "0", label: "Ads or Popups" },
+                        { num: "Zero", label: "Ads or Popups" },
                         { num: "100%", label: "Browser-Based" },
                         { num: "Free", label: "No Hidden Costs" },
                     ].map((s, i) => (
