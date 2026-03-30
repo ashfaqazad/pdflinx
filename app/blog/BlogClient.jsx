@@ -75,6 +75,7 @@ export default function BlogClient() {
       slug: "compress-pdf",
     },
 
+
     {
       title: "Convert Excel to PDF Without Losing Formatting",
       description:
@@ -161,6 +162,49 @@ export default function BlogClient() {
         "Assignments piling up, group projects, exams, and PDFs that won't cooperate — student life is hectic. Here are the tools that actually help you work faster and smarter, tested and used in real academic workflows.",
       date: "Dec 11, 2025",
       slug: "best-tools-for-students",
+    },
+
+    {
+      title: "How to Compress a PDF Free Online (Reduce File Size Instantly)",
+      description:
+        "PDF too large to email or upload? Here's how to compress any PDF in seconds — no software, no signup, no watermark. Works on mobile too, and keeps your text and images looking sharp.",
+      date: "Mar 22, 2026",
+      slug: "how-to-compress-a-pdf",
+    },
+    {
+      title: "How to Compress a PDF Without Losing Quality",
+      description:
+        "Worried compression will ruin your PDF? Here's exactly what happens to images, text, and fonts during compression — and how to reduce file size without any visible quality loss.",
+      date: "Mar 23, 2026",
+      slug: "compress-pdf-without-losing-quality",
+    },
+    {
+      title: "How to Compress a PDF on Mobile (Android & iPhone)",
+      description:
+        "Need to shrink a PDF from your phone before sending? Here's how to compress any PDF directly in your mobile browser — no app needed, works on both Android and iPhone.",
+      date: "Mar 24, 2026",
+      slug: "compress-pdf-on-mobile",
+    },
+    {
+      title: "PDF Still Too Large After Compression? Here's How to Fix It",
+      description:
+        "Compressed your PDF but it's still too big? Here are the real reasons compression sometimes doesn't work — and exactly what to do in each case.",
+      date: "Mar 25, 2026",
+      slug: "pdf-still-too-large-after-compression",
+    },
+    {
+      title: "Why Are PDF Files So Large? (And How to Fix It)",
+      description:
+        "Ever wondered why a simple PDF ends up being 50MB? Here's what actually makes PDFs large — images, scans, fonts, layers — and the fastest way to fix each one.",
+      date: "Mar 26, 2026",
+      slug: "why-are-pdf-files-so-large",
+    },
+    {
+      title: "How Small Should I Compress My PDF? (Size Guide by Use Case)",
+      description:
+        "Email, WhatsApp, university portals, websites, printing — every use case needs a different PDF size. Here's the exact target size for each one so you compress just enough.",
+      date: "Mar 27, 2026",
+      slug: "how-small-should-i-compress-my-pdf",
     },
 
     {
