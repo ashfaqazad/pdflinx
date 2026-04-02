@@ -502,6 +502,15 @@ export default function ImageToPdf() {
           <p className="mt-1 text-sm text-slate-600">
             After converting images to PDF, these tools can help you organize and share your document.
           </p>
+
+          {/* ✅ YAHAN ADD KARO — list ke upar */}
+          <p className="mt-4 text-sm text-slate-600">
+            Have a HEIC, WebP, or any unusual image format that won't upload directly? First convert it to JPG using this{" "}
+            <a href="https://convertlinx.com/heic-to-jpg" target="_blank" rel="noopener noreferrer" className="text-purple-700 font-semibold hover:underline">
+              free image converter
+            </a>
+            , then come back here to create your PDF. ConvertLinx.com offers 10+ image tools — completely free.
+          </p>
           <ul className="mt-4 space-y-2 text-sm">
             <li>
               <a href="/merge-pdf" className="text-purple-700 font-semibold hover:underline">

@@ -159,13 +159,17 @@ export default function Contact() {
               <p>Or email me directly at:</p>
 
               {/* ✅ Fix mailto */}
-              <a
+              {/* <a
                 href="mailto:support@pdflinx.com"
                 className="font-semibold text-indigo-600 hover:text-indigo-800 transition break-all"
               >
                 support@pdflinx.com
+              </a> */}
+              <a href="mailto:support&#64;pdflinx&#46;com"
+                  className="font-semibold text-indigo-600 hover:text-indigo-800 transition break-all"
+                >
+                  support&#64;pdflinx&#46;com
               </a>
-
               <p className="mt-4">
                 I&apos;m usually replying on evenings or weekends (building this
                 solo in my free time).

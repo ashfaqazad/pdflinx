@@ -36,6 +36,8 @@ export default function sitemap() {
     "/ocr-pdf",
     "/edit-pdf",
     "/add-watermark",
+    "/compress-pdf-savings-calculator",
+
   ].map((url) => ({
     url,
     changeFrequency: "weekly",
@@ -64,6 +66,7 @@ export default function sitemap() {
     "/blog/how-to-edit-scanned-pdf-in-word",
     "/blog/convert-pdf-resume-to-editable-word",
     "/blog/best-tools-for-students",
+    "/blog/best-free-image-converter-tools",
 
     // 🔥 Word to PDF Cluster
     "/blog/how-to-convert-word-to-pdf",

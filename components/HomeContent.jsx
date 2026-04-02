@@ -23,6 +23,7 @@ import {
     Eye,
     Smartphone,
 } from "lucide-react";
+import SisterSitesBanner from "./SisterSitesBanner";
 
 export default function HomeContent() {
     const router = useRouter();
@@ -377,6 +378,8 @@ export default function HomeContent() {
                     </div>
                 </div>
             </section>
+            
+            <SisterSitesBanner />
 
             {/* ── CTA STRIP ── */}
             <section className={styles.ctaStrip}>

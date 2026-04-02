@@ -4,4 +4,6 @@
 User-agent: *
 Allow: /
 
+Disallow: /cdn-cgi/
+
 Sitemap: https://pdflinx.com/sitemap.xml

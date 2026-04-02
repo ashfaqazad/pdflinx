@@ -255,7 +255,15 @@ export default function BlogClient() {
         "Submitting assignments as DOCX can break formatting or get rejected. Here's how students can convert Word to PDF properly before submission — fast, free, and reliable.",
       date: "Mar 21, 2026",
       slug: "word-to-pdf-for-students",
-    }
+    },
+
+    {
+      title: "Best Free Image Converter Tools Online in 2025",
+      description:
+        "Need to convert HEIC to JPG, WebP to PNG, or resize images without installing anything? I tested 10+ free image converter tools and found one that actually works — no watermarks, no signup, no file size tricks. Here's what I use now.",
+      date: "Apr 2, 2026",
+      slug: "best-free-image-converter-tools",
+    },
 
   ];
 

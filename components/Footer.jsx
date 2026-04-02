@@ -9,7 +9,7 @@ const Footer = () => {
   return (
     <footer className="bg-gradient-to-t from-gray-900 via-indigo-950 to-gray-900 text-gray-300 py-8">
       <div className="max-w-6xl mx-auto px-6">
-        <div className="grid grid-cols-1 md:grid-cols-6 gap-8 mb-6">
+        <div className="grid grid-cols-1 md:grid-cols-7 gap-8 mb-6">
 
           {/* Brand & Intro */}
           <div className="md:col-span-1">
@@ -59,6 +59,22 @@ const Footer = () => {
               <li><Link href="/terms-and-conditions" className="hover:text-indigo-400 transition">Terms of Service</Link></li>
             </ul>
           </div>
+
+        {/* Calculators */}
+          <div>
+            <h4 className="text-base font-semibold text-white mb-3">Calculators</h4>
+            <ul className="space-y-2 text-sm">
+              <li>
+                <Link href="/compress-pdf-savings-calculator" className="hover:text-indigo-400 transition flex items-center gap-1">
+                  Savings Calculator
+                </Link>
+              </li>
+              <li>
+                <span className="text-gray-600 text-xs">See how much you save by compressing</span>
+              </li>
+            </ul>
+          </div>
+
 
           {/* Developers */}
           <div>
