@@ -599,6 +599,7 @@ export default function PdfToWord({ seo }) {
           <h3 className="text-lg md:text-xl font-bold text-slate-900">
             Need to create a PDF too?
           </h3>
+
           <p className="mt-1 text-sm text-slate-600">
             Many workflows go both ways — convert documents into PDF, then edit PDFs back in Word.
           </p>
@@ -626,6 +627,12 @@ export default function PdfToWord({ seo }) {
                 Browse all PDF tools
               </Link>{" "}
               <span className="text-slate-600">— merge, split, compress, protect & more.</span>
+            </li>
+            <li>
+              <Link href="/pdf-to-word-for-students" className="text-blue-700 font-semibold hover:underline">
+                PDF to Word for Students
+              </Link>{" "}
+              <span className="text-slate-600">— optimized guide for students converting PDFs.</span>
             </li>
           </ul>
         </div>

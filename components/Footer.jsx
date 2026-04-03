@@ -57,10 +57,11 @@ const Footer = () => {
               <li><Link href="/contact" className="hover:text-indigo-400 transition">Contact</Link></li>
               <li><Link href="/privacy-policy" className="hover:text-indigo-400 transition">Privacy Policy</Link></li>
               <li><Link href="/terms-and-conditions" className="hover:text-indigo-400 transition">Terms of Service</Link></li>
+              <li><Link href="/compare/pdflinx-vs-ilovepdf" className="hover:text-indigo-400 transition">pdflinx vs iLovePDF</Link></li>
+              <li><Link href="/compare/pdflinx-vs-smallpdf" className="hover:text-indigo-400 transition">pdflinx vs Smallpdf</Link></li>
             </ul>
           </div>
-
-        {/* Calculators */}
+          {/* Calculators */}
           <div>
             <h4 className="text-base font-semibold text-white mb-3">Calculators</h4>
             <ul className="space-y-2 text-sm">

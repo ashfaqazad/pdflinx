@@ -388,8 +388,8 @@ export default function HomeContent() {
                     No account. No watermarks. No file size tricks. Just fast, private PDF tools that work.
                 </p>
                 <div>
-                    <a href="/pdf-to-word" className={styles.btnWhite}>
-                        Convert PDF to Word →
+                    <a href="/word-to-pdf" className={styles.btnWhite}>
+                        Convert Word to PDF →
                     </a>
                     <a href="/compress-pdf" className={styles.btnWhiteOutline}>
                         Compress a PDF

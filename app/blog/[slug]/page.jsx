@@ -138,12 +138,13 @@ const blogs = [
 
   <h2>How to Convert Word to PDF Free — Step by Step</h2>
 
-  <ol class="list-decimal list-inside space-y-3 ml-4 text-lg">
-    <li>Go to the <a href="/word-to-pdf" class="text-indigo-600 hover:underline">Word to PDF tool</a></li>
-    <li>Upload your DOC or DOCX file — or select multiple files for batch conversion</li>
-    <li>Click <strong>Convert to PDF</strong> and wait a few seconds</li>
-    <li>Download your PDF instantly — single file downloads as PDF, multiple files as ZIP</li>
-  </ol>
+<ol class="list-decimal list-inside space-y-3 ml-4 text-lg">
+  <li>Go to the <a href="/word-to-pdf" class="text-indigo-600 hover:underline">Word to PDF tool</a></li>
+  <li>Upload your DOC or DOCX file — or select multiple files for batch conversion</li>
+  <li>Click <strong>Convert to PDF</strong> and wait a few seconds</li>
+  <li>Download your PDF instantly — single file downloads as PDF, multiple files as ZIP</li>
+  <li>Are you a student? Check our <a href="/pdf-to-word-for-students" class="text-indigo-600 hover:underline">PDF to Word guide for students</a> — tips specifically for academic workflows.</li>
+</ol>
 
   <p>No signup required. No watermark added. Files are automatically deleted after conversion.</p>
 
