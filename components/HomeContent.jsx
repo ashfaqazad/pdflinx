@@ -378,7 +378,7 @@ export default function HomeContent() {
                     </div>
                 </div>
             </section>
-            
+
             <SisterSitesBanner />
 
             {/* ── CTA STRIP ── */}

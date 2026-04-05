@@ -3,6 +3,8 @@ const nextConfig = {
   // ✅ Performance: CSS & Console optimization
   experimental: {
     optimizeCss: true,
+    browsersListForSwc: true, // ✅ Sirf yeh add karo
+
   },
   compiler: {
     removeConsole: process.env.NODE_ENV === "production",
