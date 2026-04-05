@@ -310,7 +310,7 @@ export default function HomeContent() {
                     ))}
                 </div>
 
-                <div className={styles.toolsGrid}>
+                {/* <div className={styles.toolsGrid}>
                     {filtered.map((tool, i) => (
                         <div
                             key={i}
@@ -340,6 +340,39 @@ export default function HomeContent() {
                             <p className={styles.toolDesc}>{tool.desc}</p>
                             <span className={styles.toolLink}>Use Tool →</span>
                         </div>
+                    ))}
+                </div> */}
+
+                <div className={styles.toolsGrid}>
+                    {filtered.map((tool, i) => (
+                        <Link
+                            key={i}
+                            href={tool.link}
+                            className={styles.toolCard}
+                            style={{ "--accent": tool.accent }}
+                        >
+                            <div className={styles.toolCardTop}>
+                                <div
+                                    className={styles.toolIconWrap}
+                                    style={{ background: tool.accent }}
+                                >
+                                    {tool.icon}
+                                </div>
+
+                                {tool.badge && (
+                                    <span
+                                        className={styles.toolBadge}
+                                        style={{ background: tool.accent }}
+                                    >
+                                        {tool.badge}
+                                    </span>
+                                )}
+                            </div>
+
+                            <h3 className={styles.toolTitle}>{tool.title}</h3>
+                            <p className={styles.toolDesc}>{tool.desc}</p>
+                            <span className={styles.toolLink}>Use Tool →</span>
+                        </Link>
                     ))}
                 </div>
 
