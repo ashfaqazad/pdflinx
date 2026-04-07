@@ -19,7 +19,7 @@ const componentMap = {
   "sign-pdf": () => import("@/components/tools/SignPdf"),
   "ocr-pdf": () => import("@/components/tools/OCRPdf"),
   "edit-pdf": () => import("@/components/tools/EditPdf"),
-  // "pdf-to-excel": () => import("@/components/tools/PdfToExcel"),
+  "pdf-to-excel": () => import("@/components/tools/PdfToExcel"),
 
 };
 

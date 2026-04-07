@@ -102,10 +102,26 @@ export default function Navbar() {
                           <FileText size={20} className="text-red-600" />
                           <span className="font-medium text-gray-700">PDF to WORD</span>
                         </Link>
+
                         <Link href="/pdf-to-jpg" onClick={closeDropdown} className="flex items-center gap-3 px-3 py-2 rounded-xl text-sm hover:bg-indigo-50 transition-all duration-200 hover:translate-x-1">
-                          <ImageIcon size={20} className="text-orange-600" />
+                          {/* <ImageIcon size={20} className="text-orange-600" /> */}
+                          <FileSpreadsheet size={20} strokeWidth={2.5} className="text-green-600" />
                           <span className="font-medium text-gray-700">PDF to JPG</span>
                         </Link>
+
+                        {/* <Link href="/pdf-to-excel" onClick={closeDropdown} className="flex items-center gap-3 px-3 py-2 rounded-xl text-sm hover:bg-indigo-50 transition-all duration-200 hover:translate-x-1">
+                          <ImageIcon size={20} className="text-orange-600" />
+                          <span className="font-medium text-gray-700">PDF to Excel</span>
+                        </Link> */}
+
+                        <Link
+                          href="/pdf-to-excel"
+                          onClick={closeDropdown}
+                          className="flex items-center gap-3 px-3 py-2 rounded-xl text-sm hover:bg-indigo-50 transition-all duration-200 hover:translate-x-1"
+                        >
+                          <FileSpreadsheet size={20} strokeWidth={2.5} className="text-green-600" />
+                          <span className="font-medium text-gray-700">PDF to Excel</span>
+                        </Link>                        
                       </div>
                     </div>
 
@@ -212,10 +228,20 @@ export default function Navbar() {
                   </div>
                   <div>
                     <h3 className="font-bold text-sm text-gray-800 mb-2">Convert FROM PDF</h3>
+
                     <div className="space-y-2 text-sm">
                       <Link href="/pdf-to-word" onClick={closeMobile} className="flex items-center gap-2 text-gray-600 hover:text-indigo-600 py-1"><FileText size={16} className="text-red-600" />PDF to Word</Link>
                       <Link href="/pdf-to-jpg" onClick={closeMobile} className="flex items-center gap-2 text-gray-600 hover:text-indigo-600 py-1"><ImageIcon size={16} className="text-orange-600" />PDF to JPG</Link>
+                      <Link
+                        href="/pdf-to-excel"
+                        onClick={closeMobile}
+                        className="flex items-center gap-2 text-gray-600 hover:text-indigo-600 py-1"
+                      >
+                        <FileSpreadsheet size={16} className="text-green-600" />
+                        PDF to Excel
+                      </Link>
                     </div>
+
                   </div>
                   <div>
                     <h3 className="font-bold text-sm text-gray-800 mb-2">PDF SECURITY</h3>
