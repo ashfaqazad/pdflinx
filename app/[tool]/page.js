@@ -20,6 +20,9 @@ const componentMap = {
   "ocr-pdf": () => import("@/components/tools/OCRPdf"),
   "edit-pdf": () => import("@/components/tools/EditPdf"),
   "pdf-to-excel": () => import("@/components/tools/PdfToExcel"),
+  "remove-pages": () => import("@/components/tools/RemovePages"),
+  "add-page-numbers": () => import("@/components/tools/AddPageNumbers"),
+
 
 };
 

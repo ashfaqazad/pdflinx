@@ -36,7 +36,10 @@ export default function sitemap() {
     "/ocr-pdf",
     "/edit-pdf",
     "/add-watermark",
+    "/pdf-to-excel",
     "/compress-pdf-savings-calculator",
+    "/remove-pages",
+    "/add-page-numbers"
 
   ].map((url) => ({
     url,
