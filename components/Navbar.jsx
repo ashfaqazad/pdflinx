@@ -28,6 +28,7 @@ export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
+  const timeoutRef = useRef(null);
 
   const closeDropdown = () => setDropdownOpen(false);
   const closeMobile = () => setMobileOpen(false);
@@ -83,39 +84,38 @@ export default function Navbar() {
             </Link>
 
             {/* PDF TOOLS Dropdown (Desktop) */}
-            {/* <div className="relative" ref={dropdownRef}>
-              <button
-                onClick={() => setDropdownOpen(!dropdownOpen)}
-                className="flex items-center gap-2 text-gray-700 hover:text-indigo-600 font-semibold transition"
-              >
-                PDF Tools
-                <ChevronDown
-                  size={16}
-                  className={`transition-transform duration-200 ${dropdownOpen ? "rotate-180" : ""
-                    }`}
-                />
-              </button> */}
-
             <div
-              className="relative px-8"
+              className="relative"
               ref={dropdownRef}
-              onMouseEnter={() => window.innerWidth >= 1024 && setDropdownOpen(true)}
-              onMouseLeave={() => window.innerWidth >= 1024 && setDropdownOpen(false)}
+              onMouseEnter={() => {
+                if (window.innerWidth >= 1024) {
+                  clearTimeout(timeoutRef.current);
+                  setDropdownOpen(true);
+                }
+              }}
+              onMouseLeave={() => {
+                if (window.innerWidth >= 1024) {
+                  timeoutRef.current = setTimeout(() => {
+                    setDropdownOpen(false);
+                  }, 180);
+                }
+              }}
             >
               <button
-                onClick={() => setDropdownOpen(!dropdownOpen)}
+                onClick={() => setDropdownOpen((prev) => !prev)}
                 className="flex items-center gap-2 text-gray-700 hover:text-indigo-600 font-semibold transition"
               >
                 PDF Tools
                 <ChevronDown
                   size={16}
-                  className={`transition-transform duration-200 ${dropdownOpen ? "rotate-180" : ""
-                    }`}
+                  className={`transition-transform duration-200 ${
+                    dropdownOpen ? "rotate-180" : ""
+                  }`}
                 />
               </button>
 
               {dropdownOpen && (
-                <div className="absolute top-14 left-1/2 -translate-x-[72%] w-[1220px] bg-white/95 backdrop-blur-md rounded-2xl border border-gray-100 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.15)] overflow-hidden z-50">
+                <div className="absolute left-1/2 top-[calc(100%+12px)] -translate-x-[75%] w-[1180px] max-w-[calc(100vw-48px)] bg-white/95 backdrop-blur-md rounded-2xl border border-gray-100 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.15)] overflow-hidden z-50">
                   <div className="h-1 bg-gradient-to-r from-indigo-500 to-purple-500" />
 
                   <div className="px-6 py-4 bg-gradient-to-b from-gray-50 to-white">
@@ -288,17 +288,6 @@ export default function Navbar() {
                           </Link>
 
                           <Link
-                            href="/pdf-to-jpg"
-                            onClick={closeDropdown}
-                            className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm hover:bg-indigo-50 transition-all duration-200 hover:translate-x-1 whitespace-nowrap"
-                          >
-                            <ImageIcon size={18} className="text-orange-600 shrink-0" />
-                            <span className="font-medium text-gray-700 whitespace-nowrap">
-                              PDF to JPG
-                            </span>
-                          </Link>
-
-                          <Link
                             href="/pdf-to-excel"
                             onClick={closeDropdown}
                             className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm hover:bg-indigo-50 transition-all duration-200 hover:translate-x-1 whitespace-nowrap"
@@ -309,6 +298,17 @@ export default function Navbar() {
                             />
                             <span className="font-medium text-gray-700 whitespace-nowrap">
                               PDF to EXCEL
+                            </span>
+                          </Link>
+
+                          <Link
+                            href="/pdf-to-jpg"
+                            onClick={closeDropdown}
+                            className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm hover:bg-indigo-50 transition-all duration-200 hover:translate-x-1 whitespace-nowrap"
+                          >
+                            <ImageIcon size={18} className="text-orange-600 shrink-0" />
+                            <span className="font-medium text-gray-700 whitespace-nowrap">
+                              PDF to JPG
                             </span>
                           </Link>
                         </div>
@@ -444,11 +444,9 @@ export default function Navbar() {
       </div>
 
       {/* Mobile Menu */}
-      {/* {mobileOpen && (
-        <div className="lg:hidden bg-white border-t border-gray-100"> */}
       {mobileOpen && (
         <div className="lg:hidden fixed top-[73px] left-0 right-0 bottom-0 bg-white border-t border-gray-100 z-40 overflow-y-auto">
-          <div className="px-6 py-6 space-y-4">
+          <div className="px-6 py-6 space-y-4 pb-24">
             <Link
               href="/"
               onClick={closeMobile}
@@ -631,21 +629,21 @@ export default function Navbar() {
                       </Link>
 
                       <Link
-                        href="/pdf-to-jpg"
-                        onClick={closeMobile}
-                        className="flex items-center gap-2 text-gray-600 hover:text-indigo-600 py-1 whitespace-nowrap"
-                      >
-                        <ImageIcon size={16} className="text-orange-600 shrink-0" />
-                        PDF to JPG
-                      </Link>
-
-                      <Link
                         href="/pdf-to-excel"
                         onClick={closeMobile}
                         className="flex items-center gap-2 text-gray-600 hover:text-indigo-600 py-1 whitespace-nowrap"
                       >
                         <FileSpreadsheet size={16} className="text-green-600 shrink-0" />
                         PDF to Excel
+                      </Link>
+
+                      <Link
+                        href="/pdf-to-jpg"
+                        onClick={closeMobile}
+                        className="flex items-center gap-2 text-gray-600 hover:text-indigo-600 py-1 whitespace-nowrap"
+                      >
+                        <ImageIcon size={16} className="text-orange-600 shrink-0" />
+                        PDF to JPG
                       </Link>
                     </div>
                   </div>
@@ -759,6 +757,811 @@ export default function Navbar() {
     </nav>
   );
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// "use client";
+
+// import Link from "next/link";
+// import { useState, useRef } from "react";
+// import {
+//   ChevronDown,
+//   FileText,
+//   FileType,
+//   FileImage,
+//   FileSpreadsheet,
+//   FileMinus,
+//   FilePlus,
+//   Image as ImageIcon,
+//   ScanLine,
+//   FileEdit,
+//   Scissors,
+//   RotateCw,
+//   Trash2,
+//   Hash,
+//   Layers,
+//   Shield,
+//   PenSquare,
+//   Unlock,
+// } from "lucide-react";
+// import Image from "next/image";
+
+// export default function Navbar() {
+//   const [mobileOpen, setMobileOpen] = useState(false);
+//   const [dropdownOpen, setDropdownOpen] = useState(false);
+//   const dropdownRef = useRef(null);
+//   const timeoutRef = useRef(null);
+
+
+//   const closeDropdown = () => setDropdownOpen(false);
+//   const closeMobile = () => setMobileOpen(false);
+
+//   return (
+//     <nav className="bg-white shadow-md border-b border-gray-100 sticky top-0 z-50">
+//       <div className="max-w-7xl mx-auto px-6">
+//         <div className="flex justify-between items-center h-18">
+//           {/* Logo */}
+//           <Link href="/" className="flex items-center gap-2">
+//             <Image
+//               src="/pdflinx_logo.svg"
+//               alt="PDFLinx Logo"
+//               width={36}
+//               height={36}
+//               priority={true}
+//               fetchPriority="high"
+//             />
+//             <span className="font-semibold text-xl italic">pdflinx</span>
+//           </Link>
+
+//           {/* Desktop Menu */}
+//           <div className="hidden lg:flex items-center gap-8">
+//             <Link
+//               href="/"
+//               className="text-gray-700 hover:text-indigo-600 font-semibold transition"
+//             >
+//               Home
+//             </Link>
+//             <Link
+//               href="/pdf-to-word"
+//               className="text-gray-700 hover:text-indigo-600 font-semibold transition"
+//             >
+//               PDF to Word
+//             </Link>
+//             <Link
+//               href="/merge-pdf"
+//               className="text-gray-700 hover:text-indigo-600 font-semibold transition"
+//             >
+//               Merge PDF
+//             </Link>
+//             <Link
+//               href="/split-pdf"
+//               className="text-gray-700 hover:text-indigo-600 font-semibold transition"
+//             >
+//               Split PDF
+//             </Link>
+//             <Link
+//               href="/compress-pdf"
+//               className="text-gray-700 hover:text-indigo-600 font-semibold transition"
+//             >
+//               Compress PDF
+//             </Link>
+
+//             {/* PDF TOOLS Dropdown (Desktop) */}
+//             {/* <div className="relative" ref={dropdownRef}>
+//               <button
+//                 onClick={() => setDropdownOpen(!dropdownOpen)}
+//                 className="flex items-center gap-2 text-gray-700 hover:text-indigo-600 font-semibold transition"
+//               >
+//                 PDF Tools
+//                 <ChevronDown
+//                   size={16}
+//                   className={`transition-transform duration-200 ${dropdownOpen ? "rotate-180" : ""
+//                     }`}
+//                 />
+//               </button> */}
+
+//             <div
+//               className="relative"
+//               ref={dropdownRef}
+//               onMouseEnter={() => {
+//                 if (window.innerWidth >= 1024) {
+//                   clearTimeout(timeoutRef.current);
+//                   setDropdownOpen(true);
+//                 }
+//               }}
+//               onMouseLeave={() => {
+//                 if (window.innerWidth >= 1024) {
+//                   timeoutRef.current = setTimeout(() => {
+//                     setDropdownOpen(false);
+//                   }, 150); // 👈 delay (important)
+//                 }
+//               }}
+//             >
+//               <button
+//                 onClick={() => setDropdownOpen(!dropdownOpen)}
+//                 className="flex items-center gap-2 text-gray-700 hover:text-indigo-600 font-semibold transition"
+//               >
+//                 PDF Tools
+//                 <ChevronDown
+//                   size={16}
+//                   className={`transition-transform duration-200 ${dropdownOpen ? "rotate-180" : ""
+//                     }`}
+//                 />
+//               </button>
+
+//               {dropdownOpen && (
+//                 <div className="absolute top-full left-1/2 -translate-x-[68%] w-[1220px] bg-white/95 backdrop-blur-md rounded-2xl border border-gray-100 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.15)] overflow-hidden z-50">
+//                   <div className="h-1 bg-gradient-to-r from-indigo-500 to-purple-500" />
+
+//                   <div className="px-6 py-4 bg-gradient-to-b from-gray-50 to-white">
+//                     <div className="mb-4">
+
+
+//                       <Link
+//                         href="/free-pdf-tools"
+//                         onClick={closeDropdown}
+//                         className="flex items-center justify-center gap-2 px-4 py-2 rounded-xl bg-indigo-50 text-indigo-700 font-semibold hover:bg-indigo-100 transition text-sm"
+//                       >
+//                         🔹 All PDF Tools
+//                       </Link>
+//                     </div>
+
+//                     <div className="grid grid-cols-6 gap-6">
+//                       {/* ORGANIZE PDF */}
+//                       <div className="min-w-[165px]">
+//                         <h3 className="text-xs uppercase tracking-wider text-gray-500 font-semibold mb-3">
+//                           Organize PDF
+//                         </h3>
+//                         <div className="space-y-1">
+//                           <Link
+//                             href="/merge-pdf"
+//                             onClick={closeDropdown}
+//                             className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm hover:bg-indigo-50 transition-all duration-200 hover:translate-x-1 whitespace-nowrap"
+//                           >
+//                             <Layers size={18} className="text-red-500 shrink-0" />
+//                             <span className="font-medium text-gray-700 whitespace-nowrap">
+//                               Merge PDF
+//                             </span>
+//                           </Link>
+
+//                           <Link
+//                             href="/split-pdf"
+//                             onClick={closeDropdown}
+//                             className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm hover:bg-indigo-50 transition-all duration-200 hover:translate-x-1 whitespace-nowrap"
+//                           >
+//                             <Scissors size={18} className="text-red-500 shrink-0" />
+//                             <span className="font-medium text-gray-700 whitespace-nowrap">
+//                               Split PDF
+//                             </span>
+//                           </Link>
+
+//                           <Link
+//                             href="/remove-pages"
+//                             onClick={closeDropdown}
+//                             className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm hover:bg-indigo-50 transition-all duration-200 hover:translate-x-1 whitespace-nowrap"
+//                           >
+//                             <Trash2 size={18} className="text-red-500 shrink-0" />
+//                             <span className="font-medium text-gray-700 whitespace-nowrap">
+//                               Remove Pages
+//                             </span>
+//                           </Link>
+//                         </div>
+//                       </div>
+
+//                       {/* OPTIMIZE PDF */}
+//                       <div className="min-w-[165px] border-l border-gray-100 pl-5">
+//                         <h3 className="text-xs uppercase tracking-wider text-gray-500 font-semibold mb-3">
+//                           Optimize PDF
+//                         </h3>
+//                         <div className="space-y-1">
+//                           <Link
+//                             href="/compress-pdf"
+//                             onClick={closeDropdown}
+//                             className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm hover:bg-indigo-50 transition-all duration-200 hover:translate-x-1 whitespace-nowrap"
+//                           >
+//                             <FileMinus size={18} className="text-green-600 shrink-0" />
+//                             <span className="font-medium text-gray-700 whitespace-nowrap">
+//                               Compress PDF
+//                             </span>
+//                           </Link>
+
+//                           <Link
+//                             href="/ocr-pdf"
+//                             onClick={closeDropdown}
+//                             className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm hover:bg-indigo-50 transition-all duration-200 hover:translate-x-1 whitespace-nowrap"
+//                           >
+//                             <ScanLine size={18} className="text-green-600 shrink-0" />
+//                             <span className="font-medium text-gray-700 whitespace-nowrap">
+//                               OCR PDF
+//                             </span>
+//                           </Link>
+//                         </div>
+//                       </div>
+
+//                       {/* CONVERT TO PDF */}
+//                       <div className="min-w-[175px] border-l border-gray-100 pl-5">
+//                         <h3 className="text-xs uppercase tracking-wider text-gray-500 font-semibold mb-3">
+//                           Convert to PDF
+//                         </h3>
+//                         <div className="space-y-1">
+//                           <Link
+//                             href="/word-to-pdf"
+//                             onClick={closeDropdown}
+//                             className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm hover:bg-indigo-50 transition-all duration-200 hover:translate-x-1 whitespace-nowrap"
+//                           >
+//                             <FileType size={18} className="text-blue-600 shrink-0" />
+//                             <span className="font-medium text-gray-700 whitespace-nowrap">
+//                               WORD to PDF
+//                             </span>
+//                           </Link>
+
+//                           <Link
+//                             href="/excel-pdf"
+//                             onClick={closeDropdown}
+//                             className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm hover:bg-indigo-50 transition-all duration-200 hover:translate-x-1 whitespace-nowrap"
+//                           >
+//                             <FileSpreadsheet
+//                               size={18}
+//                               className="text-green-600 shrink-0"
+//                             />
+//                             <span className="font-medium text-gray-700 whitespace-nowrap">
+//                               EXCEL to PDF
+//                             </span>
+//                           </Link>
+
+//                           <Link
+//                             href="/ppt-to-pdf"
+//                             onClick={closeDropdown}
+//                             className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm hover:bg-indigo-50 transition-all duration-200 hover:translate-x-1 whitespace-nowrap"
+//                           >
+//                             <FileSpreadsheet
+//                               size={18}
+//                               className="text-orange-500 shrink-0"
+//                             />
+//                             <span className="font-medium text-gray-700 whitespace-nowrap">
+//                               POWERPOINT to PDF
+//                             </span>
+//                           </Link>
+
+//                           <Link
+//                             href="/image-to-pdf"
+//                             onClick={closeDropdown}
+//                             className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm hover:bg-indigo-50 transition-all duration-200 hover:translate-x-1 whitespace-nowrap"
+//                           >
+//                             <FileImage size={18} className="text-orange-600 shrink-0" />
+//                             <span className="font-medium text-gray-700 whitespace-nowrap">
+//                               JPG to PDF
+//                             </span>
+//                           </Link>
+
+//                           <Link
+//                             href="/text-to-pdf"
+//                             onClick={closeDropdown}
+//                             className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm hover:bg-indigo-50 transition-all duration-200 hover:translate-x-1 whitespace-nowrap"
+//                           >
+//                             <FileText size={18} className="text-purple-600 shrink-0" />
+//                             <span className="font-medium text-gray-700 whitespace-nowrap">
+//                               Text to PDF
+//                             </span>
+//                           </Link>
+//                         </div>
+//                       </div>
+
+//                       {/* CONVERT FROM PDF */}
+//                       <div className="min-w-[170px] border-l border-gray-100 pl-5">
+//                         <h3 className="text-xs uppercase tracking-wider text-gray-500 font-semibold mb-3">
+//                           Convert from PDF
+//                         </h3>
+//                         <div className="space-y-1">
+//                           <Link
+//                             href="/pdf-to-word"
+//                             onClick={closeDropdown}
+//                             className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm hover:bg-indigo-50 transition-all duration-200 hover:translate-x-1 whitespace-nowrap"
+//                           >
+//                             <FileText size={18} className="text-red-600 shrink-0" />
+//                             <span className="font-medium text-gray-700 whitespace-nowrap">
+//                               PDF to WORD
+//                             </span>
+//                           </Link>
+
+//                           <Link
+//                             href="/pdf-to-jpg"
+//                             onClick={closeDropdown}
+//                             className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm hover:bg-indigo-50 transition-all duration-200 hover:translate-x-1 whitespace-nowrap"
+//                           >
+//                             <ImageIcon size={18} className="text-orange-600 shrink-0" />
+//                             <span className="font-medium text-gray-700 whitespace-nowrap">
+//                               PDF to JPG
+//                             </span>
+//                           </Link>
+
+//                           <Link
+//                             href="/pdf-to-excel"
+//                             onClick={closeDropdown}
+//                             className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm hover:bg-indigo-50 transition-all duration-200 hover:translate-x-1 whitespace-nowrap"
+//                           >
+//                             <FileSpreadsheet
+//                               size={18}
+//                               className="text-green-600 shrink-0"
+//                             />
+//                             <span className="font-medium text-gray-700 whitespace-nowrap">
+//                               PDF to EXCEL
+//                             </span>
+//                           </Link>
+//                         </div>
+//                       </div>
+
+//                       {/* EDIT PDF */}
+//                       <div className="min-w-[175px] border-l border-gray-100 pl-5">
+//                         <h3 className="text-xs uppercase tracking-wider text-gray-500 font-semibold mb-3">
+//                           Edit PDF
+//                         </h3>
+//                         <div className="space-y-1">
+//                           <Link
+//                             href="/rotate-pdf"
+//                             onClick={closeDropdown}
+//                             className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm hover:bg-indigo-50 transition-all duration-200 hover:translate-x-1 whitespace-nowrap"
+//                           >
+//                             <RotateCw size={18} className="text-purple-600 shrink-0" />
+//                             <span className="font-medium text-gray-700 whitespace-nowrap">
+//                               Rotate PDF
+//                             </span>
+//                           </Link>
+
+//                           <Link
+//                             href="/add-page-numbers"
+//                             onClick={closeDropdown}
+//                             className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm hover:bg-indigo-50 transition-all duration-200 hover:translate-x-1 whitespace-nowrap"
+//                           >
+//                             <Hash size={18} className="text-blue-600 shrink-0" />
+//                             <span className="font-medium text-gray-700 whitespace-nowrap">
+//                               Add Page Numbers
+//                             </span>
+//                           </Link>
+
+//                           <Link
+//                             href="/add-watermark"
+//                             onClick={closeDropdown}
+//                             className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm hover:bg-indigo-50 transition-all duration-200 hover:translate-x-1 whitespace-nowrap"
+//                           >
+//                             <FilePlus size={18} className="text-emerald-600 shrink-0" />
+//                             <span className="font-medium text-gray-700 whitespace-nowrap">
+//                               Add Watermark
+//                             </span>
+//                           </Link>
+
+//                           <Link
+//                             href="/edit-pdf"
+//                             onClick={closeDropdown}
+//                             className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm hover:bg-indigo-50 transition-all duration-200 hover:translate-x-1 whitespace-nowrap"
+//                           >
+//                             <FileEdit size={18} className="text-orange-600 shrink-0" />
+//                             <span className="font-medium text-gray-700 whitespace-nowrap">
+//                               Edit PDF
+//                             </span>
+//                           </Link>
+//                         </div>
+//                       </div>
+
+//                       {/* PDF SECURITY */}
+//                       <div className="min-w-[165px] border-l border-gray-100 pl-5">
+//                         <h3 className="text-xs uppercase tracking-wider text-gray-500 font-semibold mb-3">
+//                           PDF Security
+//                         </h3>
+//                         <div className="space-y-1">
+//                           <Link
+//                             href="/protect-pdf"
+//                             onClick={closeDropdown}
+//                             className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm hover:bg-indigo-50 transition-all duration-200 hover:translate-x-1 whitespace-nowrap"
+//                           >
+//                             <Shield size={18} className="text-purple-600 shrink-0" />
+//                             <span className="font-medium text-gray-700 whitespace-nowrap">
+//                               Protect PDF
+//                             </span>
+//                           </Link>
+
+//                           <Link
+//                             href="/unlock-pdf"
+//                             onClick={closeDropdown}
+//                             className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm hover:bg-indigo-50 transition-all duration-200 hover:translate-x-1 whitespace-nowrap"
+//                           >
+//                             <Unlock size={18} className="text-emerald-600 shrink-0" />
+//                             <span className="font-medium text-gray-700 whitespace-nowrap">
+//                               Unlock PDF
+//                             </span>
+//                           </Link>
+
+//                           <Link
+//                             href="/sign-pdf"
+//                             onClick={closeDropdown}
+//                             className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm hover:bg-indigo-50 transition-all duration-200 hover:translate-x-1 whitespace-nowrap"
+//                           >
+//                             <PenSquare size={18} className="text-emerald-600 shrink-0" />
+//                             <span className="font-medium text-gray-700 whitespace-nowrap">
+//                               Sign PDF
+//                             </span>
+//                           </Link>
+//                         </div>
+//                       </div>
+//                     </div>
+//                   </div>
+//                 </div>
+//               )}
+//             </div>
+
+//             <Link
+//               href="/blog"
+//               className="text-gray-700 hover:text-indigo-600 font-semibold transition"
+//             >
+//               Blog
+//             </Link>
+//             <Link
+//               href="/about"
+//               className="text-gray-700 hover:text-indigo-600 font-semibold transition"
+//             >
+//               About
+//             </Link>
+//             <Link
+//               href="/contact"
+//               className="text-gray-700 hover:text-indigo-600 font-semibold transition"
+//             >
+//               Contact
+//             </Link>
+//           </div>
+
+//           {/* Mobile Menu Button */}
+//           <button
+//             onClick={() => setMobileOpen(!mobileOpen)}
+//             className="lg:hidden text-gray-700 hover:text-indigo-600 text-3xl"
+//             aria-label="Toggle mobile menu"
+//           >
+//             {mobileOpen ? "×" : "☰"}
+//           </button>
+//         </div>
+//       </div>
+
+//       {/* Mobile Menu */}
+//       {/* {mobileOpen && (
+//         <div className="lg:hidden bg-white border-t border-gray-100"> */}
+//       {mobileOpen && (
+//         <div className="lg:hidden fixed top-[73px] left-0 right-0 bottom-0 bg-white border-t border-gray-100 z-40 overflow-y-auto">
+//           <div className="px-6 py-6 space-y-4">
+//             <Link
+//               href="/"
+//               onClick={closeMobile}
+//               className="block font-semibold text-gray-800 py-2"
+//             >
+//               Home
+//             </Link>
+//             <Link
+//               href="/pdf-to-word"
+//               onClick={closeMobile}
+//               className="block font-semibold text-gray-800 py-2"
+//             >
+//               PDF to Word
+//             </Link>
+//             <Link
+//               href="/merge-pdf"
+//               onClick={closeMobile}
+//               className="block font-semibold text-gray-800 py-2"
+//             >
+//               Merge PDF
+//             </Link>
+//             <Link
+//               href="/split-pdf"
+//               onClick={closeMobile}
+//               className="block font-semibold text-gray-800 py-2"
+//             >
+//               Split PDF
+//             </Link>
+//             <Link
+//               href="/compress-pdf"
+//               onClick={closeMobile}
+//               className="block font-semibold text-gray-800 py-2"
+//             >
+//               Compress PDF
+//             </Link>
+
+//             <details className="group">
+//               <summary className="flex justify-between items-center font-semibold text-gray-800 cursor-pointer py-2">
+//                 PDF Tools
+//                 <ChevronDown className="group-open:rotate-180 transition" />
+//               </summary>
+
+//               <Link
+//                 href="/free-pdf-tools"
+//                 onClick={closeMobile}
+//                 className="block font-semibold text-indigo-600 py-2 border-b border-gray-100"
+//               >
+//                 🔹 All PDF Tools
+//               </Link>
+
+//               <div className="mt-3 rounded-xl border border-gray-100 bg-white shadow-sm p-4">
+//                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+//                   {/* Organize PDF */}
+//                   <div>
+//                     <h3 className="font-bold text-sm text-gray-800 mb-2">
+//                       Organize PDF
+//                     </h3>
+//                     <div className="space-y-2 text-sm">
+//                       <Link
+//                         href="/merge-pdf"
+//                         onClick={closeMobile}
+//                         className="flex items-center gap-2 text-gray-600 hover:text-indigo-600 py-1 whitespace-nowrap"
+//                       >
+//                         <Layers size={16} className="text-red-500 shrink-0" />
+//                         Merge PDF
+//                       </Link>
+
+//                       <Link
+//                         href="/split-pdf"
+//                         onClick={closeMobile}
+//                         className="flex items-center gap-2 text-gray-600 hover:text-indigo-600 py-1 whitespace-nowrap"
+//                       >
+//                         <Scissors size={16} className="text-red-500 shrink-0" />
+//                         Split PDF
+//                       </Link>
+
+//                       <Link
+//                         href="/remove-pages"
+//                         onClick={closeMobile}
+//                         className="flex items-center gap-2 text-gray-600 hover:text-indigo-600 py-1 whitespace-nowrap"
+//                       >
+//                         <Trash2 size={16} className="text-red-500 shrink-0" />
+//                         Remove Pages
+//                       </Link>
+//                     </div>
+//                   </div>
+
+//                   {/* Optimize PDF */}
+//                   <div>
+//                     <h3 className="font-bold text-sm text-gray-800 mb-2">
+//                       Optimize PDF
+//                     </h3>
+//                     <div className="space-y-2 text-sm">
+//                       <Link
+//                         href="/compress-pdf"
+//                         onClick={closeMobile}
+//                         className="flex items-center gap-2 text-gray-600 hover:text-indigo-600 py-1 whitespace-nowrap"
+//                       >
+//                         <FileMinus size={16} className="text-green-600 shrink-0" />
+//                         Compress PDF
+//                       </Link>
+
+//                       <Link
+//                         href="/ocr-pdf"
+//                         onClick={closeMobile}
+//                         className="flex items-center gap-2 text-gray-600 hover:text-indigo-600 py-1 whitespace-nowrap"
+//                       >
+//                         <ScanLine size={16} className="text-green-600 shrink-0" />
+//                         OCR PDF
+//                       </Link>
+//                     </div>
+//                   </div>
+
+//                   {/* Convert TO PDF */}
+//                   <div>
+//                     <h3 className="font-bold text-sm text-gray-800 mb-2">
+//                       Convert TO PDF
+//                     </h3>
+//                     <div className="space-y-2 text-sm">
+//                       <Link
+//                         href="/word-to-pdf"
+//                         onClick={closeMobile}
+//                         className="flex items-center gap-2 text-gray-600 hover:text-indigo-600 py-1 whitespace-nowrap"
+//                       >
+//                         <FileType size={16} className="text-blue-600 shrink-0" />
+//                         Word to PDF
+//                       </Link>
+
+//                       <Link
+//                         href="/excel-pdf"
+//                         onClick={closeMobile}
+//                         className="flex items-center gap-2 text-gray-600 hover:text-indigo-600 py-1 whitespace-nowrap"
+//                       >
+//                         <FileSpreadsheet size={16} className="text-green-600 shrink-0" />
+//                         Excel to PDF
+//                       </Link>
+
+//                       <Link
+//                         href="/ppt-to-pdf"
+//                         onClick={closeMobile}
+//                         className="flex items-center gap-2 text-gray-600 hover:text-indigo-600 py-1 whitespace-nowrap"
+//                       >
+//                         <FileSpreadsheet size={16} className="text-orange-500 shrink-0" />
+//                         PowerPoint to PDF
+//                       </Link>
+
+//                       <Link
+//                         href="/image-to-pdf"
+//                         onClick={closeMobile}
+//                         className="flex items-center gap-2 text-gray-600 hover:text-indigo-600 py-1 whitespace-nowrap"
+//                       >
+//                         <FileImage size={16} className="text-orange-600 shrink-0" />
+//                         JPG to PDF
+//                       </Link>
+
+//                       <Link
+//                         href="/text-to-pdf"
+//                         onClick={closeMobile}
+//                         className="flex items-center gap-2 text-gray-600 hover:text-indigo-600 py-1 whitespace-nowrap"
+//                       >
+//                         <FileText size={16} className="text-purple-600 shrink-0" />
+//                         Text to PDF
+//                       </Link>
+//                     </div>
+//                   </div>
+
+//                   {/* Convert FROM PDF */}
+//                   <div>
+//                     <h3 className="font-bold text-sm text-gray-800 mb-2">
+//                       Convert FROM PDF
+//                     </h3>
+//                     <div className="space-y-2 text-sm">
+//                       <Link
+//                         href="/pdf-to-word"
+//                         onClick={closeMobile}
+//                         className="flex items-center gap-2 text-gray-600 hover:text-indigo-600 py-1 whitespace-nowrap"
+//                       >
+//                         <FileText size={16} className="text-red-600 shrink-0" />
+//                         PDF to Word
+//                       </Link>
+
+//                       <Link
+//                         href="/pdf-to-jpg"
+//                         onClick={closeMobile}
+//                         className="flex items-center gap-2 text-gray-600 hover:text-indigo-600 py-1 whitespace-nowrap"
+//                       >
+//                         <ImageIcon size={16} className="text-orange-600 shrink-0" />
+//                         PDF to JPG
+//                       </Link>
+
+//                       <Link
+//                         href="/pdf-to-excel"
+//                         onClick={closeMobile}
+//                         className="flex items-center gap-2 text-gray-600 hover:text-indigo-600 py-1 whitespace-nowrap"
+//                       >
+//                         <FileSpreadsheet size={16} className="text-green-600 shrink-0" />
+//                         PDF to Excel
+//                       </Link>
+//                     </div>
+//                   </div>
+
+//                   {/* Edit PDF */}
+//                   <div>
+//                     <h3 className="font-bold text-sm text-gray-800 mb-2">
+//                       Edit PDF
+//                     </h3>
+//                     <div className="space-y-2 text-sm">
+//                       <Link
+//                         href="/rotate-pdf"
+//                         onClick={closeMobile}
+//                         className="flex items-center gap-2 text-gray-600 hover:text-indigo-600 py-1 whitespace-nowrap"
+//                       >
+//                         <RotateCw size={16} className="text-purple-600 shrink-0" />
+//                         Rotate PDF
+//                       </Link>
+
+//                       <Link
+//                         href="/add-page-numbers"
+//                         onClick={closeMobile}
+//                         className="flex items-center gap-2 text-gray-600 hover:text-indigo-600 py-1 whitespace-nowrap"
+//                       >
+//                         <Hash size={16} className="text-blue-600 shrink-0" />
+//                         Add Page Numbers
+//                       </Link>
+
+//                       <Link
+//                         href="/add-watermark"
+//                         onClick={closeMobile}
+//                         className="flex items-center gap-2 text-gray-600 hover:text-indigo-600 py-1 whitespace-nowrap"
+//                       >
+//                         <FilePlus size={16} className="text-emerald-600 shrink-0" />
+//                         Add Watermark
+//                       </Link>
+
+//                       <Link
+//                         href="/edit-pdf"
+//                         onClick={closeMobile}
+//                         className="flex items-center gap-2 text-gray-600 hover:text-indigo-600 py-1 whitespace-nowrap"
+//                       >
+//                         <FileEdit size={16} className="text-orange-600 shrink-0" />
+//                         Edit PDF
+//                       </Link>
+//                     </div>
+//                   </div>
+
+//                   {/* PDF Security */}
+//                   <div>
+//                     <h3 className="font-bold text-sm text-gray-800 mb-2">
+//                       PDF Security
+//                     </h3>
+//                     <div className="space-y-2 text-sm">
+//                       <Link
+//                         href="/protect-pdf"
+//                         onClick={closeMobile}
+//                         className="flex items-center gap-2 text-gray-600 hover:text-indigo-600 py-1 whitespace-nowrap"
+//                       >
+//                         <Shield size={16} className="text-purple-600 shrink-0" />
+//                         Protect PDF
+//                       </Link>
+
+//                       <Link
+//                         href="/unlock-pdf"
+//                         onClick={closeMobile}
+//                         className="flex items-center gap-2 text-gray-600 hover:text-indigo-600 py-1 whitespace-nowrap"
+//                       >
+//                         <Unlock size={16} className="text-emerald-600 shrink-0" />
+//                         Unlock PDF
+//                       </Link>
+
+//                       <Link
+//                         href="/sign-pdf"
+//                         onClick={closeMobile}
+//                         className="flex items-center gap-2 text-gray-600 hover:text-indigo-600 py-1 whitespace-nowrap"
+//                       >
+//                         <PenSquare size={16} className="text-emerald-600 shrink-0" />
+//                         Sign PDF
+//                       </Link>
+//                     </div>
+//                   </div>
+//                 </div>
+//               </div>
+//             </details>
+
+//             <Link
+//               href="/blog"
+//               onClick={closeMobile}
+//               className="block font-semibold text-gray-800 py-2"
+//             >
+//               Blog
+//             </Link>
+//             <Link
+//               href="/about"
+//               onClick={closeMobile}
+//               className="block font-semibold text-gray-800 py-2"
+//             >
+//               About
+//             </Link>
+//             <Link
+//               href="/contact"
+//               onClick={closeMobile}
+//               className="block font-semibold text-gray-800 py-2"
+//             >
+//               Contact
+//             </Link>
+//           </div>
+//         </div>
+//       )}
+//     </nav>
+//   );
+// }
 
 
 
