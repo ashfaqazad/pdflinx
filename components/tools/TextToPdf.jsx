@@ -91,55 +91,127 @@ export default function TextToPDF() {
       />
 
       {/* ==================== MAIN TOOL SECTION ==================== */}
-      <main className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 py-8 px-4">
-        <div className="max-w-4xl mx-auto">
-          {/* Header */}
-          <div className="text-center mb-8">
-            <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent mb-4">
-              Text to PDF Converter <br /> Online (Free)
-            </h1>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Turn your notes, letters, or any random text into a clean, professional PDF in seconds. No fuss, no watermarks – just pure magic!
+<main className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 py-8 px-4">
+  <div className="max-w-4xl mx-auto">
+
+    {/* Header */}
+    <div className="text-center mb-8">
+      <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent mb-4">
+        Text to PDF Converter Online Free
+        <br />
+        <span className="text-2xl md:text-3xl font-medium">
+          No Signup · No Watermark · Instant Download
+        </span>
+      </h1>
+      <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+        Convert plain text into a clean PDF online free — no signup, no watermark,
+        no software needed. Paste notes, letters, resumes, essays, or any long text
+        and download a properly formatted PDF in seconds.
+      </p>
+    </div>
+
+    {/* ── STEP STRIP ── */}
+    <div className="grid grid-cols-3 mb-4 rounded-2xl overflow-hidden border border-gray-100 bg-white shadow-sm">
+      {[
+        { n: "1", label: "Paste Text", sub: "Notes, letters, content" },
+        { n: "2", label: "Generate PDF", sub: "Formatted automatically" },
+        { n: "3", label: "Download File", sub: "Instant PDF export" },
+      ].map((s, i) => (
+        <div
+          key={i}
+          className={`flex flex-col items-center py-4 px-2 text-center ${i < 2 ? "border-r border-gray-100" : ""}`}
+        >
+          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-indigo-500 flex items-center justify-center text-white text-sm font-bold mb-1 shadow-sm">
+            {s.n}
+          </div>
+          <p className="text-xs font-semibold text-gray-700">{s.label}</p>
+          <p className="text-xs text-gray-400 hidden sm:block">{s.sub}</p>
+        </div>
+      ))}
+    </div>
+
+    {/* ── MAIN CARD ── */}
+    <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
+      <div className="p-8 space-y-5">
+
+        {/* textarea header */}
+        <div className="flex items-start gap-2.5 bg-gray-50 border border-gray-200 rounded-xl px-4 py-3">
+          <Type className="w-4 h-4 text-gray-400 mt-0.5 shrink-0" />
+          <div>
+            <p className="text-sm font-medium text-gray-700 leading-none">Plain text editor</p>
+            <p className="text-xs text-gray-400 mt-0.5">
+              Paste or type your content · Multi-page PDF supported automatically
             </p>
           </div>
+        </div>
 
-          {/* Tool Card */}
-          <div className="bg-white rounded-2xl shadow-lg p-8 border border-gray-100">
-            <div className="mb-6">
-              <label className="flex items-center gap-2 text-lg font-semibold text-gray-700 mb-3">
-                <Type className="w-6 h-6 text-blue-600" />
-                Drop Your Text Here
-              </label>
-              <textarea
-                value={text}
-                onChange={(e) => setText(e.target.value)}
-                placeholder="Go ahead – paste your resume, story, notes, shopping list, or whatever's on your mind..."
-                className="w-full h-80 p-6 text-base leading-relaxed border-2 border-gray-300 rounded-xl focus:border-blue-600 outline-none resize-y bg-gray-50 transition-shadow hover:shadow-inner"
-                spellCheck="true"
-              />
-              <p className="text-right text-gray-500 mt-2 text-sm">
-                {text.length} characters
+        {/* textarea */}
+        <div>
+          <label className="flex items-center gap-2 text-base font-semibold text-gray-700 mb-3">
+            <FileText className="w-5 h-5 text-blue-600" />
+            Enter your text
+          </label>
+
+          <textarea
+            value={text}
+            onChange={(e) => setText(e.target.value)}
+            placeholder="Paste your notes, resume, letter, article, assignment, or any plain text here..."
+            className="w-full min-h-[320px] p-6 text-base leading-relaxed border-2 border-gray-200 rounded-2xl focus:border-blue-500 outline-none resize-y bg-gray-50 transition-all duration-200"
+            spellCheck="true"
+          />
+
+          <div className="flex items-center justify-between mt-3">
+            <p className="text-xs text-gray-400">
+              Best for notes, letters, essays, resumes, and long-form text
+            </p>
+            <p className="text-sm text-gray-500 font-medium">
+              {text.length} characters
+            </p>
+          </div>
+        </div>
+
+        {/* action row */}
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-1">
+          <div className="flex items-start gap-2.5 bg-blue-50 border border-blue-100 rounded-xl px-4 py-3 flex-1">
+            <CheckCircle className="w-4 h-4 text-blue-500 mt-0.5 shrink-0" />
+            <div>
+              <p className="text-sm font-medium text-gray-700 leading-none">Auto page handling</p>
+              <p className="text-xs text-gray-400 mt-0.5">
+                Long text automatically flows across multiple PDF pages
               </p>
-            </div>
-
-            <div className="text-center">
-              <button
-                onClick={generatePDF}
-                disabled={!text.trim()}
-                className="bg-gradient-to-r from-blue-600 to-indigo-700 text-white font-semibold text-lg px-10 py-4 rounded-xl hover:from-blue-700 hover:to-indigo-800 disabled:opacity-60 disabled:cursor-not-allowed transition shadow-md flex items-center justify-center gap-2 mx-auto"
-              >
-                <Download className="w-5 h-5" />
-                Download as PDF
-              </button>
             </div>
           </div>
 
-          <p className="text-center mt-6 text-gray-600 text-base">
-            No account needed • Convert as much as you like • Looks sharp every time • Totally free
-          </p>
+          <button
+            onClick={generatePDF}
+            disabled={!text.trim()}
+            className={`flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm text-white transition-all duration-200 shadow-sm sm:w-auto w-full ${
+              text.trim()
+                ? "bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 hover:shadow-md active:scale-[0.98]"
+                : "bg-gray-200 text-gray-400 cursor-not-allowed"
+            }`}
+          >
+            <Download className="w-4 h-4" />
+            Download as PDF
+          </button>
         </div>
-      </main>
 
+        {/* hints */}
+        <div className="text-xs text-gray-400 text-center space-y-0.5 pb-1">
+          <p>⚡ PDF is generated instantly in your browser</p>
+          <p>🔒 Your text is not uploaded — it stays on your device during generation</p>
+        </div>
+
+      </div>
+    </div>
+
+    {/* footer trust bar */}
+    <p className="text-center mt-6 text-gray-500 text-sm">
+      No account needed • No watermark • Instant PDF export • 100% free •
+      Multi-page support • Works on Windows, Mac, Android &amp; iOS
+    </p>
+  </div>
+</main>
       {/* ==================== SEO CONTENT SECTION ==================== */}
       <section className="mt-16 max-w-4xl mx-auto px-6 pb-16">
         {/* Main Heading */}

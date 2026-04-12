@@ -1,12 +1,26 @@
 "use client";
 
+// import { useState } from "react";
+// import { Upload, Hash, CheckCircle, FileText } from "lucide-react";
+// import Script from "next/script";
+// import RelatedToolsSection from "@/components/RelatedTools";
+// import { useProgressBar } from "@/hooks/useProgressBar";
+// import ProgressButton from "@/components/ProgressButton";
+// import dynamic from "next/dynamic";
 import { useState } from "react";
-import { Upload, Hash, CheckCircle, FileText } from "lucide-react";
+import {
+  Upload,
+  Hash,
+  CheckCircle,
+  FileText,
+  X,
+  Loader2,
+} from "lucide-react";
 import Script from "next/script";
 import RelatedToolsSection from "@/components/RelatedTools";
-import { useProgressBar } from "@/hooks/useProgressBar";
-import ProgressButton from "@/components/ProgressButton";
 import dynamic from "next/dynamic";
+
+
 
 const PageNumberPreview = dynamic(
   () => import("@/components/PageNumberPreview"),
@@ -14,29 +28,118 @@ const PageNumberPreview = dynamic(
 );
 
 export default function AddPageNumbers() {
+  // const [file, setFile] = useState(null);
+  // const [success, setSuccess] = useState(false);
+
+  // const [position, setPosition] = useState("bottom-center");
+  // const [startNumber, setStartNumber] = useState(1);
+  // const [fontSize, setFontSize] = useState(14);
+  // const [margin, setMargin] = useState(20);
+
+  // const {
+  //   progress,
+  //   isLoading,
+  //   startProgress,
+  //   completeProgress,
+  //   cancelProgress,
+  // } = useProgressBar();
+
   const [file, setFile] = useState(null);
   const [success, setSuccess] = useState(false);
+  const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [progress, setProgress] = useState(0);
 
   const [position, setPosition] = useState("bottom-center");
   const [startNumber, setStartNumber] = useState(1);
   const [fontSize, setFontSize] = useState(14);
   const [margin, setMargin] = useState(20);
 
-  const {
-    progress,
-    isLoading,
-    startProgress,
-    completeProgress,
-    cancelProgress,
-  } = useProgressBar();
+  const clearAll = () => {
+    setFile(null);
+    setSuccess(false);
+    setError("");
+    setPosition("bottom-center");
+    setStartNumber(1);
+    setFontSize(14);
+    setMargin(20);
+  };
+
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+
+  //   if (!file) return alert("Please select a PDF file first!");
+
+  //   startProgress();
+  //   setSuccess(false);
+
+  //   const formData = new FormData();
+  //   formData.append("file", file);
+  //   formData.append("position", position);
+  //   formData.append("startNumber", String(startNumber));
+  //   formData.append("fontSize", String(fontSize));
+  //   formData.append("margin", String(margin));
+
+  //   try {
+  //     const res = await fetch("/convert/add-page-numbers", {
+  //       method: "POST",
+  //       body: formData,
+  //     });
+
+  //     if (!res.ok) {
+  //       let msg = "Failed to add page numbers";
+  //       try {
+  //         const maybeJson = await res.json();
+  //         msg = maybeJson?.error || msg;
+  //       } catch {}
+  //       throw new Error(msg);
+  //     }
+
+  //     const contentType = (res.headers.get("content-type") || "").toLowerCase();
+
+  //     if (!contentType.includes("application/pdf")) {
+  //       throw new Error("Unexpected response from server.");
+  //     }
+
+  //     const blob = await res.blob();
+  //     const url = window.URL.createObjectURL(blob);
+
+  //     const a = document.createElement("a");
+  //     a.href = url;
+  //     a.download = file.name.replace(/\.pdf$/i, "") + "-page-numbers.pdf";
+  //     document.body.appendChild(a);
+  //     a.click();
+  //     a.remove();
+
+  //     window.URL.revokeObjectURL(url);
+
+  //     completeProgress();
+  //     setSuccess(true);
+  //     setFile(null);
+  //     setPosition("bottom-center");
+  //     setStartNumber(1);
+  //     setFontSize(14);
+  //     setMargin(20);
+  //     e.target.reset();
+  //   } catch (err) {
+  //     cancelProgress();
+  //     alert(err.message || "Something went wrong, please try again.");
+  //     console.error(err);
+  //   }
+  // };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!file) return alert("Please select a PDF file first!");
+    if (!file) {
+      setError("Please select a PDF file first!");
+      return;
+    }
 
-    startProgress();
+    setIsLoading(true);
+    setProgress(0);
     setSuccess(false);
+    setError("");
 
     const formData = new FormData();
     formData.append("file", file);
@@ -44,6 +147,14 @@ export default function AddPageNumbers() {
     formData.append("startNumber", String(startNumber));
     formData.append("fontSize", String(fontSize));
     formData.append("margin", String(margin));
+
+    let progressInterval = setInterval(() => {
+      setProgress((prev) => {
+        if (prev >= 88) return prev;
+        const increment = prev < 35 ? 8 : prev < 65 ? 5 : 2;
+        return prev + increment;
+      });
+    }, 300);
 
     try {
       const res = await fetch("/convert/add-page-numbers", {
@@ -56,11 +167,14 @@ export default function AddPageNumbers() {
         try {
           const maybeJson = await res.json();
           msg = maybeJson?.error || msg;
-        } catch {}
+        } catch { }
         throw new Error(msg);
       }
 
       const contentType = (res.headers.get("content-type") || "").toLowerCase();
+
+      clearInterval(progressInterval);
+      setProgress(100);
 
       if (!contentType.includes("application/pdf")) {
         throw new Error("Unexpected response from server.");
@@ -78,18 +192,31 @@ export default function AddPageNumbers() {
 
       window.URL.revokeObjectURL(url);
 
-      completeProgress();
       setSuccess(true);
-      setFile(null);
-      setPosition("bottom-center");
-      setStartNumber(1);
-      setFontSize(14);
-      setMargin(20);
+
+      setTimeout(() => {
+        const downloadSection = document.getElementById("download-section");
+        if (downloadSection) {
+          downloadSection.scrollIntoView({
+            behavior: "smooth",
+            block: "center",
+          });
+        }
+      }, 300);
+
+      clearAll();
       e.target.reset();
     } catch (err) {
-      cancelProgress();
-      alert(err.message || "Something went wrong, please try again.");
+      const msg =
+        err?.message || "Something went wrong, please try again.";
+      setError(msg);
       console.error(err);
+    } finally {
+      clearInterval(progressInterval);
+      setTimeout(() => {
+        setIsLoading(false);
+        setProgress(0);
+      }, 800);
     }
   };
 
@@ -289,6 +416,7 @@ export default function AddPageNumbers() {
       />
 
       {/* ==================== MAIN TOOL SECTION ==================== */}
+      {/* ==================== MAIN TOOL SECTION ==================== */}
       <main className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-blue-50 py-8 px-4">
         <div className="max-w-4xl mx-auto">
           {/* Header */}
@@ -297,179 +425,423 @@ export default function AddPageNumbers() {
               Add Page Numbers to PDF Online Free
               <br />
               <span className="text-2xl md:text-3xl font-medium">
-                Insert PDF Page Numbers in Seconds
+                No Signup · No Watermark · Instant Download
               </span>
             </h1>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Add page numbers to PDF online free — no signup, no watermark, no software needed.
-              Insert numbering at the top or bottom of your PDF instantly.
-              Works on Windows, Mac, Android, and iPhone.
+              Add page numbers to PDF online free — no signup, no watermark,
+              no software needed. Choose the position, start number, font size,
+              and margin, then download your updated PDF instantly.
             </p>
           </div>
 
-          {/* Upload Card */}
-          <div className="bg-white rounded-2xl shadow-lg p-8 border border-gray-100">
-            <form onSubmit={handleSubmit} className="space-y-6">
-              {/* File Input */}
-              <div className="relative">
-                <label className="block">
+          {/* STEP STRIP */}
+          <div className="grid grid-cols-3 mb-4 rounded-2xl overflow-hidden border border-gray-100 bg-white shadow-sm">
+            {[
+              { n: "1", label: "Upload PDF", sub: "Select your file" },
+              { n: "2", label: "Set Numbering", sub: "Position and style" },
+              { n: "3", label: "Download PDF", sub: "Auto download" },
+            ].map((s, i) => (
+              <div
+                key={i}
+                className={`flex flex-col items-center py-4 px-2 text-center ${
+                  i < 2 ? "border-r border-gray-100" : ""
+                }`}
+              >
+                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-indigo-500 to-blue-500 flex items-center justify-center text-white text-sm font-bold mb-1 shadow-sm">
+                  {s.n}
+                </div>
+                <p className="text-xs font-semibold text-gray-700">{s.label}</p>
+                <p className="text-xs text-gray-400 hidden sm:block">{s.sub}</p>
+              </div>
+            ))}
+          </div>
+
+          {/* MAIN CARD */}
+          <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
+            <div
+              className={`relative transition-all duration-300 ${
+                isLoading ? "pointer-events-none" : ""
+              }`}
+            >
+              {/* Loading overlay */}
+              {isLoading && (
+                <div className="absolute inset-0 z-10 bg-white/70 backdrop-blur-sm rounded-2xl flex flex-col items-center justify-center gap-4">
+                  <div className="relative w-16 h-16">
+                    <div className="absolute inset-0 rounded-full border-4 border-indigo-100"></div>
+                    <div className="absolute inset-0 rounded-full border-4 border-indigo-500 border-t-transparent animate-spin"></div>
+                    <div
+                      className="absolute inset-2 rounded-full border-4 border-blue-200 border-b-transparent animate-spin"
+                      style={{
+                        animationDirection: "reverse",
+                        animationDuration: "0.8s",
+                      }}
+                    ></div>
+                  </div>
+
+                  <div className="text-center">
+                    <p className="text-base font-semibold text-gray-700">
+                      Adding page numbers…
+                    </p>
+                    <p className="text-sm text-gray-400 mt-1">
+                      {progress < 30
+                        ? "Uploading PDF…"
+                        : progress < 70
+                        ? "Applying page numbers…"
+                        : "Almost done…"}
+                    </p>
+                  </div>
+
+                  <div className="w-48 h-1.5 bg-gray-100 rounded-full overflow-hidden">
+                    <div
+                      className="h-full bg-gradient-to-r from-indigo-500 to-blue-500 rounded-full transition-all duration-500"
+                      style={{ width: `${progress}%` }}
+                    />
+                  </div>
+                  <p className="text-xs text-gray-400 font-medium">
+                    {progress}%
+                  </p>
+                </div>
+              )}
+
+              <form onSubmit={handleSubmit} className="p-8 space-y-5">
+                {/* Dropzone */}
+                <label className="block cursor-pointer group">
                   <div
-                    className={`border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition-all ${
+                    className={`relative rounded-xl border-2 border-dashed transition-all duration-200 p-8 text-center ${
                       file
-                        ? "border-green-500 bg-green-50"
-                        : "border-gray-300 hover:border-indigo-500 hover:bg-indigo-50"
+                        ? "border-green-400 bg-green-50"
+                        : "border-gray-200 hover:border-indigo-400 hover:bg-indigo-50/40"
                     }`}
                   >
-                    <Upload className="w-12 h-12 mx-auto mb-3 text-indigo-600" />
-                    <p className="text-lg font-semibold text-gray-700">
-                      {file ? file.name : "Drop your PDF here or click to upload"}
-                    </p>
+                    <div
+                      className={`w-14 h-14 rounded-2xl mx-auto mb-4 flex items-center justify-center transition-colors duration-200 ${
+                        file
+                          ? "bg-green-100"
+                          : "bg-indigo-50 group-hover:bg-indigo-100"
+                      }`}
+                    >
+                      {file ? (
+                        <CheckCircle className="w-7 h-7 text-green-500" />
+                      ) : (
+                        <Upload className="w-7 h-7 text-indigo-600" />
+                      )}
+                    </div>
 
-                    <p className="text-sm text-gray-500 mt-1">Only .pdf files</p>
+                    {file ? (
+                      <>
+                        <p className="text-base font-semibold text-green-700">
+                          1 file selected
+                        </p>
+                        <p className="text-xs text-gray-400 mt-1">
+                          Click to change selection
+                        </p>
 
-                    <p className="text-xs text-gray-500 mt-2">
-                      Upload your PDF, preview pages, choose the page number position, and download the updated file instantly.
-                    </p>
+                        <div className="flex justify-center mt-3">
+                          <span className="inline-flex items-center gap-1 bg-white border border-green-200 text-green-700 text-xs font-medium px-2.5 py-1 rounded-full shadow-sm">
+                            <FileText className="w-3 h-3" />
+                            {file.name.length > 30
+                              ? file.name.slice(0, 28) + "…"
+                              : file.name}
+                          </span>
+                        </div>
+
+                        <p className="text-xs text-gray-400 mt-3">
+                          Size: {(file.size / 1024 / 1024).toFixed(2)} MB
+                        </p>
+                      </>
+                    ) : (
+                      <>
+                        <p className="text-base font-semibold text-gray-700">
+                          Drop your PDF file here
+                        </p>
+                        <p className="text-sm text-gray-400 mt-1">
+                          or click to browse · PDF files only
+                        </p>
+
+                        <div className="flex flex-wrap justify-center gap-2 mt-4">
+                          {[
+                            "✓ No signup",
+                            "✓ No watermark",
+                            "✓ Instant download",
+                            "✓ Auto-deleted",
+                          ].map((t) => (
+                            <span
+                              key={t}
+                              className="bg-indigo-50 text-indigo-700 border border-indigo-100 text-xs font-medium px-2.5 py-1 rounded-full"
+                            >
+                              {t}
+                            </span>
+                          ))}
+                        </div>
+                      </>
+                    )}
                   </div>
 
                   <input
                     type="file"
-                    accept=".pdf"
+                    accept=".pdf,application/pdf"
                     onChange={(e) => {
                       const pickedFile = e.target.files?.[0] || null;
                       setFile(pickedFile);
+                      setSuccess(false);
+                      setError("");
                     }}
                     className="hidden"
                     required
                   />
                 </label>
-              </div>
 
-              {/* Settings */}
-              {file && (
-                <div className="grid md:grid-cols-2 gap-4 rounded-2xl border border-indigo-100 bg-indigo-50 p-4">
-                  <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-2">
-                      Page number position
-                    </label>
-                    <select
-                      value={position}
-                      onChange={(e) => setPosition(e.target.value)}
-                      className="w-full rounded-xl border border-gray-300 px-4 py-3 text-sm outline-none focus:border-indigo-500"
-                    >
-                      <option value="top-left">Top Left</option>
-                      <option value="top-center">Top Center</option>
-                      <option value="top-right">Top Right</option>
-                      <option value="bottom-left">Bottom Left</option>
-                      <option value="bottom-center">Bottom Center</option>
-                      <option value="bottom-right">Bottom Right</option>
-                    </select>
+                {/* Selected File */}
+                {file && (
+                  <div className="rounded-2xl border border-gray-200 bg-gray-50 p-4">
+                    <div className="flex items-center justify-between mb-3">
+                      <div>
+                        <p className="text-sm font-semibold text-gray-700">
+                          Selected file
+                        </p>
+                        <p className="text-xs text-gray-400">
+                          Remove or replace before processing
+                        </p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={clearAll}
+                        className="text-xs font-semibold text-gray-600 hover:text-gray-900 underline"
+                      >
+                        Clear
+                      </button>
+                    </div>
+
+                    <div className="flex items-center justify-between bg-white p-3 rounded-xl border border-gray-200">
+                      <div className="flex items-center gap-2 min-w-0">
+                        <FileText className="w-4 h-4 text-indigo-600 shrink-0" />
+                        <span className="text-sm font-medium truncate max-w-xs text-gray-700">
+                          {file.name}
+                        </span>
+                        <span className="text-xs text-gray-400 shrink-0">
+                          ({(file.size / 1024 / 1024).toFixed(2)} MB)
+                        </span>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={clearAll}
+                        className="text-red-500 hover:bg-red-100 p-1 rounded"
+                        aria-label="Remove file"
+                      >
+                        <X className="w-4 h-4" />
+                      </button>
+                    </div>
+                  </div>
+                )}
+
+                {/* Settings */}
+                {file && (
+                  <div className="rounded-2xl border border-gray-200 bg-gray-50 p-4">
+                    <div className="mb-3">
+                      <p className="text-sm font-semibold text-gray-700">
+                        Page numbering settings
+                      </p>
+                      <p className="text-xs text-gray-400">
+                        Choose position, start number, font size, and margin
+                      </p>
+                    </div>
+
+                    <div className="grid md:grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-sm font-semibold text-gray-700 mb-2">
+                          Page number position
+                        </label>
+                        <select
+                          value={position}
+                          onChange={(e) => setPosition(e.target.value)}
+                          className="w-full rounded-xl border border-gray-300 px-4 py-3 text-sm outline-none focus:border-indigo-500"
+                        >
+                          <option value="top-left">Top Left</option>
+                          <option value="top-center">Top Center</option>
+                          <option value="top-right">Top Right</option>
+                          <option value="bottom-left">Bottom Left</option>
+                          <option value="bottom-center">Bottom Center</option>
+                          <option value="bottom-right">Bottom Right</option>
+                        </select>
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-semibold text-gray-700 mb-2">
+                          Start numbering from
+                        </label>
+                        <input
+                          type="number"
+                          min="1"
+                          value={startNumber}
+                          onChange={(e) =>
+                            setStartNumber(Number(e.target.value) || 1)
+                          }
+                          className="w-full rounded-xl border border-gray-300 px-4 py-3 text-sm outline-none focus:border-indigo-500"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-semibold text-gray-700 mb-2">
+                          Font size
+                        </label>
+                        <input
+                          type="number"
+                          min="8"
+                          max="48"
+                          value={fontSize}
+                          onChange={(e) =>
+                            setFontSize(Number(e.target.value) || 14)
+                          }
+                          className="w-full rounded-xl border border-gray-300 px-4 py-3 text-sm outline-none focus:border-indigo-500"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-semibold text-gray-700 mb-2">
+                          Margin
+                        </label>
+                        <input
+                          type="number"
+                          min="0"
+                          max="100"
+                          value={margin}
+                          onChange={(e) =>
+                            setMargin(Number(e.target.value) || 20)
+                          }
+                          className="w-full rounded-xl border border-gray-300 px-4 py-3 text-sm outline-none focus:border-indigo-500"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* Preview */}
+                {file && (
+                  <PageNumberPreview
+                    file={file}
+                    position={position}
+                    startNumber={startNumber}
+                    fontSize={fontSize}
+                    margin={margin}
+                  />
+                )}
+
+                {/* Current Settings */}
+                {file && (
+                  <div className="flex items-start gap-2.5 bg-gray-50 border border-gray-200 rounded-xl px-4 py-3">
+                    <Hash className="w-4 h-4 text-gray-400 mt-0.5 shrink-0" />
+                    <div>
+                      <p className="text-sm font-medium text-gray-700 leading-none">
+                        Current numbering settings
+                      </p>
+                      <p className="text-xs text-gray-400 mt-1">
+                        Start from {startNumber}, position{" "}
+                        {position.replace("-", " ")}, font size {fontSize}px,
+                        margin {margin}px
+                      </p>
+                    </div>
+                  </div>
+                )}
+
+                {/* Error */}
+                {error && (
+                  <div className="bg-red-50 border border-red-200 rounded-xl p-4 text-red-700 text-sm">
+                    <p className="font-semibold">{error}</p>
+                  </div>
+                )}
+
+                {/* Button */}
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-1">
+                  <div className="flex items-start gap-2.5 bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 flex-1">
+                    <Hash className="w-4 h-4 text-gray-400 mt-0.5 shrink-0" />
+                    <div>
+                      <p className="text-sm font-medium text-gray-700 leading-none">
+                        PDF page numbering
+                      </p>
+                      <p className="text-xs text-gray-400 mt-0.5">
+                        Adds page numbers without changing the rest of the PDF
+                      </p>
+                    </div>
                   </div>
 
-                  <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-2">
-                      Start numbering from
-                    </label>
-                    <input
-                      type="number"
-                      min="1"
-                      value={startNumber}
-                      onChange={(e) => setStartNumber(Number(e.target.value) || 1)}
-                      className="w-full rounded-xl border border-gray-300 px-4 py-3 text-sm outline-none focus:border-indigo-500"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-2">
-                      Font size
-                    </label>
-                    <input
-                      type="number"
-                      min="8"
-                      max="48"
-                      value={fontSize}
-                      onChange={(e) => setFontSize(Number(e.target.value) || 14)}
-                      className="w-full rounded-xl border border-gray-300 px-4 py-3 text-sm outline-none focus:border-indigo-500"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-2">
-                      Margin
-                    </label>
-                    <input
-                      type="number"
-                      min="0"
-                      max="100"
-                      value={margin}
-                      onChange={(e) => setMargin(Number(e.target.value) || 20)}
-                      className="w-full rounded-xl border border-gray-300 px-4 py-3 text-sm outline-none focus:border-indigo-500"
-                    />
-                  </div>
+                  <button
+                    type="submit"
+                    disabled={isLoading || !file}
+                    className={`flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm text-white transition-all duration-200 shadow-sm sm:w-auto w-full ${
+                      file && !isLoading
+                        ? "bg-gradient-to-r from-indigo-600 to-blue-500 hover:from-indigo-700 hover:to-blue-600 hover:shadow-md active:scale-[0.98]"
+                        : "bg-gray-200 text-gray-400 cursor-not-allowed"
+                    }`}
+                  >
+                    {isLoading ? (
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                    ) : (
+                      <Hash className="w-4 h-4" />
+                    )}
+                    Add Page Numbers
+                  </button>
                 </div>
-              )}
 
-              {/* PDF Preview Selector */}
-              {file && (
-                <PageNumberPreview
-                  file={file}
-                  position={position}
-                  startNumber={startNumber}
-                  fontSize={fontSize}
-                  margin={margin}
-                />
-              )}
-
-              {/* Selected settings info */}
-              {file && (
-                <div className="rounded-xl border border-indigo-100 bg-indigo-50 px-4 py-3 text-sm text-gray-700">
-                  <span className="font-semibold">Current numbering settings: </span>
-                  Start from {startNumber}, position {position.replace("-", " ")},
-                  font size {fontSize}px, margin {margin}px
+                {/* Hints */}
+                <div className="text-xs text-gray-400 text-center space-y-0.5 pb-1">
+                  <p>⏱️ Large PDFs may take a little longer — don&apos;t close this tab</p>
+                  <p>💡 Preview the numbering position before downloading your final PDF</p>
                 </div>
-              )}
+              </form>
+            </div>
 
-              {/* Button */}
-              <ProgressButton
-                isLoading={isLoading}
-                progress={progress}
-                disabled={!file}
-                icon={<Hash className="w-5 h-5" />}
-                label="Add Page Numbers"
-                gradient="from-indigo-600 to-blue-600"
-              />
-
-              <div className="text-sm text-gray-600 text-center mt-4 space-y-1">
-                <p>
-                  🔢 <strong>Add clean page numbers</strong> to your PDF in seconds.
-                </p>
-                <p>
-                  👆 <strong>Preview and customize the number position</strong> before downloading.
-                </p>
-              </div>
-            </form>
-
-            {/* Success State */}
+            {/* Success */}
             {success && (
-              <div className="mt-6 p-4 bg-green-50 border-2 border-green-200 rounded-xl text-center">
-                <CheckCircle className="w-12 h-12 text-green-600 mx-auto mb-3" />
-                <p className="text-xl font-bold text-green-700 mb-2">
-                  Done! Your numbered PDF downloaded automatically 🎉
-                </p>
-                <p className="text-base text-gray-700">
-                  Check your downloads folder.
-                </p>
+              <div
+                id="download-section"
+                className="mx-6 mb-6 rounded-2xl overflow-hidden border border-green-200 bg-gradient-to-br from-green-50 to-emerald-50"
+              >
+                <div className="flex flex-col items-center text-center px-8 py-10">
+                  <div className="relative w-16 h-16 mb-5">
+                    <div className="absolute inset-0 rounded-full bg-emerald-100 animate-ping opacity-30"></div>
+                    <div className="relative w-16 h-16 rounded-full bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center shadow-lg">
+                      <CheckCircle className="w-8 h-8 text-white" />
+                    </div>
+                  </div>
+
+                  <h3 className="text-xl font-bold text-emerald-800 mb-1">
+                    Done! Your numbered PDF downloaded automatically 🎉
+                  </h3>
+
+                  <p className="text-sm text-gray-600 mb-6">
+                    Check your downloads folder for the updated PDF file.
+                  </p>
+
+                  <div className="flex flex-wrap gap-3 justify-center">
+                    <button
+                      type="button"
+                      onClick={clearAll}
+                      className="inline-flex items-center gap-2 bg-white border border-emerald-300 text-emerald-700 text-sm font-semibold px-5 py-2.5 rounded-xl hover:bg-emerald-50 transition shadow-sm"
+                    >
+                      <FileText className="w-4 h-4" />
+                      Add numbers to another PDF
+                    </button>
+
+                    <a
+                      href="/merge-pdf"
+                      className="inline-flex items-center gap-2 bg-white border border-gray-200 text-gray-600 text-sm font-semibold px-5 py-2.5 rounded-xl hover:bg-gray-50 transition shadow-sm"
+                    >
+                      Merge PDF →
+                    </a>
+                  </div>
+                </div>
               </div>
             )}
           </div>
 
-          <p className="text-center mt-6 text-gray-600 text-base">
-            No account • No watermark • Auto-deleted after 1 hour • 100% free •
-            Works on desktop & mobile
+          <p className="text-center mt-6 text-gray-500 text-sm">
+            No account • No watermark • Files auto delete • Completely free •
+            Works on desktop &amp; mobile
           </p>
         </div>
       </main>
-
+      
       {/* ==================== SEO CONTENT SECTION ==================== */}
       <section className="mt-16 max-w-4xl mx-auto px-6 pb-16">
         <div className="text-center mb-12">

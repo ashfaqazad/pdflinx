@@ -225,8 +225,10 @@ export default function MergePDF() {
       />
 
       {/* ==================== MAIN TOOL SECTION ==================== */}
+{/* ==================== MAIN TOOL SECTION ==================== */}
       <main className="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 py-8 px-4">
         <div className="max-w-4xl mx-auto">
+
           {/* Header */}
           <div className="text-center mb-8">
             <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent mb-4">
@@ -236,98 +238,239 @@ export default function MergePDF() {
                 No Signup · No Watermark · Instant Download
               </span>
             </h1>
-            <p className="text-gray-600 mt-3 leading-7">
-              Merge multiple PDF files into one online free — no signup, no watermark, no software needed. Works on Windows, Mac, Android and iOS. Upload 2 or more PDFs, arrange them in the right order, and download one clean merged PDF instantly.
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+              Merge multiple PDF files into one online free — no signup, no watermark, no software needed.
+              Works on Windows, Mac, Android and iOS. Upload 2 or more PDFs, arrange them in the right
+              order, and download one clean merged PDF instantly.
             </p>
           </div>
 
-          {/* Main Card */}
-          <div className="bg-white rounded-2xl shadow-lg p-8 border border-gray-100">
-            <div className="space-y-6">
-              {/* Upload Area */}
-              <div>
-                <input
-                  type="file"
-                  multiple
-                  accept="application/pdf"
-                  onChange={handleFileChange}
-                  ref={fileInputRef}
-                  className="hidden"
-                />
-
-                <div
-                  onClick={() => fileInputRef.current?.click()}
-                  className={`border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition-all ${files.length > 0 ? 'border-green-500 bg-green-50' : 'border-gray-300 hover:border-indigo-500 hover:bg-indigo-50'
-                    }`}
-                >
-                  <Files className="w-12 h-12 mx-auto mb-3 text-indigo-600" />
-                  <p className="text-lg font-semibold text-gray-800">
-                    {files.length > 0 ? `${files.length} PDF${files.length > 1 ? 's' : ''} ready` : "Drop PDFs here or click to upload"}
-                  </p>
-                  <p className="text-sm text-gray-600 mt-2">Combine 2 or more into one clean file</p>
-                </div>
-
-                {/* Selected Files Preview */}
-                {files.length > 0 && (
-                  <div className="mt-4 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 max-h-64 overflow-y-auto p-4 bg-gray-50 rounded-xl">
-                    {files.map((file, index) => (
-                      <div key={index} className="relative group bg-white p-3 rounded-lg shadow hover:shadow-md transition">
-                        <FileText className="w-10 h-10 text-indigo-600 mx-auto mb-1" />
-                        <p className="text-xs text-center font-medium truncate">{file.name}</p>
-                        <button
-                          onClick={() => removeFile(index)}
-                          className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition"
-                        >
-                          <X className="w-4 h-4" />
-                        </button>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-
-              {/* Merge Button */}
-
-              <ProgressButton
-                isLoading={isLoading}
-                progress={progress}
-                disabled={files.length < 2}   // ← 2 se kam pe disable
-                icon={<Files className="w-5 h-5" />}
-                label="Merge PDFs Now"
-                gradient="from-indigo-600 to-purple-600"  // ← bg-gradient-to-r hata diya
-                type="button"                  // ← form nahi hai toh button
-                onClick={handleMerge}          // ← seedha function pass karo
-              />
-            </div>
-
-            {/* Success State */}
-            {success && (
+          {/* ── STEP STRIP ── */}
+          <div className="grid grid-cols-3 mb-4 rounded-2xl overflow-hidden border border-gray-100 bg-white shadow-sm">
+            {[
+              { n: "1", label: "Upload PDFs", sub: "2 or more files" },
+              { n: "2", label: "Arrange Order", sub: "Remove unwanted files" },
+              { n: "3", label: "Merge & Download", sub: "One clean PDF" },
+            ].map((s, i) => (
               <div
-                id="download-section"  // ✅ BAS YE EK LINE ADD KARO
-
-                className="mt-6 p-4 bg-green-50 border-2 border-green-200 rounded-xl text-center">
-                <CheckCircle className="w-12 h-12 text-green-600 mx-auto mb-3" />
-                <p className="text-xl font-bold text-green-700 mb-2">All merged!</p>
-                <p className="text-base text-gray-700 mb-3">Your PDFs are now one perfect file</p>
-                <button
-                  onClick={handleDownload}
-                  className="bg-green-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-green-700 transition shadow-md flex items-center gap-2 mx-auto text-base"
-                >
-                  <Download className="w-5 h-5" />
-                  Download Merged PDF
-                </button>
+                key={i}
+                className={`flex flex-col items-center py-4 px-2 text-center ${i < 2 ? "border-r border-gray-100" : ""}`}
+              >
+                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-indigo-500 to-purple-500 flex items-center justify-center text-white text-sm font-bold mb-1 shadow-sm">
+                  {s.n}
+                </div>
+                <p className="text-xs font-semibold text-gray-700">{s.label}</p>
+                <p className="text-xs text-gray-400 hidden sm:block">{s.sub}</p>
               </div>
-            )}
+            ))}
           </div>
 
-          {/* Trust Footer */}
-          <p className="text-center mt-6 text-gray-600 text-base">
+          {/* ── MAIN CARD ── */}
+          <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
+
+            {/* conversion overlay */}
+            <div className={`relative transition-all duration-300 ${isLoading ? "pointer-events-none" : ""}`}>
+
+              {/* blur overlay */}
+              {isLoading && (
+                <div className="absolute inset-0 z-10 bg-white/70 backdrop-blur-sm rounded-2xl flex flex-col items-center justify-center gap-4">
+                  <div className="relative w-16 h-16">
+                    <div className="absolute inset-0 rounded-full border-4 border-indigo-100"></div>
+                    <div className="absolute inset-0 rounded-full border-4 border-indigo-500 border-t-transparent animate-spin"></div>
+                    <div className="absolute inset-2 rounded-full border-4 border-purple-200 border-b-transparent animate-spin" style={{ animationDirection: "reverse", animationDuration: "0.8s" }}></div>
+                  </div>
+                  <div className="text-center">
+                    <p className="text-base font-semibold text-gray-700">Merging your files…</p>
+                    <p className="text-sm text-gray-400 mt-1">{progress < 30 ? "Uploading…" : progress < 70 ? "Combining pages…" : "Almost done…"}</p>
+                  </div>
+                  <div className="w-48 h-1.5 bg-gray-100 rounded-full overflow-hidden">
+                    <div
+                      className="h-full bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full transition-all duration-500"
+                      style={{ width: `${progress}%` }}
+                    />
+                  </div>
+                  <p className="text-xs text-gray-400 font-medium">{progress}%</p>
+                </div>
+              )}
+
+              <div className="p-8 space-y-5">
+
+                {/* ── DROPZONE ── */}
+                <div>
+                  <input
+                    type="file"
+                    multiple
+                    accept="application/pdf"
+                    onChange={handleFileChange}
+                    ref={fileInputRef}
+                    className="hidden"
+                  />
+                  <div
+                    onClick={() => fileInputRef.current?.click()}
+                    className={`relative rounded-xl border-2 border-dashed transition-all duration-200 p-8 text-center cursor-pointer group ${
+                      files.length
+                        ? "border-green-400 bg-green-50"
+                        : "border-gray-200 hover:border-indigo-400 hover:bg-indigo-50/40"
+                    }`}
+                  >
+                    <div
+                      className={`w-14 h-14 rounded-2xl mx-auto mb-4 flex items-center justify-center transition-colors duration-200 ${
+                        files.length ? "bg-green-100" : "bg-indigo-50 group-hover:bg-indigo-100"
+                      }`}
+                    >
+                      {files.length ? (
+                        <CheckCircle className="w-7 h-7 text-green-500" />
+                      ) : (
+                        <Files className="w-7 h-7 text-indigo-500" />
+                      )}
+                    </div>
+
+                    {files.length ? (
+                      <>
+                        <p className="text-base font-semibold text-green-700">
+                          {files.length} file{files.length > 1 ? "s" : ""} selected
+                        </p>
+                        <p className="text-xs text-gray-400 mt-1">Click to add more files</p>
+                      </>
+                    ) : (
+                      <>
+                        <p className="text-base font-semibold text-gray-700">
+                          Drop your PDF files here
+                        </p>
+                        <p className="text-sm text-gray-400 mt-1">or click to browse · minimum 2 files</p>
+                        <div className="flex flex-wrap justify-center gap-2 mt-4">
+                          {["✓ No signup", "✓ No watermark", "✓ Unlimited files", "✓ Auto-deleted"].map((t) => (
+                            <span
+                              key={t}
+                              className="bg-indigo-50 text-indigo-600 border border-indigo-100 text-xs font-medium px-2.5 py-1 rounded-full"
+                            >
+                              {t}
+                            </span>
+                          ))}
+                        </div>
+                      </>
+                    )}
+                  </div>
+
+                  {/* ── File cards grid ── */}
+                  {files.length > 0 && (
+                    <div className="mt-4 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 max-h-64 overflow-y-auto p-4 bg-gray-50 rounded-xl border border-gray-100">
+                      {files.map((file, index) => (
+                        <div key={index} className="relative group bg-white p-3 rounded-xl shadow-sm hover:shadow-md transition border border-gray-100">
+                          <FileText className="w-8 h-8 text-indigo-500 mx-auto mb-1.5" />
+                          <p className="text-xs text-center font-medium text-gray-700 truncate">{file.name}</p>
+                          <p className="text-xs text-center text-gray-400 mt-0.5">
+                            {(file.size / 1024 / 1024).toFixed(1)} MB
+                          </p>
+                          <button
+                            onClick={(e) => { e.stopPropagation(); removeFile(index); }}
+                            className="absolute -top-1.5 -right-1.5 bg-red-500 text-white rounded-full p-0.5 opacity-0 group-hover:opacity-100 transition shadow-sm"
+                          >
+                            <X className="w-3.5 h-3.5" />
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+
+                {/* ── Info row + Merge Button ── */}
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-1">
+                  <div className="flex items-start gap-2.5 bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 flex-1">
+                    <Files className="w-4 h-4 text-gray-400 mt-0.5 shrink-0" />
+                    <div>
+                      <p className="text-sm font-medium text-gray-700 leading-none">Order matters</p>
+                      <p className="text-xs text-gray-400 mt-0.5">Files merge top-left to bottom-right · Remove to reorder</p>
+                    </div>
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={handleMerge}
+                    disabled={files.length < 2 || isLoading}
+                    className={`flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm text-white transition-all duration-200 shadow-sm sm:w-auto w-full ${
+                      files.length >= 2 && !isLoading
+                        ? "bg-gradient-to-r from-indigo-600 to-purple-500 hover:from-indigo-700 hover:to-purple-600 hover:shadow-md active:scale-[0.98]"
+                        : "bg-gray-200 text-gray-400 cursor-not-allowed"
+                    }`}
+                  >
+                    <Files className="w-4 h-4" />
+                    {files.length < 2 ? "Select 2+ PDFs" : "Merge PDFs Now"}
+                  </button>
+                </div>
+
+                {/* hints */}
+                <div className="text-xs text-gray-400 text-center space-y-0.5 pb-1">
+                  <p>📄 Files merge in the order shown — remove &amp; re-add to reorder</p>
+                  <p>🔒 Files permanently deleted after merging — your privacy is protected</p>
+                </div>
+
+              </div>
+
+            </div>{/* end blur wrapper */}
+
+            {/* ── SUCCESS STATE ── */}
+            {success && (
+              <div
+                id="download-section"
+                className="mx-6 mb-6 rounded-2xl overflow-hidden border border-indigo-200 bg-gradient-to-br from-indigo-50 to-purple-50"
+              >
+                <div className="flex flex-col items-center text-center px-8 py-10">
+                  <div className="relative w-16 h-16 mb-5">
+                    <div className="absolute inset-0 rounded-full bg-indigo-100 animate-ping opacity-30"></div>
+                    <div className="relative w-16 h-16 rounded-full bg-gradient-to-br from-indigo-500 to-purple-500 flex items-center justify-center shadow-lg">
+                      <CheckCircle className="w-8 h-8 text-white" />
+                    </div>
+                  </div>
+                  <h3 className="text-xl font-bold text-indigo-800 mb-1">
+                    Merge Complete! 🎉
+                  </h3>
+                  <p className="text-sm text-indigo-700 font-medium mb-1">
+                    All {files.length} files combined into one clean PDF
+                  </p>
+                  <p className="text-xs text-gray-500 mb-6">
+                    Click below to download your merged document
+                  </p>
+
+                  {/* Download button */}
+                  <button
+                    onClick={handleDownload}
+                    className="inline-flex items-center gap-2 bg-gradient-to-r from-indigo-600 to-purple-500 text-white text-sm font-semibold px-7 py-3 rounded-xl hover:from-indigo-700 hover:to-purple-600 transition shadow-md mb-4"
+                  >
+                    <Download className="w-4 h-4" />
+                    Download Merged PDF
+                  </button>
+
+                  {/* secondary actions */}
+                  <div className="flex flex-wrap gap-3 justify-center">
+                    <button
+                      onClick={() => { setSuccess(false); setFiles([]); setDownloadUrl(""); }}
+                      className="inline-flex items-center gap-2 bg-white border border-indigo-300 text-indigo-700 text-sm font-semibold px-5 py-2.5 rounded-xl hover:bg-indigo-50 transition shadow-sm"
+                    >
+                      <Upload className="w-4 h-4" />
+                      Merge more PDFs
+                    </button>
+                    
+                      <a href="/compress-pdf"
+                      className="inline-flex items-center gap-2 bg-white border border-gray-200 text-gray-600 text-sm font-semibold px-5 py-2.5 rounded-xl hover:bg-gray-50 transition shadow-sm"
+                    >
+                      Compress PDF →
+                    </a>
+                  </div>
+                </div>
+              </div>
+            )}
+
+          </div>{/* end main card */}
+
+          {/* footer trust bar */}
+          <p className="text-center mt-6 text-gray-500 text-sm">
             No sign-up • No watermark • Auto-deleted after 1 hour • 100% free •
-            Unlimited files • Works on Windows, Mac, Android & iOS
+            Unlimited files • Works on Windows, Mac, Android &amp; iOS
           </p>
+
         </div>
       </main>
-
       {/* ==================== SEO CONTENT SECTION ==================== */}
       <section className="mt-16 max-w-4xl mx-auto px-6 pb-16">
         {/* Main Heading */}

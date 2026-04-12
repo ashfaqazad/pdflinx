@@ -273,6 +273,7 @@ export default function ImageToPdf() {
       {/* ==================== MAIN TOOL SECTION ==================== */}
       <main className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-blue-50 py-8 px-4">
         <div className="max-w-4xl mx-auto">
+
           {/* Header */}
           <div className="text-center mb-8">
             <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mb-4">
@@ -283,22 +284,136 @@ export default function ImageToPdf() {
               </span>
             </h1>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Convert JPG, PNG, or WebP images into a professional PDF online free — no signup, no watermark, no software needed. Each image placed on its own page at full quality preserved. Upload a single photo or combine up to 50 images into one PDF. Works on Windows, Mac, Android and iOS. Perfect for portfolios, receipts, certificates, and scanned documents.
+              Convert JPG, PNG, or WebP images into a professional PDF online free — no signup,
+              no watermark, no software needed. Each image is placed on its own page with full
+              quality preserved. Upload one image or combine up to 50 images into one PDF.
+              Works on Windows, Mac, Android and iOS.
             </p>
           </div>
 
-          {/* Main Card */}
-          <div className="bg-white rounded-2xl shadow-lg p-8 border border-gray-100">
-            <form onSubmit={handleSubmit} className="space-y-6">
-              {/* Drop Zone */}
-              <div className="relative">
-                <label className="block">
-                  <div className={`border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition-all ${files.length > 0 ? 'border-green-500 bg-green-50' : 'border-gray-300 hover:border-purple-500 hover:bg-purple-50'}`}>
-                    <Image className="w-12 h-12 mx-auto mb-3 text-purple-600" />
-                    <p className="text-lg font-semibold text-gray-700">
-                      {files.length > 0 ? `${files.length} image(s) ready` : "Drop images here or click to upload"}
+          {/* ── STEP STRIP ── */}
+          <div className="grid grid-cols-3 mb-4 rounded-2xl overflow-hidden border border-gray-100 bg-white shadow-sm">
+            {[
+              { n: "1", label: "Upload Images", sub: "Single or multiple files" },
+              { n: "2", label: "Arrange & Convert", sub: "Preview before export" },
+              { n: "3", label: "Download PDF", sub: "One combined file" },
+            ].map((s, i) => (
+              <div
+                key={i}
+                className={`flex flex-col items-center py-4 px-2 text-center ${i < 2 ? "border-r border-gray-100" : ""}`}
+              >
+                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-white text-sm font-bold mb-1 shadow-sm">
+                  {s.n}
+                </div>
+                <p className="text-xs font-semibold text-gray-700">{s.label}</p>
+                <p className="text-xs text-gray-400 hidden sm:block">{s.sub}</p>
+              </div>
+            ))}
+          </div>
+
+          {/* ── MAIN CARD ── */}
+          <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
+
+            {/* conversion overlay wrapper */}
+            <div className={`relative transition-all duration-300 ${isLoading ? "pointer-events-none" : ""}`}>
+
+              {/* blur overlay */}
+              {isLoading && (
+                <div className="absolute inset-0 z-10 bg-white/70 backdrop-blur-sm rounded-2xl flex flex-col items-center justify-center gap-4">
+                  <div className="relative w-16 h-16">
+                    <div className="absolute inset-0 rounded-full border-4 border-purple-100"></div>
+                    <div className="absolute inset-0 rounded-full border-4 border-purple-500 border-t-transparent animate-spin"></div>
+                    <div
+                      className="absolute inset-2 rounded-full border-4 border-pink-200 border-b-transparent animate-spin"
+                      style={{ animationDirection: "reverse", animationDuration: "0.8s" }}
+                    ></div>
+                  </div>
+
+                  <div className="text-center">
+                    <p className="text-base font-semibold text-gray-700">
+                      Converting your image{files.length > 1 ? "s" : ""}…
                     </p>
-                    <p className="text-sm text-gray-500 mt-2">JPG, PNG, GIF, WebP • Up to 50 images</p>
+                    <p className="text-sm text-gray-400 mt-1">
+                      {progress < 30
+                        ? "Uploading…"
+                        : progress < 70
+                          ? "Building PDF…"
+                          : "Almost done…"}
+                    </p>
+                  </div>
+
+                  <div className="w-48 h-1.5 bg-gray-100 rounded-full overflow-hidden">
+                    <div
+                      className="h-full bg-gradient-to-r from-purple-500 to-pink-500 rounded-full transition-all duration-500"
+                      style={{ width: `${progress}%` }}
+                    />
+                  </div>
+                  <p className="text-xs text-gray-400 font-medium">{progress}%</p>
+                </div>
+              )}
+
+              <form onSubmit={handleSubmit} className="p-8 space-y-5">
+
+                {/* ── DROPZONE ── */}
+                <label className="block cursor-pointer group">
+                  <div
+                    className={`relative rounded-xl border-2 border-dashed transition-all duration-200 p-8 text-center ${files.length
+                        ? "border-green-400 bg-green-50"
+                        : "border-gray-200 hover:border-purple-400 hover:bg-purple-50/40"
+                      }`}
+                  >
+                    <div
+                      className={`w-14 h-14 rounded-2xl mx-auto mb-4 flex items-center justify-center transition-colors duration-200 ${files.length ? "bg-green-100" : "bg-purple-50 group-hover:bg-purple-100"
+                        }`}
+                    >
+                      {files.length ? (
+                        <CheckCircle className="w-7 h-7 text-green-500" />
+                      ) : (
+                        <Image className="w-7 h-7 text-purple-600" />
+                      )}
+                    </div>
+
+                    {files.length ? (
+                      <>
+                        <p className="text-base font-semibold text-green-700">
+                          {files.length} image{files.length > 1 ? "s" : ""} selected
+                        </p>
+                        <p className="text-xs text-gray-400 mt-1">
+                          Review preview below or click to change selection
+                        </p>
+
+                        <div className="flex flex-wrap justify-center gap-2 mt-4">
+                          {["✓ JPG/PNG/WebP", "✓ Up to 50 images", "✓ Full quality", "✓ One PDF output"].map((t) => (
+                            <span
+                              key={t}
+                              className="bg-white text-green-700 border border-green-200 text-xs font-medium px-2.5 py-1 rounded-full shadow-sm"
+                            >
+                              {t}
+                            </span>
+                          ))}
+                        </div>
+                      </>
+                    ) : (
+                      <>
+                        <p className="text-base font-semibold text-gray-700">
+                          Drop your image file(s) here
+                        </p>
+                        <p className="text-sm text-gray-400 mt-1">
+                          or click to browse · JPG, PNG, WebP only
+                        </p>
+
+                        <div className="flex flex-wrap justify-center gap-2 mt-4">
+                          {["✓ No signup", "✓ No watermark", "✓ Up to 50 images", "✓ Auto-deleted"].map((t) => (
+                            <span
+                              key={t}
+                              className="bg-purple-50 text-purple-700 border border-purple-100 text-xs font-medium px-2.5 py-1 rounded-full"
+                            >
+                              {t}
+                            </span>
+                          ))}
+                        </div>
+                      </>
+                    )}
                   </div>
 
                   <input
@@ -306,101 +421,152 @@ export default function ImageToPdf() {
                     multiple
                     accept="image/jpeg,image/png,image/webp"
                     onChange={handleFileChange}
-                  />
-
-                  {/* <input
-                    type="file"
-                    accept="image/*"
-                    multiple
-                    onChange={(e) => setFiles(Array.from(e.target.files || []))}
                     className="hidden"
-                  /> */}
-
-
+                  />
                 </label>
 
-                {/* Selected Images Preview */}
+                {/* ── SELECTED IMAGES PREVIEW ── */}
                 {files.length > 0 && (
-                  <div className="mt-4 grid grid-cols-4 gap-3 max-h-56 overflow-y-auto p-3 bg-gray-50 rounded-xl">
-                    {files.map((file, index) => (
-                      <div key={index} className="relative group">
-                        <img
-                          src={URL.createObjectURL(file)}
-                          alt={file.name}
-                          className="w-full h-28 object-cover rounded-lg shadow"
-                        />
-
-                        <button
-                          onClick={() => removeFile(index)}
-                          className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition"
-                        >
-                          <X className="w-4 h-4" />
-                        </button>
-                        <p className="text-xs text-center mt-1 truncate">{file.name}</p>
+                  <div className="rounded-2xl border border-gray-200 bg-gray-50 p-4">
+                    <div className="flex items-center justify-between mb-3">
+                      <div>
+                        <p className="text-sm font-semibold text-gray-700">Selected image preview</p>
+                        <p className="text-xs text-gray-400">Images will appear in PDF in this upload order</p>
                       </div>
-                    ))}
+                      <span className="text-xs font-medium text-purple-700 bg-purple-100 px-2.5 py-1 rounded-full">
+                        {files.length} selected
+                      </span>
+                    </div>
+
+                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 max-h-72 overflow-y-auto">
+                      {files.map((file, index) => (
+                        <div key={index} className="relative group bg-white rounded-xl border border-gray-200 p-2 shadow-sm">
+                          <img
+                            src={URL.createObjectURL(file)}
+                            alt={file.name}
+                            className="w-full h-28 object-cover rounded-lg"
+                          />
+
+                          <button
+                            type="button"
+                            onClick={() => removeFile(index)}
+                            className="absolute top-3 right-3 bg-red-500 text-white rounded-full p-1 shadow opacity-0 group-hover:opacity-100 transition"
+                          >
+                            <X className="w-4 h-4" />
+                          </button>
+
+                          <p className="text-xs text-center mt-2 truncate text-gray-600">
+                            {file.name}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 )}
-              </div>
 
-              {/* Convert Button */}
-              {/* <button
-                type="submit"
-                disabled={loading || files.length === 0}
-                className="w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white font-semibold text-lg py-4 rounded-xl hover:from-purple-700 hover:to-pink-700 disabled:opacity-50 disabled:cursor-not-allowed transition shadow-md flex items-center justify-center gap-2"
-              >
-                {loading ? (
-                  "Turning images into PDF..."
-                ) : (
-                  <>
-                    <Upload className="w-5 h-5" />
+                {/* ── INFO ROW + CONVERT BUTTON ── */}
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-1">
+                  <div className="flex items-start gap-2.5 bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 flex-1">
+                    <Image className="w-4 h-4 text-gray-400 mt-0.5 shrink-0" />
+                    <div>
+                      <p className="text-sm font-medium text-gray-700 leading-none">Image to PDF conversion</p>
+                      <p className="text-xs text-gray-400 mt-0.5">
+                        Each image gets its own PDF page · One combined PDF download
+                      </p>
+                    </div>
+                  </div>
+
+                  <button
+                    type="submit"
+                    disabled={!files.length || isLoading}
+                    className={`flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm text-white transition-all duration-200 shadow-sm sm:w-auto w-full ${files.length && !isLoading
+                        ? "bg-gradient-to-r from-purple-600 to-pink-500 hover:from-purple-700 hover:to-pink-600 hover:shadow-md active:scale-[0.98]"
+                        : "bg-gray-200 text-gray-400 cursor-not-allowed"
+                      }`}
+                  >
+                    <Image className="w-4 h-4" />
                     Convert to PDF
-                  </>
-                )}
-              </button> */}
+                  </button>
+                </div>
 
-              <ProgressButton
-                isLoading={isLoading}
-                progress={progress}
-                disabled={!files.length}
-                icon={<Image className="w-5 h-5" />}           // ← Image to PDF ke liye best icon
-                label="Convert Images to PDF"
-                gradient="from-purple-600 to-violet-600"       // ← image tool ke liye perfect color
-                type="button"
-                onClick={handleSubmit}
-              />
-            </form>
+                {/* hints */}
+                <div className="text-xs text-gray-400 text-center space-y-0.5 pb-1">
+                  <p>⏱️ Large image sets may take a little longer — don&apos;t close this tab</p>
+                  <p>💡 Best results with clear, high-resolution images · Output will be one combined PDF</p>
+                </div>
 
+              </form>
 
-            {/* Success Message */}
+            </div>{/* end blur wrapper */}
+
+            {/* ── SUCCESS STATE ── */}
             {success && (
               <div
-                id="download-section"  // ✅ BAS YE EK LINE ADD KARO
-                className="mt-6 p-4 bg-green-50 border-2 border-green-200 rounded-xl text-center">
-                <CheckCircle className="w-12 h-12 text-green-600 mx-auto mb-3" />
-                <p className="text-xl font-bold text-green-700 mb-2">All done!</p>
-                <p className="text-base text-gray-700 mb-3">Your images are now one beautiful PDF</p>
-                <button
-                  onClick={handleDownload}
-                  className="bg-green-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-green-700 transition shadow-md flex items-center gap-2 mx-auto text-base"
-                >
-                  <Download className="w-5 h-5" />
-                  Download Your PDF
-                </button>
+                id="download-section"
+                className="mx-6 mb-6 rounded-2xl overflow-hidden border border-green-200 bg-gradient-to-br from-green-50 to-emerald-50"
+              >
+                <div className="flex flex-col items-center text-center px-8 py-10">
+                  <div className="relative w-16 h-16 mb-5">
+                    <div className="absolute inset-0 rounded-full bg-emerald-100 animate-ping opacity-30"></div>
+                    <div className="relative w-16 h-16 rounded-full bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center shadow-lg">
+                      <CheckCircle className="w-8 h-8 text-white" />
+                    </div>
+                  </div>
+
+                  <h3 className="text-xl font-bold text-emerald-800 mb-1">
+                    Conversion Complete! 🎉
+                  </h3>
+
+                  <p className="text-sm text-emerald-700 font-medium mb-1">
+                    Your image{files.length > 1 ? "s are" : " is"} now combined into PDF format
+                  </p>
+
+                  <p className="text-xs text-gray-500 mb-6">
+                    Click below to download your PDF file
+                  </p>
+
+                  <button
+                    onClick={handleDownload}
+                    className="inline-flex items-center gap-2 bg-gradient-to-r from-emerald-600 to-teal-500 text-white text-sm font-semibold px-7 py-3 rounded-xl hover:from-emerald-700 hover:to-teal-600 transition shadow-md mb-4"
+                  >
+                    <Download className="w-4 h-4" />
+                    Download PDF
+                  </button>
+
+                  <div className="flex flex-wrap gap-3 justify-center">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setSuccess(false);
+                        setFiles([]);
+                        setDownloadUrl(null);
+                      }}
+                      className="inline-flex items-center gap-2 bg-white border border-emerald-300 text-emerald-700 text-sm font-semibold px-5 py-2.5 rounded-xl hover:bg-emerald-50 transition shadow-sm"
+                    >
+                      <Image className="w-4 h-4" />
+                      Convert more images
+                    </button>
+
+                    <a
+                      href="/pdf-to-jpg"
+                      className="inline-flex items-center gap-2 bg-white border border-gray-200 text-gray-600 text-sm font-semibold px-5 py-2.5 rounded-xl hover:bg-gray-50 transition shadow-sm"
+                    >
+                      PDF to JPG →
+                    </a>
+                  </div>
+                </div>
               </div>
             )}
 
+          </div>{/* end main card */}
 
-          </div>
-
-          {/* Trust Footer */}
-          <p className="text-center mt-6 text-gray-600 text-base">
+          {/* footer trust bar */}
+          <p className="text-center mt-6 text-gray-500 text-sm">
             No sign-up • No watermark • Auto-deleted after 1 hour • 100% free •
-            Up to 50 images • Works on Windows, Mac, Android & iOS
+            Up to 50 images • Works on Windows, Mac, Android &amp; iOS
           </p>
         </div>
       </main>
-
       {/* ==================== SEO CONTENT SECTION ==================== */}
       <section className="mt-16 max-w-4xl mx-auto px-6 pb-16">
         {/* Main Heading */}
