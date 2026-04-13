@@ -270,7 +270,6 @@ export default function WordToPdf() {
         }}
       />
       {/* ==================== MAIN TOOL SECTION ==================== */}
-{/* ==================== MAIN TOOL SECTION ==================== */}
       <main className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50 py-8 px-4">
         <div className="max-w-4xl mx-auto">
 

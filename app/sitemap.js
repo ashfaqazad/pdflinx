@@ -39,7 +39,11 @@ export default function sitemap() {
     "/pdf-to-excel",
     "/compress-pdf-savings-calculator",
     "/remove-pages",
-    "/add-page-numbers"
+    "/add-page-numbers",
+    "/html-to-pdf",
+    "/pdf-to-png",
+    "/pdf-to-text",
+    "/text-to-pdf",
 
   ].map((url) => ({
     url,

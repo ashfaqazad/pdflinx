@@ -22,6 +22,12 @@ const componentMap = {
   "pdf-to-excel": () => import("@/components/tools/PdfToExcel"),
   "remove-pages": () => import("@/components/tools/RemovePages"),
   "add-page-numbers": () => import("@/components/tools/AddPageNumbers"),
+  "html-to-pdf": () => import("@/components/tools/HtmlToPdf"),
+  "pdf-to-png": () => import("@/components/tools/PdfToPng"),
+  "pdf-to-text": () => import("@/components/tools/PdfToText"),
+
+
+
 
 
 };

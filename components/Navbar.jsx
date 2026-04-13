@@ -21,6 +21,7 @@ import {
   Shield,
   PenSquare,
   Unlock,
+  Code,
 } from "lucide-react";
 import Image from "next/image";
 
@@ -108,9 +109,8 @@ export default function Navbar() {
                 PDF Tools
                 <ChevronDown
                   size={16}
-                  className={`transition-transform duration-200 ${
-                    dropdownOpen ? "rotate-180" : ""
-                  }`}
+                  className={`transition-transform duration-200 ${dropdownOpen ? "rotate-180" : ""
+                    }`}
                 />
               </button>
 
@@ -253,7 +253,7 @@ export default function Navbar() {
                           >
                             <FileImage size={18} className="text-orange-600 shrink-0" />
                             <span className="font-medium text-gray-700 whitespace-nowrap">
-                              JPG to PDF
+                              Image to PDF
                             </span>
                           </Link>
 
@@ -265,6 +265,18 @@ export default function Navbar() {
                             <FileText size={18} className="text-purple-600 shrink-0" />
                             <span className="font-medium text-gray-700 whitespace-nowrap">
                               Text to PDF
+                            </span>
+                          </Link>
+
+                          <Link
+                            href="/html-to-pdf"
+                            onClick={closeDropdown}
+                            className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm hover:bg-indigo-50 transition-all duration-200 hover:translate-x-1 whitespace-nowrap"
+                          >
+                            <Code size={18} className="text-indigo-600 shrink-0" />
+
+                            <span className="font-medium text-gray-700 whitespace-nowrap">
+                              HTML to PDF
                             </span>
                           </Link>
                         </div>
@@ -309,6 +321,30 @@ export default function Navbar() {
                             <ImageIcon size={18} className="text-orange-600 shrink-0" />
                             <span className="font-medium text-gray-700 whitespace-nowrap">
                               PDF to JPG
+                            </span>
+                          </Link>
+
+                          <Link
+                            href="/pdf-to-png"
+                            onClick={closeDropdown}
+                            className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm hover:bg-indigo-50 transition-all duration-200 hover:translate-x-1 whitespace-nowrap"
+                          >
+                            {/* <Image size={18} className="text-orange-600 shrink-0" /> */}
+                            <ImageIcon size={18} className="text-orange-600 shrink-0" />
+                            <span className="font-medium text-gray-700 whitespace-nowrap">
+                              PDF to PNG
+                            </span>
+                          </Link>
+
+                          <Link
+                            href="/pdf-to-text"
+                            onClick={closeDropdown}
+                            className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm hover:bg-indigo-50 transition-all duration-200 hover:translate-x-1 whitespace-nowrap"
+                          >
+                            <FileText size={18} className="text-blue-600 shrink-0" />
+
+                            <span className="font-medium text-gray-700 whitespace-nowrap">
+                              PDF to Text
                             </span>
                           </Link>
                         </div>
@@ -599,7 +635,7 @@ export default function Navbar() {
                         className="flex items-center gap-2 text-gray-600 hover:text-indigo-600 py-1 whitespace-nowrap"
                       >
                         <FileImage size={16} className="text-orange-600 shrink-0" />
-                        JPG to PDF
+                        Image to PDF
                       </Link>
 
                       <Link
@@ -609,6 +645,15 @@ export default function Navbar() {
                       >
                         <FileText size={16} className="text-purple-600 shrink-0" />
                         Text to PDF
+                      </Link>
+
+                      <Link
+                        href="/html-to-pdf"
+                        onClick={closeMobile}
+                        className="flex items-center gap-2 text-gray-600 hover:text-indigo-600 py-1 whitespace-nowrap"
+                      >
+                        <Code size={16} className="text-indigo-600 shrink-0" />
+                        HTML to PDF
                       </Link>
                     </div>
                   </div>
@@ -644,6 +689,23 @@ export default function Navbar() {
                       >
                         <ImageIcon size={16} className="text-orange-600 shrink-0" />
                         PDF to JPG
+                      </Link>
+
+                      <Link
+                        href="/pdf-to-png"
+                        onClick={closeMobile}
+                        className="flex items-center gap-2 text-gray-600 hover:text-indigo-600 py-1 whitespace-nowrap"
+                      >
+                        <ImageIcon size={16} className="text-orange-600 shrink-0" />
+                        PDF to PNG
+                      </Link>
+                      <Link
+                        href="/pdf-to-text"
+                        onClick={closeMobile}
+                        className="flex items-center gap-2 text-gray-600 hover:text-indigo-600 py-1 whitespace-nowrap"
+                      >
+                        <FileText size={16} className="text-blue-600 shrink-0" />
+                        PDF to Text
                       </Link>
                     </div>
                   </div>

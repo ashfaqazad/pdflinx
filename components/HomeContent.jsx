@@ -22,6 +22,9 @@ import {
     Zap,
     Eye,
     Smartphone,
+    Trash2,
+    Hash,
+    Code,
 } from "lucide-react";
 import SisterSitesBanner from "./SisterSitesBanner";
 
@@ -168,6 +171,62 @@ export default function HomeContent() {
             accent: "#475569",
             category: "organize",
         },
+        {
+            title: "Remove Pages",
+            desc: "Delete specific pages from a PDF in seconds. Preview pages first, choose what to remove, and download a clean file.",
+            link: "/remove-pages",
+            icon: <Trash2 className="w-6 h-6" />,
+            accent: "#ef4444",
+            category: "organize",
+        },
+        {
+            title: "PDF to Excel",
+            desc: "Extract tables from PDF into editable Excel spreadsheets. Great for invoices, reports, and tabular data.",
+            link: "/pdf-to-excel",
+            icon: <FileSpreadsheet className="w-6 h-6" />,
+            accent: "#16a34a",
+            category: "convert",
+        },
+        {
+            title: "PDF to PNG",
+            desc: "Convert PDF pages into clear PNG images with sharp quality. Best for graphics, transparent-friendly output, and previews.",
+            link: "/pdf-to-png",
+            icon: <Image className="w-6 h-6" />,
+            accent: "#f97316",
+            category: "convert",
+        },
+        {
+            title: "PDF to Text",
+            desc: "Extract plain text from PDF files instantly. Useful for copying content, research notes, and searchable text workflows.",
+            link: "/pdf-to-text",
+            icon: <FileText className="w-6 h-6" />,
+            accent: "#2563eb",
+            category: "convert",
+        },
+        {
+            title: "Add Page Numbers",
+            desc: "Insert page numbers into your PDF with custom position, format, and style. Perfect for reports, books, and documents.",
+            link: "/add-page-numbers",
+            icon: <Hash className="w-6 h-6" />,
+            accent: "#1d4ed8",
+            category: "organize",
+        },
+        {
+            title: "Text to PDF",
+            desc: "Turn plain text into a clean PDF document online. Great for notes, drafts, code snippets, and simple document creation.",
+            link: "/text-to-pdf",
+            icon: <FileText className="w-6 h-6" />,
+            accent: "#9333ea",
+            category: "convert",
+        },
+        {
+            title: "HTML to PDF",
+            desc: "Convert HTML content into PDF format while preserving structure and layout. Useful for web pages, templates, and styled content.",
+            link: "/html-to-pdf",
+            icon: <Code className="w-6 h-6" />,
+            accent: "#4f46e5",
+            category: "convert",
+        },
     ];
 
     const categories = [
@@ -275,7 +334,7 @@ export default function HomeContent() {
             <div className={styles.statsBar}>
                 <div className={styles.statsInner}>
                     {[
-                        { num: "16+", label: "Free PDF Tools" },
+                        { num: "23+", label: "Free PDF Tools" },
                         { num: "Zero", label: "Ads or Popups" },
                         { num: "100%", label: "Browser-Based" },
                         { num: "Free", label: "No Hidden Costs" },
@@ -309,39 +368,6 @@ export default function HomeContent() {
                         </button>
                     ))}
                 </div>
-
-                {/* <div className={styles.toolsGrid}>
-                    {filtered.map((tool, i) => (
-                        <div
-                            key={i}
-                            className={styles.toolCard}
-                            style={{ "--accent": tool.accent }}
-                            onClick={() => router.push(tool.link)}
-                        >
-                            <div className={styles.toolCardTop}>
-                                <div
-                                    className={styles.toolIconWrap}
-                                    style={{ background: tool.accent }}
-                                >
-                                    {tool.icon}
-                                </div>
-
-                                {tool.badge && (
-                                    <span
-                                        className={styles.toolBadge}
-                                        style={{ background: tool.accent }}
-                                    >
-                                        {tool.badge}
-                                    </span>
-                                )}
-                            </div>
-
-                            <h3 className={styles.toolTitle}>{tool.title}</h3>
-                            <p className={styles.toolDesc}>{tool.desc}</p>
-                            <span className={styles.toolLink}>Use Tool →</span>
-                        </div>
-                    ))}
-                </div> */}
 
                 <div className={styles.toolsGrid}>
                     {filtered.map((tool, i) => (

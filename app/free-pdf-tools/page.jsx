@@ -41,9 +41,12 @@ const icons = {
 };
 
 export const metadata = {
+  // title: "Free PDF Tools – Convert, Merge, Compress, Sign & Edit PDFs Online | PDF Linx",
+  // description:
+  //   "16+ free online PDF tools: convert PDF to Word, merge PDF, compress PDF, split, protect, unlock, rotate, sign, OCR, edit, and add watermark. No signup, no watermark, works on all devices.",
   title: "Free PDF Tools – Convert, Merge, Compress, Sign & Edit PDFs Online | PDF Linx",
   description:
-    "16+ free online PDF tools: convert PDF to Word, merge PDF, compress PDF, split, protect, unlock, rotate, sign, OCR, edit, and add watermark. No signup, no watermark, works on all devices.",
+    "24+ free online PDF tools: convert PDF to Word, merge PDF, compress PDF, split, protect, unlock, rotate, sign, OCR, edit, watermark, and more. No signup, no watermark, works on all devices.",
   alternates: {
     canonical: "https://pdflinx.com/free-pdf-tools",
   },
@@ -80,6 +83,14 @@ export default function FreePdfToolsPage() {
   const tEdit = getTool("edit-pdf", "/edit-pdf");
   const tWatermark = getTool("add-watermark", "/add-watermark");
   const tPdfToJpg = getTool("pdf-to-jpg", "/pdf-to-jpg");
+  const tPdfToExcel = getTool("pdf-to-excel", "/pdf-to-excel");
+  const tPdfToPng = getTool("pdf-to-png", "/pdf-to-png");
+  const tPdfToText = getTool("pdf-to-text", "/pdf-to-text");
+  const tTextToPdf = getTool("text-to-pdf", "/text-to-pdf");
+  const tHtmlToPdf = getTool("html-to-pdf", "/html-to-pdf");
+  const tRemovePages = getTool("remove-pages", "/remove-pages");
+  const tAddPageNumbers = getTool("add-page-numbers", "/add-page-numbers");
+  const tJpgToPdf = getTool("jpg-to-pdf", "/jpg-to-pdf");
 
   const faqJsonLd = {
     "@context": "https://schema.org",
@@ -98,7 +109,7 @@ export default function FreePdfToolsPage() {
         name: "Are PDFLinx PDF tools completely free?",
         acceptedAnswer: {
           "@type": "Answer",
-          text: "Yes. All 16+ PDFLinx tools are free to use with no signup, no watermark added to your files, and no hidden charges.",
+          text: "Yes. All 24+ PDFLinx tools are free to use with no signup, no watermark added to your files, and no hidden charges.",
         },
       },
       {
@@ -161,6 +172,9 @@ export default function FreePdfToolsPage() {
         { label: "Excel to PDF", href: "/excel-pdf", emoji: "📊", desc: "Export XLS and XLSX spreadsheets to clean, print-ready PDF format." },
         { label: "PPT to PDF", href: "/ppt-to-pdf", emoji: "📽️", desc: "Convert PowerPoint presentations to PDF — slides stay pixel-perfect." },
         { label: "Image to PDF", href: "/image-to-pdf", emoji: "🖼️", desc: "Combine JPG and PNG images into a single PDF. Supports batch upload." },
+        { label: "JPG to PDF", href: "/jpg-to-pdf", emoji: "🖼️", desc: "Convert JPG images into a PDF document quickly and easily." },
+        { label: "Text to PDF", href: "/text-to-pdf", emoji: "📄", desc: "Convert plain text into a clean PDF document instantly." },
+        { label: "HTML to PDF", href: "/html-to-pdf", emoji: "💻", desc: "Convert HTML content into PDF while preserving layout and structure." },
       ],
     },
     {
@@ -170,6 +184,9 @@ export default function FreePdfToolsPage() {
         { label: "PDF to Word", href: "/pdf-to-word", emoji: "📝", desc: "Convert PDF to editable DOCX. Formatting, images, and tables preserved." },
         { label: "PDF to JPG", href: "/pdf-to-jpg", emoji: "🖼️", desc: "Extract PDF pages as high-quality JPG images. Download individually or as ZIP." },
         { label: "OCR PDF", href: "/ocr-pdf", emoji: "🔍", desc: "Use Optical Character Recognition to extract selectable text from scanned PDFs." },
+        { label: "PDF to Excel", href: "/pdf-to-excel", emoji: "📊", desc: "Extract PDF tables into editable Excel spreadsheets." },
+        { label: "PDF to PNG", href: "/pdf-to-png", emoji: "🖼️", desc: "Convert PDF pages into sharp PNG images with clear quality." },
+        { label: "PDF to Text", href: "/pdf-to-text", emoji: "📝", desc: "Extract plain text from PDF files for copying, editing, and reuse." },
       ],
     },
     {
@@ -180,6 +197,8 @@ export default function FreePdfToolsPage() {
         { label: "Split PDF", href: "/split-pdf", emoji: "✂️", desc: "Extract specific pages or page ranges from any PDF file." },
         { label: "Compress PDF", href: "/compress-pdf", emoji: "🗜️", desc: "Reduce PDF file size without losing readability. Choose compression level." },
         { label: "Rotate PDF", href: "/rotate-pdf", emoji: "🔄", desc: "Fix sideways or upside-down PDF pages. Rotate 90°, 180°, or 270°." },
+        { label: "Remove Pages", href: "/remove-pages", emoji: "🗑️", desc: "Delete specific pages from a PDF and download the cleaned file." },
+        { label: "Add Page Numbers", href: "/add-page-numbers", emoji: "#️⃣", desc: "Insert page numbers into your PDF with custom placement and style." },
       ],
     },
     {
@@ -209,7 +228,7 @@ export default function FreePdfToolsPage() {
         {/* ── HERO ── */}
         <section className="text-center mb-14">
           <span className="inline-block bg-red-50 text-red-600 text-xs font-bold uppercase tracking-widest px-4 py-1.5 rounded-full mb-5 border border-red-100">
-            16+ Free Tools — No Signup Required
+            24+ Free Tools — No Signup Required
           </span>
           <h1 className="text-4xl md:text-5xl font-bold mb-5 text-gray-900 leading-tight">
             Free Online PDF Tools
