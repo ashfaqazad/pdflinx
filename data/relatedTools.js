@@ -10,12 +10,16 @@ export const relatedToolsData = {
     { title: 'PDF to Word', emoji: '📄', url: '/pdf-to-word', desc: 'Convert PDF back to Word format' },
     { title: 'Excel to PDF', emoji: '📊', url: '/excel-pdf', desc: 'Convert Excel spreadsheets to PDF' },
     { title: 'Image to PDF', emoji: '🖼️', url: '/image-to-pdf', desc: 'Turn images into PDF documents' },
+    { title: 'Sign PDF', emoji: '✍️', url: '/sign-pdf', desc: 'Easily add your digital signature to any PDF document online' },
   ],
+
   'pdf-to-word': [
     { title: 'Word to PDF', emoji: '📄', url: '/word-to-pdf', desc: 'Convert back to PDF format' },
     { title: 'Split PDF', emoji: '✂️', url: '/split-pdf', desc: 'Separate pages into multiple files' },
     { title: 'Compress PDF', emoji: '🗜️', url: '/compress-pdf', desc: 'Reduce file size without losing quality' },
+    { title: 'Sign PDF', emoji: '✍️', url: '/sign-pdf', desc: 'Easily add your digital signature to any PDF document online' },
   ],
+
   'excel-pdf': [
     { title: 'Word to PDF', emoji: '📄', url: '/word-to-pdf', desc: 'Convert Word to PDF' },
     { title: 'PDF to Word', emoji: '📝', url: '/pdf-to-word', desc: 'Convert PDF to editable Word' },
@@ -47,6 +51,7 @@ export const relatedToolsData = {
     { title: 'Merge PDF', emoji: '📚', url: '/merge-pdf', desc: 'Combine multiple PDFs' },
     { title: 'Split PDF', emoji: '✂️', url: '/split-pdf', desc: 'Separate pages' },
     { title: 'PDF to Word', emoji: '📄', url: '/pdf-to-word', desc: 'Convert to Word' },
+    { title: 'Sign PDF', emoji: '✍️', url: '/sign-pdf', desc: 'Easily add your digital signature to any PDF document online' },
   ],
   'pdf-to-jpg': [
     { title: 'Image to PDF', emoji: '🖼️', url: '/image-to-pdf', desc: 'Turn images into PDF documents' },
@@ -66,7 +71,8 @@ export const relatedToolsData = {
     { title: 'Split PDF', emoji: '✂️', url: '/split-pdf', desc: 'Split unlocked PDF into pages' },
   ],
   'rotate-pdf': [
-    { title: 'Sign PDF', emoji: '✍️', url: '/sign-pdf', desc: 'Add your digital signature to rotated PDFs' },
+
+    { title: 'Sign PDF', emoji: '✍️', url: '/sign-pdf', desc: 'Easily add your digital signature to any PDF document online' },
     { title: 'Merge PDF', emoji: '📚', url: '/merge-pdf', desc: 'Combine rotated PDFs into one file' },
     { title: 'Split PDF', emoji: '✂️', url: '/split-pdf', desc: 'Split rotated PDF into separate pages' },
   ],
@@ -90,9 +96,10 @@ export const relatedToolsData = {
   'add-watermark': [
     { title: 'Protect PDF', emoji: '🔐', url: '/protect-pdf', desc: 'Secure your watermarked PDF with a password' },
     { title: 'Compress PDF', emoji: '🗜️', url: '/compress-pdf', desc: 'Reduce file size after watermarking' },
-    { title: 'Sign PDF', emoji: '✍️', url: '/sign-pdf', desc: 'Add your signature to the PDF' },
+    { title: 'Sign PDF', emoji: '✍️', url: '/sign-pdf', desc: 'Easily add your digital signature to any PDF document online' },
+    
   ],
-    'text-to-pdf': [
+  'text-to-pdf': [
     { title: 'Protect PDF', emoji: '🔐', url: '/protect-pdf', desc: 'Secure your watermarked PDF with a password' },
     { title: 'OCR PDF', emoji: '🧠', url: '/ocr-pdf', desc: 'Extract text from scanned PDFs' },
     { title: 'Split PDF', emoji: '✂️', url: '/split-pdf', desc: 'Split rotated PDF into separate pages' },
