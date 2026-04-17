@@ -2,14 +2,16 @@ import BlogClient from "./BlogClient";
 
 export const metadata = {
   metadataBase: new URL("https://pdflinx.com"),
-  
+
   title: "PDF Tools Blog and Guides - Tips, Tutorials and How-Tos",
-  
-  description: "Read practical guides, tips, and tutorials on PDF tools: how to convert, merge, split, compress PDFs, fix common errors, and get the most out of free online PDF Linx tools. New articles every week.",
+
+  description:
+    "Read practical guides, tips, and tutorials on PDF tools: how to convert, merge, split, compress PDFs, fix common errors, and get the most out of free online PDF Linx tools. New articles every week.",
 
   openGraph: {
     title: "PDF Linx Blog",
-    description: "Tips, tutorials and guides for free online PDF tools. Learn smarter ways to convert, merge, split and compress PDFs.",
+    description:
+      "Tips, tutorials and guides for free online PDF tools. Learn smarter ways to convert, merge, split and compress PDFs.",
     url: "https://pdflinx.com/blog",
     siteName: "PDF Linx",
     images: [
@@ -33,6 +35,80 @@ export default function BlogPage() {
 }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// import BlogClient from "./BlogClient";
+
+// export const metadata = {
+//   metadataBase: new URL("https://pdflinx.com"),
+  
+//   title: "PDF Tools Blog and Guides - Tips, Tutorials and How-Tos",
+  
+//   description: "Read practical guides, tips, and tutorials on PDF tools: how to convert, merge, split, compress PDFs, fix common errors, and get the most out of free online PDF Linx tools. New articles every week.",
+
+//   openGraph: {
+//     title: "PDF Linx Blog",
+//     description: "Tips, tutorials and guides for free online PDF tools. Learn smarter ways to convert, merge, split and compress PDFs.",
+//     url: "https://pdflinx.com/blog",
+//     siteName: "PDF Linx",
+//     images: [
+//       {
+//         url: "/og-image.png",
+//         width: 1200,
+//         height: 630,
+//       },
+//     ],
+//     locale: "en_US",
+//     type: "website",
+//   },
+
+//   alternates: {
+//     canonical: "https://pdflinx.com/blog",
+//   },
+// };
+
+// export default function BlogPage() {
+//   return <BlogClient />;
+// }
+
+
+
+// export async function generateMetadata({ params }) {
+//   const post = blogs.find(b => b.slug === params.slug);
+  
+//   return {
+//     title: post?.title,
+//     description: post?.excerpt,
+//     openGraph: {
+//       title: post?.title,
+//       description: post?.excerpt,
+//       images: [{
+//         url: `https://pdflinx.com${post?.coverImage}`,
+//         width: 1200,
+//         height: 630,
+//       }],
+//     },
+//     twitter: {
+//       card: "summary_large_image",
+//       images: [`https://pdflinx.com${post?.coverImage}`],
+//     }
+//   };
+// }
 
 
 

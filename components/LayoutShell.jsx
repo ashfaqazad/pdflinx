@@ -11,7 +11,7 @@ export default function LayoutShell({ children }) {
   return (
     <>
       {!isEmbed && <Navbar />}
-      <main className="flex-grow">{children}</main>
+      <main className="grow">{children}</main>
       {!isEmbed && <Footer />}
     </>
   );

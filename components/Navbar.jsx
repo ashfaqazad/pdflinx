@@ -115,10 +115,10 @@ export default function Navbar() {
               </button>
 
               {dropdownOpen && (
-                <div className="absolute left-1/2 top-[calc(100%+12px)] -translate-x-[75%] w-[1180px] max-w-[calc(100vw-48px)] bg-white/95 backdrop-blur-md rounded-2xl border border-gray-100 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.15)] overflow-hidden z-50">
-                  <div className="h-1 bg-gradient-to-r from-indigo-500 to-purple-500" />
+                <div className="absolute left-1/2 top-[calc(100%+12px)] -translate-x-[75%] w-295 max-w-[calc(100vw-48px)] bg-white/95 backdrop-blur-md rounded-2xl border border-gray-100 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.15)] overflow-hidden z-50">
+                  <div className="h-1 bg-linear-to-r from-indigo-500 to-purple-500" />
 
-                  <div className="px-6 py-4 bg-gradient-to-b from-gray-50 to-white">
+                  <div className="px-6 py-4 bg-linear-to-b from-gray-50 to-white">
                     <div className="mb-4">
                       <Link
                         href="/free-pdf-tools"
@@ -131,7 +131,7 @@ export default function Navbar() {
 
                     <div className="grid grid-cols-6 gap-6">
                       {/* ORGANIZE PDF */}
-                      <div className="min-w-[165px]">
+                      <div className="min-w-41.25">
                         <h3 className="text-xs uppercase tracking-wider text-gray-500 font-semibold mb-3">
                           Organize PDF
                         </h3>
@@ -172,7 +172,7 @@ export default function Navbar() {
                       </div>
 
                       {/* OPTIMIZE PDF */}
-                      <div className="min-w-[165px] border-l border-gray-100 pl-5">
+                      <div className="min-w-41.25 border-l border-gray-100 pl-5">
                         <h3 className="text-xs uppercase tracking-wider text-gray-500 font-semibold mb-3">
                           Optimize PDF
                         </h3>
@@ -202,7 +202,7 @@ export default function Navbar() {
                       </div>
 
                       {/* CONVERT TO PDF */}
-                      <div className="min-w-[175px] border-l border-gray-100 pl-5">
+                      <div className="min-w-43.75 border-l border-gray-100 pl-5">
                         <h3 className="text-xs uppercase tracking-wider text-gray-500 font-semibold mb-3">
                           Convert to PDF
                         </h3>
@@ -283,7 +283,7 @@ export default function Navbar() {
                       </div>
 
                       {/* CONVERT FROM PDF */}
-                      <div className="min-w-[170px] border-l border-gray-100 pl-5">
+                      <div className="min-w-42.5 border-l border-gray-100 pl-5">
                         <h3 className="text-xs uppercase tracking-wider text-gray-500 font-semibold mb-3">
                           Convert from PDF
                         </h3>
@@ -351,7 +351,7 @@ export default function Navbar() {
                       </div>
 
                       {/* EDIT PDF */}
-                      <div className="min-w-[175px] border-l border-gray-100 pl-5">
+                      <div className="min-w-43.75 border-l border-gray-100 pl-5">
                         <h3 className="text-xs uppercase tracking-wider text-gray-500 font-semibold mb-3">
                           Edit PDF
                         </h3>
@@ -403,7 +403,7 @@ export default function Navbar() {
                       </div>
 
                       {/* PDF SECURITY */}
-                      <div className="min-w-[165px] border-l border-gray-100 pl-5">
+                      <div className="min-w-41.25 border-l border-gray-100 pl-5">
                         <h3 className="text-xs uppercase tracking-wider text-gray-500 font-semibold mb-3">
                           PDF Security
                         </h3>
@@ -481,7 +481,7 @@ export default function Navbar() {
 
       {/* Mobile Menu */}
       {mobileOpen && (
-        <div className="lg:hidden fixed top-[73px] left-0 right-0 bottom-0 bg-white border-t border-gray-100 z-40 overflow-y-auto">
+        <div className="lg:hidden fixed top-18.25 left-0 right-0 bottom-0 bg-white border-t border-gray-100 z-40 overflow-y-auto">
           <div className="px-6 py-6 space-y-4 pb-24">
             <Link
               href="/"
@@ -979,9 +979,9 @@ export default function Navbar() {
 
 //               {dropdownOpen && (
 //                 <div className="absolute top-full left-1/2 -translate-x-[68%] w-[1220px] bg-white/95 backdrop-blur-md rounded-2xl border border-gray-100 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.15)] overflow-hidden z-50">
-//                   <div className="h-1 bg-gradient-to-r from-indigo-500 to-purple-500" />
+//                   <div className="h-1 bg-linear-to-r from-indigo-500 to-purple-500" />
 
-//                   <div className="px-6 py-4 bg-gradient-to-b from-gray-50 to-white">
+//                   <div className="px-6 py-4 bg-linear-to-b from-gray-50 to-white">
 //                     <div className="mb-4">
 
 
@@ -996,7 +996,7 @@ export default function Navbar() {
 
 //                     <div className="grid grid-cols-6 gap-6">
 //                       {/* ORGANIZE PDF */}
-//                       <div className="min-w-[165px]">
+//                       <div className="min-w-41.25">
 //                         <h3 className="text-xs uppercase tracking-wider text-gray-500 font-semibold mb-3">
 //                           Organize PDF
 //                         </h3>
@@ -1037,7 +1037,7 @@ export default function Navbar() {
 //                       </div>
 
 //                       {/* OPTIMIZE PDF */}
-//                       <div className="min-w-[165px] border-l border-gray-100 pl-5">
+//                       <div className="min-w-41.25 border-l border-gray-100 pl-5">
 //                         <h3 className="text-xs uppercase tracking-wider text-gray-500 font-semibold mb-3">
 //                           Optimize PDF
 //                         </h3>
@@ -1067,7 +1067,7 @@ export default function Navbar() {
 //                       </div>
 
 //                       {/* CONVERT TO PDF */}
-//                       <div className="min-w-[175px] border-l border-gray-100 pl-5">
+//                       <div className="min-w-43.75 border-l border-gray-100 pl-5">
 //                         <h3 className="text-xs uppercase tracking-wider text-gray-500 font-semibold mb-3">
 //                           Convert to PDF
 //                         </h3>
@@ -1136,7 +1136,7 @@ export default function Navbar() {
 //                       </div>
 
 //                       {/* CONVERT FROM PDF */}
-//                       <div className="min-w-[170px] border-l border-gray-100 pl-5">
+//                       <div className="min-w-42.5 border-l border-gray-100 pl-5">
 //                         <h3 className="text-xs uppercase tracking-wider text-gray-500 font-semibold mb-3">
 //                           Convert from PDF
 //                         </h3>
@@ -1180,7 +1180,7 @@ export default function Navbar() {
 //                       </div>
 
 //                       {/* EDIT PDF */}
-//                       <div className="min-w-[175px] border-l border-gray-100 pl-5">
+//                       <div className="min-w-43.75 border-l border-gray-100 pl-5">
 //                         <h3 className="text-xs uppercase tracking-wider text-gray-500 font-semibold mb-3">
 //                           Edit PDF
 //                         </h3>
@@ -1232,7 +1232,7 @@ export default function Navbar() {
 //                       </div>
 
 //                       {/* PDF SECURITY */}
-//                       <div className="min-w-[165px] border-l border-gray-100 pl-5">
+//                       <div className="min-w-41.25 border-l border-gray-100 pl-5">
 //                         <h3 className="text-xs uppercase tracking-wider text-gray-500 font-semibold mb-3">
 //                           PDF Security
 //                         </h3>
@@ -1312,7 +1312,7 @@ export default function Navbar() {
 //       {/* {mobileOpen && (
 //         <div className="lg:hidden bg-white border-t border-gray-100"> */}
 //       {mobileOpen && (
-//         <div className="lg:hidden fixed top-[73px] left-0 right-0 bottom-0 bg-white border-t border-gray-100 z-40 overflow-y-auto">
+//         <div className="lg:hidden fixed top-18.25 left-0 right-0 bottom-0 bg-white border-t border-gray-100 z-40 overflow-y-auto">
 //           <div className="px-6 py-6 space-y-4">
 //             <Link
 //               href="/"
@@ -1708,8 +1708,8 @@ export default function Navbar() {
 
 //               {dropdownOpen && (
 //                 <div className="absolute top-14 right-[-250px] w-[820px] bg-white/95 backdrop-blur-md rounded-2xl border border-gray-100 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.15)] overflow-hidden z-50">
-//                   <div className="h-1 bg-gradient-to-r from-indigo-500 to-purple-500" />
-//                   <div className="grid grid-cols-4 gap-5 px-5 py-4 bg-gradient-to-b from-gray-50 to-white">
+//                   <div className="h-1 bg-linear-to-r from-indigo-500 to-purple-500" />
+//                   <div className="grid grid-cols-4 gap-5 px-5 py-4 bg-linear-to-b from-gray-50 to-white">
 
 //                     {/* Hub link */}
 //                     <div className="col-span-4">

@@ -466,10 +466,10 @@ export default function EditPdf() {
       />
 
       {/* ==================== TOOL UI ==================== */}
-      <main className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50 py-8 px-4">
+      <main className="min-h-screen bg-linear-to-br from-blue-50 via-white to-green-50 py-8 px-4">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-8">
-            <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent mb-4">
+            <h1 className="text-3xl md:text-4xl font-bold bg-linear-to-r from-blue-600 to-green-600 bg-clip-text text-transparent mb-4">
               Edit PDF Online Free
             </h1>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
@@ -663,7 +663,7 @@ export default function EditPdf() {
                         <ZoomOut />
                       </button>
 
-                      <div className="min-w-[64px] text-center text-sm font-medium text-gray-700">
+                      <div className="min-w-16 text-center text-sm font-medium text-gray-700">
                         {Math.round(scale * 100)}%
                       </div>
 
@@ -850,7 +850,7 @@ export default function EditPdf() {
       {/* ==================== SEO CONTENT SECTION ==================== */}
       <section className="mt-16 max-w-4xl mx-auto px-6 pb-16">
         <div className="text-center mb-12">
-          <h2 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent mb-4">
+          <h2 className="text-2xl md:text-3xl font-bold bg-linear-to-r from-blue-600 to-green-600 bg-clip-text text-transparent mb-4">
             Edit PDF Online Free – Add Text, Change Font & Download
           </h2>
           <p className="text-lg text-gray-600 max-w-3xl mx-auto">
@@ -861,7 +861,7 @@ export default function EditPdf() {
         </div>
 
         <div className="grid md:grid-cols-3 gap-8 mb-16">
-          <div className="bg-gradient-to-br from-blue-50 to-white p-8 rounded-2xl shadow-lg border border-blue-100 text-center hover:shadow-xl transition">
+          <div className="bg-linear-to-br from-blue-50 to-white p-8 rounded-2xl shadow-lg border border-blue-100 text-center hover:shadow-xl transition">
             <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
               <Type className="w-8 h-8 text-white" />
             </div>
@@ -873,7 +873,7 @@ export default function EditPdf() {
             </p>
           </div>
 
-          <div className="bg-gradient-to-br from-green-50 to-white p-8 rounded-2xl shadow-lg border border-green-100 text-center hover:shadow-xl transition">
+          <div className="bg-linear-to-br from-green-50 to-white p-8 rounded-2xl shadow-lg border border-green-100 text-center hover:shadow-xl transition">
             <div className="w-16 h-16 bg-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
               <Square className="w-8 h-8 text-white" />
             </div>
@@ -885,7 +885,7 @@ export default function EditPdf() {
             </p>
           </div>
 
-          <div className="bg-gradient-to-br from-purple-50 to-white p-8 rounded-2xl shadow-lg border border-purple-100 text-center hover:shadow-xl transition">
+          <div className="bg-linear-to-br from-purple-50 to-white p-8 rounded-2xl shadow-lg border border-purple-100 text-center hover:shadow-xl transition">
             <div className="w-16 h-16 bg-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
               <Download className="w-8 h-8 text-white" />
             </div>
@@ -904,7 +904,7 @@ export default function EditPdf() {
           </h3>
           <div className="grid md:grid-cols-3 gap-8">
             <div className="text-center">
-              <div className="w-16 h-16 bg-gradient-to-r from-blue-600 to-blue-700 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold text-white shadow-lg">
+              <div className="w-16 h-16 bg-linear-to-r from-blue-600 to-blue-700 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold text-white shadow-lg">
                 1
               </div>
               <h4 className="text-lg font-semibold mb-2">Upload PDF</h4>
@@ -914,7 +914,7 @@ export default function EditPdf() {
             </div>
 
             <div className="text-center">
-              <div className="w-16 h-16 bg-gradient-to-r from-green-600 to-green-700 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold text-white shadow-lg">
+              <div className="w-16 h-16 bg-linear-to-r from-green-600 to-green-700 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold text-white shadow-lg">
                 2
               </div>
               <h4 className="text-lg font-semibold mb-2">Edit & Style</h4>
@@ -924,7 +924,7 @@ export default function EditPdf() {
             </div>
 
             <div className="text-center">
-              <div className="w-16 h-16 bg-gradient-to-r from-purple-600 to-purple-700 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold text-white shadow-lg">
+              <div className="w-16 h-16 bg-linear-to-r from-purple-600 to-purple-700 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold text-white shadow-lg">
                 3
               </div>
               <h4 className="text-lg font-semibold mb-2">Download</h4>
@@ -1562,10 +1562,10 @@ export default function EditPdf() {
 //       />
 
 //       {/* ==================== TOOL UI ==================== */}
-//       <main className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50 py-8 px-4">
+//       <main className="min-h-screen bg-linear-to-br from-blue-50 via-white to-green-50 py-8 px-4">
 //         <div className="max-w-7xl mx-auto">
 //           <div className="text-center mb-8">
-//             <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent mb-4">
+//             <h1 className="text-3xl md:text-4xl font-bold bg-linear-to-r from-blue-600 to-green-600 bg-clip-text text-transparent mb-4">
 //               Edit PDF Online Free
 //             </h1>
 //             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
@@ -1848,7 +1848,7 @@ export default function EditPdf() {
 //       {/* ==================== SEO CONTENT SECTION ==================== */}
 //       <section className="mt-16 max-w-4xl mx-auto px-6 pb-16">
 //         <div className="text-center mb-12">
-//           <h2 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent mb-4">
+//           <h2 className="text-2xl md:text-3xl font-bold bg-linear-to-r from-blue-600 to-green-600 bg-clip-text text-transparent mb-4">
 //             Edit PDF Online Free – Add Text, Change Font & Download
 //           </h2>
 //           <p className="text-lg text-gray-600 max-w-3xl mx-auto">
@@ -1859,7 +1859,7 @@ export default function EditPdf() {
 //         </div>
 
 //         <div className="grid md:grid-cols-3 gap-8 mb-16">
-//           <div className="bg-gradient-to-br from-blue-50 to-white p-8 rounded-2xl shadow-lg border border-blue-100 text-center hover:shadow-xl transition">
+//           <div className="bg-linear-to-br from-blue-50 to-white p-8 rounded-2xl shadow-lg border border-blue-100 text-center hover:shadow-xl transition">
 //             <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
 //               <Type className="w-8 h-8 text-white" />
 //             </div>
@@ -1871,7 +1871,7 @@ export default function EditPdf() {
 //             </p>
 //           </div>
 
-//           <div className="bg-gradient-to-br from-green-50 to-white p-8 rounded-2xl shadow-lg border border-green-100 text-center hover:shadow-xl transition">
+//           <div className="bg-linear-to-br from-green-50 to-white p-8 rounded-2xl shadow-lg border border-green-100 text-center hover:shadow-xl transition">
 //             <div className="w-16 h-16 bg-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
 //               <Square className="w-8 h-8 text-white" />
 //             </div>
@@ -1883,7 +1883,7 @@ export default function EditPdf() {
 //             </p>
 //           </div>
 
-//           <div className="bg-gradient-to-br from-purple-50 to-white p-8 rounded-2xl shadow-lg border border-purple-100 text-center hover:shadow-xl transition">
+//           <div className="bg-linear-to-br from-purple-50 to-white p-8 rounded-2xl shadow-lg border border-purple-100 text-center hover:shadow-xl transition">
 //             <div className="w-16 h-16 bg-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
 //               <Download className="w-8 h-8 text-white" />
 //             </div>
@@ -1902,7 +1902,7 @@ export default function EditPdf() {
 //           </h3>
 //           <div className="grid md:grid-cols-3 gap-8">
 //             <div className="text-center">
-//               <div className="w-16 h-16 bg-gradient-to-r from-blue-600 to-blue-700 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold text-white shadow-lg">
+//               <div className="w-16 h-16 bg-linear-to-r from-blue-600 to-blue-700 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold text-white shadow-lg">
 //                 1
 //               </div>
 //               <h4 className="text-lg font-semibold mb-2">Upload PDF</h4>
@@ -1912,7 +1912,7 @@ export default function EditPdf() {
 //             </div>
 
 //             <div className="text-center">
-//               <div className="w-16 h-16 bg-gradient-to-r from-green-600 to-green-700 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold text-white shadow-lg">
+//               <div className="w-16 h-16 bg-linear-to-r from-green-600 to-green-700 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold text-white shadow-lg">
 //                 2
 //               </div>
 //               <h4 className="text-lg font-semibold mb-2">Edit & Style</h4>
@@ -1922,7 +1922,7 @@ export default function EditPdf() {
 //             </div>
 
 //             <div className="text-center">
-//               <div className="w-16 h-16 bg-gradient-to-r from-purple-600 to-purple-700 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold text-white shadow-lg">
+//               <div className="w-16 h-16 bg-linear-to-r from-purple-600 to-purple-700 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold text-white shadow-lg">
 //                 3
 //               </div>
 //               <h4 className="text-lg font-semibold mb-2">Download</h4>

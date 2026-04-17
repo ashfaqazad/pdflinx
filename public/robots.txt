@@ -5,5 +5,8 @@ User-agent: *
 Allow: /
 
 Disallow: /cdn-cgi/
+Disallow: /_next/static/
+Disallow: /favicon.ico
+
 
 Sitemap: https://pdflinx.com/sitemap.xml

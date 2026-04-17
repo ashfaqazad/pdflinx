@@ -74,6 +74,10 @@ export default function sitemap() {
     "/blog/convert-pdf-resume-to-editable-word",
     "/blog/best-tools-for-students",
     "/blog/best-free-image-converter-tools",
+    "/blog/how-to-convert-chatgpt-pdf-to-word",
+    "/blog/pdf-file-too-large-compress",
+    "/blog/freelancer-edit-pdf-free",
+    "/blog/pdf-not-editable-fix",
 
     // 🔥 Word to PDF Cluster
     "/blog/how-to-convert-word-to-pdf",

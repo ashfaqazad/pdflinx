@@ -359,14 +359,54 @@ export default function PdfToWord({ seo }) {
         }}
       />
 
+      <Script
+        id="software-schema-pdf-to-word"
+        type="application/ld+json"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            {
+              "@context": "https://schema.org",
+              "@type": "SoftwareApplication",
+              "name": "PDFLinx PDF to Word Converter",
+              "url": "https://pdflinx.com/pdf-to-word",
+              "applicationCategory": "UtilitiesApplication",
+              "operatingSystem": "Web, Windows, macOS, Android, iOS",
+              "browserRequirements": "Requires JavaScript. Works in Chrome, Firefox, Safari, Edge.",
+              "description": "Free online PDF to Word converter. No signup, no watermark. Supports scanned PDFs via OCR. Batch convert up to 10 PDFs at once.",
+              "offers": {
+                "@type": "Offer",
+                "price": "0",
+                "priceCurrency": "USD"
+              },
+              "featureList": [
+                "PDF to DOCX conversion",
+                "OCR for scanned PDFs",
+                "Batch conversion up to 10 files",
+                "No watermark",
+                "No signup required"
+              ],
+              "image": "https://pdflinx.com/og-image.png",
+              "provider": {
+                "@type": "Organization",
+                "name": "PDFLinx",
+                "url": "https://pdflinx.com"
+              }
+            },
+            null,
+            2
+          ),
+        }}
+      />
+
 
       {/* ==================== MAIN TOOL SECTION ==================== */}
-      <main className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50 py-8 px-4">
+      <main className="min-h-screen bg-linear-to-br from-blue-50 via-white to-green-50 py-8 px-4">
         <div className="max-w-4xl mx-auto">
 
           {/* Header */}
           <div className="text-center mb-8">
-            <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent mb-4">
+            <h1 className="text-3xl md:text-4xl font-bold bg-linear-to-r from-blue-600 to-green-600 bg-clip-text text-transparent mb-4">
               {seo?.h1 || "Convert PDF to Word Online Free"}
               <br />
               <span className="text-2xl md:text-3xl font-medium">
@@ -391,7 +431,7 @@ export default function PdfToWord({ seo }) {
                 key={i}
                 className={`flex flex-col items-center py-4 px-2 text-center ${i < 2 ? "border-r border-gray-100" : ""}`}
               >
-                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-green-500 flex items-center justify-center text-white text-sm font-bold mb-1 shadow-sm">
+                <div className="w-8 h-8 rounded-full bg-linear-to-br from-blue-500 to-green-500 flex items-center justify-center text-white text-sm font-bold mb-1 shadow-sm">
                   {s.n}
                 </div>
                 <p className="text-xs font-semibold text-gray-700">{s.label}</p>
@@ -420,7 +460,7 @@ export default function PdfToWord({ seo }) {
                   </div>
                   <div className="w-48 h-1.5 bg-gray-100 rounded-full overflow-hidden">
                     <div
-                      className="h-full bg-gradient-to-r from-blue-500 to-green-500 rounded-full transition-all duration-500"
+                      className="h-full bg-linear-to-r from-blue-500 to-green-500 rounded-full transition-all duration-500"
                       style={{ width: `${progress}%` }}
                     />
                   </div>
@@ -434,8 +474,8 @@ export default function PdfToWord({ seo }) {
                 <label className="block cursor-pointer group">
                   <div
                     className={`relative rounded-xl border-2 border-dashed transition-all duration-200 p-8 text-center ${files.length
-                        ? "border-green-400 bg-green-50"
-                        : "border-gray-200 hover:border-blue-400 hover:bg-blue-50/40"
+                      ? "border-green-400 bg-green-50"
+                      : "border-gray-200 hover:border-blue-400 hover:bg-blue-50/40"
                       }`}
                   >
                     <div
@@ -520,8 +560,8 @@ export default function PdfToWord({ seo }) {
                     type="submit"
                     disabled={!files.length || isLoading}
                     className={`flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm text-white transition-all duration-200 shadow-sm sm:w-auto w-full ${files.length && !isLoading
-                        ? "bg-gradient-to-r from-blue-600 to-green-500 hover:from-blue-700 hover:to-green-600 hover:shadow-md active:scale-[0.98]"
-                        : "bg-gray-200 text-gray-400 cursor-not-allowed"
+                      ? "bg-linear-to-r from-blue-600 to-green-500 hover:from-blue-700 hover:to-green-600 hover:shadow-md active:scale-[0.98]"
+                      : "bg-gray-200 text-gray-400 cursor-not-allowed"
                       }`}
                   >
                     <FileText className="w-4 h-4" />
@@ -551,7 +591,7 @@ export default function PdfToWord({ seo }) {
 
             {/* ── SUCCESS STATE ── */}
             {success && (
-              <div className="mx-6 mb-6 rounded-2xl overflow-hidden border border-green-200 bg-gradient-to-br from-green-50 to-emerald-50">
+              <div className="mx-6 mb-6 rounded-2xl overflow-hidden border border-green-200 bg-linear-to-br from-green-50 to-emerald-50">
                 <div className="flex flex-col items-center text-center px-8 py-10">
                   <div className="relative w-16 h-16 mb-5">
                     <div className="absolute inset-0 rounded-full bg-green-100 animate-ping opacity-30"></div>
@@ -613,7 +653,7 @@ export default function PdfToWord({ seo }) {
       < section className="mt-16 max-w-4xl mx-auto px-6 pb-16" >
         {/* Main Heading */}
         <div div className="text-center mb-12" >
-          <h2 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent mb-4">
+          <h2 className="text-2xl md:text-3xl font-bold bg-linear-to-r from-blue-600 to-green-600 bg-clip-text text-transparent mb-4">
             Free PDF to Word Converter — Convert Scanned & Standard PDFs to Editable DOCX
           </h2>
           <p className="text-lg text-gray-600 max-w-3xl mx-auto">
@@ -626,7 +666,7 @@ export default function PdfToWord({ seo }) {
 
         {/* Benefits Grid */}
         <div div className="grid md:grid-cols-3 gap-8 mb-16" >
-          <div className="bg-gradient-to-br from-blue-50 to-white p-8 rounded-2xl shadow-lg border border-blue-100 text-center hover:shadow-xl transition">
+          <div className="bg-linear-to-br from-blue-50 to-white p-8 rounded-2xl shadow-lg border border-blue-100 text-center hover:shadow-xl transition">
             <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
               <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
@@ -639,7 +679,7 @@ export default function PdfToWord({ seo }) {
             </p>
           </div>
 
-          <div className="bg-gradient-to-br from-green-50 to-white p-8 rounded-2xl shadow-lg border border-green-100 text-center hover:shadow-xl transition">
+          <div className="bg-linear-to-br from-green-50 to-white p-8 rounded-2xl shadow-lg border border-green-100 text-center hover:shadow-xl transition">
             <div className="w-16 h-16 bg-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
               <CheckCircle className="w-8 h-8 text-white" />
             </div>
@@ -650,7 +690,7 @@ export default function PdfToWord({ seo }) {
             </p>
           </div>
 
-          <div className="bg-gradient-to-br from-purple-50 to-white p-8 rounded-2xl shadow-lg border border-purple-100 text-center hover:shadow-xl transition">
+          <div className="bg-linear-to-br from-purple-50 to-white p-8 rounded-2xl shadow-lg border border-purple-100 text-center hover:shadow-xl transition">
             <div className="w-16 h-16 bg-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
               <Download className="w-8 h-8 text-white" />
             </div>
@@ -669,7 +709,7 @@ export default function PdfToWord({ seo }) {
           </h3>
           <div className="grid md:grid-cols-3 gap-8">
             <div className="text-center">
-              <div className="w-16 h-16 bg-gradient-to-r from-blue-600 to-blue-700 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold text-white shadow-lg">
+              <div className="w-16 h-16 bg-linear-to-r from-blue-600 to-blue-700 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold text-white shadow-lg">
                 1
               </div>
               <h4 className="text-lg font-semibold mb-2">Upload Your PDF File(s)</h4>
@@ -679,7 +719,7 @@ export default function PdfToWord({ seo }) {
               </p>
             </div>
             <div className="text-center">
-              <div className="w-16 h-16 bg-gradient-to-r from-green-600 to-green-700 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold text-white shadow-lg">
+              <div className="w-16 h-16 bg-linear-to-r from-green-600 to-green-700 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold text-white shadow-lg">
                 2
               </div>
               <h4 className="text-lg font-semibold mb-2">Enable OCR if Needed & Convert</h4>
@@ -689,7 +729,7 @@ export default function PdfToWord({ seo }) {
               </p>
             </div>
             <div className="text-center">
-              <div className="w-16 h-16 bg-gradient-to-r from-purple-600 to-purple-700 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold text-white shadow-lg">
+              <div className="w-16 h-16 bg-linear-to-r from-purple-600 to-purple-700 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold text-white shadow-lg">
                 3
               </div>
               <h4 className="text-lg font-semibold mb-2">Download DOCX or ZIP</h4>
@@ -751,7 +791,7 @@ export default function PdfToWord({ seo }) {
       </section >
 
       {/* ── DEEP SEO CONTENT ── */}
-      <div section className="max-w-4xl mx-auto px-4 py-14 text-slate-700" >
+      <section className="max-w-4xl mx-auto px-4 py-14 text-slate-700" >
         <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-6">
           PDF to Word Converter – Free Online Tool by PDFLinx
         </h2>
@@ -948,12 +988,12 @@ export default function PdfToWord({ seo }) {
         <h3 className="text-xl font-semibold text-slate-900 mb-3">
           Frequently Asked Questions — PDF to Word
         </h3>
-      </div>
+      </section>
 
 
       {/* FAQ */}
 
-      <div section className="py-16 bg-gray-50" >
+      <section className="py-16 bg-gray-50" >
         <div className="max-w-4xl mx-auto px-4">
           <h2 className="text-3xl font-bold text-center mb-10 text-slate-900">
             Frequently Asked Questions
@@ -1008,7 +1048,7 @@ export default function PdfToWord({ seo }) {
             ))}
           </div>
         </div>
-      </div>
+      </section>
 
       {seo?.extraContent && (
         <section className="max-w-4xl mx-auto px-4 py-10">

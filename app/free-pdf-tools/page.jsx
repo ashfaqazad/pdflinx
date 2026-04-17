@@ -435,7 +435,7 @@ export default function FreePdfToolsPage() {
               },
             ].map((item) => (
               <div key={item.title} className="flex gap-4">
-                <div className="w-2 bg-red-500 rounded-full flex-shrink-0" />
+                <div className="w-2 bg-red-500 rounded-full shrink-0" />
                 <div>
                   <h4 className="font-bold text-gray-900 mb-1">{item.title}</h4>
                   <p className="text-sm text-gray-600 leading-relaxed">{item.text}</p>
@@ -497,7 +497,7 @@ export default function FreePdfToolsPage() {
         </section>
 
         {/* ── CTA ── */}
-        <section className="text-center bg-gradient-to-r from-red-600 to-rose-500 rounded-2xl p-10 mb-8">
+        <section className="text-center bg-linear-to-r from-red-600 to-rose-500 rounded-2xl p-10 mb-8">
           <h2 className="text-2xl font-bold text-white mb-3">
             Start Using Free PDF Tools Now
           </h2>

@@ -271,12 +271,12 @@ export default function ImageToPdf() {
         }}
       />
       {/* ==================== MAIN TOOL SECTION ==================== */}
-      <main className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-blue-50 py-8 px-4">
+      <main className="min-h-screen bg-linear-to-br from-purple-50 via-pink-50 to-blue-50 py-8 px-4">
         <div className="max-w-4xl mx-auto">
 
           {/* Header */}
           <div className="text-center mb-8">
-            <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mb-4">
+            <h1 className="text-3xl md:text-4xl font-bold bg-linear-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mb-4">
               Image to PDF Converter Online Free
               <br />
               <span className="text-2xl md:text-3xl font-medium">
@@ -302,7 +302,7 @@ export default function ImageToPdf() {
                 key={i}
                 className={`flex flex-col items-center py-4 px-2 text-center ${i < 2 ? "border-r border-gray-100" : ""}`}
               >
-                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-white text-sm font-bold mb-1 shadow-sm">
+                <div className="w-8 h-8 rounded-full bg-linear-to-br from-purple-500 to-pink-500 flex items-center justify-center text-white text-sm font-bold mb-1 shadow-sm">
                   {s.n}
                 </div>
                 <p className="text-xs font-semibold text-gray-700">{s.label}</p>
@@ -344,7 +344,7 @@ export default function ImageToPdf() {
 
                   <div className="w-48 h-1.5 bg-gray-100 rounded-full overflow-hidden">
                     <div
-                      className="h-full bg-gradient-to-r from-purple-500 to-pink-500 rounded-full transition-all duration-500"
+                      className="h-full bg-linear-to-r from-purple-500 to-pink-500 rounded-full transition-all duration-500"
                       style={{ width: `${progress}%` }}
                     />
                   </div>
@@ -480,7 +480,7 @@ export default function ImageToPdf() {
                     type="submit"
                     disabled={!files.length || isLoading}
                     className={`flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm text-white transition-all duration-200 shadow-sm sm:w-auto w-full ${files.length && !isLoading
-                        ? "bg-gradient-to-r from-purple-600 to-pink-500 hover:from-purple-700 hover:to-pink-600 hover:shadow-md active:scale-[0.98]"
+                        ? "bg-linear-to-r from-purple-600 to-pink-500 hover:from-purple-700 hover:to-pink-600 hover:shadow-md active:scale-[0.98]"
                         : "bg-gray-200 text-gray-400 cursor-not-allowed"
                       }`}
                   >
@@ -503,12 +503,12 @@ export default function ImageToPdf() {
             {success && (
               <div
                 id="download-section"
-                className="mx-6 mb-6 rounded-2xl overflow-hidden border border-green-200 bg-gradient-to-br from-green-50 to-emerald-50"
+                className="mx-6 mb-6 rounded-2xl overflow-hidden border border-green-200 bg-linear-to-br from-green-50 to-emerald-50"
               >
                 <div className="flex flex-col items-center text-center px-8 py-10">
                   <div className="relative w-16 h-16 mb-5">
                     <div className="absolute inset-0 rounded-full bg-emerald-100 animate-ping opacity-30"></div>
-                    <div className="relative w-16 h-16 rounded-full bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center shadow-lg">
+                    <div className="relative w-16 h-16 rounded-full bg-linear-to-br from-emerald-500 to-teal-500 flex items-center justify-center shadow-lg">
                       <CheckCircle className="w-8 h-8 text-white" />
                     </div>
                   </div>
@@ -527,7 +527,7 @@ export default function ImageToPdf() {
 
                   <button
                     onClick={handleDownload}
-                    className="inline-flex items-center gap-2 bg-gradient-to-r from-emerald-600 to-teal-500 text-white text-sm font-semibold px-7 py-3 rounded-xl hover:from-emerald-700 hover:to-teal-600 transition shadow-md mb-4"
+                    className="inline-flex items-center gap-2 bg-linear-to-r from-emerald-600 to-teal-500 text-white text-sm font-semibold px-7 py-3 rounded-xl hover:from-emerald-700 hover:to-teal-600 transition shadow-md mb-4"
                   >
                     <Download className="w-4 h-4" />
                     Download PDF
@@ -571,7 +571,7 @@ export default function ImageToPdf() {
       <section className="mt-16 max-w-4xl mx-auto px-6 pb-16">
         {/* Main Heading */}
         <div className="text-center mb-12">
-          <h2 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mb-4">
+          <h2 className="text-2xl md:text-3xl font-bold bg-linear-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mb-4">
             Image to PDF Online Free – Convert JPG, PNG & WebP to PDF in Seconds
           </h2>
           <p className="text-lg text-gray-600 max-w-3xl mx-auto">
@@ -585,7 +585,7 @@ export default function ImageToPdf() {
 
         {/* Benefits Grid */}
         <div className="grid md:grid-cols-3 gap-8 mb-16">
-          <div className="bg-gradient-to-br from-purple-50 to-white p-8 rounded-2xl shadow-lg border border-purple-100 text-center hover:shadow-xl transition">
+          <div className="bg-linear-to-br from-purple-50 to-white p-8 rounded-2xl shadow-lg border border-purple-100 text-center hover:shadow-xl transition">
             <div className="w-16 h-16 bg-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
               <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
@@ -598,7 +598,7 @@ export default function ImageToPdf() {
             </p>
           </div>
 
-          <div className="bg-gradient-to-br from-green-50 to-white p-8 rounded-2xl shadow-lg border border-green-100 text-center hover:shadow-xl transition">
+          <div className="bg-linear-to-br from-green-50 to-white p-8 rounded-2xl shadow-lg border border-green-100 text-center hover:shadow-xl transition">
             <div className="w-16 h-16 bg-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
               <CheckCircle className="w-8 h-8 text-white" />
             </div>
@@ -609,7 +609,7 @@ export default function ImageToPdf() {
             </p>
           </div>
 
-          <div className="bg-gradient-to-br from-pink-50 to-white p-8 rounded-2xl shadow-lg border border-pink-100 text-center hover:shadow-xl transition">
+          <div className="bg-linear-to-br from-pink-50 to-white p-8 rounded-2xl shadow-lg border border-pink-100 text-center hover:shadow-xl transition">
             <div className="w-16 h-16 bg-pink-600 rounded-full flex items-center justify-center mx-auto mb-4">
               <Download className="w-8 h-8 text-white" />
             </div>
@@ -628,7 +628,7 @@ export default function ImageToPdf() {
           </h3>
           <div className="grid md:grid-cols-3 gap-8">
             <div className="text-center">
-              <div className="w-16 h-16 bg-gradient-to-r from-purple-600 to-purple-700 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold text-white shadow-lg">
+              <div className="w-16 h-16 bg-linear-to-r from-purple-600 to-purple-700 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold text-white shadow-lg">
                 1
               </div>
               <h4 className="text-lg font-semibold mb-2">Upload Your Images</h4>
@@ -638,7 +638,7 @@ export default function ImageToPdf() {
               </p>
             </div>
             <div className="text-center">
-              <div className="w-16 h-16 bg-gradient-to-r from-pink-600 to-pink-700 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold text-white shadow-lg">
+              <div className="w-16 h-16 bg-linear-to-r from-pink-600 to-pink-700 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold text-white shadow-lg">
                 2
               </div>
               <h4 className="text-lg font-semibold mb-2">Review & Remove if Needed</h4>
@@ -648,7 +648,7 @@ export default function ImageToPdf() {
               </p>
             </div>
             <div className="text-center">
-              <div className="w-16 h-16 bg-gradient-to-r from-green-600 to-green-700 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold text-white shadow-lg">
+              <div className="w-16 h-16 bg-linear-to-r from-green-600 to-green-700 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold text-white shadow-lg">
                 3
               </div>
               <h4 className="text-lg font-semibold mb-2">Convert & Download PDF</h4>
@@ -1177,11 +1177,11 @@ export default function ImageToPdf() {
 //         }}
 //       />
 //       {/* ==================== MAIN TOOL SECTION ==================== */}
-//       <main className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-blue-50 py-8 px-4">
+//       <main className="min-h-screen bg-linear-to-br from-purple-50 via-pink-50 to-blue-50 py-8 px-4">
 //         <div className="max-w-4xl mx-auto">
 //           {/* Header */}
 //           <div className="text-center mb-8">
-//             <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mb-4">
+//             <h1 className="text-3xl md:text-4xl font-bold bg-linear-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mb-4">
 //               Image to PDF Converter <br /> Online (Free)
 //             </h1>
 //             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
@@ -1248,7 +1248,7 @@ export default function ImageToPdf() {
 //               <button
 //                 type="submit"
 //                 disabled={loading || files.length === 0}
-//                 className="w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white font-semibold text-lg py-4 rounded-xl hover:from-purple-700 hover:to-pink-700 disabled:opacity-50 disabled:cursor-not-allowed transition shadow-md flex items-center justify-center gap-2"
+//                 className="w-full bg-linear-to-r from-purple-600 to-pink-600 text-white font-semibold text-lg py-4 rounded-xl hover:from-purple-700 hover:to-pink-700 disabled:opacity-50 disabled:cursor-not-allowed transition shadow-md flex items-center justify-center gap-2"
 //               >
 //                 {loading ? (
 //                   "Turning images into PDF..."
@@ -1289,7 +1289,7 @@ export default function ImageToPdf() {
 //       <section className="mt-16 max-w-4xl mx-auto px-6 pb-16">
 //         {/* Main Heading */}
 //         <div className="text-center mb-12">
-//           <h2 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mb-4">
+//           <h2 className="text-2xl md:text-3xl font-bold bg-linear-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mb-4">
 //             Image to PDF Online Free – Photos into One Clean PDF
 //           </h2>
 //           <p className="text-lg text-gray-600 max-w-3xl mx-auto">
@@ -1299,7 +1299,7 @@ export default function ImageToPdf() {
 
 //         {/* Benefits Grid */}
 //         <div className="grid md:grid-cols-3 gap-8 mb-16">
-//           <div className="bg-gradient-to-br from-purple-50 to-white p-8 rounded-2xl shadow-lg border border-purple-100 text-center hover:shadow-xl transition">
+//           <div className="bg-linear-to-br from-purple-50 to-white p-8 rounded-2xl shadow-lg border border-purple-100 text-center hover:shadow-xl transition">
 //             <div className="w-16 h-16 bg-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
 //               <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 //                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
@@ -1311,7 +1311,7 @@ export default function ImageToPdf() {
 //             </p>
 //           </div>
 
-//           <div className="bg-gradient-to-br from-green-50 to-white p-8 rounded-2xl shadow-lg border border-green-100 text-center hover:shadow-xl transition">
+//           <div className="bg-linear-to-br from-green-50 to-white p-8 rounded-2xl shadow-lg border border-green-100 text-center hover:shadow-xl transition">
 //             <div className="w-16 h-16 bg-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
 //               <CheckCircle className="w-8 h-8 text-white" />
 //             </div>
@@ -1321,7 +1321,7 @@ export default function ImageToPdf() {
 //             </p>
 //           </div>
 
-//           <div className="bg-gradient-to-br from-purple-50 to-white p-8 rounded-2xl shadow-lg border border-purple-100 text-center hover:shadow-xl transition">
+//           <div className="bg-linear-to-br from-purple-50 to-white p-8 rounded-2xl shadow-lg border border-purple-100 text-center hover:shadow-xl transition">
 //             <div className="w-16 h-16 bg-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
 //               <Download className="w-8 h-8 text-white" />
 //             </div>
@@ -1339,7 +1339,7 @@ export default function ImageToPdf() {
 //           </h3>
 //           <div className="grid md:grid-cols-3 gap-8">
 //             <div className="text-center">
-//               <div className="w-16 h-16 bg-gradient-to-r from-purple-600 to-purple-700 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold text-white shadow-lg">
+//               <div className="w-16 h-16 bg-linear-to-r from-purple-600 to-purple-700 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold text-white shadow-lg">
 //                 1
 //               </div>
 //               <h4 className="text-lg font-semibold mb-2">Upload Photos</h4>
@@ -1347,7 +1347,7 @@ export default function ImageToPdf() {
 //             </div>
 
 //             <div className="text-center">
-//               <div className="w-16 h-16 bg-gradient-to-r from-pink-600 to-pink-700 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold text-white shadow-lg">
+//               <div className="w-16 h-16 bg-linear-to-r from-pink-600 to-pink-700 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold text-white shadow-lg">
 //                 2
 //               </div>
 //               <h4 className="text-lg font-semibold mb-2">Remove if Needed</h4>
@@ -1355,7 +1355,7 @@ export default function ImageToPdf() {
 //             </div>
 
 //             <div className="text-center">
-//               <div className="w-16 h-16 bg-gradient-to-r from-green-600 to-green-700 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold text-white shadow-lg">
+//               <div className="w-16 h-16 bg-linear-to-r from-green-600 to-green-700 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold text-white shadow-lg">
 //                 3
 //               </div>
 //               <h4 className="text-lg font-semibold mb-2">Get Your PDF</h4>
