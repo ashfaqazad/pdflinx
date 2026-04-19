@@ -72,7 +72,7 @@ export default function CompressPDF() {
     console.error(error);
   }
   // finally block hata diya — hook khud handle karta hai
-};
+  };
 
 
   const handleDownload = async () => {

@@ -71,6 +71,9 @@ export const metadata = {
 
   verification: {
     pinterest: "c1ab788f2cb7d222782d9d6ed6196669",
+     other: {
+      "msvalidate.01": "5369F9396E459EAC34A8E0FFCC90AEC1",
+    },
   },
 
   openGraph: {

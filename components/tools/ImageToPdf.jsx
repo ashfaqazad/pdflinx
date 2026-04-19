@@ -106,7 +106,7 @@ export default function ImageToPdf() {
     const hasWebP = selectedFiles.some((file) => file.type === "image/webp");
     if (hasWebP) {
       alert(
-        "WebP image detected.\nBackend conversion support needed, warna 500 error aa sakta hai."
+        "WebP image detected.\nThis format is not fully supported yet. Please upload JPG or PNG to avoid errors."
       );
     }
 
@@ -358,8 +358,8 @@ export default function ImageToPdf() {
                 <label className="block cursor-pointer group">
                   <div
                     className={`relative rounded-xl border-2 border-dashed transition-all duration-200 p-8 text-center ${files.length
-                        ? "border-green-400 bg-green-50"
-                        : "border-gray-200 hover:border-purple-400 hover:bg-purple-50/40"
+                      ? "border-green-400 bg-green-50"
+                      : "border-gray-200 hover:border-purple-400 hover:bg-purple-50/40"
                       }`}
                   >
                     <div
@@ -480,8 +480,8 @@ export default function ImageToPdf() {
                     type="submit"
                     disabled={!files.length || isLoading}
                     className={`flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm text-white transition-all duration-200 shadow-sm sm:w-auto w-full ${files.length && !isLoading
-                        ? "bg-linear-to-r from-purple-600 to-pink-500 hover:from-purple-700 hover:to-pink-600 hover:shadow-md active:scale-[0.98]"
-                        : "bg-gray-200 text-gray-400 cursor-not-allowed"
+                      ? "bg-linear-to-r from-purple-600 to-pink-500 hover:from-purple-700 hover:to-pink-600 hover:shadow-md active:scale-[0.98]"
+                      : "bg-gray-200 text-gray-400 cursor-not-allowed"
                       }`}
                   >
                     <Image className="w-4 h-4" />

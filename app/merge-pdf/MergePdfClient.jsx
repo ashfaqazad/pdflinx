@@ -26,56 +26,105 @@ export default function MergePDF() {
   };
 
 
-  const handleMerge = async (e) => {
-    e.preventDefault();
-    if (files.length < 2) {
-      alert("Please select at least 2 PDF files to merge.");
+  // const handleMerge = async (e) => {
+  //   e.preventDefault();
+  //   if (files.length < 2) {
+  //     alert("Please select at least 2 PDF files to merge.");
+  //     return;
+  //   }
+
+  //   startProgress();        // ← setLoading(true) ki jagah
+  //   setDownloadUrl("");
+  //   setSuccess(false);
+
+  //   const formData = new FormData();
+  //   files.forEach((file) => formData.append("files", file));
+
+  //   try {
+  //     const res = await fetch("/convert/merge-pdf", {
+  //       method: "POST",
+  //       body: formData,
+  //     });
+
+  //     const data = await res.json();
+
+  //     if (data.success) {
+  //       setDownloadUrl(`/api${data.download}`);
+  //       completeProgress();   // ← setLoading(false) ki jagah
+
+  //       setSuccess(true);
+
+  //       setTimeout(() => {
+  //         const downloadSection = document.getElementById('download-section');
+  //         if (downloadSection) {
+  //           downloadSection.scrollIntoView({
+  //             behavior: 'smooth',
+  //             block: 'center'
+  //           });
+  //         }
+  //       }, 300);
+
+  //     } else {
+  //       cancelProgress();     // ← error pe
+  //       alert("Merge failed: " + (data.error || "Unknown error"));
+  //     }
+  //   } catch (error) {
+  //     cancelProgress();       // ← catch pe
+  //     alert("Error merging PDFs. Please try again.");
+  //     console.error(error);
+  //   }
+  //   // finally hata diya — hook khud handle karta hai
+  // };
+
+
+const handleMerge = async (e) => {
+  e.preventDefault();
+
+  if (files.length < 2) {
+    alert("Please select at least 2 PDF files to merge.");
+    return;
+  }
+
+  startProgress();
+  setSuccess(false);
+  setDownloadUrl("");
+
+  const formData = new FormData();
+  files.forEach((file) => formData.append("files", file));
+
+  try {
+    const res = await fetch("/convert/merge-pdf", {
+      method: "POST",
+      body: formData,
+    });
+
+    if (!res.ok) {
+      const errorData = await res.json().catch(() => null);
+      cancelProgress();
+      alert("Merge failed: " + (errorData?.error || "Unknown error"));
       return;
     }
 
-    startProgress();        // ← setLoading(true) ki jagah
-    setDownloadUrl("");
-    setSuccess(false);
+    const blob = await res.blob();
+    const url = window.URL.createObjectURL(blob);
 
-    const formData = new FormData();
-    files.forEach((file) => formData.append("files", file));
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "merged-pdf.pdf";
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
 
-    try {
-      const res = await fetch("/convert/merge-pdf", {
-        method: "POST",
-        body: formData,
-      });
+    window.URL.revokeObjectURL(url);
 
-      const data = await res.json();
-
-      if (data.success) {
-        setDownloadUrl(`/api${data.download}`);
-        completeProgress();   // ← setLoading(false) ki jagah
-
-        setSuccess(true);
-
-        setTimeout(() => {
-          const downloadSection = document.getElementById('download-section');
-          if (downloadSection) {
-            downloadSection.scrollIntoView({
-              behavior: 'smooth',
-              block: 'center'
-            });
-          }
-        }, 300);
-
-      } else {
-        cancelProgress();     // ← error pe
-        alert("Merge failed: " + (data.error || "Unknown error"));
-      }
-    } catch (error) {
-      cancelProgress();       // ← catch pe
-      alert("Error merging PDFs. Please try again.");
-      console.error(error);
-    }
-    // finally hata diya — hook khud handle karta hai
-  };
-
+    completeProgress();
+    setSuccess(true);
+  } catch (error) {
+    cancelProgress();
+    console.error("Merge frontend error:", error);
+    alert("Error merging PDFs. Please try again.");
+  }
+};
 
   const handleDownload = async () => {
     if (!downloadUrl) return;
