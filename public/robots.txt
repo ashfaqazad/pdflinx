@@ -1,12 +1,10 @@
 # robots.txt for https://pdflinx.com
-# Allow all search engines and AI crawlers
 
 User-agent: *
 Allow: /
+Allow: /_next/static/
+Allow: /_next/image/
 
 Disallow: /cdn-cgi/
-Disallow: /_next/static/
-Disallow: /favicon.ico
-
 
 Sitemap: https://pdflinx.com/sitemap.xml
