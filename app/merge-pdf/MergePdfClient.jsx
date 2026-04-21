@@ -77,7 +77,8 @@ export default function MergePDF() {
   // };
 
 
-const handleMerge = async (e) => {
+
+  const handleMerge = async (e) => {
   e.preventDefault();
 
   if (files.length < 2) {
@@ -105,21 +106,23 @@ const handleMerge = async (e) => {
       return;
     }
 
-    const blob = await res.blob();
-    const url = window.URL.createObjectURL(blob);
-    setDownloadUrl(url); // ← ADD KARO
+    const data = await res.json();
 
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "merged-pdf.pdf";
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
+    if (data.success) {
+      setDownloadUrl(data.download);
+      completeProgress();
+      setSuccess(true);
 
-    // window.URL.revokeObjectURL(url);
-
-    completeProgress();
-    setSuccess(true);
+      setTimeout(() => {
+        const downloadSection = document.getElementById("download-section");
+        if (downloadSection) {
+          downloadSection.scrollIntoView({ behavior: "smooth", block: "center" });
+        }
+      }, 300);
+    } else {
+      cancelProgress();
+      alert("Merge failed: " + (data.error || "Unknown error"));
+    }
   } catch (error) {
     cancelProgress();
     console.error("Merge frontend error:", error);
@@ -127,7 +130,7 @@ const handleMerge = async (e) => {
   }
 };
 
-  const handleDownload = () => {
+const handleDownload = () => {
   if (!downloadUrl) return;
   const a = document.createElement("a");
   a.href = downloadUrl;
