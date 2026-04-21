@@ -107,6 +107,7 @@ const handleMerge = async (e) => {
 
     const blob = await res.blob();
     const url = window.URL.createObjectURL(blob);
+    setDownloadUrl(url); // ← ADD KARO
 
     const a = document.createElement("a");
     a.href = url;
@@ -115,7 +116,7 @@ const handleMerge = async (e) => {
     a.click();
     a.remove();
 
-    window.URL.revokeObjectURL(url);
+    // window.URL.revokeObjectURL(url);
 
     completeProgress();
     setSuccess(true);
@@ -126,22 +127,31 @@ const handleMerge = async (e) => {
   }
 };
 
-  const handleDownload = async () => {
-    if (!downloadUrl) return;
-    try {
-      const response = await fetch(downloadUrl);
-      if (!response.ok) throw new Error("Download failed");
-      const blob = await response.blob();
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = "merged-pdf.pdf";
-      a.click();
-      window.URL.revokeObjectURL(url);
-    } catch (err) {
-      alert("Failed to download merged PDF");
-    }
-  };
+  const handleDownload = () => {
+  if (!downloadUrl) return;
+  const a = document.createElement("a");
+  a.href = downloadUrl;
+  a.download = "merged-pdf.pdf";
+  a.click();
+};
+
+  // const handleDownload = async () => {
+  //   if (!downloadUrl) return;
+  //   try {
+  //     const response = await fetch(downloadUrl);
+  //     if (!response.ok) throw new Error("Download failed");
+  //     const blob = await response.blob();
+  //     const url = window.URL.createObjectURL(blob);
+  //     const a = document.createElement("a");
+  //     a.href = url;
+  //     a.download = "merged-pdf.pdf";
+  //     a.click();
+      
+  //     window.URL.revokeObjectURL(url);
+  //   } catch (err) {
+  //     alert("Failed to download merged PDF");
+  //   }
+  // };
 
   const removeFile = (index) => {
     setFiles(files.filter((_, i) => i !== index));
