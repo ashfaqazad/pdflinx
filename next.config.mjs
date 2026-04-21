@@ -25,6 +25,10 @@ const nextConfig = {
         destination: `${process.env.NEXT_PUBLIC_BACKEND_URL}/convert/converted/:path*`,
       },
       {
+      source: "/converted/:path*",
+      destination: `${process.env.NEXT_PUBLIC_BACKEND_URL}/converted/:path*`,
+      },
+      {
         source: "/convert/:path*",
         destination: `${process.env.NEXT_PUBLIC_BACKEND_URL}/convert/:path*`,
       },
