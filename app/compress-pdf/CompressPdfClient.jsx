@@ -18,6 +18,8 @@ export default function CompressPDF() {
   const [downloadUrl, setDownloadUrl] = useState("");
   const [success, setSuccess] = useState(false);
   const fileInputRef = useRef(null);
+  const [stats, setStats] = useState(null);
+  const [compressionLevel, setCompressionLevel] = useState("recommended");
   const { progress, isLoading, startProgress, completeProgress, cancelProgress } = useProgressBar();
 
 
@@ -36,16 +38,42 @@ export default function CompressPDF() {
   const formData = new FormData();
   files.forEach((f) => formData.append("files", f));
 
-  try {
-    const res = await fetch("/convert/compress-pdf", {
-      method: "POST",
-      body: formData,
-    });
+  formData.append("compressionLevel", compressionLevel);
 
-    const data = await res.json();
+  try {
+    // const res = await fetch("/convert/compress-pdf", {
+    //   method: "POST",
+    //   body: formData,
+    // });
+
+    // const data = await res.json();
+
+    const res = await fetch("/convert/compress-pdf", {
+  method: "POST",
+  body: formData,
+});
+
+const text = await res.text();
+
+let data;
+try {
+  data = JSON.parse(text);
+} catch {
+  console.error("Non-JSON response from server:", text);
+  cancelProgress();
+  alert("Server error: " + text);
+  return;
+}
+
+if (!res.ok) {
+  cancelProgress();
+  alert("Compression failed: " + (data.error || "Server error"));
+  return;
+}
 
     if (data.success) {
       setDownloadUrl(`/api${data.download}`);
+      setStats(data.stats || null);  // ← ye add karo
 
       completeProgress();   // ← setLoading(false) ki jagah
 
@@ -341,6 +369,90 @@ export default function CompressPDF() {
                   />
                 </label>
 
+
+                {/* ── COMPRESSION OPTIONS (ONLY AFTER FILE SELECT) ── */}
+{files.length > 0 && (
+  <div className="space-y-4">
+
+    {/* Compression Cards */}
+    <div className="grid sm:grid-cols-3 gap-3">
+
+      {/* Low Compression */}
+      <button
+        type="button"
+        // onClick={() => setCompressionLevel("low")}
+        onClick={() => setCompressionLevel("high-quality")}
+
+        className={`p-4 rounded-xl border text-left transition ${
+          // compressionLevel === "low"
+          compressionLevel === "high-quality"
+
+            ? "border-blue-500 bg-blue-50"
+            : "border-gray-200 hover:border-blue-300"
+        }`}
+      >
+        <p className="font-semibold text-sm">High Quality</p>
+        <p className="text-xs text-gray-400">Less compression</p>
+      </button>
+
+      {/* Recommended */}
+      <button
+        type="button"
+        onClick={() => setCompressionLevel("recommended")}
+        className={`p-4 rounded-xl border text-left transition ${
+          compressionLevel === "recommended"
+            ? "border-green-500 bg-green-50"
+            : "border-gray-200 hover:border-green-300"
+        }`}
+      >
+        <p className="font-semibold text-sm">Recommended ⭐</p>
+        <p className="text-xs text-gray-400">Balanced</p>
+      </button>
+
+      {/* Strong Compression */}
+      <button
+        type="button"
+        // onClick={() => setCompressionLevel("high")}
+        onClick={() => setCompressionLevel("max")}
+        className={`p-4 rounded-xl border text-left transition ${
+          // compressionLevel === "high"
+          compressionLevel === "max"
+
+            ? "border-red-500 bg-red-50"
+            : "border-gray-200 hover:border-red-300"
+        }`}
+      >
+        <p className="font-semibold text-sm">Max Compression</p>
+        <p className="text-xs text-gray-400">Smallest size</p>
+      </button>
+
+    </div>
+
+    {/* Estimated Size */}
+    <div className="bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm">
+      <p className="text-gray-600">
+        Estimated size:
+        <span className="font-semibold ml-2 text-green-600">
+          {/* {compressionLevel === "low"
+            ? "−20%"
+            : compressionLevel === "recommended"
+            ? "−50%"
+            : "−75%"} */}
+            {compressionLevel === "high-quality"
+            ? "−20%"
+            : compressionLevel === "recommended"
+            ? "−50%"
+            : "−75%"}
+
+        </span>
+      </p>
+    </div>
+
+  </div>
+)}
+
+
+
                 {/* ── Info row + Compress Button ── */}
                 <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-1">
                   <div className="flex items-start gap-2.5 bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 flex-1">
@@ -392,9 +504,19 @@ export default function CompressPDF() {
                   <h3 className="text-xl font-bold text-green-800 mb-1">
                     Compression Complete! 🎉
                   </h3>
+                  {/* <p className="text-sm text-green-700 font-medium mb-1">
+                    Your file{files.length === 1 ? " is" : "s are"} ready — smaller and sharp
+                  </p> */}
+
                   <p className="text-sm text-green-700 font-medium mb-1">
                     Your file{files.length === 1 ? " is" : "s are"} ready — smaller and sharp
                   </p>
+                  {stats && (
+                    <p className="text-sm font-bold text-green-800 bg-green-100 px-4 py-1 rounded-full mb-1">
+                      🎯 {stats.savedPercent}% reduced · {(stats.originalSize / 1024 / 1024).toFixed(2)} MB → {(stats.compressedSize / 1024 / 1024).toFixed(2)} MB
+                    </p>
+                  )}
+
                   <p className="text-xs text-gray-500 mb-6">
                     {files.length === 1
                       ? "Download your compressed PDF below"
@@ -413,7 +535,8 @@ export default function CompressPDF() {
                   {/* secondary actions */}
                   <div className="flex flex-wrap gap-3 justify-center">
                     <button
-                      onClick={() => { setSuccess(false); setFiles([]); setDownloadUrl(""); }}
+                      // onClick={() => { setSuccess(false); setFiles([]); setDownloadUrl(""); }}
+                      onClick={() => { setSuccess(false); setFiles([]); setDownloadUrl(""); setStats(null); }}
                       className="inline-flex items-center gap-2 bg-white border border-green-300 text-green-700 text-sm font-semibold px-5 py-2.5 rounded-xl hover:bg-green-50 transition shadow-sm"
                     >
                       <Upload className="w-4 h-4" />
