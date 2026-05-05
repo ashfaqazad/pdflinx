@@ -496,3 +496,23 @@
   }
 }
 
+
+
+
+.custom-tool-scroll::-webkit-scrollbar {
+  width: 5px;
+}
+
+.custom-tool-scroll::-webkit-scrollbar-track {
+  background: #e5e7eb;
+}
+
+.custom-tool-scroll::-webkit-scrollbar-thumb {
+  background: #2563eb;
+  border-radius: 999px;
+}
+
+/* .custom-tool-scroll::-webkit-scrollbar-thumb:hover {
+    background: #2563eb;
+
+} */
