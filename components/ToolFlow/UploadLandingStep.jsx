@@ -1,5 +1,6 @@
 // components/ToolFlow/UploadLandingStep.jsx
 "use client";
+import { useEffect, useRef, useState } from "react";
 
 import Link from "next/link";
 import {
@@ -21,9 +22,16 @@ import {
   LayoutTemplate,
   ChevronDown,
   Scissors,
+  Upload,
+  Layers,
+  Sparkles,
+  Timer,
 } from "lucide-react";
 import UploadStep from "./UploadStep";
 
+/* ─────────────────────────────────────────
+   DEFAULT DATA  (same keys as before)
+───────────────────────────────────────── */
 const defaultRelatedTools = [
   { label: "Word to PDF", href: "/word-to-pdf", desc: "Convert back to PDF", icon: FileText, iconColor: "text-blue-500", bgColor: "bg-blue-50" },
   { label: "Compress PDF", href: "/compress-pdf", desc: "Reduce PDF file size", icon: FileMinus, iconColor: "text-orange-500", bgColor: "bg-orange-50" },
@@ -34,34 +42,618 @@ const defaultRelatedTools = [
 ];
 
 const defaultFaqs = [
-  { q: "Is PDFLinx free?", a: "Yes, PDFLinx tools are free to use with no hidden charges." },
+  { q: "Is PDFLinx PDF to Word converter free?", a: "Yes, completely free. No hidden fees, no premium plan required. You can convert as many PDFs as you like without paying anything." },
+  { q: "Can I convert scanned PDFs?", a: "Yes! Enable the OCR option before converting. Our OCR engine will extract text from image-based PDFs and create a fully editable Word document." },
+  { q: "Will formatting be preserved?", a: "For standard PDFs, formatting is preserved very accurately — including text, tables, columns, and images. Scanned PDFs may have slight variations depending on scan quality." },
+  { q: "Is my file secure?", a: "Absolutely. All files are processed over an encrypted connection and are automatically deleted from our servers after 1 hour. We never share or store your documents." },
+  { q: "Can I convert multiple PDFs at once?", a: "Yes! Upload multiple PDF files and they'll all be converted and packaged into a single ZIP file for easy download." },
+  { q: "What is the maximum file size?", a: "The maximum file size is 10 MB per file. For larger files, try compressing your PDF first using our free PDF Compress tool." },
+  { q: "Does PDFLinx add a watermark?", a: "No watermarks, ever. Your converted Word document is completely clean and ready to use or share as-is." },
   { q: "Do I need to sign up?", a: "No account is required. Upload your file and convert instantly." },
-  { q: "Are my files secure?", a: "Files are processed securely and automatically deleted after conversion." },
-  { q: "Can I use it on mobile?", a: "Yes, PDFLinx works on desktop, tablet, and mobile browsers." },
 ];
 
 const defaultFeatures = [
-  { icon: Zap, title: "Instant Conversion", desc: "Results in seconds", iconColor: "text-yellow-500", bgColor: "bg-yellow-50" },
-  { icon: Target, title: "High Accuracy", desc: "Clean output quality", iconColor: "text-purple-500", bgColor: "bg-purple-50" },
-  { icon: ShieldCheck, title: "Secure Files", desc: "Auto-deleted after processing", iconColor: "text-blue-500", bgColor: "bg-blue-50" },
+  { icon: Zap, title: "Instant Conversion", desc: "Results in seconds", iconColor: "text-amber-500", bgColor: "bg-amber-50" },
+  { icon: Target, title: "High Accuracy", desc: "Clean output quality", iconColor: "text-violet-500", bgColor: "bg-violet-50" },
+  { icon: ShieldCheck, title: "Secure Files", desc: "Auto-deleted after processing", iconColor: "text-emerald-500", bgColor: "bg-emerald-50" },
   { icon: MonitorSmartphone, title: "Works Everywhere", desc: "Desktop, tablet, mobile", iconColor: "text-orange-500", bgColor: "bg-orange-50" },
-  { icon: Infinity, title: "100% Free", desc: "No hidden fees", iconColor: "text-red-500", bgColor: "bg-red-50" },
+  { icon: Infinity, title: "100% Free", desc: "No hidden fees", iconColor: "text-rose-500", bgColor: "bg-rose-50" },
 ];
 
 const defaultWhyItems = [
-  { icon: LayoutTemplate, title: "Clean Formatting", desc: "Get a neat and usable output file.", iconColor: "text-blue-500", bgColor: "bg-blue-50" },
-  { icon: Lock, title: "Private & Secure", desc: "Your files are handled safely.", iconColor: "text-purple-500", bgColor: "bg-purple-50" },
-  { icon: UserPlus, title: "No Sign Up Required", desc: "Use instantly without registration.", iconColor: "text-orange-500", bgColor: "bg-orange-50" },
-  { icon: Gift, title: "Free Forever", desc: "Convert files without hidden charges.", iconColor: "text-pink-500", bgColor: "bg-pink-50" },
+  { icon: LayoutTemplate, title: "Clean Formatting", desc: "Your converted file looks exactly like the original — text, tables, and images preserved.", iconColor: "text-blue-500", bgColor: "bg-blue-50" },
+  { icon: Lock, title: "Private & Secure", desc: "Files are processed on secure servers and automatically deleted after 1 hour.", iconColor: "text-violet-500", bgColor: "bg-violet-50" },
+  { icon: UserPlus, title: "No Sign Up Required", desc: "Use instantly without registration. No email, no account, no friction whatsoever.", iconColor: "text-orange-500", bgColor: "bg-orange-50" },
+  { icon: Gift, title: "Free Forever", desc: "No hidden fees, no premium tiers. Convert as many PDFs as you need at zero cost.", iconColor: "text-pink-500", bgColor: "bg-pink-50" },
+  { icon: MonitorSmartphone, title: "Works Everywhere", desc: "Desktop, tablet, mobile — use PDFLinx directly in your browser on any device or OS.", iconColor: "text-teal-500", bgColor: "bg-teal-50" },
+  { icon: Zap, title: "Lightning Fast", desc: "Most conversions complete in under 30 seconds. No waiting, no queues.", iconColor: "text-amber-500", bgColor: "bg-amber-50" },
 ];
 
 const defaultStats = [
-  { num: "2M+", label: "Files Converted" },
-  { num: "23+", label: "Free PDF Tools" },
-  { num: "100%", label: "Browser-Based" },
-  { num: "0", label: "Hidden Fees" },
+  { num: "4.9★", label: "User Rating" },
+  { num: "50K+", label: "Monthly Users" },
+  { num: "<30s", label: "Avg. Conversion Time" },
+  { num: "100%", label: "Free, Always" },
 ];
 
+/* ─────────────────────────────────────────
+   SMALL REUSABLE PIECES
+───────────────────────────────────────── */
+
+/** Animated green "live" badge */
+function HeroBadge({ text = "100% Free · No Signup Required" }) {
+  return (
+    <span className="mb-6 inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1.5 text-xs font-medium text-emerald-700">
+      <span className="inline-block h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-500" />
+      {text}
+    </span>
+  );
+}
+
+/** Small pill chip */
+function Pill({ children }) {
+  return (
+    <span className="inline-flex items-center gap-1.5 rounded-full border border-stone-200 bg-white px-3 py-1 text-xs text-stone-600">
+      <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500" />
+      {children}
+    </span>
+  );
+}
+
+/** Section eyebrow label */
+function Eyebrow({ children, color = "text-rose-600" }) {
+  return (
+    <p className={`mb-2 text-xs font-bold uppercase tracking-widest ${color}`}>
+      {children}
+    </p>
+  );
+}
+
+/** Large serif section heading */
+function SectionTitle({ children, className = "" }) {
+  return (
+    <h2
+      className={`font-display text-3xl font-bold leading-tight tracking-tight text-stone-900 sm:text-4xl ${className}`}
+    >
+      {children}
+    </h2>
+  );
+}
+// function SectionTitle({ children, className = "" }) {
+//   return (
+//     <h2 className={`font-serif text-3xl font-normal leading-tight tracking-tight text-stone-900 sm:text-4xl ${className}`}>
+//       {children}
+//     </h2>
+//   );
+// }
+
+/** Muted section subtitle */
+function SectionSub({ children }) {
+  return (
+    <p className="mt-2 max-w-xl text-base font-light leading-relaxed text-stone-500">
+      {children}
+    </p>
+  );
+}
+
+function RevealOnScroll({ children, delay = 0 }) {
+  const ref = useRef(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setVisible(true);
+          observer.unobserve(el);
+        }
+      },
+      { threshold: 0.18 }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <div
+      ref={ref}
+      style={{ transitionDelay: `${delay}ms` }}
+      className={`transition-all duration-700 ease-out ${visible
+        ? "translate-y-0 opacity-100"
+        : "translate-y-10 opacity-0"
+        }`}
+    >
+      {children}
+    </div>
+  );
+}
+
+
+/* ─────────────────────────────────────────
+   HERO UPLOAD BOX  (right column)
+───────────────────────────────────────── */
+function HeroUploadBox({ onFilesSelect, accept, multiple, uploadTitle, uploadSubtitle, uploadInfo, content }) {
+  return (
+    <div className="relative overflow-hidden rounded-2xl border border-dashed border-stone-300 bg-white p-8 text-center shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-rose-400 hover:shadow-[0_0_0_4px_rgba(232,66,10,0.08)]">
+      {/* subtle radial glow top-center */}
+      <div
+        className="pointer-events-none absolute inset-0"
+        style={{ background: "radial-gradient(ellipse at 50% 0%, rgba(232,66,10,0.04) 0%, transparent 65%)" }}
+      />
+
+      {/* Icon */}
+      {/* <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-rose-50">
+        <Upload className="h-7 w-7 text-rose-500" />
+      </div> */}
+
+      <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-[#fce7f3] mx-auto">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="h-8 w-8 text-[#c4b5fd]"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+        >
+          <path d="M6 2a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6H6z" />
+          <path d="M8 13h8v1H8zm0 3h8v1H8zm0-6h4v1H8z" fill="#a78bfa" />
+        </svg>
+      </div>
+
+
+      <p className="mb-1 text-lg font-semibold text-stone-900">
+        {uploadTitle || content?.uploadTitle || "Drop your PDF here"}
+      </p>
+      <p className="mb-5 text-sm text-stone-400">
+        {uploadSubtitle || content?.uploadSubtitle || "or click to browse — PDF files supported"}
+      </p>
+
+      {/* Actual upload trigger (UploadStep renders the input/button) */}
+      {/* <UploadStep
+        onFilesSelect={onFilesSelect}
+        accept={accept}
+        multiple={multiple}
+        uploadTitle=""
+        uploadSubtitle=""
+        uploadInfo={uploadInfo || content?.uploadInfo || null}
+        buttonClassName="inline-flex items-center gap-2 rounded-full bg-rose-600 px-8 py-3 text-sm font-medium text-white shadow-[0_4px_14px_rgba(232,66,10,0.28)] transition-all hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(232,66,10,0.36)]"
+        buttonLabel="Choose File"
+      /> */}
+
+      <UploadStep
+        onFilesSelect={onFilesSelect}
+        accept={accept}
+        multiple={multiple}
+      >
+        {({ open, dragging }) => (
+          <div
+            onClick={open}
+            className={`relative z-10 cursor-pointer ${dragging ? "opacity-80" : ""
+              }`}
+          >
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                open();
+              }}
+              className="inline-flex items-center gap-2 rounded-full bg-[#e8420a] px-8 py-3 text-sm font-medium text-white shadow-[0_4px_14px_rgba(232,66,10,0.28)] transition-all hover:-translate-y-0.5 hover:bg-[#d63a07] hover:shadow-[0_6px_20px_rgba(232,66,10,0.36)]"            >
+              <Upload className="h-4 w-4" />
+              Choose File
+            </button>
+          </div>
+        )}
+      </UploadStep>
+
+      {/* Meta row */}
+      <div className="mt-5 flex flex-wrap items-center justify-center gap-4">
+        <span className="flex items-center gap-1 text-xs text-stone-400">
+          <Timer className="h-3.5 w-3.5" /> Multiple files up to 1 min
+        </span>
+        <span className="flex items-center gap-1 text-xs text-stone-400">
+          <Layers className="h-3.5 w-3.5" /> Max 10 MB · Single · Multiple · ZIP
+        </span>
+      </div>
+
+      {/* Feature list */}
+      <div className="mt-5 rounded-lg bg-stone-50 p-3 text-left">
+        <p className="mb-1.5 text-xs font-medium text-stone-400">PDF to Word Conversion includes:</p>
+        <ul className="space-y-1">
+          {(content?.noticeItems || [
+            "Single PDF → DOCX",
+            "Multiple PDFs → ZIP",
+            "OCR available for scanned PDFs",
+          ]).map((item) => (
+            <li key={item} className="flex items-center gap-2 text-xs text-stone-600">
+              <span className="text-rose-500">→</span> {item}
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <p className="mt-3 text-xs text-stone-400">🔒 Your files are auto-deleted after 1 hour</p>
+    </div>
+  );
+}
+
+/* ─────────────────────────────────────────
+   STATS STRIP  (dark band)
+───────────────────────────────────────── */
+function StatsStrip({ stats }) {
+  return (
+    <div className="bg-stone-900 py-8">
+      <div className="mx-auto grid max-w-5xl grid-cols-2 gap-4 px-6 text-center sm:grid-cols-4">
+        {stats.map(({ num, label }) => (
+          <div key={label}>
+            <span className="block font-serif text-4xl font-normal text-white">{num}</span>
+            <span className="mt-1 block text-xs text-white/50">{label}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/* ─────────────────────────────────────────
+   HOW IT WORKS  (3-card grid)
+───────────────────────────────────────── */
+const stepStyles = [
+  { iconBg: "bg-rose-50", icon: Upload, iconColor: "text-rose-500" },
+  { iconBg: "bg-blue-50", icon: Sparkles, iconColor: "text-blue-500" },
+  { iconBg: "bg-emerald-50", icon: CheckCircle2, iconColor: "text-emerald-500" },
+];
+
+function HowItWorksSection({ steps }) {
+  return (
+    <div className="bg-stone-50 py-20">
+      <div className="mx-auto max-w-6xl px-6">
+        <Eyebrow>How it works</Eyebrow>
+        <SectionTitle>Three steps to an editable Word doc</SectionTitle>
+        <SectionSub>No learning curve. Upload, convert, download — done in under a minute.</SectionSub>
+
+        <div className="mt-12 grid gap-5 sm:grid-cols-3">
+          {steps.map(({ n, title, desc }, idx) => {
+            const { iconBg, icon: Icon, iconColor } = stepStyles[idx] || stepStyles[0];
+            return (
+              <div
+                key={n}
+                className="group relative overflow-hidden rounded-2xl border border-stone-100 bg-white p-7 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-md"
+              >
+                {/* ghost number */}
+                <span className="pointer-events-none absolute right-5 top-4 select-none font-serif text-6xl font-normal text-stone-900/[0.04]">
+                  {String(idx + 1).padStart(2, "0")}
+                </span>
+
+                <div className={`mb-5 flex h-11 w-11 items-center justify-center rounded-xl ${iconBg}`}>
+                  <Icon className={`h-5 w-5 ${iconColor}`} />
+                </div>
+                <h3 className="mb-1.5 font-semibold text-stone-900">{title}</h3>
+                <p className="text-sm leading-relaxed text-stone-500">{desc}</p>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ─────────────────────────────────────────
+   COMPARE: STANDARD vs SCANNED
+───────────────────────────────────────── */
+function PdfTypesSection() {
+  return (
+    <div className="bg-white py-20">
+      <div className="mx-auto max-w-6xl px-6">
+        <Eyebrow>PDF Types</Eyebrow>
+        <SectionTitle>Standard PDF vs Scanned PDF</SectionTitle>
+        <SectionSub>Know the difference — choose the right conversion option for best results.</SectionSub>
+
+        <div className="mt-10 grid gap-5 sm:grid-cols-2">
+          {/* Standard */}
+          <div className="rounded-2xl border border-stone-200 bg-white p-7 transition hover:shadow-md">
+            <div className="mb-5 flex items-center gap-2">
+              <span className="h-2.5 w-2.5 rounded-full bg-emerald-500" />
+              <div>
+                <h3 className="font-semibold text-stone-900">Standard PDF</h3>
+                <p className="text-xs text-stone-400">Digitally created files</p>
+              </div>
+            </div>
+            <ul className="space-y-2.5 border-t border-stone-100 pt-4 text-sm text-stone-600">
+              {["Text is selectable & searchable", "Faster conversion speed", "High accuracy output", "No OCR required"].map((item) => (
+                <li key={item} className="flex items-start gap-2">
+                  <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-emerald-500" />
+                  {item}
+                </li>
+              ))}
+            </ul>
+            <p className="mt-4 text-xs text-stone-400">Best for: reports, invoices, documents created digitally.</p>
+          </div>
+
+          {/* Scanned */}
+          <div className="rounded-2xl border border-stone-800 bg-stone-900 p-7 text-white transition hover:shadow-md">
+            <div className="mb-5 flex items-center gap-2">
+              <span className="h-2.5 w-2.5 rounded-full bg-rose-500" />
+              <div>
+                <h3 className="font-semibold text-white">Scanned PDF</h3>
+                <p className="text-xs text-white/40">Photo or print-based files</p>
+              </div>
+            </div>
+            <ul className="space-y-2.5 border-t border-white/10 pt-4 text-sm text-white/80">
+              {["Text is not selectable (image)", "OCR required for editing", "Slightly slower process", "Converts images into text"].map((item) => (
+                <li key={item} className="flex items-start gap-2">
+                  <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-emerald-400" />
+                  {item}
+                </li>
+              ))}
+            </ul>
+            <p className="mt-4 text-xs text-white/35">Best for: scanned documents, photos, printed files converted to PDF.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ─────────────────────────────────────────
+   WHY PDFLINX  (2-col grid)
+───────────────────────────────────────── */
+
+// function WhySection({ items, title }) {
+//   return (
+//     <div className="bg-stone-50 py-20">
+//       <div className="mx-auto max-w-6xl px-6">
+//         <Eyebrow>Why PDFLinx</Eyebrow>
+//         <SectionTitle>{title || "Built for simplicity. Backed by trust."}</SectionTitle>
+//         <SectionSub>Free PDF tools without the catch — no ads, no upsells, no account walls.</SectionSub>
+
+//         {/* 2-col grid with hairline separators */}
+//         <div className="mt-10 grid grid-cols-1 gap-px overflow-hidden rounded-2xl border border-stone-100 bg-stone-100 sm:grid-cols-2">
+//           {items.map((item) => (
+//             <div
+//               key={item.title}
+//               className="group flex items-start gap-4 bg-white p-6 transition hover:bg-stone-50"
+//             >
+//               <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl ${item.bgColor}`}>
+//                 <item.icon className={`h-5 w-5 ${item.iconColor}`} />
+//               </div>
+//               <div className="min-w-0">
+//                 <h4 className="font-semibold text-stone-900">{item.title}</h4>
+//                 <p className="mt-0.5 text-xs leading-relaxed text-stone-500">{item.desc}</p>
+//               </div>
+//             </div>
+//           ))}
+//         </div>
+//       </div>
+//     </div>
+//   );
+// }
+
+
+function WhySection({ items, title }) {
+  return (
+    <div className="bg-stone-50 py-20">
+      <div className="mx-auto max-w-6xl px-6">
+        <Eyebrow>Why PDFLinx</Eyebrow>
+        <SectionTitle>{title || "Built for simplicity. Backed by trust."}</SectionTitle>
+        <SectionSub>
+          Free PDF tools without the catch — no ads, no upsells, no account walls.
+        </SectionSub>
+
+        <div className="mt-10 grid grid-cols-1 gap-[1.5px] overflow-hidden rounded-2xl border-2 border-stone-200 bg-stone-200 sm:grid-cols-2">
+          {items.map((item) => (
+            <div
+              key={item.title}
+              className="group flex min-h-[145px] items-start gap-5 bg-white p-8 transition hover:bg-stone-50"
+            >
+              <div
+                className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-xl ${item.bgColor}`}
+              >
+                <item.icon className={`h-6 w-6 ${item.iconColor}`} />
+              </div>
+
+              <div className="min-w-0">
+                <h4 className="text-lg font-bold leading-7 text-stone-900">
+                  {item.title}
+                </h4>
+                <p className="mt-2 text-sm leading-7 text-stone-500">
+                  {item.desc}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ─────────────────────────────────────────
+   SEO SECTIONS  (numbered cards)
+───────────────────────────────────────── */
+function SeoSection({ sections }) {
+  if (!sections?.length) return null;
+
+  const finalSections =
+    sections.length % 2 !== 0
+      ? [
+          ...sections,
+          {
+            title: "Best For Everyday Document Editing",
+            text: "Use the converted Word file for reports, assignments, invoices, contracts, forms, and office documents. The DOCX output is easy to edit, share, and reuse.",
+          },
+        ]
+      : sections;
+
+  return (
+    <div className="bg-white py-16">
+      <div className="mx-auto max-w-6xl px-6">
+        <div className="mb-8 text-left">
+          <span className="inline-flex rounded-full bg-blue-50 px-3 py-1 text-xs font-bold uppercase tracking-widest text-blue-700">
+            PDF to Word Guide
+          </span>
+
+          <SectionTitle className="mt-3 text-left">
+            PDF to Word Converter — Free Online Tool by PDFLinx
+          </SectionTitle>
+
+          <p className="mt-3 max-w-2xl text-sm leading-7 text-stone-500">
+            Convert standard and scanned PDF files into editable Word documents with a clean, simple, and secure experience.
+          </p>
+        </div>
+
+        <div className="grid gap-4 md:grid-cols-2">
+          {finalSections.map((section, idx) => (
+            <div
+              key={section.title}
+              className="rounded-2xl border border-stone-100 bg-stone-50 p-5"
+            >
+              <div className="flex items-start gap-3">
+                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-blue-100 text-xs font-black text-blue-700">
+                  {idx + 1}
+                </span>
+
+                <div>
+                  <h3 className="font-bold text-stone-900">
+                    {section.title}
+                  </h3>
+                  <p className="mt-1.5 text-sm leading-7 text-stone-500">
+                    {section.text}
+                  </p>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ─────────────────────────────────────────
+   FAQ  (accordion, full-width border lines)
+───────────────────────────────────────── */
+function FaqSection({ faqs, title }) {
+  return (
+    <div className="bg-white py-20">
+      <div className="mx-auto max-w-6xl px-6">
+        <Eyebrow color="text-violet-600">Help Center</Eyebrow>
+        <SectionTitle>{title || "Frequently asked questions"}</SectionTitle>
+        <SectionSub>Quick answers about PDF to Word conversion, OCR, file safety, and more.</SectionSub>
+
+        <div className="mt-8 divide-y divide-stone-100 border-t border-stone-100">
+          {faqs.map((faq) => (
+            <details
+              key={faq.q}
+              className="group py-1"
+            >
+              <summary className="flex cursor-pointer list-none items-center justify-between gap-3 py-4 text-sm font-medium text-stone-800 transition-colors hover:text-rose-600">
+                <span>{faq.q}</span>
+                <ChevronDown className="h-4 w-4 shrink-0 text-stone-400 transition-transform duration-300 group-open:rotate-45 group-open:text-rose-500" />
+              </summary>
+              <p className="pb-5 text-sm leading-7 text-stone-500">{faq.a}</p>
+            </details>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ─────────────────────────────────────────
+   RELATED TOOLS  (chip grid)
+───────────────────────────────────────── */
+function RelatedToolsSection({ tools, title }) {
+  return (
+    <div className="bg-stone-50 py-16">
+      <div className="mx-auto max-w-6xl px-6">
+        <Eyebrow>More Tools</Eyebrow>
+        <SectionTitle>{title || "You might also need"}</SectionTitle>
+
+        <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3">
+          {tools.map((tool) => (
+            <Link
+              key={tool.href}
+              href={tool.href}
+              className="group flex items-center gap-3 rounded-2xl border border-stone-200 bg-white p-4 text-sm font-medium text-stone-700 transition-all hover:-translate-y-0.5 hover:border-rose-400 hover:shadow-md"
+            >
+              <div className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-xl ${tool.bgColor}`}>
+                <tool.icon className={`h-4 w-4 ${tool.iconColor}`} />
+              </div>
+              <span className="transition-colors group-hover:text-rose-600">{tool.label}</span>
+            </Link>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ─────────────────────────────────────────
+   CTA BANNER  (dark with glow)
+───────────────────────────────────────── */
+function CtaBanner({ content }) {
+  return (
+    <div className="px-4 pb-20 pt-2">
+      <div className="relative mx-auto max-w-6xl overflow-hidden rounded-3xl bg-stone-900 px-8 py-12 sm:flex sm:items-center sm:justify-between sm:gap-8">
+        {/* decorative glow */}
+        <div
+          className="pointer-events-none absolute -right-20 -top-20 h-80 w-80 rounded-full"
+          style={{ background: "radial-gradient(circle, rgba(232,66,10,0.18) 0%, transparent 70%)" }}
+        />
+
+        <div className="min-w-0">
+          <h2 className="font-display text-2xl font-bold leading-snug text-white sm:text-3xl">
+            {/* <h2 className="font-serif text-2xl font-normal leading-snug text-white sm:text-3xl"> */}
+            {content?.ctaTitle || (
+              <>Start converting now —<br />free, private, no sign‑up.</>
+            )}
+          </h2>
+          <p className="mt-2 text-sm text-white/55">
+            {content?.ctaDescription || "Join thousands who trust PDFLinx for everyday document tasks."}
+          </p>
+        </div>
+
+        <button
+          type="button"
+          onClick={() => document.querySelector('input[type="file"]')?.click()}
+          className="mt-6 inline-flex shrink-0 items-center gap-2 rounded-full bg-white px-7 py-3.5 text-sm font-semibold text-stone-900 shadow-xl transition hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(255,255,255,0.2)] sm:mt-0"
+        >
+          <Upload className="h-4 w-4" />
+          {content?.ctaButton || "Choose File"}
+        </button>
+      </div>
+    </div>
+  );
+}
+
+/* ─────────────────────────────────────────
+   FEATURES STRIP  (5-col grid)
+───────────────────────────────────────── */
+function FeaturesStrip({ features }) {
+  return (
+    <div className="grid grid-cols-2 gap-px overflow-hidden rounded-3xl border border-stone-200 bg-stone-200 shadow-sm sm:grid-cols-3 md:grid-cols-5">
+      {features.map((feat) => (
+        <div
+          key={feat.title}
+          className="flex flex-col items-center gap-2 bg-white px-3 py-5 text-center sm:px-4 sm:py-6"
+        >
+          <div className={`flex h-11 w-11 items-center justify-center rounded-2xl ${feat.bgColor}`}>
+            <feat.icon className={`h-5 w-5 ${feat.iconColor}`} />
+          </div>
+          <p className="text-xs font-bold text-stone-900 sm:text-sm">{feat.title}</p>
+          <p className="text-xs text-stone-500">{feat.desc}</p>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/* ─────────────────────────────────────────
+   MAIN EXPORT
+───────────────────────────────────────── */
 export default function UploadLandingStep({
   onFilesSelect,
   accept,
@@ -71,46 +663,45 @@ export default function UploadLandingStep({
   uploadInfo,
   content = {},
 }) {
+  /* resolve all data with content overrides */
   const relatedTools = content.relatedTools || defaultRelatedTools;
   const faqs = content.faqs || defaultFaqs;
   const features = content.features || defaultFeatures;
   const whyItems = content.whyItems || defaultWhyItems;
   const stats = content.stats || defaultStats;
 
-  const howToSteps =
-    content.howToSteps || [
-      { n: "1", title: "Upload File", desc: "Drag & drop your file or click to browse.", color: "bg-blue-600" },
-      { n: "2", title: "Convert", desc: "We process your file securely.", color: "bg-purple-600" },
-      { n: "3", title: "Download", desc: "Download your converted file instantly.", color: "bg-emerald-600" },
-    ];
+  const howToSteps = content.howToSteps || [
+    { n: "1", title: "Upload your PDF", desc: "Drag & drop or click to upload. Supports single files, batch PDFs, and ZIP archives up to 10 MB.", color: "bg-blue-600" },
+    { n: "2", title: "Enable OCR if needed", desc: "For scanned or image-based PDFs, enable OCR to extract text and preserve formatting accurately.", color: "bg-violet-600" },
+    { n: "3", title: "Download DOCX or ZIP", desc: "Single files download as DOCX. Multiple files are packed into a ZIP with all converted documents.", color: "bg-emerald-600" },
+  ];
 
-  const breadcrumbItems =
-    content.breadcrumbItems || [
-      { label: "Home", href: "/" },
-      { label: "PDF Tools", href: "/pdf-tools" },
-      { label: content.breadcrumbCurrent || "PDF Tool" },
-    ];
+  const breadcrumbItems = content.breadcrumbItems || [
+    { label: "Home", href: "/" },
+    { label: "PDF Tools", href: "/pdf-tools" },
+    { label: content.breadcrumbCurrent || "PDF Tool" },
+  ];
 
   return (
-    <div className="bg-white">
-      <div className="mx-auto w-full max-w-[1180px] overflow-x-hidden px-4 py-6 md:px-5 md:py-12">
-        <div className="mb-5 flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
-          <nav aria-label="Breadcrumb" className="flex flex-wrap items-center gap-1 text-xs text-slate-400">
+    /* warm off-white page background */
+    <div className="bg-[#faf9f7] font-sans">
+
+      {/* ── BREADCRUMB + TRUST PILLS ── */}
+      <div className="mx-auto max-w-6xl px-6 py-4">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <nav aria-label="Breadcrumb" className="flex flex-wrap items-center gap-1 text-xs text-stone-400">
             {breadcrumbItems.map((item, i) => (
               <span key={`${item.label}-${i}`} className="flex items-center gap-1">
                 {item.href ? (
-                  <Link href={item.href} className="transition-colors hover:text-slate-600">
-                    {item.label}
-                  </Link>
+                  <Link href={item.href} className="transition-colors hover:text-stone-600">{item.label}</Link>
                 ) : (
-                  <span className="font-medium text-slate-600">{item.label}</span>
+                  <span className="font-medium text-stone-600">{item.label}</span>
                 )}
                 {i < breadcrumbItems.length - 1 && <span aria-hidden="true">›</span>}
               </span>
             ))}
           </nav>
-
-          <div className="flex flex-wrap items-center gap-3 text-xs font-semibold text-slate-500">
+          <div className="flex flex-wrap items-center gap-3 text-xs font-medium text-stone-500">
             {(content.trustPills || ["100% Free", "No Sign Up", "No Watermark"]).map((pill) => (
               <span key={pill} className="inline-flex items-center gap-1">
                 <ShieldCheck className="h-3.5 w-3.5 text-emerald-500" /> {pill}
@@ -118,2635 +709,120 @@ export default function UploadLandingStep({
             ))}
           </div>
         </div>
+      </div>
 
-        <section className="grid gap-8 lg:grid-cols-[1fr_1.2fr] lg:items-start">
-          <div className="order-2 min-w-0 lg:order-1">
-            <p className="mb-3 text-xs font-extrabold uppercase tracking-widest text-blue-600">
-              {content.eyebrow || "PDF TOOL"}
-            </p>
+      {/* ── HERO  (2-col) ── */}
+      <section className="mx-auto grid max-w-6xl items-center gap-12 px-6 pb-16 pt-10 lg:grid-cols-2">
+        {/* <section className="mx-auto grid max-w-6xl items-center gap-12 px-6 pb-16 pt-10 lg:grid-cols-2"> */}
 
-            <h1 className="text-3xl font-black leading-tight tracking-tight text-slate-950 sm:text-4xl md:text-5xl">
-              {content.heroTitle || (
-                <>
-                  Convert Files <br className="hidden sm:block" />
-                  in{" "}
-                  <span className="bg-gradient-to-r from-blue-600 to-violet-500 bg-clip-text text-transparent">
-                    Seconds ⚡
-                  </span>
-                </>
-              )}
-            </h1>
+        {/* LEFT — copy */}
+        {/* <div> */}
+        <div className="animate-fade-up-hero">
+          <HeroBadge text={content.heroBadge || "✦ 100% Free · No Signup Required"} />
 
-            <p className="mt-4 text-sm leading-7 text-slate-600 sm:text-base">
-              {content.heroDescription || "Convert your files online for free. Fast, secure, and no signup required."}
-            </p>
-
-            <ul className="mt-5 space-y-2 text-sm text-slate-600">
-              {(content.bullets || [
-                "Fast online conversion",
-                "Secure file processing",
-                "Works on any device — no software needed",
-              ]).map((item) => (
-                <li key={item} className="flex items-start gap-2">
-                  <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-blue-500" />
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
-
-            {content.privacyBox !== false && (
-              <div className="mt-5 rounded-2xl border border-slate-200 bg-slate-50 p-4">
-                <div className="flex gap-3">
-                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-blue-100">
-                    <ShieldCheck className="h-5 w-5 text-blue-600" />
-                  </div>
-                  <div className="min-w-0">
-                    <p className="font-bold text-slate-900">
-                      {content.privacyTitle || "Your files stay private"}
-                    </p>
-                    <p className="mt-0.5 text-xs text-slate-500">
-                      {content.privacyText || "Files are processed securely and automatically deleted after conversion."}
-                    </p>
-                  </div>
-                </div>
-              </div>
+          {/* <h1 className="font-serif text-5xl font-normal leading-[1.12] tracking-tight text-stone-900 sm:text-6xl"> */}
+          <h1 className="font-bold font-display text-5xl leading-[1.12] tracking-tight text-stone-900 sm:text-6xl">
+            {content.heroTitle || (
+              <>
+                Convert PDF to Word{" "}
+                <em className="not-italic text-rose-600">in Seconds</em>
+              </>
             )}
+          </h1>
 
-            <div className="mt-4 flex flex-wrap items-center gap-x-2 gap-y-1">
-              <div className="flex shrink-0 text-yellow-400">
-                {Array.from({ length: 5 }).map((_, i) => (
-                  <Star key={i} className="h-4 w-4 fill-current" />
-                ))}
-              </div>
-              <span className="shrink-0 text-sm font-bold text-slate-900">
-                {content.rating || "4.9/5"}
-              </span>
-              <span className="text-sm text-slate-500">
-                {content.ratingText || "Trusted by thousands of users worldwide."}
-              </span>
-            </div>
-          </div>
-
-          <div className="order-1 min-w-0 rounded-3xl border border-slate-200 bg-white p-4 shadow-lg shadow-slate-200/60 sm:p-5 lg:order-2">
-            <div className="rounded-2xl border-2 border-dashed border-blue-300 bg-gradient-to-br from-blue-50/60 via-white to-violet-50/40 p-5 text-center sm:p-8">
-              <UploadStep
-                onFilesSelect={onFilesSelect}
-                accept={accept}
-                multiple={multiple}
-                uploadTitle={uploadTitle || content.uploadTitle || "Drop your file here"}
-                uploadSubtitle={uploadSubtitle || content.uploadSubtitle || "or click to browse"}
-                uploadInfo={uploadInfo || content.uploadInfo || null}
-              />
-            </div>
-
-            <div className="mt-4 flex flex-wrap items-center justify-center gap-3 text-xs font-medium text-slate-600">
-              {(content.supports || ["Supports your selected file format", "Auto-deleted after 1 hour"]).map((item) => (
-                <span key={item} className="flex items-center gap-1.5">
-                  <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500" />
-                  {item}
-                </span>
-              ))}
-            </div>
-
-            {content.noticeBox !== false && (
-              <div className="mt-4 rounded-2xl border border-blue-100 bg-blue-50 p-4">
-                <p className="mb-2 flex items-center gap-2 text-sm font-bold text-blue-700">
-                  <span>{content.noticeEmoji || "ℹ️"}</span> {content.noticeTitle || "Important Note"}
-                </p>
-                <ul className="space-y-1 text-xs text-slate-600">
-                  {(content.noticeItems || [
-                    "Single file downloads directly",
-                    "Multiple files download as ZIP",
-                  ]).map((item) => (
-                    <li key={item}>• {item}</li>
-                  ))}
-                </ul>
-              </div>
-            )}
-
-            
-          </div>
-        </section>
-
-        <section className="mt-10 grid grid-cols-2 gap-px overflow-hidden rounded-3xl border border-slate-200 bg-slate-200 shadow-sm sm:grid-cols-3 md:grid-cols-5">
-          {features.map((feat) => (
-            <div key={feat.title} className="flex flex-col items-center gap-2 bg-white px-3 py-5 text-center sm:px-4 sm:py-6">
-              <div className={`flex h-11 w-11 items-center justify-center rounded-2xl ${feat.bgColor}`}>
-                <feat.icon className={`h-5 w-5 ${feat.iconColor}`} />
-              </div>
-              <p className="text-xs font-bold text-slate-900 sm:text-sm">{feat.title}</p>
-              <p className="text-xs text-slate-500">{feat.desc}</p>
-            </div>
-          ))}
-        </section>
-
-        {/* <section className="mt-6 grid gap-6 lg:grid-cols-2"> */}
-        {/* <section className="mt-6 grid gap-6 lg:grid-cols-[0.9fr_1.1fr]"> */}
-        <section className="mt-6 grid gap-6 lg:grid-cols-[1.25fr_0.75fr]">
-          <div className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
-            <h2 className="text-lg font-bold text-slate-900 sm:text-xl">
-              {content.howToTitle || "How to Convert Your File"}
-            </h2>
-
-            <div className="mt-5 grid gap-5 sm:grid-cols-[1fr_1.5fr]">
-              <div>
-                {howToSteps.map(({ n, title, desc, color }, idx) => (
-                  <div key={n} className="flex gap-3">
-                    <div className="flex flex-col items-center">
-                      <span className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-xs font-bold text-white ${color}`}>
-                        {n}
-                      </span>
-                      {idx < howToSteps.length - 1 && (
-                        <div className="my-1 w-px flex-1 bg-slate-200" style={{ minHeight: 24 }} />
-                      )}
-                    </div>
-                    <div className="pb-4">
-                      <p className="font-bold text-slate-900">{title}</p>
-                      <p className="mt-0.5 max-w-[220px] sm:max-w-[260px] text-xs leading-5 text-slate-500">
-                        {desc}
-                      </p>
-                      {/* <p className="mt-0.5 text-xs text-slate-500">{desc}</p> */}
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              {/* <div className="flex flex-col gap-4"> */}
-              <div className="flex flex-col items-center gap-4">
-                <div className="w-fit max-w-[260px] rounded-2xl border border-slate-100 bg-slate-50 p-3">
-                {/* <div className="w-full rounded-2xl border border-slate-100 bg-slate-50 p-3"> */}
-                  <img
-                    src={content.visualImage || "/images/pdf-to-word-visual.jpeg"}
-                    alt={content.visualAlt || "File conversion illustration"}
-                    className="h-[220px] w-auto rounded-xl object-contain"
-                  /> 
-               </div>
-              </div>
-
-            </div>
-          </div>
-
-          <div className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
-            <h2 className="text-lg font-bold text-slate-900 sm:text-xl">
-              {content.whyTitle || "Why Choose PDFLinx?"}
-            </h2>
-
-            <div className="mt-5 space-y-3">
-              {whyItems.map((item) => (
-                <div key={item.title} className="flex items-start gap-3 rounded-2xl border border-slate-100 p-3">
-                  <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl ${item.bgColor}`}>
-                    <item.icon className={`h-5 w-5 ${item.iconColor}`} />
-                  </div>
-                  <div className="min-w-0">
-                    <p className="font-bold text-slate-900">{item.title}</p>
-                    <p className="mt-0.5 text-xs text-slate-500">{item.desc}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* <section className="mt-6 rounded-3xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
-          <h2 className="text-center text-xl font-bold text-slate-900 sm:text-2xl">
-            {content.statsTitle || "Trusted by Users Around the World"}
-          </h2>
-          <div className="mt-6 grid grid-cols-2 gap-4 text-center sm:mt-8 sm:gap-6 md:grid-cols-4">
-            {stats.map(({ num, label }) => (
-              <div key={label}>
-                <p className="text-2xl font-black text-slate-900 sm:text-3xl">{num}</p>
-                <p className="text-xs text-slate-500 sm:text-sm">{label}</p>
-              </div>
-            ))}
-          </div>
-        </section> */}
-
-{/* {content.seoSections?.length > 0 && (
-  <section className="mt-8 rounded-3xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
-    <div className="mx-auto max-w-4xl text-center">
-      <h2 className="text-2xl font-black tracking-tight text-slate-900">
-        PDF to Word Converter — Free Online Tool by PDFLinx
-      </h2>
-      <p className="mt-3 text-sm leading-7 text-slate-600">
-        Convert standard and scanned PDF files into editable Word documents with a clean, simple, and secure experience.
-      </p>
-    </div>
-
-    <div className="mt-8 grid gap-4 md:grid-cols-2">
-      {content.seoSections.map((section) => (
-        <div
-          key={section.title}
-          className="rounded-2xl border border-slate-100 bg-slate-50/70 p-5"
-        >
-          <h3 className="text-base font-bold text-slate-900">
-            {section.title}
-          </h3>
-          <p className="mt-2 text-sm leading-7 text-slate-600">
-            {section.text}
+          <p className="mt-5 max-w-md text-base font-light leading-relaxed text-stone-500">
+            {content.heroDescription ||
+              "Turn any PDF into a fully editable Word document. Keep text, layout, images and tables intact — no software, no account needed."}
           </p>
-        </div>
-      ))}
-    </div>
-  </section>
-)} */}
 
-{content.seoSections?.length > 0 && (
-  <section className="mt-8 overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
-    <div className="border-b border-slate-100 bg-gradient-to-r from-blue-50 via-white to-violet-50 px-6 py-7 text-center sm:px-8">
-      <span className="inline-flex rounded-full bg-blue-100 px-3 py-1 text-xs font-extrabold uppercase tracking-widest text-blue-700">
-        PDF to Word Guide
-      </span>
+          {/* pills */}
+          <div className="mt-6 flex flex-wrap gap-2">
+            {(content.pills || [
+              "Instant conversion",
+              "Secure file processing",
+              "OCR for scanned PDFs",
+              "Works on any device",
+            ]).map((p) => <Pill key={p}>{p}</Pill>)}
+          </div>
 
-      <h2 className="mt-3 text-2xl font-black tracking-tight text-slate-950 sm:text-3xl">
-        PDF to Word Converter — Free Online Tool by PDFLinx
-      </h2>
-
-      <p className="mx-auto mt-3 max-w-3xl text-sm leading-7 text-slate-600">
-        Convert standard and scanned PDF files into editable Word documents with a clean,
-        simple, and secure experience.
-      </p>
-    </div>
-
-    <div className="grid gap-4 p-5 sm:p-6 md:grid-cols-2">
-      {content.seoSections.map((section, index) => (
-        <div
-          key={section.title}
-          className={`rounded-2xl border border-slate-100 bg-slate-50/70 p-5 ${
-            index === content.seoSections.length - 1 ? "md:col-span-2" : ""
-          }`}
-        >
-          <div className="flex items-start gap-3">
-            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-blue-100 text-sm font-black text-blue-700">
-              {index + 1}
+          {/* social proof */}
+          <div className="mt-7 flex items-center gap-3">
+            <div className="flex text-amber-400">
+              {Array.from({ length: 5 }).map((_, i) => (
+                <Star key={i} className="h-4 w-4 fill-current" />
+              ))}
             </div>
-
-            <div>
-              <h3 className="text-base font-extrabold text-slate-900">
-                {section.title}
-              </h3>
-              <p className="mt-2 text-sm leading-7 text-slate-600">
-                {section.text}
-              </p>
-            </div>
+            <span className="text-sm font-semibold text-stone-900">{content.rating || "4.9/5"}</span>
+            <span className="text-sm text-stone-400">{content.ratingText || "Trusted by 50,000+ users monthly"}</span>
           </div>
         </div>
-      ))}
-    </div>
-  </section>
-)}
 
+        {/* RIGHT — upload box */}
+        <div className="animate-fade-up-hero animate-delay-200">
 
-
-{/* ── PDF TYPES COMPARISON (UPGRADED) ── */}
-<section className="mt-8 overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
-  
-  {/* Header */}
-  <div className="border-b border-slate-100 bg-gradient-to-r from-blue-50 via-white to-violet-50 px-6 py-6 text-center">
-    <span className="inline-flex rounded-full bg-blue-100 px-3 py-1 text-xs font-extrabold uppercase tracking-widest text-blue-700">
-      PDF Types
-    </span>
-
-    <h2 className="mt-3 text-2xl font-black tracking-tight text-slate-950">
-      Standard PDF vs Scanned PDF
-    </h2>
-
-    <p className="mx-auto mt-2 max-w-2xl text-sm text-slate-500">
-      Understand the difference before converting — choose the right option for best results.
-    </p>
-  </div>
-
-  {/* Cards */}
-  <div className="grid gap-5 p-5 sm:p-6 md:grid-cols-2">
-
-    {/* Standard PDF */}
-    <div className="group rounded-2xl border border-green-200 bg-gradient-to-br from-green-50 to-white p-5 transition hover:shadow-md">
-      
-      <div className="flex items-center gap-3">
-        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-green-100">
-          <CheckCircle2 className="h-5 w-5 text-green-600" />
+          <HeroUploadBox
+            onFilesSelect={onFilesSelect}
+            accept={accept}
+            multiple={multiple}
+            uploadTitle={uploadTitle}
+            uploadSubtitle={uploadSubtitle}
+            uploadInfo={uploadInfo}
+            content={content}
+          />
         </div>
-        <h3 className="text-base font-extrabold text-green-700">
-          Standard PDF
-        </h3>
+
+      </section>
+
+      {/* ── STATS STRIP ── */}
+      <StatsStrip stats={stats} />
+
+      {/* ── FEATURES STRIP ── */}
+      <div className="mx-auto max-w-6xl px-6 py-10">
+        <FeaturesStrip features={features} />
       </div>
 
-      <ul className="mt-4 space-y-2 text-sm text-slate-600">
-        <li>✓ Text is selectable</li>
-        <li>✓ Faster conversion speed</li>
-        <li>✓ High accuracy output</li>
-        <li>✓ No OCR required</li>
-      </ul>
+      {/* ── HOW IT WORKS ── */}
+      {/* <HowItWorksSection steps={howToSteps} /> */}
+      <RevealOnScroll>
+        <HowItWorksSection steps={howToSteps} />
+      </RevealOnScroll>
 
-      <p className="mt-4 text-xs text-slate-500">
-        Best for digitally created PDFs like reports, invoices, and documents.
-      </p>
-    </div>
+      {/* ── COMPARE ── */}
+      {/* <PdfTypesSection /> */}
+      <RevealOnScroll>
+        <PdfTypesSection />
+      </RevealOnScroll>
 
-    {/* Scanned PDF */}
-    <div className="group rounded-2xl border border-orange-200 bg-gradient-to-br from-orange-50 to-white p-5 transition hover:shadow-md">
-      
-      <div className="flex items-center gap-3">
-        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-orange-100">
-          <FileSearch className="h-5 w-5 text-orange-600" />
-        </div>
-        <h3 className="text-base font-extrabold text-orange-600">
-          Scanned PDF
-        </h3>
-      </div>
+      {/* ── WHY PDFLINX ── */}
+      {/* <WhySection items={whyItems} title={content.whyTitle} /> */}
+      <RevealOnScroll>
+        <WhySection items={whyItems} title={content.whyTitle} />
+      </RevealOnScroll>
 
-      <ul className="mt-4 space-y-2 text-sm text-slate-600">
-        <li>✓ Text is not selectable</li>
-        <li>✓ OCR required</li>
-        <li>✓ Slightly slower process</li>
-        <li>✓ Converts images into text</li>
-      </ul>
+      {/* ── SEO SECTIONS ── */}
+      {/* {content.seoSections?.length > 0 && <SeoSection sections={content.seoSections} />} */}
+      {content.seoSections?.length > 0 && (
+        <RevealOnScroll>
+          <SeoSection sections={content.seoSections} />
+        </RevealOnScroll>
+      )}
 
-      <p className="mt-4 text-xs text-slate-500">
-        Best for scanned documents, photos, and printed files converted to PDF.
-      </p>
-    </div>
+      {/* ── FAQ ── */}
+      {/* <FaqSection faqs={faqs} title={content.faqTitle} /> */}
+      <RevealOnScroll>
+        <FaqSection faqs={faqs} title={content.faqTitle} />
+      </RevealOnScroll>
 
-  </div>
-</section>
-        {/* <section className="mt-6">
-          <h2 className="text-center text-xl font-bold text-slate-900 sm:text-2xl">
-            {content.faqTitle || "Frequently Asked Questions"}
-          </h2>
-          <div className="mt-5 grid gap-3 md:grid-cols-2">
-            {faqs.map((faq) => (
-              <details key={faq.q} className="group rounded-2xl border border-slate-200 bg-white px-4 py-3.5 open:shadow-sm sm:px-5 sm:py-4">
-                <summary className="flex cursor-pointer list-none items-center justify-between gap-3 text-sm font-bold text-slate-700">
-                  <span className="min-w-0">{faq.q}</span>
-                  <ChevronDown className="h-4 w-4 shrink-0 text-slate-400 transition-transform group-open:rotate-180" />
-                </summary>
-                <p className="mt-3 text-sm leading-6 text-slate-500">{faq.a}</p>
-              </details>
-            ))}
-          </div>
-        </section> */}
+      {/* ── RELATED TOOLS ── */}
+      {/* <RelatedToolsSection tools={relatedTools} title={content.relatedTitle} /> */}
+      <RevealOnScroll>
+        <RelatedToolsSection tools={relatedTools} title={content.relatedTitle} />
+      </RevealOnScroll>
 
-        <section className="mt-8 overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
-  <div className="border-b border-slate-100 bg-gradient-to-r from-slate-50 via-white to-blue-50 px-6 py-6 text-center">
-    <span className="inline-flex rounded-full bg-violet-100 px-3 py-1 text-xs font-extrabold uppercase tracking-widest text-violet-700">
-      Help Center
-    </span>
+      {/* ── CTA BANNER ── */}
+      <CtaBanner content={content} />
 
-    <h2 className="mt-3 text-2xl font-black tracking-tight text-slate-950">
-      {content.faqTitle || "Frequently Asked Questions"}
-    </h2>
-
-    <p className="mx-auto mt-2 max-w-2xl text-sm leading-6 text-slate-500">
-      Quick answers about PDF to Word conversion, OCR, file safety, formatting, and downloads.
-    </p>
-  </div>
-
-  <div className="grid gap-3 p-5 sm:p-6 md:grid-cols-2">
-    {faqs.map((faq, index) => (
-      <details
-        key={faq.q}
-        className="group rounded-2xl border border-slate-200 bg-white px-4 py-3.5 transition open:border-blue-200 open:bg-blue-50/40 open:shadow-sm sm:px-5 sm:py-4"
-      >
-        <summary className="flex cursor-pointer list-none items-center justify-between gap-3 text-sm font-bold text-slate-800">
-          <span className="flex min-w-0 items-center gap-2">
-            <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-blue-100 text-[11px] font-black text-blue-700">
-              {index + 1}
-            </span>
-            <span>{faq.q}</span>
-          </span>
-
-          <ChevronDown className="h-4 w-4 shrink-0 text-slate-400 transition-transform group-open:rotate-180 group-open:text-blue-600" />
-        </summary>
-
-        <p className="mt-3 pl-8 text-sm leading-6 text-slate-600">
-          {faq.a}
-        </p>
-      </details>
-    ))}
-  </div>
-</section>
-
-
-                <section className="mt-6 rounded-3xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
-          <h2 className="text-lg font-bold text-slate-900 sm:text-xl">
-            {content.relatedTitle || "You Might Also Need"}
-          </h2>
-          <div className="mt-4 grid gap-3 sm:grid-cols-2 md:grid-cols-3">
-            {relatedTools.map((tool) => (
-              <Link
-                key={tool.href}
-                href={tool.href}
-                className="group flex items-start gap-3 rounded-2xl border border-slate-200 p-3.5 transition-all hover:border-blue-400 hover:shadow-sm sm:p-4"
-              >
-                <div className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-xl ${tool.bgColor}`}>
-                  <tool.icon className={`h-4 w-4 ${tool.iconColor}`} />
-                </div>
-                <div className="min-w-0">
-                  <p className="font-bold text-slate-900 transition-colors group-hover:text-blue-600">
-                    {tool.label}
-                  </p>
-                  <p className="mt-0.5 text-xs text-slate-500">{tool.desc}</p>
-                </div>
-              </Link>
-            ))}
-          </div>
-        </section>
-
-
-        <section className="mt-8 overflow-hidden rounded-3xl bg-gradient-to-r from-blue-600 to-violet-600 p-6 sm:p-8 md:p-10">
-          <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
-            <div className="min-w-0">
-              <span className="inline-block rounded-full bg-white/20 px-3 py-1 text-xs font-bold text-white/90">
-                {content.ctaBadge || "✦ 100% Free"}
-              </span>
-              <h2 className="mt-3 text-xl font-black text-white sm:text-2xl md:text-3xl">
-                {content.ctaTitle || "Start Converting Now"}
-              </h2>
-              <p className="mt-1.5 text-sm text-white/75">
-                {content.ctaDescription || "Fast. Secure. Private. No sign up required."}
-              </p>
-              <p className="mt-1 text-xs text-white/50">
-                {content.ctaSubtext || "No limits. No hidden charges."}
-              </p>
-            </div>
-
-            <button
-              type="button"
-              onClick={() => {
-                const input = document.querySelector('input[type="file"]');
-                input?.click();
-              }}
-              className="flex w-full shrink-0 items-center justify-center gap-2 rounded-2xl bg-white px-6 py-3.5 text-sm font-bold text-blue-600 shadow-xl transition hover:bg-blue-50 active:scale-95 sm:w-auto sm:px-7"
-            >
-              <FileText className="h-4 w-4 text-blue-600" />
-              {content.ctaButton || "Choose File"}
-            </button>
-          </div>
-        </section>
-      </div>
     </div>
   );
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// // components/ToolFlow/UploadLandingStep.jsx
-// "use client";
-
-// import Link from "next/link";
-// import {
-//   ShieldCheck,
-//   Zap,
-//   Target,
-//   MonitorSmartphone,
-//   Infinity,
-//   FileText,
-//   FileType2,
-//   FileSpreadsheet,
-//   FileImage,
-//   FileLock,
-//   FileSearch,
-//   FileMinus,
-//   FilePlus,
-//   Lock,
-//   Star,
-//   CheckCircle2,
-//   Gift,
-//   UserPlus,
-//   ScanText,
-//   LayoutTemplate,
-//   ChevronDown,
-//   Scissors,
-//   RefreshCw,
-// } from "lucide-react";
-// import UploadStep from "./UploadStep";
-
-// // ─── DATA ────────────────────────────────────────────────────────────────────
-
-// const relatedTools = [
-//   { label: "Word to PDF",  href: "/word-to-pdf",  desc: "Convert back to PDF",      icon: FileText,        iconColor: "text-blue-500",   bgColor: "bg-blue-50"   },
-//   { label: "Compress PDF", href: "/compress-pdf", desc: "Reduce PDF file size",      icon: FileMinus,       iconColor: "text-orange-500", bgColor: "bg-orange-50" },
-//   { label: "Merge PDF",    href: "/merge-pdf",    desc: "Combine multiple PDFs",     icon: FilePlus,        iconColor: "text-violet-500", bgColor: "bg-violet-50" },
-//   { label: "Split PDF",    href: "/split-pdf",    desc: "Separate PDF pages",        icon: Scissors,        iconColor: "text-pink-500",   bgColor: "bg-pink-50"   },
-//   { label: "PDF to Excel", href: "/pdf-to-excel", desc: "Extract PDF tables",        icon: FileSpreadsheet, iconColor: "text-emerald-500",bgColor: "bg-emerald-50"},
-//   { label: "OCR PDF",      href: "/ocr-pdf",      desc: "Make scanned PDFs readable",icon: FileSearch,      iconColor: "text-teal-500",   bgColor: "bg-teal-50"   },
-// ];
-
-// const faqs = [
-//   { q: "Is PDFLinx PDF to Word converter free?",   a: "Yes, 100% free. No hidden charges, no subscriptions, no limits." },
-//   { q: "Will my PDF formatting be preserved?",      a: "Yes, our converter maintains fonts, images, tables, and layout accurately." },
-//   { q: "Do I need to sign up?",                     a: "No account or sign up needed. Just upload and convert instantly." },
-//   { q: "What is the maximum file size?",            a: "You can upload PDF files up to 100MB in size." },
-//   { q: "Can I convert scanned PDFs to Word?",       a: "Yes! Our OCR technology extracts text from scanned PDFs accurately." },
-//   { q: "Is my file secure?",                        a: "Absolutely. Files are processed securely and never stored on our servers." },
-//   { q: "Can I convert PDF to Word on mobile?",      a: "Yes, PDFLinx works on all devices including mobile and tablet." },
-//   { q: "What happens to my files after conversion?",a: "Files are automatically deleted after conversion. Nothing is stored on our servers." },
-// ];
-
-// const features = [
-//   { icon: Zap,               title: "Instant Conversion", desc: "Results in seconds",        iconColor: "text-yellow-500", bgColor: "bg-yellow-50" },
-//   { icon: Target,            title: "High Accuracy",      desc: "Best formatting retention", iconColor: "text-purple-500", bgColor: "bg-purple-50" },
-//   { icon: ScanText,          title: "OCR Powered",        desc: "Scanned PDFs supported",    iconColor: "text-blue-500",   bgColor: "bg-blue-50"   },
-//   { icon: MonitorSmartphone, title: "Works Everywhere",   desc: "Desktop, tablet, mobile",   iconColor: "text-orange-500", bgColor: "bg-orange-50" },
-//   { icon: Infinity,          title: "100% Free",          desc: "No limits. No hidden fees", iconColor: "text-red-500",    bgColor: "bg-red-50"    },
-// ];
-
-// const whyItems = [
-//   { icon: LayoutTemplate, title: "Perfect Formatting",  desc: "Maintain fonts, images, tables & layout.",     iconColor: "text-blue-500",   bgColor: "bg-blue-50"   },
-//   { icon: ScanText,       title: "OCR Technology",      desc: "Extract text from scanned PDFs accurately.",   iconColor: "text-teal-500",   bgColor: "bg-teal-50"   },
-//   { icon: Lock,           title: "No File Uploads",     desc: "Your files never leave your device.",          iconColor: "text-purple-500", bgColor: "bg-purple-50" },
-//   { icon: UserPlus,       title: "No Sign Up Required", desc: "Use the tool instantly without registration.", iconColor: "text-orange-500", bgColor: "bg-orange-50" },
-//   { icon: Gift,           title: "Free Forever",        desc: "Convert as many files as you want.",           iconColor: "text-pink-500",   bgColor: "bg-pink-50"   },
-// ];
-
-// // ─── COLORFUL SVG STAT ICONS ──────────────────────────────────────────────────
-// const StatIcons = {
-//   files: (
-//     <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
-//       <rect width="40" height="40" rx="12" fill="#EFF6FF"/>
-//       <rect x="10" y="9" width="14" height="18" rx="2" fill="#93C5FD"/>
-//       <rect x="15" y="13" width="15" height="18" rx="2" fill="#3B82F6"/>
-//       <path d="M18 21h6M18 24.5h4" stroke="white" strokeWidth="1.3" strokeLinecap="round"/>
-//     </svg>
-//   ),
-//   tools: (
-//     <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
-//       <rect width="40" height="40" rx="12" fill="#F5F3FF"/>
-//       <path d="M25 11l-2.5 2.5 4 4 2.5-2.5a3.5 3.5 0 00-4-4z" fill="#8B5CF6"/>
-//       <path d="M22.5 13.5l-9 9 1.5 3.5 3.5 1.5 9-9-5-5z" fill="#A78BFA"/>
-//       <circle cx="14" cy="26" r="2" fill="#7C3AED"/>
-//     </svg>
-//   ),
-//   browser: (
-//     <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
-//       <rect width="40" height="40" rx="12" fill="#F0FDF4"/>
-//       <circle cx="20" cy="20" r="10" stroke="#4ADE80" strokeWidth="1.5"/>
-//       <ellipse cx="20" cy="20" rx="4.5" ry="10" stroke="#22C55E" strokeWidth="1.3"/>
-//       <path d="M10 20h20" stroke="#16A34A" strokeWidth="1.3"/>
-//       <path d="M12 15h16M12 25h16" stroke="#86EFAC" strokeWidth="1"/>
-//     </svg>
-//   ),
-//   shield: (
-//     <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
-//       <rect width="40" height="40" rx="12" fill="#FFF7ED"/>
-//       <path d="M20 10l9 3.5v6c0 4.5-3.5 8.5-9 10-5.5-1.5-9-5.5-9-10v-6L20 10z" fill="#FED7AA"/>
-//       <path d="M20 10l9 3.5v6c0 4.5-3.5 8.5-9 10" stroke="#F97316" strokeWidth="1.5" strokeLinecap="round"/>
-//       <path d="M15.5 20l3.5 3.5 6-6" stroke="#EA580C" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
-//     </svg>
-//   ),
-// };
-
-// const stats = [
-//   { num: "2M+",  label: "Files Converted",   icon: StatIcons.files   },
-//   { num: "23+",  label: "Free PDF Tools",    icon: StatIcons.tools   },
-//   { num: "100%", label: "Browser-Based",     icon: StatIcons.browser },
-//   { num: "0",    label: "Uploads to Server", icon: StatIcons.shield  },
-// ];
-
-// // ─── JSON-LD SCHEMAS ──────────────────────────────────────────────────────────
-// const faqSchema = {
-//   "@context": "https://schema.org",
-//   "@type": "FAQPage",
-//   mainEntity: faqs.map((f) => ({
-//     "@type": "Question",
-//     name: f.q,
-//     acceptedAnswer: { "@type": "Answer", text: f.a },
-//   })),
-// };
-
-// const howToSchema = {
-//   "@context": "https://schema.org",
-//   "@type": "HowTo",
-//   name: "How to Convert PDF to Word",
-//   description: "Convert your PDF to an editable Word document in 3 easy steps using PDFLinx — free, fast, no signup.",
-//   totalTime: "PT1M",
-//   step: [
-//     { "@type": "HowToStep", position: 1, name: "Upload PDF",  text: "Drag & drop your PDF file or click to browse. Max size 100MB." },
-//     { "@type": "HowToStep", position: 2, name: "Convert",     text: "Click convert. We process your PDF and convert it to a fully editable Word (.docx) document." },
-//     { "@type": "HowToStep", position: 3, name: "Download",    text: "Download your Word file instantly. No signup or watermark." },
-//   ],
-// };
-
-// const breadcrumbSchema = {
-//   "@context": "https://schema.org",
-//   "@type": "BreadcrumbList",
-//   itemListElement: [
-//     { "@type": "ListItem", position: 1, name: "Home",      item: "https://pdflinx.com" },
-//     { "@type": "ListItem", position: 2, name: "PDF Tools", item: "https://pdflinx.com/pdf-tools" },
-//     { "@type": "ListItem", position: 3, name: "PDF to Word Converter", item: "https://pdflinx.com/pdf-to-word" },
-//   ],
-// };
-
-// // ─── COMPONENT ────────────────────────────────────────────────────────────────
-// export default function UploadLandingStep({
-//   onFilesSelect,
-//   accept,
-//   multiple,
-//   uploadTitle,
-//   uploadSubtitle,
-//   uploadInfo,
-//   content = {},
-// }) {
-//   return (
-//     <div className="bg-white">
-
-//       {/* ══ JSON-LD Schemas ══ */}
-//       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
-//       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }} />
-//       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
-
-//       {/* FIX ✅ overflow-x-hidden stops mobile horizontal overflow */}
-//       <div className="mx-auto w-full max-w-[1180px] overflow-x-hidden px-4 py-6 md:px-5 md:py-12">
-
-//         {/* ── Breadcrumb + Trust Pills ── */}
-//         <div className="mb-5 flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
-//           <nav aria-label="Breadcrumb" className="flex flex-wrap items-center gap-1 text-xs text-slate-400">
-//             <Link href="/" className="hover:text-slate-600 transition-colors">Home</Link>
-//             <span aria-hidden="true">›</span>
-//             <Link href="/pdf-tools" className="hover:text-slate-600 transition-colors">PDF Tools</Link>
-//             <span aria-hidden="true">›</span>
-//             <span className="font-medium text-slate-600">PDF to Word Converter</span>
-//           </nav>
-
-//           {/* FIX ✅ trust pills wrap properly on mobile */}
-//           <div className="flex flex-wrap items-center gap-3 text-xs font-semibold text-slate-500">
-//             <span className="inline-flex items-center gap-1">
-//               <ShieldCheck className="h-3.5 w-3.5 text-emerald-500" /> 100% Free
-//             </span>
-//             <span className="inline-flex items-center gap-1">
-//               <ShieldCheck className="h-3.5 w-3.5 text-emerald-500" /> No Sign Up
-//             </span>
-//             <span className="inline-flex items-center gap-1">
-//               <Zap className="h-3.5 w-3.5 text-blue-500" /> No Watermark
-//             </span>
-//           </div>
-//         </div>
-
-//         {/* ── HERO ── */}
-//         {/* FIX ✅ single column on mobile, 2 col on lg */}
-//         {/* <section className="grid gap-8 lg:grid-cols-[1fr_1.2fr] lg:items-start"> */}
-//         <section className="grid gap-8 lg:grid-cols-[1fr_1.2fr] lg:items-start">
-
-//           {/* Left copy */}
-//           {/* <div className="min-w-0"> */}
-//           <div className="min-w-0 order-2 lg:order-1">
-//             <p className="mb-3 text-xs font-extrabold uppercase tracking-widest text-blue-600">
-//               PDF to Word Converter
-//             </p>
-
-//             {/* FIX ✅ smaller font on mobile to prevent overflow */}
-//             <h1 className="text-3xl font-black leading-tight tracking-tight text-slate-950 sm:text-4xl md:text-5xl">
-//               Convert PDF to Word{" "}
-//               <br className="hidden sm:block" />
-//               in{" "}
-//               <span className="bg-gradient-to-r from-blue-600 to-violet-500 bg-clip-text text-transparent">
-//                 Seconds ⚡
-//               </span>
-//             </h1>
-
-//             <p className="mt-4 text-sm leading-7 text-slate-600 sm:text-base">
-//               Convert PDF to editable Word documents with perfect formatting.
-//               Fast, free and 100% secure — your files never leave your browser.
-//             </p>
-
-//             <ul className="mt-5 space-y-2 text-sm text-slate-600">
-//               {[
-//                 "Maintains original formatting & layout",
-//                 "OCR powered — works on scanned PDFs",
-//                 "100% Private — files never uploaded",
-//                 "Works on any device — no software needed",
-//               ].map((item) => (
-//                 <li key={item} className="flex items-start gap-2">
-//                   <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-blue-500" />
-//                   <span>{item}</span>
-//                 </li>
-//               ))}
-//             </ul>
-
-//             {/* Privacy box */}
-//             <div className="mt-5 rounded-2xl border border-slate-200 bg-slate-50 p-4">
-//               <div className="flex gap-3">
-//                 <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-blue-100">
-//                   <ShieldCheck className="h-5 w-5 text-blue-600" />
-//                 </div>
-//                 <div className="min-w-0">
-//                   <p className="font-bold text-slate-900">Your files stay private</p>
-//                   <p className="mt-0.5 text-xs text-slate-500">
-//                     All processing happens in your browser. No uploads. No servers. No worries.
-//                   </p>
-//                 </div>
-//               </div>
-//             </div>
-
-//             {/* FIX ✅ Rating — wrap on small screens, no overflow */}
-//             <div className="mt-4 flex flex-wrap items-center gap-x-2 gap-y-1">
-//               <div className="flex shrink-0 text-yellow-400">
-//                 {Array.from({ length: 5 }).map((_, i) => (
-//                   <Star key={i} className="h-4 w-4 fill-current" />
-//                 ))}
-//               </div>
-//               <span className="shrink-0 text-sm font-bold text-slate-900">4.9/5</span>
-//               <span className="text-sm text-slate-500">Trusted by thousands of users worldwide.</span>
-//             </div>
-//           </div>
-
-//           {/* Right — Upload Card */}
-//           {/* <div className="min-w-0 rounded-3xl border border-slate-200 bg-white p-4 shadow-lg shadow-slate-200/60 sm:p-5"> */}
-//           <div className="min-w-0 order-1 lg:order-2 rounded-3xl border border-slate-200 bg-white p-4 shadow-lg shadow-slate-200/60 sm:p-5">
-
-//             {/* Dashed dropzone */}
-//             <div className="rounded-2xl border-2 border-dashed border-blue-300 bg-gradient-to-br from-blue-50/60 via-white to-violet-50/40 p-5 text-center sm:p-8">
-//               <UploadStep
-//                 onFilesSelect={onFilesSelect}
-//                 accept={accept}
-//                 multiple={multiple}
-//                 uploadTitle={uploadTitle || "Drop your PDF file here"}
-//                 uploadSubtitle={uploadSubtitle || "or click to browse"}
-//                 uploadInfo={uploadInfo || "Max file size: 100MB"}
-//               />
-//             </div>
-
-//             {/* Supports + Auto-deleted row */}
-//             <div className="mt-4 flex flex-wrap items-center justify-center gap-3 text-xs font-medium text-slate-600">
-//               <span className="flex items-center gap-1.5">
-//                 <ShieldCheck className="h-3.5 w-3.5 text-emerald-500" />
-//                 Supports: PDF (Scanned or Digital)
-//               </span>
-//               <span className="flex items-center gap-1.5">
-//                 <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500" />
-//                 Auto-deleted after 1 hour
-//               </span>
-//             </div>
-
-//             {/* Microsoft Word Compatibility box */}
-//             <div className="mt-4 rounded-2xl border border-blue-100 bg-blue-50 p-4">
-//               <p className="mb-2 flex items-center gap-2 text-sm font-bold text-blue-700">
-//                 <span>🖥️</span> Microsoft Word Compatibility
-//               </p>
-//               <ul className="space-y-1 text-xs text-slate-600">
-//                 <li>• Converted files open best in <strong>Microsoft Word 2013 or newer</strong></li>
-//                 <li>• Click <strong>"Enable Editing"</strong> when prompted — this is normal</li>
-//                 <li>• Older Word versions may not fully support modern DOCX files</li>
-//               </ul>
-//             </div>
-//           </div>
-//         </section>
-
-//         {/* ── FEATURES STRIP ── */}
-//         {/* FIX ✅ 2 cols mobile, 5 cols desktop */}
-//         <section className="mt-10 grid grid-cols-2 gap-px overflow-hidden rounded-3xl border border-slate-200 bg-slate-200 shadow-sm sm:grid-cols-3 md:grid-cols-5">
-//           {features.map((feat) => (
-//             <div key={feat.title} className="flex flex-col items-center gap-2 bg-white px-3 py-5 text-center sm:px-4 sm:py-6">
-//               <div className={`flex h-11 w-11 items-center justify-center rounded-2xl ${feat.bgColor}`}>
-//                 <feat.icon className={`h-5 w-5 ${feat.iconColor}`} />
-//               </div>
-//               <p className="text-xs font-bold text-slate-900 sm:text-sm">{feat.title}</p>
-//               <p className="text-xs text-slate-500">{feat.desc}</p>
-//             </div>
-//           ))}
-//         </section>
-
-//         {/* ── HOW TO + WHY CHOOSE ── */}
-//         {/* FIX ✅ stacked on mobile, side by side on lg */}
-//         <section className="mt-6 grid gap-6 lg:grid-cols-2">
-
-//           {/* How to Convert */}
-//           <div className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
-//             <h2 className="text-lg font-bold text-slate-900 sm:text-xl">How to Convert PDF to Word</h2>
-
-//             <div className="mt-5 grid gap-5 sm:grid-cols-[1fr_1.5fr]">
-//             {/* <div className="mt-5 grid gap-5 sm:grid-cols-[auto_1fr]"> */}
-//               <div>
-//                 {[
-//                   { n: "1", title: "Upload PDF", desc: "Drag & drop your PDF file or click to browse.", color: "bg-blue-600" },
-//                   { n: "2", title: "Convert",    desc: "We convert your PDF to a fully editable Word document.", color: "bg-purple-600" },
-//                   { n: "3", title: "Download",   desc: "Download your Word file instantly. That's it!", color: "bg-emerald-600" },
-//                 ].map(({ n, title, desc, color }, idx) => (
-//                   <div key={n} className="flex gap-3">
-//                     <div className="flex flex-col items-center">
-//                       <span className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-xs font-bold text-white ${color}`}>
-//                         {n}
-//                       </span>
-//                       {idx < 2 && <div className="my-1 w-px flex-1 bg-slate-200" style={{ minHeight: 24 }} />}
-//                     </div>
-//                     <div className="pb-4">
-//                       <p className="font-bold text-slate-900">{title}</p>
-//                       <p className="mt-0.5 text-xs text-slate-500">{desc}</p>
-//                     </div>
-//                   </div>
-//                 ))}
-//               </div>
-
-//               <div className="flex flex-col gap-4">
-
-//                 <div className="w-full rounded-2xl border border-slate-100 bg-slate-50 p-3">
-//                     <img
-//                     src="/images/pdf-to-word-visual.jpeg"
-//                     alt="PDF to Word conversion illustration"
-//                     className="w-full h-auto rounded-xl object-contain"
-//                 />
-//                 </div>
-
-//                 {/* <div className="rounded-2xl border border-slate-100 bg-slate-50 p-4">
-//                   <p className="text-sm italic text-slate-600">
-//                     "Best PDF to Word converter! Keeps the formatting almost perfect."
-//                   </p>
-//                   <div className="mt-2 flex flex-wrap items-center justify-between gap-2">
-//                     <p className="text-sm font-bold text-slate-900">— Priya M., Freelancer</p>
-//                     <div className="flex text-yellow-400">
-//                       {Array.from({ length: 5 }).map((_, i) => (
-//                         <Star key={i} className="h-3.5 w-3.5 fill-current" />
-//                       ))}
-//                     </div>
-//                   </div>
-//                 </div> */}
-
-//               </div>
-//             </div>
-//           </div>
-
-//           {/* Why Choose */}
-//           <div className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
-//             <h2 className="text-lg font-bold text-slate-900 sm:text-xl">Why Choose PDFLinx?</h2>
-
-//             <div className="mt-5 space-y-3">
-//               {whyItems.map((item) => (
-//                 <div key={item.title} className="flex items-start gap-3 rounded-2xl border border-slate-100 p-3">
-//                   <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl ${item.bgColor}`}>
-//                     <item.icon className={`h-5 w-5 ${item.iconColor}`} />
-//                   </div>
-//                   <div className="min-w-0">
-//                     <p className="font-bold text-slate-900">{item.title}</p>
-//                     <p className="mt-0.5 text-xs text-slate-500">{item.desc}</p>
-//                   </div>
-//                 </div>
-//               ))}
-//             </div>
-//           </div>
-//         </section>
-
-//         {/* ── STATS ── */}
-//         <section className="mt-6 rounded-3xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
-//           {/* FIX ✅ heading larger */}
-//           <h2 className="text-center text-xl font-bold text-slate-900 sm:text-2xl">
-//             Trusted by Users Around the World
-//           </h2>
-//           <div className="mt-6 grid grid-cols-2 gap-4 text-center sm:mt-8 sm:gap-6 md:grid-cols-4">
-//             {stats.map(({ num, label, icon }) => (
-//               <div key={label} className="flex flex-col items-center gap-2">
-//                 {icon}
-//                 {/* FIX ✅ larger number */}
-//                 <p className="text-2xl font-black text-slate-900 sm:text-3xl">{num}</p>
-//                 <p className="text-xs text-slate-500 sm:text-sm">{label}</p>
-//               </div>
-//             ))}
-//           </div>
-//         </section>
-
-//         {/* ── RELATED TOOLS ── */}
-//         <section className="mt-6 rounded-3xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
-//           <h2 className="text-lg font-bold text-slate-900 sm:text-xl">You Might Also Need</h2>
-//           {/* FIX ✅ each tool has its own unique icon */}
-//           <div className="mt-4 grid gap-3 sm:grid-cols-2 md:grid-cols-3">
-//             {relatedTools.map((tool) => (
-//               <Link
-//                 key={tool.href}
-//                 href={tool.href}
-//                 className="group flex items-start gap-3 rounded-2xl border border-slate-200 p-3.5 transition-all hover:border-blue-400 hover:shadow-sm sm:p-4"
-//               >
-//                 <div className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-xl ${tool.bgColor} transition-opacity group-hover:opacity-80`}>
-//                   <tool.icon className={`h-4 w-4 ${tool.iconColor}`} />
-//                 </div>
-//                 <div className="min-w-0">
-//                   <p className="font-bold text-slate-900 transition-colors group-hover:text-blue-600">
-//                     {tool.label}
-//                   </p>
-//                   <p className="mt-0.5 text-xs text-slate-500">{tool.desc}</p>
-//                 </div>
-//               </Link>
-//             ))}
-//           </div>
-//         </section>
-
-//         {/* ── FAQ ── */}
-//         <section className="mt-6">
-//           {/* FIX ✅ heading larger */}
-//           <h2 className="text-center text-xl font-bold text-slate-900 sm:text-2xl">
-//             Frequently Asked Questions
-//           </h2>
-//           <div className="mt-5 grid gap-3 md:grid-cols-2">
-//             {faqs.map((faq) => (
-//               <details
-//                 key={faq.q}
-//                 className="group rounded-2xl border border-slate-200 bg-white px-4 py-3.5 open:shadow-sm sm:px-5 sm:py-4"
-//               >
-//                 <summary className="flex cursor-pointer list-none items-center justify-between gap-3 text-sm font-bold text-slate-700">
-//                   <span className="min-w-0">{faq.q}</span>
-//                   <ChevronDown className="h-4 w-4 shrink-0 text-slate-400 transition-transform group-open:rotate-180" />
-//                 </summary>
-//                 <p className="mt-3 text-sm leading-6 text-slate-500">{faq.a}</p>
-//               </details>
-//             ))}
-//           </div>
-//         </section>
-
-//         {/* ── BOTTOM CTA ── */}
-//         {/* FIX ✅ CTA larger text, proper mobile stacking */}
-//         <section className="mt-8 overflow-hidden rounded-3xl bg-gradient-to-r from-blue-600 to-violet-600 p-6 sm:p-8 md:p-10">
-//           <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
-//             <div className="min-w-0">
-//               <span className="inline-block rounded-full bg-white/20 px-3 py-1 text-xs font-bold text-white/90">
-//                 ✦ 100% Free
-//               </span>
-//               {/* FIX ✅ heading larger */}
-//               <h2 className="mt-3 text-xl font-black text-white sm:text-2xl md:text-3xl">
-//                 Start Converting PDF to Word Now
-//               </h2>
-//               <p className="mt-1.5 text-sm text-white/75">
-//                 Fast. Secure. Private. No sign up required.
-//               </p>
-//               <p className="mt-1 text-xs text-white/50">
-//                 No uploads. No limits. No hidden charges.
-//               </p>
-//             </div>
-
-//             <button
-//               type="button"
-//               onClick={() => {
-//                 const input = document.querySelector('input[type="file"]');
-//                 input?.click();
-//               }}
-//               className="flex w-full shrink-0 items-center justify-center gap-2 rounded-2xl bg-white px-6 py-3.5 text-sm font-bold text-blue-600 shadow-xl transition hover:bg-blue-50 active:scale-95 sm:w-auto sm:px-7"
-//             >
-//               <FileText className="h-4 w-4 text-blue-600" />
-//               Choose PDF File
-//             </button>
-//           </div>
-//         </section>
-
-//       </div>
-//     </div>
-//   );
-// }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// // components/ToolFlow/UploadLandingStep.jsx
-// "use client";
-
-// import Link from "next/link";
-// import {
-//   ShieldCheck,
-//   Zap,
-//   Target,
-//   MonitorSmartphone,
-//   Infinity,
-//   FileText,
-//   FileType2,
-//   Lock,
-//   Star,
-//   CheckCircle2,
-//   Gift,
-//   UserPlus,
-//   ScanText,
-//   LayoutTemplate,
-//   ChevronDown,
-//   Upload,
-// } from "lucide-react";
-// import UploadStep from "./UploadStep";
-
-// // ─── DATA ────────────────────────────────────────────────────────────────────
-
-// const relatedTools = [
-//   { label: "Word to PDF",   href: "/word-to-pdf",   desc: "Convert back to PDF" },
-//   { label: "Compress PDF",  href: "/compress-pdf",  desc: "Reduce PDF file size" },
-//   { label: "Merge PDF",     href: "/merge-pdf",     desc: "Combine multiple PDFs" },
-//   { label: "Split PDF",     href: "/split-pdf",     desc: "Separate PDF pages" },
-//   { label: "PDF to Excel",  href: "/pdf-to-excel",  desc: "Extract PDF tables" },
-//   { label: "OCR PDF",       href: "/ocr-pdf",       desc: "Make scanned PDFs readable" },
-// ];
-
-// const faqs = [
-//   {
-//     q: "Is PDFLinx PDF to Word converter free?",
-//     a: "Yes, 100% free. No hidden charges, no subscriptions, no limits.",
-//   },
-//   {
-//     q: "Will my PDF formatting be preserved?",
-//     a: "Yes, our converter maintains fonts, images, tables, and layout accurately.",
-//   },
-//   {
-//     q: "Do I need to sign up?",
-//     a: "No account or sign up needed. Just upload and convert instantly.",
-//   },
-//   {
-//     q: "What is the maximum file size?",
-//     a: "You can upload PDF files up to 100MB in size.",
-//   },
-//   {
-//     q: "Can I convert scanned PDFs to Word?",
-//     a: "Yes! Our OCR technology extracts text from scanned PDFs accurately.",
-//   },
-//   {
-//     q: "Is my file secure?",
-//     a: "Absolutely. Files are processed securely and never stored on our servers.",
-//   },
-//   {
-//     q: "Can I convert PDF to Word on mobile?",
-//     a: "Yes, PDFLinx works on all devices including mobile and tablet.",
-//   },
-//   {
-//     q: "What happens to my files after conversion?",
-//     a: "Files are automatically deleted after conversion. Nothing is stored on our servers.",
-//   },
-// ];
-
-// const features = [
-//   { icon: Zap,               title: "Instant Conversion", desc: "Results in seconds",        iconColor: "text-yellow-500", bgColor: "bg-yellow-50" },
-//   { icon: Target,            title: "High Accuracy",      desc: "Best formatting retention", iconColor: "text-purple-500", bgColor: "bg-purple-50" },
-//   { icon: ScanText,          title: "OCR Powered",        desc: "Scanned PDFs supported",    iconColor: "text-blue-500",   bgColor: "bg-blue-50"   },
-//   { icon: MonitorSmartphone, title: "Works Everywhere",   desc: "Desktop, tablet, mobile",   iconColor: "text-orange-500", bgColor: "bg-orange-50" },
-//   { icon: Infinity,          title: "100% Free",          desc: "No limits. No hidden fees", iconColor: "text-red-500",    bgColor: "bg-red-50"    },
-// ];
-
-// const whyItems = [
-//   { icon: LayoutTemplate, title: "Perfect Formatting",  desc: "Maintain fonts, images, tables & layout.",     iconColor: "text-blue-500",   bgColor: "bg-blue-50"   },
-//   { icon: ScanText,       title: "OCR Technology",      desc: "Extract text from scanned PDFs accurately.",   iconColor: "text-teal-500",   bgColor: "bg-teal-50"   },
-//   { icon: Lock,           title: "No File Uploads",     desc: "Your files never leave your device.",          iconColor: "text-purple-500", bgColor: "bg-purple-50" },
-//   { icon: UserPlus,       title: "No Sign Up Required", desc: "Use the tool instantly without registration.", iconColor: "text-orange-500", bgColor: "bg-orange-50" },
-//   { icon: Gift,           title: "Free Forever",        desc: "Convert as many files as you want.",           iconColor: "text-pink-500",   bgColor: "bg-pink-50"   },
-// ];
-
-// // ─── COLORFUL SVG STAT ICONS ──────────────────────────────────────────────────
-// const StatIcons = {
-//   files: (
-//     <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
-//       <rect width="40" height="40" rx="12" fill="#EFF6FF"/>
-//       <rect x="10" y="9" width="14" height="18" rx="2" fill="#93C5FD"/>
-//       <rect x="15" y="13" width="15" height="18" rx="2" fill="#3B82F6"/>
-//       <path d="M18 21h6M18 24.5h4" stroke="white" strokeWidth="1.3" strokeLinecap="round"/>
-//     </svg>
-//   ),
-//   tools: (
-//     <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
-//       <rect width="40" height="40" rx="12" fill="#F5F3FF"/>
-//       <path d="M25 11l-2.5 2.5 4 4 2.5-2.5a3.5 3.5 0 00-4-4z" fill="#8B5CF6"/>
-//       <path d="M22.5 13.5l-9 9 1.5 3.5 3.5 1.5 9-9-5-5z" fill="#A78BFA"/>
-//       <circle cx="14" cy="26" r="2" fill="#7C3AED"/>
-//     </svg>
-//   ),
-//   browser: (
-//     <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
-//       <rect width="40" height="40" rx="12" fill="#F0FDF4"/>
-//       <circle cx="20" cy="20" r="10" stroke="#4ADE80" strokeWidth="1.5"/>
-//       <ellipse cx="20" cy="20" rx="4.5" ry="10" stroke="#22C55E" strokeWidth="1.3"/>
-//       <path d="M10 20h20" stroke="#16A34A" strokeWidth="1.3"/>
-//       <path d="M12 15h16M12 25h16" stroke="#86EFAC" strokeWidth="1"/>
-//     </svg>
-//   ),
-//   shield: (
-//     <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
-//       <rect width="40" height="40" rx="12" fill="#FFF7ED"/>
-//       <path d="M20 10l9 3.5v6c0 4.5-3.5 8.5-9 10-5.5-1.5-9-5.5-9-10v-6L20 10z" fill="#FED7AA"/>
-//       <path d="M20 10l9 3.5v6c0 4.5-3.5 8.5-9 10" stroke="#F97316" strokeWidth="1.5" strokeLinecap="round"/>
-//       <path d="M15.5 20l3.5 3.5 6-6" stroke="#EA580C" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
-//     </svg>
-//   ),
-// };
-
-// const stats = [
-//   { num: "2M+",  label: "Files Converted",   icon: StatIcons.files   },
-//   { num: "23+",  label: "Free PDF Tools",    icon: StatIcons.tools   },
-//   { num: "100%", label: "Browser-Based",     icon: StatIcons.browser },
-//   { num: "0",    label: "Uploads to Server", icon: StatIcons.shield  },
-// ];
-
-// // ─── JSON-LD SCHEMAS ──────────────────────────────────────────────────────────
-// const faqSchema = {
-//   "@context": "https://schema.org",
-//   "@type": "FAQPage",
-//   mainEntity: faqs.map((f) => ({
-//     "@type": "Question",
-//     name: f.q,
-//     acceptedAnswer: { "@type": "Answer", text: f.a },
-//   })),
-// };
-
-// const howToSchema = {
-//   "@context": "https://schema.org",
-//   "@type": "HowTo",
-//   name: "How to Convert PDF to Word",
-//   description:
-//     "Convert your PDF to an editable Word document in 3 easy steps using PDFLinx — free, fast, no signup.",
-//   totalTime: "PT1M",
-//   step: [
-//     {
-//       "@type": "HowToStep",
-//       position: 1,
-//       name: "Upload PDF",
-//       text: "Drag & drop your PDF file or click to browse and select your file. Max size 100MB.",
-//     },
-//     {
-//       "@type": "HowToStep",
-//       position: 2,
-//       name: "Convert",
-//       text: "Click convert. We process your PDF and convert it to a fully editable Word (.docx) document.",
-//     },
-//     {
-//       "@type": "HowToStep",
-//       position: 3,
-//       name: "Download",
-//       text: "Download your Word file instantly. No signup or watermark.",
-//     },
-//   ],
-// };
-
-// const breadcrumbSchema = {
-//   "@context": "https://schema.org",
-//   "@type": "BreadcrumbList",
-//   itemListElement: [
-//     { "@type": "ListItem", position: 1, name: "Home",      item: "https://pdflinx.com" },
-//     { "@type": "ListItem", position: 2, name: "PDF Tools", item: "https://pdflinx.com/pdf-tools" },
-//     { "@type": "ListItem", position: 3, name: "PDF to Word Converter", item: "https://pdflinx.com/pdf-to-word" },
-//   ],
-// };
-
-// // ─── COMPONENT ────────────────────────────────────────────────────────────────
-// export default function UploadLandingStep({
-//   onFilesSelect,
-//   accept,
-//   multiple,
-//   uploadTitle,
-//   uploadSubtitle,
-//   uploadInfo,
-// }) {
-//   return (
-//     <div className="bg-white">
-
-//       {/* ══ JSON-LD Schemas — invisible to users, read by Google ══ */}
-//       <script
-//         type="application/ld+json"
-//         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
-//       />
-//       <script
-//         type="application/ld+json"
-//         dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }}
-//       />
-//       <script
-//         type="application/ld+json"
-//         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
-//       />
-
-//       <div className="mx-auto w-full max-w-[1180px] px-5 py-8 md:py-12">
-
-//         {/* ── Breadcrumb + Trust Pills ── */}
-//         <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
-//           <nav aria-label="Breadcrumb" className="flex items-center gap-1.5 text-xs text-slate-400">
-//             <Link href="/" className="hover:text-slate-600 transition-colors">Home</Link>
-//             <span aria-hidden="true">›</span>
-//             <Link href="/pdf-tools" className="hover:text-slate-600 transition-colors">PDF Tools</Link>
-//             <span aria-hidden="true">›</span>
-//             <span className="font-medium text-slate-600">PDF to Word Converter</span>
-//           </nav>
-
-//           <div className="flex flex-wrap items-center gap-5 text-xs font-semibold text-slate-500">
-//             <span className="inline-flex items-center gap-1.5">
-//               <ShieldCheck className="h-3.5 w-3.5 text-emerald-500" /> 100% Free
-//             </span>
-//             <span className="inline-flex items-center gap-1.5">
-//               <ShieldCheck className="h-3.5 w-3.5 text-emerald-500" /> No Sign Up
-//             </span>
-//             <span className="inline-flex items-center gap-1.5">
-//               <Zap className="h-3.5 w-3.5 text-blue-500" /> No Watermark
-//             </span>
-//           </div>
-//         </div>
-
-//         {/* ── HERO ── */}
-//         <section className="grid gap-10 lg:grid-cols-[1fr_1.2fr] lg:items-start">
-
-//           {/* Left copy */}
-//           <div>
-//             <p className="mb-3 text-xs font-extrabold uppercase tracking-widest text-blue-600">
-//               PDF to Word Converter
-//             </p>
-
-//             <h1 className="max-w-[540px] text-4xl font-black leading-tight tracking-tight text-slate-950 md:text-5xl">
-//               Convert PDF to Word{" "}
-//               <br className="hidden md:block" />
-//               in{" "}
-//               <span className="bg-gradient-to-r from-blue-600 to-violet-500 bg-clip-text text-transparent">
-//                 Seconds ⚡
-//               </span>
-//             </h1>
-
-//             <p className="mt-4 max-w-[500px] text-base leading-7 text-slate-600">
-//               Convert PDF to editable Word documents with perfect formatting.
-//               Fast, free and 100% secure — your files never leave your browser.
-//             </p>
-
-//             <ul className="mt-5 space-y-2.5 text-sm text-slate-600">
-//               {[
-//                 "Maintains original formatting & layout",
-//                 "OCR powered — works on scanned PDFs",
-//                 "100% Private — files never uploaded",
-//                 "Works on any device — no software needed",
-//               ].map((item) => (
-//                 <li key={item} className="flex items-center gap-2">
-//                   <CheckCircle2 className="h-4 w-4 shrink-0 text-blue-500" />
-//                   {item}
-//                 </li>
-//               ))}
-//             </ul>
-
-//             {/* Privacy box */}
-//             <div className="mt-6 max-w-[420px] rounded-2xl border border-slate-200 bg-slate-50 p-4">
-//               <div className="flex gap-3">
-//                 <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-blue-100">
-//                   <ShieldCheck className="h-5 w-5 text-blue-600" />
-//                 </div>
-//                 <div>
-//                   <p className="font-bold text-slate-900">Your files stay private</p>
-//                   {/* FIX ✅ contrast: text-slate-500 (was too-light text-slate-400) */}
-//                   <p className="mt-0.5 text-xs text-slate-500">
-//                     All processing happens in your browser. No uploads. No servers. No worries.
-//                   </p>
-//                 </div>
-//               </div>
-//             </div>
-
-//             {/* Rating */}
-//             <div className="mt-4 flex items-center gap-2">
-//               <div className="flex text-yellow-400">
-//                 {Array.from({ length: 5 }).map((_, i) => (
-//                   <Star key={i} className="h-4 w-4 fill-current" />
-//                 ))}
-//               </div>
-//               <span className="text-sm font-bold text-slate-900">4.9/5</span>
-//               <span className="text-sm text-slate-500">Trusted by thousands of users worldwide.</span>
-//             </div>
-//           </div>
-
-//           {/* Right — Upload Card */}
-//           <div className="rounded-3xl border border-slate-200 bg-white p-5 shadow-lg shadow-slate-200/60">
-
-//             {/* Dashed dropzone */}
-//             <div className="rounded-2xl border-2 border-dashed border-blue-300 bg-gradient-to-br from-blue-50/60 via-white to-violet-50/40 p-8 text-center">
-//               {/* <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-blue-100">
-//                 <Upload className="h-8 w-8 text-blue-500" />
-//               </div> */}
-
-//               {/* <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-red-50">
-//                     <FileText className="h-10 w-10 text-red-500" />
-//               </div> */}
-
-//               <UploadStep
-//                 onFilesSelect={onFilesSelect}
-//                 accept={accept}
-//                 multiple={multiple}
-//                 uploadTitle={uploadTitle || "Drop your PDF file here"}
-//                 uploadSubtitle={uploadSubtitle || "or click to browse"}
-//                 uploadInfo={uploadInfo || "Max file size: 100MB"}
-//               />
-
-//               {/* FIX ✅ trust badges with proper contrast text-slate-600 */}
-//               <div className="mt-4 grid grid-cols-2 gap-y-2 text-xs font-medium text-slate-600">
-//                 {/* <span className="flex items-center justify-center gap-1">
-//                   <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500" /> No signup
-//                 </span>
-//                 <span className="flex items-center justify-center gap-1">
-//                   <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500" /> No watermark
-//                 </span>
-//                 {/* <span className="flex items-center justify-center gap-1">
-//                   <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500" /> Auto-deleted
-//                 </span> */}
-//                 {/* <span className="flex items-center justify-center gap-1">
-//                   <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500" /> 100% free
-//                 </span> */}
-//               </div>
-//             </div>
-
-//             {/* Supports row */}
-//             <div className="mt-4 flex items-center justify-center gap-2 text-sm font-medium text-slate-600">
-//               <ShieldCheck className="h-4 w-4 text-emerald-500" />
-//               Supports: PDF (Scanned or Digital)
-//             </div>
-
-//             {/* Secure banner */}
-//             {/* <div className="mt-4 rounded-2xl border border-emerald-200 bg-emerald-50 p-4">
-//               <div className="flex gap-3">
-//                 <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-emerald-100">
-//                   <Lock className="h-5 w-5 text-emerald-600" />
-//                 </div>
-//                 <div>
-//                   <p className="font-bold text-slate-900">Secure, Private & Encrypted</p> */}
-//                   {/* FIX ✅ contrast: text-slate-500 */}
-//                   {/* <p className="mt-0.5 text-xs text-slate-500">
-//                     Your file is processed locally in your browser and never stored.
-//                   </p>
-//                 </div>
-//               </div>
-//             </div> */}
-
-//             <div className="mt-4 rounded-2xl border border-blue-100 bg-blue-50 p-4">
-//             <p className="mb-2 flex items-center gap-2 text-sm font-bold text-blue-700">
-//                 <span>🖥️</span> Microsoft Word Compatibility
-//             </p>
-//             <ul className="space-y-1 text-xs text-slate-600">
-//                 <li>• Converted files open best in <strong>Microsoft Word 2013 or newer</strong></li>
-//                 <li>• Click <strong>"Enable Editing"</strong> when prompted — this is normal</li>
-//                 <li>• Older Word versions may not fully support modern DOCX files</li>
-//             </ul>
-//             </div>
-            
-//           </div>
-//         </section>
-
-//         {/* ── FEATURES STRIP ── */}
-//         <section className="mt-12 grid grid-cols-2 gap-px overflow-hidden rounded-3xl border border-slate-200 bg-slate-200 shadow-sm md:grid-cols-5">
-//           {features.map((feat) => (
-//             <div key={feat.title} className="flex flex-col items-center gap-2 bg-white px-4 py-6 text-center">
-//               <div className={`flex h-12 w-12 items-center justify-center rounded-2xl ${feat.bgColor}`}>
-//                 <feat.icon className={`h-6 w-6 ${feat.iconColor}`} />
-//               </div>
-//               <p className="text-sm font-bold text-slate-900">{feat.title}</p>
-//               <p className="text-xs text-slate-500">{feat.desc}</p>
-//             </div>
-//           ))}
-//         </section>
-
-//         {/* ── HOW TO + WHY CHOOSE ── */}
-//         <section className="mt-6 grid gap-6 lg:grid-cols-2">
-
-//           {/* How to Convert */}
-//           <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
-//             <h2 className="text-xl font-bold text-slate-900">How to Convert PDF to Word</h2>
-
-//             <div className="mt-6 grid gap-6 md:grid-cols-[auto_1fr]">
-//               <div>
-//                 {[
-//                   { n: "1", title: "Upload PDF", desc: "Drag & drop your PDF file or click to browse.", color: "bg-blue-600" },
-//                   { n: "2", title: "Convert",    desc: "We convert your PDF to fully editable Word document.", color: "bg-purple-600" },
-//                   { n: "3", title: "Download",   desc: "Download your Word file instantly. That's it!", color: "bg-emerald-600" },
-//                 ].map(({ n, title, desc, color }, idx) => (
-//                   <div key={n} className="flex gap-3">
-//                     <div className="flex flex-col items-center">
-//                       <span className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-xs font-bold text-white ${color}`}>
-//                         {n}
-//                       </span>
-//                       {idx < 2 && <div className="my-1 w-px flex-1 bg-slate-200" style={{ minHeight: 28 }} />}
-//                     </div>
-//                     <div className="pb-5">
-//                       <p className="font-bold text-slate-900">{title}</p>
-//                       <p className="mt-0.5 text-xs text-slate-500">{desc}</p>
-//                     </div>
-//                   </div>
-//                 ))}
-//               </div>
-
-//               <div className="flex flex-col gap-4">
-//                 <div className="flex items-center justify-center gap-4 rounded-2xl border border-slate-100 bg-slate-50 py-6">
-//                   <FileText className="h-14 w-14 text-red-500" />
-//                   <div className="flex items-center gap-1">
-//                     <Zap className="h-5 w-5 text-blue-500" />
-//                     <span className="text-slate-300">· · ·</span>
-//                     <Zap className="h-5 w-5 text-blue-500" />
-//                   </div>
-//                   <FileType2 className="h-14 w-14 text-blue-600" />
-//                 </div>
-
-//                 <div className="rounded-2xl border border-slate-100 bg-slate-50 p-4">
-//                   <p className="text-sm italic text-slate-600">
-//                     "Best PDF to Word converter! Keeps the formatting almost perfect."
-//                   </p>
-//                   <div className="mt-2 flex items-center justify-between">
-//                     <p className="text-sm font-bold text-slate-900">— Priya M., Freelancer</p>
-//                     <div className="flex text-yellow-400">
-//                       {Array.from({ length: 5 }).map((_, i) => (
-//                         <Star key={i} className="h-3.5 w-3.5 fill-current" />
-//                       ))}
-//                     </div>
-//                   </div>
-//                 </div>
-//               </div>
-//             </div>
-//           </div>
-
-//           {/* Why Choose */}
-//           <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
-//             <h2 className="text-xl font-bold text-slate-900">Why Choose PDFLinx?</h2>
-
-//             <div className="mt-5 space-y-3">
-//               {whyItems.map((item) => (
-//                 <div key={item.title} className="flex items-start gap-3 rounded-2xl border border-slate-100 p-3.5">
-//                   <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl ${item.bgColor}`}>
-//                     <item.icon className={`h-5 w-5 ${item.iconColor}`} />
-//                   </div>
-//                   <div>
-//                     <p className="font-bold text-slate-900">{item.title}</p>
-//                     <p className="mt-0.5 text-xs text-slate-500">{item.desc}</p>
-//                   </div>
-//                 </div>
-//               ))}
-//             </div>
-//           </div>
-//         </section>
-
-//         {/* ── STATS ── */}
-//         {/* FIX ✅ colorful SVG icons (replaced plain emojis) */}
-//         <section className="mt-6 rounded-3xl border border-slate-200 bg-white p-8 shadow-sm">
-//           <h2 className="text-center text-xl font-bold text-slate-900">
-//             Trusted by Users Around the World
-//           </h2>
-//           <div className="mt-8 grid grid-cols-2 gap-6 text-center md:grid-cols-4">
-//             {stats.map(({ num, label, icon }) => (
-//               <div key={label} className="flex flex-col items-center gap-3">
-//                 {icon}
-//                 <p className="text-2xl font-black text-slate-900">{num}</p>
-//                 <p className="text-xs text-slate-500">{label}</p>
-//               </div>
-//             ))}
-//           </div>
-//         </section>
-
-//         {/* ── RELATED TOOLS ── */}
-//         {/* FIX ✅ no accidental blue border on default — only hover */}
-//         <section className="mt-6 rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
-//           <h2 className="text-xl font-bold text-slate-900">You Might Also Need</h2>
-//           <div className="mt-5 grid gap-3 sm:grid-cols-2 md:grid-cols-3">
-//             {relatedTools.map((tool) => (
-//               <Link
-//                 key={tool.href}
-//                 href={tool.href}
-//                 className="group flex items-start gap-3 rounded-2xl border border-slate-200 p-4 transition-all hover:border-blue-400 hover:shadow-sm"
-//               >
-//                 <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-blue-50 transition-colors group-hover:bg-blue-100">
-//                   <FileText className="h-4 w-4 text-blue-500" />
-//                 </div>
-//                 <div>
-//                   <p className="font-bold text-slate-900 transition-colors group-hover:text-blue-600">
-//                     {tool.label}
-//                   </p>
-//                   <p className="mt-0.5 text-xs text-slate-500">{tool.desc}</p>
-//                 </div>
-//               </Link>
-//             ))}
-//           </div>
-//         </section>
-
-//         {/* ── FAQ ── */}
-//         <section className="mt-6">
-//           <h2 className="text-center text-xl font-bold text-slate-900">
-//             Frequently Asked Questions
-//           </h2>
-//           <div className="mt-6 grid gap-3 md:grid-cols-2">
-//             {faqs.map((faq) => (
-//               <details
-//                 key={faq.q}
-//                 className="group rounded-2xl border border-slate-200 bg-white px-5 py-4 open:shadow-sm"
-//               >
-//                 <summary className="flex cursor-pointer list-none items-center justify-between gap-3 text-sm font-bold text-slate-700">
-//                   {faq.q}
-//                   <ChevronDown className="h-4 w-4 shrink-0 text-slate-400 transition-transform group-open:rotate-180" />
-//                 </summary>
-//                 {/* FIX ✅ text-slate-500 for readable contrast */}
-//                 <p className="mt-3 text-sm leading-6 text-slate-500">{faq.a}</p>
-//               </details>
-//             ))}
-//           </div>
-//         </section>
-
-//         {/* ── BOTTOM CTA ── */}
-//         <section className="mt-8 overflow-hidden rounded-3xl bg-gradient-to-r from-blue-600 to-violet-600 p-7 md:p-10">
-//           <div className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
-//             <div>
-//               <span className="inline-block rounded-full bg-white/20 px-3 py-1 text-xs font-bold text-white/90">
-//                 ✦ 100% Free
-//               </span>
-//               <h2 className="mt-3 text-2xl font-black text-white md:text-3xl">
-//                 Start Converting PDF to Word Now
-//               </h2>
-//               <p className="mt-1.5 text-sm text-white/75">
-//                 Fast. Secure. Private. No sign up required.
-//               </p>
-//               <p className="mt-1 text-xs text-white/50">
-//                 No uploads. No limits. No hidden charges.
-//               </p>
-//             </div>
-
-//             {/* FIX ✅ icon color text-blue-600 (was text-red-500 — inconsistent) */}
-//             <button
-//               type="button"
-//               onClick={() => {
-//                 const input = document.querySelector('input[type="file"]');
-//                 input?.click();
-//               }}
-//               className="flex shrink-0 items-center gap-2 rounded-2xl bg-white px-7 py-3.5 text-sm font-bold text-blue-600 shadow-xl transition hover:bg-blue-50 active:scale-95"
-//             >
-//               <FileText className="h-4 w-4 text-blue-600" />
-//               Choose PDF File
-//             </button>
-//           </div>
-//         </section>
-
-//       </div>
-//     </div>
-//   );
-// }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// // // components/ToolFlow/UploadLandingStep.jsx
-// // "use client";
-
-// // import Link from "next/link";
-// // import {
-// //   ShieldCheck,
-// //   Zap,
-// //   Target,
-// //   MonitorSmartphone,
-// //   Infinity,
-// //   FileText,
-// //   FileType2,
-// //   Lock,
-// //   Star,
-// //   CheckCircle2,
-// //   Gift,
-// //   UserPlus,
-// //   ScanText,
-// //   LayoutTemplate,
-// //   ChevronDown,
-// //   Upload,
-// // } from "lucide-react";
-// // import UploadStep from "./UploadStep";
-
-// // const relatedTools = [
-// //   { label: "Word to PDF", href: "/word-to-pdf", desc: "Convert back to PDF" },
-// //   { label: "Compress PDF", href: "/compress-pdf", desc: "Reduce PDF file size" },
-// //   { label: "Merge PDF", href: "/merge-pdf", desc: "Combine multiple PDFs" },
-// //   { label: "Split PDF", href: "/split-pdf", desc: "Separate PDF pages" },
-// //   { label: "PDF to Excel", href: "/pdf-to-excel", desc: "Extract PDF tables" },
-// //   { label: "OCR PDF", href: "/ocr-pdf", desc: "Make scanned PDFs readable" },
-// // ];
-
-// // const faqs = [
-// //   {
-// //     q: "Is PDFLinx PDF to Word converter free?",
-// //     a: "Yes, 100% free. No hidden charges, no subscriptions, no limits.",
-// //   },
-// //   {
-// //     q: "Will my PDF formatting be preserved?",
-// //     a: "Yes, our converter maintains fonts, images, tables, and layout.",
-// //   },
-// //   {
-// //     q: "Do I need to sign up?",
-// //     a: "No account or sign up needed. Just upload and convert instantly.",
-// //   },
-// //   {
-// //     q: "What is the maximum file size?",
-// //     a: "You can upload PDF files up to 100MB in size.",
-// //   },
-// //   {
-// //     q: "Can I convert scanned PDFs to Word?",
-// //     a: "Yes! Our OCR technology extracts text from scanned PDFs accurately.",
-// //   },
-// //   {
-// //     q: "Is my file secure?",
-// //     a: "Absolutely. Files are processed in your browser and never stored on our servers.",
-// //   },
-// //   {
-// //     q: "Can I convert PDF to Word on mobile?",
-// //     a: "Yes, PDFLinx works on all devices including mobile and tablet.",
-// //   },
-// //   {
-// //     q: "What happens to my files after conversion?",
-// //     a: "Files are automatically deleted. Nothing is stored on our servers.",
-// //   },
-// // ];
-
-// // const features = [
-// //   {
-// //     icon: Zap,
-// //     title: "Instant Conversion",
-// //     desc: "Results in seconds",
-// //     iconColor: "text-yellow-500",
-// //     bgColor: "bg-yellow-50",
-// //   },
-// //   {
-// //     icon: Target,
-// //     title: "High Accuracy",
-// //     desc: "Best formatting retention",
-// //     iconColor: "text-purple-500",
-// //     bgColor: "bg-purple-50",
-// //   },
-// //   {
-// //     icon: ScanText,
-// //     title: "OCR Powered",
-// //     desc: "Scanned PDFs supported",
-// //     iconColor: "text-blue-500",
-// //     bgColor: "bg-blue-50",
-// //   },
-// //   {
-// //     icon: MonitorSmartphone,
-// //     title: "Works Everywhere",
-// //     desc: "Desktop, tablet, mobile",
-// //     iconColor: "text-orange-500",
-// //     bgColor: "bg-orange-50",
-// //   },
-// //   {
-// //     icon: Infinity,
-// //     title: "100% Free",
-// //     desc: "No limits. No hidden fees",
-// //     iconColor: "text-red-500",
-// //     bgColor: "bg-red-50",
-// //   },
-// // ];
-
-// // const whyItems = [
-// //   {
-// //     icon: LayoutTemplate,
-// //     title: "Perfect Formatting",
-// //     desc: "Maintain fonts, images, tables & layout.",
-// //     iconColor: "text-blue-500",
-// //     bgColor: "bg-blue-50",
-// //   },
-// //   {
-// //     icon: ScanText,
-// //     title: "OCR Technology",
-// //     desc: "Extract text from scanned PDFs accurately.",
-// //     iconColor: "text-teal-500",
-// //     bgColor: "bg-teal-50",
-// //   },
-// //   {
-// //     icon: Lock,
-// //     title: "No File Uploads",
-// //     desc: "Your files never leave your device.",
-// //     iconColor: "text-purple-500",
-// //     bgColor: "bg-purple-50",
-// //   },
-// //   {
-// //     icon: UserPlus,
-// //     title: "No Sign Up Required",
-// //     desc: "Use the tool instantly without registration.",
-// //     iconColor: "text-orange-500",
-// //     bgColor: "bg-orange-50",
-// //   },
-// //   {
-// //     icon: Gift,
-// //     title: "Free Forever",
-// //     desc: "Convert as many files as you want.",
-// //     iconColor: "text-pink-500",
-// //     bgColor: "bg-pink-50",
-// //   },
-// // ];
-
-// // const stats = [
-// //   { num: "2M+", label: "Files Converted", icon: "📄" },
-// //   { num: "23+", label: "Free PDF Tools", icon: "🔧" },
-// //   { num: "100%", label: "Browser-Based", icon: "🌐" },
-// //   { num: "0", label: "Uploads to Server", icon: "🛡️" },
-// // ];
-
-// // export default function UploadLandingStep({
-// //   onFilesSelect,
-// //   accept,
-// //   multiple,
-// //   uploadTitle,
-// //   uploadSubtitle,
-// //   uploadInfo,
-// // }) {
-// //   return (
-// //     <div className="bg-white">
-// //       <div className="mx-auto w-full max-w-[1180px] px-5 py-8 md:py-12">
-
-// //         {/* ── Breadcrumb + Trust Pills ── */}
-// //         <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
-// //           {/* Breadcrumb */}
-// //           <nav className="flex items-center gap-1.5 text-xs text-slate-400">
-// //             <Link href="/" className="hover:text-slate-600">Home</Link>
-// //             <span>›</span>
-// //             <Link href="/pdf-tools" className="hover:text-slate-600">PDF Tools</Link>
-// //             <span>›</span>
-// //             <span className="text-slate-600 font-medium">PDF to Word Converter</span>
-// //           </nav>
-
-// //           {/* Trust pills */}
-// //           <div className="flex flex-wrap items-center gap-5 text-xs font-semibold text-slate-500">
-// //             <span className="inline-flex items-center gap-1.5">
-// //               <ShieldCheck className="h-3.5 w-3.5 text-emerald-500" />
-// //               100% Free
-// //             </span>
-// //             <span className="inline-flex items-center gap-1.5">
-// //               <ShieldCheck className="h-3.5 w-3.5 text-emerald-500" />
-// //               No Sign Up
-// //             </span>
-// //             <span className="inline-flex items-center gap-1.5">
-// //               <Zap className="h-3.5 w-3.5 text-blue-500" />
-// //               No Watermark
-// //             </span>
-// //           </div>
-// //         </div>
-
-// //         {/* ── HERO ── */}
-// //         <section className="grid gap-10 lg:grid-cols-[1fr_0.95fr] lg:items-start">
-
-// //           {/* Left copy */}
-// //           <div>
-// //             <p className="mb-3 text-xs font-extrabold uppercase tracking-widest text-blue-600">
-// //               PDF to Word Converter
-// //             </p>
-
-// //             <h1 className="max-w-[540px] text-4xl font-black leading-tight tracking-tight text-slate-950 md:text-5xl">
-// //               Convert PDF to Word{" "}
-// //               <br className="hidden md:block" />
-// //               in{" "}
-// //               <span className="bg-gradient-to-r from-blue-600 to-violet-500 bg-clip-text text-transparent">
-// //                 Seconds ⚡
-// //               </span>
-// //             </h1>
-
-// //             <p className="mt-4 max-w-[500px] text-base leading-7 text-slate-600">
-// //               Convert PDF to editable Word documents with perfect formatting.
-// //               Fast, free and 100% secure — your files never leave your browser.
-// //             </p>
-
-// //             {/* Check list */}
-// //             <ul className="mt-5 space-y-2.5 text-sm text-slate-600">
-// //               {[
-// //                 "Maintains original formatting & layout",
-// //                 "OCR powered — works on scanned PDFs",
-// //                 "100% Private — files never uploaded",
-// //                 "Works on any device — no software needed",
-// //               ].map((item) => (
-// //                 <li key={item} className="flex items-center gap-2">
-// //                   <CheckCircle2 className="h-4 w-4 shrink-0 text-blue-500" />
-// //                   {item}
-// //                 </li>
-// //               ))}
-// //             </ul>
-
-// //             {/* Privacy box */}
-// //             <div className="mt-6 max-w-[420px] rounded-2xl border border-slate-200 bg-slate-50 p-4">
-// //               <div className="flex gap-3">
-// //                 <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-blue-100">
-// //                   <ShieldCheck className="h-5 w-5 text-blue-600" />
-// //                 </div>
-// //                 <div>
-// //                   <p className="font-bold text-slate-900">Your files stay private</p>
-// //                   <p className="mt-0.5 text-xs text-slate-500">
-// //                     All processing happens in your browser.
-// //                     No uploads. No servers. No worries.
-// //                   </p>
-// //                 </div>
-// //               </div>
-// //             </div>
-
-// //             {/* Rating */}
-// //             <div className="mt-4 flex items-center gap-2">
-// //               <div className="flex text-yellow-400">
-// //                 {Array.from({ length: 5 }).map((_, i) => (
-// //                   <Star key={i} className="h-4 w-4 fill-current" />
-// //                 ))}
-// //               </div>
-// //               <span className="text-sm font-bold text-slate-900">4.9/5</span>
-// //               <span className="text-sm text-slate-500">
-// //                 Trusted by thousands of users worldwide.
-// //               </span>
-// //             </div>
-// //           </div>
-
-// //           {/* Right — Upload Card */}
-// //           <div className="rounded-3xl border border-slate-200 bg-white p-5 shadow-lg shadow-slate-200/60">
-
-// //             {/* Dashed dropzone */}
-// //             <div className="rounded-2xl border-2 border-dashed border-blue-300 bg-gradient-to-br from-blue-50/60 via-white to-violet-50/40 p-8 text-center">
-// //               {/* Cloud upload icon */}
-// //               <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-blue-100">
-// //                 <Upload className="h-8 w-8 text-blue-500" />
-// //               </div>
-
-// //               <UploadStep
-// //                 onFilesSelect={onFilesSelect}
-// //                 accept={accept}
-// //                 multiple={multiple}
-// //                 uploadTitle={uploadTitle || "Drop your PDF file here"}
-// //                 uploadSubtitle={uploadSubtitle || "or click to browse"}
-// //                 uploadInfo={uploadInfo || "Max file size: 100MB"}
-// //               />
-// //             </div>
-
-// //             {/* Supports row */}
-// //             <div className="mt-4 flex items-center justify-center gap-2 text-sm font-medium text-slate-600">
-// //               <ShieldCheck className="h-4 w-4 text-emerald-500" />
-// //               Supports: PDF (Scanned or Digital)
-// //             </div>
-
-// //             {/* Secure banner */}
-// //             <div className="mt-4 rounded-2xl border border-emerald-200 bg-emerald-50 p-4">
-// //               <div className="flex gap-3">
-// //                 <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-emerald-100">
-// //                   <Lock className="h-5 w-5 text-emerald-600" />
-// //                 </div>
-// //                 <div>
-// //                   <p className="font-bold text-slate-900">Secure, Private & Encrypted</p>
-// //                   <p className="mt-0.5 text-xs text-slate-500">
-// //                     Your file is processed locally in your browser and never stored.
-// //                   </p>
-// //                 </div>
-// //               </div>
-// //             </div>
-// //           </div>
-// //         </section>
-
-// //         {/* ── FEATURES STRIP ── */}
-// //         <section className="mt-12 grid grid-cols-2 gap-px overflow-hidden rounded-3xl border border-slate-200 bg-slate-200 shadow-sm md:grid-cols-5">
-// //           {features.map((feat) => (
-// //             <div
-// //               key={feat.title}
-// //               className="flex flex-col items-center gap-2 bg-white px-4 py-6 text-center"
-// //             >
-// //               <div
-// //                 className={`flex h-12 w-12 items-center justify-center rounded-2xl ${feat.bgColor}`}
-// //               >
-// //                 <feat.icon className={`h-6 w-6 ${feat.iconColor}`} />
-// //               </div>
-// //               <p className="text-sm font-bold text-slate-900">{feat.title}</p>
-// //               <p className="text-xs text-slate-500">{feat.desc}</p>
-// //             </div>
-// //           ))}
-// //         </section>
-
-// //         {/* ── HOW TO + WHY CHOOSE ── */}
-// //         <section className="mt-6 grid gap-6 lg:grid-cols-2">
-
-// //           {/* How to Convert */}
-// //           <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
-// //             <h2 className="text-xl font-bold text-slate-900">
-// //               How to Convert PDF to Word
-// //             </h2>
-
-// //             <div className="mt-6 grid gap-6 md:grid-cols-[auto_1fr]">
-// //               {/* Steps */}
-// //               <div className="space-y-0">
-// //                 {[
-// //                   { n: "1", title: "Upload PDF", desc: "Drag & drop your PDF file or click to browse.", color: "bg-blue-600" },
-// //                   { n: "2", title: "Convert", desc: "We convert your PDF to fully editable Word document.", color: "bg-purple-600" },
-// //                   { n: "3", title: "Download", desc: "Download your Word file instantly. That's it!", color: "bg-emerald-600" },
-// //                 ].map(({ n, title, desc, color }, idx) => (
-// //                   <div key={n} className="flex gap-3">
-// //                     <div className="flex flex-col items-center">
-// //                       <span
-// //                         className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-xs font-bold text-white ${color}`}
-// //                       >
-// //                         {n}
-// //                       </span>
-// //                       {idx < 2 && (
-// //                         <div className="my-1 w-px flex-1 bg-slate-200" style={{ minHeight: 28 }} />
-// //                       )}
-// //                     </div>
-// //                     <div className="pb-5">
-// //                       <p className="font-bold text-slate-900">{title}</p>
-// //                       <p className="mt-0.5 text-xs text-slate-500">{desc}</p>
-// //                     </div>
-// //                   </div>
-// //                 ))}
-// //               </div>
-
-// //               {/* Visual + Testimonial */}
-// //               <div className="flex flex-col gap-4">
-// //                 <div className="flex items-center justify-center gap-4 rounded-2xl border border-slate-100 bg-slate-50 py-6">
-// //                   <FileText className="h-14 w-14 text-red-500" />
-// //                   <div className="flex items-center gap-1">
-// //                     <Zap className="h-5 w-5 text-blue-500" />
-// //                     <span className="text-slate-300">· · ·</span>
-// //                     <Zap className="h-5 w-5 text-blue-500" />
-// //                   </div>
-// //                   <FileType2 className="h-14 w-14 text-blue-600" />
-// //                 </div>
-
-// //                 <div className="rounded-2xl border border-slate-100 bg-slate-50 p-4">
-// //                   <p className="text-sm italic text-slate-600">
-// //                     "Best PDF to Word converter! Keeps the formatting almost perfect."
-// //                   </p>
-// //                   <div className="mt-2 flex items-center justify-between">
-// //                     <p className="text-sm font-bold text-slate-900">— Priya M., Freelancer</p>
-// //                     <div className="flex text-yellow-400">
-// //                       {Array.from({ length: 5 }).map((_, i) => (
-// //                         <Star key={i} className="h-3.5 w-3.5 fill-current" />
-// //                       ))}
-// //                     </div>
-// //                   </div>
-// //                 </div>
-// //               </div>
-// //             </div>
-// //           </div>
-
-// //           {/* Why Choose */}
-// //           <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
-// //             <h2 className="text-xl font-bold text-slate-900">Why Choose PDFLinx?</h2>
-
-// //             <div className="mt-5 space-y-3">
-// //               {whyItems.map((item) => (
-// //                 <div
-// //                   key={item.title}
-// //                   className="flex items-start gap-3 rounded-2xl border border-slate-100 p-3.5"
-// //                 >
-// //                   <div
-// //                     className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl ${item.bgColor}`}
-// //                   >
-// //                     <item.icon className={`h-5 w-5 ${item.iconColor}`} />
-// //                   </div>
-// //                   <div>
-// //                     <p className="font-bold text-slate-900">{item.title}</p>
-// //                     <p className="mt-0.5 text-xs text-slate-500">{item.desc}</p>
-// //                   </div>
-// //                 </div>
-// //               ))}
-// //             </div>
-// //           </div>
-// //         </section>
-
-// //         {/* ── STATS ── */}
-// //         <section className="mt-6 rounded-3xl border border-slate-200 bg-white p-8 shadow-sm">
-// //           <h2 className="text-center text-xl font-bold text-slate-900">
-// //             Trusted by Users Around the World
-// //           </h2>
-
-// //           <div className="mt-8 grid grid-cols-2 gap-6 text-center md:grid-cols-4">
-// //             {stats.map(({ num, label, icon }) => (
-// //               <div key={label} className="flex flex-col items-center gap-2">
-// //                 <span className="text-3xl">{icon}</span>
-// //                 <p className="text-2xl font-black text-slate-900">{num}</p>
-// //                 <p className="text-xs text-slate-500">{label}</p>
-// //               </div>
-// //             ))}
-// //           </div>
-// //         </section>
-
-// //         {/* ── RELATED TOOLS ── */}
-// //         <section className="mt-6 rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
-// //           <h2 className="text-xl font-bold text-slate-900">You Might Also Need</h2>
-
-// //           <div className="mt-5 grid gap-3 sm:grid-cols-2 md:grid-cols-3">
-// //             {relatedTools.map((tool) => (
-// //               <Link
-// //                 key={tool.href}
-// //                 href={tool.href}
-// //                 className="group flex items-start gap-3 rounded-2xl border border-slate-200 p-4 transition-all hover:border-blue-400 hover:shadow-sm"
-// //               >
-// //                 <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-blue-50">
-// //                   <FileText className="h-4 w-4 text-blue-500" />
-// //                 </div>
-// //                 <div>
-// //                   <p className="font-bold text-slate-900 group-hover:text-blue-600 transition-colors">
-// //                     {tool.label}
-// //                   </p>
-// //                   <p className="mt-0.5 text-xs text-slate-500">{tool.desc}</p>
-// //                 </div>
-// //               </Link>
-// //             ))}
-// //           </div>
-// //         </section>
-
-// //         {/* ── FAQ ── */}
-// //         <section className="mt-6">
-// //           <h2 className="text-center text-xl font-bold text-slate-900">
-// //             Frequently Asked Questions
-// //           </h2>
-
-// //           <div className="mt-6 grid gap-3 md:grid-cols-2">
-// //             {faqs.map((faq) => (
-// //               <details
-// //                 key={faq.q}
-// //                 className="group rounded-2xl border border-slate-200 bg-white px-5 py-4 open:shadow-sm"
-// //               >
-// //                 <summary className="flex cursor-pointer list-none items-center justify-between gap-3 text-sm font-bold text-slate-700">
-// //                   {faq.q}
-// //                   <ChevronDown className="h-4 w-4 shrink-0 text-slate-400 transition-transform group-open:rotate-180" />
-// //                 </summary>
-// //                 <p className="mt-3 text-sm leading-6 text-slate-500">{faq.a}</p>
-// //               </details>
-// //             ))}
-// //           </div>
-// //         </section>
-
-// //         {/* ── BOTTOM CTA ── */}
-// //         <section className="mt-8 overflow-hidden rounded-3xl bg-gradient-to-r from-blue-600 to-violet-600 p-7 md:p-10">
-// //           <div className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
-// //             <div>
-// //               <span className="inline-block rounded-full bg-white/20 px-3 py-1 text-xs font-bold text-white/90">
-// //                 ✦ 100% Free
-// //               </span>
-// //               <h2 className="mt-3 text-2xl font-black text-white md:text-3xl">
-// //                 Start Converting PDF to Word Now
-// //               </h2>
-// //               <p className="mt-1.5 text-sm text-white/75">
-// //                 Fast. Secure. Private. No sign up required.
-// //               </p>
-// //               <p className="mt-1 text-xs text-white/50">
-// //                 No uploads. No limits. No hidden charges.
-// //               </p>
-// //             </div>
-
-// //             <button
-// //               type="button"
-// //               onClick={() => {
-// //                 const input = document.querySelector('input[type="file"]');
-// //                 input?.click();
-// //               }}
-// //               className="flex shrink-0 items-center gap-2 rounded-2xl bg-white px-7 py-3.5 text-sm font-bold text-blue-600 shadow-xl transition hover:bg-blue-50 active:scale-95"
-// //             >
-// //               <FileText className="h-4 w-4 text-red-500" />
-// //               Choose PDF File
-// //             </button>
-// //           </div>
-// //         </section>
-
-// //       </div>
-// //     </div>
-// //   );
-// // }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// // // // components/ToolFlow/UploadLandingStep.jsx
-// // // "use client";
-
-// // // import Link from "next/link";
-// // // import {
-// // //   ShieldCheck,
-// // //   Zap,
-// // //   Target,
-// // //   MonitorSmartphone,
-// // //   Infinity,
-// // //   FileText,
-// // //   FileType2,
-// // //   Lock,
-// // //   Star,
-// // //   CheckCircle2,
-// // //   Gift,
-// // //   UserPlus,
-// // //   ScanText,
-// // //   LayoutTemplate,
-// // // } from "lucide-react";
-// // // import UploadStep from "./UploadStep";
-
-// // // const relatedTools = [
-// // //   { label: "Word to PDF", href: "/word-to-pdf", desc: "Convert back to PDF" },
-// // //   { label: "Compress PDF", href: "/compress-pdf", desc: "Reduce PDF file size" },
-// // //   { label: "Merge PDF", href: "/merge-pdf", desc: "Combine multiple PDFs" },
-// // //   { label: "Split PDF", href: "/split-pdf", desc: "Separate PDF pages" },
-// // //   { label: "PDF to Excel", href: "/pdf-to-excel", desc: "Extract PDF tables" },
-// // //   { label: "OCR PDF", href: "/ocr-pdf", desc: "Make scanned PDFs readable" },
-// // // ];
-
-// // // const faqs = [
-// // //   "Is PDFLinx PDF to Word converter free?",
-// // //   "Will my PDF formatting be preserved?",
-// // //   "Do I need to sign up?",
-// // //   "What is the maximum file size?",
-// // //   "Can I convert scanned PDFs to Word?",
-// // //   "Is my file secure?",
-// // // ];
-
-// // // export default function UploadLandingStep({
-// // //   onFilesSelect,
-// // //   accept,
-// // //   multiple,
-// // //   uploadTitle,
-// // //   uploadSubtitle,
-// // //   uploadInfo,
-// // // }) {
-// // //   return (
-// // //     <div className="bg-white">
-// // //       <div className="mx-auto w-full max-w-[1180px] px-5 py-8 md:py-12">
-// // //         {/* Top trust row */}
-// // //         <div className="mb-8 flex flex-wrap items-center justify-end gap-5 text-xs font-bold text-slate-500">
-// // //           <span className="inline-flex items-center gap-1.5">
-// // //             <ShieldCheck className="h-4 w-4 text-emerald-500" /> 100% Free
-// // //           </span>
-// // //           <span className="inline-flex items-center gap-1.5">
-// // //             <ShieldCheck className="h-4 w-4 text-emerald-500" /> No Sign Up
-// // //           </span>
-// // //           <span className="inline-flex items-center gap-1.5">
-// // //             <Zap className="h-4 w-4 text-blue-500" /> No Watermark
-// // //           </span>
-// // //         </div>
-
-// // //         {/* Hero */}
-// // //         <section className="grid gap-10 lg:grid-cols-[1fr_0.95fr] lg:items-center">
-// // //           {/* Left */}
-// // //           <div>
-// // //             <p className="mb-4 text-xs font-extrabold uppercase tracking-wide text-blue-600">
-// // //               PDF TO WORD CONVERTER
-// // //             </p>
-
-// // //             <h1 className="max-w-[560px] text-4xl font-black leading-tight tracking-tight text-slate-950 md:text-6xl">
-// // //               Convert PDF to Word in{" "}
-// // //               <span className="bg-gradient-to-r from-blue-600 to-violet-500 bg-clip-text text-transparent">
-// // //                 Seconds ⚡
-// // //               </span>
-// // //             </h1>
-
-// // //             <p className="mt-5 max-w-[560px] text-base leading-7 text-slate-600 md:text-lg">
-// // //               Convert PDF to editable Word documents with perfect formatting.
-// // //               Fast, free and secure — no signup required.
-// // //             </p>
-
-// // //             <div className="mt-6 space-y-3 text-sm font-semibold text-slate-600">
-// // //               <p className="flex items-center gap-2">
-// // //                 <CheckCircle2 className="h-4 w-4 text-blue-500" />
-// // //                 Maintains original formatting & layout
-// // //               </p>
-// // //               <p className="flex items-center gap-2">
-// // //                 <CheckCircle2 className="h-4 w-4 text-blue-500" />
-// // //                 OCR powered — works on scanned PDFs
-// // //               </p>
-// // //               <p className="flex items-center gap-2">
-// // //                 <CheckCircle2 className="h-4 w-4 text-blue-500" />
-// // //                 Works on any device — no software needed
-// // //               </p>
-// // //             </div>
-
-// // //             <div className="mt-7 grid max-w-[420px] gap-4">
-// // //               <div className="rounded-2xl border border-blue-100 bg-blue-50/70 p-4">
-// // //                 <div className="flex gap-3">
-// // //                   <ShieldCheck className="h-6 w-6 text-blue-600" />
-// // //                   <div>
-// // //                     <p className="font-bold text-slate-900">
-// // //                       Your files stay private
-// // //                     </p>
-// // //                     <p className="mt-1 text-sm text-slate-500">
-// // //                       No signup, no watermark, and files are auto-deleted.
-// // //                     </p>
-// // //                   </div>
-// // //                 </div>
-// // //               </div>
-
-// // //               <div className="rounded-2xl border border-yellow-100 bg-yellow-50/70 p-4">
-// // //                 <div className="flex items-center gap-3">
-// // //                   <div className="flex text-yellow-400">
-// // //                     {Array.from({ length: 5 }).map((_, i) => (
-// // //                       <Star key={i} className="h-4 w-4 fill-current" />
-// // //                     ))}
-// // //                   </div>
-// // //                   <div>
-// // //                     <p className="font-bold text-slate-900">4.9/5</p>
-// // //                     <p className="text-sm text-slate-500">
-// // //                       Trusted by users worldwide.
-// // //                     </p>
-// // //                   </div>
-// // //                 </div>
-// // //               </div>
-// // //             </div>
-// // //           </div>
-
-// // //           {/* Right upload card */}
-// // //           <div className="rounded-[28px] border border-slate-200 bg-white p-5 shadow-xl shadow-slate-200/70">
-// // //             <div className="rounded-[22px] bg-gradient-to-br from-blue-50 via-white to-violet-50 p-5">
-// // //               <UploadStep
-// // //                 onFilesSelect={onFilesSelect}
-// // //                 accept={accept}
-// // //                 multiple={multiple}
-// // //                 uploadTitle={uploadTitle || "Drop your PDF file here"}
-// // //                 uploadSubtitle={uploadSubtitle || "or click to browse"}
-// // //                 uploadInfo={uploadInfo}
-// // //               />
-// // //             </div>
-
-// // //             <div className="mt-5 text-center text-sm font-semibold text-slate-600">
-// // //               <span className="inline-flex items-center gap-2">
-// // //                 <ShieldCheck className="h-4 w-4 text-emerald-500" />
-// // //                 Supports: PDF (Scanned or Digital)
-// // //               </span>
-// // //             </div>
-
-// // //             <div className="mt-5 rounded-2xl bg-emerald-50 p-4">
-// // //               <div className="flex gap-3">
-// // //                 <Lock className="h-5 w-5 text-emerald-600" />
-// // //                 <div>
-// // //                   <p className="font-bold text-slate-900">
-// // //                     Secure, Private & Encrypted
-// // //                   </p>
-// // //                   <p className="text-sm text-slate-500">
-// // //                     Your file is processed securely and never shared.
-// // //                   </p>
-// // //                 </div>
-// // //               </div>
-// // //             </div>
-// // //           </div>
-// // //         </section>
-
-// // //         {/* Feature strip */}
-// // //         <section className="mt-14 grid gap-4 rounded-3xl border border-slate-200 bg-white p-5 shadow-sm md:grid-cols-5">
-// // //           {[
-// // //             { icon: Zap, title: "Instant Conversion", desc: "Results in seconds", color: "text-emerald-500 bg-emerald-50" },
-// // //             { icon: Target, title: "High Accuracy", desc: "Best formatting retention", color: "text-violet-500 bg-violet-50" },
-// // //             { icon: ScanText, title: "OCR Powered", desc: "Scanned PDFs supported", color: "text-blue-500 bg-blue-50" },
-// // //             { icon: MonitorSmartphone, title: "Works Everywhere", desc: "Desktop, tablet, mobile", color: "text-orange-500 bg-orange-50" },
-// // //             { icon: Infinity, title: "100% Free", desc: "No hidden fees", color: "text-pink-500 bg-pink-50" },
-// // //           ].map((item) => (
-// // //             <div key={item.title} className="text-center">
-// // //               <div className={`mx-auto flex h-12 w-12 items-center justify-center rounded-2xl ${item.color}`}>
-// // //                 <item.icon className="h-6 w-6" />
-// // //               </div>
-// // //               <p className="mt-3 font-bold text-slate-900">{item.title}</p>
-// // //               <p className="mt-1 text-xs text-slate-500">{item.desc}</p>
-// // //             </div>
-// // //           ))}
-// // //         </section>
-
-// // //         {/* How + Why */}
-// // //         <section className="mt-8 grid gap-6 lg:grid-cols-2">
-// // //           <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
-// // //             <h2 className="text-2xl font-bold text-slate-900">
-// // //               How to Convert PDF to Word
-// // //             </h2>
-
-// // //             <div className="mt-6 grid gap-5 md:grid-cols-[180px_1fr]">
-// // //               <div className="space-y-7">
-// // //                 {[
-// // //                   ["1", "Upload PDF", "Drag & drop your PDF file"],
-// // //                   ["2", "Convert", "We convert it to Word"],
-// // //                   ["3", "Download", "Get your DOCX instantly"],
-// // //                 ].map(([n, title, desc]) => (
-// // //                   <div key={n} className="flex gap-3">
-// // //                     <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-blue-600 text-sm font-bold text-white">
-// // //                       {n}
-// // //                     </span>
-// // //                     <div>
-// // //                       <p className="font-bold text-slate-900">{title}</p>
-// // //                       <p className="text-xs text-slate-500">{desc}</p>
-// // //                     </div>
-// // //                   </div>
-// // //                 ))}
-// // //               </div>
-
-// // //               <div className="rounded-2xl border border-slate-200 bg-slate-50 p-5">
-// // //                 <div className="flex items-center justify-center gap-6">
-// // //                   <FileText className="h-16 w-16 text-red-500" />
-// // //                   <span className="text-2xl text-blue-500">⚡</span>
-// // //                   <FileType2 className="h-16 w-16 text-blue-600" />
-// // //                 </div>
-// // //                 <div className="mt-5 rounded-xl bg-white p-4 text-sm text-slate-600 shadow-sm">
-// // //                   “Best PDF to Word converter! Keeps the formatting almost
-// // //                   perfect.”
-// // //                   <p className="mt-2 font-bold text-slate-900">— Priya M.</p>
-// // //                 </div>
-// // //               </div>
-// // //             </div>
-// // //           </div>
-
-// // //           <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
-// // //             <h2 className="text-2xl font-bold text-slate-900">
-// // //               Why Choose PDFLinx?
-// // //             </h2>
-
-// // //             <div className="mt-6 space-y-3">
-// // //               {[
-// // //                 { icon: LayoutTemplate, title: "Perfect Formatting", desc: "Maintain fonts, images, tables & layout.", color: "text-blue-600 bg-blue-50" },
-// // //                 { icon: ScanText, title: "OCR Technology", desc: "Extract text from scanned PDFs accurately.", color: "text-emerald-600 bg-emerald-50" },
-// // //                 { icon: Lock, title: "No File Uploads", desc: "Your files stay private and secure.", color: "text-purple-600 bg-purple-50" },
-// // //                 { icon: UserPlus, title: "No Sign Up Required", desc: "Use instantly without registration.", color: "text-orange-600 bg-orange-50" },
-// // //                 { icon: Gift, title: "Free Forever", desc: "Convert files without hidden charges.", color: "text-pink-600 bg-pink-50" },
-// // //               ].map((item) => (
-// // //                 <div key={item.title} className="flex gap-4 rounded-2xl border border-slate-100 p-4">
-// // //                   <div className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl ${item.color}`}>
-// // //                     <item.icon className="h-5 w-5" />
-// // //                   </div>
-// // //                   <div>
-// // //                     <p className="font-bold text-slate-900">{item.title}</p>
-// // //                     <p className="text-sm text-slate-500">{item.desc}</p>
-// // //                   </div>
-// // //                 </div>
-// // //               ))}
-// // //             </div>
-// // //           </div>
-// // //         </section>
-
-// // //         {/* Related tools */}
-// // //         <section className="mt-8 rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
-// // //           <h2 className="text-2xl font-bold text-slate-900">
-// // //             You Might Also Need
-// // //           </h2>
-
-// // //           <div className="mt-5 grid gap-4 md:grid-cols-3">
-// // //             {relatedTools.map((tool) => (
-// // //               <Link
-// // //                 key={tool.href}
-// // //                 href={tool.href}
-// // //                 className="group rounded-2xl border border-slate-200 p-4 transition hover:border-blue-400 hover:shadow-sm"
-// // //               >
-// // //                 <p className="font-bold text-slate-900 group-hover:text-blue-600">
-// // //                   {tool.label}
-// // //                 </p>
-// // //                 <p className="mt-1 text-sm text-slate-500">{tool.desc}</p>
-// // //               </Link>
-// // //             ))}
-// // //           </div>
-// // //         </section>
-
-// // //         {/* Stats */}
-// // //         <section className="mt-8 rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
-// // //           <h2 className="text-center text-2xl font-bold text-slate-900">
-// // //             Trusted by Users Around the World
-// // //           </h2>
-
-// // //           <div className="mt-6 grid gap-5 text-center md:grid-cols-4">
-// // //             {[
-// // //               ["2M+", "Files Converted"],
-// // //               ["23+", "Free PDF Tools"],
-// // //               ["100%", "Browser-Based"],
-// // //               ["0", "Hidden Fees"],
-// // //             ].map(([num, label]) => (
-// // //               <div key={label}>
-// // //                 <p className="text-2xl font-black text-slate-900">{num}</p>
-// // //                 <p className="text-sm text-slate-500">{label}</p>
-// // //               </div>
-// // //             ))}
-// // //           </div>
-// // //         </section>
-
-// // //         {/* FAQ */}
-// // //         <section className="mt-8">
-// // //           <h2 className="text-center text-2xl font-bold text-slate-900">
-// // //             Frequently Asked Questions
-// // //           </h2>
-
-// // //           <div className="mt-6 grid gap-4 md:grid-cols-2">
-// // //             {faqs.map((q) => (
-// // //               <div
-// // //                 key={q}
-// // //                 className="rounded-2xl border border-slate-200 bg-white px-5 py-4 text-sm font-bold text-slate-700"
-// // //               >
-// // //                 {q}
-// // //               </div>
-// // //             ))}
-// // //           </div>
-// // //         </section>
-
-// // //         {/* Bottom CTA */}
-// // //         <section className="mt-10 rounded-3xl bg-gradient-to-r from-blue-600 to-violet-600 p-6 text-white md:p-8">
-// // //           <div className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
-// // //             <div>
-// // //               <p className="text-xs font-bold uppercase text-white/80">
-// // //                 100% Free
-// // //               </p>
-// // //               <h2 className="mt-2 text-2xl font-black">
-// // //                 Start Converting PDF to Word Now
-// // //               </h2>
-// // //               <p className="mt-1 text-sm text-white/80">
-// // //                 Fast. Secure. Private. No sign up required.
-// // //               </p>
-// // //             </div>
-
-// // //             <button
-// // //               type="button"
-// // //               onClick={() => {
-// // //                 const input = document.querySelector('input[type="file"]');
-// // //                 input?.click();
-// // //               }}
-// // //               className="rounded-xl bg-white px-6 py-3 text-sm font-bold text-blue-600 shadow-lg transition hover:bg-blue-50"
-// // //             >
-// // //               Choose PDF File
-// // //             </button>
-// // //           </div>
-// // //         </section>
-// // //       </div>
-// // //     </div>
-// // //   );
-// // // }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// // // // // components/ToolFlow/UploadLandingStep.jsx
-// // // // "use client";
-
-// // // // import UploadStep from "./UploadStep";
-
-// // // // export default function UploadLandingStep({
-// // // //   title,
-// // // //   tagline,
-// // // //   onFilesSelect,
-// // // //   accept,
-// // // //   multiple,
-// // // //   uploadTitle,
-// // // //   uploadSubtitle,
-// // // //   uploadInfo,
-// // // // }) {
-// // // //   return (
-// // // //     <div className="mx-auto w-full max-w-[1100px] px-6 py-10">
-      
-// // // //       {/* Hero */}
-// // // //       <div className="grid gap-10 lg:grid-cols-2 lg:items-center">
-        
-// // // //         {/* Left Content */}
-// // // //         <div>
-// // // //           <h1 className="text-4xl font-extrabold text-slate-900 leading-tight">
-// // // //             Convert PDF to Word <br /> in Seconds
-// // // //           </h1>
-
-// // // //           <p className="mt-4 text-lg text-slate-600">
-// // // //             Free online PDF to Word converter. No signup required. 
-// // // //             Convert your PDFs into fully editable DOCX files instantly.
-// // // //           </p>
-
-// // // //           <div className="mt-6 space-y-2 text-sm text-slate-700">
-// // // //             <p>✓ High accuracy conversion</p>
-// // // //             <p>✓ OCR for scanned PDFs</p>
-// // // //             <p>✓ Works on all devices</p>
-// // // //           </div>
-// // // //         </div>
-
-// // // //         {/* Right Upload Box */}
-// // // //         <div>
-// // // //           <UploadStep
-// // // //             onFilesSelect={onFilesSelect}
-// // // //             accept={accept}
-// // // //             multiple={multiple}
-// // // //             uploadTitle={uploadTitle}
-// // // //             uploadSubtitle={uploadSubtitle}
-// // // //             uploadInfo={uploadInfo}
-// // // //           />
-// // // //         </div>
-// // // //       </div>
-
-// // // //       {/* Features Strip */}
-// // // //       <div className="mt-14 grid grid-cols-2 gap-6 md:grid-cols-4 text-center">
-// // // //         {[
-// // // //           "Fast Conversion",
-// // // //           "Secure Files",
-// // // //           "No Watermark",
-// // // //           "100% Free",
-// // // //         ].map((f) => (
-// // // //           <div key={f} className="rounded-xl bg-white p-4 shadow-sm border">
-// // // //             <p className="text-sm font-semibold text-slate-700">{f}</p>
-// // // //           </div>
-// // // //         ))}
-// // // //       </div>
-
-// // // //       {/* How To */}
-// // // //       <div className="mt-16">
-// // // //         <h2 className="text-2xl font-bold text-slate-900 text-center">
-// // // //           How to Convert PDF to Word
-// // // //         </h2>
-
-// // // //         <div className="mt-6 grid gap-6 md:grid-cols-3 text-center">
-// // // //           {[
-// // // //             "Upload your PDF file",
-// // // //             "Click convert",
-// // // //             "Download your Word file",
-// // // //           ].map((step, i) => (
-// // // //             <div key={i} className="rounded-xl border p-5 bg-white">
-// // // //               <p className="text-lg font-bold text-blue-600">{i + 1}</p>
-// // // //               <p className="mt-2 text-sm text-slate-600">{step}</p>
-// // // //             </div>
-// // // //           ))}
-// // // //         </div>
-// // // //       </div>
-
-// // // //       {/* Related Tools */}
-// // // //       <div className="mt-16">
-// // // //         <h3 className="text-xl font-bold text-slate-900 text-center">
-// // // //           You might also need
-// // // //         </h3>
-
-// // // //         <div className="mt-6 grid grid-cols-2 gap-4 md:grid-cols-4">
-// // // //           {[
-// // // //             "Word to PDF",
-// // // //             "Merge PDF",
-// // // //             "Compress PDF",
-// // // //             "Split PDF",
-// // // //           ].map((tool) => (
-// // // //             <div
-// // // //               key={tool}
-// // // //               className="rounded-xl border p-4 bg-white text-center text-sm font-semibold text-slate-700 hover:border-green-500 cursor-pointer"
-// // // //             >
-// // // //               {tool}
-// // // //             </div>
-// // // //           ))}
-// // // //         </div>
-// // // //       </div>
-
-// // // //     </div>
-// // // //   );
-// // // // }

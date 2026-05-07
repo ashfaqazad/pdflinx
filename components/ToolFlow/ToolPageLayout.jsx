@@ -80,13 +80,13 @@ export default function ToolPageLayout({
             <div className="flex justify-center px-6 py-5">
               <div className="flex w-full max-w-[1055px] items-center gap-4">
                 {sidebarIcon && (
-                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-blue-600 text-white shadow">
+                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-[14px] bg-[#f24d0d] shadow-[0_4px_14px_rgba(242,77,13,0.28)]">
                     {sidebarIcon}
                   </div>
                 )}
 
                 <div>
-                  <h1 className="text-2xl font-bold tracking-tight text-slate-900">
+                  <h1 className="font-display text-[28px] font-normal tracking-tight text-[#0f0e0d]">
                     {title}
                   </h1>
                   {tagline && (
@@ -95,6 +95,7 @@ export default function ToolPageLayout({
                     </p>
                   )}
                 </div>
+
               </div>
             </div>
           </div>
@@ -109,26 +110,23 @@ export default function ToolPageLayout({
           }
         >
           <div
-            className={`grid ${
-              isPremiumUpload
+            className={`grid ${isPremiumUpload
+              ? "grid-cols-1"
+              : `min-h-[calc(100vh-80px)] lg:h-[calc(100vh-80px)] ${flow.step === STEPS.PROCESSING
                 ? "grid-cols-1"
-                : `min-h-[calc(100vh-80px)] lg:h-[calc(100vh-80px)] ${
-                    flow.step === STEPS.PROCESSING
-                      ? "grid-cols-1"
-                      : "lg:grid-cols-[minmax(0,1fr)_300px]"
-                  }`
-            }`}
+                : "lg:grid-cols-[minmax(0,1fr)_300px]"
+              }`
+              }`}
           >
             {/* Main area */}
             <div
               className={
                 isPremiumUpload
                   ? "min-w-0 bg-white p-0 overflow-visible"
-                  : `min-w-0 bg-slate-100 p-8 ${
-                      flow.step === STEPS.UPLOAD
-                        ? "overflow-hidden"
-                        : "custom-tool-scroll overflow-y-auto"
-                    }`
+                  : `min-w-0 bg-slate-100 p-8 ${flow.step === STEPS.UPLOAD
+                    ? "overflow-hidden"
+                    : "custom-tool-scroll overflow-y-auto"
+                  }`
               }
             >
               {flow.step === STEPS.UPLOAD &&
@@ -244,40 +242,45 @@ export default function ToolPageLayout({
                       type="button"
                       onClick={onConvert}
                       disabled={!flow.files.length}
-                      className={`w-full rounded-xl px-5 py-4 text-base font-bold text-white ${
-                        flow.files.length
-                          ? "bg-[#1D9E75] hover:bg-[#0F6E56]"
+                      className={`w-full rounded-xl px-5 py-4 text-base font-bold text-white transition active:scale-[0.98] ${flow.files.length
+                          ? "bg-[#f24d0d] hover:bg-[#dc4308] shadow-[0_10px_30px_rgba(242,77,13,0.38)] hover:shadow-[0_14px_40px_rgba(242,77,13,0.45)]"
                           : "cursor-not-allowed bg-slate-300"
-                      }`}
+                        }`}
                     >
                       {convertLabel}
                     </button>
+
                   </div>
                 )}
 
+
+
                 {flow.step === STEPS.DONE && (
-                  <div>
-                    <h3 className="mb-4 text-base font-bold text-slate-900">
+                  <div className="overflow-hidden rounded-[20px] border border-black/10 bg-white shadow-sm">
+                    <h3 className="border-b border-black/10 px-5 py-4 font-display text-xl font-normal text-[#0f0e0d]">
                       Continue with...
                     </h3>
 
-                    <div className="space-y-2">
+                    <div>
                       {doneLinks.map((link, i) => (
                         <a
                           key={i}
                           href={link.href}
-                          className="flex items-center gap-3 rounded-xl border border-slate-200 px-3 py-2.5 text-sm font-semibold text-slate-700 transition hover:border-[#1D9E75]"
+                          className="flex items-center gap-3 border-b border-black/10 px-5 py-4 text-sm font-medium text-[#0f0e0d] transition last:border-b-0 hover:bg-[#f5f4f1]"
                         >
-                          <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-slate-50">
+                          <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#f5f4f1]">
                             {link.icon}
                           </span>
                           <span className="flex-1">{link.label}</span>
-                          <span className="text-slate-400">›</span>
+                          <span className="text-[#7a7772]">›</span>
                         </a>
                       ))}
                     </div>
                   </div>
                 )}
+
+
+
               </aside>
             )}
           </div>

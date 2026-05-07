@@ -1,6 +1,38 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&display=swap');
+/* @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&display=swap');
+
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap');
+ */
+
+
+/* @import "tailwindcss"; */
 
 @import "tailwindcss";
+
+:root {
+  --font-body: var(--font-dm-sans);
+  --font-heading: var(--font-instrument-serif);
+  --font-ui: var(--font-sora);
+}
+
+html,
+body {
+  font-family: var(--font-body), system-ui, sans-serif;
+}
+
+.font-dm {
+  font-family: var(--font-dm-sans), system-ui, sans-serif;
+}
+
+.font-display,
+.font-serif-premium {
+  font-family: var(--font-instrument-serif), Georgia, serif;
+}
+
+.font-sora {
+  font-family: var(--font-sora), system-ui, sans-serif;
+}
+
+
 
 /* ✅ embed-code page font fix */
 /* .embed-code-page h1 {
@@ -8,6 +40,18 @@
 } */
 
 /* ✅ Yeh karo - inherit ki jagah */
+
+
+/* body {
+  font-family: 'DM Sans', sans-serif;
+}
+
+.font-display {
+  font-family: 'Instrument Serif', serif;
+} */
+
+
+
 .embed-code-page h1 {
   font-family: '__Syne_fallback', 'Syne', sans-serif !important;
 }
@@ -516,3 +560,149 @@
     background: #2563eb;
 
 } */
+
+
+@keyframes fadeUpHero {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-up-hero {
+  animation: fadeUpHero 0.7s ease-out both;
+}
+
+.animate-delay-100 {
+  animation-delay: 0.1s;
+}
+
+.animate-delay-200 {
+  animation-delay: 0.2s;
+}
+
+
+/* ─────────────────────────────
+   Tool Flow Animations
+───────────────────────────── */
+
+@keyframes optionsIn {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.animate-options-in {
+  animation: optionsIn 0.38s ease-out both;
+}
+
+@keyframes addMoreIn {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-addmore-in {
+  animation: addMoreIn 0.35s ease-out 0.12s both;
+}
+
+@keyframes fileCardIn {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.animate-filecard-in {
+  animation: fileCardIn 0.42s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* ─────────────────────────────
+   DoneStep Animations
+───────────────────────────── */
+
+@keyframes doneIn {
+  from {
+    opacity: 0;
+    transform: translateY(26px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.animate-done-in {
+  animation: doneIn 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes successPop {
+  0% {
+    opacity: 0;
+    transform: scale(0.55);
+  }
+
+  70% {
+    transform: scale(1.08);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-success-pop {
+  animation: successPop 0.52s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+@keyframes doneText {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-done-text {
+  animation: doneText 0.45s ease-out 0.12s both;
+}
+
+@keyframes downloadPop {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+    box-shadow: 0 0 0 rgba(242,77,13,0);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    box-shadow: 0 16px 36px rgba(242,77,13,0.28);
+  }
+}
+
+.animate-download-pop {
+  animation: downloadPop 0.46s ease-out 0.18s both;
+}

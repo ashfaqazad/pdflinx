@@ -7,97 +7,72 @@ const Footer = () => {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="bg-gradient-to-t from-gray-900 via-indigo-950 to-gray-900 text-gray-300 py-8">
-      <div className="max-w-6xl mx-auto px-6">
-        <div className="grid grid-cols-1 md:grid-cols-7 gap-8 mb-6">
 
-          {/* Brand & Intro */}
-          <div className="md:col-span-1">
-            <h3 className="text-xl font-bold text-white mb-3">PDF Linx</h3>
-            <p className="text-gray-400 text-sm leading-relaxed">
-              Free online tools for PDFs and files — no signup, no ads, no watermarks.<br />
-              Just simple stuff that works.
+    <footer className="bg-black text-gray-300 py-14">
+      <div className="max-w-7xl mx-auto px-6">
+
+        <div className="grid grid-cols-1 md:grid-cols-6 gap-10 mb-10">
+
+          {/* Brand */}
+          <div className="md:col-span-2">
+            <h3 className="text-2xl font-bold text-white mb-4">
+              PDF<span className="text-orange-500">Linx</span>
+            </h3>
+            <p className="text-gray-400 text-sm leading-7 max-w-sm">
+              Free online PDF tools for people who take their PDF tasks seriously.
+              Simple, fast, and private — just the way it should be.
             </p>
           </div>
 
-          {/* Popular Tools - Column 1 */}
+          {/* Popular Tools */}
           <div>
-            <h4 className="text-base font-semibold text-white mb-3">Popular Tools</h4>
-            <ul className="space-y-2 text-sm">
-              <li><Link href="/pdf-to-word" className="hover:text-indigo-400 transition">PDF to Word</Link></li>
-              <li><Link href="/word-to-pdf" className="hover:text-indigo-400 transition">Word to PDF</Link></li>
-              <li><Link href="/merge-pdf" className="hover:text-indigo-400 transition">Merge PDF</Link></li>
-              <li><Link href="/compress-pdf" className="hover:text-indigo-400 transition">Compress PDF</Link></li>
-              <li><Link href="/image-to-pdf" className="hover:text-indigo-400 transition">Image to PDF</Link></li>
-              <li><Link href="/split-pdf" className="hover:text-indigo-400 transition">Split PDF</Link></li>
-              <li><Link href="/excel-pdf" className="hover:text-indigo-400 transition">Excel to PDF</Link></li>
+            <h4 className="text-sm font-bold text-gray-400 mb-4 tracking-wide uppercase">
+              Popular Tools
+            </h4>
+            <ul className="space-y-3 text-sm text-gray-400">
+              <li><Link href="/pdf-to-word" className="hover:text-white transition">PDF to Word</Link></li>
+              <li><Link href="/word-to-pdf" className="hover:text-white transition">Word to PDF</Link></li>
+              <li><Link href="/merge-pdf" className="hover:text-white transition">Merge PDF</Link></li>
+              <li><Link href="/compress-pdf" className="hover:text-white transition">Compress PDF</Link></li>
+              <li><Link href="/image-to-pdf" className="hover:text-white transition">Image to PDF</Link></li>
             </ul>
           </div>
 
-          {/* More Tools - Column 2 */}
+          {/* More Tools */}
           <div>
-            <h4 className="text-base font-semibold text-white mb-3">More Tools</h4>
-            <ul className="space-y-2 text-sm">
-              <li><Link href="/edit-pdf" className="hover:text-indigo-400 transition">Edit PDF</Link></li>
-              <li><Link href="/protect-pdf" className="hover:text-indigo-400 transition">Protect PDF</Link></li>
-              <li><Link href="/ocr-pdf" className="hover:text-indigo-400 transition">OCR PDF</Link></li>
-              <li><Link href="/rotate-pdf" className="hover:text-indigo-400 transition">Rotate PDF</Link></li>
-              <li><Link href="/sign-pdf" className="hover:text-indigo-400 transition">Sign PDF</Link></li>
-              <li><Link href="/unlock-pdf" className="hover:text-indigo-400 transition">Unlock PDF</Link></li>
-              <li><Link href="/ppt-to-pdf" className="hover:text-indigo-400 transition">PPT to PDF</Link></li>
+            <h4 className="text-sm font-bold text-gray-400 mb-4 tracking-wide uppercase">
+              More Tools
+            </h4>
+            <ul className="space-y-3 text-sm text-gray-400">
+              <li><Link href="/edit-pdf" className="hover:text-white transition">Edit PDF</Link></li>
+              <li><Link href="/protect-pdf" className="hover:text-white transition">Protect PDF</Link></li>
+              <li><Link href="/ocr-pdf" className="hover:text-white transition">OCR PDF</Link></li>
+              <li><Link href="/rotate-pdf" className="hover:text-white transition">Rotate PDF</Link></li>
+              <li><Link href="/sign-pdf" className="hover:text-white transition">Sign PDF</Link></li>
             </ul>
           </div>
 
-          {/* Resources */}
+          {/* Company */}
           <div>
-            <h4 className="text-base font-semibold text-white mb-3">Resources</h4>
-            <ul className="space-y-2 text-sm">
-              <li><Link href="/blog" className="hover:text-indigo-400 transition">Blog & Guides</Link></li>
-              <li><Link href="/about" className="hover:text-indigo-400 transition">About</Link></li>
-              <li><Link href="/contact" className="hover:text-indigo-400 transition">Contact</Link></li>
-              <li><Link href="/privacy-policy" className="hover:text-indigo-400 transition">Privacy Policy</Link></li>
-              <li><Link href="/terms-and-conditions" className="hover:text-indigo-400 transition">Terms of Service</Link></li>
-              <li><Link href="/compare/pdflinx-vs-ilovepdf" className="hover:text-indigo-400 transition">pdflinx vs iLovePDF</Link></li>
-              <li><Link href="/compare/pdflinx-vs-smallpdf" className="hover:text-indigo-400 transition">pdflinx vs Smallpdf</Link></li>
-            </ul>
-          </div>
-          {/* Calculators */}
-          <div>
-            <h4 className="text-base font-semibold text-white mb-3">Calculators</h4>
-            <ul className="space-y-2 text-sm">
-              <li>
-                <Link href="/compress-pdf-savings-calculator" className="hover:text-indigo-400 transition flex items-center gap-1">
-                  Savings Calculator
-                </Link>
-              </li>
-              <li>
-                <span className="text-gray-600 text-xs">See how much you save by compressing</span>
-              </li>
+            <h4 className="text-sm font-bold text-gray-400 mb-4 tracking-wide uppercase">
+              Company
+            </h4>
+            <ul className="space-y-3 text-sm text-gray-400">
+              <li><Link href="/about" className="hover:text-white transition">About</Link></li>
+              <li><Link href="/blog" className="hover:text-white transition">Blog</Link></li>
+              <li><Link href="/privacy-policy" className="hover:text-white transition">Privacy Policy</Link></li>
+              <li><Link href="/terms-and-conditions" className="hover:text-white transition">Terms of Service</Link></li>
+              <li><Link href="/contact" className="hover:text-white transition">Contact</Link></li>
             </ul>
           </div>
 
-
-          {/* Developers */}
+          {/* CTA */}
           <div>
-            <h4 className="text-base font-semibold text-white mb-3">Developers</h4>
-            <ul className="space-y-2 text-sm">
-              <li>
-                <Link href="/embed-code" className="hover:text-indigo-400 transition flex items-center gap-1">
-                  🔗 Embed PDF Tools
-                </Link>
-              </li>
-              <li>
-                <span className="text-gray-600 text-xs">Add our tools to your site — free</span>
-              </li>
-            </ul>
-          </div>
-
-          {/* Connect */}
-          <div>
-            <h4 className="text-base font-semibold text-white mb-3">Connect</h4>
-            <p className="text-gray-400 text-sm leading-relaxed mb-4">
-              Got feedback or spotted something?<br />
-              I'd love to hear from you.
+            <h4 className="text-sm font-bold text-gray-400 mb-4 tracking-wide uppercase">
+              Connect
+            </h4>
+            <p className="text-gray-400 text-sm mb-4">
+              Got feedback or ideas? Let’s talk.
             </p>
             <Link
               href="/contact"
@@ -109,17 +84,135 @@ const Footer = () => {
 
         </div>
 
-        {/* Bottom Bar */}
-        <div className="border-t border-gray-800 pt-6 text-center">
+        {/* Divider */}
+        <div className="border-t border-gray-800 pt-6 flex flex-col md:flex-row items-center justify-between gap-4">
+
           <p className="text-gray-500 text-sm">
-            © {year} PDF Linx • All Rights Reserved • Made with ❤️ for people who hate bad PDF tools
+            © {new Date().getFullYear()} PDF Linx • All rights reserved
           </p>
-          <p className="text-gray-600 text-xs mt-2">
-            Free tools • No data stored • No tracking • Processed in your browser
+
+          <p className="text-gray-600 text-xs">
+            Free tools • No tracking • No data stored
           </p>
+
         </div>
+
       </div>
     </footer>
+
+    // <footer className="bg-gradient-to-t from-gray-900 via-indigo-950 to-gray-900 text-gray-300 py-8">
+    //   <div className="max-w-6xl mx-auto px-6">
+    //     <div className="grid grid-cols-1 md:grid-cols-7 gap-8 mb-6">
+
+    //       {/* Brand & Intro */}
+    //       <div className="md:col-span-1">
+    //         <h3 className="text-xl font-bold text-white mb-3">PDF Linx</h3>
+    //         <p className="text-gray-400 text-sm leading-relaxed">
+    //           Free online tools for PDFs and files — no signup, no ads, no watermarks.<br />
+    //           Just simple stuff that works.
+    //         </p>
+    //       </div>
+
+    //       {/* Popular Tools - Column 1 */}
+    //       <div>
+    //         <h4 className="text-base font-semibold text-white mb-3">Popular Tools</h4>
+    //         <ul className="space-y-2 text-sm">
+    //           <li><Link href="/pdf-to-word" className="hover:text-indigo-400 transition">PDF to Word</Link></li>
+    //           <li><Link href="/word-to-pdf" className="hover:text-indigo-400 transition">Word to PDF</Link></li>
+    //           <li><Link href="/merge-pdf" className="hover:text-indigo-400 transition">Merge PDF</Link></li>
+    //           <li><Link href="/compress-pdf" className="hover:text-indigo-400 transition">Compress PDF</Link></li>
+    //           <li><Link href="/image-to-pdf" className="hover:text-indigo-400 transition">Image to PDF</Link></li>
+    //           <li><Link href="/split-pdf" className="hover:text-indigo-400 transition">Split PDF</Link></li>
+    //           <li><Link href="/excel-pdf" className="hover:text-indigo-400 transition">Excel to PDF</Link></li>
+    //         </ul>
+    //       </div>
+
+    //       {/* More Tools - Column 2 */}
+    //       <div>
+    //         <h4 className="text-base font-semibold text-white mb-3">More Tools</h4>
+    //         <ul className="space-y-2 text-sm">
+    //           <li><Link href="/edit-pdf" className="hover:text-indigo-400 transition">Edit PDF</Link></li>
+    //           <li><Link href="/protect-pdf" className="hover:text-indigo-400 transition">Protect PDF</Link></li>
+    //           <li><Link href="/ocr-pdf" className="hover:text-indigo-400 transition">OCR PDF</Link></li>
+    //           <li><Link href="/rotate-pdf" className="hover:text-indigo-400 transition">Rotate PDF</Link></li>
+    //           <li><Link href="/sign-pdf" className="hover:text-indigo-400 transition">Sign PDF</Link></li>
+    //           <li><Link href="/unlock-pdf" className="hover:text-indigo-400 transition">Unlock PDF</Link></li>
+    //           <li><Link href="/ppt-to-pdf" className="hover:text-indigo-400 transition">PPT to PDF</Link></li>
+    //         </ul>
+    //       </div>
+
+    //       {/* Resources */}
+    //       <div>
+    //         <h4 className="text-base font-semibold text-white mb-3">Resources</h4>
+    //         <ul className="space-y-2 text-sm">
+    //           <li><Link href="/blog" className="hover:text-indigo-400 transition">Blog & Guides</Link></li>
+    //           <li><Link href="/about" className="hover:text-indigo-400 transition">About</Link></li>
+    //           <li><Link href="/contact" className="hover:text-indigo-400 transition">Contact</Link></li>
+    //           <li><Link href="/privacy-policy" className="hover:text-indigo-400 transition">Privacy Policy</Link></li>
+    //           <li><Link href="/terms-and-conditions" className="hover:text-indigo-400 transition">Terms of Service</Link></li>
+    //           <li><Link href="/compare/pdflinx-vs-ilovepdf" className="hover:text-indigo-400 transition">pdflinx vs iLovePDF</Link></li>
+    //           <li><Link href="/compare/pdflinx-vs-smallpdf" className="hover:text-indigo-400 transition">pdflinx vs Smallpdf</Link></li>
+    //         </ul>
+    //       </div>
+    //       {/* Calculators */}
+    //       <div>
+    //         <h4 className="text-base font-semibold text-white mb-3">Calculators</h4>
+    //         <ul className="space-y-2 text-sm">
+    //           <li>
+    //             <Link href="/compress-pdf-savings-calculator" className="hover:text-indigo-400 transition flex items-center gap-1">
+    //               Savings Calculator
+    //             </Link>
+    //           </li>
+    //           <li>
+    //             <span className="text-gray-600 text-xs">See how much you save by compressing</span>
+    //           </li>
+    //         </ul>
+    //       </div>
+
+
+    //       {/* Developers */}
+    //       <div>
+    //         <h4 className="text-base font-semibold text-white mb-3">Developers</h4>
+    //         <ul className="space-y-2 text-sm">
+    //           <li>
+    //             <Link href="/embed-code" className="hover:text-indigo-400 transition flex items-center gap-1">
+    //               🔗 Embed PDF Tools
+    //             </Link>
+    //           </li>
+    //           <li>
+    //             <span className="text-gray-600 text-xs">Add our tools to your site — free</span>
+    //           </li>
+    //         </ul>
+    //       </div>
+
+    //       {/* Connect */}
+    //       <div>
+    //         <h4 className="text-base font-semibold text-white mb-3">Connect</h4>
+    //         <p className="text-gray-400 text-sm leading-relaxed mb-4">
+    //           Got feedback or spotted something?<br />
+    //           I'd love to hear from you.
+    //         </p>
+    //         <Link
+    //           href="/contact"
+    //           className="inline-block bg-indigo-600 text-white font-medium px-5 py-2 rounded-lg hover:bg-indigo-700 transition text-sm"
+    //         >
+    //           Get in Touch →
+    //         </Link>
+    //       </div>
+
+    //     </div>
+
+    //     {/* Bottom Bar */}
+    //     <div className="border-t border-gray-800 pt-6 text-center">
+    //       <p className="text-gray-500 text-sm">
+    //         © {year} PDF Linx • All Rights Reserved • Made with ❤️ for people who hate bad PDF tools
+    //       </p>
+    //       <p className="text-gray-600 text-xs mt-2">
+    //         Free tools • No data stored • No tracking • Processed in your browser
+    //       </p>
+    //     </div>
+    //   </div>
+    // </footer>
   );
 };
 
