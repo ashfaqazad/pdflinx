@@ -7,12 +7,29 @@ import {
   FileMinus, FilePlus, Image as ImageIcon, ScanLine, FileEdit,
   Scissors, RotateCw, Trash2, Hash, Layers, Shield, PenSquare,
   Unlock, Code, Menu, X,
+  Italic,
 } from "lucide-react";
 import Image from "next/image";
 
-/* ─────────────────────────────────────
-   DROPDOWN DATA
-───────────────────────────────────── */
+/* ─────────────────────────────────────────────────────────────
+   useIsDesktop — JS-based, NO Tailwind dependency
+   Returns true  when window.innerWidth >= 1024
+   Returns false on mobile / tablet
+───────────────────────────────────────────────────────────── */
+function useIsDesktop() {
+  const [isDesktop, setIsDesktop] = useState(true); // default true = SSR safe
+  useEffect(() => {
+    const check = () => setIsDesktop(window.innerWidth >= 1024);
+    check(); // run immediately on mount
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
+  return isDesktop;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   DATA
+───────────────────────────────────────────────────────────── */
 const dropdownCols = [
   {
     heading: "Organize PDF",
@@ -83,88 +100,115 @@ const endLinks = [
   { label: "Contact", href: "/contact" },
 ];
 
-/* ─────────────────────────────────────
+/* ─────────────────────────────────────────────────────────────
    MEGA DROPDOWN
-───────────────────────────────────── */
+───────────────────────────────────────────────────────────── */
 function MegaDropdown({ open, onClose }) {
   if (!open) return null;
+
   return (
     <div style={{
-      position: "absolute",
-      top: "calc(100% + 14px)",
-      left: "50%",
-      transform: "translateX(-62%)",
-      width: 900,
-      maxWidth: "calc(100vw - 48px)",
-      background: "#ffffff",
-      border: "1px solid rgba(15,14,13,0.10)",
+      position:     "absolute",
+      top:          "calc(100% + 14px)",
+      left:         "50%",
+      /* shift left enough so all 6 columns are visible */
+      transform:    "translateX(-58%)",
+      /* 1060px fits all 6 cols with whiteSpace:nowrap comfortably */
+      width:        1060,
+      maxWidth:     "calc(100vw - 24px)",
+      background:   "#ffffff",
+      border:       "1px solid rgba(15,14,13,0.10)",
       borderRadius: 18,
-      boxShadow: "0 24px 64px rgba(0,0,0,0.11)",
-      overflow: "hidden",
-      zIndex: 200,
-      animation: "megaFadeIn .18s ease",
+      boxShadow:    "0 24px 64px rgba(0,0,0,0.12)",
+      overflow:     "hidden",
+      zIndex:       9999,
     }}>
-      {/* accent bar */}
+      {/* orange accent bar */}
       <div style={{ height: 3, background: "linear-gradient(90deg,#e8420a,#fb923c)" }} />
 
-      {/* all tools */}
-      <div style={{ padding: "14px 20px 10px" }}>
+      {/* ── VIEW ALL PILL ── */}
+      <div style={{ padding: "14px 24px 10px" }}>
         <Link
           href="/free-pdf-tools"
           onClick={onClose}
           style={{
             display: "flex", alignItems: "center", justifyContent: "center", gap: 6,
-            padding: "8px 14px",
+            padding: "9px 16px",
             background: "#faf9f7",
             border: "1px solid rgba(15,14,13,0.08)",
             borderRadius: 10,
-            fontSize: 13, fontWeight: 500, color: "#3a3835",
+            fontSize: 14, fontWeight: 500, color: "#3a3835",
             textDecoration: "none",
             transition: "background .18s, color .18s",
           }}
-          onMouseEnter={e => { e.currentTarget.style.background = "#e8420a"; e.currentTarget.style.color = "#fff"; }}
-          onMouseLeave={e => { e.currentTarget.style.background = "#faf9f7"; e.currentTarget.style.color = "#3a3835"; }}
+          onMouseEnter={e => {
+            e.currentTarget.style.background = "#e8420a";
+            e.currentTarget.style.color      = "#fff";
+          }}
+          onMouseLeave={e => {
+            e.currentTarget.style.background = "#faf9f7";
+            e.currentTarget.style.color      = "#3a3835";
+          }}
         >
           🗂️ View All Free PDF Tools
         </Link>
       </div>
 
-      {/* 6-col grid */}
+      {/* ── 6 COLUMNS ── */}
       <div style={{
-        display: "grid",
-        gridTemplateColumns: "repeat(6,1fr)",
-        padding: "4px 20px 22px",
+        display:               "grid",
+        /* each col min 155px — prevents any column from shrinking */
+        gridTemplateColumns:   "repeat(6, minmax(155px, 1fr))",
+        padding:               "6px 24px 24px",
       }}>
         {dropdownCols.map((col, ci) => (
           <div
             key={col.heading}
             style={{
-              borderLeft: ci > 0 ? "1px solid rgba(15,14,13,0.07)" : "none",
-              paddingLeft: ci > 0 ? 14 : 0,
+              borderLeft:  ci > 0 ? "1px solid rgba(15,14,13,0.07)" : "none",
+              paddingLeft:  ci > 0 ? 18 : 0,
               paddingRight: 10,
             }}
           >
+            {/* heading */}
             <p style={{
-              fontSize: 10, fontWeight: 700,
-              letterSpacing: "0.09em", textTransform: "uppercase",
-              color: "#7a7772", margin: "6px 0 8px",
+              fontSize:      12,
+              fontWeight:    1000,
+              letterSpacing: "0.09em",
+              textTransform: "uppercase",
+              color:         "#7a7772",
+              margin:        "6px 0 10px",
+              whiteSpace:    "nowrap",
             }}>
               {col.heading}
             </p>
+
+            {/* items */}
             {col.items.map(({ label, href, Icon, color }) => (
               <Link
                 key={href}
                 href={href}
                 onClick={onClose}
                 style={{
-                  display: "flex", alignItems: "center", gap: 7,
-                  padding: "6px 8px", borderRadius: 8,
-                  fontSize: 13, color: "#3a3835",
-                  textDecoration: "none", whiteSpace: "nowrap",
-                  transition: "background .15s, transform .15s",
+                  display:        "flex",
+                  alignItems:     "center",
+                  gap:            8,
+                  padding:        "7px 8px",
+                  borderRadius:   8,
+                  fontSize:       14,
+                  color:          "#3a3835",
+                  textDecoration: "none",
+                  whiteSpace:     "nowrap",
+                  transition:     "background .15s, transform .15s",
                 }}
-                onMouseEnter={e => { e.currentTarget.style.background = "#faf9f7"; e.currentTarget.style.transform = "translateX(3px)"; }}
-                onMouseLeave={e => { e.currentTarget.style.background = "transparent"; e.currentTarget.style.transform = "none"; }}
+                onMouseEnter={e => {
+                  e.currentTarget.style.background = "#faf9f7";
+                  e.currentTarget.style.transform  = "translateX(3px)";
+                }}
+                onMouseLeave={e => {
+                  e.currentTarget.style.background = "transparent";
+                  e.currentTarget.style.transform  = "none";
+                }}
               >
                 <Icon size={14} style={{ color, flexShrink: 0 }} />
                 {label}
@@ -177,224 +221,288 @@ function MegaDropdown({ open, onClose }) {
   );
 }
 
-/* ─────────────────────────────────────
-   NAVBAR
-───────────────────────────────────── */
+/* ─────────────────────────────────────────────────────────────
+   MAIN NAVBAR
+───────────────────────────────────────────────────────────── */
 export default function Navbar() {
+  const isDesktop = useIsDesktop();
+
   const [mobileOpen,      setMobileOpen]      = useState(false);
-  const [dropdownOpen,    setDropdownOpen]    = useState(false);
+  const [dropdownOpen,    setDropdownOpen]     = useState(false);
   const [mobileToolsOpen, setMobileToolsOpen] = useState(false);
   const timeoutRef = useRef(null);
 
-  /* close drawer on resize to desktop */
+  /* auto-close mobile drawer when resized to desktop */
   useEffect(() => {
-    const onResize = () => {
-      if (window.innerWidth >= 1024) {
-        setMobileOpen(false);
-        setMobileToolsOpen(false);
-      }
-    };
-    window.addEventListener("resize", onResize);
-    return () => window.removeEventListener("resize", onResize);
-  }, []);
+    if (isDesktop) {
+      setMobileOpen(false);
+      setMobileToolsOpen(false);
+    }
+  }, [isDesktop]);
 
-  /* lock body scroll */
+  /* lock body scroll while mobile drawer is open */
   useEffect(() => {
     document.body.style.overflow = mobileOpen ? "hidden" : "";
     return () => { document.body.style.overflow = ""; };
   }, [mobileOpen]);
 
-  const closeAll     = () => { setMobileOpen(false); setMobileToolsOpen(false); };
+  const closeAll      = () => { setMobileOpen(false); setMobileToolsOpen(false); };
   const closeDropdown = () => setDropdownOpen(false);
-  const onEnter      = () => { clearTimeout(timeoutRef.current); setDropdownOpen(true); };
-  const onLeave      = () => { timeoutRef.current = setTimeout(() => setDropdownOpen(false), 160); };
+  const onEnter       = () => { clearTimeout(timeoutRef.current); setDropdownOpen(true); };
+  const onLeave       = () => {
+    timeoutRef.current = setTimeout(() => setDropdownOpen(false), 160);
+  };
 
-  /* shared inline styles */
-  const navLinkStyle = {
-    fontSize: 14, fontWeight: 400, color: "#7a7772",
+  /* shared desktop nav-link style */
+  const deskLinkStyle = {
+    fontSize: 16, fontWeight: 600, color: "#7a7772",
     textDecoration: "none", whiteSpace: "nowrap",
     transition: "color .2s",
   };
 
   return (
     <>
-      {/* ── GLOBAL KEYFRAMES ── */}
+      {/* keyframes */}
       <style>{`
-        @keyframes megaFadeIn {
-          from { opacity:0; transform:translateX(-62%) translateY(-8px); }
-          to   { opacity:1; transform:translateX(-62%) translateY(0); }
-        }
-        @keyframes drawerSlide {
-          from { opacity:0; transform:translateX(100%); }
-          to   { opacity:1; transform:translateX(0); }
-        }
-        @keyframes backdropFade {
-          from { opacity:0; }
-          to   { opacity:1; }
-        }
+        @keyframes drawerSlide  { from{opacity:0;transform:translateX(100%)} to{opacity:1;transform:translateX(0)} }
+        @keyframes backdropFade { from{opacity:0}                            to{opacity:1}                          }
       `}</style>
 
-      {/* ── NAV BAR ── */}
+      {/* ════════════════════════════════════
+          NAV BAR
+      ════════════════════════════════════ */}
       <nav style={{
-        position: "sticky", top: 0, zIndex: 100,
-        height: 64,
-        background: "rgba(250,249,247,0.94)",
-        backdropFilter: "blur(14px)",
-        WebkitBackdropFilter: "blur(14px)",
-        borderBottom: "1px solid rgba(15,14,13,0.10)",
+        position:            "sticky",
+        top:                 0,
+        zIndex:              100,
+        height:              64,
+        background:          "rgba(250,249,247,0.94)",
+        backdropFilter:      "blur(14px)",
+        WebkitBackdropFilter:"blur(14px)",
+        borderBottom:        "1px solid rgba(15,14,13,0.10)",
       }}>
         <div style={{
-          maxWidth: 1180, margin: "0 auto",
-          padding: "0 1.5rem", height: "100%",
-          display: "flex", alignItems: "center", justifyContent: "space-between",
-          gap: 16,
+          maxWidth:       1180,
+          margin:         "0 auto",
+          padding:        "0 1.5rem",
+          height:         "100%",
+          display:        "flex",
+          alignItems:     "center",
+          justifyContent: "space-between",
+          gap:            16,
         }}>
 
-          {/* LOGO */}
-          <Link href="/" style={{ display:"flex", alignItems:"center", gap:8, textDecoration:"none", flexShrink:0 }}>
+          {/* ── LOGO (always visible) ── */}
+          <Link
+            href="/"
+            style={{ display:"flex", alignItems:"center", gap:8, textDecoration:"none", flexShrink:0 }}
+          >
             <Image src="/pdflinx_logo.svg" alt="PDFLinx" width={30} height={30} priority />
             <span style={{
               fontFamily: "'Instrument Serif', Georgia, serif",
-              fontSize: "1.2rem", fontWeight: 400, color: "#0f0e0d",
+              fontSize:   "1.2rem",
+              fontWeight: 600,
+              fontStyle: "italic",
+              color:      "#0f0e0d",
             }}>
-              PDF <span style={{ color: "#e8420a" }}>Linx</span>
+              pdf<span style={{ color: "#e8420a" }}>linx</span>
             </span>
           </Link>
 
-          {/* DESKTOP LINKS — hidden on mobile */}
-          <div style={{
-            display: "flex", alignItems: "center", gap: "1.4rem",
-            flex: 1, justifyContent: "center",
-          }}
-            className="hidden lg:flex"
-          >
-            {mainLinks.map(({ label, href }) => (
-              <Link
-                key={href} href={href}
-                style={navLinkStyle}
-                onMouseEnter={e => e.currentTarget.style.color = "#0f0e0d"}
-                onMouseLeave={e => e.currentTarget.style.color = "#7a7772"}
-              >
-                {label}
-              </Link>
-            ))}
+          {/* ── DESKTOP NAV LINKS — rendered only when isDesktop ── */}
+          {isDesktop && (
+            <div style={{
+              display:        "flex",
+              alignItems:     "center",
+              gap:            "1.35rem",
+              flex:           1,
+              justifyContent: "center",
+            }}>
+              {/* main links */}
+              {mainLinks.map(({ label, href }) => (
+                <Link
+                  key={href} href={href} style={deskLinkStyle}
+                  onMouseEnter={e => e.currentTarget.style.color = "#0f0e0d"}
+                  onMouseLeave={e => e.currentTarget.style.color = "#7a7772"}
+                >
+                  {label}
+                </Link>
+              ))}
 
-            {/* PDF Tools trigger */}
-            <div style={{ position: "relative" }} onMouseEnter={onEnter} onMouseLeave={onLeave}>
-              <button
-                onClick={() => setDropdownOpen(p => !p)}
-                style={{
-                  display: "flex", alignItems: "center", gap: 4,
-                  fontSize: 14, fontWeight: 400,
-                  color: dropdownOpen ? "#0f0e0d" : "#7a7772",
-                  background: "none", border: "none", cursor: "pointer",
-                  fontFamily: "inherit", padding: 0,
-                  transition: "color .2s",
-                }}
-                onMouseEnter={e => e.currentTarget.style.color = "#0f0e0d"}
-                onMouseLeave={e => { if (!dropdownOpen) e.currentTarget.style.color = "#7a7772"; }}
+              {/* PDF Tools dropdown */}
+              <div
+                style={{ position: "relative" }}
+                onMouseEnter={onEnter}
+                onMouseLeave={onLeave}
               >
-                PDF Tools
-                <ChevronDown size={13} style={{
-                  transition: "transform .2s",
-                  transform: dropdownOpen ? "rotate(180deg)" : "none",
-                }} />
-              </button>
-              <MegaDropdown open={dropdownOpen} onClose={closeDropdown} />
+                <button
+                  onClick={() => setDropdownOpen(p => !p)}
+                  style={{
+                    display:    "flex",
+                    alignItems: "center",
+                    gap:        4,
+                    fontSize:   16,
+                    fontWeight: 600,
+                    color:      dropdownOpen ? "#0f0e0d" : "#7a7772",
+                    background: "none",
+                    border:     "none",
+                    cursor:     "pointer",
+                    fontFamily: "inherit",
+                    padding:    0,
+                    transition: "color .2s",
+                  }}
+                  onMouseEnter={e => e.currentTarget.style.color = "#0f0e0d"}
+                  onMouseLeave={e => {
+                    if (!dropdownOpen) e.currentTarget.style.color = "#7a7772";
+                  }}
+                >
+                  PDF Tools
+                  <ChevronDown
+                    size={13}
+                    style={{
+                      transition: "transform .2s",
+                      transform:  dropdownOpen ? "rotate(180deg)" : "none",
+                    }}
+                  />
+                </button>
+
+                <MegaDropdown open={dropdownOpen} onClose={closeDropdown} />
+              </div>
+
+              {/* end links */}
+              {endLinks.map(({ label, href }) => (
+                <Link
+                  key={href} href={href} style={deskLinkStyle}
+                  onMouseEnter={e => e.currentTarget.style.color = "#0f0e0d"}
+                  onMouseLeave={e => e.currentTarget.style.color = "#7a7772"}
+                >
+                  {label}
+                </Link>
+              ))}
             </div>
+          )}
 
-            {endLinks.map(({ label, href }) => (
+          {/* ── RIGHT SIDE ── */}
+          <div style={{ display:"flex", alignItems:"center", gap:10, flexShrink:0 }}>
+
+            {/* Desktop CTA — only on desktop */}
+            {isDesktop && (
               <Link
-                key={href} href={href}
-                style={navLinkStyle}
-                onMouseEnter={e => e.currentTarget.style.color = "#0f0e0d"}
-                onMouseLeave={e => e.currentTarget.style.color = "#7a7772"}
+                href="/free-pdf-tools"
+                style={{
+                  display:        "inline-flex",
+                  alignItems:     "center",
+                  gap:            6,
+                  background:     "#0f0e0d",
+                  color:          "#fff",
+                  fontSize:       13,
+                  fontWeight:     500,
+                  padding:        "9px 20px",
+                  borderRadius:   100,
+                  textDecoration: "none",
+                  whiteSpace:     "nowrap",
+                  transition:     "background .2s, transform .15s",
+                }}
+                onMouseEnter={e => {
+                  e.currentTarget.style.background = "#e8420a";
+                  e.currentTarget.style.transform  = "translateY(-1px)";
+                }}
+                onMouseLeave={e => {
+                  e.currentTarget.style.background = "#0f0e0d";
+                  e.currentTarget.style.transform  = "none";
+                }}
               >
-                {label}
+                Browse All Tools →
               </Link>
-            ))}
+            )}
+
+            {/* ══ HAMBURGER — only on mobile (!isDesktop) ══ */}
+            {!isDesktop && (
+              <button
+                onClick={() => setMobileOpen(p => !p)}
+                aria-label="Toggle menu"
+                style={{
+                  display:        "flex",
+                  alignItems:     "center",
+                  justifyContent: "center",
+                  width:          40,
+                  height:         40,
+                  borderRadius:   10,
+                  background:     mobileOpen ? "#faf9f7" : "transparent",
+                  border:         "1px solid rgba(15,14,13,0.12)",
+                  cursor:         "pointer",
+                  transition:     "background .2s",
+                }}
+              >
+                {mobileOpen
+                  ? <X    size={18} color="#0f0e0d" />
+                  : <Menu size={18} color="#0f0e0d" />
+                }
+              </button>
+            )}
           </div>
 
-          {/* RIGHT SIDE */}
-          <div style={{ display: "flex", alignItems: "center", gap: 10, flexShrink: 0 }}>
-            {/* Desktop CTA */}
-            <Link
-              href="/free-pdf-tools"
-              className="hidden lg:inline-flex"
-              style={{
-                alignItems: "center", gap: 6,
-                background: "#0f0e0d", color: "#fff",
-                fontSize: 13, fontWeight: 500,
-                padding: "9px 20px", borderRadius: 100,
-                textDecoration: "none", whiteSpace: "nowrap",
-                transition: "background .2s, transform .15s",
-              }}
-              onMouseEnter={e => { e.currentTarget.style.background = "#e8420a"; e.currentTarget.style.transform = "translateY(-1px)"; }}
-              onMouseLeave={e => { e.currentTarget.style.background = "#0f0e0d"; e.currentTarget.style.transform = "none"; }}
-            >
-              Browse All Tools →
-            </Link>
-
-            {/* Hamburger — mobile only (lg:hidden) */}
-            <button
-              className="lg:hidden"
-              onClick={() => setMobileOpen(p => !p)}
-              aria-label="Toggle menu"
-              style={{
-                display: "flex", alignItems: "center", justifyContent: "center",
-                width: 40, height: 40, borderRadius: 10,
-                background: mobileOpen ? "#faf9f7" : "transparent",
-                border: "1px solid rgba(15,14,13,0.12)",
-                cursor: "pointer",
-                transition: "background .2s",
-              }}
-            >
-              {mobileOpen ? <X size={18} color="#0f0e0d" /> : <Menu size={18} color="#0f0e0d" />}
-            </button>
-          </div>
         </div>
       </nav>
 
-      {/* ── MOBILE BACKDROP ── */}
-      {mobileOpen && (
+      {/* ════════════════════════════════════
+          MOBILE BACKDROP — only when !isDesktop
+      ════════════════════════════════════ */}
+      {!isDesktop && mobileOpen && (
         <div
           onClick={closeAll}
-          className="lg:hidden"
           style={{
-            position: "fixed", inset: 0, zIndex: 110,
-            background: "rgba(15,14,13,0.35)",
+            position:       "fixed",
+            inset:          0,
+            zIndex:         110,
+            background:     "rgba(15,14,13,0.38)",
             backdropFilter: "blur(2px)",
-            animation: "backdropFade .2s ease",
+            animation:      "backdropFade .2s ease",
           }}
         />
       )}
 
-      {/* ── MOBILE DRAWER ── */}
-      {mobileOpen && (
-        <div
-          className="lg:hidden"
-          style={{
-            position: "fixed", top: 0, right: 0, bottom: 0,
-            width: "min(340px,90vw)",
-            background: "#ffffff",
-            zIndex: 120,
-            overflowY: "auto",
-            boxShadow: "-16px 0 48px rgba(0,0,0,0.12)",
-            animation: "drawerSlide .25s ease",
-            display: "flex", flexDirection: "column",
-          }}
-        >
+      {/* ════════════════════════════════════
+          MOBILE DRAWER — only when !isDesktop
+      ════════════════════════════════════ */}
+      {!isDesktop && mobileOpen && (
+        <div style={{
+          position:   "fixed",
+          top:        0,
+          right:      0,
+          bottom:     0,
+          width:      "min(340px, 90vw)",
+          background: "#ffffff",
+          zIndex:     120,
+          overflowY:  "auto",
+          boxShadow:  "-16px 0 48px rgba(0,0,0,0.12)",
+          animation:  "drawerSlide .25s ease",
+          display:    "flex",
+          flexDirection: "column",
+        }}>
+
           {/* drawer header */}
           <div style={{
-            display: "flex", alignItems: "center", justifyContent: "space-between",
-            padding: "1rem 1.25rem",
-            borderBottom: "1px solid rgba(15,14,13,0.08)",
-            position: "sticky", top: 0,
-            background: "#fff", zIndex: 2,
+            display:        "flex",
+            alignItems:     "center",
+            justifyContent: "space-between",
+            padding:        "1rem 1.25rem",
+            borderBottom:   "1px solid rgba(15,14,13,0.08)",
+            position:       "sticky",
+            top:            0,
+            background:     "#fff",
+            zIndex:         2,
           }}>
-            <Link href="/" onClick={closeAll} style={{ display:"flex", alignItems:"center", gap:7, textDecoration:"none" }}>
+            <Link
+              href="/" onClick={closeAll}
+              style={{ display:"flex", alignItems:"center", gap:7, textDecoration:"none" }}
+            >
               <Image src="/pdflinx_logo.svg" alt="PDFLinx" width={26} height={26} />
-              <span style={{ fontFamily:"'Instrument Serif',Georgia,serif", fontSize:"1.1rem", color:"#0f0e0d" }}>
+              <span style={{
+                fontFamily: "'Instrument Serif',Georgia,serif",
+                fontSize:   "1.1rem",
+                color:      "#0f0e0d",
+              }}>
                 PDF <span style={{ color:"#e8420a" }}>Linx</span>
               </span>
             </Link>
@@ -406,18 +514,23 @@ export default function Navbar() {
             </button>
           </div>
 
-          {/* links */}
-          <div style={{ padding: "0 1.25rem 5rem", flex: 1 }}>
+          {/* drawer body */}
+          <div style={{ padding:"0 1.25rem 5rem", flex:1 }}>
 
+            {/* main links */}
             {mainLinks.map(({ label, href }) => (
               <Link
                 key={href} href={href} onClick={closeAll}
                 style={{
-                  display: "flex", alignItems: "center",
-                  padding: "13px 0",
-                  borderBottom: "1px solid rgba(15,14,13,0.07)",
-                  fontSize: 15, fontWeight: 500, color: "#3a3835",
+                  display:        "flex",
+                  alignItems:     "center",
+                  padding:        "13px 0",
+                  borderBottom:   "1px solid rgba(15,14,13,0.07)",
+                  fontSize:       15,
+                  fontWeight:     500,
+                  color:          "#3a3835",
                   textDecoration: "none",
+                  transition:     "color .2s",
                 }}
                 onMouseEnter={e => e.currentTarget.style.color = "#e8420a"}
                 onMouseLeave={e => e.currentTarget.style.color = "#3a3835"}
@@ -427,49 +540,75 @@ export default function Navbar() {
             ))}
 
             {/* PDF Tools accordion */}
-            <div style={{ borderBottom: "1px solid rgba(15,14,13,0.07)" }}>
+            <div style={{ borderBottom:"1px solid rgba(15,14,13,0.07)" }}>
               <button
                 onClick={() => setMobileToolsOpen(p => !p)}
                 style={{
-                  display: "flex", alignItems: "center", justifyContent: "space-between",
-                  width: "100%", padding: "13px 0",
-                  background: "none", border: "none", cursor: "pointer",
-                  fontSize: 15, fontWeight: 500, color: "#3a3835",
-                  fontFamily: "inherit",
+                  display:        "flex",
+                  alignItems:     "center",
+                  justifyContent: "space-between",
+                  width:          "100%",
+                  padding:        "13px 0",
+                  background:     "none",
+                  border:         "none",
+                  cursor:         "pointer",
+                  fontSize:       15,
+                  fontWeight:     500,
+                  color:          "#3a3835",
+                  fontFamily:     "inherit",
                 }}
               >
                 PDF Tools
-                <ChevronDown size={15} style={{
-                  color: "#7a7772",
-                  transition: "transform .25s",
-                  transform: mobileToolsOpen ? "rotate(180deg)" : "none",
-                }} />
+                <ChevronDown
+                  size={15}
+                  style={{
+                    color:      "#7a7772",
+                    transition: "transform .25s",
+                    transform:  mobileToolsOpen ? "rotate(180deg)" : "none",
+                  }}
+                />
               </button>
 
               {mobileToolsOpen && (
                 <div style={{ paddingBottom: 16 }}>
+
+                  {/* all tools pill */}
                   <Link
                     href="/free-pdf-tools" onClick={closeAll}
                     style={{
-                      display: "flex", alignItems: "center", justifyContent: "center", gap: 6,
-                      padding: "9px 14px", marginBottom: 14,
-                      background: "#fff1ec",
-                      border: "1px solid rgba(232,66,10,0.18)",
-                      borderRadius: 10,
-                      fontSize: 13, fontWeight: 500, color: "#e8420a",
+                      display:        "flex",
+                      alignItems:     "center",
+                      justifyContent: "center",
+                      gap:            6,
+                      padding:        "9px 14px",
+                      marginBottom:   14,
+                      background:     "#fff1ec",
+                      border:         "1px solid rgba(232,66,10,0.18)",
+                      borderRadius:   10,
+                      fontSize:       13,
+                      fontWeight:     500,
+                      color:          "#e8420a",
                       textDecoration: "none",
                     }}
                   >
                     🗂️ View All Free PDF Tools
                   </Link>
 
-                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20 }}>
-                    {dropdownCols.map((col) => (
+                  {/* 2-col tools grid */}
+                  <div style={{
+                    display:               "grid",
+                    gridTemplateColumns:   "1fr 1fr",
+                    gap:                   "18px 12px",
+                  }}>
+                    {dropdownCols.map(col => (
                       <div key={col.heading}>
                         <p style={{
-                          fontSize: 10, fontWeight: 700,
-                          letterSpacing: "0.09em", textTransform: "uppercase",
-                          color: "#7a7772", marginBottom: 8,
+                          fontSize:      10,
+                          fontWeight:    700,
+                          letterSpacing: "0.09em",
+                          textTransform: "uppercase",
+                          color:         "#7a7772",
+                          marginBottom:  8,
                         }}>
                           {col.heading}
                         </p>
@@ -477,15 +616,19 @@ export default function Navbar() {
                           <Link
                             key={href} href={href} onClick={closeAll}
                             style={{
-                              display: "flex", alignItems: "center", gap: 7,
-                              padding: "6px 0",
-                              fontSize: 12, color: "#3a3835",
+                              display:        "flex",
+                              alignItems:     "center",
+                              gap:            7,
+                              padding:        "5px 0",
+                              fontSize:       12,
+                              color:          "#3a3835",
                               textDecoration: "none",
+                              transition:     "color .18s",
                             }}
                             onMouseEnter={e => e.currentTarget.style.color = "#e8420a"}
                             onMouseLeave={e => e.currentTarget.style.color = "#3a3835"}
                           >
-                            <Icon size={13} style={{ color, flexShrink: 0 }} />
+                            <Icon size={13} style={{ color, flexShrink:0 }} />
                             {label}
                           </Link>
                         ))}
@@ -496,15 +639,20 @@ export default function Navbar() {
               )}
             </div>
 
+            {/* end links */}
             {endLinks.map(({ label, href }) => (
               <Link
                 key={href} href={href} onClick={closeAll}
                 style={{
-                  display: "flex", alignItems: "center",
-                  padding: "13px 0",
-                  borderBottom: "1px solid rgba(15,14,13,0.07)",
-                  fontSize: 15, fontWeight: 500, color: "#3a3835",
+                  display:        "flex",
+                  alignItems:     "center",
+                  padding:        "13px 0",
+                  borderBottom:   "1px solid rgba(15,14,13,0.07)",
+                  fontSize:       15,
+                  fontWeight:     500,
+                  color:          "#3a3835",
                   textDecoration: "none",
+                  transition:     "color .2s",
                 }}
                 onMouseEnter={e => e.currentTarget.style.color = "#e8420a"}
                 onMouseLeave={e => e.currentTarget.style.color = "#3a3835"}
@@ -514,14 +662,19 @@ export default function Navbar() {
             ))}
 
             {/* mobile CTAs */}
-            <div style={{ marginTop: 20, display: "flex", flexDirection: "column", gap: 10 }}>
+            <div style={{ marginTop:20, display:"flex", flexDirection:"column", gap:10 }}>
               <Link
                 href="/free-pdf-tools" onClick={closeAll}
                 style={{
-                  display: "flex", alignItems: "center", justifyContent: "center",
-                  background: "#0f0e0d", color: "#fff",
-                  fontSize: 14, fontWeight: 500,
-                  padding: "13px 20px", borderRadius: 100,
+                  display:        "flex",
+                  alignItems:     "center",
+                  justifyContent: "center",
+                  background:     "#0f0e0d",
+                  color:          "#fff",
+                  fontSize:       14,
+                  fontWeight:     500,
+                  padding:        "13px 20px",
+                  borderRadius:   100,
                   textDecoration: "none",
                 }}
               >
@@ -530,11 +683,16 @@ export default function Navbar() {
               <Link
                 href="/pdf-to-word" onClick={closeAll}
                 style={{
-                  display: "flex", alignItems: "center", justifyContent: "center",
-                  background: "#fff1ec", color: "#e8420a",
-                  border: "1px solid rgba(232,66,10,0.2)",
-                  fontSize: 14, fontWeight: 500,
-                  padding: "12px 20px", borderRadius: 100,
+                  display:        "flex",
+                  alignItems:     "center",
+                  justifyContent: "center",
+                  background:     "#fff1ec",
+                  color:          "#e8420a",
+                  border:         "1px solid rgba(232,66,10,0.2)",
+                  fontSize:       14,
+                  fontWeight:     500,
+                  padding:        "12px 20px",
+                  borderRadius:   100,
                   textDecoration: "none",
                 }}
               >
@@ -547,6 +705,16 @@ export default function Navbar() {
     </>
   );
 }
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -1,78 +1,169 @@
-// app/rotate-pdf/page.jsx
 "use client";
 
-import { useMemo, useState } from "react";
+import { useState } from "react";
+import Script from "next/script";
+import { useProgressBar } from "@/hooks/useProgressBar";
+import { useToolFlow } from "@/hooks/useToolFlow";
+import ToolPageLayout from "@/components/ToolFlow/ToolPageLayout";
+
 import {
-  Upload,
   FileText,
-  Download,
-  CheckCircle,
-  X,
   RotateCw,
   RotateCcw,
   RefreshCw,
+  Download,
+  Minimize2,
+  GitMerge,
+  Scissors,
+  Lock,
+  Search,
 } from "lucide-react";
-import Script from "next/script";
-import RelatedToolsSection from "@/components/RelatedTools";
 
-export default function RotatePdf() {
-  const [files, setFiles] = useState([]);
-  const [rotationAngle, setRotationAngle] = useState(90); // 90, 180, 270
-  const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState(false);
-  const [error, setError] = useState("");
-  const [progress, setProgress] = useState(0);
+// ── Config ─────────────────────────────────────────────────────────────────
+const DONE_LINKS = [
+  { label: "Merge PDF",     href: "/merge-pdf",     icon: <GitMerge   className="h-4 w-4 text-purple-500"  /> },
+  { label: "Split PDF",     href: "/split-pdf",     icon: <Scissors   className="h-4 w-4 text-pink-500"    /> },
+  { label: "Compress PDF",  href: "/compress-pdf",  icon: <Minimize2  className="h-4 w-4 text-green-500"   /> },
+  { label: "PDF to Word",   href: "/pdf-to-word",   icon: <FileText   className="h-4 w-4 text-blue-500"    /> },
+  { label: "Protect PDF",   href: "/protect-pdf",   icon: <Lock       className="h-4 w-4 text-red-500"     /> },
+  { label: "OCR PDF",       href: "/ocr-pdf",       icon: <Search     className="h-4 w-4 text-violet-500"  /> },
+];
 
-  const totalSizeMb = useMemo(() => {
-    return files.reduce((sum, f) => sum + (f?.size || 0), 0) / 1024 / 1024;
-  }, [files]);
+const SIDEBAR_NOTICE = (
+  <>
+    <p className="text-sm font-semibold text-orange-800">
+      ℹ️ Rotation Info
+    </p>
+    <ul className="mt-3 list-disc space-y-2 pl-4 text-xs text-slate-600">
+      <li>All pages rotated by same angle</li>
+      <li>Single PDF → rotated PDF directly</li>
+      <li>Multiple PDFs → ZIP download</li>
+      <li>Lossless — zero quality loss</li>
+    </ul>
+  </>
+);
 
-  const clearAll = () => {
-    setFiles([]);
-    setRotationAngle(90);
-    setSuccess(false);
-    setError("");
+const SIDEBAR_FEATURES = [
+  "✓ No account",
+  "✓ No watermark",
+  "✓ Auto-deleted after processing",
+  "✓ 100% free",
+  "✓ Batch rotation",
+  "✓ Lossless quality",
+];
+
+// ── Rotation Selector — goes into optionsSlot ──────────────────────────────
+function RotationSelector({ angle, onChange }) {
+  return (
+    <div className="space-y-3">
+      <div className="space-y-2 rounded-lg border border-slate-200 bg-slate-50 p-4 text-sm text-slate-700">
+        <p className="font-semibold text-slate-800">🔄 About rotation</p>
+        <ul className="space-y-1.5 text-xs text-slate-600">
+          <li>✓ All pages rotated by the same angle</li>
+          <li>✓ Lossless — text, images & layout unchanged</li>
+          <li>✓ Perfect for scanned docs & mobile photos</li>
+          <li>✓ Single PDF → rotated PDF directly</li>
+          <li>✓ Multiple PDFs → ZIP download</li>
+        </ul>
+      </div>
+
+      <div className="space-y-1.5">
+        <p className="text-sm font-semibold text-slate-700">Select rotation angle</p>
+        <p className="text-xs text-slate-400">All pages in each PDF will be rotated by the same angle</p>
+        <div className="grid grid-cols-3 gap-3 pt-1">
+          <button
+            type="button"
+            onClick={() => onChange(90)}
+            className={`flex flex-col items-center justify-center p-4 rounded-xl border-2 transition-all ${
+              angle === 90
+                ? "border-orange-600 bg-orange-50 shadow-md"
+                : "border-slate-200 hover:border-orange-400 hover:bg-orange-50"
+            }`}
+          >
+            <RotateCw className="w-7 h-7 text-orange-600 mb-2" />
+            <span className="text-xs font-semibold text-slate-800">90° Right</span>
+            <span className="text-xs text-slate-400 mt-0.5">Clockwise</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => onChange(180)}
+            className={`flex flex-col items-center justify-center p-4 rounded-xl border-2 transition-all ${
+              angle === 180
+                ? "border-orange-600 bg-orange-50 shadow-md"
+                : "border-slate-200 hover:border-orange-400 hover:bg-orange-50"
+            }`}
+          >
+            <RefreshCw className="w-7 h-7 text-orange-600 mb-2" />
+            <span className="text-xs font-semibold text-slate-800">180°</span>
+            <span className="text-xs text-slate-400 mt-0.5">Flip</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => onChange(270)}
+            className={`flex flex-col items-center justify-center p-4 rounded-xl border-2 transition-all ${
+              angle === 270
+                ? "border-orange-600 bg-orange-50 shadow-md"
+                : "border-slate-200 hover:border-orange-400 hover:bg-orange-50"
+            }`}
+          >
+            <RotateCcw className="w-7 h-7 text-orange-600 mb-2" />
+            <span className="text-xs font-semibold text-slate-800">270° Left</span>
+            <span className="text-xs text-slate-400 mt-0.5">Counter-CW</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+// ───────────────────────────────────────────────────────────────────────────
+
+export default function RotatePdf({ seo }) {
+  const flow = useToolFlow();
+  const { progress, startProgress, completeProgress, cancelProgress } = useProgressBar();
+
+  const [rotationAngle, setRotationAngle] = useState(90);
+  const [downloadUrl, setDownloadUrl] = useState(null);
+  const [downloadName, setDownloadName] = useState("rotated.pdf");
+
+  const handleRemoveFile = (index) => {
+    const updated = flow.files.filter((_, i) => i !== index);
+    if (updated.length === 0) flow.reset();
+    else flow.selectFiles(updated);
   };
 
-  const removeFile = (idx) => {
-    setFiles((prev) => prev.filter((_, i) => i !== idx));
-    setSuccess(false);
-    setError("");
-  };
-
-  const downloadBlob = (blob, filename) => {
-    const url = window.URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = filename;
-    a.click();
-    window.URL.revokeObjectURL(url);
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    if (!files.length) {
-      setError("Please select at least one PDF file first!");
-      return;
+  const getDownloadName = (contentType = "") => {
+    if (flow.files.length === 1) {
+      return flow.files[0]?.name
+        ? flow.files[0].name.replace(/\.pdf$/i, "-rotated.pdf")
+        : "rotated.pdf";
     }
+    return "pdflinx-rotated-pdfs.zip";
+  };
 
-    setLoading(true);
-    setProgress(0);
-    setSuccess(false);
-    setError("");
+  const handleDownload = () => {
+    if (!downloadUrl) return;
+    const a = document.createElement("a");
+    a.href = downloadUrl;
+    a.download = downloadName;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  };
+
+  // ── API LOGIC ──────────────────────────────────────────────────────────
+  const handleConvert = async () => {
+    if (!flow.files.length)
+      return alert("Please select at least one PDF file!");
+
+    flow.startProcessing();
+    startProgress();
+    setDownloadUrl(null);
 
     const formData = new FormData();
-    for (const f of files) formData.append("files", f);
+    flow.files.forEach((f) => formData.append("files", f));
     formData.append("angle", String(rotationAngle));
-
-    let progressInterval = setInterval(() => {
-      setProgress((prev) => {
-        if (prev >= 88) return prev;
-        const increment = prev < 35 ? 8 : prev < 65 ? 5 : 2;
-        return prev + increment;
-      });
-    }, 300);
 
     try {
       const res = await fetch("/convert/rotate-pdf", {
@@ -82,774 +173,302 @@ export default function RotatePdf() {
 
       if (!res.ok) {
         let msg = "Rotation failed";
-        try {
-          const j = await res.json();
-          msg = j?.error || msg;
-        } catch { }
+        try { const j = await res.json(); msg = j?.error || msg; } catch {}
         throw new Error(msg);
       }
 
       const contentType = res.headers.get("content-type") || "";
+      const filename = getDownloadName(contentType);
+      const blob = await res.blob();
+      const url = window.URL.createObjectURL(blob);
 
-      clearInterval(progressInterval);
-      setProgress(100);
+      setDownloadUrl(url);
+      setDownloadName(filename);
 
-      if (contentType.includes("application/pdf")) {
-        const blob = await res.blob();
-        const outName = files[0].name.replace(/\.pdf$/i, "") + "-rotated.pdf";
-        downloadBlob(blob, outName);
-        setSuccess(true);
-      } else if (contentType.includes("application/zip")) {
-        const blob = await res.blob();
-        downloadBlob(blob, "pdflinx-rotated-pdfs.zip");
-        setSuccess(true);
-      } else {
-        let data = null;
-        try {
-          data = await res.json();
-        } catch { }
-        throw new Error(data?.error || "Unexpected response from server");
-      }
+      // Auto-download
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
 
-      setTimeout(() => {
-        const downloadSection = document.getElementById("download-section");
-        if (downloadSection) {
-          downloadSection.scrollIntoView({
-            behavior: "smooth",
-            block: "center",
-          });
-        }
-      }, 300);
+      completeProgress();
+      flow.finishSuccess();
     } catch (err) {
-      const msg = (err?.message || "Something went wrong. Please try again.").toString();
-      setError(msg);
       console.error(err);
-    } finally {
-      clearInterval(progressInterval);
-      setTimeout(() => {
-        setLoading(false);
-        setProgress(0);
-      }, 800);
+      cancelProgress();
+      flow.handleError(err.message || "Something went wrong. Please try again.");
     }
   };
+  // ── END API LOGIC ──────────────────────────────────────────────────────
+
+  const angleLabel =
+    rotationAngle === 90 ? "90° Clockwise" :
+    rotationAngle === 180 ? "180° Flip" :
+    "270° Counter-Clockwise";
+
   return (
     <>
-      {/* ==================== SEO SCHEMAS ==================== */}
+      {/* ── SEO Schemas ── */}
       <Script
         id="howto-schema-rotate"
         type="application/ld+json"
         strategy="afterInteractive"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(
-            {
-              "@context": "https://schema.org",
-              "@type": "HowTo",
-              name: "How to Rotate PDF Pages Online for Free",
-              description:
-                "Rotate PDF pages clockwise or counterclockwise by 90°, 180°, or 270°. Fix orientation of scanned documents, photos, and PDFs.",
-              url: "https://pdflinx.com/rotate-pdf",
-              step: [
-                {
-                  "@type": "HowToStep",
-                  name: "Upload PDF file(s)",
-                  text: "Upload a single PDF or select multiple PDFs at the same time.",
-                },
-                {
-                  "@type": "HowToStep",
-                  name: "Choose rotation angle",
-                  text: "Select 90°, 180°, or 270° rotation angle.",
-                },
-                {
-                  "@type": "HowToStep",
-                  name: "Rotate and download",
-                  text: "Click Rotate PDF. Download the rotated PDF (or ZIP if multiple files).",
-                },
-              ],
-              totalTime: "PT15S",
-              estimatedCost: { "@type": "MonetaryAmount", value: "0", currency: "USD" },
-              image: "https://pdflinx.com/og-image.png",
-            },
-            null,
-            2
-          ),
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "HowTo",
+            name: "How to Rotate PDF Pages Online for Free",
+            description: "Rotate PDF pages clockwise or counterclockwise by 90°, 180°, or 270°. Fix orientation of scanned documents, photos, and PDFs.",
+            url: "https://pdflinx.com/rotate-pdf",
+            step: [
+              { "@type": "HowToStep", name: "Upload PDF file(s)", text: "Upload a single PDF or select multiple PDFs at the same time." },
+              { "@type": "HowToStep", name: "Choose rotation angle", text: "Select 90°, 180°, or 270° rotation angle." },
+              { "@type": "HowToStep", name: "Rotate and download", text: "Click Rotate PDF. Download the rotated PDF (or ZIP if multiple files)." },
+            ],
+            totalTime: "PT15S",
+            estimatedCost: { "@type": "MonetaryAmount", value: "0", currency: "USD" },
+            image: "https://pdflinx.com/og-image.png",
+          }, null, 2),
         }}
       />
-
       <Script
         id="breadcrumb-schema-rotate"
         type="application/ld+json"
         strategy="afterInteractive"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(
-            {
-              "@context": "https://schema.org",
-              "@type": "BreadcrumbList",
-              itemListElement: [
-                { "@type": "ListItem", position: 1, name: "Home", item: "https://pdflinx.com" },
-                { "@type": "ListItem", position: 2, name: "Rotate PDF", item: "https://pdflinx.com/rotate-pdf" },
-              ],
-            },
-            null,
-            2
-          ),
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            itemListElement: [
+              { "@type": "ListItem", position: 1, name: "Home", item: "https://pdflinx.com" },
+              { "@type": "ListItem", position: 2, name: "Rotate PDF", item: "https://pdflinx.com/rotate-pdf" },
+            ],
+          }, null, 2),
         }}
       />
-
       <Script
         id="faq-schema-rotate"
         type="application/ld+json"
         strategy="afterInteractive"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(
-            {
-              "@context": "https://schema.org",
-              "@type": "FAQPage",
-              mainEntity: [
-                {
-                  "@type": "Question",
-                  name: "What does Rotate PDF mean?",
-                  acceptedAnswer: {
-                    "@type": "Answer",
-                    text:
-                      "Rotate PDF means changing the orientation of PDF pages by turning them clockwise or counterclockwise. Common rotation angles are 90°, 180°, and 270°.",
-                  },
-                },
-                {
-                  "@type": "Question",
-                  name: "Can I rotate all pages at once?",
-                  acceptedAnswer: {
-                    "@type": "Answer",
-                    text:
-                      "Yes. When you upload a PDF and select a rotation angle, all pages in that PDF will be rotated by the same angle.",
-                  },
-                },
-                {
-                  "@type": "Question",
-                  name: "Can I rotate multiple PDFs at once?",
-                  acceptedAnswer: {
-                    "@type": "Answer",
-                    text:
-                      "Yes. Upload up to 10 PDFs. Each PDF's pages will be rotated by your chosen angle. Multiple files download as a ZIP.",
-                  },
-                },
-                {
-                  "@type": "Question",
-                  name: "Will rotating a PDF reduce quality?",
-                  acceptedAnswer: {
-                    "@type": "Answer",
-                    text:
-                      "No. Rotating a PDF is a lossless operation. Your text, images, and layout remain exactly the same quality.",
-                  },
-                },
-                {
-                  "@type": "Question",
-                  name: "Are my files safe?",
-                  acceptedAnswer: {
-                    "@type": "Answer",
-                    text:
-                      "Yes. Files are processed automatically and deleted after processing. No sign-up required.",
-                  },
-                },
-              ],
-            },
-            null,
-            2
-          ),
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            mainEntity: [
+              { "@type": "Question", name: "What does Rotate PDF mean?", acceptedAnswer: { "@type": "Answer", text: "Rotate PDF means changing the orientation of PDF pages by turning them clockwise or counterclockwise. Common rotation angles are 90°, 180°, and 270°." } },
+              { "@type": "Question", name: "Can I rotate all pages at once?", acceptedAnswer: { "@type": "Answer", text: "Yes. When you upload a PDF and select a rotation angle, all pages in that PDF will be rotated by the same angle." } },
+              { "@type": "Question", name: "Can I rotate multiple PDFs at once?", acceptedAnswer: { "@type": "Answer", text: "Yes. Upload up to 10 PDFs. Each PDF's pages will be rotated by your chosen angle. Multiple files download as a ZIP." } },
+              { "@type": "Question", name: "Will rotating a PDF reduce quality?", acceptedAnswer: { "@type": "Answer", text: "No. Rotating a PDF is a lossless operation. Your text, images, and layout remain exactly the same quality." } },
+              { "@type": "Question", name: "Are my files safe?", acceptedAnswer: { "@type": "Answer", text: "Yes. Files are processed automatically and deleted after processing. No sign-up required." } },
+            ],
+          }, null, 2),
         }}
       />
 
-      {/* ==================== MAIN TOOL SECTION ==================== */}
-      <main className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-red-50 py-8 px-4">
-        <div className="max-w-4xl mx-auto">
-          {/* Header */}
-          <div className="text-center mb-8">
-            <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent mb-4">
-              Rotate PDF Online Free
-              <br />
-              <span className="text-2xl md:text-3xl font-medium">
-                No Signup · No Watermark · Instant Download
-              </span>
-            </h1>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Rotate PDF pages online free — no signup, no watermark, no software needed.
-              Fix sideways or upside-down PDFs by rotating all pages 90°, 180°, or 270°.
-              Works for single files and batch uploads.
-            </p>
-          </div>
+      {/* ── Tool UI ── */}
+      <ToolPageLayout
+        title={seo?.h1 || "Rotate PDF Online Free"}
+        tagline="No Signup · No Watermark · Lossless Quality"
+        accept="application/pdf,.pdf"
+        multiple={true}
+        convertLabel="Rotate PDF"
+        flow={flow}
+        progress={progress}
+        onRemoveFile={handleRemoveFile}
+        onConvert={handleConvert}
+        onDownload={handleDownload}
+        doneLinks={DONE_LINKS}
 
-          {/* STEP STRIP */}
-          <div className="grid grid-cols-3 mb-4 rounded-2xl overflow-hidden border border-gray-100 bg-white shadow-sm">
-            {[
-              { n: "1", label: "Upload PDF", sub: "Single or multiple files" },
-              { n: "2", label: "Choose Angle", sub: "90°, 180°, or 270°" },
-              { n: "3", label: "Download PDF", sub: "Or ZIP for batch" },
-            ].map((s, i) => (
-              <div
-                key={i}
-                className={`flex flex-col items-center py-4 px-2 text-center ${i < 2 ? "border-r border-gray-100" : ""}`}
-              >
-                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-orange-500 to-red-500 flex items-center justify-center text-white text-sm font-bold mb-1 shadow-sm">
-                  {s.n}
-                </div>
-                <p className="text-xs font-semibold text-gray-700">{s.label}</p>
-                <p className="text-xs text-gray-400 hidden sm:block">{s.sub}</p>
-              </div>
-            ))}
-          </div>
+        optionsTitle="Rotation options"
+        showOutputFormat={false}
+        showPreserveLayout={false}
+        optionSectionLabel=""
+        optionsSlot={
+          <RotationSelector angle={rotationAngle} onChange={setRotationAngle} />
+        }
 
-          {/* MAIN CARD */}
-          <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
-            <div className={`relative transition-all duration-300 ${loading ? "pointer-events-none" : ""}`}>
-              {/* Loading overlay */}
-              {loading && (
-                <div className="absolute inset-0 z-10 bg-white/70 backdrop-blur-sm rounded-2xl flex flex-col items-center justify-center gap-4">
-                  <div className="relative w-16 h-16">
-                    <div className="absolute inset-0 rounded-full border-4 border-orange-100"></div>
-                    <div className="absolute inset-0 rounded-full border-4 border-orange-500 border-t-transparent animate-spin"></div>
-                    <div
-                      className="absolute inset-2 rounded-full border-4 border-red-200 border-b-transparent animate-spin"
-                      style={{ animationDirection: "reverse", animationDuration: "0.8s" }}
-                    ></div>
-                  </div>
+        processingTitle="Rotating Your PDF"
+        processingDescription="Applying rotation to all pages — lossless, no quality loss."
+        processingStages={["Uploading file", "Applying rotation", "Saving PDF"]}
 
-                  <div className="text-center">
-                    <p className="text-base font-semibold text-gray-700">
-                      Rotating your file{files.length > 1 ? "s" : ""}…
-                    </p>
-                    <p className="text-sm text-gray-400 mt-1">
-                      {progress < 30
-                        ? "Uploading…"
-                        : progress < 70
-                          ? "Applying rotation…"
-                          : "Almost done…"}
-                    </p>
-                  </div>
+        doneTitle="Your rotated PDF is ready"
+        doneDescription={
+          flow.files.length > 1
+            ? "All PDFs rotated successfully. ZIP contains all rotated files."
+            : `All pages rotated ${angleLabel}. File downloaded automatically.`
+        }
+        doneFileName={downloadName}
+        downloadLabel="Download Rotated PDF"
+        resetLabel="Rotate another PDF"
 
-                  <div className="w-48 h-1.5 bg-gray-100 rounded-full overflow-hidden">
-                    <div
-                      className="h-full bg-gradient-to-r from-orange-500 to-red-500 rounded-full transition-all duration-500"
-                      style={{ width: `${progress}%` }}
-                    />
-                  </div>
-                  <p className="text-xs text-gray-400 font-medium">{progress}%</p>
-                </div>
-              )}
+        sidebarTitle="Rotate PDF"
+        sidebarIcon={<RotateCw className="h-5 w-5 text-orange-500" />}
+        sidebarDescription="Fix PDF orientation in seconds — rotate by 90°, 180°, or 270°, lossless and free."
+        sidebarNotice={SIDEBAR_NOTICE}
+        sidebarFeatures={SIDEBAR_FEATURES}
 
-              <form onSubmit={handleSubmit} className="p-8 space-y-5">
-                {/* Dropzone */}
-                <label className="block cursor-pointer group">
-                  <div
-                    className={`relative rounded-xl border-2 border-dashed transition-all duration-200 p-8 text-center ${files.length
-                        ? "border-green-400 bg-green-50"
-                        : "border-gray-200 hover:border-orange-400 hover:bg-orange-50/40"
-                      }`}
-                  >
-                    <div
-                      className={`w-14 h-14 rounded-2xl mx-auto mb-4 flex items-center justify-center transition-colors duration-200 ${files.length ? "bg-green-100" : "bg-orange-50 group-hover:bg-orange-100"
-                        }`}
-                    >
-                      {files.length ? (
-                        <CheckCircle className="w-7 h-7 text-green-500" />
-                      ) : (
-                        <Upload className="w-7 h-7 text-orange-600" />
-                      )}
-                    </div>
+        uploadLanding={{
+          content: {
+            eyebrow: "ROTATE PDF ONLINE",
 
-                    {files.length ? (
-                      <>
-                        <p className="text-base font-semibold text-green-700">
-                          {files.length} file{files.length > 1 ? "s" : ""} selected
-                        </p>
-                        <p className="text-xs text-gray-400 mt-1">Click to change selection</p>
+            heroTitle: (
+              <>
+                Rotate PDF Pages <br />
+                <span className="bg-gradient-to-r from-orange-600 to-red-500 bg-clip-text text-transparent">
+                  Fix Orientation Instantly 🔄
+                </span>
+              </>
+            ),
 
-                        <div className="flex flex-wrap justify-center gap-2 mt-3">
-                          {files.slice(0, 5).map((f, i) => (
-                            <span
-                              key={i}
-                              className="inline-flex items-center gap-1 bg-white border border-green-200 text-green-700 text-xs font-medium px-2.5 py-1 rounded-full shadow-sm"
-                            >
-                              <FileText className="w-3 h-3" />
-                              {f.name.length > 24 ? f.name.slice(0, 22) + "…" : f.name}
-                            </span>
-                          ))}
-                          {files.length > 5 && (
-                            <span className="inline-flex items-center bg-gray-100 text-gray-500 text-xs font-medium px-2.5 py-1 rounded-full">
-                              +{files.length - 5} more
-                            </span>
-                          )}
-                        </div>
+            heroDescription:
+              "Fix sideways or upside-down PDFs in seconds — rotate all pages by 90°, 180°, or 270°. Lossless quality, no watermark, no signup. Works for single files and batch uploads.",
 
-                        <p className="text-xs text-gray-400 mt-3">
-                          Total selected: {totalSizeMb.toFixed(2)} MB
-                        </p>
-                      </>
-                    ) : (
-                      <>
-                        <p className="text-base font-semibold text-gray-700">
-                          Drop your PDF file(s) here
-                        </p>
-                        <p className="text-sm text-gray-400 mt-1">
-                          or click to browse · PDF files only
-                        </p>
+            bullets: [
+              "Rotate by 90°, 180°, or 270° — all pages at once",
+              "Lossless operation — text, images & layout stay identical",
+              "Batch rotate multiple PDFs at once",
+            ],
 
-                        <div className="flex flex-wrap justify-center gap-2 mt-4">
-                          {["✓ No signup", "✓ No watermark", "✓ Batch rotate", "✓ Auto-deleted"].map((t) => (
-                            <span
-                              key={t}
-                              className="bg-orange-50 text-orange-700 border border-orange-100 text-xs font-medium px-2.5 py-1 rounded-full"
-                            >
-                              {t}
-                            </span>
-                          ))}
-                        </div>
-                      </>
-                    )}
-                  </div>
+            uploadTitle: "Drop your PDF here",
+            uploadSubtitle: "or click to browse — PDF files supported",
 
-                  <input
-                    type="file"
-                    multiple
-                    accept=".pdf,application/pdf"
-                    onChange={(e) => {
-                      const picked = Array.from(e.target.files || []);
-                      if (picked.length > 10) {
-                        setError("Maximum 10 files allowed.");
-                        return;
-                      }
-                      setFiles(picked);
-                      setSuccess(false);
-                      setError("");
-                    }}
-                    className="hidden"
-                    required
-                  />
-                </label>
+            privacyTitle: "Your files stay private",
+            privacyText: "Files are processed securely and automatically deleted after rotation. Never stored or shared.",
 
-                {/* Selected Files List */}
-                {files.length > 0 && (
-                  <div className="rounded-2xl border border-gray-200 bg-gray-50 p-4">
-                    <div className="flex items-center justify-between mb-3">
-                      <div>
-                        <p className="text-sm font-semibold text-gray-700">Selected files</p>
-                        <p className="text-xs text-gray-400">Remove any file before rotating</p>
-                      </div>
-                      <button
-                        type="button"
-                        onClick={clearAll}
-                        className="text-xs font-semibold text-gray-600 hover:text-gray-900 underline"
-                      >
-                        Clear all
-                      </button>
-                    </div>
+            noticeTitle: "Rotation Output",
+            noticeItems: [
+              "Single PDF → rotated PDF directly",
+              "Multiple PDFs → ZIP with all files",
+              "All pages rotated by same angle",
+            ],
 
-                    <div className="space-y-2 max-h-56 overflow-y-auto">
-                      {files.map((file, idx) => (
-                        <div
-                          key={`${file.name}-${file.size}-${idx}`}
-                          className="flex items-center justify-between bg-white p-3 rounded-xl border border-gray-200"
-                        >
-                          <div className="flex items-center gap-2 min-w-0">
-                            <FileText className="w-4 h-4 text-orange-600 shrink-0" />
-                            <span className="text-sm font-medium truncate max-w-xs text-gray-700">
-                              {file.name}
-                            </span>
-                            <span className="text-xs text-gray-400 shrink-0">
-                              ({(file.size / 1024 / 1024).toFixed(2)} MB)
-                            </span>
-                          </div>
-                          <button
-                            type="button"
-                            onClick={() => removeFile(idx)}
-                            className="text-red-500 hover:bg-red-100 p-1 rounded"
-                            aria-label="Remove file"
-                          >
-                            <X className="w-4 h-4" />
-                          </button>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
+            breadcrumbItems: [
+              { label: "Home", href: "/" },
+              { label: "PDF Tools", href: "/pdf-tools" },
+              { label: "Rotate PDF" },
+            ],
 
-                {/* Rotation Options */}
-                <div className="rounded-2xl border border-gray-200 bg-gray-50 p-4">
-                  <div className="mb-3">
-                    <p className="text-sm font-semibold text-gray-700">Select rotation angle</p>
-                    <p className="text-xs text-gray-400">All pages in each PDF will be rotated by the same angle</p>
-                  </div>
+            trustPills: ["100% Free", "No Sign Up", "Lossless"],
 
-                  <div className="grid grid-cols-3 gap-3">
-                    <button
-                      type="button"
-                      onClick={() => setRotationAngle(90)}
-                      className={`flex flex-col items-center justify-center p-4 rounded-xl border-2 transition-all ${rotationAngle === 90
-                          ? "border-orange-600 bg-orange-50 shadow-md"
-                          : "border-gray-300 hover:border-orange-400 hover:bg-orange-50"
-                        }`}
-                    >
-                      <RotateCw className="w-8 h-8 text-orange-600 mb-2" />
-                      <span className="text-sm font-semibold text-gray-800">90° Right</span>
-                      <span className="text-xs text-gray-500 mt-1">Clockwise</span>
-                    </button>
+            supports: [
+              "Supports PDF files",
+              "Auto-deleted after processing",
+            ],
 
-                    <button
-                      type="button"
-                      onClick={() => setRotationAngle(180)}
-                      className={`flex flex-col items-center justify-center p-4 rounded-xl border-2 transition-all ${rotationAngle === 180
-                          ? "border-orange-600 bg-orange-50 shadow-md"
-                          : "border-gray-300 hover:border-orange-400 hover:bg-orange-50"
-                        }`}
-                    >
-                      <RefreshCw className="w-8 h-8 text-orange-600 mb-2" />
-                      <span className="text-sm font-semibold text-gray-800">180°</span>
-                      <span className="text-xs text-gray-500 mt-1">Flip</span>
-                    </button>
+            howToTitle: "How to Rotate PDF Pages",
 
-                    <button
-                      type="button"
-                      onClick={() => setRotationAngle(270)}
-                      className={`flex flex-col items-center justify-center p-4 rounded-xl border-2 transition-all ${rotationAngle === 270
-                          ? "border-orange-600 bg-orange-50 shadow-md"
-                          : "border-gray-300 hover:border-orange-400 hover:bg-orange-50"
-                        }`}
-                    >
-                      <RotateCcw className="w-8 h-8 text-orange-600 mb-2" />
-                      <span className="text-sm font-semibold text-gray-800">270° Left</span>
-                      <span className="text-xs text-gray-500 mt-1">Counter-clockwise</span>
-                    </button>
-                  </div>
-                </div>
+            howToSteps: [
+              {
+                n: "1",
+                title: "Upload Your PDF File(s)",
+                desc: "Upload one PDF or multiple PDFs at once for batch rotation. Drag and drop supported on all devices.",
+                color: "bg-orange-600",
+              },
+              {
+                n: "2",
+                title: "Choose Rotation Angle",
+                desc: "Select 90° clockwise, 180° flip, or 270° counter-clockwise. All pages in each PDF will be rotated by the same angle.",
+                color: "bg-red-600",
+              },
+              {
+                n: "3",
+                title: "Download Rotated PDF",
+                desc: "Single PDF downloads as a rotated PDF directly. Multiple PDFs download as a ZIP with all rotated files.",
+                color: "bg-purple-600",
+              },
+            ],
 
-                {/* Error */}
-                {error && (
-                  <div className="bg-red-50 border border-red-200 rounded-xl p-4 text-red-700 text-sm">
-                    <p className="font-semibold">{error}</p>
-                  </div>
-                )}
+            visualImage: "/images/rotate-pdf-visual.png",
+            visualAlt: "Rotate PDF illustration",
 
-                {/* Info Row + Button */}
-                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-1">
-                  <div className="flex items-start gap-2.5 bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 flex-1">
-                    <RotateCw className="w-4 h-4 text-gray-400 mt-0.5 shrink-0" />
-                    <div>
-                      <p className="text-sm font-medium text-gray-700 leading-none">PDF rotation</p>
-                      <p className="text-xs text-gray-400 mt-0.5">
-                        Single file → PDF · Multiple files → ZIP download
-                      </p>
-                    </div>
-                  </div>
+            whyTitle: "Why Choose PDFLinx Rotate PDF?",
 
-                  <button
-                    type="submit"
-                    disabled={loading || !files.length}
-                    className={`flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm text-white transition-all duration-200 shadow-sm sm:w-auto w-full ${files.length && !loading
-                        ? "bg-gradient-to-r from-orange-600 to-red-500 hover:from-orange-700 hover:to-red-600 hover:shadow-md active:scale-[0.98]"
-                        : "bg-gray-200 text-gray-400 cursor-not-allowed"
-                      }`}
-                  >
-                    <RotateCw className="w-4 h-4" />
-                    Rotate PDF
-                  </button>
-                </div>
+            whyItems: [
+              {
+                title: "Quick Rotation",
+                desc: "Rotate PDF pages by 90°, 180°, or 270° in seconds — perfect for fixing scanned documents and mobile photos taken at the wrong angle.",
+                icon: RotateCw,
+                iconColor: "text-orange-500",
+                bgColor: "bg-orange-50",
+              },
+              {
+                title: "Lossless Quality",
+                desc: "Rotating a PDF is a lossless operation — your text, images, and layout remain exactly the same quality. Nothing is re-compressed or degraded.",
+                icon: RefreshCw,
+                iconColor: "text-red-500",
+                bgColor: "bg-red-50",
+              },
+              {
+                title: "Batch Rotation",
+                desc: "Upload up to 10 PDFs at once — each processed separately and delivered as a ZIP download with all rotated files.",
+                icon: Download,
+                iconColor: "text-purple-500",
+                bgColor: "bg-purple-50",
+              },
+              {
+                title: "Works on Any Device",
+                desc: "Rotate PDFs on iPhone, Android, Windows, or Mac — no software installation needed. Fully browser-based.",
+                icon: FileText,
+                iconColor: "text-blue-500",
+                bgColor: "bg-blue-50",
+              },
+            ],
 
-                {/* Hints */}
-                <div className="text-xs text-gray-400 text-center space-y-0.5 pb-1">
-                  <p>⏱️ Multiple files may take a little longer — don&apos;t close this tab</p>
-                  <p>💡 Rotation is lossless — text, images, and layout stay the same quality</p>
-                </div>
-              </form>
-            </div>
+            relatedTitle: "You Might Also Need",
 
-            {/* Success */}
-            {success && (
-              <div
-                id="download-section"
-                className="mx-6 mb-6 rounded-2xl overflow-hidden border border-green-200 bg-gradient-to-br from-green-50 to-emerald-50"
-              >
-                <div className="flex flex-col items-center text-center px-8 py-10">
-                  <div className="relative w-16 h-16 mb-5">
-                    <div className="absolute inset-0 rounded-full bg-emerald-100 animate-ping opacity-30"></div>
-                    <div className="relative w-16 h-16 rounded-full bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center shadow-lg">
-                      <CheckCircle className="w-8 h-8 text-white" />
-                    </div>
-                  </div>
+            relatedTools: [
+              { label: "Merge PDF",     href: "/merge-pdf",     desc: "Combine multiple PDFs",             icon: GitMerge,   iconColor: "text-purple-500",  bgColor: "bg-purple-50"  },
+              { label: "Split PDF",     href: "/split-pdf",     desc: "Extract specific pages",            icon: Scissors,   iconColor: "text-pink-500",    bgColor: "bg-pink-50"    },
+              { label: "Compress PDF",  href: "/compress-pdf",  desc: "Reduce PDF file size",              icon: Minimize2,  iconColor: "text-green-500",   bgColor: "bg-green-50"   },
+              { label: "PDF to Word",   href: "/pdf-to-word",   desc: "Convert PDF to editable DOCX",      icon: FileText,   iconColor: "text-blue-500",    bgColor: "bg-blue-50"    },
+              { label: "Protect PDF",   href: "/protect-pdf",   desc: "Add password to PDF",               icon: Lock,       iconColor: "text-red-500",     bgColor: "bg-red-50"     },
+              { label: "OCR PDF",       href: "/ocr-pdf",       desc: "Make scanned PDFs searchable",      icon: Search,     iconColor: "text-violet-500",  bgColor: "bg-violet-50"  },
+            ],
 
-                  <h3 className="text-xl font-bold text-emerald-800 mb-1">
-                    Done! Your file{files.length > 1 ? "s" : ""} downloaded automatically 🎉
-                  </h3>
+            faqTitle: "Frequently Asked Questions",
 
-                  <p className="text-sm text-gray-600 mb-6">
-                    {files.length === 1
-                      ? "Your rotated PDF is ready in downloads."
-                      : "Check your downloads — ZIP contains all rotated PDF files."}
-                  </p>
+            faqs: [
+              { q: "Is the Rotate PDF tool free?", a: "Yes. PDFLinx Rotate PDF is completely free — no sign-up, no watermark, no hidden charges." },
+              { q: "What rotation angles are available?", a: "You can rotate by 90° clockwise (right), 180° (flip upside down), or 270° counter-clockwise (left)." },
+              { q: "Can I rotate multiple PDFs at once?", a: "Yes. Upload up to 10 PDFs. Each PDF's pages will be rotated by your chosen angle. Multiple files download as a ZIP." },
+              { q: "Will rotating a PDF reduce quality?", a: "No. Rotating a PDF is a lossless operation. Your text, images, and layout remain exactly the same quality." },
+              { q: "Can I rotate individual pages or all pages?", a: "Currently, all pages in each PDF are rotated by the same angle. This is perfect for fixing scanned documents or mobile photos." },
+              { q: "Are my files safe and private?", a: "Yes. Files are processed automatically and deleted shortly after processing. We never store your files permanently." },
+              { q: "Can I use this on my phone?", a: "Yes. PDFLinx works on Android and iOS mobile devices, tablets, and all desktop browsers — no app required." },
+              { q: "What if only some pages need rotation?", a: "Currently the tool rotates all pages by the same angle. For page-specific rotation, use the Split PDF tool to separate pages first, rotate individually, then Merge PDF to recombine." },
+            ],
 
-                  <div className="flex flex-wrap gap-3 justify-center">
-                    <button
-                      type="button"
-                      onClick={clearAll}
-                      className="inline-flex items-center gap-2 bg-white border border-emerald-300 text-emerald-700 text-sm font-semibold px-5 py-2.5 rounded-xl hover:bg-emerald-50 transition shadow-sm"
-                    >
-                      <FileText className="w-4 h-4" />
-                      Rotate another PDF
-                    </button>
+            ctaBadge: "✦ 100% Free",
+            ctaTitle: "Fix Your PDF Orientation Now",
+            ctaDescription: "Fast. Lossless. Private. No sign up required.",
+            ctaSubtext: "No limits. No hidden charges.",
+            ctaButton: "Choose PDF File",
 
-                    <a
-                      href="/merge-pdf"
-                      className="inline-flex items-center gap-2 bg-white border border-gray-200 text-gray-600 text-sm font-semibold px-5 py-2.5 rounded-xl hover:bg-gray-50 transition shadow-sm"
-                    >
-                      Merge PDF →
-                    </a>
-                  </div>
-                </div>
-              </div>
-            )}
-          </div>
+            seoSections: [
+              {
+                title: "Free Rotate PDF Tool — Fix Orientation Online in Seconds",
+                text: "Rotating PDF pages is essential when documents are scanned or photographed in the wrong orientation. PDFLinx Rotate PDF fixes the orientation instantly — rotate by 90°, 180°, or 270°, lossless quality, no watermark, no sign-up required.",
+              },
+              {
+                title: "What Rotation Angles Are Available?",
+                text: "Three rotation angles are supported: 90° clockwise (right turn), 180° flip (upside down), and 270° counter-clockwise (left turn). All pages in each PDF are rotated by the same selected angle.",
+              },
+              {
+                title: "Common Use Cases for PDF Rotation",
+                text: "Scanned documents placed sideways in the scanner. Phone photos converted to PDF in wrong orientation. Multi-page documents with some pages rotated incorrectly. Forms and applications that need to be right-side up. Receipts and invoices photographed at the wrong angle.",
+              },
+              {
+                title: "Privacy and File Security",
+                text: "Uploaded PDF files are processed securely and automatically deleted after rotation — never stored long-term, never shared with third parties. No account creation required. Your documents remain completely private.",
+              },
+            ],
 
-          <p className="text-center mt-6 text-gray-500 text-sm">
-            No account • No watermark • Files auto delete • Completely free • Supports single &amp; bulk uploads
-          </p>
-        </div>
-      </main>
-
-      {/* ==================== SEO CONTENT SECTION ==================== */}
-      <section className="mt-16 max-w-4xl mx-auto px-6 pb-16">
-        <div className="text-center mb-12">
-          <h2 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent mb-4">
-            Rotate PDF Pages Online Free – Fix Orientation in Seconds
-          </h2>
-          <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-            Scanned a document the wrong way? Photo came out sideways?
-            PDFLinx Rotate PDF lets you fix the orientation instantly.
-            Rotate by 90°, 180°, or 270° — works for single and bulk files.
-          </p>
-        </div>
-
-        {/* Benefits Grid */}
-        <div className="grid md:grid-cols-3 gap-8 mb-16">
-          <div className="bg-gradient-to-br from-orange-50 to-white p-8 rounded-2xl shadow-lg border border-orange-100 text-center hover:shadow-xl transition">
-            <div className="w-16 h-16 bg-orange-600 rounded-full flex items-center justify-center mx-auto mb-4">
-              <RotateCw className="w-8 h-8 text-white" />
-            </div>
-            <h3 className="text-xl font-semibold text-gray-800 mb-3">Quick Rotation</h3>
-            <p className="text-gray-600 text-sm">
-              Rotate PDF pages by 90°, 180°, or 270° in seconds.
-            </p>
-          </div>
-
-          <div className="bg-gradient-to-br from-red-50 to-white p-8 rounded-2xl shadow-lg border border-red-100 text-center hover:shadow-xl transition">
-            <div className="w-16 h-16 bg-red-600 rounded-full flex items-center justify-center mx-auto mb-4">
-              <FileText className="w-8 h-8 text-white" />
-            </div>
-            <h3 className="text-xl font-semibold text-gray-800 mb-3">Perfect for Scans</h3>
-            <p className="text-gray-600 text-sm">
-              Fix orientation of scanned documents, photos, and mobile uploads.
-            </p>
-          </div>
-
-          <div className="bg-gradient-to-br from-purple-50 to-white p-8 rounded-2xl shadow-lg border border-purple-100 text-center hover:shadow-xl transition">
-            <div className="w-16 h-16 bg-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
-              <Download className="w-8 h-8 text-white" />
-            </div>
-            <h3 className="text-xl font-semibold text-gray-800 mb-3">Bulk Support</h3>
-            <p className="text-gray-600 text-sm">
-              Rotate multiple PDFs at once. Download as ZIP.
-            </p>
-          </div>
-        </div>
-
-        {/* Steps */}
-        <div className="bg-white rounded-2xl shadow-lg p-8 md:p-12 border border-gray-100">
-          <h3 className="text-2xl md:text-3xl font-bold text-center mb-12 text-gray-800">
-            Rotate PDF in 3 Easy Steps
-          </h3>
-          <div className="grid md:grid-cols-3 gap-8">
-            <div className="text-center">
-              <div className="w-16 h-16 bg-gradient-to-r from-orange-600 to-orange-700 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold text-white shadow-lg">
-                1
-              </div>
-              <h4 className="text-lg font-semibold mb-2">Upload PDF(s)</h4>
-              <p className="text-gray-600 text-sm">Upload one PDF or multiple PDFs at once.</p>
-            </div>
-
-            <div className="text-center">
-              <div className="w-16 h-16 bg-gradient-to-r from-red-600 to-red-700 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold text-white shadow-lg">
-                2
-              </div>
-              <h4 className="text-lg font-semibold mb-2">Choose Angle</h4>
-              <p className="text-gray-600 text-sm">Select 90°, 180°, or 270° rotation.</p>
-            </div>
-
-            <div className="text-center">
-              <div className="w-16 h-16 bg-gradient-to-r from-purple-600 to-purple-700 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold text-white shadow-lg">
-                3
-              </div>
-              <h4 className="text-lg font-semibold mb-2">Download</h4>
-              <p className="text-gray-600 text-sm">Download rotated PDF (or ZIP if multiple files).</p>
-            </div>
-          </div>
-        </div>
-
-        <p className="text-center mt-12 text-base text-gray-600 italic max-w-3xl mx-auto">
-          PDFLinx helps you fix PDF orientation quickly — perfect for scans and mobile photos, always free.
-        </p>
-      </section>
-
-      <section className="max-w-4xl mx-auto px-4 py-14 text-slate-700">
-        <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-6">
-          Rotate PDF Pages – Fix Orientation Online by PDFLinx
-        </h2>
-
-        <p className="text-base leading-7 mb-6">
-          Rotating PDF pages is essential when documents are scanned or photographed in the wrong orientation.
-          Whether you took a photo with your phone sideways or a scanner captured the document upside down,
-          <span className="font-medium text-slate-900"> PDFLinx Rotate PDF tool</span>{" "}
-          allows you to fix the orientation online in seconds — no software installation needed.
-        </p>
-
-        <h3 className="text-xl font-semibold text-slate-900 mb-3">
-          What Does Rotating a PDF Mean?
-        </h3>
-        <p className="leading-7 mb-6">
-          Rotating a PDF means changing the orientation of the pages by turning them clockwise or counterclockwise.
-          Common rotation angles are 90° (quarter turn), 180° (half turn/flip), and 270° (three-quarter turn).
-          This is a lossless operation that doesn't affect the quality of your content.
-        </p>
-
-        <h3 className="text-xl font-semibold text-slate-900 mb-3">
-          Why Do You Need to Rotate PDF Pages?
-        </h3>
-        <ul className="space-y-2 mb-6 list-disc pl-6">
-          <li>Fix orientation of scanned documents that were placed wrong in the scanner</li>
-          <li>Correct mobile photos taken in portrait when they should be landscape (or vice versa)</li>
-          <li>Adjust PDFs received from others that display sideways or upside down</li>
-          <li>Prepare documents for printing in the correct orientation</li>
-          <li>Make multi-page PDFs easier to read when some pages are rotated incorrectly</li>
-        </ul>
-
-        <h3 className="text-xl font-semibold text-slate-900 mb-3">
-          How to Rotate PDF Pages Online
-        </h3>
-        <ol className="space-y-2 mb-6 list-decimal pl-6">
-          <li>Upload your PDF file using the Rotate PDF tool</li>
-          <li>Choose rotation angle: 90° clockwise, 180° flip, or 270° counterclockwise</li>
-          <li>Click the "Rotate PDF" button</li>
-          <li>Download your rotated PDF instantly</li>
-        </ol>
-
-        <p className="mb-6">
-          All pages in the PDF will be rotated by your selected angle. The process is fast and maintains original quality.
-        </p>
-
-        <div className="bg-slate-50 border border-slate-200 rounded-xl p-6 mb-6">
-          <h3 className="text-xl font-semibold text-slate-900 mb-4">
-            Features of PDFLinx Rotate PDF Tool
-          </h3>
-          <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 list-disc pl-5">
-            <li>Free online PDF rotation</li>
-            <li>Rotate by 90°, 180°, or 270°</li>
-            <li>No software installation needed</li>
-            <li>Lossless quality (no degradation)</li>
-            <li>Works on all devices and browsers</li>
-            <li>Bulk rotation (multiple PDFs at once)</li>
-            <li>No watermark on output files</li>
-            <li>Files deleted after processing</li>
-            <li>Fast processing in seconds</li>
-          </ul>
-        </div>
-
-        <h3 className="text-xl font-semibold text-slate-900 mb-3">
-          Who Should Use the Rotate PDF Tool?
-        </h3>
-        <ul className="space-y-2 mb-6 list-disc pl-6">
-          <li><strong>Students:</strong> Fix scanned assignments and notes</li>
-          <li><strong>Professionals:</strong> Correct orientation of business documents</li>
-          <li><strong>Photographers:</strong> Adjust photo PDFs from mobile devices</li>
-          <li><strong>Office Workers:</strong> Prepare documents for printing</li>
-          <li><strong>Anyone:</strong> Fix PDFs received in wrong orientation</li>
-        </ul>
-
-        <h3 className="text-xl font-semibold text-slate-900 mb-3">
-          Common Use Cases
-        </h3>
-        <ul className="space-y-2 mb-6 list-disc pl-6">
-          <li>Scanned documents placed sideways in the scanner</li>
-          <li>Phone photos converted to PDF in wrong orientation</li>
-          <li>Multi-page documents with some pages rotated incorrectly</li>
-          <li>Forms and applications that need to be right-side up</li>
-          <li>Receipts and invoices photographed at wrong angle</li>
-        </ul>
-
-        <h3 className="text-xl font-semibold text-slate-900 mb-3">
-          Is PDFLinx Rotate PDF Safe?
-        </h3>
-        <p className="leading-7 mb-6">
-          Yes. PDFLinx is designed with privacy in mind. Uploaded PDF files are processed automatically
-          and removed shortly after rotation. Your files are never shared, stored permanently, or accessed by anyone.
-        </p>
-
-        <h3 className="text-xl font-semibold text-slate-900 mb-3">
-          Rotate PDFs Anytime, Anywhere
-        </h3>
-        <p className="leading-7">
-          PDFLinx works seamlessly on Windows, macOS, Linux, Android, and iOS.
-          All you need is an internet connection and a modern browser to rotate your PDF pages
-          anytime, anywhere — on desktop, tablet, or mobile phone.
-        </p>
-      </section>
-
-      {/* FAQs (UI) */}
-      <section className="py-16">
-        <div className="max-w-4xl mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center mb-10">Frequently Asked Questions</h2>
-
-          <div className="space-y-4">
-            <details className="bg-white rounded-lg shadow-sm p-5">
-              <summary className="font-semibold cursor-pointer">Is the Rotate PDF tool free?</summary>
-              <p className="mt-2 text-gray-600">
-                Yes. PDFLinx Rotate PDF is free to use — no sign-up, no watermark.
-              </p>
-            </details>
-
-            <details className="bg-white rounded-lg shadow-sm p-5">
-              <summary className="font-semibold cursor-pointer">What rotation angles are available?</summary>
-              <p className="mt-2 text-gray-600">
-                You can rotate by 90° clockwise (right), 180° (flip upside down), or 270° counterclockwise (left).
-              </p>
-            </details>
-
-            <details className="bg-white rounded-lg shadow-sm p-5">
-              <summary className="font-semibold cursor-pointer">Can I rotate multiple PDFs at once?</summary>
-              <p className="mt-2 text-gray-600">
-                Yes. Upload up to 10 PDFs. Each PDF's pages will be rotated by your chosen angle. Multiple files download as a ZIP.
-              </p>
-            </details>
-
-            <details className="bg-white rounded-lg shadow-sm p-5">
-              <summary className="font-semibold cursor-pointer">Will rotating a PDF reduce quality?</summary>
-              <p className="mt-2 text-gray-600">
-                No. Rotating a PDF is a lossless operation. Your text, images, and layout remain exactly the same quality.
-              </p>
-            </details>
-
-            <details className="bg-white rounded-lg shadow-sm p-5">
-              <summary className="font-semibold cursor-pointer">Are my files safe?</summary>
-              <p className="mt-2 text-gray-600">
-                Yes. Files are processed automatically and deleted shortly after processing. We never store your files permanently.
-              </p>
-            </details>
-
-            <details className="bg-white rounded-lg shadow-sm p-5">
-              <summary className="font-semibold cursor-pointer">Can I rotate individual pages or all pages?</summary>
-              <p className="mt-2 text-gray-600">
-                Currently, all pages in each PDF are rotated by the same angle. This is perfect for fixing scanned documents or mobile photos.
-              </p>
-            </details>
-          </div>
-        </div>
-      </section>
-
-      <RelatedToolsSection currentPage="rotate-pdf" />
+            showPdfTypes: false,
+          },
+        }}
+      />
     </>
   );
 }
@@ -875,72 +494,187 @@ export default function RotatePdf() {
 
 
 
-// 'use client';
 
-// import { useState } from 'react';
-// import { PDFDocument } from 'pdf-lib';
-// import { Upload, RotateCw, Download, CheckCircle } from 'lucide-react';
-// import Script from 'next/script';
+
+
+
+
+
+
+// // app/rotate-pdf/page.jsx
+// "use client";
+
+// import { useMemo, useState } from "react";
+// import {
+//   Upload,
+//   FileText,
+//   Download,
+//   CheckCircle,
+//   X,
+//   RotateCw,
+//   RotateCcw,
+//   RefreshCw,
+// } from "lucide-react";
+// import Script from "next/script";
+// import RelatedToolsSection from "@/components/RelatedTools";
 
 // export default function RotatePdf() {
-//   const [file, setFile] = useState(null);
+//   const [files, setFiles] = useState([]);
+//   const [rotationAngle, setRotationAngle] = useState(90); // 90, 180, 270
 //   const [loading, setLoading] = useState(false);
-//   const [rotatedUrl, setRotatedUrl] = useState(null);
+//   const [success, setSuccess] = useState(false);
+//   const [error, setError] = useState("");
+//   const [progress, setProgress] = useState(0);
 
-//   const handleFile = (e) => {
-//     const selected = e.target.files[0];
-//     if (selected) setFile(selected);
+//   const totalSizeMb = useMemo(() => {
+//     return files.reduce((sum, f) => sum + (f?.size || 0), 0) / 1024 / 1024;
+//   }, [files]);
+
+//   const clearAll = () => {
+//     setFiles([]);
+//     setRotationAngle(90);
+//     setSuccess(false);
+//     setError("");
 //   };
 
-//   const rotate = async (angle) => {
-//     if (!file) return;
+//   const removeFile = (idx) => {
+//     setFiles((prev) => prev.filter((_, i) => i !== idx));
+//     setSuccess(false);
+//     setError("");
+//   };
+
+//   const downloadBlob = (blob, filename) => {
+//     const url = window.URL.createObjectURL(blob);
+//     const a = document.createElement("a");
+//     a.href = url;
+//     a.download = filename;
+//     a.click();
+//     window.URL.revokeObjectURL(url);
+//   };
+
+//   const handleSubmit = async (e) => {
+//     e.preventDefault();
+
+//     if (!files.length) {
+//       setError("Please select at least one PDF file first!");
+//       return;
+//     }
+
 //     setLoading(true);
+//     setProgress(0);
+//     setSuccess(false);
+//     setError("");
+
+//     const formData = new FormData();
+//     for (const f of files) formData.append("files", f);
+//     formData.append("angle", String(rotationAngle));
+
+//     let progressInterval = setInterval(() => {
+//       setProgress((prev) => {
+//         if (prev >= 88) return prev;
+//         const increment = prev < 35 ? 8 : prev < 65 ? 5 : 2;
+//         return prev + increment;
+//       });
+//     }, 300);
 
 //     try {
-//       const arrayBuffer = await file.arrayBuffer();
-//       const pdfDoc = await PDFDocument.load(arrayBuffer);
-//       const pages = pdfDoc.getPages();
-
-//       pages.forEach((page) => {
-//         const { width, height } = page.getSize();
-//         page.setRotation((page.getRotation().angle + angle + 360) % 360);
-//         // Adjust position if needed after rotation
-//         if (angle === 90 || angle === 270) {
-//           page.setSize(height, width);
-//         }
+//       const res = await fetch("/convert/rotate-pdf", {
+//         method: "POST",
+//         body: formData,
 //       });
 
-//       const pdfBytes = await pdfDoc.save();
-//       const blob = new Blob([pdfBytes], { type: 'application/pdf' });
-//       setRotatedUrl(URL.createObjectURL(blob));
-//     } catch (err) {
-//       alert('Error rotating PDF. Please try again.');
-//     }
-//     setLoading(false);
-//   };
+//       if (!res.ok) {
+//         let msg = "Rotation failed";
+//         try {
+//           const j = await res.json();
+//           msg = j?.error || msg;
+//         } catch { }
+//         throw new Error(msg);
+//       }
 
+//       const contentType = res.headers.get("content-type") || "";
+
+//       clearInterval(progressInterval);
+//       setProgress(100);
+
+//       if (contentType.includes("application/pdf")) {
+//         const blob = await res.blob();
+//         const outName = files[0].name.replace(/\.pdf$/i, "") + "-rotated.pdf";
+//         downloadBlob(blob, outName);
+//         setSuccess(true);
+//       } else if (contentType.includes("application/zip")) {
+//         const blob = await res.blob();
+//         downloadBlob(blob, "pdflinx-rotated-pdfs.zip");
+//         setSuccess(true);
+//       } else {
+//         let data = null;
+//         try {
+//           data = await res.json();
+//         } catch { }
+//         throw new Error(data?.error || "Unexpected response from server");
+//       }
+
+//       setTimeout(() => {
+//         const downloadSection = document.getElementById("download-section");
+//         if (downloadSection) {
+//           downloadSection.scrollIntoView({
+//             behavior: "smooth",
+//             block: "center",
+//           });
+//         }
+//       }, 300);
+//     } catch (err) {
+//       const msg = (err?.message || "Something went wrong. Please try again.").toString();
+//       setError(msg);
+//       console.error(err);
+//     } finally {
+//       clearInterval(progressInterval);
+//       setTimeout(() => {
+//         setLoading(false);
+//         setProgress(0);
+//       }, 800);
+//     }
+//   };
 //   return (
 //     <>
+//       {/* ==================== SEO SCHEMAS ==================== */}
 //       <Script
 //         id="howto-schema-rotate"
 //         type="application/ld+json"
 //         strategy="afterInteractive"
 //         dangerouslySetInnerHTML={{
-//           __html: JSON.stringify({
-//             "@context": "https://schema.org",
-//             "@type": "HowTo",
-//             name: "How to Rotate PDF Online for Free",
-//             description: "Rotate PDF pages 90, 180, 270 degrees instantly.",
-//             url: "https://pdflinx.com/rotate-pdf",
-//             step: [
-//               { "@type": "HowToStep", name: "Upload PDF", text: "Select your PDF file." },
-//               { "@type": "HowToStep", name: "Choose Angle", text: "Select 90°, 180°, or 270° rotation." },
-//               { "@type": "HowToStep", name: "Download", text: "Download rotated PDF instantly." }
-//             ],
-//             totalTime: "PT30S",
-//             estimatedCost: { "@type": "MonetaryAmount", value: "0", currency: "USD" },
-//             image: "https://pdflinx.com/og-image.png"
-//           }, null, 2),
+//           __html: JSON.stringify(
+//             {
+//               "@context": "https://schema.org",
+//               "@type": "HowTo",
+//               name: "How to Rotate PDF Pages Online for Free",
+//               description:
+//                 "Rotate PDF pages clockwise or counterclockwise by 90°, 180°, or 270°. Fix orientation of scanned documents, photos, and PDFs.",
+//               url: "https://pdflinx.com/rotate-pdf",
+//               step: [
+//                 {
+//                   "@type": "HowToStep",
+//                   name: "Upload PDF file(s)",
+//                   text: "Upload a single PDF or select multiple PDFs at the same time.",
+//                 },
+//                 {
+//                   "@type": "HowToStep",
+//                   name: "Choose rotation angle",
+//                   text: "Select 90°, 180°, or 270° rotation angle.",
+//                 },
+//                 {
+//                   "@type": "HowToStep",
+//                   name: "Rotate and download",
+//                   text: "Click Rotate PDF. Download the rotated PDF (or ZIP if multiple files).",
+//                 },
+//               ],
+//               totalTime: "PT15S",
+//               estimatedCost: { "@type": "MonetaryAmount", value: "0", currency: "USD" },
+//               image: "https://pdflinx.com/og-image.png",
+//             },
+//             null,
+//             2
+//           ),
 //         }}
 //       />
 
@@ -949,171 +683,940 @@ export default function RotatePdf() {
 //         type="application/ld+json"
 //         strategy="afterInteractive"
 //         dangerouslySetInnerHTML={{
-//           __html: JSON.stringify({
-//             "@context": "https://schema.org",
-//             "@type": "BreadcrumbList",
-//             itemListElement: [
-//               { "@type": "ListItem", position: 1, name: "Home", item: "https://pdflinx.com" },
-//               { "@type": "ListItem", position: 2, name: "Rotate PDF", item: "https://pdflinx.com/rotate-pdf" }
-//             ]
-//           }, null, 2),
+//           __html: JSON.stringify(
+//             {
+//               "@context": "https://schema.org",
+//               "@type": "BreadcrumbList",
+//               itemListElement: [
+//                 { "@type": "ListItem", position: 1, name: "Home", item: "https://pdflinx.com" },
+//                 { "@type": "ListItem", position: 2, name: "Rotate PDF", item: "https://pdflinx.com/rotate-pdf" },
+//               ],
+//             },
+//             null,
+//             2
+//           ),
 //         }}
 //       />
 
-//       <main className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-amber-50 py-12 px-4">
+//       <Script
+//         id="faq-schema-rotate"
+//         type="application/ld+json"
+//         strategy="afterInteractive"
+//         dangerouslySetInnerHTML={{
+//           __html: JSON.stringify(
+//             {
+//               "@context": "https://schema.org",
+//               "@type": "FAQPage",
+//               mainEntity: [
+//                 {
+//                   "@type": "Question",
+//                   name: "What does Rotate PDF mean?",
+//                   acceptedAnswer: {
+//                     "@type": "Answer",
+//                     text:
+//                       "Rotate PDF means changing the orientation of PDF pages by turning them clockwise or counterclockwise. Common rotation angles are 90°, 180°, and 270°.",
+//                   },
+//                 },
+//                 {
+//                   "@type": "Question",
+//                   name: "Can I rotate all pages at once?",
+//                   acceptedAnswer: {
+//                     "@type": "Answer",
+//                     text:
+//                       "Yes. When you upload a PDF and select a rotation angle, all pages in that PDF will be rotated by the same angle.",
+//                   },
+//                 },
+//                 {
+//                   "@type": "Question",
+//                   name: "Can I rotate multiple PDFs at once?",
+//                   acceptedAnswer: {
+//                     "@type": "Answer",
+//                     text:
+//                       "Yes. Upload up to 10 PDFs. Each PDF's pages will be rotated by your chosen angle. Multiple files download as a ZIP.",
+//                   },
+//                 },
+//                 {
+//                   "@type": "Question",
+//                   name: "Will rotating a PDF reduce quality?",
+//                   acceptedAnswer: {
+//                     "@type": "Answer",
+//                     text:
+//                       "No. Rotating a PDF is a lossless operation. Your text, images, and layout remain exactly the same quality.",
+//                   },
+//                 },
+//                 {
+//                   "@type": "Question",
+//                   name: "Are my files safe?",
+//                   acceptedAnswer: {
+//                     "@type": "Answer",
+//                     text:
+//                       "Yes. Files are processed automatically and deleted after processing. No sign-up required.",
+//                   },
+//                 },
+//               ],
+//             },
+//             null,
+//             2
+//           ),
+//         }}
+//       />
+
+//       {/* ==================== MAIN TOOL SECTION ==================== */}
+//       <main className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-red-50 py-8 px-4">
 //         <div className="max-w-4xl mx-auto">
-//           <div className="text-center mb-12">
-//             <h1 className="text-4xl md:text-6xl font-extrabold bg-gradient-to-r from-orange-600 to-amber-600 bg-clip-text text-transparent mb-6">
-//               Rotate PDF <br /> Online (Free)
+//           {/* Header */}
+//           <div className="text-center mb-8">
+//             <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent mb-4">
+//               Rotate PDF Online Free
+//               <br />
+//               <span className="text-2xl md:text-3xl font-medium">
+//                 No Signup · No Watermark · Instant Download
+//               </span>
 //             </h1>
-//             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-//               Rotate PDF pages 90°, 180°, or 270° instantly. Fix upside-down or sideways PDFs — 100% free, no signup.
+//             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+//               Rotate PDF pages online free — no signup, no watermark, no software needed.
+//               Fix sideways or upside-down PDFs by rotating all pages 90°, 180°, or 270°.
+//               Works for single files and batch uploads.
 //             </p>
 //           </div>
 
-//           <div className="bg-white rounded-3xl shadow-2xl p-12 border border-gray-100">
-//             <label className="block cursor-pointer">
-//               <div className="border-4 border-dashed border-orange-300 rounded-3xl p-20 text-center hover:border-amber-500 transition">
-//                 <Upload className="w-24 h-24 mx-auto text-orange-600 mb-8" />
-//                 <span className="text-3xl font-bold text-gray-800 block mb-4">
-//                   Drop PDF here or click to upload
-//                 </span>
-//                 <span className="text-xl text-gray-600">Single or multi-page PDFs supported</span>
+//           {/* STEP STRIP */}
+//           <div className="grid grid-cols-3 mb-4 rounded-2xl overflow-hidden border border-gray-100 bg-white shadow-sm">
+//             {[
+//               { n: "1", label: "Upload PDF", sub: "Single or multiple files" },
+//               { n: "2", label: "Choose Angle", sub: "90°, 180°, or 270°" },
+//               { n: "3", label: "Download PDF", sub: "Or ZIP for batch" },
+//             ].map((s, i) => (
+//               <div
+//                 key={i}
+//                 className={`flex flex-col items-center py-4 px-2 text-center ${i < 2 ? "border-r border-gray-100" : ""}`}
+//               >
+//                 <div className="w-8 h-8 rounded-full bg-gradient-to-br from-orange-500 to-red-500 flex items-center justify-center text-white text-sm font-bold mb-1 shadow-sm">
+//                   {s.n}
+//                 </div>
+//                 <p className="text-xs font-semibold text-gray-700">{s.label}</p>
+//                 <p className="text-xs text-gray-400 hidden sm:block">{s.sub}</p>
 //               </div>
-//               <input type="file" accept=".pdf" onChange={handleFile} className="hidden" />
-//             </label>
+//             ))}
+//           </div>
 
-//             {file && (
-//               <div className="mt-12">
-//                 <p className="text-center text-xl font-semibold mb-8">Selected: {file.name}</p>
-//                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-//                   <button
-//                     onClick={() => rotate(90)}
-//                     disabled={loading}
-//                     className="bg-gradient-to-r from-orange-600 to-amber-600 text-white font-bold py-6 rounded-2xl hover:from-orange-700 hover:to-amber-700 transition shadow-xl flex items-center justify-center gap-4"
+//           {/* MAIN CARD */}
+//           <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
+//             <div className={`relative transition-all duration-300 ${loading ? "pointer-events-none" : ""}`}>
+//               {/* Loading overlay */}
+//               {loading && (
+//                 <div className="absolute inset-0 z-10 bg-white/70 backdrop-blur-sm rounded-2xl flex flex-col items-center justify-center gap-4">
+//                   <div className="relative w-16 h-16">
+//                     <div className="absolute inset-0 rounded-full border-4 border-orange-100"></div>
+//                     <div className="absolute inset-0 rounded-full border-4 border-orange-500 border-t-transparent animate-spin"></div>
+//                     <div
+//                       className="absolute inset-2 rounded-full border-4 border-red-200 border-b-transparent animate-spin"
+//                       style={{ animationDirection: "reverse", animationDuration: "0.8s" }}
+//                     ></div>
+//                   </div>
+
+//                   <div className="text-center">
+//                     <p className="text-base font-semibold text-gray-700">
+//                       Rotating your file{files.length > 1 ? "s" : ""}…
+//                     </p>
+//                     <p className="text-sm text-gray-400 mt-1">
+//                       {progress < 30
+//                         ? "Uploading…"
+//                         : progress < 70
+//                           ? "Applying rotation…"
+//                           : "Almost done…"}
+//                     </p>
+//                   </div>
+
+//                   <div className="w-48 h-1.5 bg-gray-100 rounded-full overflow-hidden">
+//                     <div
+//                       className="h-full bg-gradient-to-r from-orange-500 to-red-500 rounded-full transition-all duration-500"
+//                       style={{ width: `${progress}%` }}
+//                     />
+//                   </div>
+//                   <p className="text-xs text-gray-400 font-medium">{progress}%</p>
+//                 </div>
+//               )}
+
+//               <form onSubmit={handleSubmit} className="p-8 space-y-5">
+//                 {/* Dropzone */}
+//                 <label className="block cursor-pointer group">
+//                   <div
+//                     className={`relative rounded-xl border-2 border-dashed transition-all duration-200 p-8 text-center ${files.length
+//                         ? "border-green-400 bg-green-50"
+//                         : "border-gray-200 hover:border-orange-400 hover:bg-orange-50/40"
+//                       }`}
 //                   >
-//                     <RotateCw size={32} />
-//                     Rotate 90° Clockwise
-//                   </button>
+//                     <div
+//                       className={`w-14 h-14 rounded-2xl mx-auto mb-4 flex items-center justify-center transition-colors duration-200 ${files.length ? "bg-green-100" : "bg-orange-50 group-hover:bg-orange-100"
+//                         }`}
+//                     >
+//                       {files.length ? (
+//                         <CheckCircle className="w-7 h-7 text-green-500" />
+//                       ) : (
+//                         <Upload className="w-7 h-7 text-orange-600" />
+//                       )}
+//                     </div>
+
+//                     {files.length ? (
+//                       <>
+//                         <p className="text-base font-semibold text-green-700">
+//                           {files.length} file{files.length > 1 ? "s" : ""} selected
+//                         </p>
+//                         <p className="text-xs text-gray-400 mt-1">Click to change selection</p>
+
+//                         <div className="flex flex-wrap justify-center gap-2 mt-3">
+//                           {files.slice(0, 5).map((f, i) => (
+//                             <span
+//                               key={i}
+//                               className="inline-flex items-center gap-1 bg-white border border-green-200 text-green-700 text-xs font-medium px-2.5 py-1 rounded-full shadow-sm"
+//                             >
+//                               <FileText className="w-3 h-3" />
+//                               {f.name.length > 24 ? f.name.slice(0, 22) + "…" : f.name}
+//                             </span>
+//                           ))}
+//                           {files.length > 5 && (
+//                             <span className="inline-flex items-center bg-gray-100 text-gray-500 text-xs font-medium px-2.5 py-1 rounded-full">
+//                               +{files.length - 5} more
+//                             </span>
+//                           )}
+//                         </div>
+
+//                         <p className="text-xs text-gray-400 mt-3">
+//                           Total selected: {totalSizeMb.toFixed(2)} MB
+//                         </p>
+//                       </>
+//                     ) : (
+//                       <>
+//                         <p className="text-base font-semibold text-gray-700">
+//                           Drop your PDF file(s) here
+//                         </p>
+//                         <p className="text-sm text-gray-400 mt-1">
+//                           or click to browse · PDF files only
+//                         </p>
+
+//                         <div className="flex flex-wrap justify-center gap-2 mt-4">
+//                           {["✓ No signup", "✓ No watermark", "✓ Batch rotate", "✓ Auto-deleted"].map((t) => (
+//                             <span
+//                               key={t}
+//                               className="bg-orange-50 text-orange-700 border border-orange-100 text-xs font-medium px-2.5 py-1 rounded-full"
+//                             >
+//                               {t}
+//                             </span>
+//                           ))}
+//                         </div>
+//                       </>
+//                     )}
+//                   </div>
+
+//                   <input
+//                     type="file"
+//                     multiple
+//                     accept=".pdf,application/pdf"
+//                     onChange={(e) => {
+//                       const picked = Array.from(e.target.files || []);
+//                       if (picked.length > 10) {
+//                         setError("Maximum 10 files allowed.");
+//                         return;
+//                       }
+//                       setFiles(picked);
+//                       setSuccess(false);
+//                       setError("");
+//                     }}
+//                     className="hidden"
+//                     required
+//                   />
+//                 </label>
+
+//                 {/* Selected Files List */}
+//                 {files.length > 0 && (
+//                   <div className="rounded-2xl border border-gray-200 bg-gray-50 p-4">
+//                     <div className="flex items-center justify-between mb-3">
+//                       <div>
+//                         <p className="text-sm font-semibold text-gray-700">Selected files</p>
+//                         <p className="text-xs text-gray-400">Remove any file before rotating</p>
+//                       </div>
+//                       <button
+//                         type="button"
+//                         onClick={clearAll}
+//                         className="text-xs font-semibold text-gray-600 hover:text-gray-900 underline"
+//                       >
+//                         Clear all
+//                       </button>
+//                     </div>
+
+//                     <div className="space-y-2 max-h-56 overflow-y-auto">
+//                       {files.map((file, idx) => (
+//                         <div
+//                           key={`${file.name}-${file.size}-${idx}`}
+//                           className="flex items-center justify-between bg-white p-3 rounded-xl border border-gray-200"
+//                         >
+//                           <div className="flex items-center gap-2 min-w-0">
+//                             <FileText className="w-4 h-4 text-orange-600 shrink-0" />
+//                             <span className="text-sm font-medium truncate max-w-xs text-gray-700">
+//                               {file.name}
+//                             </span>
+//                             <span className="text-xs text-gray-400 shrink-0">
+//                               ({(file.size / 1024 / 1024).toFixed(2)} MB)
+//                             </span>
+//                           </div>
+//                           <button
+//                             type="button"
+//                             onClick={() => removeFile(idx)}
+//                             className="text-red-500 hover:bg-red-100 p-1 rounded"
+//                             aria-label="Remove file"
+//                           >
+//                             <X className="w-4 h-4" />
+//                           </button>
+//                         </div>
+//                       ))}
+//                     </div>
+//                   </div>
+//                 )}
+
+//                 {/* Rotation Options */}
+//                 <div className="rounded-2xl border border-gray-200 bg-gray-50 p-4">
+//                   <div className="mb-3">
+//                     <p className="text-sm font-semibold text-gray-700">Select rotation angle</p>
+//                     <p className="text-xs text-gray-400">All pages in each PDF will be rotated by the same angle</p>
+//                   </div>
+
+//                   <div className="grid grid-cols-3 gap-3">
+//                     <button
+//                       type="button"
+//                       onClick={() => setRotationAngle(90)}
+//                       className={`flex flex-col items-center justify-center p-4 rounded-xl border-2 transition-all ${rotationAngle === 90
+//                           ? "border-orange-600 bg-orange-50 shadow-md"
+//                           : "border-gray-300 hover:border-orange-400 hover:bg-orange-50"
+//                         }`}
+//                     >
+//                       <RotateCw className="w-8 h-8 text-orange-600 mb-2" />
+//                       <span className="text-sm font-semibold text-gray-800">90° Right</span>
+//                       <span className="text-xs text-gray-500 mt-1">Clockwise</span>
+//                     </button>
+
+//                     <button
+//                       type="button"
+//                       onClick={() => setRotationAngle(180)}
+//                       className={`flex flex-col items-center justify-center p-4 rounded-xl border-2 transition-all ${rotationAngle === 180
+//                           ? "border-orange-600 bg-orange-50 shadow-md"
+//                           : "border-gray-300 hover:border-orange-400 hover:bg-orange-50"
+//                         }`}
+//                     >
+//                       <RefreshCw className="w-8 h-8 text-orange-600 mb-2" />
+//                       <span className="text-sm font-semibold text-gray-800">180°</span>
+//                       <span className="text-xs text-gray-500 mt-1">Flip</span>
+//                     </button>
+
+//                     <button
+//                       type="button"
+//                       onClick={() => setRotationAngle(270)}
+//                       className={`flex flex-col items-center justify-center p-4 rounded-xl border-2 transition-all ${rotationAngle === 270
+//                           ? "border-orange-600 bg-orange-50 shadow-md"
+//                           : "border-gray-300 hover:border-orange-400 hover:bg-orange-50"
+//                         }`}
+//                     >
+//                       <RotateCcw className="w-8 h-8 text-orange-600 mb-2" />
+//                       <span className="text-sm font-semibold text-gray-800">270° Left</span>
+//                       <span className="text-xs text-gray-500 mt-1">Counter-clockwise</span>
+//                     </button>
+//                   </div>
+//                 </div>
+
+//                 {/* Error */}
+//                 {error && (
+//                   <div className="bg-red-50 border border-red-200 rounded-xl p-4 text-red-700 text-sm">
+//                     <p className="font-semibold">{error}</p>
+//                   </div>
+//                 )}
+
+//                 {/* Info Row + Button */}
+//                 <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-1">
+//                   <div className="flex items-start gap-2.5 bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 flex-1">
+//                     <RotateCw className="w-4 h-4 text-gray-400 mt-0.5 shrink-0" />
+//                     <div>
+//                       <p className="text-sm font-medium text-gray-700 leading-none">PDF rotation</p>
+//                       <p className="text-xs text-gray-400 mt-0.5">
+//                         Single file → PDF · Multiple files → ZIP download
+//                       </p>
+//                     </div>
+//                   </div>
+
 //                   <button
-//                     onClick={() => rotate(180)}
-//                     disabled={loading}
-//                     className="bg-gradient-to-r from-amber-600 to-orange-600 text-white font-bold py-6 rounded-2xl hover:from-amber-700 hover:to-orange-700 transition shadow-xl flex items-center justify-center gap-4"
+//                     type="submit"
+//                     disabled={loading || !files.length}
+//                     className={`flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm text-white transition-all duration-200 shadow-sm sm:w-auto w-full ${files.length && !loading
+//                         ? "bg-gradient-to-r from-orange-600 to-red-500 hover:from-orange-700 hover:to-red-600 hover:shadow-md active:scale-[0.98]"
+//                         : "bg-gray-200 text-gray-400 cursor-not-allowed"
+//                       }`}
 //                   >
-//                     <RotateCw size={32} className="rotate-180" />
-//                     Rotate 180°
-//                   </button>
-//                   <button
-//                     onClick={() => rotate(270)}
-//                     disabled={loading}
-//                     className="bg-gradient-to-r from-orange-600 to-amber-600 text-white font-bold py-6 rounded-2xl hover:from-orange-700 hover:to-amber-700 transition shadow-xl flex items-center justify-center gap-4"
-//                   >
-//                     <RotateCw size={32} className="rotate-90" />
-//                     Rotate 270° Clockwise
+//                     <RotateCw className="w-4 h-4" />
+//                     Rotate PDF
 //                   </button>
 //                 </div>
-//               </div>
-//             )}
 
-//             {loading && (
-//               <div className="text-center mt-12">
-//                 <div className="inline-block animate-spin rounded-full h-20 w-20 border-t-4 border-b-4 border-orange-600"></div>
-//                 <p className="mt-6 text-2xl font-bold text-orange-600">Rotating PDF...</p>
-//               </div>
-//             )}
+//                 {/* Hints */}
+//                 <div className="text-xs text-gray-400 text-center space-y-0.5 pb-1">
+//                   <p>⏱️ Multiple files may take a little longer — don&apos;t close this tab</p>
+//                   <p>💡 Rotation is lossless — text, images, and layout stay the same quality</p>
+//                 </div>
+//               </form>
+//             </div>
 
-//             {rotatedUrl && (
-//               <div className="text-center mt-12">
-//                 <p className="text-3xl font-bold text-green-600 mb-6">PDF Rotated Successfully!</p>
-//                 <a
-//                   href={rotatedUrl}
-//                   download="rotated-pdf.pdf"
-//                   className="inline-flex items-center gap-4 bg-gradient-to-r from-green-600 to-teal-600 text-white font-bold text-xl px-12 py-6 rounded-2xl hover:from-green-700 hover:to-teal-700 transition shadow-2xl"
-//                 >
-//                   <Download size={36} />
-//                   Download Rotated PDF
-//                 </a>
+//             {/* Success */}
+//             {success && (
+//               <div
+//                 id="download-section"
+//                 className="mx-6 mb-6 rounded-2xl overflow-hidden border border-green-200 bg-gradient-to-br from-green-50 to-emerald-50"
+//               >
+//                 <div className="flex flex-col items-center text-center px-8 py-10">
+//                   <div className="relative w-16 h-16 mb-5">
+//                     <div className="absolute inset-0 rounded-full bg-emerald-100 animate-ping opacity-30"></div>
+//                     <div className="relative w-16 h-16 rounded-full bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center shadow-lg">
+//                       <CheckCircle className="w-8 h-8 text-white" />
+//                     </div>
+//                   </div>
+
+//                   <h3 className="text-xl font-bold text-emerald-800 mb-1">
+//                     Done! Your file{files.length > 1 ? "s" : ""} downloaded automatically 🎉
+//                   </h3>
+
+//                   <p className="text-sm text-gray-600 mb-6">
+//                     {files.length === 1
+//                       ? "Your rotated PDF is ready in downloads."
+//                       : "Check your downloads — ZIP contains all rotated PDF files."}
+//                   </p>
+
+//                   <div className="flex flex-wrap gap-3 justify-center">
+//                     <button
+//                       type="button"
+//                       onClick={clearAll}
+//                       className="inline-flex items-center gap-2 bg-white border border-emerald-300 text-emerald-700 text-sm font-semibold px-5 py-2.5 rounded-xl hover:bg-emerald-50 transition shadow-sm"
+//                     >
+//                       <FileText className="w-4 h-4" />
+//                       Rotate another PDF
+//                     </button>
+
+//                     <a
+//                       href="/merge-pdf"
+//                       className="inline-flex items-center gap-2 bg-white border border-gray-200 text-gray-600 text-sm font-semibold px-5 py-2.5 rounded-xl hover:bg-gray-50 transition shadow-sm"
+//                     >
+//                       Merge PDF →
+//                     </a>
+//                   </div>
+//                 </div>
 //               </div>
 //             )}
 //           </div>
 
-//           <p className="text-center mt-10 text-gray-600 text-lg">
-//             No signup • Unlimited rotations • High quality • 100% free & private
+//           <p className="text-center mt-6 text-gray-500 text-sm">
+//             No account • No watermark • Files auto delete • Completely free • Supports single &amp; bulk uploads
 //           </p>
 //         </div>
 //       </main>
 
-//       <section className="mt-20 max-w-6xl mx-auto px-6 pb-20">
-//         <div className="text-center mb-16">
-//           <h2 className="text-3xl md:text-5xl font-extrabold bg-gradient-to-r from-orange-600 to-amber-600 bg-clip-text text-transparent mb-6">
-//             Rotate PDF Online Free - Fix Orientation Instantly
+//       {/* ==================== SEO CONTENT SECTION ==================== */}
+//       <section className="mt-16 max-w-4xl mx-auto px-6 pb-16">
+//         <div className="text-center mb-12">
+//           <h2 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent mb-4">
+//             Rotate PDF Pages Online Free – Fix Orientation in Seconds
 //           </h2>
-//           <p className="text-xl text-gray-600 max-w-4xl mx-auto">
-//             Rotate PDF pages 90°, 180°, or 270° in seconds. Perfect for fixing upside-down or sideways scanned documents — completely free with PDF Linx.
+//           <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+//             Scanned a document the wrong way? Photo came out sideways?
+//             PDFLinx Rotate PDF lets you fix the orientation instantly.
+//             Rotate by 90°, 180°, or 270° — works for single and bulk files.
 //           </p>
 //         </div>
 
-//         <div className="grid md:grid-cols-3 gap-10 mb-20">
-//           <div className="bg-gradient-to-br from-orange-50 to-white p-10 rounded-3xl shadow-xl border border-orange-100 text-center hover:shadow-2xl transition">
-//             <div className="w-20 h-20 bg-orange-600 rounded-full flex items-center justify-center mx-auto mb-6">
-//               <RotateCw className="w-10 h-10 text-white" />
+//         {/* Benefits Grid */}
+//         <div className="grid md:grid-cols-3 gap-8 mb-16">
+//           <div className="bg-gradient-to-br from-orange-50 to-white p-8 rounded-2xl shadow-lg border border-orange-100 text-center hover:shadow-xl transition">
+//             <div className="w-16 h-16 bg-orange-600 rounded-full flex items-center justify-center mx-auto mb-4">
+//               <RotateCw className="w-8 h-8 text-white" />
 //             </div>
-//             <h3 className="text-2xl font-bold text-gray-800 mb-4">Any Angle</h3>
-//             <p className="text-gray-600">Rotate 90°, 180°, or 270° — fix any orientation issue.</p>
+//             <h3 className="text-xl font-semibold text-gray-800 mb-3">Quick Rotation</h3>
+//             <p className="text-gray-600 text-sm">
+//               Rotate PDF pages by 90°, 180°, or 270° in seconds.
+//             </p>
 //           </div>
 
-//           <div className="bg-gradient-to-br from-amber-50 to-white p-10 rounded-3xl shadow-xl border border-amber-100 text-center hover:shadow-2xl transition">
-//             <div className="w-20 h-20 bg-amber-600 rounded-full flex items-center justify-center mx-auto mb-6">
-//               <CheckCircle className="w-10 h-10 text-white" />
+//           <div className="bg-gradient-to-br from-red-50 to-white p-8 rounded-2xl shadow-lg border border-red-100 text-center hover:shadow-xl transition">
+//             <div className="w-16 h-16 bg-red-600 rounded-full flex items-center justify-center mx-auto mb-4">
+//               <FileText className="w-8 h-8 text-white" />
 //             </div>
-//             <h3 className="text-2xl font-bold text-gray-800 mb-4">Perfect Quality</h3>
-//             <p className="text-gray-600">No quality loss — original PDF preserved perfectly.</p>
+//             <h3 className="text-xl font-semibold text-gray-800 mb-3">Perfect for Scans</h3>
+//             <p className="text-gray-600 text-sm">
+//               Fix orientation of scanned documents, photos, and mobile uploads.
+//             </p>
 //           </div>
 
-//           <div className="bg-gradient-to-br from-green-50 to-white p-10 rounded-3xl shadow-xl border border-green-100 text-center hover:shadow-2xl transition">
-//             <div className="w-20 h-20 bg-green-600 rounded-full flex items-center justify-center mx-auto mb-6">
-//               <CheckCircle className="w-10 h-10 text-white" />
+//           <div className="bg-gradient-to-br from-purple-50 to-white p-8 rounded-2xl shadow-lg border border-purple-100 text-center hover:shadow-xl transition">
+//             <div className="w-16 h-16 bg-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
+//               <Download className="w-8 h-8 text-white" />
 //             </div>
-//             <h3 className="text-2xl font-bold text-gray-800 mb-4">Fast & Free</h3>
-//             <p className="text-gray-600">Rotate unlimited PDFs instantly — no signup, completely free.</p>
+//             <h3 className="text-xl font-semibold text-gray-800 mb-3">Bulk Support</h3>
+//             <p className="text-gray-600 text-sm">
+//               Rotate multiple PDFs at once. Download as ZIP.
+//             </p>
 //           </div>
 //         </div>
 
-//         <div className="bg-white rounded-3xl shadow-2xl p-12 md:p-20 border border-gray-100">
-//           <h3 className="text-4xl md:text-5xl font-bold text-center mb-16 text-gray-800">
-//             How to Rotate PDF in 3 Simple Steps
+//         {/* Steps */}
+//         <div className="bg-white rounded-2xl shadow-lg p-8 md:p-12 border border-gray-100">
+//           <h3 className="text-2xl md:text-3xl font-bold text-center mb-12 text-gray-800">
+//             Rotate PDF in 3 Easy Steps
 //           </h3>
-//           <div className="grid md:grid-cols-3 gap-12">
+//           <div className="grid md:grid-cols-3 gap-8">
 //             <div className="text-center">
-//               <div className="w-24 h-24 bg-gradient-to-r from-orange-600 to-orange-700 rounded-full flex items-center justify-center mx-auto mb-8 text-4xl font-bold text-white shadow-2xl">
+//               <div className="w-16 h-16 bg-gradient-to-r from-orange-600 to-orange-700 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold text-white shadow-lg">
 //                 1
 //               </div>
-//               <h4 className="text-2xl font-semibold mb-4">Upload PDF</h4>
-//               <p className="text-gray-600 text-lg">Drop or select your PDF file.</p>
+//               <h4 className="text-lg font-semibold mb-2">Upload PDF(s)</h4>
+//               <p className="text-gray-600 text-sm">Upload one PDF or multiple PDFs at once.</p>
 //             </div>
 
 //             <div className="text-center">
-//               <div className="w-24 h-24 bg-gradient-to-r from-amber-600 to-amber-700 rounded-full flex items-center justify-center mx-auto mb-8 text-4xl font-bold text-white shadow-2xl">
+//               <div className="w-16 h-16 bg-gradient-to-r from-red-600 to-red-700 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold text-white shadow-lg">
 //                 2
 //               </div>
-//               <h4 className="text-2xl font-semibold mb-4">Choose Rotation</h4>
-//               <p className="text-gray-600 text-lg">Select 90°, 180°, or 270° rotation.</p>
+//               <h4 className="text-lg font-semibold mb-2">Choose Angle</h4>
+//               <p className="text-gray-600 text-sm">Select 90°, 180°, or 270° rotation.</p>
 //             </div>
 
 //             <div className="text-center">
-//               <div className="w-24 h-24 bg-gradient-to-r from-green-600 to-green-700 rounded-full flex items-center justify-center mx-auto mb-8 text-4xl font-bold text-white shadow-2xl">
+//               <div className="w-16 h-16 bg-gradient-to-r from-purple-600 to-purple-700 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold text-white shadow-lg">
 //                 3
 //               </div>
-//               <h4 className="text-2xl font-semibold mb-4">Download</h4>
-//               <p className="text-gray-600 text-lg">Save your rotated PDF instantly.</p>
+//               <h4 className="text-lg font-semibold mb-2">Download</h4>
+//               <p className="text-gray-600 text-sm">Download rotated PDF (or ZIP if multiple files).</p>
 //             </div>
 //           </div>
 //         </div>
 
-//         <p className="text-center mt-16 text-xl text-gray-600 italic max-w-4xl mx-auto">
-//           Rotate PDFs every day with PDF Linx — trusted by thousands for fast, accurate, and completely free PDF rotation.
+//         <p className="text-center mt-12 text-base text-gray-600 italic max-w-3xl mx-auto">
+//           PDFLinx helps you fix PDF orientation quickly — perfect for scans and mobile photos, always free.
 //         </p>
 //       </section>
+
+//       <section className="max-w-4xl mx-auto px-4 py-14 text-slate-700">
+//         <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-6">
+//           Rotate PDF Pages – Fix Orientation Online by PDFLinx
+//         </h2>
+
+//         <p className="text-base leading-7 mb-6">
+//           Rotating PDF pages is essential when documents are scanned or photographed in the wrong orientation.
+//           Whether you took a photo with your phone sideways or a scanner captured the document upside down,
+//           <span className="font-medium text-slate-900"> PDFLinx Rotate PDF tool</span>{" "}
+//           allows you to fix the orientation online in seconds — no software installation needed.
+//         </p>
+
+//         <h3 className="text-xl font-semibold text-slate-900 mb-3">
+//           What Does Rotating a PDF Mean?
+//         </h3>
+//         <p className="leading-7 mb-6">
+//           Rotating a PDF means changing the orientation of the pages by turning them clockwise or counterclockwise.
+//           Common rotation angles are 90° (quarter turn), 180° (half turn/flip), and 270° (three-quarter turn).
+//           This is a lossless operation that doesn't affect the quality of your content.
+//         </p>
+
+//         <h3 className="text-xl font-semibold text-slate-900 mb-3">
+//           Why Do You Need to Rotate PDF Pages?
+//         </h3>
+//         <ul className="space-y-2 mb-6 list-disc pl-6">
+//           <li>Fix orientation of scanned documents that were placed wrong in the scanner</li>
+//           <li>Correct mobile photos taken in portrait when they should be landscape (or vice versa)</li>
+//           <li>Adjust PDFs received from others that display sideways or upside down</li>
+//           <li>Prepare documents for printing in the correct orientation</li>
+//           <li>Make multi-page PDFs easier to read when some pages are rotated incorrectly</li>
+//         </ul>
+
+//         <h3 className="text-xl font-semibold text-slate-900 mb-3">
+//           How to Rotate PDF Pages Online
+//         </h3>
+//         <ol className="space-y-2 mb-6 list-decimal pl-6">
+//           <li>Upload your PDF file using the Rotate PDF tool</li>
+//           <li>Choose rotation angle: 90° clockwise, 180° flip, or 270° counterclockwise</li>
+//           <li>Click the "Rotate PDF" button</li>
+//           <li>Download your rotated PDF instantly</li>
+//         </ol>
+
+//         <p className="mb-6">
+//           All pages in the PDF will be rotated by your selected angle. The process is fast and maintains original quality.
+//         </p>
+
+//         <div className="bg-slate-50 border border-slate-200 rounded-xl p-6 mb-6">
+//           <h3 className="text-xl font-semibold text-slate-900 mb-4">
+//             Features of PDFLinx Rotate PDF Tool
+//           </h3>
+//           <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 list-disc pl-5">
+//             <li>Free online PDF rotation</li>
+//             <li>Rotate by 90°, 180°, or 270°</li>
+//             <li>No software installation needed</li>
+//             <li>Lossless quality (no degradation)</li>
+//             <li>Works on all devices and browsers</li>
+//             <li>Bulk rotation (multiple PDFs at once)</li>
+//             <li>No watermark on output files</li>
+//             <li>Files deleted after processing</li>
+//             <li>Fast processing in seconds</li>
+//           </ul>
+//         </div>
+
+//         <h3 className="text-xl font-semibold text-slate-900 mb-3">
+//           Who Should Use the Rotate PDF Tool?
+//         </h3>
+//         <ul className="space-y-2 mb-6 list-disc pl-6">
+//           <li><strong>Students:</strong> Fix scanned assignments and notes</li>
+//           <li><strong>Professionals:</strong> Correct orientation of business documents</li>
+//           <li><strong>Photographers:</strong> Adjust photo PDFs from mobile devices</li>
+//           <li><strong>Office Workers:</strong> Prepare documents for printing</li>
+//           <li><strong>Anyone:</strong> Fix PDFs received in wrong orientation</li>
+//         </ul>
+
+//         <h3 className="text-xl font-semibold text-slate-900 mb-3">
+//           Common Use Cases
+//         </h3>
+//         <ul className="space-y-2 mb-6 list-disc pl-6">
+//           <li>Scanned documents placed sideways in the scanner</li>
+//           <li>Phone photos converted to PDF in wrong orientation</li>
+//           <li>Multi-page documents with some pages rotated incorrectly</li>
+//           <li>Forms and applications that need to be right-side up</li>
+//           <li>Receipts and invoices photographed at wrong angle</li>
+//         </ul>
+
+//         <h3 className="text-xl font-semibold text-slate-900 mb-3">
+//           Is PDFLinx Rotate PDF Safe?
+//         </h3>
+//         <p className="leading-7 mb-6">
+//           Yes. PDFLinx is designed with privacy in mind. Uploaded PDF files are processed automatically
+//           and removed shortly after rotation. Your files are never shared, stored permanently, or accessed by anyone.
+//         </p>
+
+//         <h3 className="text-xl font-semibold text-slate-900 mb-3">
+//           Rotate PDFs Anytime, Anywhere
+//         </h3>
+//         <p className="leading-7">
+//           PDFLinx works seamlessly on Windows, macOS, Linux, Android, and iOS.
+//           All you need is an internet connection and a modern browser to rotate your PDF pages
+//           anytime, anywhere — on desktop, tablet, or mobile phone.
+//         </p>
+//       </section>
+
+//       {/* FAQs (UI) */}
+//       <section className="py-16">
+//         <div className="max-w-4xl mx-auto px-4">
+//           <h2 className="text-3xl font-bold text-center mb-10">Frequently Asked Questions</h2>
+
+//           <div className="space-y-4">
+//             <details className="bg-white rounded-lg shadow-sm p-5">
+//               <summary className="font-semibold cursor-pointer">Is the Rotate PDF tool free?</summary>
+//               <p className="mt-2 text-gray-600">
+//                 Yes. PDFLinx Rotate PDF is free to use — no sign-up, no watermark.
+//               </p>
+//             </details>
+
+//             <details className="bg-white rounded-lg shadow-sm p-5">
+//               <summary className="font-semibold cursor-pointer">What rotation angles are available?</summary>
+//               <p className="mt-2 text-gray-600">
+//                 You can rotate by 90° clockwise (right), 180° (flip upside down), or 270° counterclockwise (left).
+//               </p>
+//             </details>
+
+//             <details className="bg-white rounded-lg shadow-sm p-5">
+//               <summary className="font-semibold cursor-pointer">Can I rotate multiple PDFs at once?</summary>
+//               <p className="mt-2 text-gray-600">
+//                 Yes. Upload up to 10 PDFs. Each PDF's pages will be rotated by your chosen angle. Multiple files download as a ZIP.
+//               </p>
+//             </details>
+
+//             <details className="bg-white rounded-lg shadow-sm p-5">
+//               <summary className="font-semibold cursor-pointer">Will rotating a PDF reduce quality?</summary>
+//               <p className="mt-2 text-gray-600">
+//                 No. Rotating a PDF is a lossless operation. Your text, images, and layout remain exactly the same quality.
+//               </p>
+//             </details>
+
+//             <details className="bg-white rounded-lg shadow-sm p-5">
+//               <summary className="font-semibold cursor-pointer">Are my files safe?</summary>
+//               <p className="mt-2 text-gray-600">
+//                 Yes. Files are processed automatically and deleted shortly after processing. We never store your files permanently.
+//               </p>
+//             </details>
+
+//             <details className="bg-white rounded-lg shadow-sm p-5">
+//               <summary className="font-semibold cursor-pointer">Can I rotate individual pages or all pages?</summary>
+//               <p className="mt-2 text-gray-600">
+//                 Currently, all pages in each PDF are rotated by the same angle. This is perfect for fixing scanned documents or mobile photos.
+//               </p>
+//             </details>
+//           </div>
+//         </div>
+//       </section>
+
+//       <RelatedToolsSection currentPage="rotate-pdf" />
 //     </>
 //   );
 // }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// // 'use client';
+
+// // import { useState } from 'react';
+// // import { PDFDocument } from 'pdf-lib';
+// // import { Upload, RotateCw, Download, CheckCircle } from 'lucide-react';
+// // import Script from 'next/script';
+
+// // export default function RotatePdf() {
+// //   const [file, setFile] = useState(null);
+// //   const [loading, setLoading] = useState(false);
+// //   const [rotatedUrl, setRotatedUrl] = useState(null);
+
+// //   const handleFile = (e) => {
+// //     const selected = e.target.files[0];
+// //     if (selected) setFile(selected);
+// //   };
+
+// //   const rotate = async (angle) => {
+// //     if (!file) return;
+// //     setLoading(true);
+
+// //     try {
+// //       const arrayBuffer = await file.arrayBuffer();
+// //       const pdfDoc = await PDFDocument.load(arrayBuffer);
+// //       const pages = pdfDoc.getPages();
+
+// //       pages.forEach((page) => {
+// //         const { width, height } = page.getSize();
+// //         page.setRotation((page.getRotation().angle + angle + 360) % 360);
+// //         // Adjust position if needed after rotation
+// //         if (angle === 90 || angle === 270) {
+// //           page.setSize(height, width);
+// //         }
+// //       });
+
+// //       const pdfBytes = await pdfDoc.save();
+// //       const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+// //       setRotatedUrl(URL.createObjectURL(blob));
+// //     } catch (err) {
+// //       alert('Error rotating PDF. Please try again.');
+// //     }
+// //     setLoading(false);
+// //   };
+
+// //   return (
+// //     <>
+// //       <Script
+// //         id="howto-schema-rotate"
+// //         type="application/ld+json"
+// //         strategy="afterInteractive"
+// //         dangerouslySetInnerHTML={{
+// //           __html: JSON.stringify({
+// //             "@context": "https://schema.org",
+// //             "@type": "HowTo",
+// //             name: "How to Rotate PDF Online for Free",
+// //             description: "Rotate PDF pages 90, 180, 270 degrees instantly.",
+// //             url: "https://pdflinx.com/rotate-pdf",
+// //             step: [
+// //               { "@type": "HowToStep", name: "Upload PDF", text: "Select your PDF file." },
+// //               { "@type": "HowToStep", name: "Choose Angle", text: "Select 90°, 180°, or 270° rotation." },
+// //               { "@type": "HowToStep", name: "Download", text: "Download rotated PDF instantly." }
+// //             ],
+// //             totalTime: "PT30S",
+// //             estimatedCost: { "@type": "MonetaryAmount", value: "0", currency: "USD" },
+// //             image: "https://pdflinx.com/og-image.png"
+// //           }, null, 2),
+// //         }}
+// //       />
+
+// //       <Script
+// //         id="breadcrumb-schema-rotate"
+// //         type="application/ld+json"
+// //         strategy="afterInteractive"
+// //         dangerouslySetInnerHTML={{
+// //           __html: JSON.stringify({
+// //             "@context": "https://schema.org",
+// //             "@type": "BreadcrumbList",
+// //             itemListElement: [
+// //               { "@type": "ListItem", position: 1, name: "Home", item: "https://pdflinx.com" },
+// //               { "@type": "ListItem", position: 2, name: "Rotate PDF", item: "https://pdflinx.com/rotate-pdf" }
+// //             ]
+// //           }, null, 2),
+// //         }}
+// //       />
+
+// //       <main className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-amber-50 py-12 px-4">
+// //         <div className="max-w-4xl mx-auto">
+// //           <div className="text-center mb-12">
+// //             <h1 className="text-4xl md:text-6xl font-extrabold bg-gradient-to-r from-orange-600 to-amber-600 bg-clip-text text-transparent mb-6">
+// //               Rotate PDF <br /> Online (Free)
+// //             </h1>
+// //             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+// //               Rotate PDF pages 90°, 180°, or 270° instantly. Fix upside-down or sideways PDFs — 100% free, no signup.
+// //             </p>
+// //           </div>
+
+// //           <div className="bg-white rounded-3xl shadow-2xl p-12 border border-gray-100">
+// //             <label className="block cursor-pointer">
+// //               <div className="border-4 border-dashed border-orange-300 rounded-3xl p-20 text-center hover:border-amber-500 transition">
+// //                 <Upload className="w-24 h-24 mx-auto text-orange-600 mb-8" />
+// //                 <span className="text-3xl font-bold text-gray-800 block mb-4">
+// //                   Drop PDF here or click to upload
+// //                 </span>
+// //                 <span className="text-xl text-gray-600">Single or multi-page PDFs supported</span>
+// //               </div>
+// //               <input type="file" accept=".pdf" onChange={handleFile} className="hidden" />
+// //             </label>
+
+// //             {file && (
+// //               <div className="mt-12">
+// //                 <p className="text-center text-xl font-semibold mb-8">Selected: {file.name}</p>
+// //                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+// //                   <button
+// //                     onClick={() => rotate(90)}
+// //                     disabled={loading}
+// //                     className="bg-gradient-to-r from-orange-600 to-amber-600 text-white font-bold py-6 rounded-2xl hover:from-orange-700 hover:to-amber-700 transition shadow-xl flex items-center justify-center gap-4"
+// //                   >
+// //                     <RotateCw size={32} />
+// //                     Rotate 90° Clockwise
+// //                   </button>
+// //                   <button
+// //                     onClick={() => rotate(180)}
+// //                     disabled={loading}
+// //                     className="bg-gradient-to-r from-amber-600 to-orange-600 text-white font-bold py-6 rounded-2xl hover:from-amber-700 hover:to-orange-700 transition shadow-xl flex items-center justify-center gap-4"
+// //                   >
+// //                     <RotateCw size={32} className="rotate-180" />
+// //                     Rotate 180°
+// //                   </button>
+// //                   <button
+// //                     onClick={() => rotate(270)}
+// //                     disabled={loading}
+// //                     className="bg-gradient-to-r from-orange-600 to-amber-600 text-white font-bold py-6 rounded-2xl hover:from-orange-700 hover:to-amber-700 transition shadow-xl flex items-center justify-center gap-4"
+// //                   >
+// //                     <RotateCw size={32} className="rotate-90" />
+// //                     Rotate 270° Clockwise
+// //                   </button>
+// //                 </div>
+// //               </div>
+// //             )}
+
+// //             {loading && (
+// //               <div className="text-center mt-12">
+// //                 <div className="inline-block animate-spin rounded-full h-20 w-20 border-t-4 border-b-4 border-orange-600"></div>
+// //                 <p className="mt-6 text-2xl font-bold text-orange-600">Rotating PDF...</p>
+// //               </div>
+// //             )}
+
+// //             {rotatedUrl && (
+// //               <div className="text-center mt-12">
+// //                 <p className="text-3xl font-bold text-green-600 mb-6">PDF Rotated Successfully!</p>
+// //                 <a
+// //                   href={rotatedUrl}
+// //                   download="rotated-pdf.pdf"
+// //                   className="inline-flex items-center gap-4 bg-gradient-to-r from-green-600 to-teal-600 text-white font-bold text-xl px-12 py-6 rounded-2xl hover:from-green-700 hover:to-teal-700 transition shadow-2xl"
+// //                 >
+// //                   <Download size={36} />
+// //                   Download Rotated PDF
+// //                 </a>
+// //               </div>
+// //             )}
+// //           </div>
+
+// //           <p className="text-center mt-10 text-gray-600 text-lg">
+// //             No signup • Unlimited rotations • High quality • 100% free & private
+// //           </p>
+// //         </div>
+// //       </main>
+
+// //       <section className="mt-20 max-w-6xl mx-auto px-6 pb-20">
+// //         <div className="text-center mb-16">
+// //           <h2 className="text-3xl md:text-5xl font-extrabold bg-gradient-to-r from-orange-600 to-amber-600 bg-clip-text text-transparent mb-6">
+// //             Rotate PDF Online Free - Fix Orientation Instantly
+// //           </h2>
+// //           <p className="text-xl text-gray-600 max-w-4xl mx-auto">
+// //             Rotate PDF pages 90°, 180°, or 270° in seconds. Perfect for fixing upside-down or sideways scanned documents — completely free with PDF Linx.
+// //           </p>
+// //         </div>
+
+// //         <div className="grid md:grid-cols-3 gap-10 mb-20">
+// //           <div className="bg-gradient-to-br from-orange-50 to-white p-10 rounded-3xl shadow-xl border border-orange-100 text-center hover:shadow-2xl transition">
+// //             <div className="w-20 h-20 bg-orange-600 rounded-full flex items-center justify-center mx-auto mb-6">
+// //               <RotateCw className="w-10 h-10 text-white" />
+// //             </div>
+// //             <h3 className="text-2xl font-bold text-gray-800 mb-4">Any Angle</h3>
+// //             <p className="text-gray-600">Rotate 90°, 180°, or 270° — fix any orientation issue.</p>
+// //           </div>
+
+// //           <div className="bg-gradient-to-br from-amber-50 to-white p-10 rounded-3xl shadow-xl border border-amber-100 text-center hover:shadow-2xl transition">
+// //             <div className="w-20 h-20 bg-amber-600 rounded-full flex items-center justify-center mx-auto mb-6">
+// //               <CheckCircle className="w-10 h-10 text-white" />
+// //             </div>
+// //             <h3 className="text-2xl font-bold text-gray-800 mb-4">Perfect Quality</h3>
+// //             <p className="text-gray-600">No quality loss — original PDF preserved perfectly.</p>
+// //           </div>
+
+// //           <div className="bg-gradient-to-br from-green-50 to-white p-10 rounded-3xl shadow-xl border border-green-100 text-center hover:shadow-2xl transition">
+// //             <div className="w-20 h-20 bg-green-600 rounded-full flex items-center justify-center mx-auto mb-6">
+// //               <CheckCircle className="w-10 h-10 text-white" />
+// //             </div>
+// //             <h3 className="text-2xl font-bold text-gray-800 mb-4">Fast & Free</h3>
+// //             <p className="text-gray-600">Rotate unlimited PDFs instantly — no signup, completely free.</p>
+// //           </div>
+// //         </div>
+
+// //         <div className="bg-white rounded-3xl shadow-2xl p-12 md:p-20 border border-gray-100">
+// //           <h3 className="text-4xl md:text-5xl font-bold text-center mb-16 text-gray-800">
+// //             How to Rotate PDF in 3 Simple Steps
+// //           </h3>
+// //           <div className="grid md:grid-cols-3 gap-12">
+// //             <div className="text-center">
+// //               <div className="w-24 h-24 bg-gradient-to-r from-orange-600 to-orange-700 rounded-full flex items-center justify-center mx-auto mb-8 text-4xl font-bold text-white shadow-2xl">
+// //                 1
+// //               </div>
+// //               <h4 className="text-2xl font-semibold mb-4">Upload PDF</h4>
+// //               <p className="text-gray-600 text-lg">Drop or select your PDF file.</p>
+// //             </div>
+
+// //             <div className="text-center">
+// //               <div className="w-24 h-24 bg-gradient-to-r from-amber-600 to-amber-700 rounded-full flex items-center justify-center mx-auto mb-8 text-4xl font-bold text-white shadow-2xl">
+// //                 2
+// //               </div>
+// //               <h4 className="text-2xl font-semibold mb-4">Choose Rotation</h4>
+// //               <p className="text-gray-600 text-lg">Select 90°, 180°, or 270° rotation.</p>
+// //             </div>
+
+// //             <div className="text-center">
+// //               <div className="w-24 h-24 bg-gradient-to-r from-green-600 to-green-700 rounded-full flex items-center justify-center mx-auto mb-8 text-4xl font-bold text-white shadow-2xl">
+// //                 3
+// //               </div>
+// //               <h4 className="text-2xl font-semibold mb-4">Download</h4>
+// //               <p className="text-gray-600 text-lg">Save your rotated PDF instantly.</p>
+// //             </div>
+// //           </div>
+// //         </div>
+
+// //         <p className="text-center mt-16 text-xl text-gray-600 italic max-w-4xl mx-auto">
+// //           Rotate PDFs every day with PDF Linx — trusted by thousands for fast, accurate, and completely free PDF rotation.
+// //         </p>
+// //       </section>
+// //     </>
+// //   );
+// // }

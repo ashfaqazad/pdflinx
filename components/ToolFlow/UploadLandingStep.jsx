@@ -26,7 +26,12 @@ import {
   Layers,
   Sparkles,
   Timer,
+  Image,
+  FileImage,
+  Minimize2,
+  GitMerge,
 } from "lucide-react";
+
 import UploadStep from "./UploadStep";
 
 /* ─────────────────────────────────────────
@@ -305,13 +310,23 @@ const stepStyles = [
   { iconBg: "bg-emerald-50", icon: CheckCircle2, iconColor: "text-emerald-500" },
 ];
 
-function HowItWorksSection({ steps }) {
+function HowItWorksSection({
+  steps, eyebrow, title, subtitle, }) {
+
+  // function HowItWorksSection({ steps }) {
   return (
     <div className="bg-stone-50 py-20">
       <div className="mx-auto max-w-6xl px-6">
-        <Eyebrow>How it works</Eyebrow>
-        <SectionTitle>Three steps to an editable Word doc</SectionTitle>
-        <SectionSub>No learning curve. Upload, convert, download — done in under a minute.</SectionSub>
+        {/* <Eyebrow>How it works</Eyebrow> */}
+        <Eyebrow>{eyebrow || "How it works"}</Eyebrow>
+        {/* <SectionTitle>Three steps to an editable Word doc</SectionTitle> */}
+        <SectionTitle>
+          {title || "Three steps to an editable Word doc"}
+        </SectionTitle>
+        {/* <SectionSub>No learning curve. Upload, convert, download — done in under a minute.</SectionSub> */}
+        <SectionSub>
+          {subtitle || "No learning curve. Upload, convert, download — done in under a minute."}
+        </SectionSub>
 
         <div className="mt-12 grid gap-5 sm:grid-cols-3">
           {steps.map(({ n, title, desc }, idx) => {
@@ -343,14 +358,25 @@ function HowItWorksSection({ steps }) {
 /* ─────────────────────────────────────────
    COMPARE: STANDARD vs SCANNED
 ───────────────────────────────────────── */
-function PdfTypesSection() {
+// function PdfTypesSection() {
+function PdfTypesSection({
+  eyebrow,
+  title,
+  subtitle,
+}) {
   return (
     <div className="bg-white py-20">
       <div className="mx-auto max-w-6xl px-6">
-        <Eyebrow>PDF Types</Eyebrow>
-        <SectionTitle>Standard PDF vs Scanned PDF</SectionTitle>
-        <SectionSub>Know the difference — choose the right conversion option for best results.</SectionSub>
-
+        {/* <Eyebrow>PDF Types</Eyebrow> */}
+        <Eyebrow>{eyebrow || "PDF Types"}</Eyebrow>
+        {/* <SectionTitle>Standard PDF vs Scanned PDF</SectionTitle> */}
+        <SectionTitle>
+          {title || "Standard PDF vs Scanned PDF"}
+        </SectionTitle>
+        {/* <SectionSub>Know the difference — choose the right conversion option for best results.</SectionSub> */}
+        <SectionSub>
+          {subtitle || "Know the difference — choose the right conversion option for best results."}
+        </SectionSub>
         <div className="mt-10 grid gap-5 sm:grid-cols-2">
           {/* Standard */}
           <div className="rounded-2xl border border-stone-200 bg-white p-7 transition hover:shadow-md">
@@ -397,46 +423,12 @@ function PdfTypesSection() {
   );
 }
 
-/* ─────────────────────────────────────────
-   WHY PDFLINX  (2-col grid)
-───────────────────────────────────────── */
-
-// function WhySection({ items, title }) {
-//   return (
-//     <div className="bg-stone-50 py-20">
-//       <div className="mx-auto max-w-6xl px-6">
-//         <Eyebrow>Why PDFLinx</Eyebrow>
-//         <SectionTitle>{title || "Built for simplicity. Backed by trust."}</SectionTitle>
-//         <SectionSub>Free PDF tools without the catch — no ads, no upsells, no account walls.</SectionSub>
-
-//         {/* 2-col grid with hairline separators */}
-//         <div className="mt-10 grid grid-cols-1 gap-px overflow-hidden rounded-2xl border border-stone-100 bg-stone-100 sm:grid-cols-2">
-//           {items.map((item) => (
-//             <div
-//               key={item.title}
-//               className="group flex items-start gap-4 bg-white p-6 transition hover:bg-stone-50"
-//             >
-//               <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl ${item.bgColor}`}>
-//                 <item.icon className={`h-5 w-5 ${item.iconColor}`} />
-//               </div>
-//               <div className="min-w-0">
-//                 <h4 className="font-semibold text-stone-900">{item.title}</h4>
-//                 <p className="mt-0.5 text-xs leading-relaxed text-stone-500">{item.desc}</p>
-//               </div>
-//             </div>
-//           ))}
-//         </div>
-//       </div>
-//     </div>
-//   );
-// }
-
 
 function WhySection({ items, title }) {
   return (
     <div className="bg-stone-50 py-20">
       <div className="mx-auto max-w-6xl px-6">
-        <Eyebrow>Why PDFLinx</Eyebrow>
+        <Eyebrow>Why Choose PDFLinx?</Eyebrow>
         <SectionTitle>{title || "Built for simplicity. Backed by trust."}</SectionTitle>
         <SectionSub>
           Free PDF tools without the catch — no ads, no upsells, no account walls.
@@ -473,37 +465,45 @@ function WhySection({ items, title }) {
 /* ─────────────────────────────────────────
    SEO SECTIONS  (numbered cards)
 ───────────────────────────────────────── */
-function SeoSection({ sections }) {
+// function SeoSection({ sections }) {
+function SeoSection({
+  sections,
+  content,
+  badge,
+  title,
+  description,
+}) {
   if (!sections?.length) return null;
 
   const finalSections =
     sections.length % 2 !== 0
       ? [
-          ...sections,
-          {
-            title: "Best For Everyday Document Editing",
-            text: "Use the converted Word file for reports, assignments, invoices, contracts, forms, and office documents. The DOCX output is easy to edit, share, and reuse.",
-          },
-        ]
+        ...sections,
+        {
+          title: "Best For Everyday Document Editing",
+          text: "Use the converted Word file for reports, assignments, invoices, contracts, forms, and office documents. The DOCX output is easy to edit, share, and reuse.",
+        },
+      ]
       : sections;
 
   return (
     <div className="bg-white py-16">
       <div className="mx-auto max-w-6xl px-6">
+
         <div className="mb-8 text-left">
           <span className="inline-flex rounded-full bg-blue-50 px-3 py-1 text-xs font-bold uppercase tracking-widest text-blue-700">
-            PDF to Word Guide
+            {badge || "PDF Guide"}
           </span>
 
           <SectionTitle className="mt-3 text-left">
-            PDF to Word Converter — Free Online Tool by PDFLinx
+            {title || "Free Online PDF Tool by PDFLinx"}
           </SectionTitle>
 
           <p className="mt-3 max-w-2xl text-sm leading-7 text-stone-500">
-            Convert standard and scanned PDF files into editable Word documents with a clean, simple, and secure experience.
+            {description ||
+              "Convert standard and scanned PDF files into editable Word documents with a clean, simple, and secure experience."}
           </p>
         </div>
-
         <div className="grid gap-4 md:grid-cols-2">
           {finalSections.map((section, idx) => (
             <div
@@ -580,7 +580,10 @@ function RelatedToolsSection({ tools, title }) {
               className="group flex items-center gap-3 rounded-2xl border border-stone-200 bg-white p-4 text-sm font-medium text-stone-700 transition-all hover:-translate-y-0.5 hover:border-rose-400 hover:shadow-md"
             >
               <div className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-xl ${tool.bgColor}`}>
-                <tool.icon className={`h-4 w-4 ${tool.iconColor}`} />
+                {/* <tool.icon className={`h-4 w-4 ${tool.iconColor}`} /> */}
+                {tool.icon && (
+                  <tool.icon className={`h-4 w-4 ${tool.iconColor}`} />
+                )}
               </div>
               <span className="transition-colors group-hover:text-rose-600">{tool.label}</span>
             </Link>
@@ -589,6 +592,7 @@ function RelatedToolsSection({ tools, title }) {
       </div>
     </div>
   );
+
 }
 
 /* ─────────────────────────────────────────
@@ -654,6 +658,22 @@ function FeaturesStrip({ features }) {
 /* ─────────────────────────────────────────
    MAIN EXPORT
 ───────────────────────────────────────── */
+// export default function UploadLandingStep({
+//   onFilesSelect,
+//   accept,
+//   multiple,
+//   uploadTitle,
+//   uploadSubtitle,
+//   uploadInfo,
+//   content = {},
+// }) {
+/* resolve all data with content overrides */
+// const relatedTools = content.relatedTools || defaultRelatedTools;
+// const relatedTools = content?.relatedTools || defaultRelatedTools;
+// const faqs = content.faqs || defaultFaqs;
+// const features = content.features || defaultFeatures;
+// const whyItems = content.whyItems || defaultWhyItems;
+// const stats = content.stats || defaultStats;
 export default function UploadLandingStep({
   onFilesSelect,
   accept,
@@ -663,12 +683,16 @@ export default function UploadLandingStep({
   uploadInfo,
   content = {},
 }) {
+
+  // SAFE FALLBACK
+  content = content || {};
+
   /* resolve all data with content overrides */
-  const relatedTools = content.relatedTools || defaultRelatedTools;
-  const faqs = content.faqs || defaultFaqs;
-  const features = content.features || defaultFeatures;
-  const whyItems = content.whyItems || defaultWhyItems;
-  const stats = content.stats || defaultStats;
+  const relatedTools = content?.relatedTools || defaultRelatedTools;
+  const faqs = content?.faqs || defaultFaqs;
+  const features = content?.features || defaultFeatures;
+  const whyItems = content?.whyItems || defaultWhyItems;
+  const stats = content?.stats || defaultStats;
 
   const howToSteps = content.howToSteps || [
     { n: "1", title: "Upload your PDF", desc: "Drag & drop or click to upload. Supports single files, batch PDFs, and ZIP archives up to 10 MB.", color: "bg-blue-600" },
@@ -721,13 +745,17 @@ export default function UploadLandingStep({
           <HeroBadge text={content.heroBadge || "✦ 100% Free · No Signup Required"} />
 
           {/* <h1 className="font-serif text-5xl font-normal leading-[1.12] tracking-tight text-stone-900 sm:text-6xl"> */}
-          <h1 className="font-bold font-display text-5xl leading-[1.12] tracking-tight text-stone-900 sm:text-6xl">
+          {/* <h1 className="font-bold font-display text-5xl leading-[1.12] tracking-tight text-stone-900 sm:text-6xl">
             {content.heroTitle || (
               <>
                 Convert PDF to Word{" "}
-                <em className="not-italic text-rose-600">in Seconds</em>
+                <em className="text-rose-600">in Seconds</em>
               </>
             )}
+          </h1> */}
+
+          <h1 className="font-bold font-display text-5xl leading-[1.12] tracking-tight text-stone-900 sm:text-6xl">
+            {content.heroTitle}
           </h1>
 
           <p className="mt-5 max-w-md text-base font-light leading-relaxed text-stone-500">
@@ -784,13 +812,26 @@ export default function UploadLandingStep({
       {/* ── HOW IT WORKS ── */}
       {/* <HowItWorksSection steps={howToSteps} /> */}
       <RevealOnScroll>
-        <HowItWorksSection steps={howToSteps} />
+        <HowItWorksSection
+          steps={howToSteps}
+          eyebrow={content.howToEyebrow}
+          title={content.howToTitle}
+          subtitle={content.howToSubtitle}
+        />
+        {/* <HowItWorksSection steps={howToSteps} /> */}
       </RevealOnScroll>
 
       {/* ── COMPARE ── */}
       {/* <PdfTypesSection /> */}
       <RevealOnScroll>
-        <PdfTypesSection />
+        {content.showPdfTypes !== false && (
+          <PdfTypesSection
+            eyebrow={content.pdfTypesEyebrow}
+            title={content.pdfTypesTitle}
+            subtitle={content.pdfTypesSubtitle}
+          />
+        )}
+        {/* <PdfTypesSection /> */}
       </RevealOnScroll>
 
       {/* ── WHY PDFLINX ── */}
@@ -803,7 +844,13 @@ export default function UploadLandingStep({
       {/* {content.seoSections?.length > 0 && <SeoSection sections={content.seoSections} />} */}
       {content.seoSections?.length > 0 && (
         <RevealOnScroll>
-          <SeoSection sections={content.seoSections} />
+          <SeoSection
+            sections={content.seoSections}
+            content={content}
+            badge={content.seoBadge}
+            title={content.seoTitle}
+            description={content.seoDescription}
+          />
         </RevealOnScroll>
       )}
 

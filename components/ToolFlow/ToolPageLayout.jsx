@@ -138,7 +138,8 @@ export default function ToolPageLayout({
                     uploadTitle={uploadTitle}
                     uploadSubtitle={uploadSubtitle}
                     uploadInfo={uploadInfo}
-                    content={uploadLandingContent}
+                    // content={uploadLandingContent}
+                    content={uploadLanding?.content}
                   />
                 ) : (
                   <div className="flex w-full justify-center">
@@ -278,9 +279,6 @@ export default function ToolPageLayout({
                     </div>
                   </div>
                 )}
-
-
-
               </aside>
             )}
           </div>

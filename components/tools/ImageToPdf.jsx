@@ -9,11 +9,18 @@ import ToolPageLayout from "@/components/ToolFlow/ToolPageLayout";
 import {
   Image,
   FileImage,
-  GitMerge,
-  Minimize2,
+  Zap,
+  MonitorSmartphone,
   FileText,
+  FilePlus,
+  FileMinus,
   Scissors,
-  RotateCw,
+  Lock,
+  Minimize2,
+  GitMerge,
+  RotateCw
+  
+
 } from "lucide-react";
 
 const DONE_LINKS = [
@@ -324,9 +331,267 @@ export default function ImageToPdf({ seo }) {
         sidebarDescription="Convert JPG, PNG, and WebP images into one PDF."
         sidebarNotice={SIDEBAR_NOTICE}
         sidebarFeatures={SIDEBAR_FEATURES}
+
+        // ImageToPdf.jsx ke andar ToolPageLayout mein paste karo
+// uploadLanding prop ke andar
+
+uploadLanding={{
+  content: {
+    eyebrow: "IMAGE TO PDF CONVERTER",
+
+    heroTitle: (
+      <>
+        Convert Images to PDF{" "}
+        <br />
+        in{" "}
+        <span className="bg-gradient-to-r from-violet-600 to-blue-500 bg-clip-text text-transparent">
+          Seconds ⚡
+        </span>
+      </>
+    ),
+
+    heroDescription:
+      "Convert JPG, PNG, WebP and other images into a high-quality PDF instantly — no signup, no watermark. Single image downloads as PDF. Multiple images combined into one PDF. Works on Windows, Mac, Android, and iOS.",
+
+    bullets: [
+      "JPG, PNG & WebP supported",
+      "Full quality preserved — sharp text and vibrant colors",
+      "Fast & Private — files auto-deleted after conversion",
+    ],
+
+    uploadTitle: "Drop your image files here",
+    uploadSubtitle: "or click to browse — JPG, PNG, WebP supported",
+
+    privacyTitle: "Your files stay private",
+    privacyText:
+      "Files are processed securely and automatically deleted after conversion. Never stored or shared.",
+
+    noticeTitle: "Image to PDF Conversion",
+    noticeItems: [
+      "Single image → PDF directly",
+      "Multiple images → combined into one PDF",
+      "Supports JPG, PNG, WebP formats",
+    ],
+
+    breadcrumbItems: [
+      { label: "Home", href: "/" },
+      { label: "PDF Tools", href: "/pdf-tools" },
+      { label: "Image to PDF" },
+    ],
+
+    trustPills: ["100% Free", "No Sign Up", "No Watermark"],
+
+    supports: [
+      "Supports JPG, PNG, WebP",
+      "Auto-deleted after 1 hour",
+    ],
+
+    howToTitle: "How to Convert Images to PDF — 3 Simple Steps",
+
+    howToSteps: [
+      {
+        n: "1",
+        title: "Upload Your Images",
+        desc: "Select one or multiple image files. Drag and drop supported on all devices. JPG, PNG, WebP all accepted.",
+        color: "bg-violet-600",
+      },
+      {
+        n: "2",
+        title: "Review & Remove if Needed",
+        desc: "Preview your uploaded images, reorder or remove any before converting. Full control before download.",
+        color: "bg-blue-600",
+      },
+      {
+        n: "3",
+        title: "Convert & Download PDF",
+        desc: "Click Convert — all images are merged into one high-quality PDF and downloaded instantly. No watermark.",
+        color: "bg-emerald-600",
+      },
+    ],
+
+    visualImage: "/images/image-to-pdf-visual.png",
+    visualAlt: "Image to PDF conversion illustration",
+
+    whyTitle: "Why Choose PDFLinx Image to PDF?",
+
+    whyItems: [
+      {
+        title: "JPG, PNG & WebP Supported",
+        desc: "Upload any common image format — JPG, PNG, WebP, and more. All converted to a clean, high-quality PDF.",
+        icon: Image, // ImageIcon — import karo tool file mein
+        iconColor: "text-violet-500",
+        bgColor: "bg-violet-50",
+      },
+      {
+        title: "Full Quality Preserved",
+        desc: "Images are embedded at full resolution — sharp text, vibrant colors, no quality loss in the output PDF.",
+        icon: Image, // FileImage
+        iconColor: "text-blue-500",
+        bgColor: "bg-blue-50",
+      },
+      {
+        title: "Fast & Private",
+        desc: "Conversion happens instantly in your browser. Files are auto-deleted after processing — never stored or shared.",
+        icon: Image, // Zap
+        iconColor: "text-emerald-500",
+        bgColor: "bg-emerald-50",
+      },
+      {
+        title: "Works on Any Device",
+        desc: "Convert images to PDF on iPhone, Android, Windows, or Mac — no software installation needed.",
+        icon: Image, // MonitorSmartphone
+        iconColor: "text-orange-500",
+        bgColor: "bg-orange-50",
+      },
+    ],
+
+    relatedTitle: "You Might Also Need",
+
+    // relatedTools: [
+    //   { label: "PDF to Word",   href: "/pdf-to-word",   desc: "Convert PDF to editable DOCX",   iconColor: "text-blue-500",   bgColor: "bg-blue-50"   },
+    //   { label: "Merge PDF",     href: "/merge-pdf",     desc: "Combine multiple PDFs",           iconColor: "text-violet-500", bgColor: "bg-violet-50" },
+    //   { label: "Compress PDF",  href: "/compress-pdf",  desc: "Reduce PDF file size",            iconColor: "text-green-500",  bgColor: "bg-green-50"  },
+    //   { label: "Split PDF",     href: "/split-pdf",     desc: "Extract specific pages",          iconColor: "text-pink-500",   bgColor: "bg-pink-50"   },
+    //   { label: "PDF to JPG",    href: "/pdf-to-jpg",    desc: "Extract PDF pages as images",     iconColor: "text-amber-500",  bgColor: "bg-amber-50"  },
+    //   { label: "Protect PDF",   href: "/protect-pdf",   desc: "Add password to PDF",             iconColor: "text-red-500",    bgColor: "bg-red-50"    },
+    // ],
+
+    relatedTools: [
+  {
+    label: "PDF to Word",
+    href: "/pdf-to-word",
+    desc: "Convert PDF to editable DOCX",
+    icon: FileText,
+    iconColor: "text-blue-500",
+    bgColor: "bg-blue-50",
+  },
+
+  {
+    label: "Merge PDF",
+    href: "/merge-pdf",
+    desc: "Combine multiple PDFs",
+    icon: FilePlus,
+    iconColor: "text-violet-500",
+    bgColor: "bg-violet-50",
+  },
+
+  {
+    label: "Compress PDF",
+    href: "/compress-pdf",
+    desc: "Reduce PDF file size",
+    icon: FileMinus,
+    iconColor: "text-green-500",
+    bgColor: "bg-green-50",
+  },
+
+  {
+    label: "Split PDF",
+    href: "/split-pdf",
+    desc: "Extract specific pages",
+    icon: Scissors,
+    iconColor: "text-pink-500",
+    bgColor: "bg-pink-50",
+  },
+
+  {
+    label: "PDF to JPG",
+    href: "/pdf-to-jpg",
+    desc: "Extract PDF pages as images",
+    icon: Image,
+    iconColor: "text-amber-500",
+    bgColor: "bg-amber-50",
+  },
+
+  {
+    label: "Protect PDF",
+    href: "/protect-pdf",
+    desc: "Add password to PDF",
+    icon: Lock,
+    iconColor: "text-red-500",
+    bgColor: "bg-red-50",
+  },
+],
+
+    faqTitle: "Frequently Asked Questions — Image to PDF",
+
+    faqs: [
+      {
+        q: "Is the Image to PDF converter free to use?",
+        a: "Yes, completely free. No hidden charges, no subscription, no limits on conversions.",
+      },
+      {
+        q: "Do I need to install any software?",
+        a: "No. Everything works directly in your browser. No desktop software or plugins needed.",
+      },
+      {
+        q: "Will my image quality be preserved after conversion?",
+        a: "Yes. Images are embedded at full resolution — sharp text, vibrant colors, no quality loss in the output PDF.",
+      },
+      {
+        q: "Which image formats are supported?",
+        a: "PDFLinx supports JPG, JPEG, PNG, and WebP image formats for PDF conversion.",
+      },
+      {
+        q: "Can I convert multiple images into one PDF?",
+        a: "Yes. Upload multiple images and they will all be combined into a single PDF file in order.",
+      },
+      {
+        q: "How is the page order determined in the PDF?",
+        a: "Pages appear in the order you upload the images. You can reorder them before converting.",
+      },
+      {
+        q: "Are my uploaded images safe and private?",
+        a: "Yes. Files are processed securely and permanently deleted after conversion. Never stored or shared.",
+      },
+      {
+        q: "Can I convert images to PDF on my phone?",
+        a: "Yes. PDFLinx works on Android and iOS mobile devices, tablets, and all desktop browsers — no app required.",
+      },
+      {
+        q: "Can I combine images with other PDF documents?",
+        a: "For that, first convert your images to PDF using this tool, then use the Merge PDF tool to combine them with other PDFs.",
+      },
+      {
+        q: "What should I do if the converted PDF file is too large?",
+        a: "Use the Compress PDF tool on PDFLinx to reduce the file size of your converted PDF without losing quality.",
+      },
+    ],
+
+    ctaBadge: "✦ 100% Free",
+    ctaTitle: "Start Converting Images to PDF Now",
+    ctaDescription: "Fast. Secure. Private. No sign up required.",
+    ctaSubtext: "No limits. No hidden charges.",
+    ctaButton: "Choose Image Files",
+
+    seoSections: [
+      {
+        title: "Free Image to PDF Converter — Convert JPG, PNG & WebP to PDF in Seconds",
+        text: "Need to turn photos, screenshots, or scanned images into a PDF? PDFLinx converts JPG, PNG, and WebP images into a professional PDF instantly — full quality, no watermarks, no sign-up required. Upload a single image or combine up to 50 images into one PDF — fast, private, and completely free.",
+      },
+      {
+        title: "What is Image to PDF Conversion?",
+        text: "Image to PDF conversion turns image files — like JPG, PNG, or WebP — into a shareable, printable PDF document. Each image is placed on its own page at full resolution. PDFLinx handles the conversion entirely in your browser without requiring any desktop software, making it accessible on any device or OS.",
+      },
+      {
+        title: "Why Convert Images to PDF?",
+        text: "PDFs are universally compatible — open on any device, any OS, any browser without special software. Common reasons to convert images to PDF include: sharing receipts, invoices, and ID scans professionally; combining multiple photos into one document; submitting scanned forms and signed documents; preserving image content in a fixed, printable format.",
+      },
+      {
+        title: "Privacy and File Security",
+        text: "PDFLinx takes your privacy seriously. Uploaded image files are processed securely and permanently deleted after conversion — never stored long-term, never shared with third parties. No account creation is required. Your images remain completely private throughout the process.",
+      },
+      {
+        title: "Convert Images to PDF on Any Device",
+        text: "Works on Windows, macOS, Linux, Android, and iOS — directly in your browser. No app download needed. PDFLinx is fully responsive and works with drag-and-drop on desktop and image picker on mobile phones. Convert images to PDF anywhere, anytime.",
+      },
+    ],
+
+    showPdfTypes: false,
+  },
+}}
       />
 
-      <RelatedToolsSection currentPage="image-to-pdf" />
+      {/* <RelatedToolsSection currentPage="image-to-pdf" /> */}
     </>
   );
 }

@@ -313,183 +313,167 @@ export default function PdfToWord({ seo }) {
           </>
         }
 
-        uploadLanding={true}
+        // uploadLanding={true}
 
         // uploadLandingContent={{
-        //   eyebrow: "PDF TO WORD CONVERTER",
-        //   heroTitle: (
-        //     <>
-        //       Convert PDF to Word <br />
-        //       in <span className="text-blue-600">Seconds ⚡</span>
-        //     </>
-        //   ),
-        //   heroDescription:
-        //     "Convert PDF to editable Word documents with perfect formatting. Fast, free and 100% secure — your files never leave your browser.",
-        // }}
+        uploadLanding={{
+          content: {
+            eyebrow: "PDF TO WORD CONVERTER",
 
-        uploadLandingContent={{
-          eyebrow: "PDF TO WORD CONVERTER",
+            heroTitle: (
+              <>
+                Convert PDF to Word Online for Free {" "}
+                <em className="font-bold text-[#e8420a] sm:italic">in Seconds</em>
 
-          heroTitle: (
-            <>
-              Convert PDF to Word <br />
-              <em className="font-bold not-italic text-[#e8420a] sm:italic">in Seconds</em>
+                {/* in <span className="text-blue-600">Seconds ⚡</span> */}
+              </>
+            ),
 
-              {/* in <span className="text-blue-600">Seconds ⚡</span> */}
-            </>
-          ),
+            heroDescription:
+              "Turn PDFs into editable Word documents in seconds — keep text, layout, images, and tables clean without signup or watermark.",
 
-          heroDescription:
-            "Turn PDFs into editable Word documents in seconds — keep text, layout, images, and tables clean without signup or watermark.",
+            uploadTitle: "Drop your PDF here",
+            uploadSubtitle: "or click to browse — PDF files supported",
 
-          uploadTitle: "Drop your PDF here",
-          uploadSubtitle: "or click to browse — PDF files supported",
+            noticeTitle: "PDF to Word Conversion",
+            noticeItems: [
+              "Single PDF → DOCX",
+              "Multiple PDFs → ZIP",
+              "OCR available for scanned PDFs",
+            ],
 
-          noticeTitle: "PDF to Word Conversion",
-          noticeItems: [
-            "Single PDF → DOCX",
-            "Multiple PDFs → ZIP",
-            "OCR available for scanned PDFs",
-          ],
+            howToTitle: "How to Convert PDF to Word",
 
-          howToTitle: "How to Convert PDF to Word",
+            howToSteps: [
+              {
+                n: "1",
+                title: "Upload Your PDF File(s)",
+                desc: "Select one PDF or upload multiple files at once for batch conversion. Drag and drop supported on all devices.",
+                color: "bg-blue-600",
+              },
+              {
+                n: "2",
+                title: "Enable OCR if Needed & Convert",
+                desc: "For scanned PDFs, enable the OCR option first. Then click Convert — the tool processes your file and preserves formatting.",
+                color: "bg-purple-600",
+              },
+              {
+                n: "3",
+                title: "Download DOCX or ZIP",
+                desc: "Single file downloads as DOCX instantly. Multiple files are packaged into a ZIP containing all converted Word documents.",
+                color: "bg-emerald-600",
+              },
+            ],
 
-          howToSteps: [
-            {
-              n: "1",
-              title: "Upload Your PDF File(s)",
-              desc: "Select one PDF or upload multiple files at once for batch conversion. Drag and drop supported on all devices.",
-              color: "bg-blue-600",
-            },
-            {
-              n: "2",
-              title: "Enable OCR if Needed & Convert",
-              desc: "For scanned PDFs, enable the OCR option first. Then click Convert — the tool processes your file and preserves formatting.",
-              color: "bg-purple-600",
-            },
-            {
-              n: "3",
-              title: "Download DOCX or ZIP",
-              desc: "Single file downloads as DOCX instantly. Multiple files are packaged into a ZIP containing all converted Word documents.",
-              color: "bg-emerald-600",
-            },
-          ],
+            seoSections: [
+              {
+                title: "Free PDF to Word Converter — Convert Scanned & Standard PDFs to Editable DOCX",
+                text: "Need to edit a PDF? Convert PDF to Word online for free. PDFLinx helps you turn scanned and standard PDF files into editable DOCX documents while keeping formatting clean.",
+              },
 
-          seoSections: [
-            {
-              title: "Free PDF to Word Converter — Convert Scanned & Standard PDFs to Editable DOCX",
-              text: "Need to edit a PDF? Convert PDF to Word online for free. PDFLinx helps you turn scanned and standard PDF files into editable DOCX documents while keeping formatting clean.",
-            },
-            // {
-            //   title: "What is PDF to Word Conversion?",
-            //   text: "PDF to Word conversion transforms a PDF file into an editable DOCX format. This allows you to modify text, reuse content, and update formatting easily.",
-            // },
-            {
-              title: "What is PDF to Word Conversion?",
-              text: "PDF to Word conversion allows you to turn a static PDF file into an editable DOCX document. This means you can update text, edit formatting, reuse content, and make changes easily without recreating the file from scratch. It is especially useful for reports, invoices, assignments, and scanned documents.",
-            },
-            // {
-            //   title: "Why Choose PDFLinx?",
-            //   text: "PDFLinx is fast, simple, and secure. No signup, no watermark, and no software installation required.",
-            // },
-            {
-              title: "Why Choose PDFLinx?",
-              text: "PDFLinx is designed for fast, simple, and secure PDF conversion. You can convert files without signup, without watermark, and without installing any software. It supports both standard and scanned PDFs with OCR, making it a reliable solution for everyday document editing needs.",
-            },
-            {
-              title: "Privacy and File Security",
-              text: "Your files are processed securely and handled with care. Conversion is safe and private.",
-            },
-            {
-              title: "Convert PDF to Word on Any Device",
-              text: "Works on Windows, Mac, Android, iPhone, and tablets — directly in your browser.",
-            },
-          ],
+              {
+                title: "What is PDF to Word Conversion?",
+                text: "PDF to Word conversion allows you to turn a static PDF file into an editable DOCX document. This means you can update text, edit formatting, reuse content, and make changes easily without recreating the file from scratch. It is especially useful for reports, invoices, assignments, and scanned documents.",
+              },
 
-          faqs: [
-            {
-              q: "Is PDFLinx PDF to Word converter free?",
-              a: "Yes, PDFLinx PDF to Word converter is completely free.",
-            },
-            {
-              q: "Do I need to sign up?",
-              a: "No account is required to convert files.",
-            },
-            {
-              q: "Can I convert scanned PDFs?",
-              a: "Yes, OCR helps convert scanned PDFs into editable Word files.",
-            },
-            {
-              q: "Will formatting be preserved?",
-              a: "We try to preserve layout, fonts, images, and structure as accurately as possible.",
-            },
-            {
-              q: "Can I convert multiple PDFs?",
-              a: "Yes, multiple PDFs are converted and downloaded as a ZIP file.",
-            },
-            {
-              q: "Is my file secure?",
-              a: "Files are processed securely and are not stored permanently.",
-            },
-            {
-              q: "Can I use it on mobile?",
-              a: "Yes, PDFLinx works on desktop, tablet, Android, iPhone, and iPad browsers.",
-            },
-            {
-              q: "What is the maximum file size?",
-              a: "File size limits depend on the current tool settings and server configuration.",
-            },
-            {
-              q: "Can I edit the converted Word file?",
-              a: "Yes, the converted DOCX file can be opened and edited in Microsoft Word or compatible editors.",
-            },
-            {
-              q: "Does PDFLinx add a watermark?",
-              a: "No, PDFLinx does not add a watermark to converted files.",
-            },
-            {
-              q: "Can I convert PDF to DOCX?",
-              a: "Yes, the converted file is provided in DOCX format.",
-            },
-            {
-              q: "Why does Microsoft Word ask me to Enable Editing?",
-              a: "This is normal for downloaded DOCX files. Click Enable Editing to start editing the document.",
-            },
-          ],
+              {
+                title: "Why Choose PDFLinx?",
+                text: "PDFLinx is designed for fast, simple, and secure PDF conversion. You can convert files without signup, without watermark, and without installing any software. It supports both standard and scanned PDFs with OCR, making it a reliable solution for everyday document editing needs.",
+              },
+              {
+                title: "Privacy and File Security",
+                text: "Your files are processed securely and handled with care. Conversion is safe and private.",
+              },
+
+
+              // Naya Section - Simple Text Version
+              {
+                title: "Common Use Cases for PDF to Word Conversion",
+                text: "• Students & Researchers: Convert study notes, research papers, theses, and assignments into editable format.\n\n• Professionals & Office Workers: Edit reports, proposals, contracts, and business documents.\n\n• Job Seekers: Quickly update resumes and CVs.\n\n• Lawyers & Accountants: Modify legal contracts, invoices, agreements, and financial documents.\n\n• HR Teams: Edit offer letters, company policies, and employee forms.\n\n• Teachers & Freelancers: Update worksheets, lesson plans, and client deliverables.",
+              },
+
+              {
+                title: "Convert PDF to Word on Any Device",
+                text: "Works on Windows, Mac, Android, iPhone, and tablets — directly in your browser.",
+              },
+
+              {
+                title: "Convert PDF to Word on Any Device",
+                text: "No software installation needed. Works perfectly on Windows, Mac, Linux, Android, iPhone, and tablets directly in your browser.",
+              },
+              {
+                title: "Privacy and File Security",
+                text: "Your files are processed on secure servers and automatically deleted after 1 hour. We do not store or share your documents with anyone.",
+              },
+            ],
+
+
+            faqs: [
+              {
+                q: "Is PDFLinX PDF to Word converter free?",
+                a: "Yes, PDFLinX PDF to Word converter is completely free. There are no hidden charges, no premium plans, and no limits on the number of conversions.",
+              },
+              {
+                q: "Do I need to sign up or create an account?",
+                a: "No, you do not need to sign up or create an account. You can convert PDFs to Word instantly without registration.",
+              },
+              {
+                q: "Can I convert scanned PDFs?",
+                a: "Yes, our tool supports scanned PDFs. It uses advanced OCR technology to extract text from images and convert them into editable Word documents.",
+              },
+              {
+                q: "Will the original formatting be preserved?",
+                a: "We make every effort to preserve the original layout, fonts, tables, images, and structure. However, complex layouts may have minor differences that can be easily adjusted in Word.",
+              },
+              {
+                q: "Can I convert multiple PDFs at once?",
+                a: "Yes, you can upload and convert multiple PDFs in a single batch. All converted Word files will be automatically packed into a single ZIP file for easy download.",
+              },
+              {
+                q: "Is my file secure and private?",
+                a: "Yes, your files are completely secure. They are processed on secure servers and automatically deleted after 1 hour. We do not store, share, or view your documents.",
+              },
+              {
+                q: "Can I use PDFLinX on mobile devices?",
+                a: "Yes, PDFLinX works perfectly on all devices including Android phones, iPhones, iPads, tablets, Windows, and Mac — no app installation required.",
+              },
+              {
+                q: "What is the maximum file size limit?",
+                a: "You can convert files up to 10 MB for a single file and up to 50 MB combined for multiple files. For larger files, we recommend splitting them first.",
+              },
+              {
+                q: "Why does Microsoft Word ask to 'Enable Editing'?",
+                a: "This is a standard Microsoft Word security prompt for downloaded files. It is completely safe. Just click 'Enable Editing' to start making changes.",
+              },
+              {
+                q: "Does PDFLinX add any watermark?",
+                a: "No, PDFLinX does not add any watermark. The converted Word file remains 100% clean and original.",
+              },
+              {
+                q: "Can I convert password-protected PDFs?",
+                a: "Yes, if you have the password. You need to unlock the PDF first before uploading it to our tool.",
+              },
+              {
+                q: "What file format do I get after conversion?",
+                a: "You will receive editable .DOCX files which are fully compatible with Microsoft Word, Google Docs, LibreOffice, and other word processors.",
+              },
+              {
+                q: "How long does the conversion take?",
+                a: "Most conversions complete within 10–30 seconds depending on file size and complexity.",
+              },
+              {
+                q: "Can I edit the converted Word file immediately?",
+                a: "Yes, once downloaded, you can open and edit the DOCX file in any Word editor without any restrictions.",
+              },
+            ],
+
+          },
         }}
-
-
-      />
-      {/* <ToolPageLayout
-        title={seo?.h1 || "PDF to Word Converter (Free & Online)"}
-        tagline="No Signup · No Watermark · Instant Download"
-        accept="application/pdf"
-        multiple={true}
-        convertLabel="Convert to Word"
-        flow={flow}
-        progress={progress}
-        onRemoveFile={handleRemoveFile}
-        onConvert={handleConvert}
-        onDownload={handleDownload}
-        doneLinks={DONE_LINKS}
-        sidebarIcon={<FileType2 className="h-5 w-5 text-white" />}
-
-        // sidebarIcon={<FileText className="h-5 w-5 text-white" />}
-        sidebarTitle="PDF to Word"
-        sidebarDescription="Convert PDF files into editable DOCX documents with a simple step-based experience."
-        sidebarNotice={SIDEBAR_NOTICE}
-        optionsSidebarNotice={optionsSidebarNotice}   // ← lowercase (component ke andar wala)
-        sidebarFeatures={SIDEBAR_FEATURES}
-        showOutputFormat={false}                       // ← ADD
-        showPreserveLayout={false}                     // ← ADD
-        optionsSlot={null}                             // ← OCR checkbox hata diya
-      /> */}
-      {/* <RelatedToolsSection currentPage="ppt-to-pdf" /> */}
-      {/* {flow.step !== STEPS.UPLOAD && (
-        <RelatedToolsSection currentPage="pdf-to-word" />
-      )} */}
+          />
 
     </>
+
+
   );
 }
 

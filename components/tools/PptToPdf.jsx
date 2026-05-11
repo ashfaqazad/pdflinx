@@ -189,9 +189,179 @@ export default function PptToPdf({ seo }) {
         sidebarDescription="Convert PPT and PPTX presentations to PDF instantly."
         sidebarNotice={SIDEBAR_NOTICE}
         sidebarFeatures={SIDEBAR_FEATURES}
+
+        uploadLanding={{
+          content: {
+            heroBadge: "✦ Free PowerPoint to PDF Converter — No Signup, No Watermark",
+
+            heroTitle: (
+              <>
+                Convert PowerPoint to PDF Online{" "}
+                <em className="text-[#e8420a]">for Free</em>
+              </>
+            ),
+
+            heroDescription:
+              "Convert PowerPoint to PDF online for free — no signup, no watermark, no software needed. Turn PPT and PPTX presentations into professional PDF documents instantly. Perfect for sharing business presentations, academic slideshows, pitch decks, lecture notes, and project reports via email, WhatsApp, and university portals. Maintains original slide layout, fonts, images, transitions structure, and design themes. Works on Windows, Mac, Android, and iPhone — convert PowerPoint to PDF in seconds right in your browser.",
+
+            pills: [
+              "Convert PPTX to PDF",
+              "PowerPoint to PDF free",
+              "Keep slide formatting",
+              "Convert pitch deck to PDF",
+              "Works on mobile",
+              "No file size limit",
+            ],
+
+            noticeItems: [
+              "Original slide layout & design preserved",
+              "PPT and PPTX formats supported",
+              "No email or account required",
+            ],
+
+            seoBadge: "PowerPoint to PDF Guide",
+
+            seoTitle: "Free PowerPoint to PDF Converter — Convert PPTX to PDF Instantly | PDFLinx",
+
+            seoDescription:
+              "Convert PowerPoint to PDF online for free. Turn PPT and PPTX presentations into PDF documents instantly. No signup, no watermark. Slide formatting preserved. Works on Android, iPhone, and desktop.",
+
+            howToTitle: "How to Convert PowerPoint to PDF — 3 Simple Steps",
+
+            howToSubtitle:
+              "Upload your PowerPoint file, convert it to PDF automatically, and download the formatted PDF instantly — no account required.",
+
+            howToSteps: [
+              {
+                n: "1",
+                title: "Upload Your PowerPoint File",
+                desc: "Choose or drag & drop your PPT or PPTX file into the upload area. Supports all PowerPoint formats including legacy PPT and modern PPTX files. Works on desktop and mobile devices.",
+              },
+              {
+                n: "2",
+                title: "Convert to PDF",
+                desc: "Conversion starts instantly. PDFLinx preserves your presentation design — slide layouts, fonts, images, shapes, text boxes, and background themes — in the output PDF.",
+              },
+              {
+                n: "3",
+                title: "Download Your PDF",
+                desc: "Download your converted PDF immediately — no watermark, no quality loss, ready to share via email, WhatsApp, or upload to any university or business portal.",
+              },
+            ],
+
+            whyTitle: "Why Use PDFLinx PowerPoint to PDF Converter?",
+
+            whyPoints: [
+              {
+                title: "100% Free, Always",
+                desc: "No subscription, no credits, no hidden fees. Convert unlimited PowerPoint presentations to PDF at zero cost — free for everyone, forever.",
+              },
+              {
+                title: "Slide Formatting Perfectly Preserved",
+                desc: "Fonts, images, shapes, text boxes, background themes, and slide layouts are all maintained in the converted PDF — exactly as they appear in your PowerPoint presentation.",
+              },
+              {
+                title: "Supports PPT and PPTX",
+                desc: "Works with all PowerPoint file formats — modern PPTX files and legacy PPT files from older versions of Microsoft Office. No need to resave or reformat before uploading.",
+              },
+              {
+                title: "Works on All Devices",
+                desc: "Convert PowerPoint to PDF on iPhone, Android, Windows, or Mac — no software installation needed. Everything runs directly in your browser.",
+              },
+              {
+                title: "Secure & Private",
+                desc: "All files are transferred over HTTPS encryption and permanently deleted from our servers immediately after conversion. Your presentations are never stored or accessed.",
+              },
+              {
+                title: "No Watermark Ever",
+                desc: "PDFLinx never stamps a watermark on your converted PDF. Your pitch decks, academic slides, and business presentations stay completely clean and professional.",
+              },
+              {
+                title: "Instant Conversion, Instant Download",
+                desc: "Convert large multi-slide PowerPoint files in seconds. No queue, no waiting — your PDF is ready for download as soon as processing completes.",
+              },
+            ],
+
+            faqTitle: "PowerPoint to PDF FAQs",
+
+            faqs: [
+              {
+                q: "Is the PowerPoint to PDF converter free?",
+                a: "Yes. PDFLinx PowerPoint to PDF is completely free with no hidden costs, credits, or subscriptions required.",
+              },
+              {
+                q: "Do I need Microsoft PowerPoint or any software installed?",
+                a: "No. PDFLinx converts PowerPoint files entirely in the cloud — no PowerPoint, no software, and no browser extensions needed.",
+              },
+              {
+                q: "Will my slide formatting and design be preserved in the PDF?",
+                a: "Yes. PDFLinx preserves slide layouts, fonts, images, shapes, background themes, and text boxes so the PDF looks exactly like your original presentation.",
+              },
+              {
+                q: "Can I convert both PPT and PPTX files?",
+                a: "Yes. Both modern PPTX files and legacy PPT files from older versions of Microsoft Office are fully supported.",
+              },
+              {
+                q: "Can I convert a large multi-slide presentation to PDF?",
+                a: "Yes. PDFLinx supports multi-slide PowerPoint files of all sizes. All slides are included and rendered in the output PDF.",
+              },
+              {
+                q: "Can I convert my pitch deck or business presentation to PDF for sharing?",
+                a: "Absolutely. PDFLinx is ideal for converting pitch decks, business proposals, company profiles, and project presentations to PDF for sharing via email or WhatsApp.",
+              },
+              {
+                q: "Can I convert a PowerPoint file for university submission or official portals?",
+                a: "Yes. Convert your PowerPoint to PDF and upload it to university portals, academic submission systems, or HR platforms that require PDF format.",
+              },
+              {
+                q: "Does PDFLinx add a watermark to converted PDFs?",
+                a: "No. PDFLinx never adds watermarks. Your converted PDF is completely clean with no branding stamped on any slide.",
+              },
+              {
+                q: "Are my uploaded PowerPoint files safe and private?",
+                a: "Yes. Files are encrypted during transfer over HTTPS and automatically deleted from our servers after conversion. We never store or read your presentation data.",
+              },
+              {
+                q: "Can I convert PowerPoint to PDF on my phone?",
+                a: "Yes. PDFLinx works on Android, iPhone, tablets, and all modern desktop browsers with no app installation needed.",
+              },
+              {
+                q: "What happens if my PowerPoint has embedded images or charts?",
+                a: "All embedded images, charts, icons, and graphics inside your PowerPoint slides are included and rendered correctly in the converted PDF output.",
+              },
+            ],
+
+            relatedTitle: "More PDF Tools",
+
+            seoSections: [
+              {
+                title: "Convert PowerPoint Pitch Decks & Business Presentations to PDF",
+                text: "Turn your PowerPoint pitch decks, company profiles, business proposals, and project reports into professional PDF documents. PDFs are universally readable, non-editable, and accepted by investors, clients, and HR teams worldwide.",
+              },
+              {
+                title: "Convert PowerPoint to PDF for Email & WhatsApp Sharing",
+                text: "PowerPoint files are not always openable by recipients without Microsoft Office installed. Converting to PDF ensures your presentation looks identical on every device — ideal for sharing slides, lecture notes, and proposals via Gmail, Outlook, or WhatsApp.",
+              },
+              {
+                title: "Submit Presentations to University & Official Portals",
+                text: "Many university submission portals, academic platforms, and HR systems only accept PDF uploads. Use PDFLinx to convert your PowerPoint assignments, thesis presentations, and project slides to PDF before submitting to any portal.",
+              },
+              {
+                title: "Preserve Slide Design & Layout in PDF Output",
+                text: "PDFLinx maintains your original presentation design including slide layouts, background themes, font styles, image positions, shapes, and text boxes. The converted PDF mirrors your PowerPoint exactly — no reformatting or redesigning needed.",
+              },
+              {
+                title: "Secure Online PowerPoint to PDF Conversion",
+                text: "All uploaded PowerPoint files are encrypted during transfer and automatically purged from our servers after conversion. No account is required and your business or academic presentations are never stored or accessed.",
+              },
+            ],
+
+            showPdfTypes: false,
+          },
+        }}
       />
 
-      <RelatedToolsSection currentPage="ppt-to-pdf" />
+      {/* <RelatedToolsSection currentPage="ppt-to-pdf" /> */}
     </>
   );
 }
