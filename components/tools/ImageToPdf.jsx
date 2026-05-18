@@ -19,7 +19,7 @@ import {
   Minimize2,
   GitMerge,
   RotateCw
-  
+
 
 } from "lucide-react";
 
@@ -132,7 +132,7 @@ const getOptionsSlot = (files, onRemoveFile, onClearAll, onMoveFile) => (
           <img
             src={URL.createObjectURL(file)}
             alt={file.name}
-            className="h-40 w-full rounded-lg object-cover"
+            className="h-80 w-full rounded-lg object-cover"
           />
 
           <button
@@ -170,11 +170,24 @@ export default function ImageToPdf({ seo }) {
 
   const [downloadUrl, setDownloadUrl] = useState(null);
   const [downloadName, setDownloadName] = useState("images-converted.pdf");
+  const [pageOrientation, setPageOrientation] = useState("portrait");
+  const [pageSize, setPageSize] = useState("A4");
+  const [margin, setMargin] = useState("big");
+  const [mergeAll, setMergeAll] = useState(true);
+  const [rotations, setRotations] = useState({});
+
 
   const handleRemoveFile = (index) => {
     const updated = flow.files.filter((_, i) => i !== index);
     if (updated.length === 0) flow.reset();
     else flow.selectFiles(updated);
+  };
+
+  const handleRotateImage = (index) => {
+    setRotations((prev) => ({
+      ...prev,
+      [index]: ((prev[index] || 0) + 90) % 360,
+    }));
   };
 
   const handleClearAll = () => {
@@ -248,6 +261,14 @@ export default function ImageToPdf({ seo }) {
 
     const formData = new FormData();
     flow.files.forEach((file) => formData.append("images", file));
+    formData.append("orientation", pageOrientation);
+    formData.append("pageSize", pageSize);
+    formData.append("margin", margin);
+    formData.append("mergeAll", String(mergeAll));
+    formData.append("rotations", JSON.stringify(rotations));
+
+
+
 
     try {
       const res = await fetch("/convert/image-to-pdf", {
@@ -299,6 +320,254 @@ export default function ImageToPdf({ seo }) {
         showOutputFormat={false}
         showPreserveLayout={false}
         optionsSlot={OPTIONS_SLOT}
+
+        customOptionsLayout={
+          <div className="grid grid-cols-1 lg:grid-cols-[1fr_300px] min-h-[calc(100vh-80px)]">
+
+            {/* LEFT — Image Thumbnails */}
+            <div className="relative bg-slate-100 p-6 overflow-y-auto h-[calc(100vh-80px)]">
+
+              {/* Top buttons */}
+              <div className="absolute right-4 top-4 flex items-center gap-2 z-10">
+                {/* Add more */}
+                <label className="flex cursor-pointer items-center gap-1.5 rounded-full border border-slate-300 bg-white px-3 py-1.5 text-sm font-medium text-slate-600 shadow-sm transition hover:bg-slate-50">
+                  <span className="flex h-5 w-5 items-center justify-center rounded-full bg-[#f24d0d] text-white text-xs font-bold">
+                    {flow.files.length}
+                  </span>
+                  <span>+</span>
+                  <input
+                    type="file"
+                    accept="image/jpeg,image/png,image/webp"
+                    multiple
+                    className="hidden"
+                    onChange={(e) => {
+                      const newFiles = Array.from(e.target.files || []);
+                      if (newFiles.length) flow.selectFiles([...flow.files, ...newFiles]);
+                    }}
+                  />
+                </label>
+
+                {/* Sort A-Z */}
+                <button
+                  type="button"
+
+                  // onClick={() => {
+                  //   const sorted = [...flow.files].sort((a, b) =>
+                  //     a.name.localeCompare(b.name)
+                  //   );
+                  //   flow.selectFiles(sorted);
+                  // }}
+
+                  onClick={() => {
+                    const sorted = [...flow.files].sort((a, b) =>
+                      a.name.localeCompare(b.name)
+                    );
+                    flow.selectFiles(sorted);
+                  }}
+
+                  className="flex items-center gap-1 rounded-full border border-slate-300 bg-white px-3 py-1.5 text-sm font-medium text-slate-600 shadow-sm hover:bg-slate-50"
+                  title="Sort A-Z"
+                >
+                  <span className="text-xs font-bold">↓A<br />Z</span>
+                </button>
+              </div>
+
+              {/* Image grid */}
+              <div className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+                {flow.files.map((file, i) => (
+                  <div
+                    key={`${file.name}-${i}`}
+                    draggable
+                    onDragStart={(e) => {
+                      e.dataTransfer.setData("text/plain", String(i));
+                      e.dataTransfer.effectAllowed = "move";
+                    }}
+                    onDragOver={(e) => { e.preventDefault(); }}
+                    onDrop={(e) => {
+                      e.preventDefault();
+                      const from = Number(e.dataTransfer.getData("text/plain"));
+                      handleMoveFile(from, i);
+                    }}
+                    className="group relative cursor-grab overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-md active:cursor-grabbing"
+                  >
+                    {/* Image */}
+                    {/* <div className="relative aspect-[3/4] overflow-hidden bg-slate-50">
+                      <img
+                        src={URL.createObjectURL(file)}
+                        alt={file.name}
+                        className="h-full w-full object-cover transition-transform duration-300"
+                        style={{
+                          transform: `rotate(${rotations[i] || 0}deg)`,
+                        }}
+                      /> */}
+
+                    <div className={`relative overflow-hidden bg-slate-50
+  ${pageOrientation === "landscape" ? "aspect-[4/3]" : "aspect-[3/4]"}`}
+                    >
+                      <div className={`h-full w-full flex items-center justify-center
+    ${margin === "none" ? "p-0" : margin === "small" ? "p-2" : "p-5"}`}
+                      >
+                        <img
+                          src={URL.createObjectURL(file)}
+                          alt={file.name}
+                          className="h-full w-full object-contain transition-transform duration-300"
+                          style={{ transform: `rotate(${rotations[i] || 0}deg)` }}
+                        />
+                      </div>
+
+                      {/* Hover overlay */}
+                      {/* <div className="absolute inset-0 flex items-center justify-center gap-2 bg-black/40 opacity-0 transition-opacity group-hover:opacity-100"> */}
+                      <div className="absolute top-2 right-2 flex gap-1.5 opacity-0 transition-opacity group-hover:opacity-100">
+                        {/* Rotate button */}
+                        <button
+                          type="button"
+                          onClick={(e) => { e.stopPropagation(); handleRotateImage(i); }}
+                          className="flex h-8 w-8 items-center justify-center rounded-full bg-white/90 text-slate-700 shadow transition hover:bg-white"
+                          title="Rotate"
+                        >
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2" />
+                          </svg>
+                        </button>
+
+                        {/* Delete button */}
+                        <button
+                          type="button"
+                          onClick={(e) => { e.stopPropagation(); handleRemoveFile(i); }}
+                          className="flex h-8 w-8 items-center justify-center rounded-full bg-red-500 text-white shadow transition hover:bg-red-600"
+                          title="Remove"
+                        >
+                          ×
+                        </button>
+                      </div>
+                    </div>
+
+                    {/* File name */}
+                    <div className="p-2">
+                      <p className="truncate text-xs text-slate-500">{file.name}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* RIGHT — Sidebar */}
+            {/* <div className="flex flex-col border-l border-slate-200 bg-white"> */}
+            <div className="flex flex-col border-l border-slate-200 bg-white h-[calc(100vh-80px)]">
+              {/* <div className="flex-1 overflow-y-auto p-5 space-y-5"> */}
+              <div className="flex-1 overflow-y-auto p-5 space-y-5">
+                <h3 className="text-sm font-bold uppercase tracking-wide text-slate-700 border-b border-slate-200 pb-3">
+                  Image to PDF Options
+                </h3>
+
+                {/* Orientation */}
+                <div>
+                  <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-slate-500">Orientation</p>
+                  <div className="grid grid-cols-2 gap-2">
+                    <button
+                      type="button"
+                      onClick={() => setPageOrientation("portrait")}
+                      className={`flex flex-col items-center gap-1.5 rounded-xl border-2 p-3 transition ${pageOrientation === "portrait"
+                        ? "border-[#f24d0d] bg-red-50"
+                        : "border-slate-200 hover:border-slate-300"
+                        }`}
+                    >
+                      <div className={`h-10 w-7 rounded border-2 ${pageOrientation === "portrait" ? "border-[#f24d0d]" : "border-slate-300"}`} />
+                      <span className="text-xs font-semibold text-slate-700">Portrait</span>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => setPageOrientation("landscape")}
+                      className={`flex flex-col items-center gap-1.5 rounded-xl border-2 p-3 transition ${pageOrientation === "landscape"
+                        ? "border-[#f24d0d] bg-red-50"
+                        : "border-slate-200 hover:border-slate-300"
+                        }`}
+                    >
+                      <div className={`h-7 w-10 rounded border-2 ${pageOrientation === "landscape" ? "border-[#f24d0d]" : "border-slate-300"}`} />
+                      <span className="text-xs font-semibold text-slate-700">Landscape</span>
+                    </button>
+                  </div>
+                </div>
+
+                {/* Page size */}
+                <div>
+                  <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-slate-500">Page size</p>
+                  <select
+                    value={pageSize}
+                    onChange={(e) => setPageSize(e.target.value)}
+                    className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-700 focus:border-[#f24d0d] focus:outline-none"
+                  >
+                    <option value="A4">A4 (297x210 mm)</option>
+                    <option value="A3">A3 (420x297 mm)</option>
+                    <option value="Letter">Letter (11x8.5 in)</option>
+                    <option value="Legal">Legal (14x8.5 in)</option>
+                  </select>
+                </div>
+
+                {/* Margin */}
+                <div>
+                  <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-slate-500">Margin</p>
+                  <div className="grid grid-cols-3 gap-2">
+                    {[
+                      { key: "none", label: "No margin" },
+                      { key: "small", label: "Small" },
+                      { key: "big", label: "Big" },
+                    ].map((m) => (
+                      <button
+                        key={m.key}
+                        type="button"
+                        onClick={() => setMargin(m.key)}
+                        className={`flex flex-col items-center gap-1.5 rounded-xl border-2 p-2.5 transition ${margin === m.key
+                          ? "border-[#f24d0d] bg-red-50"
+                          : "border-slate-200 hover:border-slate-300"
+                          }`}
+                      >
+                        <div className={`h-8 w-6 rounded border ${m.key === "none" ? "border-slate-300" :
+                          m.key === "small" ? "border-slate-300 m-0.5" :
+                            "border-slate-300 m-1"
+                          } ${margin === m.key ? "border-[#f24d0d]" : ""}`} />
+                        <span className="text-[10px] font-semibold text-slate-600 text-center">{m.label}</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Merge all */}
+                <div className="flex items-center gap-3 rounded-xl border border-slate-200 p-3">
+                  <input
+                    type="checkbox"
+                    id="mergeAll"
+                    checked={mergeAll}
+                    onChange={(e) => setMergeAll(e.target.checked)}
+                    className="h-4 w-4 accent-[#f24d0d]"
+                  />
+                  <label htmlFor="mergeAll" className="text-sm font-medium text-slate-700 cursor-pointer">
+                    Merge all images in one PDF file
+                  </label>
+                </div>
+
+              </div>
+
+              {/* Convert button */}
+              <div className="border-t border-slate-200 p-4">
+                <button
+                  type="button"
+                  onClick={handleConvert}
+                  disabled={!flow.files.length}
+                  className={`flex w-full items-center justify-center gap-2 rounded-xl px-5 py-4 text-base font-bold text-white transition active:scale-[0.98] ${flow.files.length
+                    ? "bg-[#f24d0d] hover:bg-[#dc4308] shadow-[0_10px_30px_rgba(242,77,13,0.38)]"
+                    : "cursor-not-allowed bg-slate-300"
+                    }`}
+                >
+                  Convert to PDF →
+                </button>
+              </div>
+            </div>
+
+          </div>
+        }
+
         customFilePreview={getOptionsSlot(
           flow.files,
           handleRemoveFile,
@@ -333,262 +602,262 @@ export default function ImageToPdf({ seo }) {
         sidebarFeatures={SIDEBAR_FEATURES}
 
         // ImageToPdf.jsx ke andar ToolPageLayout mein paste karo
-// uploadLanding prop ke andar
+        // uploadLanding prop ke andar
 
-uploadLanding={{
-  content: {
-    eyebrow: "IMAGE TO PDF CONVERTER",
+        uploadLanding={{
+          content: {
+            eyebrow: "IMAGE TO PDF CONVERTER",
 
-    heroTitle: (
-      <>
-        Convert Images to PDF{" "}
-        <br />
-        in{" "}
-        <span className="bg-gradient-to-r from-violet-600 to-blue-500 bg-clip-text text-transparent">
-          Seconds ⚡
-        </span>
-      </>
-    ),
+            heroTitle: (
+              <>
+                Convert Images to PDF{" "}
+                <br />
+                in{" "}
+                <span className="bg-gradient-to-r from-violet-600 to-blue-500 bg-clip-text text-transparent">
+                  Seconds ⚡
+                </span>
+              </>
+            ),
 
-    heroDescription:
-      "Convert JPG, PNG, WebP and other images into a high-quality PDF instantly — no signup, no watermark. Single image downloads as PDF. Multiple images combined into one PDF. Works on Windows, Mac, Android, and iOS.",
+            heroDescription:
+              "Convert JPG, PNG, WebP and other images into a high-quality PDF instantly — no signup, no watermark. Single image downloads as PDF. Multiple images combined into one PDF. Works on Windows, Mac, Android, and iOS.",
 
-    bullets: [
-      "JPG, PNG & WebP supported",
-      "Full quality preserved — sharp text and vibrant colors",
-      "Fast & Private — files auto-deleted after conversion",
-    ],
+            bullets: [
+              "JPG, PNG & WebP supported",
+              "Full quality preserved — sharp text and vibrant colors",
+              "Fast & Private — files auto-deleted after conversion",
+            ],
 
-    uploadTitle: "Drop your image files here",
-    uploadSubtitle: "or click to browse — JPG, PNG, WebP supported",
+            uploadTitle: "Drop your image files here",
+            uploadSubtitle: "or click to browse — JPG, PNG, WebP supported",
 
-    privacyTitle: "Your files stay private",
-    privacyText:
-      "Files are processed securely and automatically deleted after conversion. Never stored or shared.",
+            privacyTitle: "Your files stay private",
+            privacyText:
+              "Files are processed securely and automatically deleted after conversion. Never stored or shared.",
 
-    noticeTitle: "Image to PDF Conversion",
-    noticeItems: [
-      "Single image → PDF directly",
-      "Multiple images → combined into one PDF",
-      "Supports JPG, PNG, WebP formats",
-    ],
+            noticeTitle: "Image to PDF Conversion",
+            noticeItems: [
+              "Single image → PDF directly",
+              "Multiple images → combined into one PDF",
+              "Supports JPG, PNG, WebP formats",
+            ],
 
-    breadcrumbItems: [
-      { label: "Home", href: "/" },
-      { label: "PDF Tools", href: "/pdf-tools" },
-      { label: "Image to PDF" },
-    ],
+            breadcrumbItems: [
+              { label: "Home", href: "/" },
+              { label: "PDF Tools", href: "/pdf-tools" },
+              { label: "Image to PDF" },
+            ],
 
-    trustPills: ["100% Free", "No Sign Up", "No Watermark"],
+            trustPills: ["100% Free", "No Sign Up", "No Watermark"],
 
-    supports: [
-      "Supports JPG, PNG, WebP",
-      "Auto-deleted after 1 hour",
-    ],
+            supports: [
+              "Supports JPG, PNG, WebP",
+              "Auto-deleted after 1 hour",
+            ],
 
-    howToTitle: "How to Convert Images to PDF — 3 Simple Steps",
+            howToTitle: "How to Convert Images to PDF — 3 Simple Steps",
 
-    howToSteps: [
-      {
-        n: "1",
-        title: "Upload Your Images",
-        desc: "Select one or multiple image files. Drag and drop supported on all devices. JPG, PNG, WebP all accepted.",
-        color: "bg-violet-600",
-      },
-      {
-        n: "2",
-        title: "Review & Remove if Needed",
-        desc: "Preview your uploaded images, reorder or remove any before converting. Full control before download.",
-        color: "bg-blue-600",
-      },
-      {
-        n: "3",
-        title: "Convert & Download PDF",
-        desc: "Click Convert — all images are merged into one high-quality PDF and downloaded instantly. No watermark.",
-        color: "bg-emerald-600",
-      },
-    ],
+            howToSteps: [
+              {
+                n: "1",
+                title: "Upload Your Images",
+                desc: "Select one or multiple image files. Drag and drop supported on all devices. JPG, PNG, WebP all accepted.",
+                color: "bg-violet-600",
+              },
+              {
+                n: "2",
+                title: "Review & Remove if Needed",
+                desc: "Preview your uploaded images, reorder or remove any before converting. Full control before download.",
+                color: "bg-blue-600",
+              },
+              {
+                n: "3",
+                title: "Convert & Download PDF",
+                desc: "Click Convert — all images are merged into one high-quality PDF and downloaded instantly. No watermark.",
+                color: "bg-emerald-600",
+              },
+            ],
 
-    visualImage: "/images/image-to-pdf-visual.png",
-    visualAlt: "Image to PDF conversion illustration",
+            visualImage: "/images/image-to-pdf-visual.png",
+            visualAlt: "Image to PDF conversion illustration",
 
-    whyTitle: "Why Choose PDFLinx Image to PDF?",
+            whyTitle: "Why Choose PDFLinx Image to PDF?",
 
-    whyItems: [
-      {
-        title: "JPG, PNG & WebP Supported",
-        desc: "Upload any common image format — JPG, PNG, WebP, and more. All converted to a clean, high-quality PDF.",
-        icon: Image, // ImageIcon — import karo tool file mein
-        iconColor: "text-violet-500",
-        bgColor: "bg-violet-50",
-      },
-      {
-        title: "Full Quality Preserved",
-        desc: "Images are embedded at full resolution — sharp text, vibrant colors, no quality loss in the output PDF.",
-        icon: Image, // FileImage
-        iconColor: "text-blue-500",
-        bgColor: "bg-blue-50",
-      },
-      {
-        title: "Fast & Private",
-        desc: "Conversion happens instantly in your browser. Files are auto-deleted after processing — never stored or shared.",
-        icon: Image, // Zap
-        iconColor: "text-emerald-500",
-        bgColor: "bg-emerald-50",
-      },
-      {
-        title: "Works on Any Device",
-        desc: "Convert images to PDF on iPhone, Android, Windows, or Mac — no software installation needed.",
-        icon: Image, // MonitorSmartphone
-        iconColor: "text-orange-500",
-        bgColor: "bg-orange-50",
-      },
-    ],
+            whyItems: [
+              {
+                title: "JPG, PNG & WebP Supported",
+                desc: "Upload any common image format — JPG, PNG, WebP, and more. All converted to a clean, high-quality PDF.",
+                icon: Image, // ImageIcon — import karo tool file mein
+                iconColor: "text-violet-500",
+                bgColor: "bg-violet-50",
+              },
+              {
+                title: "Full Quality Preserved",
+                desc: "Images are embedded at full resolution — sharp text, vibrant colors, no quality loss in the output PDF.",
+                icon: Image, // FileImage
+                iconColor: "text-blue-500",
+                bgColor: "bg-blue-50",
+              },
+              {
+                title: "Fast & Private",
+                desc: "Conversion happens instantly in your browser. Files are auto-deleted after processing — never stored or shared.",
+                icon: Image, // Zap
+                iconColor: "text-emerald-500",
+                bgColor: "bg-emerald-50",
+              },
+              {
+                title: "Works on Any Device",
+                desc: "Convert images to PDF on iPhone, Android, Windows, or Mac — no software installation needed.",
+                icon: Image, // MonitorSmartphone
+                iconColor: "text-orange-500",
+                bgColor: "bg-orange-50",
+              },
+            ],
 
-    relatedTitle: "You Might Also Need",
+            relatedTitle: "You Might Also Need",
 
-    // relatedTools: [
-    //   { label: "PDF to Word",   href: "/pdf-to-word",   desc: "Convert PDF to editable DOCX",   iconColor: "text-blue-500",   bgColor: "bg-blue-50"   },
-    //   { label: "Merge PDF",     href: "/merge-pdf",     desc: "Combine multiple PDFs",           iconColor: "text-violet-500", bgColor: "bg-violet-50" },
-    //   { label: "Compress PDF",  href: "/compress-pdf",  desc: "Reduce PDF file size",            iconColor: "text-green-500",  bgColor: "bg-green-50"  },
-    //   { label: "Split PDF",     href: "/split-pdf",     desc: "Extract specific pages",          iconColor: "text-pink-500",   bgColor: "bg-pink-50"   },
-    //   { label: "PDF to JPG",    href: "/pdf-to-jpg",    desc: "Extract PDF pages as images",     iconColor: "text-amber-500",  bgColor: "bg-amber-50"  },
-    //   { label: "Protect PDF",   href: "/protect-pdf",   desc: "Add password to PDF",             iconColor: "text-red-500",    bgColor: "bg-red-50"    },
-    // ],
+            // relatedTools: [
+            //   { label: "PDF to Word",   href: "/pdf-to-word",   desc: "Convert PDF to editable DOCX",   iconColor: "text-blue-500",   bgColor: "bg-blue-50"   },
+            //   { label: "Merge PDF",     href: "/merge-pdf",     desc: "Combine multiple PDFs",           iconColor: "text-violet-500", bgColor: "bg-violet-50" },
+            //   { label: "Compress PDF",  href: "/compress-pdf",  desc: "Reduce PDF file size",            iconColor: "text-green-500",  bgColor: "bg-green-50"  },
+            //   { label: "Split PDF",     href: "/split-pdf",     desc: "Extract specific pages",          iconColor: "text-pink-500",   bgColor: "bg-pink-50"   },
+            //   { label: "PDF to JPG",    href: "/pdf-to-jpg",    desc: "Extract PDF pages as images",     iconColor: "text-amber-500",  bgColor: "bg-amber-50"  },
+            //   { label: "Protect PDF",   href: "/protect-pdf",   desc: "Add password to PDF",             iconColor: "text-red-500",    bgColor: "bg-red-50"    },
+            // ],
 
-    relatedTools: [
-  {
-    label: "PDF to Word",
-    href: "/pdf-to-word",
-    desc: "Convert PDF to editable DOCX",
-    icon: FileText,
-    iconColor: "text-blue-500",
-    bgColor: "bg-blue-50",
-  },
+            relatedTools: [
+              {
+                label: "PDF to Word",
+                href: "/pdf-to-word",
+                desc: "Convert PDF to editable DOCX",
+                icon: FileText,
+                iconColor: "text-blue-500",
+                bgColor: "bg-blue-50",
+              },
 
-  {
-    label: "Merge PDF",
-    href: "/merge-pdf",
-    desc: "Combine multiple PDFs",
-    icon: FilePlus,
-    iconColor: "text-violet-500",
-    bgColor: "bg-violet-50",
-  },
+              {
+                label: "Merge PDF",
+                href: "/merge-pdf",
+                desc: "Combine multiple PDFs",
+                icon: FilePlus,
+                iconColor: "text-violet-500",
+                bgColor: "bg-violet-50",
+              },
 
-  {
-    label: "Compress PDF",
-    href: "/compress-pdf",
-    desc: "Reduce PDF file size",
-    icon: FileMinus,
-    iconColor: "text-green-500",
-    bgColor: "bg-green-50",
-  },
+              {
+                label: "Compress PDF",
+                href: "/compress-pdf",
+                desc: "Reduce PDF file size",
+                icon: FileMinus,
+                iconColor: "text-green-500",
+                bgColor: "bg-green-50",
+              },
 
-  {
-    label: "Split PDF",
-    href: "/split-pdf",
-    desc: "Extract specific pages",
-    icon: Scissors,
-    iconColor: "text-pink-500",
-    bgColor: "bg-pink-50",
-  },
+              {
+                label: "Split PDF",
+                href: "/split-pdf",
+                desc: "Extract specific pages",
+                icon: Scissors,
+                iconColor: "text-pink-500",
+                bgColor: "bg-pink-50",
+              },
 
-  {
-    label: "PDF to JPG",
-    href: "/pdf-to-jpg",
-    desc: "Extract PDF pages as images",
-    icon: Image,
-    iconColor: "text-amber-500",
-    bgColor: "bg-amber-50",
-  },
+              {
+                label: "PDF to JPG",
+                href: "/pdf-to-jpg",
+                desc: "Extract PDF pages as images",
+                icon: Image,
+                iconColor: "text-amber-500",
+                bgColor: "bg-amber-50",
+              },
 
-  {
-    label: "Protect PDF",
-    href: "/protect-pdf",
-    desc: "Add password to PDF",
-    icon: Lock,
-    iconColor: "text-red-500",
-    bgColor: "bg-red-50",
-  },
-],
+              {
+                label: "Protect PDF",
+                href: "/protect-pdf",
+                desc: "Add password to PDF",
+                icon: Lock,
+                iconColor: "text-red-500",
+                bgColor: "bg-red-50",
+              },
+            ],
 
-    faqTitle: "Frequently Asked Questions — Image to PDF",
+            faqTitle: "Frequently Asked Questions — Image to PDF",
 
-    faqs: [
-      {
-        q: "Is the Image to PDF converter free to use?",
-        a: "Yes, completely free. No hidden charges, no subscription, no limits on conversions.",
-      },
-      {
-        q: "Do I need to install any software?",
-        a: "No. Everything works directly in your browser. No desktop software or plugins needed.",
-      },
-      {
-        q: "Will my image quality be preserved after conversion?",
-        a: "Yes. Images are embedded at full resolution — sharp text, vibrant colors, no quality loss in the output PDF.",
-      },
-      {
-        q: "Which image formats are supported?",
-        a: "PDFLinx supports JPG, JPEG, PNG, and WebP image formats for PDF conversion.",
-      },
-      {
-        q: "Can I convert multiple images into one PDF?",
-        a: "Yes. Upload multiple images and they will all be combined into a single PDF file in order.",
-      },
-      {
-        q: "How is the page order determined in the PDF?",
-        a: "Pages appear in the order you upload the images. You can reorder them before converting.",
-      },
-      {
-        q: "Are my uploaded images safe and private?",
-        a: "Yes. Files are processed securely and permanently deleted after conversion. Never stored or shared.",
-      },
-      {
-        q: "Can I convert images to PDF on my phone?",
-        a: "Yes. PDFLinx works on Android and iOS mobile devices, tablets, and all desktop browsers — no app required.",
-      },
-      {
-        q: "Can I combine images with other PDF documents?",
-        a: "For that, first convert your images to PDF using this tool, then use the Merge PDF tool to combine them with other PDFs.",
-      },
-      {
-        q: "What should I do if the converted PDF file is too large?",
-        a: "Use the Compress PDF tool on PDFLinx to reduce the file size of your converted PDF without losing quality.",
-      },
-    ],
+            faqs: [
+              {
+                q: "Is the Image to PDF converter free to use?",
+                a: "Yes, completely free. No hidden charges, no subscription, no limits on conversions.",
+              },
+              {
+                q: "Do I need to install any software?",
+                a: "No. Everything works directly in your browser. No desktop software or plugins needed.",
+              },
+              {
+                q: "Will my image quality be preserved after conversion?",
+                a: "Yes. Images are embedded at full resolution — sharp text, vibrant colors, no quality loss in the output PDF.",
+              },
+              {
+                q: "Which image formats are supported?",
+                a: "PDFLinx supports JPG, JPEG, PNG, and WebP image formats for PDF conversion.",
+              },
+              {
+                q: "Can I convert multiple images into one PDF?",
+                a: "Yes. Upload multiple images and they will all be combined into a single PDF file in order.",
+              },
+              {
+                q: "How is the page order determined in the PDF?",
+                a: "Pages appear in the order you upload the images. You can reorder them before converting.",
+              },
+              {
+                q: "Are my uploaded images safe and private?",
+                a: "Yes. Files are processed securely and permanently deleted after conversion. Never stored or shared.",
+              },
+              {
+                q: "Can I convert images to PDF on my phone?",
+                a: "Yes. PDFLinx works on Android and iOS mobile devices, tablets, and all desktop browsers — no app required.",
+              },
+              {
+                q: "Can I combine images with other PDF documents?",
+                a: "For that, first convert your images to PDF using this tool, then use the Merge PDF tool to combine them with other PDFs.",
+              },
+              {
+                q: "What should I do if the converted PDF file is too large?",
+                a: "Use the Compress PDF tool on PDFLinx to reduce the file size of your converted PDF without losing quality.",
+              },
+            ],
 
-    ctaBadge: "✦ 100% Free",
-    ctaTitle: "Start Converting Images to PDF Now",
-    ctaDescription: "Fast. Secure. Private. No sign up required.",
-    ctaSubtext: "No limits. No hidden charges.",
-    ctaButton: "Choose Image Files",
+            ctaBadge: "✦ 100% Free",
+            ctaTitle: "Start Converting Images to PDF Now",
+            ctaDescription: "Fast. Secure. Private. No sign up required.",
+            ctaSubtext: "No limits. No hidden charges.",
+            ctaButton: "Choose Image Files",
 
-    seoSections: [
-      {
-        title: "Free Image to PDF Converter — Convert JPG, PNG & WebP to PDF in Seconds",
-        text: "Need to turn photos, screenshots, or scanned images into a PDF? PDFLinx converts JPG, PNG, and WebP images into a professional PDF instantly — full quality, no watermarks, no sign-up required. Upload a single image or combine up to 50 images into one PDF — fast, private, and completely free.",
-      },
-      {
-        title: "What is Image to PDF Conversion?",
-        text: "Image to PDF conversion turns image files — like JPG, PNG, or WebP — into a shareable, printable PDF document. Each image is placed on its own page at full resolution. PDFLinx handles the conversion entirely in your browser without requiring any desktop software, making it accessible on any device or OS.",
-      },
-      {
-        title: "Why Convert Images to PDF?",
-        text: "PDFs are universally compatible — open on any device, any OS, any browser without special software. Common reasons to convert images to PDF include: sharing receipts, invoices, and ID scans professionally; combining multiple photos into one document; submitting scanned forms and signed documents; preserving image content in a fixed, printable format.",
-      },
-      {
-        title: "Privacy and File Security",
-        text: "PDFLinx takes your privacy seriously. Uploaded image files are processed securely and permanently deleted after conversion — never stored long-term, never shared with third parties. No account creation is required. Your images remain completely private throughout the process.",
-      },
-      {
-        title: "Convert Images to PDF on Any Device",
-        text: "Works on Windows, macOS, Linux, Android, and iOS — directly in your browser. No app download needed. PDFLinx is fully responsive and works with drag-and-drop on desktop and image picker on mobile phones. Convert images to PDF anywhere, anytime.",
-      },
-    ],
+            seoSections: [
+              {
+                title: "Free Image to PDF Converter — Convert JPG, PNG & WebP to PDF in Seconds",
+                text: "Need to turn photos, screenshots, or scanned images into a PDF? PDFLinx converts JPG, PNG, and WebP images into a professional PDF instantly — full quality, no watermarks, no sign-up required. Upload a single image or combine up to 50 images into one PDF — fast, private, and completely free.",
+              },
+              {
+                title: "What is Image to PDF Conversion?",
+                text: "Image to PDF conversion turns image files — like JPG, PNG, or WebP — into a shareable, printable PDF document. Each image is placed on its own page at full resolution. PDFLinx handles the conversion entirely in your browser without requiring any desktop software, making it accessible on any device or OS.",
+              },
+              {
+                title: "Why Convert Images to PDF?",
+                text: "PDFs are universally compatible — open on any device, any OS, any browser without special software. Common reasons to convert images to PDF include: sharing receipts, invoices, and ID scans professionally; combining multiple photos into one document; submitting scanned forms and signed documents; preserving image content in a fixed, printable format.",
+              },
+              {
+                title: "Privacy and File Security",
+                text: "PDFLinx takes your privacy seriously. Uploaded image files are processed securely and permanently deleted after conversion — never stored long-term, never shared with third parties. No account creation is required. Your images remain completely private throughout the process.",
+              },
+              {
+                title: "Convert Images to PDF on Any Device",
+                text: "Works on Windows, macOS, Linux, Android, and iOS — directly in your browser. No app download needed. PDFLinx is fully responsive and works with drag-and-drop on desktop and image picker on mobile phones. Convert images to PDF anywhere, anytime.",
+              },
+            ],
 
-    showPdfTypes: false,
-  },
-}}
+            showPdfTypes: false,
+          },
+        }}
       />
 
       {/* <RelatedToolsSection currentPage="image-to-pdf" /> */}

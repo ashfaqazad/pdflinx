@@ -181,7 +181,133 @@ function RevealOnScroll({ children, delay = 0 }) {
 /* ─────────────────────────────────────────
    HERO UPLOAD BOX  (right column)
 ───────────────────────────────────────── */
+// function HeroUploadBox({ onFilesSelect, accept, multiple, uploadTitle, uploadSubtitle, uploadInfo, content }) {
+//   return (
+//     <div className="relative overflow-hidden rounded-2xl border border-dashed border-stone-300 bg-white p-8 text-center shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-rose-400 hover:shadow-[0_0_0_4px_rgba(232,66,10,0.08)]">
+//       {/* subtle radial glow top-center */}
+//       <div
+//         className="pointer-events-none absolute inset-0"
+//         style={{ background: "radial-gradient(ellipse at 50% 0%, rgba(232,66,10,0.04) 0%, transparent 65%)" }}
+//       />
+
+//       {/* Icon */}
+//       {/* <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-rose-50">
+//         <Upload className="h-7 w-7 text-rose-500" />
+//       </div> */}
+
+//       <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-[#fce7f3] mx-auto">
+//         <svg
+//           xmlns="http://www.w3.org/2000/svg"
+//           className="h-8 w-8 text-[#c4b5fd]"
+//           viewBox="0 0 24 24"
+//           fill="currentColor"
+//         >
+//           <path d="M6 2a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6H6z" />
+//           <path d="M8 13h8v1H8zm0 3h8v1H8zm0-6h4v1H8z" fill="#a78bfa" />
+//         </svg>
+//       </div>
+
+
+//       <p className="mb-1 text-lg font-semibold text-stone-900">
+//         {uploadTitle || content?.uploadTitle || "Drop your PDF here"}
+//       </p>
+//       <p className="mb-5 text-sm text-stone-400">
+//         {uploadSubtitle || content?.uploadSubtitle || "or click to browse — PDF files supported"}
+//       </p>
+
+//       {/* Actual upload trigger (UploadStep renders the input/button) */}
+//       {/* <UploadStep
+//         onFilesSelect={onFilesSelect}
+//         accept={accept}
+//         multiple={multiple}
+//         uploadTitle=""
+//         uploadSubtitle=""
+//         uploadInfo={uploadInfo || content?.uploadInfo || null}
+//         buttonClassName="inline-flex items-center gap-2 rounded-full bg-rose-600 px-8 py-3 text-sm font-medium text-white shadow-[0_4px_14px_rgba(232,66,10,0.28)] transition-all hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(232,66,10,0.36)]"
+//         buttonLabel="Choose File"
+//       /> */}
+
+//       <UploadStep
+//         onFilesSelect={onFilesSelect}
+//         accept={accept}
+//         multiple={multiple}
+//       >
+//         {({ open, dragging }) => (
+//           <div
+//             onClick={open}
+//             className={`relative z-10 cursor-pointer ${dragging ? "opacity-80" : ""
+//               }`}
+//           >
+//             <button
+//               type="button"
+//               onClick={(e) => {
+//                 e.stopPropagation();
+//                 open();
+//               }}
+//               className="inline-flex items-center gap-2 rounded-full bg-[#e8420a] px-8 py-3 text-sm font-medium text-white shadow-[0_4px_14px_rgba(232,66,10,0.28)] transition-all hover:-translate-y-0.5 hover:bg-[#d63a07] hover:shadow-[0_6px_20px_rgba(232,66,10,0.36)]"            >
+//               <Upload className="h-4 w-4" />
+//               Choose File
+//             </button>
+//           </div>
+//         )}
+//       </UploadStep>
+
+//       {/* Meta row */}
+//       <div className="mt-5 flex flex-wrap items-center justify-center gap-4">
+//         <span className="flex items-center gap-1 text-xs text-stone-400">
+//           <Timer className="h-3.5 w-3.5" /> Multiple files up to 1 min
+//         </span>
+//         <span className="flex items-center gap-1 text-xs text-stone-400">
+//           <Layers className="h-3.5 w-3.5" /> Max 10 MB · Single · Multiple · ZIP
+//         </span>
+//       </div>
+
+//       {/* Feature list */}
+//       <div className="mt-5 rounded-lg bg-stone-50 p-3 text-left">
+//         <p className="mb-1.5 text-xs font-medium text-stone-400">PDF to Word Conversion includes:</p>
+//         <ul className="space-y-1">
+//           {(content?.noticeItems || [
+//             "Single PDF → DOCX",
+//             "Multiple PDFs → ZIP",
+//             "OCR available for scanned PDFs",
+//           ]).map((item) => (
+//             <li key={item} className="flex items-center gap-2 text-xs text-stone-600">
+//               <span className="text-rose-500">→</span> {item}
+//             </li>
+//           ))}
+//         </ul>
+//       </div>
+
+//       <p className="mt-3 text-xs text-stone-400">🔒 Your files are auto-deleted after 1 hour</p>
+//     </div>
+//   );
+// }
+
+
+
+
+// UploadLandingStep.jsx mein ye pura function dhundo aur replace karo
+// "function HeroUploadBox" se lekar closing "}" tak
+
 function HeroUploadBox({ onFilesSelect, accept, multiple, uploadTitle, uploadSubtitle, uploadInfo, content }) {
+
+  // ── Agar customUploadNode hai to seedha render karo ──
+  if (content?.customUploadNode) {
+    return (
+      // <div className="relative overflow-hidden rounded-2xl border border-dashed border-stone-300 bg-white p-8 shadow-sm">
+      <div className="relative overflow-hidden rounded-2xl border border-dashed border-stone-300 bg-white p-8 shadow-sm min-h-[520px]">
+        <div
+          className="pointer-events-none absolute inset-0"
+          style={{ background: "radial-gradient(ellipse at 50% 0%, rgba(232,66,10,0.04) 0%, transparent 65%)" }}
+        />
+        <div className="relative z-10">
+          {content.customUploadNode}
+        </div>
+      </div>
+    );
+  }
+
+  // ── Default upload box ──
   return (
     <div className="relative overflow-hidden rounded-2xl border border-dashed border-stone-300 bg-white p-8 text-center shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-rose-400 hover:shadow-[0_0_0_4px_rgba(232,66,10,0.08)]">
       {/* subtle radial glow top-center */}
@@ -191,10 +317,6 @@ function HeroUploadBox({ onFilesSelect, accept, multiple, uploadTitle, uploadSub
       />
 
       {/* Icon */}
-      {/* <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-rose-50">
-        <Upload className="h-7 w-7 text-rose-500" />
-      </div> */}
-
       <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-[#fce7f3] mx-auto">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -207,25 +329,12 @@ function HeroUploadBox({ onFilesSelect, accept, multiple, uploadTitle, uploadSub
         </svg>
       </div>
 
-
       <p className="mb-1 text-lg font-semibold text-stone-900">
         {uploadTitle || content?.uploadTitle || "Drop your PDF here"}
       </p>
       <p className="mb-5 text-sm text-stone-400">
         {uploadSubtitle || content?.uploadSubtitle || "or click to browse — PDF files supported"}
       </p>
-
-      {/* Actual upload trigger (UploadStep renders the input/button) */}
-      {/* <UploadStep
-        onFilesSelect={onFilesSelect}
-        accept={accept}
-        multiple={multiple}
-        uploadTitle=""
-        uploadSubtitle=""
-        uploadInfo={uploadInfo || content?.uploadInfo || null}
-        buttonClassName="inline-flex items-center gap-2 rounded-full bg-rose-600 px-8 py-3 text-sm font-medium text-white shadow-[0_4px_14px_rgba(232,66,10,0.28)] transition-all hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(232,66,10,0.36)]"
-        buttonLabel="Choose File"
-      /> */}
 
       <UploadStep
         onFilesSelect={onFilesSelect}
@@ -235,8 +344,7 @@ function HeroUploadBox({ onFilesSelect, accept, multiple, uploadTitle, uploadSub
         {({ open, dragging }) => (
           <div
             onClick={open}
-            className={`relative z-10 cursor-pointer ${dragging ? "opacity-80" : ""
-              }`}
+            className={`relative z-10 cursor-pointer ${dragging ? "opacity-80" : ""}`}
           >
             <button
               type="button"
@@ -244,7 +352,8 @@ function HeroUploadBox({ onFilesSelect, accept, multiple, uploadTitle, uploadSub
                 e.stopPropagation();
                 open();
               }}
-              className="inline-flex items-center gap-2 rounded-full bg-[#e8420a] px-8 py-3 text-sm font-medium text-white shadow-[0_4px_14px_rgba(232,66,10,0.28)] transition-all hover:-translate-y-0.5 hover:bg-[#d63a07] hover:shadow-[0_6px_20px_rgba(232,66,10,0.36)]"            >
+              className="inline-flex items-center gap-2 rounded-full bg-[#e8420a] px-8 py-3 text-sm font-medium text-white shadow-[0_4px_14px_rgba(232,66,10,0.28)] transition-all hover:-translate-y-0.5 hover:bg-[#d63a07] hover:shadow-[0_6px_20px_rgba(232,66,10,0.36)]"
+            >
               <Upload className="h-4 w-4" />
               Choose File
             </button>
@@ -282,6 +391,9 @@ function HeroUploadBox({ onFilesSelect, accept, multiple, uploadTitle, uploadSub
     </div>
   );
 }
+
+
+
 
 /* ─────────────────────────────────────────
    STATS STRIP  (dark band)

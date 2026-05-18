@@ -3,50 +3,24 @@
 import { useRef, useState, useEffect, useMemo } from "react";
 import RelatedToolsSection from "@/components/RelatedTools";
 import Script from "next/script";
-import Link from "next/link";
 import {
-  Upload,
-  FileText,
-  Download,
-  CheckCircle,
-  X,
   PenTool,
   Eraser,
   Image as ImageIcon,
   ZoomIn,
   ZoomOut,
+  FileText,
+  CheckCircle,
+  X,
   Shield,
   Zap,
   Lock,
-  FileImage,
-  Scissors,
-  Minimize2,
-  ArrowRightLeft,
-  FilePlus,
+  MonitorSmartphone,
 } from "lucide-react";
-
-// ==================== RELATED TOOLS DATA ====================
-const RELATED_TOOLS = [
-  { href: "/word-to-pdf", label: "Word to PDF", icon: FileText, desc: "Convert Word docs to PDF", color: "blue" },
-  { href: "/pdf-to-word", label: "PDF to Word", icon: ArrowRightLeft, desc: "Convert PDF to editable Word", color: "indigo" },
-  { href: "/compress-pdf", label: "Compress PDF", icon: Minimize2, desc: "Reduce PDF file size", color: "orange" },
-  { href: "/merge-pdf", label: "Merge PDF", icon: FilePlus, desc: "Combine multiple PDFs", color: "purple" },
-  { href: "/split-pdf", label: "Split PDF", icon: Scissors, desc: "Split PDF into parts", color: "red" },
-  { href: "/image-to-pdf", label: "Image to PDF", icon: FileImage, desc: "Convert images to PDF", color: "green" },
-  { href: "/pdf-to-jpg", label: "PDF to JPG", icon: ImageIcon, desc: "Convert PDF pages to JPG", color: "yellow" },
-  { href: "/pdf-to-png", label: "PDF to PNG", icon: ImageIcon, desc: "Convert PDF pages to PNG", color: "teal" },
-];
-
-const COLOR_MAP = {
-  blue:   { bg: "bg-blue-50",   border: "border-blue-200",   text: "text-blue-700",   icon: "bg-blue-100",   iconText: "text-blue-600"   },
-  indigo: { bg: "bg-indigo-50", border: "border-indigo-200", text: "text-indigo-700", icon: "bg-indigo-100", iconText: "text-indigo-600" },
-  orange: { bg: "bg-orange-50", border: "border-orange-200", text: "text-orange-700", icon: "bg-orange-100", iconText: "text-orange-600" },
-  purple: { bg: "bg-purple-50", border: "border-purple-200", text: "text-purple-700", icon: "bg-purple-100", iconText: "text-purple-600" },
-  red:    { bg: "bg-red-50",    border: "border-red-200",    text: "text-red-700",    icon: "bg-red-100",    iconText: "text-red-600"    },
-  green:  { bg: "bg-green-50",  border: "border-green-200",  text: "text-green-700",  icon: "bg-green-100",  iconText: "text-green-600"  },
-  yellow: { bg: "bg-yellow-50", border: "border-yellow-200", text: "text-yellow-700", icon: "bg-yellow-100", iconText: "text-yellow-600" },
-  teal:   { bg: "bg-teal-50",   border: "border-teal-200",   text: "text-teal-700",   icon: "bg-teal-100",   iconText: "text-teal-600"   },
-};
+import ToolPageLayout from "@/components/ToolFlow/ToolPageLayout";
+import { useToolFlow } from "@/hooks/useToolFlow";
+import { useProgressBar } from "@/hooks/useProgressBar";
+import { DEFAULT_DONE_LINKS, DEFAULT_SIDEBAR_FEATURES } from "@/lib/toolUiConfig";
 
 // ==================== FAQ DATA ====================
 const FAQ_DATA = [
@@ -92,19 +66,163 @@ const FAQ_DATA = [
   },
 ];
 
-// ==================== COMPONENT ====================
-export default function SignPdf() {
-  // ==================== STATE ====================
+// ==================== SIGN PDF PREVIEW COMPONENT ====================
+function SignPdfPreview({
+  pdfDoc,
+  totalPages,
+  pageNumber,
+  signaturePreview,
+  xPosition,
+  yPosition,
+  signatureWidth,
+  signatureHeight,
+  scale,
+  setScale,
+  canvasRefs,
+  renderKey,
+  handleSignatureDrag,
+  handleSignatureDragStart,
+  handleSignatureDragEnd,
+  selectPage,
+  pdfFile,
+}) {
+  const clamp = (v, min, max) => Math.max(min, Math.min(max, v));
+
+  return (
+    <div className="w-full">
+      {/* Zoom controls */}
+      <div className="flex items-center justify-between mb-3">
+        <h3 className="text-sm font-semibold text-slate-700">Live PDF Preview</h3>
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={() => setScale((s) => clamp(Number((s + 0.2).toFixed(2)), 0.5, 2.5))}
+            className="px-2.5 py-1.5 bg-gray-100 rounded-lg hover:bg-gray-200 transition"
+            title="Zoom In"
+          >
+            <ZoomIn className="w-4 h-4" />
+          </button>
+          <span className="text-xs text-gray-600 min-w-10 text-center font-medium">
+            {Math.round(scale * 100)}%
+          </span>
+          <button
+            type="button"
+            onClick={() => setScale((s) => clamp(Number((s - 0.2).toFixed(2)), 0.5, 2.5))}
+            className="px-2.5 py-1.5 bg-gray-100 rounded-lg hover:bg-gray-200 transition"
+            title="Zoom Out"
+          >
+            <ZoomOut className="w-4 h-4" />
+          </button>
+        </div>
+      </div>
+
+      {/* Preview area */}
+      {!pdfFile ? (
+        <div className="flex items-center justify-center h-56 border-2 border-dashed border-gray-200 rounded-xl bg-gray-50">
+          <div className="text-center text-gray-400">
+            <FileText className="w-10 h-10 mx-auto mb-2 text-gray-300" />
+            <p className="text-sm">Upload a PDF to see live preview</p>
+            <p className="text-xs text-gray-300 mt-1">
+              See your digital signature placement in real-time
+            </p>
+          </div>
+        </div>
+      ) : (
+        <div
+          className="relative border border-gray-200 rounded-xl overflow-auto bg-gray-100 p-3 space-y-4"
+          // style={{ maxHeight: "90vh" }}
+          style={{ maxHeight: "calc(100vh - 120px)" }}
+          onMouseMove={handleSignatureDrag}
+          onMouseUp={handleSignatureDragEnd}
+          onMouseLeave={handleSignatureDragEnd}
+          onTouchMove={handleSignatureDrag}
+          onTouchEnd={handleSignatureDragEnd}
+        >
+          {Array.from({ length: totalPages }).map((_, index) => (
+            <div
+              key={`page-${index}-${renderKey}`}
+              className={`relative flex justify-center cursor-pointer transition-all ${pageNumber === index + 1
+                ? "ring-4 ring-blue-500 rounded-xl p-1.5 bg-blue-50"
+                : "hover:ring-2 hover:ring-gray-300 rounded-xl p-1.5"
+                }`}
+              onClick={() => selectPage(index + 1)}
+            >
+              <div className="absolute top-2 left-2 bg-gray-800 text-white text-xs px-2 py-0.5 rounded z-10 font-medium">
+                Page {index + 1}
+              </div>
+              <div className="relative inline-block shadow-xl max-w-full overflow-hidden">
+                <canvas
+                  ref={(el) => {
+                    if (el) canvasRefs.current[index] = el;
+                  }}
+                  className="bg-white block"
+                  style={{ display: "block", maxWidth: "100%", height: "auto" }}
+                />
+                {signaturePreview && pageNumber === index + 1 && (
+                  <div
+                    className="absolute cursor-move border-2 border-blue-500 shadow-lg"
+                    style={{
+                      left: `${xPosition}px`,
+                      top: `${yPosition}px`,
+                      width: `${signatureWidth}px`,
+                      height: `${signatureHeight}px`,
+                    }}
+                    onMouseDown={handleSignatureDragStart}
+                    onTouchStart={handleSignatureDragStart}
+                    title="Drag to move digital signature"
+                  >
+                    <img
+                      src={signaturePreview}
+                      alt="Digital signature on PDF"
+                      className="w-full h-full object-contain bg-white/90 pointer-events-none"
+                      draggable={false}
+                    />
+                  </div>
+                )}
+              </div>
+            </div>
+          ))}
+
+          {!pdfDoc && (
+            <div className="absolute inset-0 flex items-center justify-center bg-white/80 rounded-xl">
+              <div className="text-center">
+                <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-2" />
+                <p className="text-sm text-gray-500">Loading PDF preview…</p>
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+
+      <p className="text-xs text-gray-400 mt-2 text-center">
+        💡 Click a page to select it, then drag the signature to position it
+      </p>
+    </div>
+  );
+}
+
+// ==================== MAIN COMPONENT ====================
+export default function SignPdf({ seo }) {
+  const flow = useToolFlow();
+  const { progress, startProgress, completeProgress, cancelProgress } = useProgressBar();
+
+  // ── PDF state ──
   const [pdfFile, setPdfFile] = useState(null);
   const [pdfDoc, setPdfDoc] = useState(null);
   const [totalPages, setTotalPages] = useState(1);
+  const [pdfJsReady, setPdfJsReady] = useState(false);
+  const [renderKey, setRenderKey] = useState(0);
+  const canvasRefs = useRef([]);
+  const toolCardRef = useRef(null);
+
+  // ── Signature state ──
   const [signatureImage, setSignatureImage] = useState(null);
   const [signaturePreview, setSignaturePreview] = useState("");
-  const [drawMode, setDrawMode] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState(false);
-  const [error, setError] = useState("");
-  const [progress, setProgress] = useState(0);
+  const [activeTab, setActiveTab] = useState("draw");
+  const signCanvasRef = useRef(null);
+  const isDrawing = useRef(false);
+
+  // ── Position / size state ──
   const [pageNumber, setPageNumber] = useState(1);
   const [xPosition, setXPosition] = useState(50);
   const [yPosition, setYPosition] = useState(50);
@@ -112,23 +230,14 @@ export default function SignPdf() {
   const [signatureHeight, setSignatureHeight] = useState(75);
   const [scale, setScale] = useState(1);
   const [isDragging, setIsDragging] = useState(false);
-  const [pdfJsReady, setPdfJsReady] = useState(false);
-  const [renderKey, setRenderKey] = useState(0);
-  const [activeTab, setActiveTab] = useState("draw");
-  const [openFaq, setOpenFaq] = useState(null);
-
   const dragStart = useRef({ x: 0, y: 0 });
-  const canvasRefs = useRef([]);
-  const signCanvasRef = useRef(null);
-  const toolCardRef = useRef(null);
-  const isDrawing = useRef(false);
 
-  // ==================== COMPUTED ====================
-  const fileSizeMb = useMemo(() => {
-    return pdfFile ? (pdfFile.size / 1024 / 1024).toFixed(2) : 0;
-  }, [pdfFile]);
+  // ── UI state ──
+  const [error, setError] = useState("");
+  const [downloadUrl, setDownloadUrl] = useState(null);
+  const [outputFilename, setOutputFilename] = useState("signed.pdf");
 
-  // ==================== HELPERS ====================
+  // ── Helpers ──
   const clamp = (v, min, max) => Math.max(min, Math.min(max, v));
 
   const resetAllForNewPdf = () => {
@@ -139,40 +248,28 @@ export default function SignPdf() {
     canvasRefs.current = [];
     setXPosition(50);
     setYPosition(50);
-    setSuccess(false);
-    setError("");
     setRenderKey(0);
   };
 
   const resetSignature = () => {
     setSignatureImage(null);
     setSignaturePreview("");
-    setDrawMode(false);
   };
 
-  const downloadBlob = (blob, filename) => {
-    const url = window.URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = filename;
-    a.click();
-    window.URL.revokeObjectURL(url);
-  };
-
-  // ==================== PDF FILE UPLOAD ====================
-  const handlePdfUpload = (e) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    if (file.type !== "application/pdf") {
-      setError("Please upload a valid PDF file.");
-      return;
+  // ── Sync pdfFile from flow.files ──
+  useEffect(() => {
+    const f = flow.files?.[0] || null;
+    if (f !== pdfFile) {
+      setPdfFile(f);
+      if (f) {
+        resetAllForNewPdf();
+        setError("");
+        setOutputFilename(f.name.replace(/\.pdf$/i, "") + "-signed.pdf");
+      }
     }
-    setPdfFile(file);
-    resetAllForNewPdf();
-    setError("");
-  };
+  }, [flow.files]);
 
-  // ==================== LOAD PDF DOC ====================
+  // ── Load PDF doc ──
   useEffect(() => {
     if (!pdfFile) return;
     let cancelled = false;
@@ -204,7 +301,7 @@ export default function SignPdf() {
     return () => { cancelled = true; };
   }, [pdfFile]);
 
-  // ==================== RENDER ALL PAGES ====================
+  // ── Render all pages ──
   useEffect(() => {
     if (!pdfDoc) return;
     let cancelled = false;
@@ -215,7 +312,7 @@ export default function SignPdf() {
         for (let i = 1; i <= totalPages; i++) {
           if (cancelled) return;
           const canvas = canvasRefs.current[i - 1];
-          if (!canvas) { console.warn(`Canvas ${i} not mounted yet`); continue; }
+          if (!canvas) continue;
           const page = await pdfDoc.getPage(i);
           const viewport = page.getViewport({ scale });
           const ctx = canvas.getContext("2d");
@@ -237,7 +334,7 @@ export default function SignPdf() {
     if (pdfDoc) setRenderKey((prev) => prev + 1);
   }, [scale]);
 
-  // ==================== SIGNATURE DRAWING ====================
+  // ── Drawing ──
   const getCanvasCoords = (e, canvas) => {
     const rect = canvas.getBoundingClientRect();
     const scaleX = canvas.width / rect.width;
@@ -251,7 +348,6 @@ export default function SignPdf() {
   };
 
   const startDrawing = (e) => {
-    if (!drawMode) return;
     const canvas = signCanvasRef.current;
     if (!canvas) return;
     e.preventDefault();
@@ -267,7 +363,7 @@ export default function SignPdf() {
   };
 
   const draw = (e) => {
-    if (!drawMode || !isDrawing.current) return;
+    if (!isDrawing.current) return;
     const canvas = signCanvasRef.current;
     if (!canvas) return;
     e.preventDefault();
@@ -295,8 +391,6 @@ export default function SignPdf() {
       setSignatureImage(file);
       const url = URL.createObjectURL(blob);
       setSignaturePreview(url);
-      setDrawMode(false);
-      setSuccess(false);
       setError("");
     }, "image/png");
   };
@@ -310,12 +404,10 @@ export default function SignPdf() {
     }
     setSignatureImage(file);
     setSignaturePreview(URL.createObjectURL(file));
-    setDrawMode(false);
-    setSuccess(false);
     setError("");
   };
 
-  // ==================== DRAG SIGNATURE ====================
+  // ── Drag signature ──
   const handleSignatureDragStart = (e) => {
     if (!signaturePreview) return;
     const canvas = canvasRefs.current[pageNumber - 1];
@@ -355,165 +447,264 @@ export default function SignPdf() {
     setYPosition((y) => clamp(y, 0, rect.height - signatureHeight));
   };
 
-  // ==================== SUBMIT ====================
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   if (!pdfFile) return setError("Please upload a PDF file!");
-  //   if (!signatureImage) return setError("Please provide a signature!");
+  // ── Remove file ──
+  const handleRemoveFile = () => {
+    resetAllForNewPdf();
+    resetSignature();
+    setError("");
+    flow.reset();
+  };
 
-  //   setLoading(true);
-  //   setProgress(0);
-  //   setSuccess(false);
-  //   setError("");
+  // ── Download ──
+  const handleDownload = () => {
+    if (!downloadUrl) return;
+    const a = document.createElement("a");
+    a.href = downloadUrl;
+    a.download = outputFilename;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+  };
 
-  //   let progressInterval = setInterval(() => {
-  //     setProgress((prev) => {
-  //       if (prev >= 88) return prev;
-  //       const increment = prev < 35 ? 8 : prev < 65 ? 5 : 2;
-  //       return prev + increment;
-  //     });
-  //   }, 300);
-
-  //   try {
-  //     const formData = new FormData();
-  //     formData.append("pdfFile", pdfFile);
-  //     formData.append("signatureImage", signatureImage);
-  //     formData.append("pageNumber", String(pageNumber));
-  //     formData.append("xPosition", String(Math.round(xPosition)));
-  //     formData.append("yPosition", String(Math.round(yPosition)));
-  //     formData.append("width", String(Math.round(signatureWidth)));
-  //     formData.append("height", String(Math.round(signatureHeight)));
-  //     formData.append("scale", String(scale));
-
-  //     const res = await fetch("/convert/sign-pdf", {
-  //       method: "POST",
-  //       body: formData,
-  //     });
-
-  //     if (!res.ok) {
-  //       let msg = "Signing failed";
-  //       try { const j = await res.json(); msg = j?.error || msg; } catch {}
-  //       throw new Error(msg);
-  //     }
-
-  //     clearInterval(progressInterval);
-  //     setProgress(100);
-
-  //     const blob = await res.blob();
-  //     downloadBlob(blob, pdfFile.name.replace(/\.pdf$/i, "") + "-signed.pdf");
-  //     setSuccess(true);
-
-  //     setTimeout(() => {
-  //       document.getElementById("download-section")?.scrollIntoView({ behavior: "smooth", block: "center" });
-  //     }, 300);
-  //   } catch (err) {
-  //     console.error(err);
-  //     setError((err?.message || "Something went wrong. Please try again.").toString());
-  //   } finally {
-  //     clearInterval(progressInterval);
-  //     setTimeout(() => { setLoading(false); setProgress(0); }, 800);
-  //   }
-  // };
-
-
-const handleSubmit = async (e) => {
-  e.preventDefault();
-
-  if (!pdfFile) {
-    setError("Please upload a PDF file!");
-    return;
-  }
-
-  if (!signatureImage) {
-    setError("Please provide a signature!");
-    return;
-  }
-
-  const currentCanvas = canvasRefs.current[pageNumber - 1];
-  if (!currentCanvas) {
-    setError("Preview canvas not ready yet. Please wait a moment and try again.");
-    return;
-  }
-
-  toolCardRef.current?.scrollIntoView({
-    behavior: "smooth",
-    block: "center",
-  });
-
-  setLoading(true);
-  setProgress(0);
-  setSuccess(false);
-  setError("");
-
-  const progressInterval = setInterval(() => {
-    setProgress((prev) => {
-      if (prev >= 88) return prev;
-      const increment = prev < 35 ? 8 : prev < 65 ? 5 : 2;
-      return prev + increment;
-    });
-  }, 300);
-
-  try {
-    const formData = new FormData();
-    formData.append("pdfFile", pdfFile);
-    formData.append("signatureImage", signatureImage);
-    formData.append("pageNumber", String(pageNumber));
-
-    // Preview overlay coordinates
-    formData.append("xPosition", String(Math.round(xPosition)));
-    formData.append("yPosition", String(Math.round(yPosition)));
-    formData.append("width", String(Math.round(signatureWidth)));
-    formData.append("height", String(Math.round(signatureHeight)));
-    formData.append("scale", String(scale));
-
-    // Preview canvas displayed size backend ko bhejo
-    const displayRect = currentCanvas.getBoundingClientRect();
-    formData.append("previewWidth", String(displayRect.width));
-    formData.append("previewHeight", String(displayRect.height));
-
-    const res = await fetch("/convert/sign-pdf", {
-      method: "POST",
-      body: formData,
-    });
-
-    if (!res.ok) {
-      let msg = "Signing failed";
-      try {
-        const j = await res.json();
-        msg = j?.error || msg;
-      } catch {}
-      throw new Error(msg);
+  // ── Convert / Submit ──
+  const handleConvert = async () => {
+    if (!pdfFile) {
+      setError("Please upload a PDF file!");
+      return;
+    }
+    if (!signatureImage) {
+      setError("Please provide a signature first!");
+      return;
     }
 
-    clearInterval(progressInterval);
-    setProgress(100);
+    const currentCanvas = canvasRefs.current[pageNumber - 1];
+    if (!currentCanvas) {
+      setError("Preview canvas not ready yet. Please wait a moment and try again.");
+      return;
+    }
 
-    const blob = await res.blob();
-    downloadBlob(
-      blob,
-      pdfFile.name.replace(/\.pdf$/i, "") + "-signed.pdf"
-    );
+    flow.startProcessing();
+    startProgress();
+    setError("");
 
-    setSuccess(true);
+    try {
+      const formData = new FormData();
+      formData.append("pdfFile", pdfFile);
+      formData.append("signatureImage", signatureImage);
+      formData.append("pageNumber", String(pageNumber));
+      formData.append("xPosition", String(Math.round(xPosition)));
+      formData.append("yPosition", String(Math.round(yPosition)));
+      formData.append("width", String(Math.round(signatureWidth)));
+      formData.append("height", String(Math.round(signatureHeight)));
+      formData.append("scale", String(scale));
 
-    setTimeout(() => {
-      document
-        .getElementById("download-section")
-        ?.scrollIntoView({ behavior: "smooth", block: "center" });
-    }, 300);
-  } catch (err) {
-    console.error(err);
-    setError(
-      (err?.message || "Something went wrong. Please try again.").toString()
-    );
-  } finally {
-    clearInterval(progressInterval);
-    setTimeout(() => {
-      setLoading(false);
-      setProgress(0);
-    }, 800);
-  }
-};  // ==================== UI ====================
+      const displayRect = currentCanvas.getBoundingClientRect();
+      formData.append("previewWidth", String(displayRect.width));
+      formData.append("previewHeight", String(displayRect.height));
+
+      const res = await fetch("/convert/sign-pdf", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!res.ok) {
+        let msg = "Signing failed";
+        try {
+          const j = await res.json();
+          msg = j?.error || msg;
+        } catch { }
+        throw new Error(msg);
+      }
+
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+      if (downloadUrl) URL.revokeObjectURL(downloadUrl);
+      setDownloadUrl(url);
+
+      completeProgress();
+      flow.finishSuccess();
+    } catch (err) {
+      cancelProgress();
+      const msg = (err?.message || "Something went wrong. Please try again.").toString();
+      setError(msg);
+      flow.handleError(msg);
+      console.error(err);
+    }
+  };
+
+  // ── Options slot: draw/upload tabs + size controls ──
+  const optionsSlot = (
+    <div className="space-y-5">
+      {/* Signature creation */}
+      <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+        <h3 className="text-base font-bold text-slate-900">Create your signature</h3>
+        <p className="mt-1 text-sm text-slate-500">Draw with mouse/touch or upload an image.</p>
+
+        {/* Tab switcher */}
+        <div className="grid grid-cols-2 gap-2 mt-4 mb-4">
+          <button
+            type="button"
+            onClick={() => setActiveTab("draw")}
+            className={`flex items-center justify-center gap-2 py-2.5 rounded-xl border-2 text-sm font-semibold transition-all ${activeTab === "draw"
+              ? "border-blue-600 bg-blue-50 text-blue-700"
+              : "border-gray-200 text-gray-600 hover:border-blue-300"
+              }`}
+          >
+            <PenTool className="w-4 h-4" />
+            Draw Signature
+          </button>
+
+          <label
+            className={`flex items-center justify-center gap-2 py-2.5 rounded-xl border-2 text-sm font-semibold transition-all cursor-pointer ${activeTab === "upload"
+              ? "border-purple-600 bg-purple-50 text-purple-700"
+              : "border-gray-200 text-gray-600 hover:border-purple-300"
+              }`}
+            onClick={() => setActiveTab("upload")}
+          >
+            <ImageIcon className="w-4 h-4" />
+            Upload Image
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleSignatureUpload}
+              className="hidden"
+            />
+          </label>
+        </div>
+
+        {/* Draw canvas */}
+        {activeTab === "draw" && (
+          <div className="rounded-xl border-2 border-gray-200 bg-gray-50 p-3">
+            <p className="text-xs text-gray-500 mb-2">Draw your signature below:</p>
+            <canvas
+              ref={signCanvasRef}
+              width={600}
+              height={300}
+              onMouseDown={startDrawing}
+              onMouseMove={draw}
+              onMouseUp={stopDrawing}
+              onMouseLeave={stopDrawing}
+              onTouchStart={startDrawing}
+              onTouchMove={draw}
+              onTouchEnd={stopDrawing}
+              className="border-2 border-dashed border-gray-300 bg-white w-full rounded-lg cursor-crosshair"
+              style={{ touchAction: "none" }}
+            />
+            <div className="flex gap-2 mt-2">
+              <button
+                type="button"
+                onClick={clearCanvas}
+                className="flex items-center gap-1.5 px-3 py-2 bg-red-100 text-red-700 rounded-lg hover:bg-red-200 transition text-xs font-semibold"
+              >
+                <Eraser className="w-3.5 h-3.5" />
+                Clear
+              </button>
+              <button
+                type="button"
+                onClick={saveCanvasAsImage}
+                className="flex items-center gap-1.5 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition text-xs font-semibold"
+              >
+                <CheckCircle className="w-3.5 h-3.5" />
+                Use This Signature
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* Signature ready */}
+        {signaturePreview && (
+          <div className="mt-3 border-2 border-green-400 bg-green-50 rounded-xl p-3 flex items-center gap-3">
+            <CheckCircle className="w-5 h-5 text-green-600 shrink-0" />
+            <div className="min-w-0 flex-1">
+              <p className="text-xs font-semibold text-green-700 mb-1">✓ Signature ready</p>
+              <img
+                src={signaturePreview}
+                alt="Signature preview"
+                className="max-h-12 bg-white border border-gray-200 rounded p-1"
+              />
+            </div>
+            <button
+              type="button"
+              onClick={resetSignature}
+              className="text-red-400 hover:bg-red-100 p-1 rounded shrink-0"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </div>
+        )}
+      </div>
+
+      {/* Position & size controls */}
+      {pdfFile && signaturePreview && (
+        <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm space-y-4">
+          <h3 className="text-base font-bold text-slate-900">Position & size</h3>
+
+          <div>
+            <label className="block text-xs text-slate-500 mb-1">
+              Page:{" "}
+              <span className="font-semibold text-slate-700">
+                {pageNumber} / {totalPages}
+              </span>
+            </label>
+            <input
+              type="number"
+              min={1}
+              max={totalPages}
+              value={pageNumber}
+              onChange={(e) => selectPage(parseInt(e.target.value) || 1)}
+              className="w-full px-3 py-2 border-2 border-gray-200 rounded-lg text-sm focus:border-blue-400 focus:outline-none"
+            />
+          </div>
+
+          <div>
+            <label className="block text-xs text-slate-500 mb-1">
+              Width:{" "}
+              <span className="font-semibold text-slate-700">
+                {Math.round(signatureWidth)}px
+              </span>
+            </label>
+            <input
+              type="range"
+              min="50"
+              max="400"
+              value={signatureWidth}
+              onChange={(e) => setSignatureWidth(parseInt(e.target.value))}
+              className="w-full accent-blue-600"
+            />
+          </div>
+
+          <div>
+            <label className="block text-xs text-slate-500 mb-1">
+              Height:{" "}
+              <span className="font-semibold text-slate-700">
+                {Math.round(signatureHeight)}px
+              </span>
+            </label>
+            <input
+              type="range"
+              min="30"
+              max="220"
+              value={signatureHeight}
+              onChange={(e) => setSignatureHeight(parseInt(e.target.value))}
+              className="w-full accent-blue-600"
+            />
+          </div>
+
+          <p className="text-xs text-slate-400">
+            💡 Drag the signature box in the preview to reposition it
+          </p>
+        </div>
+      )}
+
+      {/* Error */}
+      {error && (
+        <div className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">
+          <p className="font-semibold">{error}</p>
+        </div>
+      )}
+    </div>
+  );
+
   return (
     <>
       {/* ==================== SEO SCHEMAS ==================== */}
@@ -537,10 +728,6 @@ const handleSubmit = async (e) => {
             ],
             totalTime: "PT30S",
             estimatedCost: { "@type": "MonetaryAmount", value: "0", currency: "USD" },
-            tool: [
-              { "@type": "HowToTool", name: "PDFLinx Sign PDF Tool" },
-              { "@type": "HowToTool", name: "Web Browser" },
-            ],
             image: "https://pdflinx.com/og-sign-pdf.png",
           }, null, 2),
         }}
@@ -592,12 +779,9 @@ const handleSubmit = async (e) => {
             url: "https://pdflinx.com/sign-pdf",
             applicationCategory: "UtilitiesApplication",
             operatingSystem: "All",
-            offers: {
-              "@type": "Offer",
-              price: "0",
-              priceCurrency: "USD",
-            },
-            description: "Free online tool to add digital signatures to PDF documents. Draw or upload your signature, position with live preview, download instantly. No signup required.",
+            offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+            description:
+              "Free online tool to add digital signatures to PDF documents. Draw or upload your signature, position with live preview, download instantly. No signup required.",
             featureList: [
               "Free digital signature creation online",
               "Draw signature with mouse or touchscreen",
@@ -611,6 +795,7 @@ const handleSubmit = async (e) => {
         }}
       />
 
+      {/* pdf.js CDN */}
       <Script
         src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"
         strategy="afterInteractive"
@@ -623,852 +808,266 @@ const handleSubmit = async (e) => {
         }}
       />
 
-      {/* ==================== BREADCRUMB NAV ==================== */}
-      <nav aria-label="Breadcrumb" className="max-w-6xl mx-auto px-4 pt-4 pb-0">
-        <ol className="flex items-center gap-1.5 text-xs text-gray-500 flex-wrap">
-          <li><Link href="/" className="hover:text-blue-600 transition">Home</Link></li>
-          <li className="text-gray-300">/</li>
-          <li><Link href="/tools" className="hover:text-blue-600 transition">PDF Tools</Link></li>
-          <li className="text-gray-300">/</li>
-          <li className="text-gray-700 font-medium" aria-current="page">Sign PDF Online Free</li>
-        </ol>
-      </nav>
+      {/* ==================== TOOL UI ==================== */}
+      <ToolPageLayout
+        title={seo?.h1 || "Sign PDF Online Free"}
+        tagline="No Signup · No Watermark · Live Preview · 100% Free"
+        accept=".pdf,application/pdf"
+        multiple={false}
+        convertLabel="Sign PDF Now"
+        hideSidebar={true}
+        flow={flow}
+        progress={progress}
+        onRemoveFile={handleRemoveFile}
+        onConvert={handleConvert}
+        onDownload={handleDownload}
+        doneLinks={DEFAULT_DONE_LINKS}
+        showOutputFormat={false}
+        showPreserveLayout={false}
+        optionsTitle="Signature options"
+        optionsSlot={optionsSlot}
+        processingTitle="Signing your PDF..."
+        processingDescription="Applying your digital signature. Please wait."
+        processingStages={["Uploading", "Applying signature", "Done"]}
+        doneTitle="Your signed PDF is ready"
+        doneDescription="Click download to save your digitally signed PDF."
+        downloadLabel="Download Signed PDF"
+        resetLabel="Sign another PDF"
+        sidebarTitle="Sign PDF"
+        sidebarIcon={<PenTool className="h-5 w-5 text-white" />}
+        sidebarDescription="Add a free digital signature to any PDF — draw or upload, position with live preview."
+        sidebarNotice={
+          <>
+            <p className="text-sm font-semibold text-blue-800">ℹ️ Signature</p>
+            <ul className="mt-3 list-disc space-y-2 pl-4 text-xs leading-5 text-slate-600">
+              <li>Draw or upload signature image</li>
+              <li>Drag to position on any page</li>
+              <li>Resize width & height freely</li>
+              <li>No watermark on output</li>
+            </ul>
+          </>
+        }
+        sidebarFeatures={DEFAULT_SIDEBAR_FEATURES}
+        uploadTitle="Drop your PDF here"
+        uploadSubtitle="or click to browse — PDF files only"
 
-      {/* ==================== MAIN TOOL SECTION ==================== */}
-      <main className="min-h-screen bg-linear-to-br from-blue-50 via-white to-purple-50 py-8 px-4">
-        <div className="max-w-6xl mx-auto">
+        customOptionsLayout={
+          <div className="grid grid-cols-1 xl:grid-cols-[1fr_340px] gap-6">
 
-          {/* Header */}
-          <div className="text-center mb-8">
-            <h1 className="text-3xl md:text-4xl font-bold bg-linear-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-4">
-              Sign PDF Online Free — Add Digital Signature Instantly
-              <br />
-              <span className="text-xl md:text-2xl font-medium text-gray-600 mt-1 block">
-                No Signup · No Watermark · Live Preview · 100% Free
-              </span>
-            </h1>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Create a free digital signature and add it to any PDF online — draw your signature or upload an image, position with live preview, and download your signed PDF in seconds. No software needed.
-            </p>
-          </div>
+            {/* LEFT PREVIEW */}
+            <div>
+              <SignPdfPreview
+                pdfFile={pdfFile}
+                pdfDoc={pdfDoc}
+                totalPages={totalPages}
+                pageNumber={pageNumber}
+                signaturePreview={signaturePreview}
+                xPosition={xPosition}
+                yPosition={yPosition}
+                signatureWidth={signatureWidth}
+                signatureHeight={signatureHeight}
+                scale={scale}
+                setScale={setScale}
+                canvasRefs={canvasRefs}
+                renderKey={renderKey}
+                handleSignatureDrag={handleSignatureDrag}
+                handleSignatureDragStart={handleSignatureDragStart}
+                handleSignatureDragEnd={handleSignatureDragEnd}
+                selectPage={selectPage}
+              />
+            </div>
 
-          {/* STEP STRIP */}
-          <div className="grid grid-cols-3 mb-6 rounded-2xl overflow-hidden border border-gray-100 bg-white shadow-sm">
-            {[
-              { n: "1", label: "Upload PDF", sub: "Any PDF document" },
-              { n: "2", label: "Create Signature", sub: "Draw or upload image" },
-              { n: "3", label: "Download Signed PDF", sub: "Free, instant, no watermark" },
-            ].map((s, i) => (
-              <div
-                key={i}
-                className={`flex flex-col items-center py-4 px-2 text-center ${i < 2 ? "border-r border-gray-100" : ""}`}
-              >
-                <div className="w-8 h-8 rounded-full bg-linear-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white text-sm font-bold mb-1 shadow-sm">
-                  {s.n}
-                </div>
-                <p className="text-xs font-semibold text-gray-700">{s.label}</p>
-                <p className="text-xs text-gray-400 hidden sm:block">{s.sub}</p>
-              </div>
-            ))}
-          </div>
+            {/* RIGHT SIDEBAR */}
+            <div className="space-y-4 xl:sticky xl:top-6 h-fit">
+              {optionsSlot}
 
-          {/* MAIN CARD */}
-          {/* <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden"> */}
-          <div
-              ref={toolCardRef}
-              className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden"
-              >
-            <div className={`relative transition-all duration-300 ${loading ? "pointer-events-none" : ""}`}>
-
-              {/* Loading Overlay */}
-              {loading && (
-                <div className="absolute inset-0 z-10 bg-white/70 backdrop-blur-sm rounded-2xl flex flex-col items-center justify-center gap-4">
-                  <div className="relative w-16 h-16">
-                    <div className="absolute inset-0 rounded-full border-4 border-blue-100"></div>
-                    <div className="absolute inset-0 rounded-full border-4 border-blue-500 border-t-transparent animate-spin"></div>
-                    <div
-                      className="absolute inset-2 rounded-full border-4 border-purple-200 border-b-transparent animate-spin"
-                      style={{ animationDirection: "reverse", animationDuration: "0.8s" }}
-                    ></div>
-                  </div>
-                  <div className="text-center">
-                    <p className="text-base font-semibold text-gray-700">Signing your PDF…</p>
-                    <p className="text-sm text-gray-400 mt-1">
-                      {progress < 30 ? "Uploading…" : progress < 70 ? "Applying digital signature…" : "Almost done…"}
-                    </p>
-                  </div>
-                  <div className="w-48 h-1.5 bg-gray-100 rounded-full overflow-hidden">
-                    <div
-                      className="h-full bg-linear-to-r from-blue-500 to-purple-500 rounded-full transition-all duration-500"
-                      style={{ width: `${progress}%` }}
-                    />
-                  </div>
-                  <p className="text-xs text-gray-400 font-medium">{progress}%</p>
+              {/* Sign + Error */}
+              {error && (
+                <div className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">
+                  <p className="font-semibold">{error}</p>
                 </div>
               )}
 
-              <form onSubmit={handleSubmit}>
-                <div className="grid grid-cols-1 lg:grid-cols-2 lg:divide-x divide-gray-100">
-
-                  {/* ===== LEFT PANEL ===== */}
-                  <div className="p-5 sm:p-6 space-y-5">
-
-                    {/* Step 1 — Upload PDF */}
-                    <div>
-                      <p className="text-sm font-semibold text-gray-700 mb-2">Step 1 — Upload PDF</p>
-                      <label className="block cursor-pointer group">
-                        <div
-                          className={`relative rounded-xl border-2 border-dashed transition-all duration-200 p-6 text-center ${
-                            pdfFile
-                              ? "border-green-400 bg-green-50"
-                              : "border-gray-200 hover:border-blue-400 hover:bg-blue-50/40"
-                          }`}
-                        >
-                          <div
-                            className={`w-12 h-12 rounded-2xl mx-auto mb-3 flex items-center justify-center transition-colors ${
-                              pdfFile ? "bg-green-100" : "bg-blue-50 group-hover:bg-blue-100"
-                            }`}
-                          >
-                            {pdfFile ? (
-                              <CheckCircle className="w-6 h-6 text-green-500" />
-                            ) : (
-                              <Upload className="w-6 h-6 text-blue-600" />
-                            )}
-                          </div>
-                          {pdfFile ? (
-                            <>
-                              <p className="text-sm font-semibold text-green-700">File selected</p>
-                              <p className="text-xs text-gray-400 mt-1">Click to change</p>
-                            </>
-                          ) : (
-                            <>
-                              <p className="text-sm font-semibold text-gray-700">Drop your PDF here</p>
-                              <p className="text-xs text-gray-400 mt-1">or click to browse · PDF only</p>
-                              <div className="flex flex-wrap justify-center gap-2 mt-3">
-                                {["✓ Free digital signature", "✓ No signup", "✓ No watermark", "✓ Auto-deleted"].map((t) => (
-                                  <span key={t} className="bg-blue-50 text-blue-700 border border-blue-100 text-xs font-medium px-2.5 py-1 rounded-full">
-                                    {t}
-                                  </span>
-                                ))}
-                              </div>
-                            </>
-                          )}
-                        </div>
-                        <input
-                          type="file"
-                          accept=".pdf,application/pdf"
-                          onChange={handlePdfUpload}
-                          className="hidden"
-                        />
-                      </label>
-
-                      {pdfFile && (
-                        <div className="mt-2 flex items-center justify-between bg-gray-50 border border-gray-200 px-3 py-2 rounded-xl">
-                          <div className="flex items-center gap-2 min-w-0">
-                            <FileText className="w-4 h-4 text-blue-600 shrink-0" />
-                            <span className="text-sm font-medium text-gray-700 truncate">{pdfFile.name}</span>
-                            <span className="text-xs text-gray-400 shrink-0">({fileSizeMb} MB)</span>
-                          </div>
-                          <button
-                            type="button"
-                            onClick={() => { setPdfFile(null); resetAllForNewPdf(); resetSignature(); }}
-                            className="text-red-500 hover:bg-red-100 p-1 rounded ml-2 shrink-0"
-                          >
-                            <X className="w-4 h-4" />
-                          </button>
-                        </div>
-                      )}
-                    </div>
-
-                    {/* Step 2 — Signature */}
-                    <div>
-                      <p className="text-sm font-semibold text-gray-700 mb-2">Step 2 — Create Free Digital Signature</p>
-
-                      {/* Tab switcher */}
-                      <div className="grid grid-cols-2 gap-2 mb-3">
-                        <button
-                          type="button"
-                          onClick={() => { setActiveTab("draw"); setDrawMode(true); }}
-                          className={`flex items-center justify-center gap-2 py-2.5 rounded-xl border-2 text-sm font-semibold transition-all ${
-                            activeTab === "draw"
-                              ? "border-blue-600 bg-blue-50 text-blue-700"
-                              : "border-gray-200 text-gray-600 hover:border-blue-300"
-                          }`}
-                        >
-                          <PenTool className="w-4 h-4" />
-                          Draw Signature
-                        </button>
-
-                        <label
-                          className={`flex items-center justify-center gap-2 py-2.5 rounded-xl border-2 text-sm font-semibold transition-all cursor-pointer ${
-                            activeTab === "upload"
-                              ? "border-purple-600 bg-purple-50 text-purple-700"
-                              : "border-gray-200 text-gray-600 hover:border-purple-300"
-                          }`}
-                          onClick={() => setActiveTab("upload")}
-                        >
-                          <ImageIcon className="w-4 h-4" />
-                          Upload Image
-                          <input type="file" accept="image/*" onChange={handleSignatureUpload} className="hidden" />
-                        </label>
-                      </div>
-
-                      {/* Draw canvas */}
-                      {activeTab === "draw" && (
-                        <div className="rounded-xl border-2 border-gray-200 bg-gray-50 p-3">
-                          <p className="text-xs text-gray-500 mb-2">Draw your digital signature below:</p>
-                          <canvas
-                            ref={signCanvasRef}
-                            width={600}
-                            height={200}
-                            onMouseDown={startDrawing}
-                            onMouseMove={draw}
-                            onMouseUp={stopDrawing}
-                            onMouseLeave={stopDrawing}
-                            onTouchStart={startDrawing}
-                            onTouchMove={draw}
-                            onTouchEnd={stopDrawing}
-                            className="border-2 border-dashed border-gray-300 bg-white w-full rounded-lg cursor-crosshair"
-                            style={{ touchAction: "none" }}
-                          />
-                          <div className="flex gap-2 mt-2">
-                            <button
-                              type="button"
-                              onClick={clearCanvas}
-                              className="flex items-center gap-1.5 px-3 py-2 bg-red-100 text-red-700 rounded-lg hover:bg-red-200 transition text-xs font-semibold"
-                            >
-                              <Eraser className="w-3.5 h-3.5" />
-                              Clear
-                            </button>
-                            <button
-                              type="button"
-                              onClick={saveCanvasAsImage}
-                              className="flex items-center gap-1.5 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition text-xs font-semibold"
-                            >
-                              <CheckCircle className="w-3.5 h-3.5" />
-                              Use This Signature
-                            </button>
-                          </div>
-                        </div>
-                      )}
-
-                      {/* Signature ready preview */}
-                      {signaturePreview && (
-                        <div className="mt-3 border-2 border-green-400 bg-green-50 rounded-xl p-3 flex items-center gap-3">
-                          <CheckCircle className="w-5 h-5 text-green-600 shrink-0" />
-                          <div className="min-w-0 flex-1">
-                            <p className="text-xs font-semibold text-green-700 mb-1">✓ Digital signature ready</p>
-                            <img
-                              src={signaturePreview}
-                              alt="Digital signature preview"
-                              className="max-h-12 bg-white border border-gray-200 rounded p-1"
-                            />
-                          </div>
-                          <button
-                            type="button"
-                            onClick={resetSignature}
-                            className="text-red-400 hover:bg-red-100 p-1 rounded shrink-0"
-                          >
-                            <X className="w-4 h-4" />
-                          </button>
-                        </div>
-                      )}
-                    </div>
-
-                    {/* Step 3 — Controls */}
-                    {pdfFile && signaturePreview && (
-                      <div className="rounded-xl border border-gray-200 bg-gray-50 p-4 space-y-3">
-                        <p className="text-sm font-semibold text-gray-700">Step 3 — Position &amp; Size Signature</p>
-                        <div>
-                          <label className="block text-xs text-gray-500 mb-1">
-                            Page: <span className="font-semibold text-gray-700">{pageNumber} / {totalPages}</span>
-                          </label>
-                          <input
-                            type="number"
-                            min={1}
-                            max={totalPages}
-                            value={pageNumber}
-                            onChange={(e) => selectPage(parseInt(e.target.value) || 1)}
-                            className="w-full px-3 py-2 border-2 border-gray-200 rounded-lg text-sm focus:border-blue-400 focus:outline-none"
-                          />
-                        </div>
-                        <div>
-                          <label className="block text-xs text-gray-500 mb-1">
-                            Width: <span className="font-semibold text-gray-700">{Math.round(signatureWidth)}px</span>
-                          </label>
-                          <input
-                            type="range" min="50" max="400"
-                            value={signatureWidth}
-                            onChange={(e) => setSignatureWidth(parseInt(e.target.value))}
-                            className="w-full accent-blue-600"
-                          />
-                        </div>
-                        <div>
-                          <label className="block text-xs text-gray-500 mb-1">
-                            Height: <span className="font-semibold text-gray-700">{Math.round(signatureHeight)}px</span>
-                          </label>
-                          <input
-                            type="range" min="30" max="220"
-                            value={signatureHeight}
-                            onChange={(e) => setSignatureHeight(parseInt(e.target.value))}
-                            className="w-full accent-blue-600"
-                          />
-                        </div>
-                        <p className="text-xs text-gray-400">💡 Drag the signature box in the preview to reposition it</p>
-                      </div>
-                    )}
-
-                    {/* Error */}
-                    {error && (
-                      <div className="bg-red-50 border border-red-200 rounded-xl p-3 text-red-700 text-sm font-medium">
-                        {error}
-                      </div>
-                    )}
-
-                    {/* Submit */}
-                    <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-1">
-                      <div className="flex items-start gap-2.5 bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 flex-1">
-                        <PenTool className="w-4 h-4 text-gray-400 mt-0.5 shrink-0" />
-                        <div>
-                          <p className="text-sm font-medium text-gray-700 leading-none">Free digital signature</p>
-                          <p className="text-xs text-gray-400 mt-0.5">Draw or upload → position → download</p>
-                        </div>
-                      </div>
-                      <button
-                        type="submit"
-                        disabled={loading || !pdfFile || !signatureImage}
-                        className={`flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm text-white transition-all duration-200 shadow-sm sm:w-auto w-full ${
-                          pdfFile && signatureImage && !loading
-                            ? "bg-linear-to-r from-blue-600 to-purple-500 hover:from-blue-700 hover:to-purple-600 hover:shadow-md active:scale-[0.98]"
-                            : "bg-gray-200 text-gray-400 cursor-not-allowed"
-                        }`}
-                      >
-                        {loading ? (
-                          <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                        ) : (
-                          <PenTool className="w-4 h-4" />
-                        )}
-                        Sign PDF Free
-                      </button>
-                    </div>
-
-                    <div className="text-xs text-gray-400 text-center space-y-0.5 pb-1">
-                      <p>⏱️ Processing usually takes a few seconds — don&apos;t close this tab</p>
-                      <p>🔒 Your signature and PDF are never stored on our servers</p>
-                    </div>
-                  </div>
-
-                  {/* ===== RIGHT PANEL — Live Preview ===== */}
-                  {/* <div className="p-5 sm:p-6 border-t lg:border-t-0 border-gray-100">
-                    <div className="flex items-center justify-between mb-4">
-                      <h3 className="text-sm font-semibold text-gray-700">Live PDF Preview</h3>
-                      <div className="flex items-center gap-2">
-                        <button
-                          type="button"
-                          onClick={() => setScale((s) => clamp(Number((s + 0.2).toFixed(2)), 0.5, 2.5))}
-                          className="px-2.5 py-1.5 bg-gray-100 rounded-lg hover:bg-gray-200 transition"
-                          title="Zoom In"
-                        >
-                          <ZoomIn className="w-4 h-4" />
-                        </button>
-                        <span className="text-xs text-gray-600 min-w-10 text-center font-medium">
-                          {Math.round(scale * 100)}%
-                        </span>
-                        <button
-                          type="button"
-                          onClick={() => setScale((s) => clamp(Number((s - 0.2).toFixed(2)), 0.5, 2.5))}
-                          className="px-2.5 py-1.5 bg-gray-100 rounded-lg hover:bg-gray-200 transition"
-                          title="Zoom Out"
-                        >
-                          <ZoomOut className="w-4 h-4" />
-                        </button>
-                      </div>
-                    </div>
-
-                    {!pdfFile ? (
-                      <div className="flex items-center justify-center h-56 lg:h-[60vh] border-2 border-dashed border-gray-200 rounded-xl bg-gray-50">
-                        <div className="text-center text-gray-400">
-                          <FileText className="w-10 h-10 mx-auto mb-2 text-gray-300" />
-                          <p className="text-sm">Upload a PDF to see live preview</p>
-                          <p className="text-xs text-gray-300 mt-1">See your digital signature placement in real-time</p>
-                        </div>
-                      </div>
-                    ) : (
-                      <div
-                        className="relative border border-gray-200 rounded-xl overflow-auto bg-gray-100 p-3 space-y-4"
-                        // style={{ maxHeight: "60vh" }}
-                        style={{ maxHeight: "85vh" }}   // ←←← Sirf yeh line change ki
-                        onMouseMove={handleSignatureDrag}
-                        onMouseUp={handleSignatureDragEnd}
-                        onMouseLeave={handleSignatureDragEnd}
-                        onTouchMove={handleSignatureDrag}
-                        onTouchEnd={handleSignatureDragEnd}
-                      >
-                        {Array.from({ length: totalPages }).map((_, index) => (
-                          <div
-                            key={`page-${index}-${renderKey}`}
-                            className={`relative flex justify-center cursor-pointer transition-all ${
-                              pageNumber === index + 1
-                                ? "ring-4 ring-blue-500 rounded-xl p-1.5 bg-blue-50"
-                                : "hover:ring-2 hover:ring-gray-300 rounded-xl p-1.5"
-                            }`}
-                            onClick={() => selectPage(index + 1)}
-                          >
-                            <div className="absolute top-2 left-2 bg-gray-800 text-white text-xs px-2 py-0.5 rounded z-10 font-medium">
-                              Page {index + 1}
-                            </div>
-
-                            <div className="relative inline-block shadow-xl max-w-full overflow-hidden">
-                              <canvas
-                                ref={(el) => { if (el) canvasRefs.current[index] = el; }}
-                                className="bg-white block"
-                                style={{ display: "block", maxWidth: "100%", height: "auto" }}
-                              />
-                              {signaturePreview && pageNumber === index + 1 && (
-                                <div
-                                  className="absolute cursor-move border-2 border-blue-500 shadow-lg"
-                                  style={{
-                                    left: `${xPosition}px`,
-                                    top: `${yPosition}px`,
-                                    width: `${signatureWidth}px`,
-                                    height: `${signatureHeight}px`,
-                                  }}
-                                  onMouseDown={handleSignatureDragStart}
-                                  onTouchStart={handleSignatureDragStart}
-                                  title="Drag to move digital signature"
-                                >
-                                  <img
-                                    src={signaturePreview}
-                                    alt="Digital signature on PDF"
-                                    className="w-full h-full object-contain bg-white/90 pointer-events-none"
-                                    draggable={false}
-                                  />
-                                </div>
-                              )}
-                            </div>
-                          </div>
-                        ))}
-
-                        {!pdfDoc && (
-                          <div className="absolute inset-0 flex items-center justify-center bg-white/80 rounded-xl">
-                            <div className="text-center">
-                              <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-2" />
-                              <p className="text-sm text-gray-500">Loading PDF preview…</p>
-                            </div>
-                          </div>
-                        )}
-                      </div>
-                    )}
-
-                    <p className="text-xs text-gray-400 mt-2 text-center">
-                      💡 Click a page to select it, then drag the digital signature to position it
-                    </p>
-                  </div> */}
-
-                  {/* ===== RIGHT PANEL — Live Preview ===== */}
-<div className="p-5 sm:p-6 border-t lg:border-t-0 border-gray-100">
-  <div className="flex items-center justify-between mb-4">
-    <h3 className="text-sm font-semibold text-gray-700">Live PDF Preview</h3>
-    <div className="flex items-center gap-2">
-      <button
-        type="button"
-        onClick={() => setScale((s) => clamp(Number((s + 0.2).toFixed(2)), 0.5, 2.5))}
-        className="px-2.5 py-1.5 bg-gray-100 rounded-lg hover:bg-gray-200 transition"
-        title="Zoom In"
-      >
-        <ZoomIn className="w-4 h-4" />
-      </button>
-      <span className="text-xs text-gray-600 min-w-10 text-center font-medium">
-        {Math.round(scale * 100)}%
-      </span>
-      <button
-        type="button"
-        onClick={() => setScale((s) => clamp(Number((s - 0.2).toFixed(2)), 0.5, 2.5))}
-        className="px-2.5 py-1.5 bg-gray-100 rounded-lg hover:bg-gray-200 transition"
-        title="Zoom Out"
-      >
-        <ZoomOut className="w-4 h-4" />
-      </button>
-    </div>
-  </div>
-
-  {!pdfFile ? (
-    <div className="flex items-center justify-center h-56 lg:h-[60vh] border-2 border-dashed border-gray-200 rounded-xl bg-gray-50">
-      <div className="text-center text-gray-400">
-        <FileText className="w-10 h-10 mx-auto mb-2 text-gray-300" />
-        <p className="text-sm">Upload a PDF to see live preview</p>
-        <p className="text-xs text-gray-300 mt-1">See your digital signature placement in real-time</p>
-      </div>
-    </div>
-  ) : (
-    <div
-      className="relative border border-gray-200 rounded-xl overflow-auto bg-gray-100 p-3 space-y-4"
-      style={{ 
-        maxHeight: pdfFile ? "90vh" : "60vh"     // ← Height dynamically barhi (90vh jab PDF uploaded ho)
-      }}
-      onMouseMove={handleSignatureDrag}
-      onMouseUp={handleSignatureDragEnd}
-      onMouseLeave={handleSignatureDragEnd}
-      onTouchMove={handleSignatureDrag}
-      onTouchEnd={handleSignatureDragEnd}
-    >
-      {Array.from({ length: totalPages }).map((_, index) => (
-        <div
-          key={`page-${index}-${renderKey}`}
-          className={`relative flex justify-center cursor-pointer transition-all ${
-            pageNumber === index + 1
-              ? "ring-4 ring-blue-500 rounded-xl p-1.5 bg-blue-50"
-              : "hover:ring-2 hover:ring-gray-300 rounded-xl p-1.5"
-          }`}
-          onClick={() => selectPage(index + 1)}
-        >
-          <div className="absolute top-2 left-2 bg-gray-800 text-white text-xs px-2 py-0.5 rounded z-10 font-medium">
-            Page {index + 1}
-          </div>
-          <div className="relative inline-block shadow-xl max-w-full overflow-hidden">
-            <canvas
-              ref={(el) => { if (el) canvasRefs.current[index] = el; }}
-              className="bg-white block"
-              style={{ display: "block", maxWidth: "100%", height: "auto" }}
-            />
-            {signaturePreview && pageNumber === index + 1 && (
-              <div
-                className="absolute cursor-move border-2 border-blue-500 shadow-lg"
-                style={{
-                  left: `${xPosition}px`,
-                  top: `${yPosition}px`,
-                  width: `${signatureWidth}px`,
-                  height: `${signatureHeight}px`,
-                }}
-                onMouseDown={handleSignatureDragStart}
-                onTouchStart={handleSignatureDragStart}
-                title="Drag to move digital signature"
+              <button
+                type="button"
+                onClick={handleConvert}
+                disabled={!pdfFile || !signatureImage}
+                className={`w-full rounded-xl px-5 py-4 text-base font-bold text-white transition active:scale-[0.98] ${pdfFile && signatureImage
+                    ? "bg-[#f24d0d] hover:bg-[#dc4308] shadow-[0_10px_30px_rgba(242,77,13,0.38)]"
+                    : "cursor-not-allowed bg-slate-300"
+                  }`}
               >
-                <img
-                  src={signaturePreview}
-                  alt="Digital signature on PDF"
-                  className="w-full h-full object-contain bg-white/90 pointer-events-none"
-                  draggable={false}
-                />
-              </div>
-            )}
-          </div>
-        </div>
-      ))}
-
-      {!pdfDoc && (
-        <div className="absolute inset-0 flex items-center justify-center bg-white/80 rounded-xl">
-          <div className="text-center">
-            <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-2" />
-            <p className="text-sm text-gray-500">Loading PDF preview…</p>
-          </div>
-        </div>
-      )}
-    </div>
-  )}
-
-  <p className="text-xs text-gray-400 mt-2 text-center">
-    💡 Click a page to select it, then drag the digital signature to position it
-  </p>
-</div>
-
-                </div>
-
-                {/* Success banner */}
-                {success && (
-                  <div
-                    id="download-section"
-                    className="mx-5 mb-6 rounded-2xl overflow-hidden border border-green-200 bg-linear-to-br from-green-50 to-emerald-50"
-                  >
-                    <div className="flex flex-col items-center text-center px-8 py-10">
-                      <div className="relative w-16 h-16 mb-5">
-                        <div className="absolute inset-0 rounded-full bg-emerald-100 animate-ping opacity-30"></div>
-                        <div className="relative w-16 h-16 rounded-full bg-linear-to-br from-emerald-500 to-teal-500 flex items-center justify-center shadow-lg">
-                          <CheckCircle className="w-8 h-8 text-white" />
-                        </div>
-                      </div>
-                      <h3 className="text-xl font-bold text-emerald-800 mb-1">
-                        Done! Your signed PDF downloaded automatically 🎉
-                      </h3>
-                      <p className="text-sm text-gray-600 mb-6">
-                        Check your downloads folder. Your digital signature has been applied successfully — no watermarks, completely free.
-                      </p>
-                      <div className="flex flex-wrap gap-3 justify-center">
-                        <button
-                          type="button"
-                          onClick={() => { setPdfFile(null); resetAllForNewPdf(); resetSignature(); setSuccess(false); }}
-                          className="inline-flex items-center gap-2 bg-white border border-emerald-300 text-emerald-700 text-sm font-semibold px-5 py-2.5 rounded-xl hover:bg-emerald-50 transition shadow-sm"
-                        >
-                          <FileText className="w-4 h-4" />
-                          Sign another PDF free
-                        </button>
-                        <Link
-                          href="/compress-pdf"
-                          className="inline-flex items-center gap-2 bg-white border border-gray-200 text-gray-600 text-sm font-semibold px-5 py-2.5 rounded-xl hover:bg-gray-50 transition shadow-sm"
-                        >
-                          Compress PDF →
-                        </Link>
-                        <Link
-                          href="/merge-pdf"
-                          className="inline-flex items-center gap-2 bg-white border border-gray-200 text-gray-600 text-sm font-semibold px-5 py-2.5 rounded-xl hover:bg-gray-50 transition shadow-sm"
-                        >
-                          Merge PDF →
-                        </Link>
-                      </div>
-                    </div>
-                  </div>
-                )}
-              </form>
+                Sign PDF Now
+              </button>
             </div>
+            {/* <div className="space-y-4 xl:sticky xl:top-6 h-fit">
+              {optionsSlot}
+            </div> */}
+
           </div>
+        }
 
-          <p className="text-center mt-6 text-gray-500 text-sm">
-            🔒 No account required • No watermark • Files auto-deleted • 100% free digital signature • Live preview
-          </p>
-        </div>
-      </main>
+        // customFilePreview={
+        //   <SignPdfPreview
+        //     pdfFile={pdfFile}
+        //     pdfDoc={pdfDoc}
+        //     totalPages={totalPages}
+        //     pageNumber={pageNumber}
+        //     signaturePreview={signaturePreview}
+        //     xPosition={xPosition}
+        //     yPosition={yPosition}
+        //     signatureWidth={signatureWidth}
+        //     signatureHeight={signatureHeight}
+        //     scale={scale}
+        //     setScale={setScale}
+        //     canvasRefs={canvasRefs}
+        //     renderKey={renderKey}
+        //     handleSignatureDrag={handleSignatureDrag}
+        //     handleSignatureDragStart={handleSignatureDragStart}
+        //     handleSignatureDragEnd={handleSignatureDragEnd}
+        //     selectPage={selectPage}
+        //   />
+        // }
 
-      {/* ==================== TRUST BADGES ==================== */}
-      <section className="bg-white border-y border-gray-100 py-6">
-        <div className="max-w-4xl mx-auto px-4">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {[
-              { icon: <Shield className="w-5 h-5 text-green-600" />, title: "100% Free", sub: "No hidden costs ever" },
-              { icon: <Lock className="w-5 h-5 text-blue-600" />, title: "Privacy First", sub: "Files deleted instantly" },
-              { icon: <Zap className="w-5 h-5 text-yellow-500" />, title: "Instant Download", sub: "Signed in seconds" },
-              { icon: <CheckCircle className="w-5 h-5 text-purple-600" />, title: "No Watermark", sub: "Clean signed output" },
-            ].map((b, i) => (
-              <div key={i} className="flex items-center gap-3 bg-gray-50 rounded-xl px-4 py-3">
-                <div className="shrink-0">{b.icon}</div>
-                <div>
-                  <p className="text-xs font-bold text-gray-800">{b.title}</p>
-                  <p className="text-xs text-gray-500">{b.sub}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
-      {/* ==================== SEO CONTENT SECTION ==================== */}
-      <section className="mt-16 max-w-4xl mx-auto px-6 pb-16">
-        <div className="text-center mb-12">
-          <h2 className="text-2xl md:text-3xl font-bold bg-linear-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-4">
-            Sign PDF Online Free – Create Digital Signature Instantly
-          </h2>
-          <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-            Need to add a free digital signature to a PDF? PDFLinx lets you create a digital signature online in seconds — draw it or upload an image — and sign any PDF document with live preview. No software, no account, completely free.
-          </p>
-        </div>
+        uploadLanding={{
+          content: {
+            eyebrow: "SIGN PDF",
 
-        {/* Benefits Grid */}
-        <div className="grid md:grid-cols-3 gap-8 mb-16">
-          <div className="bg-linear-to-br from-blue-50 to-white p-8 rounded-2xl shadow-lg border border-blue-100 text-center hover:shadow-xl transition">
-            <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
-              <PenTool className="w-8 h-8 text-white" />
-            </div>
-            <h3 className="text-xl font-semibold text-gray-800 mb-3">Free Digital Signature</h3>
-            <p className="text-gray-600 text-sm">
-              Create a digital signature online for free — draw with mouse or touchscreen, or upload a PNG/JPG image of your handwritten signature.
-            </p>
-          </div>
+            heroTitle: (
+              <>
+                Sign PDF Online <br />
+                <em className="font-bold not-italic text-[#e8420a] sm:italic">
+                  free & instantly
+                </em>
+              </>
+            ),
 
-          <div className="bg-linear-to-br from-purple-50 to-white p-8 rounded-2xl shadow-lg border border-purple-100 text-center hover:shadow-xl transition">
-            <div className="w-16 h-16 bg-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
-              <FileText className="w-8 h-8 text-white" />
-            </div>
-            <h3 className="text-xl font-semibold text-gray-800 mb-3">Live PDF Preview</h3>
-            <p className="text-gray-600 text-sm">
-              See exactly where your electronic signature will appear before downloading. Drag &amp; drop to position it perfectly on any page.
-            </p>
-          </div>
+            heroDescription:
+              "Add a free digital signature to any PDF online — draw your signature with mouse or touchscreen, or upload an image. Position with live preview and download your signed PDF instantly. No signup, no software, no watermark.",
 
-          <div className="bg-linear-to-br from-green-50 to-white p-8 rounded-2xl shadow-lg border border-green-100 text-center hover:shadow-xl transition">
-            <div className="w-16 h-16 bg-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
-              <Download className="w-8 h-8 text-white" />
-            </div>
-            <h3 className="text-xl font-semibold text-gray-800 mb-3">Instant Download</h3>
-            <p className="text-gray-600 text-sm">
-              Download your signed PDF instantly. No watermarks, no registration, no hidden fees — 100% free digital signature tool.
-            </p>
-          </div>
-        </div>
+            noticeTitle: "Signature output",
 
-        {/* Steps */}
-        <div className="bg-white rounded-2xl shadow-lg p-8 md:p-12 border border-gray-100 mb-16">
-          <h3 className="text-2xl md:text-3xl font-bold text-center mb-12 text-gray-800">
-            How to Add a Free Digital Signature to PDF — 3 Steps
-          </h3>
-          <div className="grid md:grid-cols-3 gap-8">
-            {[
-              { n: 1, color: "from-blue-600 to-blue-700", title: "Upload PDF", desc: "Upload any PDF document — employment contracts, NDAs, rental agreements, consent forms, business proposals, or any other PDF that needs signing." },
-              { n: 2, color: "from-purple-600 to-purple-700", title: "Create Digital Signature", desc: "Draw your signature with mouse or touchscreen for a free digital signature online, or upload a PNG/JPG image of your handwritten signature. Drag it to the correct position in the live preview." },
-              { n: 3, color: "from-green-600 to-green-700", title: "Download Signed PDF", desc: "Click Sign PDF Free and download your professionally signed document instantly. No watermark, no account required." },
-            ].map((s) => (
-              <div key={s.n} className="text-center">
-                <div className={`w-16 h-16 bg-linear-to-r ${s.color} rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold text-white shadow-lg`}>
-                  {s.n}
-                </div>
-                <h4 className="text-lg font-semibold mb-2">{s.title}</h4>
-                <p className="text-gray-600 text-sm">{s.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
+            noticeItems: [
+              "Draw or upload signature image",
+              "Live preview with drag positioning",
+              "Single signed PDF download",
+            ],
 
-        {/* Long-form SEO */}
-        <div className="max-w-4xl mx-auto text-slate-700 space-y-8">
-          <div>
-            <h3 className="text-xl font-semibold text-slate-900 mb-3">What Is a Free Digital Signature Online?</h3>
-            <p className="leading-7">
-              A free digital signature online is a visual representation of your handwritten signature that you can add to any PDF document without paying any fees or downloading software. You can create a digital signature online for free by drawing it with your mouse, trackpad, or finger on a touchscreen — or by uploading a photo or scan of your physical signature. PDFLinx Sign PDF lets you do both, completely free.
-            </p>
-          </div>
+            howToTitle: "How to sign a PDF online",
 
-          <div>
-            <h3 className="text-xl font-semibold text-slate-900 mb-3">Why Use PDFLinx to Create Digital Signature Free?</h3>
-            <p className="leading-7 mb-4">
-              Unlike other tools that require subscriptions, account creation, or add watermarks to your signed PDFs, PDFLinx provides a completely free digital signature experience:
-            </p>
-            <ul className="space-y-2 list-disc pl-6">
-              <li><strong>Free digital signature</strong> — no subscription, no hidden fees, unlimited use</li>
-              <li><strong>No account required</strong> — create a digital signature online free without signing up</li>
-              <li><strong>No watermark</strong> — your signed PDF is clean and professional</li>
-              <li><strong>Live preview</strong> — see exactly where your signature appears before finalizing</li>
-              <li><strong>Privacy protected</strong> — files deleted immediately after processing, never stored</li>
-              <li><strong>Works on all devices</strong> — desktop, tablet, iPhone, Android, any browser</li>
-            </ul>
-          </div>
+            howToSubtitle:
+              "Upload your PDF, create your signature, drag it into position on the live preview, and download the signed PDF instantly.",
 
-          <div>
-            <h3 className="text-xl font-semibold text-slate-900 mb-3">Who Needs a Free Digital Signature Tool?</h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {[
-                { label: "Business Professionals", desc: "Sign contracts, agreements, and proposals without printing" },
-                { label: "Freelancers", desc: "Sign client contracts and service agreements digitally" },
-                { label: "Remote Workers", desc: "Sign HR documents and offer letters from anywhere" },
-                { label: "Students", desc: "Sign application forms and academic documents" },
-                { label: "Landlords & Tenants", desc: "Sign rental agreements and lease documents online free" },
-                { label: "Anyone", desc: "Sign any PDF document with a free digital signature" },
-              ].map((u, i) => (
-                <div key={i} className="bg-slate-50 border border-slate-200 rounded-xl p-4">
-                  <p className="font-semibold text-slate-800 text-sm mb-1">{u.label}</p>
-                  <p className="text-slate-600 text-xs">{u.desc}</p>
-                </div>
-              ))}
-            </div>
-          </div>
+            howToSteps: [
+              {
+                n: "1",
+                title: "Upload your PDF",
+                desc: "Select the PDF document you need to sign from your device or drag and drop it into the uploader.",
+                color: "bg-blue-600",
+              },
+              {
+                n: "2",
+                title: "Create your signature",
+                desc: "Draw your signature using mouse or touchscreen, or upload a PNG/JPG image of your handwritten signature.",
+                color: "bg-purple-600",
+              },
+              {
+                n: "3",
+                title: "Position & download",
+                desc: "Drag the signature to your preferred position on the live preview, then download the signed PDF instantly.",
+                color: "bg-emerald-600",
+              },
+            ],
 
-          <div className="bg-slate-50 border border-slate-200 rounded-xl p-6">
-            <h3 className="text-xl font-semibold text-slate-900 mb-4">Common PDF Documents You Can Sign Free</h3>
-            <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 list-disc pl-5 text-sm text-slate-700">
-              <li>Employment contracts and job offer letters</li>
-              <li>Rental agreements and property lease documents</li>
-              <li>Non-disclosure agreements (NDAs)</li>
-              <li>Business proposals, quotes, and invoices</li>
-              <li>Consent forms and permission slips</li>
-              <li>Tax forms and financial documents</li>
-              <li>Freelance client contracts</li>
-              <li>University and school application forms</li>
-              <li>Medical and healthcare consent forms</li>
-              <li>Legal documents requiring signature</li>
-            </ul>
-          </div>
+            whyTitle: "Why use PDFLinx to sign PDF?",
 
-          <div>
-            <h3 className="text-xl font-semibold text-slate-900 mb-3">Is This Digital Signature Legally Valid?</h3>
-            <p className="leading-7">
-              The visual electronic signature created by PDFLinx is widely accepted for everyday business documents, freelance agreements, and personal use. For contracts requiring legally binding cryptographic digital signatures (such as DocuSign-style eSignatures with certificate authority), we recommend consulting your legal team. For most everyday document signing needs — contracts, forms, agreements — a visual electronic signature created online for free is perfectly sufficient and widely accepted.
-            </p>
-          </div>
+            whyItems: [
+              {
+                title: "Free Digital Signature",
+                desc: "Create and add a free digital signature to any PDF — no subscription, no hidden fees, unlimited use.",
+                icon: PenTool,
+                iconColor: "text-blue-600",
+                bgColor: "bg-blue-100",
+              },
+              {
+                title: "Draw or Upload",
+                desc: "Draw your signature with mouse or touchscreen, or upload a PNG/JPG image of your handwritten signature.",
+                icon: ImageIcon,
+                iconColor: "text-purple-600",
+                bgColor: "bg-purple-100",
+              },
+              {
+                title: "Live PDF Preview",
+                desc: "See exactly where your signature will appear — drag it to any position on any page before downloading.",
+                icon: Zap,
+                iconColor: "text-green-600",
+                bgColor: "bg-green-100",
+              },
+              {
+                title: "No Watermark",
+                desc: "Your signed PDF is completely clean — no watermarks, no branding, just your signature on the document.",
+                icon: Shield,
+                iconColor: "text-slate-600",
+                bgColor: "bg-slate-100",
+              },
+              {
+                title: "Works on Mobile",
+                desc: "Use PDFLinx on iPhone, Android, tablet, or desktop — touch support lets you draw your signature with your finger.",
+                icon: MonitorSmartphone,
+                iconColor: "text-orange-500",
+                bgColor: "bg-orange-50",
+              },
+              {
+                title: "Files Auto-Deleted",
+                desc: "Your PDF and signature are never stored permanently — processed securely and deleted immediately after signing.",
+                icon: Lock,
+                iconColor: "text-rose-500",
+                bgColor: "bg-rose-50",
+              },
+            ],
 
-          <div>
-            <h3 className="text-xl font-semibold text-slate-900 mb-3">Sign PDF on Any Device — Desktop, Tablet, or Mobile</h3>
-            <p className="leading-7">
-              PDFLinx Sign PDF works seamlessly on Windows, macOS, Linux, Android, and iOS. Whether you&apos;re on a desktop computer, laptop, tablet, iPhone, or Android phone, you can create a free digital signature and sign PDF documents online with full live preview — all you need is an internet connection and a modern web browser. No app download required.
-            </p>
-          </div>
-        </div>
-      </section>
+            seoBadge: "PDF Signature Guide",
 
-      {/* ==================== INTERNAL LINKING — OTHER PDF TOOLS ==================== */}
-      <section className="bg-linear-to-br from-slate-50 to-blue-50 border-y border-gray-100 py-16">
-        <div className="max-w-5xl mx-auto px-4">
-          <div className="text-center mb-10">
-            <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-3">
-              More Free PDF Tools You Might Need
-            </h2>
-            <p className="text-gray-500 text-base max-w-2xl mx-auto">
-              After signing your PDF, you may need to convert, compress, merge, or split it. All tools are free, no signup required.
-            </p>
-          </div>
+            seoTitle: "Free Online Sign PDF Tool by PDFLinx",
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-            {RELATED_TOOLS.map((tool) => {
-              const c = COLOR_MAP[tool.color];
-              const Icon = tool.icon;
-              return (
-                <Link
-                  key={tool.href}
-                  href={tool.href}
-                  className={`group flex flex-col items-center text-center gap-3 p-5 rounded-2xl border-2 ${c.bg} ${c.border} hover:shadow-md transition-all duration-200 hover:-translate-y-0.5`}
-                >
-                  <div className={`w-12 h-12 rounded-xl ${c.icon} flex items-center justify-center group-hover:scale-110 transition-transform`}>
-                    <Icon className={`w-6 h-6 ${c.iconText}`} />
-                  </div>
-                  <div>
-                    <p className={`text-sm font-bold ${c.text}`}>{tool.label}</p>
-                    <p className="text-xs text-gray-500 mt-0.5">{tool.desc}</p>
-                  </div>
-                </Link>
-              );
-            })}
-          </div>
+            seoDescription:
+              "Add a free digital signature to any PDF online. Draw your signature or upload an image, position with live preview, and download the signed PDF instantly. No signup needed.",
 
-          <p className="text-center text-xs text-gray-400 mt-8">
-            All tools are 100% free · No account required · Files auto-deleted after processing
-          </p>
-        </div>
-      </section>
+            seoSections: [
+              {
+                title: "Draw Your Signature Online for Free",
+                desc: "Use the built-in drawing canvas to create a smooth, natural signature with your mouse, trackpad, or touchscreen — no stylus or special hardware needed.",
+              },
+              {
+                title: "Upload a Signature Image",
+                text: "Already have a scanned or photographed signature? Upload any PNG or JPG image and it will be overlaid on your PDF exactly where you position it.",
+              },
+              {
+                title: "Live Preview with Drag Positioning",
+                text: "The live PDF preview shows all pages with your signature overlay in real-time. Simply drag the signature box to position it perfectly before downloading.",
+              },
+              {
+                title: "Multi-Page PDF Support",
+                text: "Sign any specific page of a multi-page PDF document. Select the page number and position your signature exactly where it needs to appear.",
+              },
+              {
+                title: "Works on All Devices",
+                text: "Use the PDFLinx sign PDF tool in your browser on Windows, macOS, Linux, Android, iPhone, and tablets — no app or software installation required.",
+              },
+              {
+                title: "No Signup, No Watermark",
+                text: "Add a digital signature to PDF online for free with no account required, no watermark added, and files permanently deleted after signing.",
+              },
+            ],
 
-      {/* ==================== FAQs ==================== */}
-      <section className="py-16 bg-white">
-        <div className="max-w-4xl mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center mb-3">
-            Frequently Asked Questions — Free Digital Signature & Sign PDF
-          </h2>
-          <p className="text-center text-gray-500 mb-10 text-sm">
-            Everything you need to know about signing PDF documents online for free
-          </p>
-          <div className="space-y-3">
-            {FAQ_DATA.map((item, i) => (
-              <div
-                key={i}
-                className="bg-gray-50 border border-gray-200 rounded-xl overflow-hidden transition-all"
-              >
-                <button
-                  type="button"
-                  onClick={() => setOpenFaq(openFaq === i ? null : i)}
-                  className="w-full flex items-center justify-between px-5 py-4 text-left"
-                  aria-expanded={openFaq === i}
-                >
-                  <span className="font-semibold text-gray-800 text-sm pr-4">{item.q}</span>
-                  <span className={`shrink-0 w-5 h-5 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-xs font-bold transition-transform ${openFaq === i ? "rotate-45" : ""}`}>
-                    +
-                  </span>
-                </button>
-                {openFaq === i && (
-                  <div className="px-5 pb-4">
-                    <p className="text-gray-600 leading-relaxed text-sm">{item.a}</p>
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+            faqTitle: "Frequently asked questions",
 
-      <RelatedToolsSection currentPage="sign-pdf" />
+            faqs: FAQ_DATA,
+          },
+        }}
+      />
+
     </>
   );
 }
@@ -1477,6257 +1076,4 @@ const handleSubmit = async (e) => {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// "use client";
-
-// import { useRef, useState, useEffect, useMemo } from "react";
-// import RelatedToolsSection from "@/components/RelatedTools";
-// import Script from "next/script";
-// import {
-//   Upload,
-//   FileText,
-//   Download,
-//   CheckCircle,
-//   X,
-//   PenTool,
-//   Eraser,
-//   Image as ImageIcon,
-//   ZoomIn,
-//   ZoomOut,
-// } from "lucide-react";
-
-// export default function SignPdf() {
-//   // ==================== STATE ====================
-//   const [pdfFile, setPdfFile] = useState(null);
-//   const [pdfDoc, setPdfDoc] = useState(null);
-//   const [totalPages, setTotalPages] = useState(1);
-//   const [signatureImage, setSignatureImage] = useState(null);
-//   const [signaturePreview, setSignaturePreview] = useState("");
-//   const [drawMode, setDrawMode] = useState(false);
-//   const [loading, setLoading] = useState(false);
-//   const [success, setSuccess] = useState(false);
-//   const [error, setError] = useState("");
-//   const [progress, setProgress] = useState(0);
-//   const [pageNumber, setPageNumber] = useState(1);
-//   const [xPosition, setXPosition] = useState(50);
-//   const [yPosition, setYPosition] = useState(50);
-//   const [signatureWidth, setSignatureWidth] = useState(150);
-//   const [signatureHeight, setSignatureHeight] = useState(75);
-//   const [scale, setScale] = useState(1);
-//   const [isDragging, setIsDragging] = useState(false);
-//   const [pdfJsReady, setPdfJsReady] = useState(false);
-//   const [renderKey, setRenderKey] = useState(0);
-//   const [activeTab, setActiveTab] = useState("draw"); // "draw" | "upload"
-
-//   const dragStart = useRef({ x: 0, y: 0 });
-//   const canvasRefs = useRef([]);
-//   const signCanvasRef = useRef(null);
-//   const isDrawing = useRef(false);
-
-//   // ==================== COMPUTED ====================
-//   const fileSizeMb = useMemo(() => {
-//     return pdfFile ? (pdfFile.size / 1024 / 1024).toFixed(2) : 0;
-//   }, [pdfFile]);
-
-//   // ==================== HELPERS ====================
-//   const clamp = (v, min, max) => Math.max(min, Math.min(max, v));
-
-//   const resetAllForNewPdf = () => {
-//     setPdfDoc(null);
-//     setTotalPages(1);
-//     setPageNumber(1);
-//     setScale(1);
-//     canvasRefs.current = [];
-//     setXPosition(50);
-//     setYPosition(50);
-//     setSuccess(false);
-//     setError("");
-//     setRenderKey(0);
-//   };
-
-//   const resetSignature = () => {
-//     setSignatureImage(null);
-//     setSignaturePreview("");
-//     setDrawMode(false);
-//   };
-
-//   const downloadBlob = (blob, filename) => {
-//     const url = window.URL.createObjectURL(blob);
-//     const a = document.createElement("a");
-//     a.href = url;
-//     a.download = filename;
-//     a.click();
-//     window.URL.revokeObjectURL(url);
-//   };
-
-//   // ==================== PDF FILE UPLOAD ====================
-//   const handlePdfUpload = (e) => {
-//     const file = e.target.files?.[0];
-//     if (!file) return;
-//     if (file.type !== "application/pdf") {
-//       setError("Please upload a valid PDF file.");
-//       return;
-//     }
-//     setPdfFile(file);
-//     resetAllForNewPdf();
-//     setError("");
-//   };
-
-//   // ==================== LOAD PDF DOC ====================
-//   useEffect(() => {
-//     if (!pdfFile) return;
-//     let cancelled = false;
-//     let tries = 0;
-
-//     const load = async () => {
-//       const lib = window?.pdfjsLib;
-//       if (!lib) {
-//         if (tries++ < 60) return setTimeout(load, 50);
-//         if (!cancelled) setError("PDF preview engine failed to load.");
-//         return;
-//       }
-//       try {
-//         setError("");
-//         const buf = await pdfFile.arrayBuffer();
-//         const doc = await lib.getDocument({ data: buf }).promise;
-//         if (cancelled) return;
-//         setPdfDoc(doc);
-//         setTotalPages(doc.numPages);
-//         setPageNumber(1);
-//         canvasRefs.current = new Array(doc.numPages).fill(null);
-//       } catch (err) {
-//         console.error(err);
-//         if (!cancelled) setError("Failed to load PDF for preview.");
-//       }
-//     };
-
-//     load();
-//     return () => { cancelled = true; };
-//   }, [pdfFile]);
-
-//   // ==================== RENDER ALL PAGES ====================
-//   useEffect(() => {
-//     if (!pdfDoc) return;
-//     let cancelled = false;
-
-//     const renderAll = async () => {
-//       try {
-//         await new Promise((r) => setTimeout(r, 100));
-//         for (let i = 1; i <= totalPages; i++) {
-//           if (cancelled) return;
-//           const canvas = canvasRefs.current[i - 1];
-//           if (!canvas) { console.warn(`Canvas ${i} not mounted yet`); continue; }
-//           const page = await pdfDoc.getPage(i);
-//           const viewport = page.getViewport({ scale });
-//           const ctx = canvas.getContext("2d");
-//           canvas.width = viewport.width;
-//           canvas.height = viewport.height;
-//           await page.render({ canvasContext: ctx, viewport }).promise;
-//         }
-//       } catch (e) {
-//         console.error("Render error:", e);
-//         if (!cancelled) setError("Failed to render PDF preview.");
-//       }
-//     };
-
-//     renderAll();
-//     return () => { cancelled = true; };
-//   }, [pdfDoc, totalPages, scale, renderKey]);
-
-//   useEffect(() => {
-//     if (pdfDoc) setRenderKey((prev) => prev + 1);
-//   }, [scale]);
-
-//   // ==================== SIGNATURE DRAWING ====================
-//   const getCanvasCoords = (e, canvas) => {
-//     const rect = canvas.getBoundingClientRect();
-//     const scaleX = canvas.width / rect.width;
-//     const scaleY = canvas.height / rect.height;
-//     const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-//     const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-//     return {
-//       x: (clientX - rect.left) * scaleX,
-//       y: (clientY - rect.top) * scaleY,
-//     };
-//   };
-
-//   const startDrawing = (e) => {
-//     if (!drawMode) return;
-//     const canvas = signCanvasRef.current;
-//     if (!canvas) return;
-//     e.preventDefault();
-//     const { x, y } = getCanvasCoords(e, canvas);
-//     const ctx = canvas.getContext("2d");
-//     ctx.beginPath();
-//     ctx.moveTo(x, y);
-//     ctx.strokeStyle = "#1e293b";
-//     ctx.lineWidth = 3;
-//     ctx.lineCap = "round";
-//     ctx.lineJoin = "round";
-//     isDrawing.current = true;
-//   };
-
-//   const draw = (e) => {
-//     if (!drawMode || !isDrawing.current) return;
-//     const canvas = signCanvasRef.current;
-//     if (!canvas) return;
-//     e.preventDefault();
-//     const { x, y } = getCanvasCoords(e, canvas);
-//     const ctx = canvas.getContext("2d");
-//     ctx.lineTo(x, y);
-//     ctx.stroke();
-//   };
-
-//   const stopDrawing = () => { isDrawing.current = false; };
-
-//   const clearCanvas = () => {
-//     const canvas = signCanvasRef.current;
-//     if (!canvas) return;
-//     canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
-//     resetSignature();
-//   };
-
-//   const saveCanvasAsImage = () => {
-//     const canvas = signCanvasRef.current;
-//     if (!canvas) return;
-//     canvas.toBlob((blob) => {
-//       if (!blob) return;
-//       const file = new File([blob], "signature.png", { type: "image/png" });
-//       setSignatureImage(file);
-//       const url = URL.createObjectURL(blob);
-//       setSignaturePreview(url);
-//       setDrawMode(false);
-//       setSuccess(false);
-//       setError("");
-//     }, "image/png");
-//   };
-
-//   const handleSignatureUpload = (e) => {
-//     const file = e.target.files?.[0];
-//     if (!file) return;
-//     if (!file.type.startsWith("image/")) {
-//       setError("Please upload a valid image (PNG/JPG).");
-//       return;
-//     }
-//     setSignatureImage(file);
-//     setSignaturePreview(URL.createObjectURL(file));
-//     setDrawMode(false);
-//     setSuccess(false);
-//     setError("");
-//   };
-
-//   // ==================== DRAG SIGNATURE ====================
-//   const handleSignatureDragStart = (e) => {
-//     if (!signaturePreview) return;
-//     const canvas = canvasRefs.current[pageNumber - 1];
-//     if (!canvas) return;
-//     const rect = canvas.parentElement.getBoundingClientRect();
-//     const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-//     const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-//     setIsDragging(true);
-//     dragStart.current = {
-//       x: clientX - rect.left - xPosition,
-//       y: clientY - rect.top - yPosition,
-//     };
-//   };
-
-//   const handleSignatureDrag = (e) => {
-//     if (!isDragging) return;
-//     const canvas = canvasRefs.current[pageNumber - 1];
-//     if (!canvas) return;
-//     const rect = canvas.parentElement.getBoundingClientRect();
-//     const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-//     const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-//     const newX = clientX - rect.left - dragStart.current.x;
-//     const newY = clientY - rect.top - dragStart.current.y;
-//     setXPosition(clamp(newX, 0, rect.width - signatureWidth));
-//     setYPosition(clamp(newY, 0, rect.height - signatureHeight));
-//   };
-
-//   const handleSignatureDragEnd = () => setIsDragging(false);
-
-//   const selectPage = (i) => {
-//     setPageNumber(i);
-//     const canvas = canvasRefs.current[i - 1];
-//     if (!canvas) return;
-//     const rect = canvas.parentElement?.getBoundingClientRect();
-//     if (!rect) return;
-//     setXPosition((x) => clamp(x, 0, rect.width - signatureWidth));
-//     setYPosition((y) => clamp(y, 0, rect.height - signatureHeight));
-//   };
-
-//   // ==================== SUBMIT ====================
-//   const handleSubmit = async (e) => {
-//     e.preventDefault();
-//     if (!pdfFile) return setError("Please upload a PDF file!");
-//     if (!signatureImage) return setError("Please provide a signature!");
-
-//     setLoading(true);
-//     setProgress(0);
-//     setSuccess(false);
-//     setError("");
-
-//     let progressInterval = setInterval(() => {
-//       setProgress((prev) => {
-//         if (prev >= 88) return prev;
-//         const increment = prev < 35 ? 8 : prev < 65 ? 5 : 2;
-//         return prev + increment;
-//       });
-//     }, 300);
-
-//     try {
-//       const formData = new FormData();
-//       formData.append("pdfFile", pdfFile);
-//       formData.append("signatureImage", signatureImage);
-//       formData.append("pageNumber", String(pageNumber));
-//       formData.append("xPosition", String(Math.round(xPosition)));
-//       formData.append("yPosition", String(Math.round(yPosition)));
-//       formData.append("width", String(Math.round(signatureWidth)));
-//       formData.append("height", String(Math.round(signatureHeight)));
-//       formData.append("scale", String(scale));
-
-//       const res = await fetch("/convert/sign-pdf", {
-//         method: "POST",
-//         body: formData,
-//       });
-
-//       if (!res.ok) {
-//         let msg = "Signing failed";
-//         try { const j = await res.json(); msg = j?.error || msg; } catch {}
-//         throw new Error(msg);
-//       }
-
-//       clearInterval(progressInterval);
-//       setProgress(100);
-
-//       const blob = await res.blob();
-//       downloadBlob(blob, pdfFile.name.replace(/\.pdf$/i, "") + "-signed.pdf");
-//       setSuccess(true);
-
-//       setTimeout(() => {
-//         document.getElementById("download-section")?.scrollIntoView({ behavior: "smooth", block: "center" });
-//       }, 300);
-//     } catch (err) {
-//       console.error(err);
-//       setError((err?.message || "Something went wrong. Please try again.").toString());
-//     } finally {
-//       clearInterval(progressInterval);
-//       setTimeout(() => { setLoading(false); setProgress(0); }, 800);
-//     }
-//   };
-
-//   // ==================== UI ====================
-//   return (
-//     <>
-//       {/* ==================== SEO SCHEMAS ==================== */}
-//       <Script
-//         id="howto-schema-sign"
-//         type="application/ld+json"
-//         strategy="afterInteractive"
-//         dangerouslySetInnerHTML={{
-//           __html: JSON.stringify({
-//             "@context": "https://schema.org",
-//             "@type": "HowTo",
-//             name: "How to Sign a PDF Online for Free",
-//             description:
-//               "Add your digital signature to any PDF document online for free. Draw your signature or upload an image, position it with live preview, and download the signed PDF instantly.",
-//             url: "https://pdflinx.com/sign-pdf",
-//             step: [
-//               { "@type": "HowToStep", name: "Upload PDF file", text: "Upload the PDF document you need to sign." },
-//               { "@type": "HowToStep", name: "Add your signature", text: "Draw your signature with mouse or upload a signature image (PNG/JPG)." },
-//               { "@type": "HowToStep", name: "Position and download", text: "Drag the signature to the correct position in the live preview, then click Sign PDF to download." },
-//             ],
-//             totalTime: "PT20S",
-//             estimatedCost: { "@type": "MonetaryAmount", value: "0", currency: "USD" },
-//             image: "https://pdflinx.com/og-image.png",
-//           }, null, 2),
-//         }}
-//       />
-
-//       <Script
-//         id="breadcrumb-schema-sign"
-//         type="application/ld+json"
-//         strategy="afterInteractive"
-//         dangerouslySetInnerHTML={{
-//           __html: JSON.stringify({
-//             "@context": "https://schema.org",
-//             "@type": "BreadcrumbList",
-//             itemListElement: [
-//               { "@type": "ListItem", position: 1, name: "Home", item: "https://pdflinx.com" },
-//               { "@type": "ListItem", position: 2, name: "Sign PDF", item: "https://pdflinx.com/sign-pdf" },
-//             ],
-//           }, null, 2),
-//         }}
-//       />
-
-//       <Script
-//         id="faq-schema-sign"
-//         type="application/ld+json"
-//         strategy="afterInteractive"
-//         dangerouslySetInnerHTML={{
-//           __html: JSON.stringify({
-//             "@context": "https://schema.org",
-//             "@type": "FAQPage",
-//             mainEntity: [
-//               {
-//                 "@type": "Question",
-//                 name: "Is the Sign PDF tool free?",
-//                 acceptedAnswer: { "@type": "Answer", text: "Yes. PDFLinx Sign PDF is completely free — no sign-up, no watermarks, no hidden costs." },
-//               },
-//               {
-//                 "@type": "Question",
-//                 name: "Can I draw my signature online?",
-//                 acceptedAnswer: { "@type": "Answer", text: "Yes. You can draw your signature using your mouse, trackpad, or touchscreen directly in the browser." },
-//               },
-//               {
-//                 "@type": "Question",
-//                 name: "Can I upload a signature image?",
-//                 acceptedAnswer: { "@type": "Answer", text: "Yes. Upload any PNG or JPG image of your handwritten signature. It will be overlaid on the PDF." },
-//               },
-//               {
-//                 "@type": "Question",
-//                 name: "Can I see where my signature will appear before downloading?",
-//                 acceptedAnswer: { "@type": "Answer", text: "Yes. The live preview shows your PDF with the signature overlay in real-time. Drag it to position exactly where you want." },
-//               },
-//               {
-//                 "@type": "Question",
-//                 name: "Are my files safe when signing a PDF?",
-//                 acceptedAnswer: { "@type": "Answer", text: "Yes. All uploaded files are processed automatically and deleted immediately after signing. We never store your documents." },
-//               },
-//               {
-//                 "@type": "Question",
-//                 name: "Can I sign specific pages of a multi-page PDF?",
-//                 acceptedAnswer: { "@type": "Answer", text: "Yes. Select the exact page number where you want to add your signature using the page selector." },
-//               },
-//             ],
-//           }, null, 2),
-//         }}
-//       />
-
-//       <Script
-//         src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"
-//         strategy="afterInteractive"
-//         onReady={() => {
-//           if (window?.pdfjsLib) {
-//             window.pdfjsLib.GlobalWorkerOptions.workerSrc =
-//               "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
-//             setPdfJsReady(true);
-//           }
-//         }}
-//       />
-
-//       {/* ==================== MAIN TOOL SECTION ==================== */}
-//       <main className="min-h-screen bg-linear-to-br from-blue-50 via-white to-purple-50 py-8 px-4">
-//         <div className="max-w-6xl mx-auto">
-
-//           {/* Header */}
-//           <div className="text-center mb-8">
-//             <h1 className="text-3xl md:text-4xl font-bold bg-linear-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-4">
-//               Sign PDF Online Free
-//               <br />
-//               <span className="text-2xl md:text-3xl font-medium">
-//                 No Signup · No Watermark · Live Preview
-//               </span>
-//             </h1>
-//             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-//               Add your digital signature to any PDF online — draw it or upload an image, position with live preview, and download instantly. Free, secure, no software needed.
-//             </p>
-//           </div>
-
-//           {/* STEP STRIP */}
-//           <div className="grid grid-cols-3 mb-6 rounded-2xl overflow-hidden border border-gray-100 bg-white shadow-sm">
-//             {[
-//               { n: "1", label: "Upload PDF", sub: "Any PDF document" },
-//               { n: "2", label: "Add Signature", sub: "Draw or upload image" },
-//               { n: "3", label: "Download PDF", sub: "Signed & ready" },
-//             ].map((s, i) => (
-//               <div
-//                 key={i}
-//                 className={`flex flex-col items-center py-4 px-2 text-center ${i < 2 ? "border-r border-gray-100" : ""}`}
-//               >
-//                 <div className="w-8 h-8 rounded-full bg-linear-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white text-sm font-bold mb-1 shadow-sm">
-//                   {s.n}
-//                 </div>
-//                 <p className="text-xs font-semibold text-gray-700">{s.label}</p>
-//                 <p className="text-xs text-gray-400 hidden sm:block">{s.sub}</p>
-//               </div>
-//             ))}
-//           </div>
-
-//           {/* MAIN CARD */}
-//           <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
-//             <div className={`relative transition-all duration-300 ${loading ? "pointer-events-none" : ""}`}>
-
-//               {/* Loading Overlay — same style as Rotate PDF */}
-//               {loading && (
-//                 <div className="absolute inset-0 z-10 bg-white/70 backdrop-blur-sm rounded-2xl flex flex-col items-center justify-center gap-4">
-//                   <div className="relative w-16 h-16">
-//                     <div className="absolute inset-0 rounded-full border-4 border-blue-100"></div>
-//                     <div className="absolute inset-0 rounded-full border-4 border-blue-500 border-t-transparent animate-spin"></div>
-//                     <div
-//                       className="absolute inset-2 rounded-full border-4 border-purple-200 border-b-transparent animate-spin"
-//                       style={{ animationDirection: "reverse", animationDuration: "0.8s" }}
-//                     ></div>
-//                   </div>
-//                   <div className="text-center">
-//                     <p className="text-base font-semibold text-gray-700">Signing your PDF…</p>
-//                     <p className="text-sm text-gray-400 mt-1">
-//                       {progress < 30 ? "Uploading…" : progress < 70 ? "Applying signature…" : "Almost done…"}
-//                     </p>
-//                   </div>
-//                   <div className="w-48 h-1.5 bg-gray-100 rounded-full overflow-hidden">
-//                     <div
-//                       className="h-full bg-linear-to-r from-blue-500 to-purple-500 rounded-full transition-all duration-500"
-//                       style={{ width: `${progress}%` }}
-//                     />
-//                   </div>
-//                   <p className="text-xs text-gray-400 font-medium">{progress}%</p>
-//                 </div>
-//               )}
-
-//               <form onSubmit={handleSubmit}>
-//                 {/*
-//                   Layout:
-//                   - Mobile: single column (left panel on top, preview below)
-//                   - Desktop (lg): two columns side by side
-//                 */}
-//                 <div className="grid grid-cols-1 lg:grid-cols-2 lg:divide-x divide-gray-100">
-
-//                   {/* ===== LEFT PANEL ===== */}
-//                   <div className="p-5 sm:p-6 space-y-5">
-
-//                     {/* Step 1 — Upload PDF */}
-//                     <div>
-//                       <p className="text-sm font-semibold text-gray-700 mb-2">Step 1 — Upload PDF</p>
-//                       <label className="block cursor-pointer group">
-//                         <div
-//                           className={`relative rounded-xl border-2 border-dashed transition-all duration-200 p-6 text-center ${
-//                             pdfFile
-//                               ? "border-green-400 bg-green-50"
-//                               : "border-gray-200 hover:border-blue-400 hover:bg-blue-50/40"
-//                           }`}
-//                         >
-//                           <div
-//                             className={`w-12 h-12 rounded-2xl mx-auto mb-3 flex items-center justify-center transition-colors ${
-//                               pdfFile ? "bg-green-100" : "bg-blue-50 group-hover:bg-blue-100"
-//                             }`}
-//                           >
-//                             {pdfFile ? (
-//                               <CheckCircle className="w-6 h-6 text-green-500" />
-//                             ) : (
-//                               <Upload className="w-6 h-6 text-blue-600" />
-//                             )}
-//                           </div>
-//                           {pdfFile ? (
-//                             <>
-//                               <p className="text-sm font-semibold text-green-700">File selected</p>
-//                               <p className="text-xs text-gray-400 mt-1">Click to change</p>
-//                             </>
-//                           ) : (
-//                             <>
-//                               <p className="text-sm font-semibold text-gray-700">Drop your PDF here</p>
-//                               <p className="text-xs text-gray-400 mt-1">or click to browse · PDF only</p>
-//                               <div className="flex flex-wrap justify-center gap-2 mt-3">
-//                                 {["✓ No signup", "✓ No watermark", "✓ Live preview", "✓ Auto-deleted"].map((t) => (
-//                                   <span key={t} className="bg-blue-50 text-blue-700 border border-blue-100 text-xs font-medium px-2.5 py-1 rounded-full">
-//                                     {t}
-//                                   </span>
-//                                 ))}
-//                               </div>
-//                             </>
-//                           )}
-//                         </div>
-//                         <input
-//                           type="file"
-//                           accept=".pdf,application/pdf"
-//                           onChange={handlePdfUpload}
-//                           className="hidden"
-//                         />
-//                       </label>
-
-//                       {pdfFile && (
-//                         <div className="mt-2 flex items-center justify-between bg-gray-50 border border-gray-200 px-3 py-2 rounded-xl">
-//                           <div className="flex items-center gap-2 min-w-0">
-//                             <FileText className="w-4 h-4 text-blue-600 shrink-0" />
-//                             <span className="text-sm font-medium text-gray-700 truncate">{pdfFile.name}</span>
-//                             <span className="text-xs text-gray-400 shrink-0">({fileSizeMb} MB)</span>
-//                           </div>
-//                           <button
-//                             type="button"
-//                             onClick={() => { setPdfFile(null); resetAllForNewPdf(); resetSignature(); }}
-//                             className="text-red-500 hover:bg-red-100 p-1 rounded ml-2 shrink-0"
-//                           >
-//                             <X className="w-4 h-4" />
-//                           </button>
-//                         </div>
-//                       )}
-//                     </div>
-
-//                     {/* Step 2 — Signature */}
-//                     <div>
-//                       <p className="text-sm font-semibold text-gray-700 mb-2">Step 2 — Add Signature</p>
-
-//                       {/* Tab switcher */}
-//                       <div className="grid grid-cols-2 gap-2 mb-3">
-//                         <button
-//                           type="button"
-//                           onClick={() => { setActiveTab("draw"); setDrawMode(true); }}
-//                           className={`flex items-center justify-center gap-2 py-2.5 rounded-xl border-2 text-sm font-semibold transition-all ${
-//                             activeTab === "draw"
-//                               ? "border-blue-600 bg-blue-50 text-blue-700"
-//                               : "border-gray-200 text-gray-600 hover:border-blue-300"
-//                           }`}
-//                         >
-//                           <PenTool className="w-4 h-4" />
-//                           Draw
-//                         </button>
-
-//                         <label
-//                           className={`flex items-center justify-center gap-2 py-2.5 rounded-xl border-2 text-sm font-semibold transition-all cursor-pointer ${
-//                             activeTab === "upload"
-//                               ? "border-purple-600 bg-purple-50 text-purple-700"
-//                               : "border-gray-200 text-gray-600 hover:border-purple-300"
-//                           }`}
-//                           onClick={() => setActiveTab("upload")}
-//                         >
-//                           <ImageIcon className="w-4 h-4" />
-//                           Upload Image
-//                           <input type="file" accept="image/*" onChange={handleSignatureUpload} className="hidden" />
-//                         </label>
-//                       </div>
-
-//                       {/* Draw canvas */}
-//                       {activeTab === "draw" && (
-//                         <div className="rounded-xl border-2 border-gray-200 bg-gray-50 p-3">
-//                           <p className="text-xs text-gray-500 mb-2">Draw your signature below:</p>
-//                           <canvas
-//                             ref={signCanvasRef}
-//                             width={600}
-//                             height={200}
-//                             onMouseDown={startDrawing}
-//                             onMouseMove={draw}
-//                             onMouseUp={stopDrawing}
-//                             onMouseLeave={stopDrawing}
-//                             onTouchStart={startDrawing}
-//                             onTouchMove={draw}
-//                             onTouchEnd={stopDrawing}
-//                             className="border-2 border-dashed border-gray-300 bg-white w-full rounded-lg cursor-crosshair"
-//                             style={{ touchAction: "none" }}
-//                           />
-//                           <div className="flex gap-2 mt-2">
-//                             <button
-//                               type="button"
-//                               onClick={clearCanvas}
-//                               className="flex items-center gap-1.5 px-3 py-2 bg-red-100 text-red-700 rounded-lg hover:bg-red-200 transition text-xs font-semibold"
-//                             >
-//                               <Eraser className="w-3.5 h-3.5" />
-//                               Clear
-//                             </button>
-//                             <button
-//                               type="button"
-//                               onClick={saveCanvasAsImage}
-//                               className="flex items-center gap-1.5 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition text-xs font-semibold"
-//                             >
-//                               <CheckCircle className="w-3.5 h-3.5" />
-//                               Use This Signature
-//                             </button>
-//                           </div>
-//                         </div>
-//                       )}
-
-//                       {/* Signature ready preview */}
-//                       {signaturePreview && (
-//                         <div className="mt-3 border-2 border-green-400 bg-green-50 rounded-xl p-3 flex items-center gap-3">
-//                           <CheckCircle className="w-5 h-5 text-green-600 shrink-0" />
-//                           <div className="min-w-0 flex-1">
-//                             <p className="text-xs font-semibold text-green-700 mb-1">✓ Signature ready</p>
-//                             <img
-//                               src={signaturePreview}
-//                               alt="Signature preview"
-//                               className="max-h-12 bg-white border border-gray-200 rounded p-1"
-//                             />
-//                           </div>
-//                           <button
-//                             type="button"
-//                             onClick={resetSignature}
-//                             className="text-red-400 hover:bg-red-100 p-1 rounded shrink-0"
-//                           >
-//                             <X className="w-4 h-4" />
-//                           </button>
-//                         </div>
-//                       )}
-//                     </div>
-
-//                     {/* Step 3 — Controls (only when both ready) */}
-//                     {pdfFile && signaturePreview && (
-//                       <div className="rounded-xl border border-gray-200 bg-gray-50 p-4 space-y-3">
-//                         <p className="text-sm font-semibold text-gray-700">Step 3 — Position &amp; Size</p>
-//                         <div>
-//                           <label className="block text-xs text-gray-500 mb-1">
-//                             Page: <span className="font-semibold text-gray-700">{pageNumber} / {totalPages}</span>
-//                           </label>
-//                           <input
-//                             type="number"
-//                             min={1}
-//                             max={totalPages}
-//                             value={pageNumber}
-//                             onChange={(e) => selectPage(parseInt(e.target.value) || 1)}
-//                             className="w-full px-3 py-2 border-2 border-gray-200 rounded-lg text-sm focus:border-blue-400 focus:outline-none"
-//                           />
-//                         </div>
-//                         <div>
-//                           <label className="block text-xs text-gray-500 mb-1">
-//                             Width: <span className="font-semibold text-gray-700">{Math.round(signatureWidth)}px</span>
-//                           </label>
-//                           <input
-//                             type="range" min="50" max="400"
-//                             value={signatureWidth}
-//                             onChange={(e) => setSignatureWidth(parseInt(e.target.value))}
-//                             className="w-full accent-blue-600"
-//                           />
-//                         </div>
-//                         <div>
-//                           <label className="block text-xs text-gray-500 mb-1">
-//                             Height: <span className="font-semibold text-gray-700">{Math.round(signatureHeight)}px</span>
-//                           </label>
-//                           <input
-//                             type="range" min="30" max="220"
-//                             value={signatureHeight}
-//                             onChange={(e) => setSignatureHeight(parseInt(e.target.value))}
-//                             className="w-full accent-blue-600"
-//                           />
-//                         </div>
-//                         <p className="text-xs text-gray-400">💡 Drag the signature box in the preview to reposition it</p>
-//                       </div>
-//                     )}
-
-//                     {/* Error */}
-//                     {error && (
-//                       <div className="bg-red-50 border border-red-200 rounded-xl p-3 text-red-700 text-sm font-medium">
-//                         {error}
-//                       </div>
-//                     )}
-
-//                     {/* Info row + Submit button */}
-//                     <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-1">
-//                       <div className="flex items-start gap-2.5 bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 flex-1">
-//                         <PenTool className="w-4 h-4 text-gray-400 mt-0.5 shrink-0" />
-//                         <div>
-//                           <p className="text-sm font-medium text-gray-700 leading-none">PDF signing</p>
-//                           <p className="text-xs text-gray-400 mt-0.5">Draw or upload → position → download</p>
-//                         </div>
-//                       </div>
-//                       <button
-//                         type="submit"
-//                         disabled={loading || !pdfFile || !signatureImage}
-//                         className={`flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm text-white transition-all duration-200 shadow-sm sm:w-auto w-full ${
-//                           pdfFile && signatureImage && !loading
-//                             ? "bg-linear-to-r from-blue-600 to-purple-500 hover:from-blue-700 hover:to-purple-600 hover:shadow-md active:scale-[0.98]"
-//                             : "bg-gray-200 text-gray-400 cursor-not-allowed"
-//                         }`}
-//                       >
-//                         {loading ? (
-//                           <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-//                         ) : (
-//                           <PenTool className="w-4 h-4" />
-//                         )}
-//                         Sign PDF
-//                       </button>
-//                     </div>
-
-//                     <div className="text-xs text-gray-400 text-center space-y-0.5 pb-1">
-//                       <p>⏱️ Processing usually takes a few seconds — don&apos;t close this tab</p>
-//                       <p>💡 Your signature is applied exactly as positioned in the preview</p>
-//                     </div>
-//                   </div>
-
-//                   {/* ===== RIGHT PANEL — Live Preview ===== */}
-//                   <div className="p-5 sm:p-6 border-t lg:border-t-0 border-gray-100">
-//                     <div className="flex items-center justify-between mb-4">
-//                       <h3 className="text-sm font-semibold text-gray-700">Live Preview</h3>
-//                       <div className="flex items-center gap-2">
-//                         <button
-//                           type="button"
-//                           onClick={() => setScale((s) => clamp(Number((s + 0.2).toFixed(2)), 0.5, 2.5))}
-//                           className="px-2.5 py-1.5 bg-gray-100 rounded-lg hover:bg-gray-200 transition"
-//                           title="Zoom In"
-//                         >
-//                           <ZoomIn className="w-4 h-4" />
-//                         </button>
-//                         <span className="text-xs text-gray-600 min-w-10 text-center font-medium">
-//                           {Math.round(scale * 100)}%
-//                         </span>
-//                         <button
-//                           type="button"
-//                           onClick={() => setScale((s) => clamp(Number((s - 0.2).toFixed(2)), 0.5, 2.5))}
-//                           className="px-2.5 py-1.5 bg-gray-100 rounded-lg hover:bg-gray-200 transition"
-//                           title="Zoom Out"
-//                         >
-//                           <ZoomOut className="w-4 h-4" />
-//                         </button>
-//                       </div>
-//                     </div>
-
-//                     {!pdfFile ? (
-//                       <div className="flex items-center justify-center h-56 lg:h-[60vh] border-2 border-dashed border-gray-200 rounded-xl bg-gray-50">
-//                         <div className="text-center text-gray-400">
-//                           <FileText className="w-10 h-10 mx-auto mb-2 text-gray-300" />
-//                           <p className="text-sm">Upload a PDF to see preview</p>
-//                         </div>
-//                       </div>
-//                     ) : (
-//                       <div
-//                         className="relative border border-gray-200 rounded-xl overflow-auto bg-gray-100 p-3 space-y-4"
-//                         style={{ maxHeight: "60vh" }}
-//                         onMouseMove={handleSignatureDrag}
-//                         onMouseUp={handleSignatureDragEnd}
-//                         onMouseLeave={handleSignatureDragEnd}
-//                         onTouchMove={handleSignatureDrag}
-//                         onTouchEnd={handleSignatureDragEnd}
-//                       >
-//                         {Array.from({ length: totalPages }).map((_, index) => (
-//                           <div
-//                             key={`page-${index}-${renderKey}`}
-//                             className={`relative flex justify-center cursor-pointer transition-all ${
-//                               pageNumber === index + 1
-//                                 ? "ring-4 ring-blue-500 rounded-xl p-1.5 bg-blue-50"
-//                                 : "hover:ring-2 hover:ring-gray-300 rounded-xl p-1.5"
-//                             }`}
-//                             onClick={() => selectPage(index + 1)}
-//                           >
-//                             <div className="absolute top-2 left-2 bg-gray-800 text-white text-xs px-2 py-0.5 rounded z-10 font-medium">
-//                               Page {index + 1}
-//                             </div>
-
-//                             {/* Canvas wrapper — overflow hidden so canvas doesn't break mobile layout */}
-//                             <div className="relative inline-block shadow-xl max-w-full overflow-hidden">
-//                               <canvas
-//                                 ref={(el) => { if (el) canvasRefs.current[index] = el; }}
-//                                 className="bg-white block"
-//                                 style={{ display: "block", maxWidth: "100%", height: "auto" }}
-//                               />
-//                               {signaturePreview && pageNumber === index + 1 && (
-//                                 <div
-//                                   className="absolute cursor-move border-2 border-blue-500 shadow-lg"
-//                                   style={{
-//                                     left: `${xPosition}px`,
-//                                     top: `${yPosition}px`,
-//                                     width: `${signatureWidth}px`,
-//                                     height: `${signatureHeight}px`,
-//                                   }}
-//                                   onMouseDown={handleSignatureDragStart}
-//                                   onTouchStart={handleSignatureDragStart}
-//                                   title="Drag to move signature"
-//                                 >
-//                                   <img
-//                                     src={signaturePreview}
-//                                     alt="Signature"
-//                                     className="w-full h-full object-contain bg-white/90 pointer-events-none"
-//                                     draggable={false}
-//                                   />
-//                                 </div>
-//                               )}
-//                             </div>
-//                           </div>
-//                         ))}
-
-//                         {/* Loading overlay inside preview */}
-//                         {!pdfDoc && (
-//                           <div className="absolute inset-0 flex items-center justify-center bg-white/80 rounded-xl">
-//                             <div className="text-center">
-//                               <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-2" />
-//                               <p className="text-sm text-gray-500">Loading preview…</p>
-//                             </div>
-//                           </div>
-//                         )}
-//                       </div>
-//                     )}
-
-//                     <p className="text-xs text-gray-400 mt-2 text-center">
-//                       💡 Click a page to select it, then drag the signature box to position it
-//                     </p>
-//                   </div>
-//                 </div>
-
-//                 {/* Success banner */}
-//                 {success && (
-//                   <div
-//                     id="download-section"
-//                     className="mx-5 mb-6 rounded-2xl overflow-hidden border border-green-200 bg-linear-to-br from-green-50 to-emerald-50"
-//                   >
-//                     <div className="flex flex-col items-center text-center px-8 py-10">
-//                       <div className="relative w-16 h-16 mb-5">
-//                         <div className="absolute inset-0 rounded-full bg-emerald-100 animate-ping opacity-30"></div>
-//                         <div className="relative w-16 h-16 rounded-full bg-linear-to-br from-emerald-500 to-teal-500 flex items-center justify-center shadow-lg">
-//                           <CheckCircle className="w-8 h-8 text-white" />
-//                         </div>
-//                       </div>
-//                       <h3 className="text-xl font-bold text-emerald-800 mb-1">
-//                         Done! Your signed PDF downloaded automatically 🎉
-//                       </h3>
-//                       <p className="text-sm text-gray-600 mb-6">
-//                         Check your downloads folder for the signed PDF file.
-//                       </p>
-//                       <div className="flex flex-wrap gap-3 justify-center">
-//                         <button
-//                           type="button"
-//                           onClick={() => { setPdfFile(null); resetAllForNewPdf(); resetSignature(); setSuccess(false); }}
-//                           className="inline-flex items-center gap-2 bg-white border border-emerald-300 text-emerald-700 text-sm font-semibold px-5 py-2.5 rounded-xl hover:bg-emerald-50 transition shadow-sm"
-//                         >
-//                           <FileText className="w-4 h-4" />
-//                           Sign another PDF
-//                         </button>
-//                         <a
-//                           href="/rotate-pdf"
-//                           className="inline-flex items-center gap-2 bg-white border border-gray-200 text-gray-600 text-sm font-semibold px-5 py-2.5 rounded-xl hover:bg-gray-50 transition shadow-sm"
-//                         >
-//                           Rotate PDF →
-//                         </a>
-//                       </div>
-//                     </div>
-//                   </div>
-//                 )}
-//               </form>
-//             </div>
-//           </div>
-
-//           <p className="text-center mt-6 text-gray-500 text-sm">
-//             No account • No watermark • Files auto-deleted • Completely free • Live preview signing
-//           </p>
-//         </div>
-//       </main>
-
-//       {/* ==================== SEO CONTENT SECTION ==================== */}
-//       <section className="mt-16 max-w-4xl mx-auto px-6 pb-16">
-//         <div className="text-center mb-12">
-//           <h2 className="text-2xl md:text-3xl font-bold bg-linear-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-4">
-//             Sign PDF Online Free – Add Digital Signature with Live Preview
-//           </h2>
-//           <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-//             Need to electronically sign a PDF document? PDFLinx Sign PDF tool lets you add your handwritten or uploaded signature online with real-time live preview — no software needed.
-//           </p>
-//         </div>
-
-//         {/* Benefits Grid */}
-//         <div className="grid md:grid-cols-3 gap-8 mb-16">
-//           <div className="bg-linear-to-br from-blue-50 to-white p-8 rounded-2xl shadow-lg border border-blue-100 text-center hover:shadow-xl transition">
-//             <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
-//               <PenTool className="w-8 h-8 text-white" />
-//             </div>
-//             <h3 className="text-xl font-semibold text-gray-800 mb-3">Draw or Upload</h3>
-//             <p className="text-gray-600 text-sm">
-//               Draw your signature with mouse or touchscreen, or upload a PNG/JPG image of your signature.
-//             </p>
-//           </div>
-
-//           <div className="bg-linear-to-br from-purple-50 to-white p-8 rounded-2xl shadow-lg border border-purple-100 text-center hover:shadow-xl transition">
-//             <div className="w-16 h-16 bg-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
-//               <FileText className="w-8 h-8 text-white" />
-//             </div>
-//             <h3 className="text-xl font-semibold text-gray-800 mb-3">Live Preview</h3>
-//             <p className="text-gray-600 text-sm">
-//               See exactly where your signature will appear. Drag &amp; drop to position it perfectly on any page.
-//             </p>
-//           </div>
-
-//           <div className="bg-linear-to-br from-green-50 to-white p-8 rounded-2xl shadow-lg border border-green-100 text-center hover:shadow-xl transition">
-//             <div className="w-16 h-16 bg-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
-//               <Download className="w-8 h-8 text-white" />
-//             </div>
-//             <h3 className="text-xl font-semibold text-gray-800 mb-3">Instant Download</h3>
-//             <p className="text-gray-600 text-sm">
-//               Get your signed PDF instantly. No watermarks, no registration, no hidden fees.
-//             </p>
-//           </div>
-//         </div>
-
-//         {/* Steps */}
-//         <div className="bg-white rounded-2xl shadow-lg p-8 md:p-12 border border-gray-100">
-//           <h3 className="text-2xl md:text-3xl font-bold text-center mb-12 text-gray-800">
-//             Sign PDF in 3 Easy Steps
-//           </h3>
-//           <div className="grid md:grid-cols-3 gap-8">
-//             {[
-//               { n: 1, color: "from-blue-600 to-blue-700", title: "Upload PDF", desc: "Upload the PDF document you want to sign — contracts, forms, agreements, any PDF." },
-//               { n: 2, color: "from-purple-600 to-purple-700", title: "Add Signature", desc: "Draw your signature with mouse or upload an image. Drag it to the correct position in live preview." },
-//               { n: 3, color: "from-green-600 to-green-700", title: "Download", desc: "Click Sign PDF and download your professionally signed document instantly." },
-//             ].map((s) => (
-//               <div key={s.n} className="text-center">
-//                 <div className={`w-16 h-16 bg-linear-to-r ${s.color} rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold text-white shadow-lg`}>
-//                   {s.n}
-//                 </div>
-//                 <h4 className="text-lg font-semibold mb-2">{s.title}</h4>
-//                 <p className="text-gray-600 text-sm">{s.desc}</p>
-//               </div>
-//             ))}
-//           </div>
-//         </div>
-
-//         <p className="text-center mt-12 text-base text-gray-600 italic max-w-3xl mx-auto">
-//           PDFLinx makes signing PDFs quick and professional with live preview — perfect for contracts, agreements, forms, and legal documents.
-//         </p>
-//       </section>
-
-//       {/* Long-form SEO section */}
-//       <section className="max-w-4xl mx-auto px-4 py-14 text-slate-700">
-//         <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-6">
-//           Sign PDF Online with Live Preview – Free Electronic Signature Tool by PDFLinx
-//         </h2>
-
-//         <p className="text-base leading-7 mb-6">
-//           Adding a digital signature to PDF documents is now essential for modern remote work, freelancing, and business workflows. Whether you need to sign employment contracts, NDAs, rental agreements, or consent forms,
-//           <span className="font-medium text-slate-900"> PDFLinx Sign PDF tool</span> lets you electronically sign any PDF document online — with real-time live preview so you can see exactly where your signature appears before finalizing.
-//         </p>
-
-//         <h3 className="text-xl font-semibold text-slate-900 mb-3">What is an Electronic PDF Signature?</h3>
-//         <p className="leading-7 mb-6">
-//           An electronic PDF signature is a digital representation of your handwritten signature added to a PDF document. It can be drawn using a mouse or touchscreen, or created from an uploaded image of your physical signature. Unlike cryptographic digital signatures, visual electronic signatures are widely used for everyday document signing like contracts, forms, permission slips, and business proposals.
-//         </p>
-
-//         <h3 className="text-xl font-semibold text-slate-900 mb-3">Why Use Live Preview When Signing PDFs?</h3>
-//         <ul className="space-y-2 mb-6 list-disc pl-6">
-//           <li>See exactly where your electronic signature will appear on the page</li>
-//           <li>Drag and drop signature to the precise position with visual feedback</li>
-//           <li>Adjust signature size in real-time before finalizing</li>
-//           <li>No trial and error — get it right the first time</li>
-//           <li>Professional-looking signed PDFs every time</li>
-//           <li>Select specific pages in multi-page PDFs for precise placement</li>
-//         </ul>
-
-//         <h3 className="text-xl font-semibold text-slate-900 mb-3">How to Electronically Sign a PDF Online</h3>
-//         <ol className="space-y-2 mb-6 list-decimal pl-6">
-//           <li>Upload your PDF document using the Sign PDF tool above</li>
-//           <li>Draw your signature with mouse/touchscreen or upload a PNG/JPG signature image</li>
-//           <li>See the live PDF preview with your signature overlay</li>
-//           <li>Drag the signature box to your preferred position on the page</li>
-//           <li>Select the correct page number for multi-page PDFs</li>
-//           <li>Adjust width and height using the sliders</li>
-//           <li>Click &quot;Sign PDF&quot; to apply the signature and download</li>
-//         </ol>
-
-//         <div className="bg-slate-50 border border-slate-200 rounded-xl p-6 mb-6">
-//           <h3 className="text-xl font-semibold text-slate-900 mb-4">Features of PDFLinx Sign PDF Tool</h3>
-//           <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 list-disc pl-5">
-//             <li>Free online PDF signing — no subscription needed</li>
-//             <li>Real-time live preview of signature placement</li>
-//             <li>Draw signature with mouse, trackpad, or touchscreen</li>
-//             <li>Upload signature image (PNG, JPG, JPEG)</li>
-//             <li>Drag and drop signature positioning</li>
-//             <li>Adjustable signature width and height</li>
-//             <li>Multi-page PDF support with page selector</li>
-//             <li>Works on desktop, tablet, and mobile</li>
-//             <li>No watermark on signed PDF output</li>
-//             <li>Files automatically deleted after processing</li>
-//             <li>No software installation or account required</li>
-//             <li>Supports all standard PDF documents</li>
-//           </ul>
-//         </div>
-
-//         <h3 className="text-xl font-semibold text-slate-900 mb-3">Common Use Cases for PDF Signing</h3>
-//         <ul className="space-y-2 mb-6 list-disc pl-6">
-//           <li>Employment contracts and job offer letters</li>
-//           <li>Rental agreements and property lease documents</li>
-//           <li>Non-disclosure agreements (NDAs) and confidentiality forms</li>
-//           <li>Business proposals, quotes, and invoices</li>
-//           <li>Consent forms and permission slips</li>
-//           <li>Tax forms and financial documents</li>
-//           <li>Freelance client contracts and service agreements</li>
-//           <li>Academic and university application forms</li>
-//         </ul>
-
-//         <h3 className="text-xl font-semibold text-slate-900 mb-3">Is PDFLinx Sign PDF Secure?</h3>
-//         <p className="leading-7 mb-6">
-//           Yes. PDFLinx is built with privacy and security as the top priority. Your uploaded PDF files and signature images are processed automatically on secure servers and deleted immediately after the signed PDF is generated. We never store your documents, signatures, or personal data permanently. No account is required, meaning your files are never linked to any profile.
-//         </p>
-
-//         <h3 className="text-xl font-semibold text-slate-900 mb-3">Sign PDF on Any Device — Desktop, Tablet, or Mobile</h3>
-//         <p className="leading-7">
-//           PDFLinx Sign PDF works seamlessly on Windows, macOS, Linux, Android, and iOS. Whether you&apos;re on a desktop computer, laptop, tablet, or smartphone, you can sign PDF documents online with full live preview and drag-and-drop positioning — all you need is an internet connection and a modern web browser.
-//         </p>
-//       </section>
-
-//       {/* FAQs */}
-//       <section className="py-16">
-//         <div className="max-w-4xl mx-auto px-4">
-//           <h2 className="text-3xl font-bold text-center mb-10">Frequently Asked Questions</h2>
-//           <div className="space-y-4">
-//             {[
-//               { q: "Is the Sign PDF tool free?", a: "Yes. PDFLinx Sign PDF is completely free — no sign-up, no watermarks, no hidden costs. You can sign unlimited PDFs at no charge." },
-//               { q: "Can I draw my signature online?", a: "Yes. You can draw your signature using your mouse, trackpad, or touchscreen directly in the browser. The drawing canvas supports smooth, natural signature drawing on both desktop and mobile." },
-//               { q: "Can I upload a signature image?", a: "Yes. Upload any PNG or JPG image of your handwritten signature. The tool will overlay it on your PDF exactly where you position it in the live preview." },
-//               { q: "Can I see where my signature will appear before downloading?", a: "Yes. The live preview panel shows your PDF with the signature overlay in real-time. Simply drag the signature box to position it exactly where you want." },
-//               { q: "Are my files safe when signing a PDF?", a: "Yes. All uploaded files are processed automatically and deleted immediately after signing. We never store your PDFs or signatures permanently." },
-//               { q: "Can I sign specific pages of a multi-page PDF?", a: "Yes. Use the page selector to choose exactly which page you want to sign. The live preview will show all pages, and you can click any page to select it." },
-//               { q: "Does the signed PDF have watermarks?", a: "No. PDFLinx never adds watermarks to your signed PDF documents. The output file is clean with only your signature applied." },
-//               { q: "Can I use this on my phone or tablet?", a: "Yes. PDFLinx Sign PDF works on all devices including smartphones and tablets. Touch support lets you draw your signature with your finger directly on mobile." },
-//             ].map((item, i) => (
-//               <details key={i} className="bg-white rounded-lg shadow-sm p-5">
-//                 <summary className="font-semibold cursor-pointer text-gray-800">{item.q}</summary>
-//                 <p className="mt-2 text-gray-600 leading-relaxed">{item.a}</p>
-//               </details>
-//             ))}
-//           </div>
-//         </div>
-//       </section>
-
-//       <RelatedToolsSection currentPage="sign-pdf" />
-//     </>
-//   );
-// }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// "use client";
-
-// import { useRef, useState, useEffect } from "react";
-// import RelatedToolsSection from "@/components/RelatedTools";
-
-// import Script from "next/script";
-// import {
-//   Upload,
-//   FileText,
-//   Download,
-//   CheckCircle,
-//   X,
-//   PenTool,
-//   Eraser,
-//   Image as ImageIcon,
-//   ZoomIn,
-//   ZoomOut,
-// } from "lucide-react";
-
-// export default function SignPdf() {
-//   // ==================== STATE ====================
-//   const [pdfFile, setPdfFile] = useState(null);
-//   const [pdfDoc, setPdfDoc] = useState(null);
-//   const [totalPages, setTotalPages] = useState(1);
-//   const [signatureImage, setSignatureImage] = useState(null);
-//   const [signaturePreview, setSignaturePreview] = useState("");
-//   const [drawMode, setDrawMode] = useState(false);
-//   const [loading, setLoading] = useState(false);
-//   const [success, setSuccess] = useState(false);
-//   const [error, setError] = useState("");
-//   const [pageNumber, setPageNumber] = useState(1);
-//   const [xPosition, setXPosition] = useState(50);
-//   const [yPosition, setYPosition] = useState(50);
-//   const [signatureWidth, setSignatureWidth] = useState(150);
-//   const [signatureHeight, setSignatureHeight] = useState(75);
-//   const [scale, setScale] = useState(1);
-//   const [isDragging, setIsDragging] = useState(false);
-//   const dragStart = useRef({ x: 0, y: 0 });
-//   const [pdfJsReady, setPdfJsReady] = useState(false);
-//   const canvasRefs = useRef([]);
-//   const signCanvasRef = useRef(null);
-//   const isDrawing = useRef(false);
-//   const [renderKey, setRenderKey] = useState(0); // Force re-render trigger
-
-//   // ==================== HELPERS ====================
-//   const clamp = (v, min, max) => Math.max(min, Math.min(max, v));
-
-//   const resetAllForNewPdf = () => {
-//     setPdfDoc(null);
-//     setTotalPages(1);
-//     setPageNumber(1);
-//     setScale(1);
-//     canvasRefs.current = [];
-//     setXPosition(50);
-//     setYPosition(50);
-//     setSuccess(false);
-//     setError("");
-//     setRenderKey(0);
-//   };
-
-//   const resetSignature = () => {
-//     setSignatureImage(null);
-//     setSignaturePreview("");
-//     setDrawMode(false);
-//   };
-
-//   // ==================== PDF FILE UPLOAD ====================
-//   const handlePdfUpload = (e) => {
-//     const file = e.target.files?.[0];
-//     if (!file) return;
-//     if (file.type !== "application/pdf") {
-//       setError("Please upload a valid PDF file.");
-//       return;
-//     }
-//     setPdfFile(file);
-//     resetAllForNewPdf();
-//   };
-
-//   // ==================== LOAD PDF DOC ====================
-//   useEffect(() => {
-//     if (!pdfFile) return;
-
-//     let cancelled = false;
-//     let tries = 0;
-
-//     const load = async () => {
-//       const lib = window?.pdfjsLib;
-
-//       if (!lib) {
-//         if (tries++ < 60) return setTimeout(load, 50);
-//         if (!cancelled) setError("PDF preview engine failed to load (pdf.js).");
-//         return;
-//       }
-
-//       try {
-//         setError("");
-//         const buf = await pdfFile.arrayBuffer();
-//         const doc = await lib.getDocument({ data: buf }).promise;
-
-//         if (cancelled) return;
-
-//         setPdfDoc(doc);
-//         setTotalPages(doc.numPages);
-//         setPageNumber(1);
-//         canvasRefs.current = new Array(doc.numPages).fill(null);
-//       } catch (err) {
-//         console.error(err);
-//         if (!cancelled) setError("Failed to load PDF for preview.");
-//       }
-//     };
-
-//     load();
-//     return () => {
-//       cancelled = true;
-//     };
-//   }, [pdfFile]);
-
-//   // ==================== RENDER ALL PAGES ====================
-//   useEffect(() => {
-//     if (!pdfDoc) return;
-
-//     let cancelled = false;
-
-//     const renderAll = async () => {
-//       try {
-//         // Wait for all canvas refs to be mounted
-//         await new Promise(resolve => setTimeout(resolve, 100));
-        
-//         for (let i = 1; i <= totalPages; i++) {
-//           if (cancelled) return;
-
-//           const canvas = canvasRefs.current[i - 1];
-//           if (!canvas) {
-//             console.warn(`Canvas ${i} not mounted yet`);
-//             continue;
-//           }
-
-//           const page = await pdfDoc.getPage(i);
-//           const viewport = page.getViewport({ scale });
-
-//           const ctx = canvas.getContext("2d");
-//           canvas.width = viewport.width;
-//           canvas.height = viewport.height;
-
-//           await page.render({ canvasContext: ctx, viewport }).promise;
-//         }
-//       } catch (e) {
-//         console.error("Render error:", e);
-//         if (!cancelled) setError("Failed to render PDF preview.");
-//       }
-//     };
-
-//     renderAll();
-
-//     return () => {
-//       cancelled = true;
-//     };
-//   }, [pdfDoc, totalPages, scale, renderKey]);
-
-//   // Trigger re-render when scale changes
-//   useEffect(() => {
-//     if (pdfDoc) {
-//       setRenderKey(prev => prev + 1);
-//     }
-//   }, [scale]);
-
-//   // ==================== SIGNATURE: DRAW MODE ====================
-//   // const startDrawing = (e) => {
-//   //   if (!drawMode) return;
-//   //   const canvas = signCanvasRef.current;
-//   //   if (!canvas) return;
-
-//   //   const rect = canvas.getBoundingClientRect();
-//   //   const x = e.clientX - rect.left;
-//   //   const y = e.clientY - rect.top;
-
-//   //   const ctx = canvas.getContext("2d");
-//   //   ctx.beginPath();
-//   //   ctx.moveTo(x, y);
-//   //   ctx.strokeStyle = "#000";
-//   //   ctx.lineWidth = 2;
-//   //   ctx.lineCap = "round";
-
-//   //   isDrawing.current = true;
-//   // };
-
-//   // const draw = (e) => {
-//   //   if (!drawMode || !isDrawing.current) return;
-//   //   const canvas = signCanvasRef.current;
-//   //   if (!canvas) return;
-
-//   //   const rect = canvas.getBoundingClientRect();
-//   //   const x = e.clientX - rect.left;
-//   //   const y = e.clientY - rect.top;
-
-//   //   const ctx = canvas.getContext("2d");
-//   //   ctx.lineTo(x, y);
-//   //   ctx.stroke();
-//   // };
-
-//   // const stopDrawing = () => {
-//   //   isDrawing.current = false;
-//   // };
-
-//   // const clearCanvas = () => {
-//   //   const canvas = signCanvasRef.current;
-//   //   if (!canvas) return;
-//   //   const ctx = canvas.getContext("2d");
-//   //   ctx.clearRect(0, 0, canvas.width, canvas.height);
-//   //   resetSignature();
-//   // };
-
-//   // const saveCanvasAsImage = () => {
-//   //   const canvas = signCanvasRef.current;
-//   //   if (!canvas) return;
-
-//   //   canvas.toBlob((blob) => {
-//   //     if (!blob) return;
-//   //     const file = new File([blob], "signature.png", { type: "image/png" });
-//   //     setSignatureImage(file);
-//   //     const url = URL.createObjectURL(blob);
-//   //     setSignaturePreview(url);
-//   //     setDrawMode(false);
-//   //     setSuccess(false);
-//   //     setError("");
-//   //   }, "image/png");
-//   // };
-
-//   // ==================== SIGNATURE: DRAW MODE ====================
-// const startDrawing = (e) => {
-//   if (!drawMode) return;
-//   const canvas = signCanvasRef.current;
-//   if (!canvas) return;
-
-//   const rect = canvas.getBoundingClientRect();
-//   // FIX: Scale factor calculate karo
-//   const scaleX = canvas.width / rect.width;
-//   const scaleY = canvas.height / rect.height;
-  
-//   const x = (e.clientX - rect.left) * scaleX;
-//   const y = (e.clientY - rect.top) * scaleY;
-
-//   const ctx = canvas.getContext("2d");
-//   ctx.beginPath();
-//   ctx.moveTo(x, y);
-//   ctx.strokeStyle = "#000";
-//   ctx.lineWidth = 3; // Thicker line for better visibility
-//   ctx.lineCap = "round";
-//   ctx.lineJoin = "round"; // Smooth corners
-
-//   isDrawing.current = true;
-// };
-
-// const draw = (e) => {
-//   if (!drawMode || !isDrawing.current) return;
-//   const canvas = signCanvasRef.current;
-//   if (!canvas) return;
-
-//   const rect = canvas.getBoundingClientRect();
-//   // FIX: Same scale factor
-//   const scaleX = canvas.width / rect.width;
-//   const scaleY = canvas.height / rect.height;
-  
-//   const x = (e.clientX - rect.left) * scaleX;
-//   const y = (e.clientY - rect.top) * scaleY;
-
-//   const ctx = canvas.getContext("2d");
-//   ctx.lineTo(x, y);
-//   ctx.stroke();
-// };
-
-// const stopDrawing = () => {
-//   isDrawing.current = false;
-// };
-
-// const clearCanvas = () => {
-//   const canvas = signCanvasRef.current;
-//   if (!canvas) return;
-//   const ctx = canvas.getContext("2d");
-//   ctx.clearRect(0, 0, canvas.width, canvas.height);
-//   resetSignature();
-// };
-
-// const saveCanvasAsImage = () => {
-//   const canvas = signCanvasRef.current;
-//   if (!canvas) return;
-
-//   canvas.toBlob((blob) => {
-//     if (!blob) return;
-//     const file = new File([blob], "signature.png", { type: "image/png" });
-//     setSignatureImage(file);
-//     const url = URL.createObjectURL(blob);
-//     setSignaturePreview(url);
-//     setDrawMode(false);
-//     setSuccess(false);
-//     setError("");
-//   }, "image/png");
-// };
-
-//   const handleSignatureUpload = (e) => {
-//     const file = e.target.files?.[0];
-//     if (!file) return;
-//     if (!file.type.startsWith("image/")) {
-//       setError("Please upload a valid image (PNG/JPG).");
-//       return;
-//     }
-//     setSignatureImage(file);
-//     setSignaturePreview(URL.createObjectURL(file));
-//     setDrawMode(false);
-//     setSuccess(false);
-//     setError("");
-//   };
-
-//   // ==================== DRAG SIGNATURE ====================
-//   const handleSignatureDragStart = (e) => {
-//     if (!signaturePreview) return;
-
-//     const pageWrapper = e.currentTarget.parentElement;
-//     const rect = pageWrapper.getBoundingClientRect();
-
-//     setIsDragging(true);
-//     dragStart.current = {
-//       x: e.clientX - rect.left - xPosition,
-//       y: e.clientY - rect.top - yPosition,
-//     };
-//   };
-
-//   const handleSignatureDrag = (e) => {
-//     if (!isDragging) return;
-
-//     const canvas = canvasRefs.current[pageNumber - 1];
-//     if (!canvas) return;
-
-//     const pageWrapper = canvas.parentElement;
-//     if (!pageWrapper) return;
-
-//     const rect = pageWrapper.getBoundingClientRect();
-
-//     const newX = e.clientX - rect.left - dragStart.current.x;
-//     const newY = e.clientY - rect.top - dragStart.current.y;
-
-//     const maxX = rect.width - signatureWidth;
-//     const maxY = rect.height - signatureHeight;
-
-//     setXPosition(clamp(newX, 0, maxX));
-//     setYPosition(clamp(newY, 0, maxY));
-//   };
-
-//   const handleSignatureDragEnd = () => {
-//     setIsDragging(false);
-//   };
-
-//   // ==================== SELECT PAGE ====================
-//   const selectPage = (i) => {
-//     setPageNumber(i);
-//     const canvas = canvasRefs.current[i - 1];
-//     if (!canvas) return;
-//     const rect = canvas.parentElement?.getBoundingClientRect();
-//     if (!rect) return;
-//     setXPosition((x) => clamp(x, 0, rect.width - signatureWidth));
-//     setYPosition((y) => clamp(y, 0, rect.height - signatureHeight));
-//   };
-
-//   // ==================== SUBMIT ====================
-//   const downloadBlob = (blob, filename) => {
-//     const url = window.URL.createObjectURL(blob);
-//     const a = document.createElement("a");
-//     a.href = url;
-//     a.download = filename;
-//     a.click();
-//     window.URL.revokeObjectURL(url);
-//   };
-
-//   const handleSubmit = async (e) => {
-//     e.preventDefault();
-
-//     if (!pdfFile) return setError("Please upload a PDF file!");
-//     if (!signatureImage) return setError("Please provide a signature!");
-
-//     setLoading(true);
-//     setSuccess(false);
-//     setError("");
-
-//     try {
-//       const formData = new FormData();
-//       formData.append("pdfFile", pdfFile);
-//       formData.append("signatureImage", signatureImage);
-//       formData.append("pageNumber", String(pageNumber));
-//       formData.append("xPosition", String(Math.round(xPosition)));
-//       formData.append("yPosition", String(Math.round(yPosition)));
-//       formData.append("width", String(Math.round(signatureWidth)));
-//       formData.append("height", String(Math.round(signatureHeight)));
-//       formData.append("scale", String(scale));
-
-//       const res = await fetch("/convert/sign-pdf", {
-//         method: "POST",
-//         body: formData,
-//       });
-
-//       if (!res.ok) {
-//         let msg = "Signing failed";
-//         try {
-//           const j = await res.json();
-//           msg = j?.error || msg;
-//         } catch {}
-//         throw new Error(msg);
-//       }
-
-//       const blob = await res.blob();
-//       downloadBlob(blob, pdfFile.name.replace(/\.pdf$/i, "") + "-signed.pdf");
-//       setSuccess(true);
-//     } catch (err) {
-//       console.error(err);
-//       setError((err?.message || "Something went wrong").toString());
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
-
-//   // ==================== UI ====================
-//   return (
-//     <>
-//       <Script
-//         src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"
-//         strategy="afterInteractive"
-//         onReady={() => {
-//           if (window?.pdfjsLib) {
-//             window.pdfjsLib.GlobalWorkerOptions.workerSrc =
-//               "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
-//             setPdfJsReady(true);
-//           }
-//         }}
-//       />
-
-//       <main className="min-h-screen bg-gray-50 py-8 px-4">
-//         <div className="max-w-7xl mx-auto">
-//           <div className="grid lg:grid-cols-2 gap-8">
-//             {/* LEFT */}
-//             <div className="bg-white rounded-2xl shadow p-6 border border-gray-100">
-//               <form onSubmit={handleSubmit} className="space-y-6">
-//                 {/* Upload */}
-//                 <div>
-//                   <label className="block mb-2 text-sm font-medium text-gray-700">
-//                     Upload PDF
-//                   </label>
-//                   <label className="block cursor-pointer">
-//                     <div className="border-2 border-dashed rounded-xl p-6 text-center hover:bg-blue-50 transition">
-//                       <Upload className="w-10 h-10 mx-auto mb-2 text-blue-600" />
-//                       <p className="font-semibold text-gray-800">
-//                         {pdfFile ? pdfFile.name : "Click to upload PDF"}
-//                       </p>
-//                       <p className="text-xs text-gray-500 mt-1">.pdf only</p>
-//                     </div>
-//                     <input
-//                       type="file"
-//                       accept=".pdf,application/pdf"
-//                       onChange={handlePdfUpload}
-//                       className="hidden"
-//                     />
-//                   </label>
-
-//                   {pdfFile && (
-//                     <div className="mt-3 flex items-center justify-between bg-gray-50 p-3 rounded-lg">
-//                       <div className="flex items-center gap-2">
-//                         <FileText className="w-5 h-5 text-red-600" />
-//                         <span className="text-sm font-medium">{pdfFile.name}</span>
-//                       </div>
-//                       <button
-//                         type="button"
-//                         onClick={() => {
-//                           setPdfFile(null);
-//                           resetAllForNewPdf();
-//                           resetSignature();
-//                         }}
-//                         className="text-red-500 hover:bg-red-100 p-1 rounded"
-//                       >
-//                         <X className="w-5 h-5" />
-//                       </button>
-//                     </div>
-//                   )}
-//                 </div>
-
-//                 {/* Signature create */}
-//                 <div>
-//                   <label className="block mb-2 text-sm font-medium text-gray-700">
-//                     Signature
-//                   </label>
-
-//                   <div className="grid grid-cols-2 gap-3 mb-4">
-//                     <button
-//                       type="button"
-//                       onClick={() => setDrawMode(true)}
-//                       className={`flex items-center justify-center gap-2 p-3 rounded-xl border-2 transition ${
-//                         drawMode ? "border-blue-600 bg-blue-50" : "border-gray-300"
-//                       }`}
-//                     >
-//                       <PenTool className="w-5 h-5 text-blue-600" />
-//                       <span className="font-semibold text-sm">Draw</span>
-//                     </button>
-
-//                     <label className="flex items-center justify-center gap-2 p-3 rounded-xl border-2 border-gray-300 hover:border-purple-400 cursor-pointer transition">
-//                       <ImageIcon className="w-5 h-5 text-purple-600" />
-//                       <span className="font-semibold text-sm">Upload</span>
-//                       <input
-//                         type="file"
-//                         accept="image/*"
-//                         onChange={handleSignatureUpload}
-//                         className="hidden"
-//                       />
-//                     </label>
-//                   </div>
-
-//                 {drawMode && (
-//                   <div className="border-2 border-gray-300 rounded-xl p-4 bg-gray-50">
-//                     <canvas
-//                       ref={signCanvasRef}
-//                       width={600}  // INCREASED from 450
-//                       height={250}  // INCREASED from 150
-//                       onMouseDown={startDrawing}
-//                       onMouseMove={draw}
-//                       onMouseUp={stopDrawing}
-//                       onMouseLeave={stopDrawing}
-//                       className="border-2 border-dashed border-gray-400 bg-white w-full rounded-lg cursor-crosshair"
-//                       style={{ touchAction: 'none' }} // Prevent scrolling on touch devices
-//                     />
-//                     <div className="flex gap-2 mt-3">
-//                       <button
-//                         type="button"
-//                         onClick={clearCanvas}
-//                         className="flex items-center gap-1 px-3 py-2 bg-red-100 text-red-700 rounded-lg hover:bg-red-200 transition text-sm"
-//                       >
-//                         <Eraser className="w-4 h-4" />
-//                         Clear
-//                       </button>
-//                       <button
-//                         type="button"
-//                         onClick={saveCanvasAsImage}
-//                         className="flex items-center gap-1 px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition text-sm"
-//                       >
-//                         <CheckCircle className="w-4 h-4" />
-//                         Save
-//                       </button>
-//                     </div>
-//                   </div>
-//                 )}
-
-
-//                   {/* {drawMode && (
-//                     <div className="border-2 border-gray-300 rounded-xl p-4 bg-gray-50">
-//                       <canvas
-//                         ref={signCanvasRef}
-//                         width={450}
-//                         height={150}
-//                         onMouseDown={startDrawing}
-//                         onMouseMove={draw}
-//                         onMouseUp={stopDrawing}
-//                         onMouseLeave={stopDrawing}
-//                         className="border-2 border-dashed border-gray-400 bg-white w-full rounded-lg cursor-crosshair"
-//                       />
-//                       <div className="flex gap-2 mt-3">
-//                         <button
-//                           type="button"
-//                           onClick={clearCanvas}
-//                           className="flex items-center gap-1 px-3 py-2 bg-red-100 text-red-700 rounded-lg hover:bg-red-200 transition text-sm"
-//                         >
-//                           <Eraser className="w-4 h-4" />
-//                           Clear
-//                         </button>
-//                         <button
-//                           type="button"
-//                           onClick={saveCanvasAsImage}
-//                           className="flex items-center gap-1 px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition text-sm"
-//                         >
-//                           <CheckCircle className="w-4 h-4" />
-//                           Save
-//                         </button>
-//                       </div>
-//                     </div>
-//                   )}
-//                    */}
-
-//                   {signaturePreview && !drawMode && (
-//                     <div className="border-2 border-green-500 bg-green-50 rounded-xl p-4">
-//                       <p className="text-sm font-medium text-green-700 mb-2">
-//                         ✓ Signature ready
-//                       </p>
-//                       <img
-//                         src={signaturePreview}
-//                         alt="Signature preview"
-//                         className="max-h-24 bg-white border-2 border-gray-300 rounded-lg p-2"
-//                       />
-//                     </div>
-//                   )}
-//                 </div>
-
-//                 {/* Controls */}
-//                 {pdfFile && signaturePreview && (
-//                   <div className="space-y-4">
-//                     <div>
-//                       <label className="block text-xs text-gray-600 mb-1">
-//                         Page (1 - {totalPages})
-//                       </label>
-//                       <input
-//                         type="number"
-//                         min={1}
-//                         max={totalPages}
-//                         value={pageNumber}
-//                         onChange={(e) => selectPage(parseInt(e.target.value) || 1)}
-//                         className="w-full px-3 py-2 border-2 border-gray-300 rounded-lg"
-//                       />
-//                     </div>
-
-//                     <div>
-//                       <label className="block text-xs text-gray-600 mb-1">
-//                         Width: {Math.round(signatureWidth)}px
-//                       </label>
-//                       <input
-//                         type="range"
-//                         min="50"
-//                         max="400"
-//                         value={signatureWidth}
-//                         onChange={(e) => setSignatureWidth(parseInt(e.target.value))}
-//                         className="w-full"
-//                       />
-//                     </div>
-
-//                     <div>
-//                       <label className="block text-xs text-gray-600 mb-1">
-//                         Height: {Math.round(signatureHeight)}px
-//                       </label>
-//                       <input
-//                         type="range"
-//                         min="30"
-//                         max="220"
-//                         value={signatureHeight}
-//                         onChange={(e) => setSignatureHeight(parseInt(e.target.value))}
-//                         className="w-full"
-//                       />
-//                     </div>
-//                   </div>
-//                 )}
-
-//                 {error && (
-//                   <div className="bg-red-50 border-2 border-red-200 rounded-xl p-4 text-red-700">
-//                     {error}
-//                   </div>
-//                 )}
-
-//                 <button
-//                   type="submit"
-//                   disabled={loading || !pdfFile || !signatureImage}
-//                   className="w-full bg-linear-to-r from-blue-600 to-purple-600 text-white font-semibold py-4 rounded-xl disabled:opacity-60 disabled:cursor-not-allowed transition flex items-center justify-center gap-2"
-//                 >
-//                   {loading ? (
-//                     <>
-//                       <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
-//                       Signing...
-//                     </>
-//                   ) : (
-//                     <>
-//                       <PenTool className="w-5 h-5" />
-//                       Sign PDF
-//                     </>
-//                   )}
-//                 </button>
-
-//                 {success && (
-//                   <div className="p-4 bg-green-50 border-2 border-green-200 rounded-xl text-center">
-//                     <CheckCircle className="w-10 h-10 text-green-600 mx-auto mb-2" />
-//                     <p className="font-semibold text-green-700">
-//                       Done! Download started.
-//                     </p>
-//                   </div>
-//                 )}
-//               </form>
-//             </div>
-
-//             {/* RIGHT - PREVIEW */}
-//             <div className="bg-white rounded-2xl shadow p-6 border border-gray-100">
-//               <div className="flex items-center justify-between mb-4">
-//                 <h3 className="text-lg font-semibold text-gray-800">
-//                   Live Preview
-//                 </h3>
-
-//                 {/* zoom */}
-//                 <div className="flex items-center gap-2">
-//                   <button
-//                     type="button"
-//                     onClick={() => setScale((s) => clamp(Number((s + 0.2).toFixed(2)), 0.5, 2.5))}
-//                     className="px-3 py-2 bg-gray-100 rounded-lg hover:bg-gray-200"
-//                     title="Zoom In"
-//                   >
-//                     <ZoomIn className="w-5 h-5" />
-//                   </button>
-//                   <span className="text-sm text-gray-600 min-w-[50px] text-center">
-//                     {Math.round(scale * 100)}%
-//                   </span>
-//                   <button
-//                     type="button"
-//                     onClick={() => setScale((s) => clamp(Number((s - 0.2).toFixed(2)), 0.5, 2.5))}
-//                     className="px-3 py-2 bg-gray-100 rounded-lg hover:bg-gray-200"
-//                     title="Zoom Out"
-//                   >
-//                     <ZoomOut className="w-5 h-5" />
-//                   </button>
-//                 </div>
-//               </div>
-
-//               {!pdfFile ? (
-//                 <div className="flex items-center justify-center h-[60vh] border-2 border-dashed border-gray-300 rounded-xl bg-gray-50">
-//                   <div className="text-center text-gray-500">
-//                     <FileText className="w-12 h-12 mx-auto mb-2 text-gray-400" />
-//                     <p>Upload a PDF to preview</p>
-//                   </div>
-//                 </div>
-//               ) : (
-//                 <div
-//                   className="relative border rounded-xl overflow-y-auto max-h-[85vh] bg-gray-100 p-4 space-y-6"
-//                   onMouseMove={handleSignatureDrag}
-//                   onMouseUp={handleSignatureDragEnd}
-//                   onMouseLeave={handleSignatureDragEnd}
-//                 >
-//                   {/* Multi-page canvases */}
-//                   {Array.from({ length: totalPages }).map((_, index) => (
-//                     <div
-//                       key={`page-${index}-${renderKey}`}
-//                       className={`relative flex justify-center cursor-pointer transition-all ${
-//                         pageNumber === index + 1 
-//                           ? "ring-4 ring-blue-500 rounded-xl p-2 bg-blue-50" 
-//                           : "hover:ring-2 hover:ring-gray-300 rounded-xl p-2"
-//                       }`}
-//                       onClick={() => selectPage(index + 1)}
-//                     >
-//                       {/* Page number indicator */}
-//                       <div className="absolute top-1 left-1 bg-gray-800 text-white text-xs px-2 py-1 rounded z-10">
-//                         Page {index + 1}
-//                       </div>
-
-//                       <div className="relative inline-block shadow-xl">
-//                         <canvas
-//                           ref={(el) => {
-//                             if (el) {
-//                               canvasRefs.current[index] = el;
-//                             }
-//                           }}
-//                           className="bg-white block"
-//                           style={{ display: 'block' }}
-//                         />
-
-//                         {/* Signature overlay only on selected page */}
-//                         {signaturePreview && pageNumber === index + 1 && (
-//                           <div
-//                             className="absolute cursor-move border-2 border-blue-500 shadow-xl bg-white/10 hover:border-blue-700"
-//                             style={{
-//                               left: `${xPosition}px`,
-//                               top: `${yPosition}px`,
-//                               width: `${signatureWidth}px`,
-//                               height: `${signatureHeight}px`,
-//                             }}
-//                             onMouseDown={handleSignatureDragStart}
-//                             title="Drag to move"
-//                           >
-//                             <img
-//                               src={signaturePreview}
-//                               alt="Signature"
-//                               className="w-full h-full object-contain bg-white/90 pointer-events-none"
-//                               draggable={false}
-//                             />
-//                           </div>
-//                         )}
-//                       </div>
-//                     </div>
-//                   ))}
-
-//                   {/* Loading hint */}
-//                   {!pdfDoc && (
-//                     <div className="absolute inset-0 flex items-center justify-center bg-white/80 text-gray-500">
-//                       <div className="text-center">
-//                         <div className="w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-2" />
-//                         <p>Loading preview...</p>
-//                       </div>
-//                     </div>
-//                   )}
-//                 </div>
-//               )}
-
-//               <p className="text-xs text-gray-500 mt-3 text-center">
-//                 💡 Tip: Click a page to select it, then drag signature on that page.
-//               </p>
-//             </div>
-//           </div>
-//           <p className="text-center mt-6 text-gray-600 text-base">
-//              No account • No watermark • Files auto-deleted • 100% free
-//           </p>
-
-        
-//         </div>
-//       </main>
-
-//             {/* ==================== SEO CONTENT SECTION ==================== */}
-//       <section className="mt-16 max-w-4xl mx-auto px-6 pb-16">
-//         <div className="text-center mb-12">
-//           <h2 className="text-2xl md:text-3xl font-bold bg-linear-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-4">
-//             Sign PDF Online Free – Add Your Signature Instantly
-//           </h2>
-//           <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-//             Need to sign a PDF document? PDFLinx Sign PDF tool lets you add
-//             your signature online in seconds with live preview. Draw your signature or upload an
-//             image — no software installation required.
-//           </p>
-//         </div>
-
-//         {/* Benefits Grid */}
-//         <div className="grid md:grid-cols-3 gap-8 mb-16">
-//           <div className="bg-linear-to-br from-blue-50 to-white p-8 rounded-2xl shadow-lg border border-blue-100 text-center hover:shadow-xl transition">
-//             <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
-//               <PenTool className="w-8 h-8 text-white" />
-//             </div>
-//             <h3 className="text-xl font-semibold text-gray-800 mb-3">
-//               Draw or Upload
-//             </h3>
-//             <p className="text-gray-600 text-sm">
-//               Draw your signature with mouse or upload an image. Both work
-//               perfectly with live preview.
-//             </p>
-//           </div>
-
-//           <div className="bg-linear-to-br from-purple-50 to-white p-8 rounded-2xl shadow-lg border border-purple-100 text-center hover:shadow-xl transition">
-//             <div className="w-16 h-16 bg-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
-//               <FileText className="w-8 h-8 text-white" />
-//             </div>
-//             <h3 className="text-xl font-semibold text-gray-800 mb-3">
-//               Drag & Drop
-//             </h3>
-//             <p className="text-gray-600 text-sm">
-//               Drag your signature to the perfect position with real-time preview.
-//             </p>
-//           </div>
-
-//           <div className="bg-linear-to-br from-green-50 to-white p-8 rounded-2xl shadow-lg border border-green-100 text-center hover:shadow-xl transition">
-//             <div className="w-16 h-16 bg-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
-//               <Download className="w-8 h-8 text-white" />
-//             </div>
-//             <h3 className="text-xl font-semibold text-gray-800 mb-3">
-//               Instant Download
-//             </h3>
-//             <p className="text-gray-600 text-sm">
-//               Get your signed PDF instantly. No watermarks, no registration.
-//             </p>
-//           </div>
-//         </div>
-
-//         {/* Steps */}
-//         <div className="bg-white rounded-2xl shadow-lg p-8 md:p-12 border border-gray-100">
-//           <h3 className="text-2xl md:text-3xl font-bold text-center mb-12 text-gray-800">
-//             Sign PDF in 3 Simple Steps
-//           </h3>
-//           <div className="grid md:grid-cols-3 gap-8">
-//             <div className="text-center">
-//               <div className="w-16 h-16 bg-linear-to-r from-blue-600 to-blue-700 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold text-white shadow-lg">
-//                 1
-//               </div>
-//               <h4 className="text-lg font-semibold mb-2">Upload PDF</h4>
-//               <p className="text-gray-600 text-sm">
-//                 Upload the PDF document you need to sign.
-//               </p>
-//             </div>
-
-//             <div className="text-center">
-//               <div className="w-16 h-16 bg-linear-to-r from-purple-600 to-purple-700 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold text-white shadow-lg">
-//                 2
-//               </div>
-//               <h4 className="text-lg font-semibold mb-2">Add & Position</h4>
-//               <p className="text-gray-600 text-sm">
-//                 Draw or upload signature, then drag it to position with live preview.
-//               </p>
-//             </div>
-
-//             <div className="text-center">
-//               <div className="w-16 h-16 bg-linear-to-r from-green-600 to-green-700 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold text-white shadow-lg">
-//                 3
-//               </div>
-//               <h4 className="text-lg font-semibold mb-2">Download</h4>
-//               <p className="text-gray-600 text-sm">
-//                 Click Sign PDF and download your signed document.
-//               </p>
-//             </div>
-//           </div>
-//         </div>
-
-//         <p className="text-center mt-12 text-base text-gray-600 italic max-w-3xl mx-auto">
-//           PDFLinx makes signing PDFs quick and easy with live preview — perfect for contracts,
-//           forms, and documents.
-//         </p>
-//       </section>
-
-//       <section className="max-w-4xl mx-auto px-4 py-14 text-slate-700">
-//         <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-6">
-//           Sign PDF Online with Live Preview – Add Digital Signature by PDFLinx
-//         </h2>
-
-//         <p className="text-base leading-7 mb-6">
-//           Digital signatures are essential for modern document workflows.
-//           Whether you need to sign contracts, agreements, forms, or applications,
-//           <span className="font-medium text-slate-900">
-//             {" "}
-//             PDFLinx Sign PDF tool
-//           </span>{" "}
-//           makes it easy to add your signature to any PDF document online with live preview —
-//           without installing software or creating an account.
-//         </p>
-
-//         <h3 className="text-xl font-semibold text-slate-900 mb-3">
-//           What is PDF Signing?
-//         </h3>
-//         <p className="leading-7 mb-6">
-//           PDF signing means adding your signature to a PDF document digitally.
-//           This can be done by drawing your signature, uploading an image of
-//           your handwritten signature, or using a scanned signature. The signed
-//           PDF can then be shared, printed, or stored electronically. Our tool provides
-//           live preview so you can see exactly where your signature will appear.
-//         </p>
-
-//         <h3 className="text-xl font-semibold text-slate-900 mb-3">
-//           Why Use Live Preview for Signing?
-//         </h3>
-//         <ul className="space-y-2 mb-6 list-disc pl-6">
-//           <li>See exactly where your signature will appear</li>
-//           <li>Drag and drop signature to perfect position</li>
-//           <li>Adjust size in real-time before finalizing</li>
-//           <li>No guesswork or trial and error</li>
-//           <li>Professional-looking results every time</li>
-//           <li>Save time with visual positioning</li>
-//         </ul>
-
-//         <h3 className="text-xl font-semibold text-slate-900 mb-3">
-//           How to Sign a PDF Online with Live Preview
-//         </h3>
-//         <ol className="space-y-2 mb-6 list-decimal pl-6">
-//           <li>Upload your PDF document using the tool above</li>
-//           <li>
-//             Create your signature by drawing it or uploading an image (PNG/JPG)
-//           </li>
-//           <li>
-//             See live preview of your PDF with signature overlay
-//           </li>
-//           <li>
-//             Drag signature to exact position or use sliders for precise control
-//           </li>
-//           <li>Adjust signature size with real-time preview</li>
-//           <li>Click "Sign PDF" to finalize and download</li>
-//         </ol>
-
-//         <div className="bg-slate-50 border border-slate-200 rounded-xl p-6 mb-6">
-//           <h3 className="text-xl font-semibold text-slate-900 mb-4">
-//             Features of PDFLinx Sign PDF Tool
-//           </h3>
-//           <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 list-disc pl-5">
-//             <li>Free online PDF signing</li>
-//             <li>Live preview of signature position</li>
-//             <li>Drag and drop signature placement</li>
-//             <li>Draw signature with mouse/trackpad</li>
-//             <li>Upload signature image (PNG/JPG)</li>
-//             <li>Precise position sliders</li>
-//             <li>Adjustable signature size</li>
-//             <li>Multi-page PDF support</li>
-//             <li>Works on all devices</li>
-//             <li>No software installation needed</li>
-//             <li>No watermarks added</li>
-//             <li>Files deleted after processing</li>
-//           </ul>
-//         </div>
-
-//         <h3 className="text-xl font-semibold text-slate-900 mb-3">
-//           Who Should Use Sign PDF Tool?
-//         </h3>
-//         <ul className="space-y-2 mb-6 list-disc pl-6">
-//           <li>
-//             <strong>Business professionals:</strong> Sign contracts and
-//             agreements with precise positioning
-//           </li>
-//           <li>
-//             <strong>Remote workers:</strong> Sign documents from home with live preview
-//           </li>
-//           <li>
-//             <strong>Freelancers:</strong> Sign client contracts professionally
-//           </li>
-//           <li>
-//             <strong>Students:</strong> Sign academic forms accurately
-//           </li>
-//           <li>
-//             <strong>Anyone:</strong> Sign any PDF document with visual control
-//           </li>
-//         </ul>
-
-//         <h3 className="text-xl font-semibold text-slate-900 mb-3">
-//           Common Use Cases
-//         </h3>
-//         <ul className="space-y-2 mb-6 list-disc pl-6">
-//           <li>Employment contracts and offer letters</li>
-//           <li>Rental agreements and lease documents</li>
-//           <li>Business proposals and quotes</li>
-//           <li>Non-disclosure agreements (NDAs)</li>
-//           <li>Permission forms and consent documents</li>
-//           <li>Tax forms and financial documents</li>
-//           <li>Legal contracts and agreements</li>
-//         </ul>
-
-//         <h3 className="text-xl font-semibold text-slate-900 mb-3">
-//           Is PDFLinx Sign PDF Secure?
-//         </h3>
-//         <p className="leading-7 mb-6">
-//           Yes. PDFLinx is built with privacy and security in mind. Your
-//           uploaded PDF files and signature images are processed automatically
-//           and deleted immediately after signing. We never store your documents
-//           or signatures permanently, and your files are never shared with
-//           anyone.
-//         </p>
-
-//         <h3 className="text-xl font-semibold text-slate-900 mb-3">
-//           Sign PDFs on Any Device
-//         </h3>
-//         <p className="leading-7">
-//           PDFLinx works seamlessly on Windows, macOS, Linux, Android, and iOS.
-//           Sign your PDFs on desktop, laptop, tablet, or smartphone with live preview on any device —
-//           all you need is an internet connection and a modern web browser.
-//         </p>
-//       </section>
-
-//       {/* FAQs (UI) */}
-//       <section className="py-16">
-//         <div className="max-w-4xl mx-auto px-4">
-//           <h2 className="text-3xl font-bold text-center mb-10">
-//             Frequently Asked Questions
-//           </h2>
-
-//           <div className="space-y-4">
-//             <details className="bg-white rounded-lg shadow-sm p-5">
-//               <summary className="font-semibold cursor-pointer">
-//                 Is the Sign PDF tool free?
-//               </summary>
-//               <p className="mt-2 text-gray-600">
-//                 Yes. PDFLinx Sign PDF is completely free — no sign-up, no
-//                 watermarks, no hidden costs.
-//               </p>
-//             </details>
-
-//             <details className="bg-white rounded-lg shadow-sm p-5">
-//               <summary className="font-semibold cursor-pointer">
-//                 Can I see where my signature will appear?
-//               </summary>
-//               <p className="mt-2 text-gray-600">
-//                 Yes! Our live preview feature shows your PDF with the signature overlay
-//                 in real-time. You can drag the signature to position it perfectly.
-//               </p>
-//             </details>
-
-//             <details className="bg-white rounded-lg shadow-sm p-5">
-//               <summary className="font-semibold cursor-pointer">
-//                 Can I draw my signature?
-//               </summary>
-//               <p className="mt-2 text-gray-600">
-//                 Yes. You can draw your signature using your mouse, trackpad, or
-//                 touchscreen. You can also upload an image file (PNG/JPG).
-//               </p>
-//             </details>
-
-//             <details className="bg-white rounded-lg shadow-sm p-5">
-//               <summary className="font-semibold cursor-pointer">
-//                 Are my files safe?
-//               </summary>
-//               <p className="mt-2 text-gray-600">
-//                 Yes. Files are processed automatically and deleted immediately
-//                 after signing. We never store your PDFs or signatures.
-//               </p>
-//             </details>
-
-//             <details className="bg-white rounded-lg shadow-sm p-5">
-//               <summary className="font-semibold cursor-pointer">
-//                 Can I sign multiple pages?
-//               </summary>
-//               <p className="mt-2 text-gray-600">
-//                 Yes. Select the page number where you want to add your signature.
-//                 For multiple signatures, process the PDF multiple times.
-//               </p>
-//             </details>
-
-//             <details className="bg-white rounded-lg shadow-sm p-5">
-//               <summary className="font-semibold cursor-pointer">
-//                 How do I position my signature accurately?
-//               </summary>
-//               <p className="mt-2 text-gray-600">
-//                 Simply drag the signature on the live preview to position it, or use
-//                 the position sliders for precise pixel-level control. You'll see the
-//                 changes in real-time.
-//               </p>
-//             </details>
-//           </div>
-//         </div>
-//       </section>
-
-//       <RelatedToolsSection currentPage="sign-pdf" />
-//     </>
-//   );
-// }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// // app/sign-pdf/page.jsx
-// "use client";
-
-// import { useRef, useState, useEffect } from "react";
-// import Script from "next/script";
-// import {
-//   Upload,
-//   FileText,
-//   Download,
-//   CheckCircle,
-//   X,
-//   PenTool,
-//   Eraser,
-//   Image as ImageIcon,
-//   ZoomIn,
-//   ZoomOut,
-// } from "lucide-react";
-
-// export default function SignPdf() {
-//   // ==================== STATE ====================
-//   const [pdfFile, setPdfFile] = useState(null);
-
-//   const [pdfDoc, setPdfDoc] = useState(null);
-//   const [totalPages, setTotalPages] = useState(1);
-
-//   const [signatureImage, setSignatureImage] = useState(null);
-//   const [signaturePreview, setSignaturePreview] = useState("");
-
-//   const [drawMode, setDrawMode] = useState(false);
-//   const [loading, setLoading] = useState(false);
-//   const [success, setSuccess] = useState(false);
-//   const [error, setError] = useState("");
-
-//   // selected page for signature
-//   const [pageNumber, setPageNumber] = useState(1);
-
-//   // signature position & size (IN PREVIEW COORDS)
-//   const [xPosition, setXPosition] = useState(50);
-//   const [yPosition, setYPosition] = useState(50);
-//   const [signatureWidth, setSignatureWidth] = useState(150);
-//   const [signatureHeight, setSignatureHeight] = useState(75);
-
-//   // preview zoom
-//   const [scale, setScale] = useState(1);
-
-//   // drag
-//   const [isDragging, setIsDragging] = useState(false);
-//   const dragStart = useRef({ x: 0, y: 0 });
-
-//   // pdf.js readiness
-//   const [pdfJsReady, setPdfJsReady] = useState(false);
-
-//   // canvases
-//   const canvasRefs = useRef([]); // one canvas per page
-//   const [canvasesReady, setCanvasesReady] = useState(false);
-
-//   // draw signature canvas (separate)
-//   const signCanvasRef = useRef(null);
-//   const isDrawing = useRef(false);
-
-//   // ==================== HELPERS ====================
-//   const clamp = (v, min, max) => Math.max(min, Math.min(max, v));
-
-//   const resetAllForNewPdf = () => {
-//     setPdfDoc(null);
-//     setTotalPages(1);
-//     setPageNumber(1);
-//     setScale(1);
-//     canvasRefs.current = [];
-//     setCanvasesReady(false);
-//     setXPosition(50);
-//     setYPosition(50);
-//     setSuccess(false);
-//     setError("");
-//   };
-
-//   const resetSignature = () => {
-//     setSignatureImage(null);
-//     setSignaturePreview("");
-//     setDrawMode(false);
-//   };
-
-//   // ==================== PDF.JS SCRIPT ====================
-//   // Use afterInteractive + onReady (reliable even with cache)
-//   // Note: this component assumes you load from CDN (as you already do)
-//   // If you want, you can remove onLoad elsewhere and keep only this.
-//   // -------------------------------------------------------
-//   // IMPORTANT: setPdfJsReady only when window.pdfjsLib exists
-//   // -------------------------------------------------------
-//   // eslint-disable-next-line react/jsx-no-undef
-//   // (Script is imported from next/script)
-//   // -------------------------------------------------------
-
-//   // ==================== PDF FILE UPLOAD ====================
-//   const handlePdfUpload = (e) => {
-//     const file = e.target.files?.[0];
-//     if (!file) return;
-//     if (file.type !== "application/pdf") {
-//       setError("Please upload a valid PDF file.");
-//       return;
-//     }
-//     setPdfFile(file);
-//     resetAllForNewPdf();
-//   };
-
-//   // ==================== LOAD PDF DOC (wait for pdfjsLib) ====================
-//   useEffect(() => {
-//     if (!pdfFile) return;
-
-//     let cancelled = false;
-//     let tries = 0;
-
-//     const load = async () => {
-//       const lib = window?.pdfjsLib;
-
-//       // wait/retry for pdfjsLib
-//       if (!lib) {
-//         if (tries++ < 60) return setTimeout(load, 50);
-//         if (!cancelled) setError("PDF preview engine failed to load (pdf.js).");
-//         return;
-//       }
-
-//       try {
-//         setError("");
-//         const buf = await pdfFile.arrayBuffer();
-//         const doc = await lib.getDocument({ data: buf }).promise;
-
-//         if (cancelled) return;
-
-//         setPdfDoc(doc);
-//         setTotalPages(doc.numPages);
-//         setPageNumber(1);
-//       } catch (err) {
-//         console.error(err);
-//         if (!cancelled) setError("Failed to load PDF for preview.");
-//       }
-//     };
-
-//     load();
-//     return () => {
-//       cancelled = true;
-//     };
-//   }, [pdfFile]);
-
-//   // ==================== RESET CANVAS REFS WHEN PAGE COUNT CHANGES ====================
-//   useEffect(() => {
-//     canvasRefs.current = [];
-//     setCanvasesReady(false);
-//   }, [totalPages]);
-
-//   // ==================== RENDER ALL PAGES (ONLY WHEN CANVASES READY) ====================
-//   // useEffect(() => {
-//   //   if (!pdfDoc || !canvasesReady) return;
-
-//   //   let cancelled = false;
-
-//   //   const renderAll = async () => {
-//   //     try {
-//   //       for (let i = 1; i <= totalPages; i++) {
-//   //         if (cancelled) return;
-
-//   //         const page = await pdfDoc.getPage(i);
-//   //         const viewport = page.getViewport({ scale });
-
-//   //         const canvas = canvasRefs.current[i - 1];
-//   //         if (!canvas) continue;
-
-//   //         const ctx = canvas.getContext("2d");
-//   //         canvas.width = viewport.width;
-//   //         canvas.height = viewport.height;
-
-//   //         await page.render({ canvasContext: ctx, viewport }).promise;
-//   //       }
-//   //     } catch (e) {
-//   //       console.error(e);
-//   //       if (!cancelled) setError("Failed to render PDF preview.");
-//   //     }
-//   //   };
-
-//   //   renderAll();
-
-//   //   return () => {
-//   //     cancelled = true;
-//   //   };
-//   // }, [pdfDoc, totalPages, canvasesReady, scale]);
-
-//   useEffect(() => {
-//   if (!pdfDoc) return;
-  
-//   // Pehle check karo k all canvases mounted hain
-//   const allMounted = canvasRefs.current.length === totalPages && 
-//                      canvasRefs.current.every(c => c !== null);
-  
-//   if (!allMounted) return;
-
-//   let cancelled = false;
-
-//   const renderAll = async () => {
-//     try {
-//       for (let i = 1; i <= totalPages; i++) {
-//         if (cancelled) return;
-
-//         const page = await pdfDoc.getPage(i);
-//         const viewport = page.getViewport({ scale });
-
-//         const canvas = canvasRefs.current[i - 1];
-//         if (!canvas) continue;
-
-//         const ctx = canvas.getContext("2d");
-//         canvas.width = viewport.width;
-//         canvas.height = viewport.height;
-
-//         await page.render({ canvasContext: ctx, viewport }).promise;
-//       }
-//     } catch (e) {
-//       console.error(e);
-//       if (!cancelled) setError("Failed to render PDF preview.");
-//     }
-//   };
-
-//   renderAll();
-
-//   return () => {
-//     cancelled = true;
-//   };
-// }, [pdfDoc, totalPages, scale, canvasRefs.current.length]); // dependency update
-
-
-//   // ==================== SIGNATURE: DRAW MODE ====================
-//   const startDrawing = (e) => {
-//     if (!drawMode) return;
-//     const canvas = signCanvasRef.current;
-//     if (!canvas) return;
-
-//     const rect = canvas.getBoundingClientRect();
-//     const x = e.clientX - rect.left;
-//     const y = e.clientY - rect.top;
-
-//     const ctx = canvas.getContext("2d");
-//     ctx.beginPath();
-//     ctx.moveTo(x, y);
-//     ctx.strokeStyle = "#000";
-//     ctx.lineWidth = 2;
-//     ctx.lineCap = "round";
-
-//     isDrawing.current = true;
-//   };
-
-//   const draw = (e) => {
-//     if (!drawMode || !isDrawing.current) return;
-//     const canvas = signCanvasRef.current;
-//     if (!canvas) return;
-
-//     const rect = canvas.getBoundingClientRect();
-//     const x = e.clientX - rect.left;
-//     const y = e.clientY - rect.top;
-
-//     const ctx = canvas.getContext("2d");
-//     ctx.lineTo(x, y);
-//     ctx.stroke();
-//   };
-
-//   const stopDrawing = () => {
-//     isDrawing.current = false;
-//   };
-
-//   const clearCanvas = () => {
-//     const canvas = signCanvasRef.current;
-//     if (!canvas) return;
-//     const ctx = canvas.getContext("2d");
-//     ctx.clearRect(0, 0, canvas.width, canvas.height);
-//     resetSignature();
-//   };
-
-//   const saveCanvasAsImage = () => {
-//     const canvas = signCanvasRef.current;
-//     if (!canvas) return;
-
-//     canvas.toBlob((blob) => {
-//       if (!blob) return;
-//       const file = new File([blob], "signature.png", { type: "image/png" });
-//       setSignatureImage(file);
-//       const url = URL.createObjectURL(blob);
-//       setSignaturePreview(url);
-//       setDrawMode(false);
-//       setSuccess(false);
-//       setError("");
-//     }, "image/png");
-//   };
-
-//   const handleSignatureUpload = (e) => {
-//     const file = e.target.files?.[0];
-//     if (!file) return;
-//     if (!file.type.startsWith("image/")) {
-//       setError("Please upload a valid image (PNG/JPG).");
-//       return;
-//     }
-//     setSignatureImage(file);
-//     setSignaturePreview(URL.createObjectURL(file));
-//     setDrawMode(false);
-//     setSuccess(false);
-//     setError("");
-//   };
-
-//   // ==================== DRAG SIGNATURE (PAGE-BASED RECT) ====================
-//   const handleSignatureDragStart = (e) => {
-//     if (!signaturePreview) return;
-
-//     // overlay's parent is page wrapper (relative container)
-//     const pageWrapper = e.currentTarget.parentElement;
-//     const rect = pageWrapper.getBoundingClientRect();
-
-//     setIsDragging(true);
-//     dragStart.current = {
-//       x: e.clientX - rect.left - xPosition,
-//       y: e.clientY - rect.top - yPosition,
-//     };
-//   };
-
-//   const handleSignatureDrag = (e) => {
-//     if (!isDragging) return;
-
-//     const canvas = canvasRefs.current[pageNumber - 1];
-//     if (!canvas) return;
-
-//     const pageWrapper = canvas.parentElement;
-//     if (!pageWrapper) return;
-
-//     const rect = pageWrapper.getBoundingClientRect();
-
-//     const newX = e.clientX - rect.left - dragStart.current.x;
-//     const newY = e.clientY - rect.top - dragStart.current.y;
-
-//     const maxX = rect.width - signatureWidth;
-//     const maxY = rect.height - signatureHeight;
-
-//     setXPosition(clamp(newX, 0, maxX));
-//     setYPosition(clamp(newY, 0, maxY));
-//   };
-
-//   const handleSignatureDragEnd = () => {
-//     setIsDragging(false);
-//   };
-
-//   // ==================== OPTIONAL: CLICK PAGE TO SELECT IT ====================
-//   const selectPage = (i) => {
-//     setPageNumber(i);
-//     // keep signature in bounds for new page wrapper (best effort)
-//     const canvas = canvasRefs.current[i - 1];
-//     if (!canvas) return;
-//     const rect = canvas.parentElement?.getBoundingClientRect();
-//     if (!rect) return;
-//     setXPosition((x) => clamp(x, 0, rect.width - signatureWidth));
-//     setYPosition((y) => clamp(y, 0, rect.height - signatureHeight));
-//   };
-
-//   // ==================== SUBMIT (BACKEND SIGN) ====================
-//   const downloadBlob = (blob, filename) => {
-//     const url = window.URL.createObjectURL(blob);
-//     const a = document.createElement("a");
-//     a.href = url;
-//     a.download = filename;
-//     a.click();
-//     window.URL.revokeObjectURL(url);
-//   };
-
-//   const handleSubmit = async (e) => {
-//     e.preventDefault();
-
-//     if (!pdfFile) return setError("Please upload a PDF file!");
-//     if (!signatureImage) return setError("Please provide a signature!");
-
-//     setLoading(true);
-//     setSuccess(false);
-//     setError("");
-
-//     try {
-//       const formData = new FormData();
-//       formData.append("pdfFile", pdfFile);
-//       formData.append("signatureImage", signatureImage);
-//       formData.append("pageNumber", String(pageNumber));
-//       formData.append("xPosition", String(Math.round(xPosition)));
-//       formData.append("yPosition", String(Math.round(yPosition)));
-//       formData.append("width", String(Math.round(signatureWidth)));
-//       formData.append("height", String(Math.round(signatureHeight)));
-//       formData.append("scale", String(scale)); // optional: if backend needs it
-
-//       const res = await fetch("/convert/sign-pdf", {
-//         method: "POST",
-//         body: formData,
-//       });
-
-//       if (!res.ok) {
-//         let msg = "Signing failed";
-//         try {
-//           const j = await res.json();
-//           msg = j?.error || msg;
-//         } catch {}
-//         throw new Error(msg);
-//       }
-
-//       const blob = await res.blob();
-//       downloadBlob(blob, pdfFile.name.replace(/\.pdf$/i, "") + "-signed.pdf");
-//       setSuccess(true);
-//     } catch (err) {
-//       console.error(err);
-//       setError((err?.message || "Something went wrong").toString());
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
-
-//   // ==================== UI ====================
-//   return (
-//     <>
-//       <Script
-//         src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"
-//         strategy="afterInteractive"
-//         onReady={() => {
-//           if (window?.pdfjsLib) {
-//             window.pdfjsLib.GlobalWorkerOptions.workerSrc =
-//               "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
-//             setPdfJsReady(true);
-//           }
-//         }}
-//       />
-
-//       <main className="min-h-screen bg-gray-50 py-8 px-4">
-//         <div className="max-w-7xl mx-auto">
-//           <div className="grid lg:grid-cols-2 gap-8">
-//             {/* LEFT */}
-//             <div className="bg-white rounded-2xl shadow p-6 border border-gray-100">
-//               <form onSubmit={handleSubmit} className="space-y-6">
-//                 {/* Upload */}
-//                 <div>
-//                   <label className="block mb-2 text-sm font-medium text-gray-700">
-//                     Upload PDF
-//                   </label>
-//                   <label className="block cursor-pointer">
-//                     <div className="border-2 border-dashed rounded-xl p-6 text-center hover:bg-blue-50 transition">
-//                       <Upload className="w-10 h-10 mx-auto mb-2 text-blue-600" />
-//                       <p className="font-semibold text-gray-800">
-//                         {pdfFile ? pdfFile.name : "Click to upload PDF"}
-//                       </p>
-//                       <p className="text-xs text-gray-500 mt-1">.pdf only</p>
-//                     </div>
-//                     <input
-//                       type="file"
-//                       accept=".pdf,application/pdf"
-//                       onChange={handlePdfUpload}
-//                       className="hidden"
-//                     />
-//                   </label>
-
-//                   {pdfFile && (
-//                     <div className="mt-3 flex items-center justify-between bg-gray-50 p-3 rounded-lg">
-//                       <div className="flex items-center gap-2">
-//                         <FileText className="w-5 h-5 text-red-600" />
-//                         <span className="text-sm font-medium">{pdfFile.name}</span>
-//                       </div>
-//                       <button
-//                         type="button"
-//                         onClick={() => {
-//                           setPdfFile(null);
-//                           resetAllForNewPdf();
-//                           resetSignature();
-//                         }}
-//                         className="text-red-500 hover:bg-red-100 p-1 rounded"
-//                       >
-//                         <X className="w-5 h-5" />
-//                       </button>
-//                     </div>
-//                   )}
-//                 </div>
-
-//                 {/* Signature create */}
-//                 <div>
-//                   <label className="block mb-2 text-sm font-medium text-gray-700">
-//                     Signature
-//                   </label>
-
-//                   <div className="grid grid-cols-2 gap-3 mb-4">
-//                     <button
-//                       type="button"
-//                       onClick={() => setDrawMode(true)}
-//                       className={`flex items-center justify-center gap-2 p-3 rounded-xl border-2 transition ${
-//                         drawMode ? "border-blue-600 bg-blue-50" : "border-gray-300"
-//                       }`}
-//                     >
-//                       <PenTool className="w-5 h-5 text-blue-600" />
-//                       <span className="font-semibold text-sm">Draw</span>
-//                     </button>
-
-//                     <label className="flex items-center justify-center gap-2 p-3 rounded-xl border-2 border-gray-300 hover:border-purple-400 cursor-pointer transition">
-//                       <ImageIcon className="w-5 h-5 text-purple-600" />
-//                       <span className="font-semibold text-sm">Upload</span>
-//                       <input
-//                         type="file"
-//                         accept="image/*"
-//                         onChange={handleSignatureUpload}
-//                         className="hidden"
-//                       />
-//                     </label>
-//                   </div>
-
-//                   {drawMode && (
-//                     <div className="border-2 border-gray-300 rounded-xl p-4 bg-gray-50">
-//                       <canvas
-//                         ref={signCanvasRef}
-//                         width={450}
-//                         height={150}
-//                         onMouseDown={startDrawing}
-//                         onMouseMove={draw}
-//                         onMouseUp={stopDrawing}
-//                         onMouseLeave={stopDrawing}
-//                         className="border-2 border-dashed border-gray-400 bg-white w-full rounded-lg cursor-crosshair"
-//                       />
-//                       <div className="flex gap-2 mt-3">
-//                         <button
-//                           type="button"
-//                           onClick={clearCanvas}
-//                           className="flex items-center gap-1 px-3 py-2 bg-red-100 text-red-700 rounded-lg hover:bg-red-200 transition text-sm"
-//                         >
-//                           <Eraser className="w-4 h-4" />
-//                           Clear
-//                         </button>
-//                         <button
-//                           type="button"
-//                           onClick={saveCanvasAsImage}
-//                           className="flex items-center gap-1 px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition text-sm"
-//                         >
-//                           <CheckCircle className="w-4 h-4" />
-//                           Save
-//                         </button>
-//                       </div>
-//                     </div>
-//                   )}
-
-//                   {signaturePreview && !drawMode && (
-//                     <div className="border-2 border-green-500 bg-green-50 rounded-xl p-4">
-//                       <p className="text-sm font-medium text-green-700 mb-2">
-//                         ✓ Signature ready
-//                       </p>
-//                       <img
-//                         src={signaturePreview}
-//                         alt="Signature preview"
-//                         className="max-h-24 bg-white border-2 border-gray-300 rounded-lg p-2"
-//                       />
-//                     </div>
-//                   )}
-//                 </div>
-
-//                 {/* Controls */}
-//                 {pdfFile && signaturePreview && (
-//                   <div className="space-y-4">
-//                     <div>
-//                       <label className="block text-xs text-gray-600 mb-1">
-//                         Page (1 - {totalPages})
-//                       </label>
-//                       <input
-//                         type="number"
-//                         min={1}
-//                         max={totalPages}
-//                         value={pageNumber}
-//                         onChange={(e) => selectPage(parseInt(e.target.value) || 1)}
-//                         className="w-full px-3 py-2 border-2 border-gray-300 rounded-lg"
-//                       />
-//                     </div>
-
-//                     <div>
-//                       <label className="block text-xs text-gray-600 mb-1">
-//                         Width: {Math.round(signatureWidth)}px
-//                       </label>
-//                       <input
-//                         type="range"
-//                         min="50"
-//                         max="400"
-//                         value={signatureWidth}
-//                         onChange={(e) => setSignatureWidth(parseInt(e.target.value))}
-//                         className="w-full"
-//                       />
-//                     </div>
-
-//                     <div>
-//                       <label className="block text-xs text-gray-600 mb-1">
-//                         Height: {Math.round(signatureHeight)}px
-//                       </label>
-//                       <input
-//                         type="range"
-//                         min="30"
-//                         max="220"
-//                         value={signatureHeight}
-//                         onChange={(e) => setSignatureHeight(parseInt(e.target.value))}
-//                         className="w-full"
-//                       />
-//                     </div>
-//                   </div>
-//                 )}
-
-//                 {error && (
-//                   <div className="bg-red-50 border-2 border-red-200 rounded-xl p-4 text-red-700">
-//                     {error}
-//                   </div>
-//                 )}
-
-//                 <button
-//                   type="submit"
-//                   disabled={loading || !pdfFile || !signatureImage}
-//                   className="w-full bg-linear-to-r from-blue-600 to-purple-600 text-white font-semibold py-4 rounded-xl disabled:opacity-60 disabled:cursor-not-allowed transition flex items-center justify-center gap-2"
-//                 >
-//                   {loading ? (
-//                     <>
-//                       <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
-//                       Signing...
-//                     </>
-//                   ) : (
-//                     <>
-//                       <PenTool className="w-5 h-5" />
-//                       Sign PDF
-//                     </>
-//                   )}
-//                 </button>
-
-//                 {success && (
-//                   <div className="p-4 bg-green-50 border-2 border-green-200 rounded-xl text-center">
-//                     <CheckCircle className="w-10 h-10 text-green-600 mx-auto mb-2" />
-//                     <p className="font-semibold text-green-700">
-//                       Done! Download started.
-//                     </p>
-//                   </div>
-//                 )}
-//               </form>
-//             </div>
-
-//             {/* RIGHT */}
-//             <div className="bg-white rounded-2xl shadow p-6 border border-gray-100">
-//               <div className="flex items-center justify-between mb-4">
-//                 <h3 className="text-lg font-semibold text-gray-800">
-//                   Live Preview
-//                 </h3>
-
-//                 {/* zoom */}
-//                 <div className="flex items-center gap-2">
-//                   <button
-//                     type="button"
-//                     onClick={() => setScale((s) => clamp(Number((s + 0.2).toFixed(2)), 0.5, 2.5))}
-//                     className="px-3 py-2 bg-gray-100 rounded-lg"
-//                     title="Zoom In"
-//                   >
-//                     <ZoomIn className="w-5 h-5" />
-//                   </button>
-//                   <span className="text-sm text-gray-600">
-//                     {Math.round(scale * 100)}%
-//                   </span>
-//                   <button
-//                     type="button"
-//                     onClick={() => setScale((s) => clamp(Number((s - 0.2).toFixed(2)), 0.5, 2.5))}
-//                     className="px-3 py-2 bg-gray-100 rounded-lg"
-//                     title="Zoom Out"
-//                   >
-//                     <ZoomOut className="w-5 h-5" />
-//                   </button>
-//                 </div>
-//               </div>
-
-//               {!pdfFile ? (
-//                 <div className="flex items-center justify-center h-[60vh] border-2 border-dashed border-gray-300 rounded-xl bg-gray-50">
-//                   <div className="text-center text-gray-500">
-//                     <FileText className="w-12 h-12 mx-auto mb-2 text-gray-400" />
-//                     <p>Upload a PDF to preview</p>
-//                   </div>
-//                 </div>
-//               ) : (
-//                 <div
-//                   className="relative border rounded-xl overflow-y-auto max-h-[85vh] bg-gray-50 p-4"
-//                   onMouseMove={handleSignatureDrag}
-//                   onMouseUp={handleSignatureDragEnd}
-//                   onMouseLeave={handleSignatureDragEnd}
-//                 >
-//                   {/* Multi-page canvases */}
-//                   {Array.from({ length: totalPages }).map((_, index) => (
-//                     <div
-//                       key={index}
-//                       className={`relative mb-8 flex justify-center ${
-//                         pageNumber === index + 1 ? "ring-2 ring-blue-400 rounded-xl p-2" : ""
-//                       }`}
-//                       onClick={() => selectPage(index + 1)}
-//                     >
-//                       <div className="relative inline-block">
-
-//                         {/* <canvas
-//                           ref={(el) => {
-//                             canvasRefs.current[index] = el;
-
-//                             const readyCount = canvasRefs.current.filter(Boolean).length;
-//                             if (readyCount === totalPages) setCanvasesReady(true);
-//                           }}
-//                           className="shadow-lg bg-white"
-//                         /> */}
-
-//                       <canvas
-//                         ref={(el) => {
-//                           if (el && !canvasRefs.current[index]) {
-//                             canvasRefs.current[index] = el;
-                            
-//                             // Check if all canvases are now ready
-//                             if (canvasRefs.current.filter(Boolean).length === totalPages) {
-//                               setCanvasesReady(true);
-//                             }
-//                           }
-//                         }}
-//                         className="shadow-lg bg-white"
-//                       />
-
-//                         {/* Signature overlay only on selected page */}
-//                         {signaturePreview && pageNumber === index + 1 && (
-//                           <div
-//                             className="absolute cursor-move border-2 border-blue-500 shadow-xl bg-white/10"
-//                             style={{
-//                               left: `${xPosition}px`,
-//                               top: `${yPosition}px`,
-//                               width: `${signatureWidth}px`,
-//                               height: `${signatureHeight}px`,
-//                             }}
-//                             onMouseDown={handleSignatureDragStart}
-//                             title="Drag to move"
-//                           >
-//                             <img
-//                               src={signaturePreview}
-//                               alt="Signature"
-//                               className="w-full h-full object-contain bg-white/90 pointer-events-none"
-//                               draggable={false}
-//                             />
-//                           </div>
-//                         )}
-//                       </div>
-//                     </div>
-//                   ))}
-
-//                   {/* basic loading hint */}
-//                   {!pdfDoc && (
-//                     <div className="absolute inset-0 flex items-center justify-center text-gray-500">
-//                       Loading preview...
-//                     </div>
-//                   )}
-//                 </div>
-//               )}
-
-//               <p className="text-xs text-gray-500 mt-3 text-center">
-//                 Tip: Click a page to select it, then drag signature on that page.
-//               </p>
-//             </div>
-//           </div>
-//         </div>
-//       </main>
-//     </>
-//   );
-// }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// // // app/sign-pdf/page.jsx
-// // "use client";
-
-// // import { useRef, useState, useEffect } from "react";
-// // import {
-// //   Upload,
-// //   FileText,
-// //   Download,
-// //   CheckCircle,
-// //   X,
-// //   PenTool,
-// //   Eraser,
-// //   Image as ImageIcon,
-// //   ZoomIn,
-// //   ZoomOut,
-// // } from "lucide-react";
-// // import Script from "next/script";
-// // import RelatedToolsSection from "@/components/RelatedTools";
-
-// // export default function SignPdf() {
-// //   const [pdfFile, setPdfFile] = useState(null);
-// //   const [pdfPreviewUrl, setPdfPreviewUrl] = useState("");
-// //   const [signatureImage, setSignatureImage] = useState(null);
-// //   const [signaturePreview, setSignaturePreview] = useState("");
-// //   const [drawMode, setDrawMode] = useState(false);
-// //   const [loading, setLoading] = useState(false);
-// //   const [success, setSuccess] = useState(false);
-// //   const [error, setError] = useState("");
-
-// //   // Signature position & size
-// //   const [pageNumber, setPageNumber] = useState(1);
-// //   const [totalPages, setTotalPages] = useState(1);
-// //   const [xPosition, setXPosition] = useState(50);
-// //   const [yPosition, setYPosition] = useState(650);
-// //   const [signatureWidth, setSignatureWidth] = useState(150);
-// //   const [signatureHeight, setSignatureHeight] = useState(75);
-
-// //   // Preview & Drag
-// //   const [isDragging, setIsDragging] = useState(false);
-// //   const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
-// //   const [pdfDimensions, setPdfDimensions] = useState({ width: 0, height: 0 });
-
-// //   const canvasRef = useRef(null);
-// //   const isDrawing = useRef(false);
-// //   const previewContainerRef = useRef(null);
-
-// //   // ==================== PDF PREVIEW SETUP ====================
-// //   useEffect(() => {
-// //     if (pdfFile) {
-// //       // Create object URL for PDF preview
-// //       const url = URL.createObjectURL(pdfFile);
-// //       setPdfPreviewUrl(url);
-
-// //       // Load PDF to get page count
-// //       loadPdfPageCount(pdfFile);
-
-// //       return () => URL.revokeObjectURL(url);
-// //     }
-// //   }, [pdfFile]);
-
-// //   const loadPdfPageCount = async (file) => {
-// //     try {
-// //       // Using pdf.js to load PDF and get page count
-// //       const pdfjsLib = window.pdfjsLib;
-// //       if (!pdfjsLib) {
-// //         console.warn("PDF.js not loaded yet");
-// //         return;
-// //       }
-
-// //       const arrayBuffer = await file.arrayBuffer();
-// //       const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
-// //       setTotalPages(pdf.numPages);
-
-// //       // Load first page to get dimensions
-// //       const page = await pdf.getPage(1);
-// //       const viewport = page.getViewport({ scale: 1 });
-// //       setPdfDimensions({ width: viewport.width, height: viewport.height });
-// //     } catch (err) {
-// //       console.error("Failed to load PDF:", err);
-// //     }
-// //   };
-
-// //   // ==================== CANVAS DRAWING ====================
-// //   const startDrawing = (e) => {
-// //     if (!drawMode) return;
-// //     const canvas = canvasRef.current;
-// //     const rect = canvas.getBoundingClientRect();
-// //     const x = e.clientX - rect.left;
-// //     const y = e.clientY - rect.top;
-
-// //     const ctx = canvas.getContext("2d");
-// //     ctx.beginPath();
-// //     ctx.moveTo(x, y);
-// //     isDrawing.current = true;
-// //   };
-
-// //   const draw = (e) => {
-// //     if (!drawMode || !isDrawing.current) return;
-// //     const canvas = canvasRef.current;
-// //     const rect = canvas.getBoundingClientRect();
-// //     const x = e.clientX - rect.left;
-// //     const y = e.clientY - rect.top;
-
-// //     const ctx = canvas.getContext("2d");
-// //     ctx.lineTo(x, y);
-// //     ctx.strokeStyle = "#000";
-// //     ctx.lineWidth = 2;
-// //     ctx.lineCap = "round";
-// //     ctx.stroke();
-// //   };
-
-// //   const stopDrawing = () => {
-// //     isDrawing.current = false;
-// //   };
-
-// //   const clearCanvas = () => {
-// //     const canvas = canvasRef.current;
-// //     const ctx = canvas.getContext("2d");
-// //     ctx.clearRect(0, 0, canvas.width, canvas.height);
-// //     setSignatureImage(null);
-// //     setSignaturePreview("");
-// //   };
-
-// //   const saveCanvasAsImage = () => {
-// //     const canvas = canvasRef.current;
-// //     canvas.toBlob((blob) => {
-// //       const file = new File([blob], "signature.png", { type: "image/png" });
-// //       setSignatureImage(file);
-// //       setSignaturePreview(URL.createObjectURL(blob));
-// //       setDrawMode(false);
-// //     });
-// //   };
-
-// //   // ==================== DRAG SIGNATURE ====================
-// //   const handleSignatureDragStart = (e) => {
-// //     if (!signatureImage) return;
-// //     setIsDragging(true);
-// //     const rect = previewContainerRef.current.getBoundingClientRect();
-// //     setDragStart({
-// //       x: e.clientX - rect.left - xPosition,
-// //       y: e.clientY - rect.top - yPosition,
-// //     });
-// //   };
-
-// //   const handleSignatureDrag = (e) => {
-// //     if (!isDragging) return;
-// //     const rect = previewContainerRef.current.getBoundingClientRect();
-// //     const newX = e.clientX - rect.left - dragStart.x;
-// //     const newY = e.clientY - rect.top - dragStart.y;
-
-// //     // Constrain within bounds
-// //     const maxX = rect.width - signatureWidth;
-// //     const maxY = rect.height - signatureHeight;
-
-// //     setXPosition(Math.max(0, Math.min(newX, maxX)));
-// //     setYPosition(Math.max(0, Math.min(newY, maxY)));
-// //   };
-
-// //   const handleSignatureDragEnd = () => {
-// //     setIsDragging(false);
-// //   };
-
-// //   // ==================== FILE HANDLERS ====================
-// //   const handlePdfUpload = (e) => {
-// //     const file = e.target.files?.[0];
-// //     if (file) {
-// //       setPdfFile(file);
-// //       setSuccess(false);
-// //       setError("");
-// //       setPageNumber(1);
-// //     }
-// //   };
-
-// //   const handleSignatureUpload = (e) => {
-// //     const file = e.target.files?.[0];
-// //     if (file) {
-// //       setSignatureImage(file);
-// //       setSignaturePreview(URL.createObjectURL(file));
-// //       setDrawMode(false);
-// //       setSuccess(false);
-// //       setError("");
-// //     }
-// //   };
-
-// //   const downloadBlob = (blob, filename) => {
-// //     const url = window.URL.createObjectURL(blob);
-// //     const a = document.createElement("a");
-// //     a.href = url;
-// //     a.download = filename;
-// //     a.click();
-// //     window.URL.revokeObjectURL(url);
-// //   };
-
-// //   // ==================== SUBMIT ====================
-// //   const handleSubmit = async (e) => {
-// //     e.preventDefault();
-
-// //     if (!pdfFile) {
-// //       setError("Please upload a PDF file!");
-// //       return;
-// //     }
-
-// //     if (!signatureImage) {
-// //       setError("Please provide a signature (draw or upload image)!");
-// //       return;
-// //     }
-
-// //     setLoading(true);
-// //     setSuccess(false);
-// //     setError("");
-
-// //     const formData = new FormData();
-// //     formData.append("pdfFile", pdfFile);
-// //     formData.append("signatureImage", signatureImage);
-// //     formData.append("pageNumber", String(pageNumber));
-// //     formData.append("xPosition", String(Math.round(xPosition)));
-// //     formData.append("yPosition", String(Math.round(yPosition)));
-// //     formData.append("width", String(Math.round(signatureWidth)));
-// //     formData.append("height", String(Math.round(signatureHeight)));
-
-// //     try {
-// //       const res = await fetch("/convert/sign-pdf", {
-// //         method: "POST",
-// //         body: formData,
-// //       });
-
-// //       if (!res.ok) {
-// //         let msg = "Signing failed";
-// //         try {
-// //           const j = await res.json();
-// //           msg = j?.error || msg;
-// //         } catch {}
-// //         throw new Error(msg);
-// //       }
-
-// //       const blob = await res.blob();
-// //       const outName = pdfFile.name.replace(/\.pdf$/i, "") + "-signed.pdf";
-// //       downloadBlob(blob, outName);
-// //       setSuccess(true);
-// //     } catch (err) {
-// //       const msg = (
-// //         err?.message || "Something went wrong. Please try again."
-// //       ).toString();
-// //       setError(msg);
-// //       console.error(err);
-// //     } finally {
-// //       setLoading(false);
-// //     }
-// //   };
-
-// //   return (
-// //     <>
-// //       {/* Load PDF.js from CDN */}
-// //       <Script
-// //         src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"
-// //         strategy="beforeInteractive"
-// //         onLoad={() => {
-// //           window.pdfjsLib.GlobalWorkerOptions.workerSrc =
-// //             "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
-// //         }}
-// //       />
-
-// //       {/* ==================== SEO SCHEMAS ==================== */}
-// //       <Script
-// //         id="howto-schema-sign"
-// //         type="application/ld+json"
-// //         strategy="afterInteractive"
-// //         dangerouslySetInnerHTML={{
-// //           __html: JSON.stringify(
-// //             {
-// //               "@context": "https://schema.org",
-// //               "@type": "HowTo",
-// //               name: "How to Sign PDF Online for Free",
-// //               description:
-// //                 "Add your signature to PDF documents online. Draw your signature or upload an image and place it anywhere on your PDF.",
-// //               url: "https://pdflinx.com/sign-pdf",
-// //               step: [
-// //                 {
-// //                   "@type": "HowToStep",
-// //                   name: "Upload PDF",
-// //                   text: "Upload the PDF file you want to sign.",
-// //                 },
-// //                 {
-// //                   "@type": "HowToStep",
-// //                   name: "Create signature",
-// //                   text: "Draw your signature or upload a signature image.",
-// //                 },
-// //                 {
-// //                   "@type": "HowToStep",
-// //                   name: "Position & download",
-// //                   text: "Drag signature to position, adjust size, then download signed PDF.",
-// //                 },
-// //               ],
-// //               totalTime: "PT30S",
-// //               estimatedCost: {
-// //                 "@type": "MonetaryAmount",
-// //                 value: "0",
-// //                 currency: "USD",
-// //               },
-// //               image: "https://pdflinx.com/og-image.png",
-// //             },
-// //             null,
-// //             2
-// //           ),
-// //         }}
-// //       />
-
-// //       <Script
-// //         id="breadcrumb-schema-sign"
-// //         type="application/ld+json"
-// //         strategy="afterInteractive"
-// //         dangerouslySetInnerHTML={{
-// //           __html: JSON.stringify(
-// //             {
-// //               "@context": "https://schema.org",
-// //               "@type": "BreadcrumbList",
-// //               itemListElement: [
-// //                 {
-// //                   "@type": "ListItem",
-// //                   position: 1,
-// //                   name: "Home",
-// //                   item: "https://pdflinx.com",
-// //                 },
-// //                 {
-// //                   "@type": "ListItem",
-// //                   position: 2,
-// //                   name: "Sign PDF",
-// //                   item: "https://pdflinx.com/sign-pdf",
-// //                 },
-// //               ],
-// //             },
-// //             null,
-// //             2
-// //           ),
-// //         }}
-// //       />
-
-// //       <Script
-// //         id="faq-schema-sign"
-// //         type="application/ld+json"
-// //         strategy="afterInteractive"
-// //         dangerouslySetInnerHTML={{
-// //           __html: JSON.stringify(
-// //             {
-// //               "@context": "https://schema.org",
-// //               "@type": "FAQPage",
-// //               mainEntity: [
-// //                 {
-// //                   "@type": "Question",
-// //                   name: "Is PDFLinx Sign PDF free?",
-// //                   acceptedAnswer: {
-// //                     "@type": "Answer",
-// //                     text: "Yes. PDFLinx Sign PDF is completely free — no sign-up required, no watermarks added.",
-// //                   },
-// //                 },
-// //                 {
-// //                   "@type": "Question",
-// //                   name: "Can I draw my signature?",
-// //                   acceptedAnswer: {
-// //                     "@type": "Answer",
-// //                     text: "Yes. You can draw your signature using your mouse, trackpad, or touchscreen. You can also upload an image of your signature.",
-// //                   },
-// //                 },
-// //                 {
-// //                   "@type": "Question",
-// //                   name: "Is my PDF secure?",
-// //                   acceptedAnswer: {
-// //                     "@type": "Answer",
-// //                     text: "Yes. Your files are processed automatically and deleted immediately after signing. We never store your PDFs or signatures.",
-// //                   },
-// //                 },
-// //                 {
-// //                   "@type": "Question",
-// //                   name: "Can I sign multiple pages?",
-// //                   acceptedAnswer: {
-// //                     "@type": "Answer",
-// //                     text: "Currently, you can add one signature to one page. For multi-page signing, process the PDF multiple times.",
-// //                   },
-// //                 },
-// //                 {
-// //                   "@type": "Question",
-// //                   name: "What image formats are supported?",
-// //                   acceptedAnswer: {
-// //                     "@type": "Answer",
-// //                     text: "You can upload PNG or JPG images as your signature. Transparent PNG images work best.",
-// //                   },
-// //                 },
-// //               ],
-// //             },
-// //             null,
-// //             2
-// //           ),
-// //         }}
-// //       />
-
-// //       {/* ==================== MAIN TOOL SECTION ==================== */}
-// //       <main className="min-h-screen bg-linear-to-br from-blue-50 via-white to-purple-50 py-8 px-4">
-// //         <div className="max-w-7xl mx-auto">
-// //           {/* Header */}
-// //           <div className="text-center mb-8">
-// //             <h1 className="text-3xl md:text-4xl font-bold bg-linear-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-4">
-// //               Sign PDF Online Free
-// //             </h1>
-// //             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-// //               Add your signature to PDF documents in seconds. Draw or upload
-// //               your signature and drag it to the perfect position with live preview.
-// //             </p>
-// //           </div>
-
-// //           <div className="grid lg:grid-cols-2 gap-8">
-// //             {/* LEFT SIDE - Controls */}
-// //             <div className="bg-white rounded-2xl shadow-lg p-6 border border-gray-100 h-fit">
-// //               <form onSubmit={handleSubmit} className="space-y-6">
-// //                 {/* PDF Upload */}
-// //                 <div>
-// //                   <label className="block mb-2 text-sm font-medium text-gray-700">
-// //                     1. Upload PDF Document
-// //                   </label>
-// //                   <div className="relative">
-// //                     <label className="block">
-// //                       <div
-// //                         className={`border-2 border-dashed rounded-xl p-6 text-center cursor-pointer transition-all ${
-// //                           pdfFile
-// //                             ? "border-green-500 bg-green-50"
-// //                             : "border-gray-300 hover:border-blue-500 hover:bg-blue-50"
-// //                         }`}
-// //                       >
-// //                         <Upload className="w-10 h-10 mx-auto mb-2 text-blue-600" />
-// //                         <p className="text-base font-semibold text-gray-700">
-// //                           {pdfFile
-// //                             ? pdfFile.name
-// //                             : "Click to upload PDF"}
-// //                         </p>
-// //                         <p className="text-sm text-gray-500 mt-1">
-// //                           Max 25MB • .pdf only
-// //                         </p>
-// //                       </div>
-// //                       <input
-// //                         type="file"
-// //                         accept=".pdf,application/pdf"
-// //                         onChange={handlePdfUpload}
-// //                         className="hidden"
-// //                         required
-// //                       />
-// //                     </label>
-// //                   </div>
-
-// //                   {pdfFile && (
-// //                     <div className="mt-3 flex items-center justify-between bg-gray-50 p-3 rounded-lg">
-// //                       <div className="flex items-center gap-2">
-// //                         <FileText className="w-5 h-5 text-red-600" />
-// //                         <span className="text-sm font-medium">
-// //                           {pdfFile.name}
-// //                         </span>
-// //                         <span className="text-xs text-gray-500">
-// //                           ({(pdfFile.size / 1024 / 1024).toFixed(2)} MB)
-// //                         </span>
-// //                       </div>
-// //                       <button
-// //                         type="button"
-// //                         onClick={() => {
-// //                           setPdfFile(null);
-// //                           setPdfPreviewUrl("");
-// //                         }}
-// //                         className="text-red-500 hover:bg-red-100 p-1 rounded"
-// //                       >
-// //                         <X className="w-5 h-5" />
-// //                       </button>
-// //                     </div>
-// //                   )}
-// //                 </div>
-
-// //                 {/* Signature Creation */}
-// //                 <div>
-// //                   <label className="block mb-2 text-sm font-medium text-gray-700">
-// //                     2. Create or Upload Signature
-// //                   </label>
-
-// //                   <div className="grid grid-cols-2 gap-3 mb-4">
-// //                     <button
-// //                       type="button"
-// //                       onClick={() => setDrawMode(true)}
-// //                       className={`flex items-center justify-center gap-2 p-3 rounded-xl border-2 transition-all ${
-// //                         drawMode
-// //                           ? "border-blue-600 bg-blue-50 shadow-md"
-// //                           : "border-gray-300 hover:border-blue-400"
-// //                       }`}
-// //                     >
-// //                       <PenTool className="w-5 h-5 text-blue-600" />
-// //                       <span className="font-semibold text-sm">Draw</span>
-// //                     </button>
-
-// //                     <label className="flex items-center justify-center gap-2 p-3 rounded-xl border-2 border-gray-300 hover:border-purple-400 cursor-pointer transition-all">
-// //                       <ImageIcon className="w-5 h-5 text-purple-600" />
-// //                       <span className="font-semibold text-sm">Upload</span>
-// //                       <input
-// //                         type="file"
-// //                         accept="image/*"
-// //                         onChange={handleSignatureUpload}
-// //                         className="hidden"
-// //                       />
-// //                     </label>
-// //                   </div>
-
-// //                   {/* Drawing Canvas */}
-// //                   {drawMode && (
-// //                     <div className="border-2 border-gray-300 rounded-xl p-4 bg-gray-50">
-// //                       <canvas
-// //                         ref={canvasRef}
-// //                         width={450}
-// //                         height={150}
-// //                         onMouseDown={startDrawing}
-// //                         onMouseMove={draw}
-// //                         onMouseUp={stopDrawing}
-// //                         onMouseLeave={stopDrawing}
-// //                         className="border-2 border-dashed border-gray-400 bg-white cursor-crosshair w-full rounded-lg"
-// //                       />
-// //                       <div className="flex gap-2 mt-3">
-// //                         <button
-// //                           type="button"
-// //                           onClick={clearCanvas}
-// //                           className="flex items-center gap-1 px-3 py-2 bg-red-100 text-red-700 rounded-lg hover:bg-red-200 transition text-sm"
-// //                         >
-// //                           <Eraser className="w-4 h-4" />
-// //                           Clear
-// //                         </button>
-// //                         <button
-// //                           type="button"
-// //                           onClick={saveCanvasAsImage}
-// //                           className="flex items-center gap-1 px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition text-sm"
-// //                         >
-// //                           <CheckCircle className="w-4 h-4" />
-// //                           Save
-// //                         </button>
-// //                       </div>
-// //                     </div>
-// //                   )}
-
-// //                   {/* Signature Preview */}
-// //                   {signaturePreview && !drawMode && (
-// //                     <div className="border-2 border-green-500 bg-green-50 rounded-xl p-4">
-// //                       <p className="text-sm font-medium text-green-700 mb-2">
-// //                         ✓ Signature ready
-// //                       </p>
-// //                       <img
-// //                         src={signaturePreview}
-// //                         alt="Signature preview"
-// //                         className="max-h-24 bg-white border-2 border-gray-300 rounded-lg p-2"
-// //                       />
-// //                     </div>
-// //                   )}
-// //                 </div>
-
-// //                 {/* Position Controls */}
-// //                 {pdfFile && signatureImage && (
-// //                   <div>
-// //                     <label className="block mb-3 text-sm font-medium text-gray-700">
-// //                       3. Adjust Position & Size
-// //                     </label>
-
-// //                     <div className="space-y-3">
-// //                       {/* Page Number */}
-// //                       <div>
-// //                         <label className="block text-xs text-gray-600 mb-1">
-// //                           Page Number (Total: {totalPages})
-// //                         </label>
-// //                         <input
-// //                           type="number"
-// //                           min="1"
-// //                           max={totalPages}
-// //                           value={pageNumber}
-// //                           onChange={(e) => setPageNumber(parseInt(e.target.value) || 1)}
-// //                           className="w-full px-3 py-2 border-2 border-gray-300 rounded-lg focus:border-blue-500 focus:outline-none"
-// //                         />
-// //                       </div>
-
-// //                       {/* X Position */}
-// //                       <div>
-// //                         <label className="block text-xs text-gray-600 mb-1">
-// //                           X Position: {Math.round(xPosition)}px
-// //                         </label>
-// //                         <input
-// //                           type="range"
-// //                           min="0"
-// //                           max="500"
-// //                           value={xPosition}
-// //                           onChange={(e) => setXPosition(parseInt(e.target.value))}
-// //                           className="w-full"
-// //                         />
-// //                       </div>
-
-// //                       {/* Y Position */}
-// //                       <div>
-// //                         <label className="block text-xs text-gray-600 mb-1">
-// //                           Y Position: {Math.round(yPosition)}px
-// //                         </label>
-// //                         <input
-// //                           type="range"
-// //                           min="0"
-// //                           max="800"
-// //                           value={yPosition}
-// //                           onChange={(e) => setYPosition(parseInt(e.target.value))}
-// //                           className="w-full"
-// //                         />
-// //                       </div>
-
-// //                       {/* Width */}
-// //                       <div>
-// //                         <label className="block text-xs text-gray-600 mb-1">
-// //                           Width: {Math.round(signatureWidth)}px
-// //                         </label>
-// //                         <input
-// //                           type="range"
-// //                           min="50"
-// //                           max="300"
-// //                           value={signatureWidth}
-// //                           onChange={(e) =>
-// //                             setSignatureWidth(parseInt(e.target.value))
-// //                           }
-// //                           className="w-full"
-// //                         />
-// //                       </div>
-
-// //                       {/* Height */}
-// //                       <div>
-// //                         <label className="block text-xs text-gray-600 mb-1">
-// //                           Height: {Math.round(signatureHeight)}px
-// //                         </label>
-// //                         <input
-// //                           type="range"
-// //                           min="30"
-// //                           max="150"
-// //                           value={signatureHeight}
-// //                           onChange={(e) =>
-// //                             setSignatureHeight(parseInt(e.target.value))
-// //                           }
-// //                           className="w-full"
-// //                         />
-// //                       </div>
-// //                     </div>
-
-// //                     <p className="text-xs text-blue-600 mt-3 bg-blue-50 p-2 rounded">
-// //                       💡 Tip: You can also drag the signature directly on the preview!
-// //                     </p>
-// //                   </div>
-// //                 )}
-
-// //                 {/* Error */}
-// //                 {error && (
-// //                   <div className="bg-red-50 border-2 border-red-200 rounded-xl p-4 text-red-700">
-// //                     <p className="font-semibold text-sm">{error}</p>
-// //                   </div>
-// //                 )}
-
-// //                 {/* Submit Button */}
-// //                 <button
-// //                   type="submit"
-// //                   disabled={loading || !pdfFile || !signatureImage}
-// //                   className="w-full bg-linear-to-r from-blue-600 to-purple-600 text-white font-semibold text-lg py-4 rounded-xl hover:from-blue-700 hover:to-purple-700 disabled:opacity-60 disabled:cursor-not-allowed transition shadow-md flex items-center justify-center gap-2"
-// //                 >
-// //                   {loading ? (
-// //                     <>
-// //                       <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
-// //                       Signing PDF...
-// //                     </>
-// //                   ) : (
-// //                     <>
-// //                       <PenTool className="w-5 h-5" />
-// //                       Sign PDF
-// //                     </>
-// //                   )}
-// //                 </button>
-// //               </form>
-
-// //               {/* Success */}
-// //               {success && (
-// //                 <div className="mt-6 p-4 bg-green-50 border-2 border-green-200 rounded-xl text-center">
-// //                   <CheckCircle className="w-12 h-12 text-green-600 mx-auto mb-3" />
-// //                   <p className="text-xl font-bold text-green-700 mb-2">
-// //                     Done! Your signed PDF is ready
-// //                   </p>
-// //                   <p className="text-sm text-green-700">
-// //                     Download started automatically.
-// //                   </p>
-// //                 </div>
-// //               )}
-// //             </div>
-
-// //             {/* RIGHT SIDE - Live Preview */}
-// //             <div className="bg-white rounded-2xl shadow-lg p-6 border border-gray-100">
-// //               <h3 className="text-lg font-semibold mb-4 text-gray-800">
-// //                 Live Preview
-// //               </h3>
-
-// //               {!pdfFile ? (
-// //                 <div className="flex items-center justify-center h-[600px] border-2 border-dashed border-gray-300 rounded-xl bg-gray-50">
-// //                   <div className="text-center text-gray-500">
-// //                     <FileText className="w-16 h-16 mx-auto mb-3 text-gray-400" />
-// //                     <p className="font-medium">Upload a PDF to see preview</p>
-// //                   </div>
-// //                 </div>
-// //               ) : (
-// //                 <div
-// //                   ref={previewContainerRef}
-// //                   className="relative border-2 border-gray-300 rounded-xl overflow-hidden bg-gray-100"
-// //                   style={{ height: "600px" }}
-// //                   onMouseMove={handleSignatureDrag}
-// //                   onMouseUp={handleSignatureDragEnd}
-// //                   onMouseLeave={handleSignatureDragEnd}
-// //                 >
-// //                   {/* PDF Preview using iframe */}
-// //                   <iframe
-// //                     src={`${pdfPreviewUrl}#page=${pageNumber}`}
-// //                     className="w-full h-full"
-// //                     title="PDF Preview"
-// //                   />
-
-// //                   {/* Signature Overlay */}
-// //                   {signaturePreview && (
-// //                     <div
-// //                       className="absolute cursor-move border-2 border-blue-500 shadow-lg"
-// //                       style={{
-// //                         left: `${xPosition}px`,
-// //                         top: `${yPosition}px`,
-// //                         width: `${signatureWidth}px`,
-// //                         height: `${signatureHeight}px`,
-// //                       }}
-// //                       onMouseDown={handleSignatureDragStart}
-// //                     >
-// //                       <img
-// //                         src={signaturePreview}
-// //                         alt="Signature"
-// //                         className="w-full h-full object-contain bg-white/90 pointer-events-none"
-// //                         draggable={false}
-// //                       />
-// //                       {/* Corner resize indicator */}
-// //                       <div className="absolute bottom-0 right-0 w-3 h-3 bg-blue-600 cursor-se-resize" />
-// //                     </div>
-// //                   )}
-// //                 </div>
-// //               )}
-
-// //               <p className="text-xs text-gray-500 mt-3 text-center">
-// //                 Preview shows approximate signature position. Drag signature to adjust.
-// //               </p>
-// //             </div>
-// //           </div>
-
-// //           <p className="text-center mt-6 text-gray-600 text-base">
-// //             No account • No watermark • Files auto-deleted • 100% free
-// //           </p>
-// //         </div>
-// //       </main>
-
-//       {/* ==================== SEO CONTENT SECTION ==================== */}
-//       <section className="mt-16 max-w-4xl mx-auto px-6 pb-16">
-//         <div className="text-center mb-12">
-//           <h2 className="text-2xl md:text-3xl font-bold bg-linear-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-4">
-//             Sign PDF Online Free – Add Your Signature Instantly
-//           </h2>
-//           <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-//             Need to sign a PDF document? PDFLinx Sign PDF tool lets you add
-//             your signature online in seconds with live preview. Draw your signature or upload an
-//             image — no software installation required.
-//           </p>
-//         </div>
-
-//         {/* Benefits Grid */}
-//         <div className="grid md:grid-cols-3 gap-8 mb-16">
-//           <div className="bg-linear-to-br from-blue-50 to-white p-8 rounded-2xl shadow-lg border border-blue-100 text-center hover:shadow-xl transition">
-//             <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
-//               <PenTool className="w-8 h-8 text-white" />
-//             </div>
-//             <h3 className="text-xl font-semibold text-gray-800 mb-3">
-//               Draw or Upload
-//             </h3>
-//             <p className="text-gray-600 text-sm">
-//               Draw your signature with mouse or upload an image. Both work
-//               perfectly with live preview.
-//             </p>
-//           </div>
-
-//           <div className="bg-linear-to-br from-purple-50 to-white p-8 rounded-2xl shadow-lg border border-purple-100 text-center hover:shadow-xl transition">
-//             <div className="w-16 h-16 bg-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
-//               <FileText className="w-8 h-8 text-white" />
-//             </div>
-//             <h3 className="text-xl font-semibold text-gray-800 mb-3">
-//               Drag & Drop
-//             </h3>
-//             <p className="text-gray-600 text-sm">
-//               Drag your signature to the perfect position with real-time preview.
-//             </p>
-//           </div>
-
-//           <div className="bg-linear-to-br from-green-50 to-white p-8 rounded-2xl shadow-lg border border-green-100 text-center hover:shadow-xl transition">
-//             <div className="w-16 h-16 bg-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
-//               <Download className="w-8 h-8 text-white" />
-//             </div>
-//             <h3 className="text-xl font-semibold text-gray-800 mb-3">
-//               Instant Download
-//             </h3>
-//             <p className="text-gray-600 text-sm">
-//               Get your signed PDF instantly. No watermarks, no registration.
-//             </p>
-//           </div>
-//         </div>
-
-//         {/* Steps */}
-//         <div className="bg-white rounded-2xl shadow-lg p-8 md:p-12 border border-gray-100">
-//           <h3 className="text-2xl md:text-3xl font-bold text-center mb-12 text-gray-800">
-//             Sign PDF in 3 Simple Steps
-//           </h3>
-//           <div className="grid md:grid-cols-3 gap-8">
-//             <div className="text-center">
-//               <div className="w-16 h-16 bg-linear-to-r from-blue-600 to-blue-700 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold text-white shadow-lg">
-//                 1
-//               </div>
-//               <h4 className="text-lg font-semibold mb-2">Upload PDF</h4>
-//               <p className="text-gray-600 text-sm">
-//                 Upload the PDF document you need to sign.
-//               </p>
-//             </div>
-
-//             <div className="text-center">
-//               <div className="w-16 h-16 bg-linear-to-r from-purple-600 to-purple-700 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold text-white shadow-lg">
-//                 2
-//               </div>
-//               <h4 className="text-lg font-semibold mb-2">Add & Position</h4>
-//               <p className="text-gray-600 text-sm">
-//                 Draw or upload signature, then drag it to position with live preview.
-//               </p>
-//             </div>
-
-//             <div className="text-center">
-//               <div className="w-16 h-16 bg-linear-to-r from-green-600 to-green-700 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold text-white shadow-lg">
-//                 3
-//               </div>
-//               <h4 className="text-lg font-semibold mb-2">Download</h4>
-//               <p className="text-gray-600 text-sm">
-//                 Click Sign PDF and download your signed document.
-//               </p>
-//             </div>
-//           </div>
-//         </div>
-
-//         <p className="text-center mt-12 text-base text-gray-600 italic max-w-3xl mx-auto">
-//           PDFLinx makes signing PDFs quick and easy with live preview — perfect for contracts,
-//           forms, and documents.
-//         </p>
-//       </section>
-
-//       <section className="max-w-4xl mx-auto px-4 py-14 text-slate-700">
-//         <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-6">
-//           Sign PDF Online with Live Preview – Add Digital Signature by PDFLinx
-//         </h2>
-
-//         <p className="text-base leading-7 mb-6">
-//           Digital signatures are essential for modern document workflows.
-//           Whether you need to sign contracts, agreements, forms, or applications,
-//           <span className="font-medium text-slate-900">
-//             {" "}
-//             PDFLinx Sign PDF tool
-//           </span>{" "}
-//           makes it easy to add your signature to any PDF document online with live preview —
-//           without installing software or creating an account.
-//         </p>
-
-//         <h3 className="text-xl font-semibold text-slate-900 mb-3">
-//           What is PDF Signing?
-//         </h3>
-//         <p className="leading-7 mb-6">
-//           PDF signing means adding your signature to a PDF document digitally.
-//           This can be done by drawing your signature, uploading an image of
-//           your handwritten signature, or using a scanned signature. The signed
-//           PDF can then be shared, printed, or stored electronically. Our tool provides
-//           live preview so you can see exactly where your signature will appear.
-//         </p>
-
-//         <h3 className="text-xl font-semibold text-slate-900 mb-3">
-//           Why Use Live Preview for Signing?
-//         </h3>
-//         <ul className="space-y-2 mb-6 list-disc pl-6">
-//           <li>See exactly where your signature will appear</li>
-//           <li>Drag and drop signature to perfect position</li>
-//           <li>Adjust size in real-time before finalizing</li>
-//           <li>No guesswork or trial and error</li>
-//           <li>Professional-looking results every time</li>
-//           <li>Save time with visual positioning</li>
-//         </ul>
-
-//         <h3 className="text-xl font-semibold text-slate-900 mb-3">
-//           How to Sign a PDF Online with Live Preview
-//         </h3>
-//         <ol className="space-y-2 mb-6 list-decimal pl-6">
-//           <li>Upload your PDF document using the tool above</li>
-//           <li>
-//             Create your signature by drawing it or uploading an image (PNG/JPG)
-//           </li>
-//           <li>
-//             See live preview of your PDF with signature overlay
-//           </li>
-//           <li>
-//             Drag signature to exact position or use sliders for precise control
-//           </li>
-//           <li>Adjust signature size with real-time preview</li>
-//           <li>Click "Sign PDF" to finalize and download</li>
-//         </ol>
-
-//         <div className="bg-slate-50 border border-slate-200 rounded-xl p-6 mb-6">
-//           <h3 className="text-xl font-semibold text-slate-900 mb-4">
-//             Features of PDFLinx Sign PDF Tool
-//           </h3>
-//           <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 list-disc pl-5">
-//             <li>Free online PDF signing</li>
-//             <li>Live preview of signature position</li>
-//             <li>Drag and drop signature placement</li>
-//             <li>Draw signature with mouse/trackpad</li>
-//             <li>Upload signature image (PNG/JPG)</li>
-//             <li>Precise position sliders</li>
-//             <li>Adjustable signature size</li>
-//             <li>Multi-page PDF support</li>
-//             <li>Works on all devices</li>
-//             <li>No software installation needed</li>
-//             <li>No watermarks added</li>
-//             <li>Files deleted after processing</li>
-//           </ul>
-//         </div>
-
-//         <h3 className="text-xl font-semibold text-slate-900 mb-3">
-//           Who Should Use Sign PDF Tool?
-//         </h3>
-//         <ul className="space-y-2 mb-6 list-disc pl-6">
-//           <li>
-//             <strong>Business professionals:</strong> Sign contracts and
-//             agreements with precise positioning
-//           </li>
-//           <li>
-//             <strong>Remote workers:</strong> Sign documents from home with live preview
-//           </li>
-//           <li>
-//             <strong>Freelancers:</strong> Sign client contracts professionally
-//           </li>
-//           <li>
-//             <strong>Students:</strong> Sign academic forms accurately
-//           </li>
-//           <li>
-//             <strong>Anyone:</strong> Sign any PDF document with visual control
-//           </li>
-//         </ul>
-
-//         <h3 className="text-xl font-semibold text-slate-900 mb-3">
-//           Common Use Cases
-//         </h3>
-//         <ul className="space-y-2 mb-6 list-disc pl-6">
-//           <li>Employment contracts and offer letters</li>
-//           <li>Rental agreements and lease documents</li>
-//           <li>Business proposals and quotes</li>
-//           <li>Non-disclosure agreements (NDAs)</li>
-//           <li>Permission forms and consent documents</li>
-//           <li>Tax forms and financial documents</li>
-//           <li>Legal contracts and agreements</li>
-//         </ul>
-
-//         <h3 className="text-xl font-semibold text-slate-900 mb-3">
-//           Is PDFLinx Sign PDF Secure?
-//         </h3>
-//         <p className="leading-7 mb-6">
-//           Yes. PDFLinx is built with privacy and security in mind. Your
-//           uploaded PDF files and signature images are processed automatically
-//           and deleted immediately after signing. We never store your documents
-//           or signatures permanently, and your files are never shared with
-//           anyone.
-//         </p>
-
-//         <h3 className="text-xl font-semibold text-slate-900 mb-3">
-//           Sign PDFs on Any Device
-//         </h3>
-//         <p className="leading-7">
-//           PDFLinx works seamlessly on Windows, macOS, Linux, Android, and iOS.
-//           Sign your PDFs on desktop, laptop, tablet, or smartphone with live preview on any device —
-//           all you need is an internet connection and a modern web browser.
-//         </p>
-//       </section>
-
-//       {/* FAQs (UI) */}
-//       <section className="py-16">
-//         <div className="max-w-4xl mx-auto px-4">
-//           <h2 className="text-3xl font-bold text-center mb-10">
-//             Frequently Asked Questions
-//           </h2>
-
-//           <div className="space-y-4">
-//             <details className="bg-white rounded-lg shadow-sm p-5">
-//               <summary className="font-semibold cursor-pointer">
-//                 Is the Sign PDF tool free?
-//               </summary>
-//               <p className="mt-2 text-gray-600">
-//                 Yes. PDFLinx Sign PDF is completely free — no sign-up, no
-//                 watermarks, no hidden costs.
-//               </p>
-//             </details>
-
-//             <details className="bg-white rounded-lg shadow-sm p-5">
-//               <summary className="font-semibold cursor-pointer">
-//                 Can I see where my signature will appear?
-//               </summary>
-//               <p className="mt-2 text-gray-600">
-//                 Yes! Our live preview feature shows your PDF with the signature overlay
-//                 in real-time. You can drag the signature to position it perfectly.
-//               </p>
-//             </details>
-
-//             <details className="bg-white rounded-lg shadow-sm p-5">
-//               <summary className="font-semibold cursor-pointer">
-//                 Can I draw my signature?
-//               </summary>
-//               <p className="mt-2 text-gray-600">
-//                 Yes. You can draw your signature using your mouse, trackpad, or
-//                 touchscreen. You can also upload an image file (PNG/JPG).
-//               </p>
-//             </details>
-
-//             <details className="bg-white rounded-lg shadow-sm p-5">
-//               <summary className="font-semibold cursor-pointer">
-//                 Are my files safe?
-//               </summary>
-//               <p className="mt-2 text-gray-600">
-//                 Yes. Files are processed automatically and deleted immediately
-//                 after signing. We never store your PDFs or signatures.
-//               </p>
-//             </details>
-
-//             <details className="bg-white rounded-lg shadow-sm p-5">
-//               <summary className="font-semibold cursor-pointer">
-//                 Can I sign multiple pages?
-//               </summary>
-//               <p className="mt-2 text-gray-600">
-//                 Yes. Select the page number where you want to add your signature.
-//                 For multiple signatures, process the PDF multiple times.
-//               </p>
-//             </details>
-
-//             <details className="bg-white rounded-lg shadow-sm p-5">
-//               <summary className="font-semibold cursor-pointer">
-//                 How do I position my signature accurately?
-//               </summary>
-//               <p className="mt-2 text-gray-600">
-//                 Simply drag the signature on the live preview to position it, or use
-//                 the position sliders for precise pixel-level control. You'll see the
-//                 changes in real-time.
-//               </p>
-//             </details>
-//           </div>
-//         </div>
-//       </section>
-
-//       <RelatedToolsSection currentPage="sign-pdf" />
-//     </>
-//   );
-// }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// // // // app/sign-pdf/page.jsx
-// // // "use client";
-
-// // // import { useRef, useState, useEffect } from "react";
-// // // import {
-// // //   Upload,
-// // //   FileText,
-// // //   Download,
-// // //   CheckCircle,
-// // //   X,
-// // //   PenTool,
-// // //   Eraser,
-// // //   Image as ImageIcon,
-// // // } from "lucide-react";
-// // // import Script from "next/script";
-// // // import RelatedToolsSection from "@/components/RelatedTools";
-
-// // // // No static import of pdfjs-dist here (to avoid SSR error)
-
-// // // export default function SignPdf() {
-// // //   const [pdfFile, setPdfFile] = useState(null);
-// // //   const [signatureImage, setSignatureImage] = useState(null);
-// // //   const [signaturePreview, setSignaturePreview] = useState("");
-// // //   const [drawMode, setDrawMode] = useState(false);
-// // //   const [loading, setLoading] = useState(false);
-// // //   const [success, setSuccess] = useState(false);
-// // //   const [error, setError] = useState("");
-
-// // //   // Position & size
-// // //   const [pageNumber, setPageNumber] = useState(1);
-// // //   const [xPosition, setXPosition] = useState(50);
-// // //   const [yPosition, setYPosition] = useState(650);
-// // //   const [signatureWidth, setSignatureWidth] = useState(150);
-// // //   const [signatureHeight, setSignatureHeight] = useState(75);
-
-// // //   // PDF preview states
-// // //   const [pdfDoc, setPdfDoc] = useState(null);
-// // //   const [currentPagePreview, setCurrentPagePreview] = useState(null);
-// // //   const [pdfjsLib, setPdfjsLib] = useState(null);
-// // //   const [pdfLoaded, setPdfLoaded] = useState(false);
-
-// // //   const canvasRef = useRef(null);       // Signature drawing canvas
-// // //   const pdfCanvasRef = useRef(null);    // PDF render canvas
-
-// // //   const isDrawing = useRef(false);
-
-// // //   // Dynamic load pdfjs (only on client)
-// // //   useEffect(() => {
-// // //     if (pdfLoaded) return;
-
-// // //     console.log("Starting pdfjs dynamic import...");
-// // //     import('pdfjs-dist')
-// // //       .then((module) => {
-// // //         console.log("pdfjs loaded successfully");
-// // //         const pdfjs = module;
-// // //         pdfjs.GlobalWorkerOptions.workerSrc = '/pdf.worker.min.mjs';
-// // //         console.log("WorkerSrc set:", pdfjs.GlobalWorkerOptions.workerSrc);
-// // //         setPdfjsLib(pdfjs);
-// // //         setPdfLoaded(true);
-// // //       })
-// // //       .catch((err) => {
-// // //         console.error("pdfjs dynamic import FAILED:", err);
-// // //         setError("PDF preview library load failed. Check console.");
-// // //       });
-// // //   }, [pdfLoaded]);
-
-// // //   // ==================== DRAWING ====================
-// // //   const startDrawing = (e) => {
-// // //     if (!drawMode) return;
-// // //     const canvas = canvasRef.current;
-// // //     if (!canvas) return;
-// // //     const rect = canvas.getBoundingClientRect();
-// // //     const x = e.clientX - rect.left;
-// // //     const y = e.clientY - rect.top;
-
-// // //     const ctx = canvas.getContext("2d");
-// // //     ctx.beginPath();
-// // //     ctx.moveTo(x, y);
-// // //     isDrawing.current = true;
-// // //   };
-
-// // //   const draw = (e) => {
-// // //     if (!drawMode || !isDrawing.current) return;
-// // //     const canvas = canvasRef.current;
-// // //     if (!canvas) return;
-// // //     const rect = canvas.getBoundingClientRect();
-// // //     const x = e.clientX - rect.left;
-// // //     const y = e.clientY - rect.top;
-
-// // //     const ctx = canvas.getContext("2d");
-// // //     ctx.lineTo(x, y);
-// // //     ctx.strokeStyle = "#000";
-// // //     ctx.lineWidth = 2;
-// // //     ctx.lineCap = "round";
-// // //     ctx.stroke();
-// // //   };
-
-// // //   const stopDrawing = () => {
-// // //     isDrawing.current = false;
-// // //   };
-
-// // //   const clearCanvas = () => {
-// // //     const canvas = canvasRef.current;
-// // //     if (!canvas) return;
-// // //     const ctx = canvas.getContext("2d");
-// // //     ctx.clearRect(0, 0, canvas.width, canvas.height);
-// // //     setSignatureImage(null);
-// // //     setSignaturePreview("");
-// // //   };
-
-// // //   const saveCanvasAsImage = () => {
-// // //     const canvas = canvasRef.current;
-// // //     if (!canvas) return;
-// // //     canvas.toBlob((blob) => {
-// // //       if (!blob) return;
-// // //       const file = new File([blob], "signature.png", { type: "image/png" });
-// // //       setSignatureImage(file);
-// // //       setSignaturePreview(URL.createObjectURL(blob));
-// // //       setDrawMode(false);
-// // //     }, 'image/png');
-// // //   };
-
-// // //   // ==================== PDF PREVIEW ====================
-// // //   const loadPdfPreview = async (file) => {
-// // //     if (!file) return;
-
-// // //     if (!pdfLoaded || !pdfjsLib) {
-// // //       setError("PDF library abhi load ho rahi hai...");
-// // //       console.log("PDF library not ready yet");
-// // //       return;
-// // //     }
-
-// // //     try {
-// // //       console.log("Loading PDF preview...");
-// // //       const arrayBuffer = await file.arrayBuffer();
-// // //       const loadingTask = pdfjsLib.getDocument({ data: arrayBuffer });
-// // //       const pdf = await loadingTask.promise;
-// // //       console.log("PDF loaded with", pdf.numPages, "pages");
-
-// // //       setPdfDoc(pdf);
-// // //       await renderPagePreview(pdf, pageNumber);
-// // //     } catch (err) {
-// // //       console.error("PDF load failed:", err);
-// // //       setError("PDF preview load failed: " + err.message);
-// // //     }
-// // //   };
-
-// // //   const renderPagePreview = async (pdf, pgNum) => {
-// // //     if (!pdf || !pdfCanvasRef.current) {
-// // //       console.log("Render failed: pdf or canvas missing");
-// // //       return;
-// // //     }
-
-// // //     try {
-// // //       console.log("Rendering page", pgNum);
-// // //       const page = await pdf.getPage(pgNum);
-// // //       const scale = 1.2;
-// // //       const viewport = page.getViewport({ scale });
-
-// // //       const canvas = pdfCanvasRef.current;
-// // //       canvas.height = viewport.height;
-// // //       canvas.width = viewport.width;
-
-// // //       const context = canvas.getContext("2d");
-// // //       await page.render({ canvasContext: context, viewport }).promise;
-// // //       console.log("Page rendered OK");
-// // //       setCurrentPagePreview(pgNum);
-// // //     } catch (err) {
-// // //       console.error("Render error:", err);
-// // //       setError("Page render failed");
-// // //     }
-// // //   };
-
-// // //   // ==================== HANDLERS ====================
-// // //   const handlePdfUpload = (e) => {
-// // //     const file = e.target.files?.[0];
-// // //     if (file && file.type === "application/pdf") {
-// // //       setPdfFile(file);
-// // //       setSuccess(false);
-// // //       setError("");
-// // //       loadPdfPreview(file);
-// // //     } else if (file) {
-// // //       setError("Sirf PDF file upload karo");
-// // //     }
-// // //   };
-
-// // //   const handleSignatureUpload = (e) => {
-// // //     const file = e.target.files?.[0];
-// // //     if (file) {
-// // //       setSignatureImage(file);
-// // //       setSignaturePreview(URL.createObjectURL(file));
-// // //       setDrawMode(false);
-// // //       setSuccess(false);
-// // //       setError("");
-// // //     }
-// // //   };
-
-// // //   const handleSubmit = async (e) => {
-// // //     e.preventDefault();
-
-// // //     if (!pdfFile) return setError("PDF upload karo pehle");
-// // //     if (!signatureImage) return setError("Signature banao ya upload karo");
-
-// // //     setLoading(true);
-// // //     setSuccess(false);
-// // //     setError("");
-
-// // //     const formData = new FormData();
-// // //     formData.append("pdfFile", pdfFile);
-// // //     formData.append("signatureImage", signatureImage);
-// // //     formData.append("pageNumber", String(pageNumber));
-// // //     formData.append("xPosition", String(xPosition));
-// // //     formData.append("yPosition", String(yPosition));
-// // //     formData.append("width", String(signatureWidth));
-// // //     formData.append("height", String(signatureHeight));
-
-// // //     try {
-// // //       const res = await fetch("/convert/sign-pdf", {
-// // //         method: "POST",
-// // //         body: formData,
-// // //       });
-
-// // //       if (!res.ok) throw new Error("Signing failed");
-
-// // //       const blob = await res.blob();
-// // //       const outName = pdfFile.name.replace(/\.pdf$/i, "") + "-signed.pdf";
-// // //       const url = URL.createObjectURL(blob);
-// // //       const a = document.createElement("a");
-// // //       a.href = url;
-// // //       a.download = outName;
-// // //       a.click();
-// // //       URL.revokeObjectURL(url);
-// // //       setSuccess(true);
-// // //     } catch (err) {
-// // //       setError(err.message || "Kuch galat ho gaya");
-// // //       console.error(err);
-// // //     } finally {
-// // //       setLoading(false);
-// // //     }
-// // //   };
-
-// // //   // Re-render on page change
-// // //   useEffect(() => {
-// // //     if (pdfDoc && pageNumber !== currentPagePreview) {
-// // //       renderPagePreview(pdfDoc, pageNumber);
-// // //     }
-// // //   }, [pageNumber, pdfDoc]);
-
-// // //   return (
-// // //     <>
-// // //       <main className="min-h-screen bg-linear-to-br from-blue-50 via-white to-purple-50 py-8 px-4">
-// // //         <div className="max-w-5xl mx-auto">
-// // //           <div className="text-center mb-8">
-// // //             <h1 className="text-3xl md:text-4xl font-bold bg-linear-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-4">
-// // //               Sign PDF Online Free
-// // //             </h1>
-// // //             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-// // //               Add your signature to PDF documents in seconds. Draw or upload your signature and place it anywhere on your PDF.
-// // //             </p>
-// // //           </div>
-
-// // //           <div className="bg-white rounded-2xl shadow-lg p-8 border border-gray-100">
-// // //             <form onSubmit={handleSubmit} className="space-y-6">
-// // //               {/* 1. Upload PDF */}
-// // //               <div>
-// // //                 <label className="block mb-2 text-sm font-medium text-gray-700">
-// // //                   1. Upload PDF Document
-// // //                 </label>
-// // //                 <div className="relative">
-// // //                   <label className="block">
-// // //                     <div
-// // //                       className={`border-2 border-dashed rounded-xl p-6 text-center cursor-pointer transition-all ${
-// // //                         pdfFile ? "border-green-500 bg-green-50" : "border-gray-300 hover:border-blue-500 hover:bg-blue-50"
-// // //                       }`}
-// // //                     >
-// // //                       <Upload className="w-10 h-10 mx-auto mb-2 text-blue-600" />
-// // //                       <p className="text-base font-semibold text-gray-700">
-// // //                         {pdfFile ? pdfFile.name : "Click to upload PDF or drag & drop"}
-// // //                       </p>
-// // //                       <p className="text-sm text-gray-500 mt-1">Max 25MB • .pdf only</p>
-// // //                     </div>
-// // //                     <input
-// // //                       type="file"
-// // //                       accept="application/pdf"
-// // //                       onChange={handlePdfUpload}
-// // //                       className="hidden"
-// // //                     />
-// // //                   </label>
-// // //                 </div>
-
-// // //                 {pdfFile && (
-// // //                   <div className="mt-3 flex items-center justify-between bg-gray-50 p-3 rounded-lg">
-// // //                     <div className="flex items-center gap-2">
-// // //                       <FileText className="w-5 h-5 text-red-600" />
-// // //                       <span className="text-sm font-medium">{pdfFile.name}</span>
-// // //                       <span className="text-xs text-gray-500">
-// // //                         ({(pdfFile.size / 1024 / 1024).toFixed(2)} MB)
-// // //                       </span>
-// // //                     </div>
-// // //                     <button
-// // //                       type="button"
-// // //                       onClick={() => {
-// // //                         setPdfFile(null);
-// // //                         setPdfDoc(null);
-// // //                         setError("");
-// // //                       }}
-// // //                       className="text-red-500 hover:bg-red-100 p-1 rounded"
-// // //                     >
-// // //                       <X className="w-5 h-5" />
-// // //                     </button>
-// // //                   </div>
-// // //                 )}
-// // //               </div>
-
-// // //               {/* 2. Signature */}
-// // //               <div>
-// // //                 <label className="block mb-2 text-sm font-medium text-gray-700">
-// // //                   2. Create or Upload Signature
-// // //                 </label>
-
-// // //                 <div className="grid md:grid-cols-2 gap-4 mb-4">
-// // //                   <button
-// // //                     type="button"
-// // //                     onClick={() => setDrawMode(true)}
-// // //                     className={`flex items-center justify-center gap-2 p-4 rounded-xl border-2 transition-all ${
-// // //                       drawMode ? "border-blue-600 bg-blue-50 shadow-md" : "border-gray-300 hover:border-blue-400"
-// // //                     }`}
-// // //                   >
-// // //                     <PenTool className="w-5 h-5 text-blue-600" />
-// // //                     <span className="font-semibold">Draw Signature</span>
-// // //                   </button>
-
-// // //                   <label className="flex items-center justify-center gap-2 p-4 rounded-xl border-2 border-gray-300 hover:border-purple-400 cursor-pointer transition-all">
-// // //                     <ImageIcon className="w-5 h-5 text-purple-600" />
-// // //                     <span className="font-semibold">Upload Image</span>
-// // //                     <input
-// // //                       type="file"
-// // //                       accept="image/png,image/jpeg"
-// // //                       onChange={handleSignatureUpload}
-// // //                       className="hidden"
-// // //                     />
-// // //                   </label>
-// // //                 </div>
-
-// // //                 {drawMode && (
-// // //                   <div className="border-2 border-gray-300 rounded-xl p-4 bg-gray-50">
-// // //                     <canvas
-// // //                       ref={canvasRef}
-// // //                       width={600}
-// // //                       height={200}
-// // //                       onMouseDown={startDrawing}
-// // //                       onMouseMove={draw}
-// // //                       onMouseUp={stopDrawing}
-// // //                       onMouseLeave={stopDrawing}
-// // //                       className="border-2 border-dashed border-gray-400 bg-white cursor-crosshair w-full rounded-lg touch-none"
-// // //                     />
-// // //                     <div className="flex gap-3 mt-3">
-// // //                       <button
-// // //                         type="button"
-// // //                         onClick={clearCanvas}
-// // //                         className="flex items-center gap-2 px-4 py-2 bg-red-100 text-red-700 rounded-lg hover:bg-red-200 transition"
-// // //                       >
-// // //                         <Eraser className="w-4 h-4" />
-// // //                         Clear
-// // //                       </button>
-// // //                       <button
-// // //                         type="button"
-// // //                         onClick={saveCanvasAsImage}
-// // //                         className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
-// // //                       >
-// // //                         <CheckCircle className="w-4 h-4" />
-// // //                         Save Signature
-// // //                       </button>
-// // //                     </div>
-// // //                   </div>
-// // //                 )}
-
-// // //                 {signaturePreview && !drawMode && (
-// // //                   <div className="border-2 border-green-500 bg-green-50 rounded-xl p-4">
-// // //                     <p className="text-sm font-medium text-green-700 mb-2">✓ Signature ready</p>
-// // //                     <img
-// // //                       src={signaturePreview}
-// // //                       alt="Signature preview"
-// // //                       className="max-h-32 bg-white border-2 border-gray-300 rounded-lg p-2 object-contain"
-// // //                     />
-// // //                   </div>
-// // //                 )}
-// // //               </div>
-
-// // //               {/* LIVE PREVIEW SECTION */}
-// // //               {pdfFile && (
-// // //                 <div className="mt-6">
-// // //                   <label className="block mb-2 text-sm font-medium text-gray-700">
-// // //                     Live Preview (Signature Placement)
-// // //                   </label>
-// // //                   <div className="relative border-2 border-gray-300 rounded-xl overflow-hidden bg-gray-50 min-h-[400px]">
-// // //                     {pdfLoaded ? (
-// // //                       <canvas ref={pdfCanvasRef} className="w-full h-auto block" />
-// // //                     ) : (
-// // //                       <div className="absolute inset-0 flex items-center justify-center text-gray-500">
-// // //                         PDF library abhi load ho rahi hai...
-// // //                       </div>
-// // //                     )}
-// // //                     {signaturePreview && pdfCanvasRef.current?.width && pdfLoaded && (
-// // //                       <img
-// // //                         src={signaturePreview}
-// // //                         alt="Signature overlay preview"
-// // //                         className="absolute border-2 border-blue-500 border-dashed pointer-events-none opacity-80 shadow-md"
-// // //                         style={{
-// // //                           left: `${xPosition}px`,
-// // //                           top: `${pdfCanvasRef.current.height - yPosition - signatureHeight}px`,
-// // //                           width: `${signatureWidth}px`,
-// // //                           height: `${signatureHeight}px`,
-// // //                         }}
-// // //                       />
-// // //                     )}
-// // //                   </div>
-// // //                   <p className="text-xs text-gray-500 mt-1">
-// // //                     Adjust X/Y/Size below — changes appear here instantly.
-// // //                   </p>
-// // //                 </div>
-// // //               )}
-
-// // //               {/* 3. Position Settings */}
-// // //               <div>
-// // //                 <label className="block mb-3 text-sm font-medium text-gray-700">
-// // //                   3. Position & Size Settings
-// // //                 </label>
-
-// // //                 <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-4">
-// // //                   <div>
-// // //                     <label className="block text-xs text-gray-600 mb-1">Page Number</label>
-// // //                     <input
-// // //                       type="number"
-// // //                       min="1"
-// // //                       value={pageNumber}
-// // //                       onChange={(e) => setPageNumber(Math.max(1, parseInt(e.target.value) || 1))}
-// // //                       className="w-full px-3 py-2 border-2 border-gray-300 rounded-lg focus:border-blue-500 focus:outline-none"
-// // //                     />
-// // //                   </div>
-// // //                   <div>
-// // //                     <label className="block text-xs text-gray-600 mb-1">X Position (px)</label>
-// // //                     <input
-// // //                       type="number"
-// // //                       min="0"
-// // //                       value={xPosition}
-// // //                       onChange={(e) => setXPosition(Math.max(0, parseInt(e.target.value) || 0))}
-// // //                       className="w-full px-3 py-2 border-2 border-gray-300 rounded-lg focus:border-blue-500 focus:outline-none"
-// // //                     />
-// // //                   </div>
-// // //                   <div>
-// // //                     <label className="block text-xs text-gray-600 mb-1">Y Position (px)</label>
-// // //                     <input
-// // //                       type="number"
-// // //                       min="0"
-// // //                       value={yPosition}
-// // //                       onChange={(e) => setYPosition(Math.max(0, parseInt(e.target.value) || 0))}
-// // //                       className="w-full px-3 py-2 border-2 border-gray-300 rounded-lg focus:border-blue-500 focus:outline-none"
-// // //                     />
-// // //                   </div>
-// // //                   <div>
-// // //                     <label className="block text-xs text-gray-600 mb-1">Width (px)</label>
-// // //                     <input
-// // //                       type="number"
-// // //                       min="50"
-// // //                       value={signatureWidth}
-// // //                       onChange={(e) => setSignatureWidth(Math.max(50, parseInt(e.target.value) || 150))}
-// // //                       className="w-full px-3 py-2 border-2 border-gray-300 rounded-lg focus:border-blue-500 focus:outline-none"
-// // //                     />
-// // //                   </div>
-// // //                   <div>
-// // //                     <label className="block text-xs text-gray-600 mb-1">Height (px)</label>
-// // //                     <input
-// // //                       type="number"
-// // //                       min="30"
-// // //                       value={signatureHeight}
-// // //                       onChange={(e) => setSignatureHeight(Math.max(30, parseInt(e.target.value) || 75))}
-// // //                       className="w-full px-3 py-2 border-2 border-gray-300 rounded-lg focus:border-blue-500 focus:outline-none"
-// // //                     />
-// // //                   </div>
-// // //                 </div>
-
-// // //                 <p className="text-xs text-gray-500 mt-2">
-// // //                   💡 Tip: Adjust X and Y to move signature. Lower Y = higher on page.
-// // //                 </p>
-// // //               </div>
-
-// // //               {error && (
-// // //                 <div className="bg-red-50 border border-red-200 rounded-xl p-4 text-red-700 text-sm">
-// // //                   {error}
-// // //                 </div>
-// // //               )}
-
-// // //               <button
-// // //                 type="submit"
-// // //                 disabled={loading || !pdfFile || !signatureImage || !pdfLoaded}
-// // //                 className="w-full bg-linear-to-r from-blue-600 to-purple-600 text-white font-semibold text-lg py-4 rounded-xl hover:from-blue-700 hover:to-purple-700 disabled:opacity-60 transition shadow-md flex items-center justify-center gap-2"
-// // //               >
-// // //                 {loading ? (
-// // //                   <>
-// // //                     <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
-// // //                     Signing PDF...
-// // //                   </>
-// // //                 ) : (
-// // //                   <>
-// // //                     <PenTool className="w-5 h-5" />
-// // //                     Sign PDF
-// // //                   </>
-// // //                 )}
-// // //               </button>
-// // //             </form>
-
-// // //             {success && (
-// // //               <div className="mt-6 p-4 bg-green-50 border border-green-200 rounded-xl text-center">
-// // //                 <CheckCircle className="w-12 h-12 text-green-600 mx-auto mb-3" />
-// // //                 <p className="text-xl font-bold text-green-700 mb-2">Done! Signed PDF downloaded</p>
-// // //               </div>
-// // //             )}
-// // //           </div>
-
-// // //           <p className="text-center mt-6 text-gray-600">
-// // //             No account • No watermark • Files auto-deleted • 100% free
-// // //           </p>
-// // //         </div>
-// // //       </main>
-
-// // //       {/* SEO, FAQs, Related Tools – same as before */}
-// // //       <RelatedToolsSection currentPage="sign-pdf" />
-// // //     </>
-// // //   );
-// // // }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// // // // // app/sign-pdf/page.jsx
-// // // // "use client";
-
-// // // // import { useRef, useState, useEffect } from "react";
-// // // // // import * as pdfjsLib from 'pdfjs-dist';
-// // // // import {
-// // // //   Upload,
-// // // //   FileText,
-// // // //   Download,
-// // // //   CheckCircle,
-// // // //   X,
-// // // //   PenTool,
-// // // //   Eraser,
-// // // //   Image as ImageIcon,
-// // // // } from "lucide-react";
-// // // // import Script from "next/script";
-// // // // import RelatedToolsSection from "@/components/RelatedTools";
-
-// // // // // pdfjs imports
-// // // // // import * as pdfjsLib from 'pdfjs-dist';
-// // // // // import pdfjsWorker from 'pdfjs-dist/build/pdf.worker.entry';
-
-// // // // export default function SignPdf() {
-// // // //   const [pdfFile, setPdfFile] = useState(null);
-// // // //   const [signatureImage, setSignatureImage] = useState(null);
-// // // //   const [signaturePreview, setSignaturePreview] = useState("");
-// // // //   const [drawMode, setDrawMode] = useState(false);
-// // // //   const [loading, setLoading] = useState(false);
-// // // //   const [success, setSuccess] = useState(false);
-// // // //   const [error, setError] = useState("");
-// // // //   const [pdfjs, setPdfjs] = useState(null);
-// // // //   const [pdfjsLib, setPdfjsLib] = useState(null);
-// // // // const [pdfLoaded, setPdfLoaded] = useState(false);
-
-// // // //   // Signature position & size
-// // // //   const [pageNumber, setPageNumber] = useState(1);
-// // // //   const [xPosition, setXPosition] = useState(50);
-// // // //   const [yPosition, setYPosition] = useState(650);
-// // // //   const [signatureWidth, setSignatureWidth] = useState(150);
-// // // //   const [signatureHeight, setSignatureHeight] = useState(75);
-
-// // // //   // PDF preview states
-// // // //   const [pdfDoc, setPdfDoc] = useState(null);
-// // // //   const [currentPagePreview, setCurrentPagePreview] = useState(null);
-
-// // // //   const canvasRef = useRef(null);          // Drawing canvas for signature
-// // // //   const pdfCanvasRef = useRef(null);       // Canvas for PDF preview
-
-// // // //   const isDrawing = useRef(false);
-
-
-// // // //   useEffect(() => {
-// // // //   if (pdfLoaded) return; // Already loaded
-
-// // // //   console.log("Attempting to load pdfjs dynamically...");
-// // // //   import('pdfjs-dist')
-// // // //     .then((module) => {
-// // // //       console.log("pdfjs imported successfully");
-// // // //       const pdfjs = module;
-// // // //       pdfjs.GlobalWorkerOptions.workerSrc = '/pdf.worker.min.mjs';
-// // // //       console.log("Worker set:", pdfjs.GlobalWorkerOptions.workerSrc);
-// // // //       setPdfjsLib(pdfjs);
-// // // //       setPdfLoaded(true);
-// // // //     })
-// // // //     .catch((err) => {
-// // // //       console.error("Dynamic import failed:", err);
-// // // //       setError("PDF preview library load nahi ho rahi: " + err.message);
-// // // //     });
-// // // // }, [pdfLoaded]);
-
-
-// // // // // useEffect(() => {
-// // // // //   pdfjsLib.GlobalWorkerOptions.workerSrc = '/pdf.worker.min.mjs';
-// // // // // }, []);
-
-
-// // // // // const [pdfjsLib, setPdfjsLib] = useState(null);  // New state add kar
-// // // // // useEffect(() => {
-// // // // //   import('pdfjs-dist').then((module) => {
-// // // // //     const pdfjsLib = module;
-// // // // //     pdfjsLib.GlobalWorkerOptions.workerSrc = '/pdf.worker.min.mjs';  // ya jo path tune copy kiya
-// // // // //     setPdfjs(pdfjsLib);
-// // // // //   }).catch((err) => {
-// // // // //     console.error("pdfjs load failed:", err);
-// // // // //     setError("PDF preview library load nahi ho rahi");
-// // // // //   });
-// // // // // }, []);
-// // // // // useEffect(() => {
-// // // // //   // Load pdfjs only once on client
-// // // // //   import('pdfjs-dist').then((module) => {
-// // // // //     const pdfjs = module;
-// // // // //     pdfjs.GlobalWorkerOptions.workerSrc = '/pdf.worker.min.mjs';  // Worker copy wala path
-// // // // //     setPdfjsLib(pdfjs);
-// // // // //   }).catch(err => {
-// // // // //     console.error("pdfjs load failed", err);
-// // // // //     setError("PDF library load nahi ho rahi");
-// // // // //   });
-// // // // // }, []);
-
-
-// // // //   // ==================== CANVAS DRAWING ====================
-// // // //   const startDrawing = (e) => {
-// // // //     if (!drawMode) return;
-// // // //     const canvas = canvasRef.current;
-// // // //     if (!canvas) return;
-// // // //     const rect = canvas.getBoundingClientRect();
-// // // //     const x = e.clientX - rect.left;
-// // // //     const y = e.clientY - rect.top;
-
-// // // //     const ctx = canvas.getContext("2d");
-// // // //     ctx.beginPath();
-// // // //     ctx.moveTo(x, y);
-// // // //     isDrawing.current = true;
-// // // //   };
-
-// // // //   const draw = (e) => {
-// // // //     if (!drawMode || !isDrawing.current) return;
-// // // //     const canvas = canvasRef.current;
-// // // //     if (!canvas) return;
-// // // //     const rect = canvas.getBoundingClientRect();
-// // // //     const x = e.clientX - rect.left;
-// // // //     const y = e.clientY - rect.top;
-
-// // // //     const ctx = canvas.getContext("2d");
-// // // //     ctx.lineTo(x, y);
-// // // //     ctx.strokeStyle = "#000";
-// // // //     ctx.lineWidth = 2;
-// // // //     ctx.lineCap = "round";
-// // // //     ctx.stroke();
-// // // //   };
-
-// // // //   const stopDrawing = () => {
-// // // //     isDrawing.current = false;
-// // // //   };
-
-// // // //   const clearCanvas = () => {
-// // // //     const canvas = canvasRef.current;
-// // // //     if (!canvas) return;
-// // // //     const ctx = canvas.getContext("2d");
-// // // //     ctx.clearRect(0, 0, canvas.width, canvas.height);
-// // // //     setSignatureImage(null);
-// // // //     setSignaturePreview("");
-// // // //   };
-
-// // // //   const saveCanvasAsImage = () => {
-// // // //     const canvas = canvasRef.current;
-// // // //     if (!canvas) return;
-// // // //     canvas.toBlob((blob) => {
-// // // //       if (!blob) return;
-// // // //       const file = new File([blob], "signature.png", { type: "image/png" });
-// // // //       setSignatureImage(file);
-// // // //       setSignaturePreview(URL.createObjectURL(blob));
-// // // //       setDrawMode(false);
-// // // //     }, 'image/png');
-// // // //   };
-
-// // // //   // ==================== PDF PREVIEW ====================
-// // // // //   const loadPdfPreview = async (file) => {
-// // // // //     if (!file) return;
-
-// // // // //     try {
-// // // // //       setError(""); // Clear previous errors
-// // // // //       const arrayBuffer = await file.arrayBuffer();
-// // // // //       const loadingTask = pdfjsLib.getDocument({ data: arrayBuffer });
-// // // // //       const pdf = await loadingTask.promise;
-
-// // // // //       setPdfDoc(pdf);
-// // // // //       await renderPagePreview(pdf, pageNumber);
-// // // // //     } catch (err) {
-// // // // //       console.error("PDF preview load failed:", err);
-// // // // //       setError(`Failed to load PDF preview: ${err.message || "Unknown error"}`);
-// // // // //     }
-// // // // //   };
-
-
-
-// // // // // const loadPdfPreview = async (file) => {
-// // // // //   if (!file) return;
-
-// // // // //   try {
-// // // // //     setError("");
-// // // // //     const arrayBuffer = await file.arrayBuffer();
-// // // // //     const loadingTask = pdfjsLib.getDocument({ data: arrayBuffer });
-// // // // //     const pdf = await loadingTask.promise;
-
-// // // // //     setPdfDoc(pdf);
-// // // // //     await renderPagePreview(pdf, pageNumber);
-// // // // //   } catch (err) {
-// // // // //     console.error("PDF preview error:", err);
-// // // // //     setError("PDF preview load nahi ho raha: " + (err.message || "Kuch galat hua"));
-// // // // //   }
-// // // // // };
-
-// // // // // const loadPdfPreview = async (file) => {
-// // // // //   if (!file || !pdfjs) {
-// // // // //     if (!pdfjs) setError("PDF library abhi load ho rahi hai...");
-// // // // //     return;
-// // // // //   }
-
-// // // // //   try {
-// // // // //     setError("");
-// // // // //     const arrayBuffer = await file.arrayBuffer();
-// // // // //     const loadingTask = pdfjs.getDocument({ data: arrayBuffer });
-// // // // //     const pdf = await loadingTask.promise;
-
-// // // // //     setPdfDoc(pdf);
-// // // // //     await renderPagePreview(pdf, pageNumber);
-// // // // //   } catch (err) {
-// // // // //     console.error("PDF load error:", err);
-// // // // //     setError("PDF preview load failed: " + err.message);
-// // // // //   }
-// // // // // };
-
-
-// // // // const loadPdfPreview = async (file) => {
-// // // //   if (!file) return;
-
-// // // //   if (!pdfLoaded || !pdfjsLib) {
-// // // //     setError("PDF library abhi load ho rahi hai... thoda wait karo");
-// // // //     console.log("PDF library not ready yet");
-// // // //     return;
-// // // //   }
-
-// // // //   try {
-// // // //     console.log("Loading PDF with pdfjs");
-// // // //     const arrayBuffer = await file.arrayBuffer();
-// // // //     const loadingTask = pdfjsLib.getDocument({ data: arrayBuffer });
-// // // //     const pdf = await loadingTask.promise;
-// // // //     console.log("PDF document loaded", pdf.numPages, "pages");
-
-// // // //     setPdfDoc(pdf);
-// // // //     await renderPagePreview(pdf, pageNumber);
-// // // //   } catch (err) {
-// // // //     console.error("PDF load/render error:", err);
-// // // //     setError("PDF preview load failed: " + err.message);
-// // // //   }
-// // // // };
-
-// // // // // const loadPdfPreview = async (file) => {
-// // // // //   if (!file || !pdfjsLib) return;  // Wait for library to load
-
-// // // // //   try {
-// // // // //     setError("");
-// // // // //     const arrayBuffer = await file.arrayBuffer();
-// // // // //     const loadingTask = pdfjsLib.getDocument({ data: arrayBuffer });
-// // // // //     const pdf = await loadingTask.promise;
-
-// // // // //     setPdfDoc(pdf);
-// // // // //     await renderPagePreview(pdf, pageNumber);
-// // // // //   } catch (err) {
-// // // // //     console.error(err);
-// // // // //     setError("PDF preview load failed: " + err.message);
-// // // // //   }
-// // // // // };
-
-// // // // const renderPagePreview = async (pdf, pgNum) => {
-// // // //   if (!pdf || !pdfCanvasRef.current) {
-// // // //     console.log("Render failed: pdf or canvas null");
-// // // //     return;
-// // // //   }
-
-// // // //   try {
-// // // //     console.log("Rendering page", pgNum);
-// // // //     const page = await pdf.getPage(pgNum);
-// // // //     const scale = 1.0; // Simple scale se shuru kar
-// // // //     const viewport = page.getViewport({ scale });
-
-// // // //     const canvas = pdfCanvasRef.current;
-// // // //     canvas.height = viewport.height;
-// // // //     canvas.width = viewport.width;
-
-// // // //     const context = canvas.getContext("2d");
-// // // //     await page.render({ canvasContext: context, viewport }).promise;
-// // // //     console.log("Page rendered successfully");
-// // // //     setCurrentPagePreview(pgNum);
-// // // //   } catch (err) {
-// // // //     console.error("Page render error:", err);
-// // // //     setError("Page render failed: " + err.message);
-// // // //   }
-// // // // };
-// // // //   // ==================== FILE HANDLERS ====================
-// // // //   const handlePdfUpload = (e) => {
-// // // //     const file = e.target.files?.[0];
-// // // //     if (file && file.type === "application/pdf") {
-// // // //       setPdfFile(file);
-// // // //       setSuccess(false);
-// // // //       setError("");
-// // // //       loadPdfPreview(file);
-// // // //     } else if (file) {
-// // // //       setError("Please upload a valid PDF file");
-// // // //     }
-// // // //   };
-
-// // // //   const handleSignatureUpload = (e) => {
-// // // //     const file = e.target.files?.[0];
-// // // //     if (file) {
-// // // //       setSignatureImage(file);
-// // // //       setSignaturePreview(URL.createObjectURL(file));
-// // // //       setDrawMode(false);
-// // // //       setSuccess(false);
-// // // //       setError("");
-// // // //     }
-// // // //   };
-
-// // // //   const downloadBlob = (blob, filename) => {
-// // // //     const url = window.URL.createObjectURL(blob);
-// // // //     const a = document.createElement("a");
-// // // //     a.href = url;
-// // // //     a.download = filename;
-// // // //     a.click();
-// // // //     window.URL.revokeObjectURL(url);
-// // // //   };
-
-// // // //   // ==================== SUBMIT ====================
-// // // //   const handleSubmit = async (e) => {
-// // // //     e.preventDefault();
-
-// // // //     if (!pdfFile) {
-// // // //       setError("Please upload a PDF file!");
-// // // //       return;
-// // // //     }
-
-// // // //     if (!signatureImage) {
-// // // //       setError("Please provide a signature (draw or upload image)!");
-// // // //       return;
-// // // //     }
-
-// // // //     setLoading(true);
-// // // //     setSuccess(false);
-// // // //     setError("");
-
-// // // //     const formData = new FormData();
-// // // //     formData.append("pdfFile", pdfFile);
-// // // //     formData.append("signatureImage", signatureImage);
-// // // //     formData.append("pageNumber", String(pageNumber));
-// // // //     formData.append("xPosition", String(xPosition));
-// // // //     formData.append("yPosition", String(yPosition));
-// // // //     formData.append("width", String(signatureWidth));
-// // // //     formData.append("height", String(signatureHeight));
-
-// // // //     try {
-// // // //       const res = await fetch("/convert/sign-pdf", {
-// // // //         method: "POST",
-// // // //         body: formData,
-// // // //       });
-
-// // // //       if (!res.ok) {
-// // // //         const errorData = await res.json().catch(() => ({}));
-// // // //         throw new Error(errorData.error || "Signing failed");
-// // // //       }
-
-// // // //       const blob = await res.blob();
-// // // //       const outName = pdfFile.name.replace(/\.pdf$/i, "") + "-signed.pdf";
-// // // //       downloadBlob(blob, outName);
-// // // //       setSuccess(true);
-// // // //     } catch (err) {
-// // // //       setError(err.message || "Something went wrong. Please try again.");
-// // // //       console.error(err);
-// // // //     } finally {
-// // // //       setLoading(false);
-// // // //     }
-// // // //   };
-
-// // // //   // Re-render when page number changes
-// // // //   useEffect(() => {
-// // // //     if (pdfDoc && pageNumber !== currentPagePreview) {
-// // // //       renderPagePreview(pdfDoc, pageNumber);
-// // // //     }
-// // // //   }, [pageNumber, pdfDoc]);
-
-// // // //   return (
-// // // //     <>
-// // // //       {/* Your SEO Scripts here - keep as is */}
-// // // //       {/* <Script id="howto-schema-sign" ... /> etc. */}
-
-// // // //       <main className="min-h-screen bg-linear-to-br from-blue-50 via-white to-purple-50 py-8 px-4">
-// // // //         <div className="max-w-5xl mx-auto">
-// // // //           <div className="text-center mb-8">
-// // // //             <h1 className="text-3xl md:text-4xl font-bold bg-linear-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-4">
-// // // //               Sign PDF Online Free
-// // // //             </h1>
-// // // //             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-// // // //               Add your signature to PDF documents in seconds. Draw or upload your signature and place it anywhere on your PDF.
-// // // //             </p>
-// // // //           </div>
-
-// // // //           <div className="bg-white rounded-2xl shadow-lg p-8 border border-gray-100">
-// // // //             <form onSubmit={handleSubmit} className="space-y-6">
-// // // //               {/* 1. Upload PDF */}
-// // // //               <div>
-// // // //                 <label className="block mb-2 text-sm font-medium text-gray-700">
-// // // //                   1. Upload PDF Document
-// // // //                 </label>
-// // // //                 <div className="relative">
-// // // //                   <label className="block">
-// // // //                     <div
-// // // //                       className={`border-2 border-dashed rounded-xl p-6 text-center cursor-pointer transition-all ${
-// // // //                         pdfFile ? "border-green-500 bg-green-50" : "border-gray-300 hover:border-blue-500 hover:bg-blue-50"
-// // // //                       }`}
-// // // //                     >
-// // // //                       <Upload className="w-10 h-10 mx-auto mb-2 text-blue-600" />
-// // // //                       <p className="text-base font-semibold text-gray-700">
-// // // //                         {pdfFile ? pdfFile.name : "Click to upload PDF or drag & drop"}
-// // // //                       </p>
-// // // //                       <p className="text-sm text-gray-500 mt-1">Max 25MB • .pdf only</p>
-// // // //                     </div>
-// // // //                     <input
-// // // //                       type="file"
-// // // //                       accept="application/pdf"
-// // // //                       onChange={handlePdfUpload}
-// // // //                       className="hidden"
-// // // //                     />
-// // // //                   </label>
-// // // //                 </div>
-
-// // // //                 {pdfFile && (
-// // // //                   <div className="mt-3 flex items-center justify-between bg-gray-50 p-3 rounded-lg">
-// // // //                     <div className="flex items-center gap-2">
-// // // //                       <FileText className="w-5 h-5 text-red-600" />
-// // // //                       <span className="text-sm font-medium">{pdfFile.name}</span>
-// // // //                       <span className="text-xs text-gray-500">
-// // // //                         ({(pdfFile.size / 1024 / 1024).toFixed(2)} MB)
-// // // //                       </span>
-// // // //                     </div>
-// // // //                     <button
-// // // //                       type="button"
-// // // //                       onClick={() => {
-// // // //                         setPdfFile(null);
-// // // //                         setPdfDoc(null);
-// // // //                         setError("");
-// // // //                       }}
-// // // //                       className="text-red-500 hover:bg-red-100 p-1 rounded"
-// // // //                     >
-// // // //                       <X className="w-5 h-5" />
-// // // //                     </button>
-// // // //                   </div>
-// // // //                 )}
-// // // //               </div>
-
-// // // //               {/* 2. Signature */}
-// // // //               <div>
-// // // //                 <label className="block mb-2 text-sm font-medium text-gray-700">
-// // // //                   2. Create or Upload Signature
-// // // //                 </label>
-
-// // // //                 <div className="grid md:grid-cols-2 gap-4 mb-4">
-// // // //                   <button
-// // // //                     type="button"
-// // // //                     onClick={() => setDrawMode(true)}
-// // // //                     className={`flex items-center justify-center gap-2 p-4 rounded-xl border-2 transition-all ${
-// // // //                       drawMode ? "border-blue-600 bg-blue-50 shadow-md" : "border-gray-300 hover:border-blue-400"
-// // // //                     }`}
-// // // //                   >
-// // // //                     <PenTool className="w-5 h-5 text-blue-600" />
-// // // //                     <span className="font-semibold">Draw Signature</span>
-// // // //                   </button>
-
-// // // //                   <label className="flex items-center justify-center gap-2 p-4 rounded-xl border-2 border-gray-300 hover:border-purple-400 cursor-pointer transition-all">
-// // // //                     <ImageIcon className="w-5 h-5 text-purple-600" />
-// // // //                     <span className="font-semibold">Upload Image</span>
-// // // //                     <input
-// // // //                       type="file"
-// // // //                       accept="image/png,image/jpeg"
-// // // //                       onChange={handleSignatureUpload}
-// // // //                       className="hidden"
-// // // //                     />
-// // // //                   </label>
-// // // //                 </div>
-
-// // // //                 {drawMode && (
-// // // //                   <div className="border-2 border-gray-300 rounded-xl p-4 bg-gray-50">
-// // // //                     <canvas
-// // // //                       ref={canvasRef}
-// // // //                       width={600}
-// // // //                       height={200}
-// // // //                       onMouseDown={startDrawing}
-// // // //                       onMouseMove={draw}
-// // // //                       onMouseUp={stopDrawing}
-// // // //                       onMouseLeave={stopDrawing}
-// // // //                       className="border-2 border-dashed border-gray-400 bg-white cursor-crosshair w-full rounded-lg touch-none"
-// // // //                     />
-// // // //                     <div className="flex gap-3 mt-3">
-// // // //                       <button
-// // // //                         type="button"
-// // // //                         onClick={clearCanvas}
-// // // //                         className="flex items-center gap-2 px-4 py-2 bg-red-100 text-red-700 rounded-lg hover:bg-red-200 transition"
-// // // //                       >
-// // // //                         <Eraser className="w-4 h-4" />
-// // // //                         Clear
-// // // //                       </button>
-// // // //                       <button
-// // // //                         type="button"
-// // // //                         onClick={saveCanvasAsImage}
-// // // //                         className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
-// // // //                       >
-// // // //                         <CheckCircle className="w-4 h-4" />
-// // // //                         Save Signature
-// // // //                       </button>
-// // // //                     </div>
-// // // //                   </div>
-// // // //                 )}
-
-// // // //                 {signaturePreview && !drawMode && (
-// // // //                   <div className="border-2 border-green-500 bg-green-50 rounded-xl p-4">
-// // // //                     <p className="text-sm font-medium text-green-700 mb-2">✓ Signature ready</p>
-// // // //                     <img
-// // // //                       src={signaturePreview}
-// // // //                       alt="Signature preview"
-// // // //                       className="max-h-32 bg-white border-2 border-gray-300 rounded-lg p-2 object-contain"
-// // // //                     />
-// // // //                   </div>
-// // // //                 )}
-// // // //               </div>
-
-// // // //               {/* LIVE PREVIEW */}
-// // // //               {pdfFile && (
-// // // //                 <div className="mt-6">
-// // // //                   <label className="block mb-2 text-sm font-medium text-gray-700">
-// // // //                     Live Preview (Signature Placement)
-// // // //                   </label>
-// // // //                   <div className="relative border-2 border-gray-300 rounded-xl overflow-hidden bg-gray-50">
-// // // //                     <canvas ref={pdfCanvasRef} className="w-full h-auto block" />
-// // // //                     {signaturePreview && pdfCanvasRef.current?.width && (
-// // // //                       <img
-// // // //                         src={signaturePreview}
-// // // //                         alt="Signature preview overlay"
-// // // //                         className="absolute border-2 border-blue-500 border-dashed pointer-events-none opacity-80 shadow-md"
-// // // //                         style={{
-// // // //                           left: `${xPosition}px`,
-// // // //                           top: `${pdfCanvasRef.current.height - yPosition - signatureHeight}px`,
-// // // //                           width: `${signatureWidth}px`,
-// // // //                           height: `${signatureHeight}px`,
-// // // //                         }}
-// // // //                       />
-// // // //                     )}
-// // // //                   </div>
-// // // //                   <p className="text-xs text-gray-500 mt-1">
-// // // //                     Adjust position and size below — see changes instantly here.
-// // // //                   </p>
-// // // //                 </div>
-// // // //               )}
-
-// // // //               {/* 3. Position Settings */}
-// // // //               <div>
-// // // //                 <label className="block mb-3 text-sm font-medium text-gray-700">
-// // // //                   3. Position & Size Settings
-// // // //                 </label>
-
-// // // //                 <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-4">
-// // // //                   <div>
-// // // //                     <label className="block text-xs text-gray-600 mb-1">Page Number</label>
-// // // //                     <input
-// // // //                       type="number"
-// // // //                       min="1"
-// // // //                       value={pageNumber}
-// // // //                       onChange={(e) => setPageNumber(Math.max(1, parseInt(e.target.value) || 1))}
-// // // //                       className="w-full px-3 py-2 border-2 border-gray-300 rounded-lg focus:border-blue-500 focus:outline-none"
-// // // //                     />
-// // // //                   </div>
-// // // //                   <div>
-// // // //                     <label className="block text-xs text-gray-600 mb-1">X Position (px)</label>
-// // // //                     <input
-// // // //                       type="number"
-// // // //                       min="0"
-// // // //                       value={xPosition}
-// // // //                       onChange={(e) => setXPosition(Math.max(0, parseInt(e.target.value) || 0))}
-// // // //                       className="w-full px-3 py-2 border-2 border-gray-300 rounded-lg focus:border-blue-500 focus:outline-none"
-// // // //                     />
-// // // //                   </div>
-// // // //                   <div>
-// // // //                     <label className="block text-xs text-gray-600 mb-1">Y Position (px)</label>
-// // // //                     <input
-// // // //                       type="number"
-// // // //                       min="0"
-// // // //                       value={yPosition}
-// // // //                       onChange={(e) => setYPosition(Math.max(0, parseInt(e.target.value) || 0))}
-// // // //                       className="w-full px-3 py-2 border-2 border-gray-300 rounded-lg focus:border-blue-500 focus:outline-none"
-// // // //                     />
-// // // //                   </div>
-// // // //                   <div>
-// // // //                     <label className="block text-xs text-gray-600 mb-1">Width (px)</label>
-// // // //                     <input
-// // // //                       type="number"
-// // // //                       min="50"
-// // // //                       value={signatureWidth}
-// // // //                       onChange={(e) => setSignatureWidth(Math.max(50, parseInt(e.target.value) || 150))}
-// // // //                       className="w-full px-3 py-2 border-2 border-gray-300 rounded-lg focus:border-blue-500 focus:outline-none"
-// // // //                     />
-// // // //                   </div>
-// // // //                   <div>
-// // // //                     <label className="block text-xs text-gray-600 mb-1">Height (px)</label>
-// // // //                     <input
-// // // //                       type="number"
-// // // //                       min="30"
-// // // //                       value={signatureHeight}
-// // // //                       onChange={(e) => setSignatureHeight(Math.max(30, parseInt(e.target.value) || 75))}
-// // // //                       className="w-full px-3 py-2 border-2 border-gray-300 rounded-lg focus:border-blue-500 focus:outline-none"
-// // // //                     />
-// // // //                   </div>
-// // // //                 </div>
-
-// // // //                 <p className="text-xs text-gray-500 mt-2">
-// // // //                   💡 Tip: Adjust X and Y to move signature. Lower Y = higher on page.
-// // // //                 </p>
-// // // //               </div>
-
-// // // //               {error && (
-// // // //                 <div className="bg-red-50 border border-red-200 rounded-xl p-4 text-red-700 text-sm">
-// // // //                   {error}
-// // // //                 </div>
-// // // //               )}
-
-// // // //               <button
-// // // //                 type="submit"
-// // // //                 disabled={loading || !pdfFile || !signatureImage}
-// // // //                 className="w-full bg-linear-to-r from-blue-600 to-purple-600 text-white font-semibold text-lg py-4 rounded-xl hover:from-blue-700 hover:to-purple-700 disabled:opacity-60 transition shadow-md flex items-center justify-center gap-2"
-// // // //               >
-// // // //                 {loading ? (
-// // // //                   <>
-// // // //                     <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
-// // // //                     Signing PDF...
-// // // //                   </>
-// // // //                 ) : (
-// // // //                   <>
-// // // //                     <PenTool className="w-5 h-5" />
-// // // //                     Sign PDF
-// // // //                   </>
-// // // //                 )}
-// // // //               </button>
-// // // //             </form>
-
-// // // //             {success && (
-// // // //               <div className="mt-6 p-4 bg-green-50 border border-green-200 rounded-xl text-center">
-// // // //                 <CheckCircle className="w-12 h-12 text-green-600 mx-auto mb-3" />
-// // // //                 <p className="text-xl font-bold text-green-700 mb-2">Done! Signed PDF downloaded</p>
-// // // //               </div>
-// // // //             )}
-// // // //           </div>
-
-// // // //           <p className="text-center mt-6 text-gray-600">
-// // // //             No account • No watermark • Files auto-deleted • 100% free
-// // // //           </p>
-// // // //         </div>
-// // // //       </main>
-
-// // // //       {/* Keep your SEO content, FAQs, RelatedToolsSection as is */}
-// // // //       {/* ... paste your existing lower sections here ... */}
-
-// // // //       <RelatedToolsSection currentPage="sign-pdf" />
-// // // //     </>
-// // // //   );
-// // // // }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// // // // // // app/sign-pdf/page.jsx
-// // // // // "use client";
-
-// // // // // import { useRef, useState } from "react";
-// // // // // import {
-// // // // //   Upload,
-// // // // //   FileText,
-// // // // //   Download,
-// // // // //   CheckCircle,
-// // // // //   X,
-// // // // //   PenTool,
-// // // // //   Eraser,
-// // // // //   Image as ImageIcon,
-// // // // // } from "lucide-react";
-// // // // // import Script from "next/script";
-// // // // // import RelatedToolsSection from "@/components/RelatedTools";
-
-// // // // // export default function SignPdf() {
-// // // // //   const [pdfFile, setPdfFile] = useState(null);
-// // // // //   const [signatureImage, setSignatureImage] = useState(null);
-// // // // //   const [signaturePreview, setSignaturePreview] = useState("");
-// // // // //   const [drawMode, setDrawMode] = useState(false);
-// // // // //   const [loading, setLoading] = useState(false);
-// // // // //   const [success, setSuccess] = useState(false);
-// // // // //   const [error, setError] = useState("");
-
-// // // // //   // Signature position & size
-// // // // //   const [pageNumber, setPageNumber] = useState(1);
-// // // // //   const [xPosition, setXPosition] = useState(50);
-// // // // //   const [yPosition, setYPosition] = useState(650);
-// // // // //   const [signatureWidth, setSignatureWidth] = useState(150);
-// // // // //   const [signatureHeight, setSignatureHeight] = useState(75);
-
-// // // // //   const canvasRef = useRef(null);
-// // // // //   const isDrawing = useRef(false);
-
-// // // // //   // ==================== CANVAS DRAWING ====================
-// // // // //   const startDrawing = (e) => {
-// // // // //     if (!drawMode) return;
-// // // // //     const canvas = canvasRef.current;
-// // // // //     const rect = canvas.getBoundingClientRect();
-// // // // //     const x = e.clientX - rect.left;
-// // // // //     const y = e.clientY - rect.top;
-
-// // // // //     const ctx = canvas.getContext("2d");
-// // // // //     ctx.beginPath();
-// // // // //     ctx.moveTo(x, y);
-// // // // //     isDrawing.current = true;
-// // // // //   };
-
-// // // // //   const draw = (e) => {
-// // // // //     if (!drawMode || !isDrawing.current) return;
-// // // // //     const canvas = canvasRef.current;
-// // // // //     const rect = canvas.getBoundingClientRect();
-// // // // //     const x = e.clientX - rect.left;
-// // // // //     const y = e.clientY - rect.top;
-
-// // // // //     const ctx = canvas.getContext("2d");
-// // // // //     ctx.lineTo(x, y);
-// // // // //     ctx.strokeStyle = "#000";
-// // // // //     ctx.lineWidth = 2;
-// // // // //     ctx.lineCap = "round";
-// // // // //     ctx.stroke();
-// // // // //   };
-
-// // // // //   const stopDrawing = () => {
-// // // // //     isDrawing.current = false;
-// // // // //   };
-
-// // // // //   const clearCanvas = () => {
-// // // // //     const canvas = canvasRef.current;
-// // // // //     const ctx = canvas.getContext("2d");
-// // // // //     ctx.clearRect(0, 0, canvas.width, canvas.height);
-// // // // //     setSignatureImage(null);
-// // // // //     setSignaturePreview("");
-// // // // //   };
-
-// // // // //   const saveCanvasAsImage = () => {
-// // // // //     const canvas = canvasRef.current;
-// // // // //     canvas.toBlob((blob) => {
-// // // // //       const file = new File([blob], "signature.png", { type: "image/png" });
-// // // // //       setSignatureImage(file);
-// // // // //       setSignaturePreview(URL.createObjectURL(blob));
-// // // // //       setDrawMode(false);
-// // // // //     });
-// // // // //   };
-
-// // // // //   // ==================== FILE HANDLERS ====================
-// // // // //   const handlePdfUpload = (e) => {
-// // // // //     const file = e.target.files?.[0];
-// // // // //     if (file) {
-// // // // //       setPdfFile(file);
-// // // // //       setSuccess(false);
-// // // // //       setError("");
-// // // // //     }
-// // // // //   };
-
-// // // // //   const handleSignatureUpload = (e) => {
-// // // // //     const file = e.target.files?.[0];
-// // // // //     if (file) {
-// // // // //       setSignatureImage(file);
-// // // // //       setSignaturePreview(URL.createObjectURL(file));
-// // // // //       setDrawMode(false);
-// // // // //       setSuccess(false);
-// // // // //       setError("");
-// // // // //     }
-// // // // //   };
-
-// // // // //   const downloadBlob = (blob, filename) => {
-// // // // //     const url = window.URL.createObjectURL(blob);
-// // // // //     const a = document.createElement("a");
-// // // // //     a.href = url;
-// // // // //     a.download = filename;
-// // // // //     a.click();
-// // // // //     window.URL.revokeObjectURL(url);
-// // // // //   };
-
-// // // // //   // ==================== SUBMIT ====================
-// // // // //   const handleSubmit = async (e) => {
-// // // // //     e.preventDefault();
-
-// // // // //     if (!pdfFile) {
-// // // // //       setError("Please upload a PDF file!");
-// // // // //       return;
-// // // // //     }
-
-// // // // //     if (!signatureImage) {
-// // // // //       setError("Please provide a signature (draw or upload image)!");
-// // // // //       return;
-// // // // //     }
-
-// // // // //     setLoading(true);
-// // // // //     setSuccess(false);
-// // // // //     setError("");
-
-// // // // //     const formData = new FormData();
-// // // // //     formData.append("pdfFile", pdfFile);
-// // // // //     formData.append("signatureImage", signatureImage);
-// // // // //     formData.append("pageNumber", String(pageNumber));
-// // // // //     formData.append("xPosition", String(xPosition));
-// // // // //     formData.append("yPosition", String(yPosition));
-// // // // //     formData.append("width", String(signatureWidth));
-// // // // //     formData.append("height", String(signatureHeight));
-
-// // // // //     try {
-// // // // //       const res = await fetch("/convert/sign-pdf", {
-// // // // //         method: "POST",
-// // // // //         body: formData,
-// // // // //       });
-
-// // // // //       if (!res.ok) {
-// // // // //         let msg = "Signing failed";
-// // // // //         try {
-// // // // //           const j = await res.json();
-// // // // //           msg = j?.error || msg;
-// // // // //         } catch {}
-// // // // //         throw new Error(msg);
-// // // // //       }
-
-// // // // //       const blob = await res.blob();
-// // // // //       const outName = pdfFile.name.replace(/\.pdf$/i, "") + "-signed.pdf";
-// // // // //       downloadBlob(blob, outName);
-// // // // //       setSuccess(true);
-// // // // //     } catch (err) {
-// // // // //       const msg = (
-// // // // //         err?.message || "Something went wrong. Please try again."
-// // // // //       ).toString();
-// // // // //       setError(msg);
-// // // // //       console.error(err);
-// // // // //     } finally {
-// // // // //       setLoading(false);
-// // // // //     }
-// // // // //   };
-
-// // // // //   return (
-// // // // //     <>
-// // // // //       {/* ==================== SEO SCHEMAS ==================== */}
-// // // // //       <Script
-// // // // //         id="howto-schema-sign"
-// // // // //         type="application/ld+json"
-// // // // //         strategy="afterInteractive"
-// // // // //         dangerouslySetInnerHTML={{
-// // // // //           __html: JSON.stringify(
-// // // // //             {
-// // // // //               "@context": "https://schema.org",
-// // // // //               "@type": "HowTo",
-// // // // //               name: "How to Sign PDF Online for Free",
-// // // // //               description:
-// // // // //                 "Add your signature to PDF documents online. Draw your signature or upload an image and place it anywhere on your PDF.",
-// // // // //               url: "https://pdflinx.com/sign-pdf",
-// // // // //               step: [
-// // // // //                 {
-// // // // //                   "@type": "HowToStep",
-// // // // //                   name: "Upload PDF",
-// // // // //                   text: "Upload the PDF file you want to sign.",
-// // // // //                 },
-// // // // //                 {
-// // // // //                   "@type": "HowToStep",
-// // // // //                   name: "Create signature",
-// // // // //                   text: "Draw your signature or upload a signature image.",
-// // // // //                 },
-// // // // //                 {
-// // // // //                   "@type": "HowToStep",
-// // // // //                   name: "Position & download",
-// // // // //                   text: "Adjust signature position and size, then download signed PDF.",
-// // // // //                 },
-// // // // //               ],
-// // // // //               totalTime: "PT30S",
-// // // // //               estimatedCost: {
-// // // // //                 "@type": "MonetaryAmount",
-// // // // //                 value: "0",
-// // // // //                 currency: "USD",
-// // // // //               },
-// // // // //               image: "https://pdflinx.com/og-image.png",
-// // // // //             },
-// // // // //             null,
-// // // // //             2
-// // // // //           ),
-// // // // //         }}
-// // // // //       />
-
-// // // // //       <Script
-// // // // //         id="breadcrumb-schema-sign"
-// // // // //         type="application/ld+json"
-// // // // //         strategy="afterInteractive"
-// // // // //         dangerouslySetInnerHTML={{
-// // // // //           __html: JSON.stringify(
-// // // // //             {
-// // // // //               "@context": "https://schema.org",
-// // // // //               "@type": "BreadcrumbList",
-// // // // //               itemListElement: [
-// // // // //                 {
-// // // // //                   "@type": "ListItem",
-// // // // //                   position: 1,
-// // // // //                   name: "Home",
-// // // // //                   item: "https://pdflinx.com",
-// // // // //                 },
-// // // // //                 {
-// // // // //                   "@type": "ListItem",
-// // // // //                   position: 2,
-// // // // //                   name: "Sign PDF",
-// // // // //                   item: "https://pdflinx.com/sign-pdf",
-// // // // //                 },
-// // // // //               ],
-// // // // //             },
-// // // // //             null,
-// // // // //             2
-// // // // //           ),
-// // // // //         }}
-// // // // //       />
-
-// // // // //       <Script
-// // // // //         id="faq-schema-sign"
-// // // // //         type="application/ld+json"
-// // // // //         strategy="afterInteractive"
-// // // // //         dangerouslySetInnerHTML={{
-// // // // //           __html: JSON.stringify(
-// // // // //             {
-// // // // //               "@context": "https://schema.org",
-// // // // //               "@type": "FAQPage",
-// // // // //               mainEntity: [
-// // // // //                 {
-// // // // //                   "@type": "Question",
-// // // // //                   name: "Is PDFLinx Sign PDF free?",
-// // // // //                   acceptedAnswer: {
-// // // // //                     "@type": "Answer",
-// // // // //                     text: "Yes. PDFLinx Sign PDF is completely free — no sign-up required, no watermarks added.",
-// // // // //                   },
-// // // // //                 },
-// // // // //                 {
-// // // // //                   "@type": "Question",
-// // // // //                   name: "Can I draw my signature?",
-// // // // //                   acceptedAnswer: {
-// // // // //                     "@type": "Answer",
-// // // // //                     text: "Yes. You can draw your signature using your mouse, trackpad, or touchscreen. You can also upload an image of your signature.",
-// // // // //                   },
-// // // // //                 },
-// // // // //                 {
-// // // // //                   "@type": "Question",
-// // // // //                   name: "Is my PDF secure?",
-// // // // //                   acceptedAnswer: {
-// // // // //                     "@type": "Answer",
-// // // // //                     text: "Yes. Your files are processed automatically and deleted immediately after signing. We never store your PDFs or signatures.",
-// // // // //                   },
-// // // // //                 },
-// // // // //                 {
-// // // // //                   "@type": "Question",
-// // // // //                   name: "Can I sign multiple pages?",
-// // // // //                   acceptedAnswer: {
-// // // // //                     "@type": "Answer",
-// // // // //                     text: "Currently, you can add one signature to one page. For multi-page signing, process the PDF multiple times.",
-// // // // //                   },
-// // // // //                 },
-// // // // //                 {
-// // // // //                   "@type": "Question",
-// // // // //                   name: "What image formats are supported?",
-// // // // //                   acceptedAnswer: {
-// // // // //                     "@type": "Answer",
-// // // // //                     text: "You can upload PNG or JPG images as your signature. Transparent PNG images work best.",
-// // // // //                   },
-// // // // //                 },
-// // // // //               ],
-// // // // //             },
-// // // // //             null,
-// // // // //             2
-// // // // //           ),
-// // // // //         }}
-// // // // //       />
-
-// // // // //       {/* ==================== MAIN TOOL SECTION ==================== */}
-// // // // //       <main className="min-h-screen bg-linear-to-br from-blue-50 via-white to-purple-50 py-8 px-4">
-// // // // //         <div className="max-w-5xl mx-auto">
-// // // // //           {/* Header */}
-// // // // //           <div className="text-center mb-8">
-// // // // //             <h1 className="text-3xl md:text-4xl font-bold bg-linear-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-4">
-// // // // //               Sign PDF Online Free
-// // // // //             </h1>
-// // // // //             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-// // // // //               Add your signature to PDF documents in seconds. Draw or upload
-// // // // //               your signature and place it anywhere on your PDF.
-// // // // //             </p>
-// // // // //           </div>
-
-// // // // //           {/* Main Card */}
-// // // // //           <div className="bg-white rounded-2xl shadow-lg p-8 border border-gray-100">
-// // // // //             <form onSubmit={handleSubmit} className="space-y-6">
-// // // // //               {/* PDF Upload */}
-// // // // //               <div>
-// // // // //                 <label className="block mb-2 text-sm font-medium text-gray-700">
-// // // // //                   1. Upload PDF Document
-// // // // //                 </label>
-// // // // //                 <div className="relative">
-// // // // //                   <label className="block">
-// // // // //                     <div
-// // // // //                       className={`border-2 border-dashed rounded-xl p-6 text-center cursor-pointer transition-all ${
-// // // // //                         pdfFile
-// // // // //                           ? "border-green-500 bg-green-50"
-// // // // //                           : "border-gray-300 hover:border-blue-500 hover:bg-blue-50"
-// // // // //                       }`}
-// // // // //                     >
-// // // // //                       <Upload className="w-10 h-10 mx-auto mb-2 text-blue-600" />
-// // // // //                       <p className="text-base font-semibold text-gray-700">
-// // // // //                         {pdfFile
-// // // // //                           ? pdfFile.name
-// // // // //                           : "Click to upload PDF or drag & drop"}
-// // // // //                       </p>
-// // // // //                       <p className="text-sm text-gray-500 mt-1">
-// // // // //                         Max 25MB • .pdf only
-// // // // //                       </p>
-// // // // //                     </div>
-// // // // //                     <input
-// // // // //                       type="file"
-// // // // //                       accept=".pdf,application/pdf"
-// // // // //                       onChange={handlePdfUpload}
-// // // // //                       className="hidden"
-// // // // //                       required
-// // // // //                     />
-// // // // //                   </label>
-// // // // //                 </div>
-
-// // // // //                 {pdfFile && (
-// // // // //                   <div className="mt-3 flex items-center justify-between bg-gray-50 p-3 rounded-lg">
-// // // // //                     <div className="flex items-center gap-2">
-// // // // //                       <FileText className="w-5 h-5 text-red-600" />
-// // // // //                       <span className="text-sm font-medium">{pdfFile.name}</span>
-// // // // //                       <span className="text-xs text-gray-500">
-// // // // //                         ({(pdfFile.size / 1024 / 1024).toFixed(2)} MB)
-// // // // //                       </span>
-// // // // //                     </div>
-// // // // //                     <button
-// // // // //                       type="button"
-// // // // //                       onClick={() => setPdfFile(null)}
-// // // // //                       className="text-red-500 hover:bg-red-100 p-1 rounded"
-// // // // //                     >
-// // // // //                       <X className="w-5 h-5" />
-// // // // //                     </button>
-// // // // //                   </div>
-// // // // //                 )}
-// // // // //               </div>
-
-// // // // //               {/* Signature Creation */}
-// // // // //               <div>
-// // // // //                 <label className="block mb-2 text-sm font-medium text-gray-700">
-// // // // //                   2. Create or Upload Signature
-// // // // //                 </label>
-
-// // // // //                 <div className="grid md:grid-cols-2 gap-4 mb-4">
-// // // // //                   <button
-// // // // //                     type="button"
-// // // // //                     onClick={() => setDrawMode(true)}
-// // // // //                     className={`flex items-center justify-center gap-2 p-4 rounded-xl border-2 transition-all ${
-// // // // //                       drawMode
-// // // // //                         ? "border-blue-600 bg-blue-50 shadow-md"
-// // // // //                         : "border-gray-300 hover:border-blue-400"
-// // // // //                     }`}
-// // // // //                   >
-// // // // //                     <PenTool className="w-5 h-5 text-blue-600" />
-// // // // //                     <span className="font-semibold">Draw Signature</span>
-// // // // //                   </button>
-
-// // // // //                   <label className="flex items-center justify-center gap-2 p-4 rounded-xl border-2 border-gray-300 hover:border-purple-400 cursor-pointer transition-all">
-// // // // //                     <ImageIcon className="w-5 h-5 text-purple-600" />
-// // // // //                     <span className="font-semibold">Upload Image</span>
-// // // // //                     <input
-// // // // //                       type="file"
-// // // // //                       accept="image/*"
-// // // // //                       onChange={handleSignatureUpload}
-// // // // //                       className="hidden"
-// // // // //                     />
-// // // // //                   </label>
-// // // // //                 </div>
-
-// // // // //                 {/* Drawing Canvas */}
-// // // // //                 {drawMode && (
-// // // // //                   <div className="border-2 border-gray-300 rounded-xl p-4 bg-gray-50">
-// // // // //                     <canvas
-// // // // //                       ref={canvasRef}
-// // // // //                       width={600}
-// // // // //                       height={200}
-// // // // //                       onMouseDown={startDrawing}
-// // // // //                       onMouseMove={draw}
-// // // // //                       onMouseUp={stopDrawing}
-// // // // //                       onMouseLeave={stopDrawing}
-// // // // //                       className="border-2 border-dashed border-gray-400 bg-white cursor-crosshair w-full rounded-lg"
-// // // // //                     />
-// // // // //                     <div className="flex gap-3 mt-3">
-// // // // //                       <button
-// // // // //                         type="button"
-// // // // //                         onClick={clearCanvas}
-// // // // //                         className="flex items-center gap-2 px-4 py-2 bg-red-100 text-red-700 rounded-lg hover:bg-red-200 transition"
-// // // // //                       >
-// // // // //                         <Eraser className="w-4 h-4" />
-// // // // //                         Clear
-// // // // //                       </button>
-// // // // //                       <button
-// // // // //                         type="button"
-// // // // //                         onClick={saveCanvasAsImage}
-// // // // //                         className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
-// // // // //                       >
-// // // // //                         <CheckCircle className="w-4 h-4" />
-// // // // //                         Save Signature
-// // // // //                       </button>
-// // // // //                     </div>
-// // // // //                   </div>
-// // // // //                 )}
-
-// // // // //                 {/* Signature Preview */}
-// // // // //                 {signaturePreview && !drawMode && (
-// // // // //                   <div className="border-2 border-green-500 bg-green-50 rounded-xl p-4">
-// // // // //                     <p className="text-sm font-medium text-green-700 mb-2">
-// // // // //                       ✓ Signature ready
-// // // // //                     </p>
-// // // // //                     <img
-// // // // //                       src={signaturePreview}
-// // // // //                       alt="Signature preview"
-// // // // //                       className="max-h-32 bg-white border-2 border-gray-300 rounded-lg p-2"
-// // // // //                     />
-// // // // //                   </div>
-// // // // //                 )}
-// // // // //               </div>
-
-// // // // //               {/* Position Controls */}
-// // // // //               <div>
-// // // // //                 <label className="block mb-3 text-sm font-medium text-gray-700">
-// // // // //                   3. Position & Size Settings
-// // // // //                 </label>
-
-// // // // //                 <div className="grid md:grid-cols-2 gap-4">
-// // // // //                   <div>
-// // // // //                     <label className="block text-xs text-gray-600 mb-1">
-// // // // //                       Page Number
-// // // // //                     </label>
-// // // // //                     <input
-// // // // //                       type="number"
-// // // // //                       min="1"
-// // // // //                       value={pageNumber}
-// // // // //                       onChange={(e) => setPageNumber(parseInt(e.target.value))}
-// // // // //                       className="w-full px-3 py-2 border-2 border-gray-300 rounded-lg focus:border-blue-500 focus:outline-none"
-// // // // //                     />
-// // // // //                   </div>
-
-// // // // //                   <div>
-// // // // //                     <label className="block text-xs text-gray-600 mb-1">
-// // // // //                       X Position (px)
-// // // // //                     </label>
-// // // // //                     <input
-// // // // //                       type="number"
-// // // // //                       min="0"
-// // // // //                       value={xPosition}
-// // // // //                       onChange={(e) => setXPosition(parseInt(e.target.value))}
-// // // // //                       className="w-full px-3 py-2 border-2 border-gray-300 rounded-lg focus:border-blue-500 focus:outline-none"
-// // // // //                     />
-// // // // //                   </div>
-
-// // // // //                   <div>
-// // // // //                     <label className="block text-xs text-gray-600 mb-1">
-// // // // //                       Y Position (px)
-// // // // //                     </label>
-// // // // //                     <input
-// // // // //                       type="number"
-// // // // //                       min="0"
-// // // // //                       value={yPosition}
-// // // // //                       onChange={(e) => setYPosition(parseInt(e.target.value))}
-// // // // //                       className="w-full px-3 py-2 border-2 border-gray-300 rounded-lg focus:border-blue-500 focus:outline-none"
-// // // // //                     />
-// // // // //                   </div>
-
-// // // // //                   <div>
-// // // // //                     <label className="block text-xs text-gray-600 mb-1">
-// // // // //                       Width (px)
-// // // // //                     </label>
-// // // // //                     <input
-// // // // //                       type="number"
-// // // // //                       min="50"
-// // // // //                       value={signatureWidth}
-// // // // //                       onChange={(e) =>
-// // // // //                         setSignatureWidth(parseInt(e.target.value))
-// // // // //                       }
-// // // // //                       className="w-full px-3 py-2 border-2 border-gray-300 rounded-lg focus:border-blue-500 focus:outline-none"
-// // // // //                     />
-// // // // //                   </div>
-
-// // // // //                   <div>
-// // // // //                     <label className="block text-xs text-gray-600 mb-1">
-// // // // //                       Height (px)
-// // // // //                     </label>
-// // // // //                     <input
-// // // // //                       type="number"
-// // // // //                       min="30"
-// // // // //                       value={signatureHeight}
-// // // // //                       onChange={(e) =>
-// // // // //                         setSignatureHeight(parseInt(e.target.value))
-// // // // //                       }
-// // // // //                       className="w-full px-3 py-2 border-2 border-gray-300 rounded-lg focus:border-blue-500 focus:outline-none"
-// // // // //                     />
-// // // // //                   </div>
-// // // // //                 </div>
-
-// // // // //                 <p className="text-xs text-gray-500 mt-2">
-// // // // //                   💡 Tip: Adjust X and Y to move signature position. Lower Y = higher on page.
-// // // // //                 </p>
-// // // // //               </div>
-
-// // // // //               {/* Error */}
-// // // // //               {error && (
-// // // // //                 <div className="bg-red-50 border-2 border-red-200 rounded-xl p-4 text-red-700">
-// // // // //                   <p className="font-semibold">{error}</p>
-// // // // //                 </div>
-// // // // //               )}
-
-// // // // //               {/* Submit Button */}
-// // // // //               <button
-// // // // //                 type="submit"
-// // // // //                 disabled={loading || !pdfFile || !signatureImage}
-// // // // //                 className="w-full bg-linear-to-r from-blue-600 to-purple-600 text-white font-semibold text-lg py-4 rounded-xl hover:from-blue-700 hover:to-purple-700 disabled:opacity-60 disabled:cursor-not-allowed transition shadow-md flex items-center justify-center gap-2"
-// // // // //               >
-// // // // //                 {loading ? (
-// // // // //                   <>
-// // // // //                     <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
-// // // // //                     Signing PDF...
-// // // // //                   </>
-// // // // //                 ) : (
-// // // // //                   <>
-// // // // //                     <PenTool className="w-5 h-5" />
-// // // // //                     Sign PDF
-// // // // //                   </>
-// // // // //                 )}
-// // // // //               </button>
-// // // // //             </form>
-
-// // // // //             {/* Success */}
-// // // // //             {success && (
-// // // // //               <div className="mt-6 p-4 bg-green-50 border-2 border-green-200 rounded-xl text-center">
-// // // // //                 <CheckCircle className="w-12 h-12 text-green-600 mx-auto mb-3" />
-// // // // //                 <p className="text-xl font-bold text-green-700 mb-2">
-// // // // //                   Done! Your signed PDF is ready
-// // // // //                 </p>
-// // // // //                 <p className="text-sm text-green-700">
-// // // // //                   Download started automatically.
-// // // // //                 </p>
-// // // // //               </div>
-// // // // //             )}
-// // // // //           </div>
-
-// // // // //           <p className="text-center mt-6 text-gray-600 text-base">
-// // // // //             No account • No watermark • Files auto-deleted • 100% free
-// // // // //           </p>
-// // // // //         </div>
-// // // // //       </main>
-
-// // // // //       {/* ==================== SEO CONTENT SECTION ==================== */}
-// // // // //       <section className="mt-16 max-w-4xl mx-auto px-6 pb-16">
-// // // // //         <div className="text-center mb-12">
-// // // // //           <h2 className="text-2xl md:text-3xl font-bold bg-linear-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-4">
-// // // // //             Sign PDF Online Free – Add Your Signature Instantly
-// // // // //           </h2>
-// // // // //           <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-// // // // //             Need to sign a PDF document? PDFLinx Sign PDF tool lets you add
-// // // // //             your signature online in seconds. Draw your signature or upload an
-// // // // //             image — no software installation required.
-// // // // //           </p>
-// // // // //         </div>
-
-// // // // //         {/* Benefits Grid */}
-// // // // //         <div className="grid md:grid-cols-3 gap-8 mb-16">
-// // // // //           <div className="bg-linear-to-br from-blue-50 to-white p-8 rounded-2xl shadow-lg border border-blue-100 text-center hover:shadow-xl transition">
-// // // // //             <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
-// // // // //               <PenTool className="w-8 h-8 text-white" />
-// // // // //             </div>
-// // // // //             <h3 className="text-xl font-semibold text-gray-800 mb-3">
-// // // // //               Draw or Upload
-// // // // //             </h3>
-// // // // //             <p className="text-gray-600 text-sm">
-// // // // //               Draw your signature with mouse or upload an image. Both work
-// // // // //               perfectly.
-// // // // //             </p>
-// // // // //           </div>
-
-// // // // //           <div className="bg-linear-to-br from-purple-50 to-white p-8 rounded-2xl shadow-lg border border-purple-100 text-center hover:shadow-xl transition">
-// // // // //             <div className="w-16 h-16 bg-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
-// // // // //               <FileText className="w-8 h-8 text-white" />
-// // // // //             </div>
-// // // // //             <h3 className="text-xl font-semibold text-gray-800 mb-3">
-// // // // //               Custom Position
-// // // // //             </h3>
-// // // // //             <p className="text-gray-600 text-sm">
-// // // // //               Place your signature anywhere on the PDF with precise position
-// // // // //               controls.
-// // // // //             </p>
-// // // // //           </div>
-
-// // // // //           <div className="bg-linear-to-br from-green-50 to-white p-8 rounded-2xl shadow-lg border border-green-100 text-center hover:shadow-xl transition">
-// // // // //             <div className="w-16 h-16 bg-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
-// // // // //               <Download className="w-8 h-8 text-white" />
-// // // // //             </div>
-// // // // //             <h3 className="text-xl font-semibold text-gray-800 mb-3">
-// // // // //               Instant Download
-// // // // //             </h3>
-// // // // //             <p className="text-gray-600 text-sm">
-// // // // //               Get your signed PDF instantly. No watermarks, no registration.
-// // // // //             </p>
-// // // // //           </div>
-// // // // //         </div>
-
-// // // // //         {/* Steps */}
-// // // // //         <div className="bg-white rounded-2xl shadow-lg p-8 md:p-12 border border-gray-100">
-// // // // //           <h3 className="text-2xl md:text-3xl font-bold text-center mb-12 text-gray-800">
-// // // // //             Sign PDF in 3 Simple Steps
-// // // // //           </h3>
-// // // // //           <div className="grid md:grid-cols-3 gap-8">
-// // // // //             <div className="text-center">
-// // // // //               <div className="w-16 h-16 bg-linear-to-r from-blue-600 to-blue-700 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold text-white shadow-lg">
-// // // // //                 1
-// // // // //               </div>
-// // // // //               <h4 className="text-lg font-semibold mb-2">Upload PDF</h4>
-// // // // //               <p className="text-gray-600 text-sm">
-// // // // //                 Upload the PDF document you need to sign.
-// // // // //               </p>
-// // // // //             </div>
-
-// // // // //             <div className="text-center">
-// // // // //               <div className="w-16 h-16 bg-linear-to-r from-purple-600 to-purple-700 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold text-white shadow-lg">
-// // // // //                 2
-// // // // //               </div>
-// // // // //               <h4 className="text-lg font-semibold mb-2">Add Signature</h4>
-// // // // //               <p className="text-gray-600 text-sm">
-// // // // //                 Draw your signature or upload signature image.
-// // // // //               </p>
-// // // // //             </div>
-
-// // // // //             <div className="text-center">
-// // // // //               <div className="w-16 h-16 bg-linear-to-r from-green-600 to-green-700 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold text-white shadow-lg">
-// // // // //                 3
-// // // // //               </div>
-// // // // //               <h4 className="text-lg font-semibold mb-2">Download</h4>
-// // // // //               <p className="text-gray-600 text-sm">
-// // // // //                 Adjust position, click Sign PDF, and download.
-// // // // //               </p>
-// // // // //             </div>
-// // // // //           </div>
-// // // // //         </div>
-
-// // // // //         <p className="text-center mt-12 text-base text-gray-600 italic max-w-3xl mx-auto">
-// // // // //           PDFLinx makes signing PDFs quick and easy — perfect for contracts,
-// // // // //           forms, and documents.
-// // // // //         </p>
-// // // // //       </section>
-
-// // // // //       <section className="max-w-4xl mx-auto px-4 py-14 text-slate-700">
-// // // // //         <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-6">
-// // // // //           Sign PDF Online – Add Digital Signature by PDFLinx
-// // // // //         </h2>
-
-// // // // //         <p className="text-base leading-7 mb-6">
-// // // // //           Digital signatures are essential for modern document workflows.
-// // // // //           Whether you need to sign contracts, agreements, forms, or applications,
-// // // // //           <span className="font-medium text-slate-900">
-// // // // //             {" "}
-// // // // //             PDFLinx Sign PDF tool
-// // // // //           </span>{" "}
-// // // // //           makes it easy to add your signature to any PDF document online —
-// // // // //           without installing software or creating an account.
-// // // // //         </p>
-
-// // // // //         <h3 className="text-xl font-semibold text-slate-900 mb-3">
-// // // // //           What is PDF Signing?
-// // // // //         </h3>
-// // // // //         <p className="leading-7 mb-6">
-// // // // //           PDF signing means adding your signature to a PDF document digitally.
-// // // // //           This can be done by drawing your signature, uploading an image of
-// // // // //           your handwritten signature, or using a scanned signature. The signed
-// // // // //           PDF can then be shared, printed, or stored electronically.
-// // // // //         </p>
-
-// // // // //         <h3 className="text-xl font-semibold text-slate-900 mb-3">
-// // // // //           Why Sign PDFs Online?
-// // // // //         </h3>
-// // // // //         <ul className="space-y-2 mb-6 list-disc pl-6">
-// // // // //           <li>Sign contracts and agreements from anywhere</li>
-// // // // //           <li>No need to print, sign, and scan documents</li>
-// // // // //           <li>Save time on document workflows</li>
-// // // // //           <li>Work remotely without physical paperwork</li>
-// // // // //           <li>Environmentally friendly (less paper waste)</li>
-// // // // //           <li>Professional appearance for business documents</li>
-// // // // //         </ul>
-
-// // // // //         <h3 className="text-xl font-semibold text-slate-900 mb-3">
-// // // // //           How to Sign a PDF Online
-// // // // //         </h3>
-// // // // //         <ol className="space-y-2 mb-6 list-decimal pl-6">
-// // // // //           <li>Upload your PDF document using the tool above</li>
-// // // // //           <li>
-// // // // //             Create your signature by drawing it or uploading an image (PNG/JPG)
-// // // // //           </li>
-// // // // //           <li>
-// // // // //             Adjust signature position and size using the position controls
-// // // // //           </li>
-// // // // //           <li>Click "Sign PDF" to add signature to your document</li>
-// // // // //           <li>Download your signed PDF instantly</li>
-// // // // //         </ol>
-
-// // // // //         <div className="bg-slate-50 border border-slate-200 rounded-xl p-6 mb-6">
-// // // // //           <h3 className="text-xl font-semibold text-slate-900 mb-4">
-// // // // //             Features of PDFLinx Sign PDF Tool
-// // // // //           </h3>
-// // // // //           <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 list-disc pl-5">
-// // // // //             <li>Free online PDF signing</li>
-// // // // //             <li>Draw signature with mouse/trackpad</li>
-// // // // //             <li>Upload signature image (PNG/JPG)</li>
-// // // // //             <li>Precise position controls</li>
-// // // // //             <li>Adjustable signature size</li>
-// // // // //             <li>Works on all devices</li>
-// // // // //             <li>No software installation needed</li>
-// // // // //             <li>No watermarks added</li>
-// // // // //             <li>Files deleted after processing</li>
-// // // // //             <li>Fast and secure</li>
-// // // // //           </ul>
-// // // // //         </div>
-
-// // // // //         <h3 className="text-xl font-semibold text-slate-900 mb-3">
-// // // // //           Who Should Use Sign PDF Tool?
-// // // // //         </h3>
-// // // // //         <ul className="space-y-2 mb-6 list-disc pl-6">
-// // // // //           <li>
-// // // // //             <strong>Business professionals:</strong> Sign contracts and
-// // // // //             agreements
-// // // // //           </li>
-// // // // //           <li>
-// // // // //             <strong>Remote workers:</strong> Sign documents from home
-// // // // //           </li>
-// // // // //           <li>
-// // // // //             <strong>Freelancers:</strong> Sign client contracts and proposals
-// // // // //           </li>
-// // // // //           <li>
-// // // // //             <strong>Students:</strong> Sign academic forms and applications
-// // // // //           </li>
-// // // // //           <li>
-// // // // //             <strong>Anyone:</strong> Sign any PDF document quickly
-// // // // //           </li>
-// // // // //         </ul>
-
-// // // // //         <h3 className="text-xl font-semibold text-slate-900 mb-3">
-// // // // //           Common Use Cases
-// // // // //         </h3>
-// // // // //         <ul className="space-y-2 mb-6 list-disc pl-6">
-// // // // //           <li>Employment contracts and offer letters</li>
-// // // // //           <li>Rental agreements and lease documents</li>
-// // // // //           <li>Business proposals and quotes</li>
-// // // // //           <li>Non-disclosure agreements (NDAs)</li>
-// // // // //           <li>Permission forms and consent documents</li>
-// // // // //           <li>Tax forms and financial documents</li>
-// // // // //           <li>Legal contracts and agreements</li>
-// // // // //         </ul>
-
-// // // // //         <h3 className="text-xl font-semibold text-slate-900 mb-3">
-// // // // //           Is PDFLinx Sign PDF Secure?
-// // // // //         </h3>
-// // // // //         <p className="leading-7 mb-6">
-// // // // //           Yes. PDFLinx is built with privacy and security in mind. Your
-// // // // //           uploaded PDF files and signature images are processed automatically
-// // // // //           and deleted immediately after signing. We never store your documents
-// // // // //           or signatures permanently, and your files are never shared with
-// // // // //           anyone.
-// // // // //         </p>
-
-// // // // //         <h3 className="text-xl font-semibold text-slate-900 mb-3">
-// // // // //           Sign PDFs on Any Device
-// // // // //         </h3>
-// // // // //         <p className="leading-7">
-// // // // //           PDFLinx works seamlessly on Windows, macOS, Linux, Android, and iOS.
-// // // // //           Sign your PDFs on desktop, laptop, tablet, or smartphone — all you
-// // // // //           need is an internet connection and a modern web browser.
-// // // // //         </p>
-// // // // //       </section>
-
-// // // // //       {/* FAQs (UI) */}
-// // // // //       <section className="py-16">
-// // // // //         <div className="max-w-4xl mx-auto px-4">
-// // // // //           <h2 className="text-3xl font-bold text-center mb-10">
-// // // // //             Frequently Asked Questions
-// // // // //           </h2>
-
-// // // // //           <div className="space-y-4">
-// // // // //             <details className="bg-white rounded-lg shadow-sm p-5">
-// // // // //               <summary className="font-semibold cursor-pointer">
-// // // // //                 Is the Sign PDF tool free?
-// // // // //               </summary>
-// // // // //               <p className="mt-2 text-gray-600">
-// // // // //                 Yes. PDFLinx Sign PDF is completely free — no sign-up, no
-// // // // //                 watermarks, no hidden costs.
-// // // // //               </p>
-// // // // //             </details>
-
-// // // // //             <details className="bg-white rounded-lg shadow-sm p-5">
-// // // // //               <summary className="font-semibold cursor-pointer">
-// // // // //                 Can I draw my signature?
-// // // // //               </summary>
-// // // // //               <p className="mt-2 text-gray-600">
-// // // // //                 Yes. You can draw your signature using your mouse, trackpad, or
-// // // // //                 touchscreen. You can also upload an image file (PNG/JPG).
-// // // // //               </p>
-// // // // //             </details>
-
-// // // // //             <details className="bg-white rounded-lg shadow-sm p-5">
-// // // // //               <summary className="font-semibold cursor-pointer">
-// // // // //                 Are my files safe?
-// // // // //               </summary>
-// // // // //               <p className="mt-2 text-gray-600">
-// // // // //                 Yes. Files are processed automatically and deleted immediately
-// // // // //                 after signing. We never store your PDFs or signatures.
-// // // // //               </p>
-// // // // //             </details>
-
-// // // // //             <details className="bg-white rounded-lg shadow-sm p-5">
-// // // // //               <summary className="font-semibold cursor-pointer">
-// // // // //                 Can I sign multiple pages?
-// // // // //               </summary>
-// // // // //               <p className="mt-2 text-gray-600">
-// // // // //                 Currently, you can add one signature to one page per upload.
-// // // // //                 For multiple pages, process the PDF multiple times.
-// // // // //               </p>
-// // // // //             </details>
-
-// // // // //             <details className="bg-white rounded-lg shadow-sm p-5">
-// // // // //               <summary className="font-semibold cursor-pointer">
-// // // // //                 What image formats are supported?
-// // // // //               </summary>
-// // // // //               <p className="mt-2 text-gray-600">
-// // // // //                 PNG and JPG/JPEG formats are supported. PNG with transparent
-// // // // //                 background works best for clean signatures.
-// // // // //               </p>
-// // // // //             </details>
-
-// // // // //             <details className="bg-white rounded-lg shadow-sm p-5">
-// // // // //               <summary className="font-semibold cursor-pointer">
-// // // // //                 How do I position my signature?
-// // // // //               </summary>
-// // // // //               <p className="mt-2 text-gray-600">
-// // // // //                 Use the position controls to set X and Y coordinates. Lower Y
-// // // // //                 values place the signature higher on the page. You can also
-// // // // //                 adjust width and height.
-// // // // //               </p>
-// // // // //             </details>
-// // // // //           </div>
-// // // // //         </div>
-// // // // //       </section>
-
-// // // // //       <RelatedToolsSection currentPage="sign-pdf" />
-// // // // //     </>
-// // // // //   );
-// // // // // }
 

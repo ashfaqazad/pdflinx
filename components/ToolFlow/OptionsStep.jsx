@@ -9,6 +9,109 @@ function formatBytes(bytes) {
   return (bytes / (1024 * 1024)).toFixed(1) + " MB";
 }
 
+
+
+// function PdfThumbnail({ url }) {
+//   const canvasRef = useRef(null);
+
+//   useEffect(() => {
+//     if (!url) return;
+
+//     // pdfjsLib load hone ka wait karo
+//     const renderPdf = () => {
+//       if (!window.pdfjsLib) return;
+      
+//       window.pdfjsLib.GlobalWorkerOptions.workerSrc =
+//         "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+
+//       window.pdfjsLib.getDocument(url).promise.then((pdf) => {
+//         pdf.getPage(1).then((page) => {
+//           const viewport = page.getViewport({ scale: 0.5 });
+//           const canvas = canvasRef.current;
+//           if (!canvas) return;
+//           const ctx = canvas.getContext("2d");
+//           canvas.width = viewport.width;
+//           canvas.height = viewport.height;
+//           ctx.fillStyle = "#ffffff";
+//           ctx.fillRect(0, 0, canvas.width, canvas.height);
+//           page.render({ canvasContext: ctx, viewport });
+//         });
+//       });
+//     };
+
+//     // Agar pdfjsLib abhi available nahi — interval se check karo
+//     if (window.pdfjsLib) {
+//       renderPdf();
+//     } else {
+//       const interval = setInterval(() => {
+//         if (window.pdfjsLib) {
+//           clearInterval(interval);
+//           renderPdf();
+//         }
+//       }, 100);
+//       return () => clearInterval(interval);
+//     }
+//   }, [url]);
+
+//   return (
+//     <canvas
+//       ref={canvasRef}
+//       className="w-full h-full object-contain bg-white"
+//     />
+//   );
+// }
+
+function PdfThumbnail({ file }) {
+  const canvasRef = useRef(null);
+
+  useEffect(() => {
+    if (!file) return;
+    let cancelled = false;
+
+    const render = async () => {
+      try {
+        // file ko ArrayBuffer mein convert karo — URL se zyada fast
+        const buffer = await file.arrayBuffer();
+        const pdf = await window.pdfjsLib.getDocument({ data: buffer }).promise;
+        const page = await pdf.getPage(1);
+        const viewport = page.getViewport({ scale: 0.5 });
+        const canvas = canvasRef.current;
+        if (!canvas || cancelled) return;
+        const ctx = canvas.getContext("2d");
+        canvas.width = viewport.width;
+        canvas.height = viewport.height;
+        ctx.fillStyle = "#ffffff";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        await page.render({ canvasContext: ctx, viewport }).promise;
+      } catch (e) {
+        console.error("PDF render error:", e);
+      }
+    };
+
+    const tryRender = () => {
+      if (window.pdfjsLib) {
+        window.pdfjsLib.GlobalWorkerOptions.workerSrc =
+          "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+        render();
+      } else {
+        setTimeout(tryRender, 100);
+      }
+    };
+
+    tryRender();
+    return () => { cancelled = true; };
+  }, [file]);
+
+  return (
+    <canvas
+      ref={canvasRef}
+      className="w-full h-full object-contain bg-white"
+    />
+  );
+}
+
+
+
 export default function OptionsStep({
   files,
   onRemoveFile,
@@ -17,6 +120,9 @@ export default function OptionsStep({
   multiple = true,
   error = "",
   customFilePreview,
+  // 🔥 ADD THIS
+  customOptionsLayout,
+
 }) {
   const fileInputRef = useRef(null);
 
@@ -37,6 +143,12 @@ export default function OptionsStep({
     if (newFiles.length && onAddFiles) onAddFiles(newFiles);
     e.target.value = "";
   };
+
+  // 🔥 EXACT YAHAN
+  if (customOptionsLayout) {
+    return customOptionsLayout;
+  }
+
 
   return (
     // <div className="w-full">
@@ -80,8 +192,8 @@ export default function OptionsStep({
               <div
                 key={`${file.name}-${i}`}
                 className="animate-filecard-in group relative w-[190px] overflow-hidden rounded-xl bg-white shadow-md transition hover:-translate-y-1 hover:shadow-lg"
-                // className="group relative w-[190px] overflow-hidden rounded-xl bg-white shadow-md transition hover:shadow-lg"
-                >
+              // className="group relative w-[190px] overflow-hidden rounded-xl bg-white shadow-md transition hover:shadow-lg"
+              >
                 {/* Remove button */}
                 <button
                   type="button"
@@ -96,14 +208,28 @@ export default function OptionsStep({
                 <div className="relative flex h-[170px] items-center justify-center overflow-hidden bg-white p-3">
 
                   {/* PDF */}
-                  {(file.type === "application/pdf" || ext === "pdf") && (
+                  {/* {(file.type === "application/pdf" || ext === "pdf") && (
                     <div className="h-full w-full overflow-hidden">
                       <iframe
                         src={`${fileUrls[i]}#page=1&toolbar=0&navpanes=0&scrollbar=0&view=FitH`}
                         title={file.name}
                         scrolling="no"
+                        className="pointer-events-none h-[130%] w-[135%] -translate-x-[14%] -translate-y-[12%] border-0 bg-white"
+                        style={{ backgroundColor: "#ffffff", colorScheme: "light" }}
+                      /> */}
+                  {/* <iframe
+                        src={`${fileUrls[i]}#page=1&toolbar=0&navpanes=0&scrollbar=0&view=FitH`}
+                        title={file.name}
+                        scrolling="no"
                         className="pointer-events-none h-[130%] w-[135%] -translate-x-[14%] -translate-y-[12%] border-0"
-                      />
+                      /> */}
+                  {/* </div>
+                  )} */}
+
+                  {(file.type === "application/pdf" || ext === "pdf") && (
+                    <div className="h-full w-full overflow-hidden bg-white">
+                      <PdfThumbnail file={file} />
+                      {/* <PdfThumbnail url={fileUrls[i]} /> */}
                     </div>
                   )}
 

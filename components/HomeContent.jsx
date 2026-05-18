@@ -11,7 +11,7 @@ import {
     ArrowUp, Lock, Zap, Eye, Smartphone, Trash2, Hash, Code,
     Image, CheckCircle2,
 } from "lucide-react";
-import SisterSitesBanner from "./SisterSitesBanner";
+// import SisterSitesBanner from "./SisterSitesBanner";
 
 /* ─────────────────────────────────────────────────────────────
    SCROLL REVEAL HOOK
@@ -473,7 +473,7 @@ export default function HomeContent() {
                 </div>
             </section>
 
-            <SisterSitesBanner />
+            {/* <SisterSitesBanner /> */}
 
             {/* ── CTA BANNER ── */}
             <section className={styles.ctaOuter}>
@@ -481,8 +481,11 @@ export default function HomeContent() {
                     <div className={styles.ctaGlow} />
                     <div className={styles.ctaLeft}>
                         <h2 className={styles.ctaTitle}>
-                            Start Converting PDFs for Free
+                            Start Converting PDFs for <span>Free</span>
                         </h2>
+                        {/* <h2 className={styles.ctaTitle}>
+                            Start Converting PDFs for Free
+                        </h2> */}
                         <p className={styles.ctaText}>
                             No account, no watermarks, no file size tricks. Just fast, private PDF tools that work.
                         </p>

@@ -21,12 +21,12 @@ import {
 
 // ── Config ─────────────────────────────────────────────────────────────────
 const DONE_LINKS = [
-  { label: "Merge PDF",     href: "/merge-pdf",     icon: <GitMerge   className="h-4 w-4 text-purple-500"  /> },
-  { label: "Compress PDF",  href: "/compress-pdf",  icon: <Minimize2  className="h-4 w-4 text-green-500"   /> },
-  { label: "Word to PDF",   href: "/word-to-pdf",   icon: <FileText   className="h-4 w-4 text-blue-500"    /> },
-  { label: "Split PDF",     href: "/split-pdf",     icon: <Scissors   className="h-4 w-4 text-pink-500"    /> },
-  { label: "PDF to Word",   href: "/pdf-to-word",   icon: <FileText   className="h-4 w-4 text-indigo-500"  /> },
-  { label: "OCR PDF",       href: "/ocr-pdf",       icon: <FileCode   className="h-4 w-4 text-amber-500"   /> },
+  { label: "Merge PDF", href: "/merge-pdf", icon: <GitMerge className="h-4 w-4 text-purple-500" /> },
+  { label: "Compress PDF", href: "/compress-pdf", icon: <Minimize2 className="h-4 w-4 text-green-500" /> },
+  { label: "Word to PDF", href: "/word-to-pdf", icon: <FileText className="h-4 w-4 text-blue-500" /> },
+  { label: "Split PDF", href: "/split-pdf", icon: <Scissors className="h-4 w-4 text-pink-500" /> },
+  { label: "PDF to Word", href: "/pdf-to-word", icon: <FileText className="h-4 w-4 text-indigo-500" /> },
+  { label: "OCR PDF", href: "/ocr-pdf", icon: <FileCode className="h-4 w-4 text-amber-500" /> },
 ];
 
 const SIDEBAR_NOTICE = (
@@ -67,7 +67,7 @@ function HtmlInputPanel({ mode, setMode, htmlCode, setHtmlCode, urlInput, setUrl
   return (
     <div className="space-y-4">
       {/* About info */}
-      <div className="space-y-2 rounded-lg border border-slate-200 bg-slate-50 p-4 text-sm text-slate-700">
+      {/* <div className="space-y-2 rounded-lg border border-slate-200 bg-slate-50 p-4 text-sm text-slate-700">
         <p className="font-semibold text-slate-800">💡 About this conversion</p>
         <ul className="space-y-1.5 text-xs text-slate-600">
           <li>✓ Paste HTML code with inline/internal CSS</li>
@@ -76,7 +76,7 @@ function HtmlInputPanel({ mode, setMode, htmlCode, setHtmlCode, urlInput, setUrl
           <li>✓ CSS, fonts, images & layout preserved</li>
           <li>✓ Headless browser rendering — pixel-perfect</li>
         </ul>
-      </div>
+      </div> */}
 
       {/* Mode Toggle */}
       <div>
@@ -84,18 +84,17 @@ function HtmlInputPanel({ mode, setMode, htmlCode, setHtmlCode, urlInput, setUrl
         <div className="flex gap-2 bg-gray-100 p-1 rounded-xl w-full flex-wrap">
           {[
             { key: "code", label: "HTML Code", icon: <Code2 className="w-3.5 h-3.5" /> },
-            { key: "url",  label: "Webpage URL", icon: <Globe className="w-3.5 h-3.5" /> },
+            { key: "url", label: "Webpage URL", icon: <Globe className="w-3.5 h-3.5" /> },
             { key: "file", label: "Upload .html", icon: <Upload className="w-3.5 h-3.5" /> },
           ].map(({ key, label, icon }) => (
             <button
               key={key}
               type="button"
               onClick={() => setMode(key)}
-              className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-semibold transition-all duration-200 flex-1 justify-center ${
-                mode === key
-                  ? "bg-white text-orange-600 shadow-sm"
-                  : "text-gray-500 hover:text-gray-700"
-              }`}
+              className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-semibold transition-all duration-200 flex-1 justify-center ${mode === key
+                ? "bg-white text-orange-600 shadow-sm"
+                : "text-gray-500 hover:text-gray-700"
+                }`}
             >
               {icon}
               {label}
@@ -163,14 +162,12 @@ function HtmlInputPanel({ mode, setMode, htmlCode, setHtmlCode, urlInput, setUrl
             Select your .html file
           </label>
           <label className="block cursor-pointer group">
-            <div className={`rounded-lg border-2 border-dashed p-6 text-center transition-all duration-200 ${
-              htmlFile
-                ? "border-orange-400 bg-orange-50"
-                : "border-slate-200 hover:border-orange-400 hover:bg-orange-50/40"
-            }`}>
-              <div className={`w-10 h-10 rounded-xl mx-auto mb-3 flex items-center justify-center transition-colors ${
-                htmlFile ? "bg-orange-100" : "bg-orange-50 group-hover:bg-orange-100"
+            <div className={`rounded-lg border-2 border-dashed p-6 text-center transition-all duration-200 ${htmlFile
+              ? "border-orange-400 bg-orange-50"
+              : "border-slate-200 hover:border-orange-400 hover:bg-orange-50/40"
               }`}>
+              <div className={`w-10 h-10 rounded-xl mx-auto mb-3 flex items-center justify-center transition-colors ${htmlFile ? "bg-orange-100" : "bg-orange-50 group-hover:bg-orange-100"
+                }`}>
                 {htmlFile
                   ? <CheckCircle className="w-5 h-5 text-orange-500" />
                   : <Upload className="w-5 h-5 text-orange-600" />
@@ -217,7 +214,7 @@ export default function HtmlToPdf({ seo }) {
 
   const isReady =
     (mode === "code" && htmlCode.trim().length > 0) ||
-    (mode === "url"  && urlInput.trim().length > 0) ||
+    (mode === "url" && urlInput.trim().length > 0) ||
     (mode === "file" && htmlFile !== null);
 
   const getDownloadName = () =>
@@ -232,16 +229,28 @@ export default function HtmlToPdf({ seo }) {
   };
 
   // Advance flow to OPTIONS by injecting a dummy file
-  const handleInputReady = () => {
-    if (!isReady) {
-      if (mode === "code") return alert("Please paste your HTML code first");
-      if (mode === "url")  return alert("Please enter a valid URL first");
-      if (mode === "file") return alert("Please select an .html file first");
-    }
-    const blob = new Blob(["html-input"], { type: "text/plain" });
-    const dummy = new File([blob], "html-input.html", { type: "text/html" });
-    flow.selectFiles([dummy]);
-  };
+  // const handleInputReady = () => {
+  //   if (!isReady) {
+  //     if (mode === "code") return alert("Please paste your HTML code first");
+  //     if (mode === "url") return alert("Please enter a valid URL first");
+  //     if (mode === "file") return alert("Please select an .html file first");
+  //   }
+  //   const blob = new Blob(["html-input"], { type: "text/plain" });
+  //   const dummy = new File([blob], "html-input.html", { type: "text/html" });
+  //   flow.selectFiles([dummy]);
+  // };
+
+  // const handleInputReady = () => {
+  //   if (!isReady) {
+  //     if (mode === "code") return alert("Please paste your HTML code first");
+  //     if (mode === "url") return alert("Please enter a valid URL first");
+  //     if (mode === "file") return alert("Please select an .html file first");
+
+  //   }
+  //   const blob = new Blob(["html-input"], { type: "text/plain" });
+  //   const dummy = new File([blob], "html-input.html", { type: "text/html" });
+  //   flow.selectFiles([dummy]); // ← YE OPTIONS step trigger karta hai
+  // };
 
   // ── API LOGIC ──────────────────────────────────────────────────────────
   const handleConvert = async () => {
@@ -256,7 +265,7 @@ export default function HtmlToPdf({ seo }) {
       if (mode === "file") {
         const htmlContent = await new Promise((resolve, reject) => {
           const reader = new FileReader();
-          reader.onload  = (e) => resolve(e.target.result);
+          reader.onload = (e) => resolve(e.target.result);
           reader.onerror = () => reject(new Error("File read failed"));
           reader.readAsText(htmlFile, "UTF-8");
         });
@@ -292,10 +301,19 @@ export default function HtmlToPdf({ seo }) {
 
       completeProgress();
       flow.finishSuccess();
+      // } catch (err) {
+      //   console.error(err);
+      //   cancelProgress();
+      //   flow.handleError(err.message || "Something went wrong. Please try again.");
+      // }
+
     } catch (err) {
       console.error(err);
       cancelProgress();
-      flow.handleError(err.message || "Something went wrong. Please try again.");
+      // flow.handleError mat use karo — ye OPTIONS step pe le jaata hai
+      // Seedha UPLOAD step pe wapas jao
+      flow.reset();
+      alert(err.message || "Something went wrong. Please try again.");
     }
   };
   // ── END API LOGIC ──────────────────────────────────────────────────────
@@ -374,7 +392,7 @@ export default function HtmlToPdf({ seo }) {
         progress={progress}
         onRemoveFile={handleRemoveFile}
         onConvert={handleConvert}
-        onDownload={() => {}}
+        onDownload={() => { }}
         doneLinks={DONE_LINKS}
 
         optionsTitle="HTML input options"
@@ -394,6 +412,84 @@ export default function HtmlToPdf({ seo }) {
             fileInputRef={fileInputRef}
           />
         }
+
+        customFilePreview={
+          <HtmlInputPanel
+            mode={mode}
+            setMode={setMode}
+            htmlCode={htmlCode}
+            setHtmlCode={setHtmlCode}
+            urlInput={urlInput}
+            setUrlInput={setUrlInput}
+            htmlFile={htmlFile}
+            setHtmlFile={setHtmlFile}
+            fileInputRef={fileInputRef}
+          />
+        }
+
+        // customOptionsLayout={
+        //   <div className="grid grid-cols-1 lg:grid-cols-[1fr_300px] min-h-[calc(100vh-80px)]">
+
+        //     {/* LEFT — HTML Input */}
+        //     <div className="bg-white p-8 overflow-y-auto">
+        //       <h2 className="text-lg font-bold text-slate-900 mb-5">
+        //         HTML to PDF — Input Options
+        //       </h2>
+        //       <HtmlInputPanel
+        //         mode={mode}
+        //         setMode={setMode}
+        //         htmlCode={htmlCode}
+        //         setHtmlCode={setHtmlCode}
+        //         urlInput={urlInput}
+        //         setUrlInput={setUrlInput}
+        //         htmlFile={htmlFile}
+        //         setHtmlFile={setHtmlFile}
+        //         fileInputRef={fileInputRef}
+        //       />
+        //     </div>
+
+        //     {/* RIGHT — Sidebar */}
+        //     <div className="bg-white border-l border-slate-200 flex flex-col">
+        //       <div className="flex-1 p-5">
+        //         <h3 className="text-base font-bold text-slate-900 mb-3">
+        //           HTML to PDF
+        //         </h3>
+        //         <div className="rounded-2xl border border-orange-100 bg-orange-50 p-4">
+        //           <p className="text-sm font-semibold text-orange-800">
+        //             ℹ️ HTML to PDF Info
+        //           </p>
+        //           <ul className="mt-3 list-disc space-y-2 pl-4 text-xs text-slate-600">
+        //             <li>HTML Code — paste raw HTML + CSS</li>
+        //             <li>URL — any public webpage</li>
+        //             <li>File — upload .html / .htm file</li>
+        //             <li>CSS, fonts & images preserved</li>
+        //           </ul>
+        //         </div>
+        //       </div>
+
+        //       {/* Convert Button */}
+        //       <div className="p-4 border-t border-slate-200">
+        //         <button
+        //           type="button"
+        //           onClick={handleConvert}
+        //           disabled={!isReady}
+        //           className={`w-full flex items-center justify-center gap-2 rounded-xl px-5 py-4 text-base font-bold text-white transition active:scale-[0.98] ${isReady
+        //             ? "bg-gradient-to-r from-orange-600 to-rose-500 hover:from-orange-700 hover:to-rose-600 shadow-[0_10px_30px_rgba(234,88,12,0.35)]"
+        //             : "cursor-not-allowed bg-slate-300"
+        //             }`}
+        //         >
+        //           <FileCode className="h-5 w-5" />
+        //           Convert to PDF
+        //         </button>
+        //         <p className="mt-2 text-xs text-center text-slate-400">
+        //           ⏱️ URL mode may take ~30 seconds
+        //         </p>
+        //       </div>
+        //     </div>
+
+        //   </div>
+        // }
+
 
         processingTitle="Converting HTML to PDF"
         processingDescription="Rendering your HTML with full CSS and layout support — please wait."
@@ -438,19 +534,18 @@ export default function HtmlToPdf({ seo }) {
                 {/* Mode Toggle */}
                 <div className="flex gap-2 bg-gray-100 p-1 rounded-xl w-full">
                   {[
-                    { key: "code", label: "HTML Code",    icon: <Code2  className="w-3.5 h-3.5" /> },
-                    { key: "url",  label: "Webpage URL",  icon: <Globe  className="w-3.5 h-3.5" /> },
+                    { key: "code", label: "HTML Code", icon: <Code2 className="w-3.5 h-3.5" /> },
+                    { key: "url", label: "Webpage URL", icon: <Globe className="w-3.5 h-3.5" /> },
                     { key: "file", label: "Upload .html", icon: <Upload className="w-3.5 h-3.5" /> },
                   ].map(({ key, label, icon }) => (
                     <button
                       key={key}
                       type="button"
                       onClick={() => setMode(key)}
-                      className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-semibold transition-all duration-200 flex-1 justify-center ${
-                        mode === key
-                          ? "bg-white text-orange-600 shadow-sm"
-                          : "text-gray-500 hover:text-gray-700"
-                      }`}
+                      className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-semibold transition-all duration-200 flex-1 justify-center ${mode === key
+                        ? "bg-white text-orange-600 shadow-sm"
+                        : "text-gray-500 hover:text-gray-700"
+                        }`}
                     >
                       {icon}{label}
                     </button>
@@ -463,7 +558,7 @@ export default function HtmlToPdf({ seo }) {
                     value={htmlCode}
                     onChange={(e) => setHtmlCode(e.target.value)}
                     placeholder={`<!DOCTYPE html>\n<html>\n  <head>\n    <style>body { font-family: Arial; padding: 40px; }</style>\n  </head>\n  <body>\n    <h1>Hello PDF!</h1>\n  </body>\n</html>`}
-                    rows={8}
+                    rows={12}
                     className="w-full rounded-xl border-2 border-dashed border-gray-200 bg-gray-50 p-4 text-xs font-mono text-slate-800 outline-none resize-y focus:border-orange-400 focus:ring-2 focus:ring-orange-100 transition-all hover:border-orange-300"
                   />
                 )}
@@ -490,14 +585,12 @@ export default function HtmlToPdf({ seo }) {
                 {/* File upload */}
                 {mode === "file" && (
                   <label className="block cursor-pointer group">
-                    <div className={`rounded-xl border-2 border-dashed p-8 text-center transition-all duration-200 ${
-                      htmlFile
-                        ? "border-orange-400 bg-orange-50"
-                        : "border-gray-200 hover:border-orange-400 hover:bg-orange-50/40"
-                    }`}>
-                      <div className={`w-12 h-12 rounded-2xl mx-auto mb-3 flex items-center justify-center ${
-                        htmlFile ? "bg-orange-100" : "bg-orange-50 group-hover:bg-orange-100"
+                    <div className={`rounded-xl border-2 border-dashed p-8 text-center transition-all duration-200 ${htmlFile
+                      ? "border-orange-400 bg-orange-50"
+                      : "border-gray-200 hover:border-orange-400 hover:bg-orange-50/40"
                       }`}>
+                      <div className={`w-12 h-12 rounded-2xl mx-auto mb-3 flex items-center justify-center ${htmlFile ? "bg-orange-100" : "bg-orange-50 group-hover:bg-orange-100"
+                        }`}>
                         {htmlFile
                           ? <CheckCircle className="w-6 h-6 text-orange-500" />
                           : <Upload className="w-6 h-6 text-orange-600" />
@@ -528,18 +621,36 @@ export default function HtmlToPdf({ seo }) {
                   </label>
                 )}
 
-                <button
+                {/* <button
                   type="button"
                   onClick={handleInputReady}
                   disabled={!isReady}
-                  className={`w-full flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm text-white transition-all duration-200 shadow-sm ${
-                    isReady
-                      ? "bg-gradient-to-r from-orange-600 to-rose-500 hover:from-orange-700 hover:to-rose-600 hover:shadow-md active:scale-[0.98]"
-                      : "bg-gray-200 text-gray-400 cursor-not-allowed"
-                  }`}
+                  className={`w-full flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm text-white transition-all duration-200 shadow-sm ${isReady
+                    ? "bg-gradient-to-r from-orange-600 to-rose-500 hover:from-orange-700 hover:to-rose-600 hover:shadow-md active:scale-[0.98]"
+                    : "bg-gray-200 text-gray-400 cursor-not-allowed"
+                    }`}
                 >
                   <FileCode className="w-4 h-4" />
                   Continue to Convert
+                </button> */}
+
+
+                <button
+                  type="button"
+                  onClick={handleConvert}
+                  disabled={!isReady}
+                  className={`w-full flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm text-white transition-all duration-200 shadow-sm ${isReady
+                      ? "bg-[#e8420a] hover:bg-[#d63a07] shadow-[0_4px_14px_rgba(232,66,10,0.35)] active:scale-[0.98]"
+                      : "bg-gray-200 text-gray-400 cursor-not-allowed"
+                    }`}
+                // className={`w-full flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm text-white transition-all duration-200 shadow-sm ${isReady
+                //   ? "bg-gradient-to-r from-orange-600 to-rose-500 hover:from-orange-700 hover:to-rose-600 hover:shadow-md active:scale-[0.98]"
+                //   : "bg-gray-200 text-gray-400 cursor-not-allowed"
+                //   }`}
+
+                >
+                  <FileCode className="w-4 h-4" />
+                  Convert to PDF
                 </button>
 
                 <p className="text-xs text-center text-slate-400">
@@ -633,12 +744,12 @@ export default function HtmlToPdf({ seo }) {
             relatedTitle: "You Might Also Need",
 
             relatedTools: [
-              { label: "Merge PDF",     href: "/merge-pdf",     desc: "Combine multiple PDFs",             icon: GitMerge,   iconColor: "text-purple-500",  bgColor: "bg-purple-50"  },
-              { label: "Compress PDF",  href: "/compress-pdf",  desc: "Reduce PDF file size",              icon: Minimize2,  iconColor: "text-green-500",   bgColor: "bg-green-50"   },
-              { label: "Word to PDF",   href: "/word-to-pdf",   desc: "Convert DOCX to PDF",               icon: FileText,   iconColor: "text-blue-500",    bgColor: "bg-blue-50"    },
-              { label: "Split PDF",     href: "/split-pdf",     desc: "Extract specific pages",            icon: Scissors,   iconColor: "text-pink-500",    bgColor: "bg-pink-50"    },
-              { label: "PDF to Word",   href: "/pdf-to-word",   desc: "Convert PDF to editable DOCX",      icon: FileText,   iconColor: "text-indigo-500",  bgColor: "bg-indigo-50"  },
-              { label: "OCR PDF",       href: "/ocr-pdf",       icon: FileCode,   iconColor: "text-amber-500",   bgColor: "bg-amber-50",   desc: "Make scanned PDFs searchable" },
+              { label: "Merge PDF", href: "/merge-pdf", desc: "Combine multiple PDFs", icon: GitMerge, iconColor: "text-purple-500", bgColor: "bg-purple-50" },
+              { label: "Compress PDF", href: "/compress-pdf", desc: "Reduce PDF file size", icon: Minimize2, iconColor: "text-green-500", bgColor: "bg-green-50" },
+              { label: "Word to PDF", href: "/word-to-pdf", desc: "Convert DOCX to PDF", icon: FileText, iconColor: "text-blue-500", bgColor: "bg-blue-50" },
+              { label: "Split PDF", href: "/split-pdf", desc: "Extract specific pages", icon: Scissors, iconColor: "text-pink-500", bgColor: "bg-pink-50" },
+              { label: "PDF to Word", href: "/pdf-to-word", desc: "Convert PDF to editable DOCX", icon: FileText, iconColor: "text-indigo-500", bgColor: "bg-indigo-50" },
+              { label: "OCR PDF", href: "/ocr-pdf", icon: FileCode, iconColor: "text-amber-500", bgColor: "bg-amber-50", desc: "Make scanned PDFs searchable" },
             ],
 
             faqTitle: "Frequently Asked Questions",

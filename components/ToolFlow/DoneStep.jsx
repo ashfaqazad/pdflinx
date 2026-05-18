@@ -3,6 +3,16 @@
 
 import { Check, Download } from "lucide-react";
 
+// export default function DoneStep({
+//   title = "Conversion complete!",
+//   description = "Your file is ready to download.",
+//   downloadLabel = "Download File",
+//   resetLabel = "Convert another file",
+//   onDownload,
+//   onReset,
+//   relatedLinks = [],
+// }) {
+
 export default function DoneStep({
   title = "Conversion complete!",
   description = "Your file is ready to download.",
@@ -11,9 +21,10 @@ export default function DoneStep({
   onDownload,
   onReset,
   relatedLinks = [],
+  compressionStats = null,
 }) {
   return (
-    <div className="animate-done-in mx-auto -mt-10 w-full max-w-[760px] rounded-[20px] border border-black/10 bg-white px-8 py-14 text-center shadow-sm">
+    <div className="animate-done-in mx-auto -mt-6 w-full max-w-[760px] rounded-[20px] border border-black/10 bg-white px-8 py-14 text-center shadow-sm">
       <div className="animate-success-pop mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-[#edfaf3]">
         <Check className="h-10 w-10 text-black" strokeWidth={2.4} />
       </div>
@@ -23,6 +34,117 @@ export default function DoneStep({
       </h3>
 
       <p className="mt-2 text-sm text-[#7a7772]">{description}</p>
+
+
+
+      {/* {compressionStats && (
+        <div className="mx-auto mt-6 w-full max-w-[380px] flex items-center gap-4 rounded-2xl border border-slate-200 bg-white px-5 py-4 shadow-sm"> */}
+      {/* Circle % */}
+      {/* <div className="relative flex h-16 w-16 shrink-0 items-center justify-center rounded-full border-4 border-green-400">
+            <div className="text-center">
+              <p className="text-sm font-bold leading-none text-green-600">
+                {Math.round((1 - compressionStats.compressedSize / compressionStats.originalSize) * 100)}%
+              </p>
+              <p className="text-[9px] font-semibold uppercase tracking-wide text-slate-400">
+                saved
+              </p>
+            </div>
+          </div> */}
+      {/* Text */}
+      {/* <div className="text-left">
+            <p className="text-sm font-semibold text-slate-700">
+              Your PDF is now{" "}
+              {Math.round((1 - compressionStats.compressedSize / compressionStats.originalSize) * 100)}% smaller!
+            </p>
+            <p className="mt-1 text-xs text-slate-400">
+              {(compressionStats.originalSize / (1024 * 1024)).toFixed(2)} MB {"→"}{" "}
+              {(compressionStats.compressedSize / (1024 * 1024)).toFixed(2)} MB
+            </p>
+          </div>
+        </div>
+      )} */}
+
+
+      {compressionStats && (() => {
+        const savedPct = Math.round(
+          (1 - compressionStats.compressedSize / compressionStats.originalSize) * 100
+        );
+        const origMB = (compressionStats.originalSize / (1024 * 1024)).toFixed(2);
+        const compMB = (compressionStats.compressedSize / (1024 * 1024)).toFixed(2);
+        // const radius = 28;
+        // const circ = 2 * Math.PI * radius;
+        // const dash = (savedPct / 100) * circ;
+
+        return (
+          <div className="mx-auto mt-6 w-full max-w-[380px] flex items-center gap-4 rounded-2xl border border-slate-200 bg-white px-5 py-4 shadow-sm">
+            {/* SVG Circle */}
+            <div className="relative flex h-16 w-16 shrink-0 items-center justify-center">
+              {/* <svg width="64" height="64" viewBox="0 0 64 64" className="-rotate-90"> */}
+
+
+              {/* <svg width="64" height="64" viewBox="0 0 64 64" className="-rotate-90" fill="none" style={{display:'block'}}> */}
+
+              {/* <circle cx="32" cy="32" r={radius} fill="none" stroke="#f0e6d3" strokeWidth="6" /> */}
+              {/* <circle cx="32" cy="32" r={radius} fill="none" stroke="#e5e7eb" strokeWidth="6" />
+                <circle
+                  cx="32" cy="32" r={radius}
+                  fill="none"
+                  stroke="#f24d0d"
+                  strokeWidth="6"
+                  strokeDasharray={`${dash} ${circ}`}
+                  strokeLinecap="round"
+                /> */}
+
+              {/* <circle cx="32" cy="32" r={radius} fill="none" stroke="#e5e7eb" strokeWidth="5" />
+                <circle
+                  cx="32" cy="32" r={radius}
+                  fill="none"
+                  stroke="#22c55e"
+                  strokeWidth="5"
+                  strokeDasharray={`${dash} ${circ}`}
+                  strokeLinecap="round"
+                /> */}
+
+              {/* </svg> */}
+
+
+              <svg width="64" height="64" viewBox="0 0 64 64" fill="none" className="-rotate-90">
+                {/* Track — gray */}
+                <circle
+                  cx="32" cy="32" r="28"
+                  stroke="#e5e7eb"
+                  strokeWidth="6"
+                />
+                {/* Progress — orange-red */}
+                <circle
+                  cx="32" cy="32" r="28"
+                  stroke="#f24d0d"
+                  strokeWidth="6"
+                  strokeLinecap="round"
+                  strokeDasharray="175.9"
+                  strokeDashoffset={175.9 - (savedPct / 100) * 175.9}
+                />
+              </svg>
+
+
+              <div className="absolute text-center">
+                <p className="text-xs font-bold leading-none text-green-600">{savedPct}%</p>
+                <p className="text-[8px] font-semibold uppercase tracking-wide text-slate-400">saved</p>
+              </div>
+            </div>
+
+            {/* Text */}
+            <div className="text-left">
+              <p className="text-sm font-semibold text-slate-700">
+                Your PDF is now {savedPct}% smaller!
+              </p>
+              <p className="mt-1 text-xs text-slate-400">
+                {origMB} MB → {compMB} MB
+              </p>
+            </div>
+          </div>
+        );
+      })()}
 
       <div className="mx-auto mt-8 w-full max-w-[380px] overflow-hidden rounded-xl border border-black/10 bg-white">
         <button

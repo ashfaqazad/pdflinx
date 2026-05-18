@@ -404,101 +404,115 @@ export default function AddPageNumbers() {
         doneLinks={DEFAULT_DONE_LINKS}
         showOutputFormat={false}
         showPreserveLayout={false}
-        customFilePreview={
-          <div className="mx-auto w-full max-w-[900px] space-y-5">
-            <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-              <h3 className="text-base font-bold text-slate-900">
-                Page numbering settings
-              </h3>
-              <p className="mt-1 text-sm text-slate-500">
-                Choose position, start number, font size, and margin.
-              </p>
 
-              <div className="mt-5 grid gap-4 md:grid-cols-2">
-                <div>
-                  <label className="block text-sm font-semibold text-slate-700">
-                    Page number position
-                  </label>
-                  <select
-                    value={position}
-                    onChange={(e) => setPosition(e.target.value)}
-                    className="mt-2 w-full rounded-xl border border-slate-300 px-4 py-3 text-sm outline-none focus:border-slate-500"
-                  >
-                    <option value="top-left">Top Left</option>
-                    <option value="top-center">Top Center</option>
-                    <option value="top-right">Top Right</option>
-                    <option value="bottom-left">Bottom Left</option>
-                    <option value="bottom-center">Bottom Center</option>
-                    <option value="bottom-right">Bottom Right</option>
-                  </select>
-                </div>
+        customOptionsLayout={
+          <div className="grid grid-cols-1 lg:grid-cols-[1fr_340px] min-h-[calc(100vh-80px)]">
 
-                <div>
-                  <label className="block text-sm font-semibold text-slate-700">
-                    Start numbering from
-                  </label>
-                  <input
-                    type="number"
-                    min="1"
-                    value={startNumber}
-                    onChange={(e) => setStartNumber(Number(e.target.value) || 1)}
-                    className="mt-2 w-full rounded-xl border border-slate-300 px-4 py-3 text-sm outline-none focus:border-slate-500"
+            {/* LEFT — existing customFilePreview content minus settings */}
+            <div className="bg-slate-100 p-8 overflow-y-auto h-[calc(100vh-80px)]">
+              <div className="mx-auto w-full max-w-[900px] space-y-5">
+                {file && (
+                  <PageNumberPreview
+                    file={file}
+                    position={position}
+                    startNumber={startNumber}
+                    fontSize={fontSize}
+                    margin={margin}
                   />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-semibold text-slate-700">
-                    Font size
-                  </label>
-                  <input
-                    type="number"
-                    min="8"
-                    max="48"
-                    value={fontSize}
-                    onChange={(e) => setFontSize(Number(e.target.value) || 14)}
-                    className="mt-2 w-full rounded-xl border border-slate-300 px-4 py-3 text-sm outline-none focus:border-slate-500"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-semibold text-slate-700">
-                    Margin
-                  </label>
-                  <input
-                    type="number"
-                    min="0"
-                    max="100"
-                    value={margin}
-                    onChange={(e) => setMargin(Number(e.target.value) || 20)}
-                    className="mt-2 w-full rounded-xl border border-slate-300 px-4 py-3 text-sm outline-none focus:border-slate-500"
-                  />
-                </div>
+                )}
+                {/* <div className="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-700">
+                  <span className="font-semibold">Current settings:</span> Start{" "}
+                  {startNumber}, {position.replace("-", " ")}, {fontSize}px, margin {margin}px
+                </div> */}
+                {error && (
+                  <div className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">
+                    <p className="font-semibold">{error}</p>
+                  </div>
+                )}
               </div>
             </div>
 
-            {file && (
-              <PageNumberPreview
-                file={file}
-                position={position}
-                startNumber={startNumber}
-                fontSize={fontSize}
-                margin={margin}
-              />
-            )}
+            {/* RIGHT — Settings sidebar */}
+            <div className="flex flex-col border-l border-slate-200 bg-white h-[calc(100vh-80px)]">
+              <div className="flex-1 overflow-y-auto p-5">
+                <h3 className="text-base font-bold text-slate-900 border-b border-slate-200 pb-3 mb-4">
+                  Page numbering settings
+                </h3>
 
-            <div className="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-700">
-              <span className="font-semibold">Current settings:</span> Start{" "}
-              {startNumber}, {position.replace("-", " ")}, {fontSize}px, margin{" "}
-              {margin}px
-            </div>
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-sm font-semibold text-slate-700">Page number position</label>
+                    <select
+                      value={position}
+                      onChange={(e) => setPosition(e.target.value)}
+                      className="mt-2 w-full rounded-xl border border-slate-300 px-4 py-3 text-sm outline-none focus:border-slate-500"
+                    >
+                      <option value="top-left">Top Left</option>
+                      <option value="top-center">Top Center</option>
+                      <option value="top-right">Top Right</option>
+                      <option value="bottom-left">Bottom Left</option>
+                      <option value="bottom-center">Bottom Center</option>
+                      <option value="bottom-right">Bottom Right</option>
+                    </select>
+                  </div>
 
-            {error && (
-              <div className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">
-                <p className="font-semibold">{error}</p>
+                  <div>
+                    <label className="block text-sm font-semibold text-slate-700">Start numbering from</label>
+                    <input
+                      type="number"
+                      min="1"
+                      value={startNumber}
+                      onChange={(e) => setStartNumber(Number(e.target.value) || 1)}
+                      className="mt-2 w-full rounded-xl border border-slate-300 px-4 py-3 text-sm outline-none focus:border-slate-500"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-semibold text-slate-700">Font size</label>
+                    <input
+                      type="number"
+                      min="8"
+                      max="48"
+                      value={fontSize}
+                      onChange={(e) => setFontSize(Number(e.target.value) || 14)}
+                      className="mt-2 w-full rounded-xl border border-slate-300 px-4 py-3 text-sm outline-none focus:border-slate-500"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-semibold text-slate-700">Margin</label>
+                    <input
+                      type="number"
+                      min="0"
+                      max="100"
+                      value={margin}
+                      onChange={(e) => setMargin(Number(e.target.value) || 20)}
+                      className="mt-2 w-full rounded-xl border border-slate-300 px-4 py-3 text-sm outline-none focus:border-slate-500"
+                    />
+                  </div>
+                </div>
               </div>
-            )}
+
+              {/* Button bottom fixed */}
+              <div className="border-t border-slate-200 p-4">
+                <button
+                  type="button"
+                  onClick={handleConvert}
+                  disabled={!file}
+                  className={`flex w-full items-center justify-center gap-2 rounded-xl px-5 py-4 text-base font-bold text-white transition active:scale-[0.98] ${file
+                      ? "bg-[#f24d0d] hover:bg-[#dc4308] shadow-[0_10px_30px_rgba(242,77,13,0.38)]"
+                      : "cursor-not-allowed bg-slate-300"
+                    }`}
+                >
+                  <Hash className="h-5 w-5" />
+                  Add Page Numbers
+                </button>
+              </div>
+            </div>
           </div>
         }
+
+
         doneTitle="Your numbered PDF is ready"
         doneDescription="Your file was processed successfully."
         downloadLabel="Download PDF"
@@ -711,8 +725,8 @@ export default function AddPageNumbers() {
             ],
           },
         }}
-          />
-      
+      />
+
 
 
     </>
