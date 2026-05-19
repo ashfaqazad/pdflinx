@@ -23,23 +23,23 @@ const PageNumberPreview = dynamic(
 
 // ─── Position map: 9-dot grid key → API value ────────────────────────────────
 const DOT_POSITIONS = [
-  { key: "top-left",      label: "Top Left" },
-  { key: "top-center",    label: "Top Center" },
-  { key: "top-right",     label: "Top Right" },
-  { key: "middle-left",   label: "Middle Left" },
+  { key: "top-left", label: "Top Left" },
+  { key: "top-center", label: "Top Center" },
+  { key: "top-right", label: "Top Right" },
+  { key: "middle-left", label: "Middle Left" },
   { key: "middle-center", label: "Middle Center" },
-  { key: "middle-right",  label: "Middle Right" },
-  { key: "bottom-left",   label: "Bottom Left" },
+  { key: "middle-right", label: "Middle Right" },
+  { key: "bottom-left", label: "Bottom Left" },
   { key: "bottom-center", label: "Bottom Center" },
-  { key: "bottom-right",  label: "Bottom Right" },
+  { key: "bottom-right", label: "Bottom Right" },
 ];
 
 // ─── Number format options ────────────────────────────────────────────────────
 const NUMBER_FORMATS = [
-  { id: "n",        label: "1",         preview: (n) => `${n}` },
-  { id: "page-n",   label: "Page 1",    preview: (n) => `Page ${n}` },
-  { id: "n-of-t",   label: "1 / 10",    preview: (n) => `${n} / 10` },
-  { id: "dash-n",   label: "- 1 -",     preview: (n) => `- ${n} -` },
+  { id: "n", label: "1", preview: (n) => `${n}` },
+  { id: "page-n", label: "Page 1", preview: (n) => `Page ${n}` },
+  { id: "n-of-t", label: "1 / 10", preview: (n) => `${n} / 10` },
+  { id: "dash-n", label: "- 1 -", preview: (n) => `- ${n} -` },
 ];
 
 // ─── Font families ────────────────────────────────────────────────────────────
@@ -67,11 +67,10 @@ function PositionPicker({ value, onChange }) {
             type="button"
             title={pos.label}
             onClick={() => onChange(pos.key)}
-            className={`relative w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-150 group ${
-              isActive
-                ? "bg-[#f24d0d] shadow-[0_4px_14px_rgba(242,77,13,0.4)]"
-                : "bg-white border-2 border-slate-200 hover:border-[#f24d0d] hover:bg-orange-50"
-            }`}
+            className={`relative w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-150 group ${isActive
+              ? "bg-[#f24d0d] shadow-[0_4px_14px_rgba(242,77,13,0.4)]"
+              : "bg-white border-2 border-slate-200 hover:border-[#f24d0d] hover:bg-orange-50"
+              }`}
           >
             {/* Mini page icon */}
             <svg width="20" height="24" viewBox="0 0 20 24" fill="none">
@@ -102,15 +101,15 @@ function PositionPicker({ value, onChange }) {
 function NumberDot({ posKey, isActive }) {
   const dotColor = isActive ? "#fff" : "#f24d0d";
   const positions = {
-    "top-left":      { x: 3.5,  y: 2.5 },
-    "top-center":    { x: 8.5,  y: 2.5 },
-    "top-right":     { x: 13.5, y: 2.5 },
-    "middle-left":   { x: 3.5,  y: 11 },
-    "middle-center": { x: 8.5,  y: 11 },
-    "middle-right":  { x: 13.5, y: 11 },
-    "bottom-left":   { x: 3.5,  y: 19.5 },
-    "bottom-center": { x: 8.5,  y: 19.5 },
-    "bottom-right":  { x: 13.5, y: 19.5 },
+    "top-left": { x: 3.5, y: 2.5 },
+    "top-center": { x: 8.5, y: 2.5 },
+    "top-right": { x: 13.5, y: 2.5 },
+    "middle-left": { x: 3.5, y: 11 },
+    "middle-center": { x: 8.5, y: 11 },
+    "middle-right": { x: 13.5, y: 11 },
+    "bottom-left": { x: 3.5, y: 19.5 },
+    "bottom-center": { x: 8.5, y: 19.5 },
+    "bottom-right": { x: 13.5, y: 19.5 },
   };
   const p = positions[posKey];
   if (!p) return null;
@@ -126,11 +125,10 @@ function FormatSelector({ value, onChange, startNumber }) {
           key={fmt.id}
           type="button"
           onClick={() => onChange(fmt.id)}
-          className={`rounded-xl border-2 py-3 px-2 text-sm font-semibold transition-all duration-150 ${
-            value === fmt.id
-              ? "border-[#f24d0d] bg-orange-50 text-[#f24d0d]"
-              : "border-slate-200 bg-white text-slate-600 hover:border-slate-300 hover:bg-slate-50"
-          }`}
+          className={`rounded-xl border-2 py-3 px-2 text-sm font-semibold transition-all duration-150 ${value === fmt.id
+            ? "border-[#f24d0d] bg-orange-50 text-[#f24d0d]"
+            : "border-slate-200 bg-white text-slate-600 hover:border-slate-300 hover:bg-slate-50"
+            }`}
         >
           <span className="block text-base font-bold mb-0.5">
             {fmt.preview(startNumber)}
@@ -234,13 +232,13 @@ export default function AddPageNumbers() {
   const [downloadFile, setDownloadFile] = useState(null);
 
   // Settings
-  const [position, setPosition]       = useState("bottom-center");
-  const [format, setFormat]           = useState("n");
+  const [position, setPosition] = useState("bottom-center");
+  const [format, setFormat] = useState("n");
   const [startNumber, setStartNumber] = useState(1);
-  const [fontSize, setFontSize]       = useState(14);
-  const [margin, setMargin]           = useState(20);
-  const [fontColor, setFontColor]     = useState("#000000");
-  const [fontFamily, setFontFamily]   = useState("Helvetica");
+  const [fontSize, setFontSize] = useState(14);
+  const [margin, setMargin] = useState(20);
+  const [fontColor, setFontColor] = useState("#000000");
+  const [fontFamily, setFontFamily] = useState("Helvetica");
 
   const file = flow.files?.[0] || null;
 
@@ -303,7 +301,7 @@ export default function AddPageNumbers() {
       });
       if (!res.ok) {
         let msg = "Failed to add page numbers";
-        try { const j = await res.json(); msg = j?.error || msg; } catch {}
+        try { const j = await res.json(); msg = j?.error || msg; } catch { }
         throw new Error(msg);
       }
       const ct = (res.headers.get("content-type") || "").toLowerCase();
@@ -402,12 +400,24 @@ export default function AddPageNumbers() {
           >
             <div className="mx-auto max-w-[900px]">
               {file ? (
+                // <PageNumberPreview
+                //   file={file}
+                //   position={position}
+                //   startNumber={startNumber}
+                //   fontSize={fontSize}
+                //   margin={margin}
+                // />
+
                 <PageNumberPreview
                   file={file}
                   position={position}
                   startNumber={startNumber}
                   fontSize={fontSize}
                   margin={margin}
+                  fontColor={fontColor}
+                  fontFamily={fontFamily}
+                  format={format}  // ← ADD
+
                 />
               ) : (
                 <div className="flex min-h-[420px] items-center justify-center rounded-3xl border-2 border-dashed border-slate-200 bg-white/60">
@@ -549,11 +559,10 @@ export default function AddPageNumbers() {
                 type="button"
                 onClick={handleConvert}
                 disabled={!file}
-                className={`w-full rounded-2xl px-5 py-4 text-base font-bold text-white transition-all active:scale-[0.98] ${
-                  file
-                    ? "bg-[#f24d0d] hover:bg-[#db4309] shadow-[0_12px_32px_rgba(242,77,13,0.38)]"
-                    : "cursor-not-allowed bg-slate-200 text-slate-400"
-                }`}
+                className={`w-full rounded-2xl px-5 py-4 text-base font-bold text-white transition-all active:scale-[0.98] ${file
+                  ? "bg-[#f24d0d] hover:bg-[#db4309] shadow-[0_12px_32px_rgba(242,77,13,0.38)]"
+                  : "cursor-not-allowed bg-slate-200 text-slate-400"
+                  }`}
               >
                 <span className="flex items-center justify-center gap-2">
                   <Hash className="h-5 w-5" />
