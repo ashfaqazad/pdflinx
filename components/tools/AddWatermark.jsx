@@ -66,42 +66,50 @@ const hexToRgb01 = (hex) => {
   return { r, g, b };
 };
 
-// ─── Live Canvas Preview ──────────────────────────────────────────────────────
+// ─── Live Canvas Preview (Multi-page + Zoom) ─────────────────────────────────
+// SIRF YEH COMPONENT REPLACE KARO — baaki AddWatermark.jsx same rahega
 
 function WatermarkPreview({ file, text, opacity, fontFamily, fontSize, colorHex }) {
-  const canvasRef = useRef(null);
-  const [pdfPage, setPdfPage] = useState(null); // { imageData, width, height }
+  const [pages, setPages] = useState([]); // Array of { imageData, width, height }
   const [loading, setLoading] = useState(false);
+  const [zoom, setZoom] = useState(1);
+  const canvasRefs = useRef([]);
 
-  // Load first page of PDF as image via pdf.js (CDN)
+  // Load ALL pages of PDF
   useEffect(() => {
-    if (!file) { setPdfPage(null); return; }
+    if (!file) { setPages([]); return; }
     let cancelled = false;
     setLoading(true);
+    setPages([]);
 
     const loadPdf = async () => {
       try {
-        // Use pdfjsLib from CDN (loaded via Script tag below)
         const pdfjsLib = window.pdfjsLib;
         if (!pdfjsLib) { setLoading(false); return; }
 
         const arrayBuffer = await file.arrayBuffer();
         const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
-        const page = await pdf.getPage(1);
-        const viewport = page.getViewport({ scale: 1.5 });
+        const totalPages = pdf.numPages;
+        const loadedPages = [];
 
-        const offCanvas = document.createElement("canvas");
-        offCanvas.width = viewport.width;
-        offCanvas.height = viewport.height;
-        const ctx = offCanvas.getContext("2d");
-        await page.render({ canvasContext: ctx, viewport }).promise;
-
-        if (!cancelled) {
-          setPdfPage({
+        for (let i = 1; i <= totalPages; i++) {
+          if (cancelled) return;
+          const page = await pdf.getPage(i);
+          const viewport = page.getViewport({ scale: 1.5 });
+          const offCanvas = document.createElement("canvas");
+          offCanvas.width = viewport.width;
+          offCanvas.height = viewport.height;
+          const ctx = offCanvas.getContext("2d");
+          await page.render({ canvasContext: ctx, viewport }).promise;
+          loadedPages.push({
             imageData: offCanvas.toDataURL("image/png"),
             width: viewport.width,
             height: viewport.height,
           });
+        }
+
+        if (!cancelled) {
+          setPages(loadedPages);
           setLoading(false);
         }
       } catch {
@@ -113,67 +121,114 @@ function WatermarkPreview({ file, text, opacity, fontFamily, fontSize, colorHex 
     return () => { cancelled = true; };
   }, [file]);
 
-  // Draw watermark overlay on canvas
+  // Draw watermark on all canvases when options change
   useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas || !pdfPage) return;
-    const ctx = canvas.getContext("2d");
+    pages.forEach((pageData, idx) => {
+      const canvas = canvasRefs.current[idx];
+      if (!canvas) return;
+      const ctx = canvas.getContext("2d");
+      canvas.width = pageData.width;
+      canvas.height = pageData.height;
 
-    canvas.width = pdfPage.width;
-    canvas.height = pdfPage.height;
+      const img = new Image();
+      img.onload = () => {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(img, 0, 0);
 
-    // Draw PDF page
-    const img = new Image();
-    img.onload = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.drawImage(img, 0, 0);
-
-      // Draw watermark
-      if (text.trim()) {
-        const actualFontSize = fontSize || Math.max(42, Math.min(canvas.width, canvas.height) * 0.1);
-        ctx.save();
-        ctx.translate(canvas.width / 2, canvas.height / 2);
-        ctx.rotate(-Math.PI / 4);
-        ctx.globalAlpha = opacity;
-        ctx.fillStyle = colorHex;
-        ctx.font = `${actualFontSize}px ${CSS_FONT_MAP[fontFamily] || "bold Arial, sans-serif"}`;
-        ctx.textAlign = "center";
-        ctx.textBaseline = "middle";
-        ctx.fillText(text, 0, 0);
-        ctx.restore();
-      }
-    };
-    img.src = pdfPage.imageData;
-  }, [pdfPage, text, opacity, fontFamily, fontSize, colorHex]);
+        if (text.trim()) {
+          const actualFontSize = fontSize || Math.max(42, Math.min(canvas.width, canvas.height) * 0.1);
+          ctx.save();
+          ctx.translate(canvas.width / 2, canvas.height / 2);
+          ctx.rotate(-Math.PI / 4);
+          ctx.globalAlpha = opacity;
+          ctx.fillStyle = colorHex;
+          ctx.font = `${actualFontSize}px ${CSS_FONT_MAP[fontFamily] || "bold Arial, sans-serif"}`;
+          ctx.textAlign = "center";
+          ctx.textBaseline = "middle";
+          ctx.fillText(text, 0, 0);
+          ctx.restore();
+        }
+      };
+      img.src = pageData.imageData;
+    });
+  }, [pages, text, opacity, fontFamily, fontSize, colorHex]);
 
   if (!file) return null;
 
   return (
-    <div className="flex h-full w-full flex-col items-center justify-center rounded-2xl bg-slate-100 p-4">
-      {loading && (
-        <div className="flex flex-col items-center gap-3">
-          <div className="h-8 w-8 animate-spin rounded-full border-4 border-slate-300 border-t-slate-600" />
-          <p className="text-sm text-slate-500">Loading preview…</p>
+    <div className="flex h-full w-full flex-col">
+
+      {/* Zoom controls */}
+      <div className="mb-4 flex items-center justify-between">
+        <p className="text-xs font-semibold text-slate-500">
+          {pages.length > 0 ? `${pages.length} page${pages.length !== 1 ? "s" : ""}` : "Loading..."}
+        </p>
+        <div className="flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-1.5 shadow-sm">
+          <button
+            type="button"
+            onClick={() => setZoom((z) => Math.max(0.5, +(z - 0.25).toFixed(2)))}
+            className="flex h-6 w-6 items-center justify-center rounded-lg text-slate-600 hover:bg-slate-100 font-bold text-lg leading-none"
+          >
+            −
+          </button>
+          <span className="min-w-[40px] text-center text-xs font-bold text-slate-700">
+            {Math.round(zoom * 100)}%
+          </span>
+          <button
+            type="button"
+            onClick={() => setZoom((z) => Math.min(2, +(z + 0.25).toFixed(2)))}
+            className="flex h-6 w-6 items-center justify-center rounded-lg text-slate-600 hover:bg-slate-100 font-bold text-lg leading-none"
+          >
+            +
+          </button>
+          <button
+            type="button"
+            onClick={() => setZoom(1)}
+            className="ml-1 rounded-lg border border-slate-200 px-2 py-0.5 text-[10px] font-semibold text-slate-500 hover:bg-slate-100"
+          >
+            Reset
+          </button>
         </div>
-      )}
-      {!loading && pdfPage && (
-        <div className="relative w-full overflow-auto rounded-xl shadow-xl">
-          <canvas
-            ref={canvasRef}
-            className="mx-auto block max-h-[72vh] w-full rounded-xl object-contain"
-            style={{ maxWidth: "100%" }}
-          />
-          <p className="mt-2 text-center text-xs text-slate-400">
-            Live preview — Page 1 of your PDF
-          </p>
-        </div>
-      )}
-      {!loading && !pdfPage && (
-        <p className="text-sm text-slate-400">Preview unavailable</p>
-      )}
+      </div>
+
+      {/* Pages */}
+      <div className="flex-1 overflow-y-auto">
+        {loading && (
+          <div className="flex h-48 flex-col items-center justify-center gap-3">
+            <div className="h-8 w-8 animate-spin rounded-full border-4 border-slate-300 border-t-slate-600" />
+            <p className="text-sm text-slate-500">Loading pages…</p>
+          </div>
+        )}
+
+        {!loading && pages.length > 0 && (
+          <div className="flex flex-col items-center gap-6">
+            {pages.map((pageData, idx) => (
+              <div key={idx} className="flex flex-col items-center">
+                <div
+                  className="overflow-hidden rounded-xl shadow-lg"
+                  style={{ width: `${pageData.width * zoom}px`, maxWidth: "100%" }}
+                >
+                  <canvas
+                    ref={(el) => (canvasRefs.current[idx] = el)}
+                    className="block w-full"
+                    style={{ width: `${pageData.width * zoom}px`, height: `${pageData.height * zoom}px` }}
+                  />
+                </div>
+                <p className="mt-2 text-xs text-slate-400">Page {idx + 1}</p>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {!loading && pages.length === 0 && (
+          <p className="text-center text-sm text-slate-400">Preview unavailable</p>
+        )}
+      </div>
     </div>
   );
 }
+
+
 
 // ─── Options Sidebar Panel ────────────────────────────────────────────────────
 
@@ -214,8 +269,8 @@ function WatermarkOptionsPanel({
               key={f.value}
               onClick={() => setFontFamily(f.value)}
               className={`rounded-xl border px-3 py-2 text-left text-xs transition-all ${fontFamily === f.value
-                  ? "border-slate-800 bg-slate-800 text-white"
-                  : "border-slate-200 bg-slate-50 text-slate-700 hover:border-slate-400"
+                ? "border-slate-800 bg-slate-800 text-white"
+                : "border-slate-200 bg-slate-50 text-slate-700 hover:border-slate-400"
                 }`}
               style={{
                 fontFamily: CSS_FONT_MAP[f.value],
@@ -264,8 +319,8 @@ function WatermarkOptionsPanel({
               title={c.label}
               onClick={() => setColorHex(c.hex)}
               className={`h-8 w-8 rounded-full border-2 transition-all ${colorHex === c.hex
-                  ? "scale-110 border-slate-800 shadow-md"
-                  : "border-transparent hover:scale-105"
+                ? "scale-110 border-slate-800 shadow-md"
+                : "border-transparent hover:scale-105"
                 }`}
               style={{ backgroundColor: c.hex }}
             />
@@ -417,9 +472,6 @@ export default function AddWatermark({ seo }) {
           opacity,
           rotate: degrees(-45),
         });
-
-
-
       });
 
       const pdfBytes = await pdfDoc.save();
@@ -595,8 +647,8 @@ export default function AddWatermark({ seo }) {
                   onClick={handleConvert}
                   disabled={!file}
                   className={`flex w-full items-center justify-center gap-2 rounded-xl px-5 py-4 text-base font-bold text-white transition active:scale-[0.98] ${file
-                      ? "bg-[#f24d0d] hover:bg-[#dc4308] shadow-[0_10px_30px_rgba(242,77,13,0.38)]"
-                      : "cursor-not-allowed bg-slate-300"
+                    ? "bg-[#f24d0d] hover:bg-[#dc4308] shadow-[0_10px_30px_rgba(242,77,13,0.38)]"
+                    : "cursor-not-allowed bg-slate-300"
                     }`}
                 >
                   Apply Watermark
