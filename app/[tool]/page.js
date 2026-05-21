@@ -25,6 +25,12 @@ const componentMap = {
   "html-to-pdf": () => import("@/components/tools/HtmlToPdf"),
   "pdf-to-png": () => import("@/components/tools/PdfToPng"),
   "pdf-to-text": () => import("@/components/tools/PdfToText"),
+  "organize-pdf": () => import("@/components/tools/OrganizePdf"),
+  "crop-pdf": () => import("@/components/tools/CropPdf"),
+  "extract-pdf": () => import("@/components/tools/ExtractPdf"),
+
+
+
 
 
 

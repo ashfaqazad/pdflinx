@@ -31,7 +31,6 @@ export default function ToolPageLayout({
   onConvert,
   onDownload,
   customOptionsLayout,
-
   customFilePreview,
   optionsSlot,
   optionsTitle = "Conversion options",
