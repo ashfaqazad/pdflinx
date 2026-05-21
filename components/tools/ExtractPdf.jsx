@@ -1,7 +1,19 @@
 "use client";
 
 import { useState, useEffect, useRef, useCallback } from "react";
-import { Scissors, GitMerge, FileText, Minimize2, Lock, X } from "lucide-react";
+import {
+  Scissors,
+  GitMerge,
+  FileText,
+  Minimize2,
+  Lock,
+  X,
+  CheckCircle,
+  Layers3,
+  Download,
+  MonitorSmartphone,
+  ShieldCheck,
+} from "lucide-react";
 import Script from "next/script";
 import { useProgressBar } from "@/hooks/useProgressBar";
 import { useToolFlow } from "@/hooks/useToolFlow";
