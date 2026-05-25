@@ -6,6 +6,9 @@ import OptionsStep from "@/components/ToolFlow/OptionsStep";
 import ProcessingStep from "@/components/ToolFlow/ProcessingStep";
 import DoneStep from "@/components/ToolFlow/DoneStep";
 import { STEPS } from "@/hooks/useToolFlow";
+import { useEffect } from "react";
+
+
 
 const STEP_ITEMS = [
   { key: STEPS.UPLOAD, label: "Upload" },
@@ -73,6 +76,25 @@ export default function ToolPageLayout({
 
   // Jab customOptionsLayout ho — sidebar bilkul nahi chahiye
   const isCustomOptions = flow.step === STEPS.OPTIONS && !!customOptionsLayout;
+
+
+  // Component ke andar, return se pehle:
+useEffect(() => {
+  if (
+    flow.step === STEPS.OPTIONS ||
+    flow.step === STEPS.DONE
+  ) {
+    document.body.classList.add("hide-tool-footer");
+  } else {
+    document.body.classList.remove("hide-tool-footer");
+  }
+
+  // Cleanup — page change hone par hata do
+  return () => {
+    document.body.classList.remove("hide-tool-footer");
+  };
+}, [flow.step]);
+
 
   return (
     // <main className={isPremiumUpload ? "bg-white" : "bg-slate-50"}>

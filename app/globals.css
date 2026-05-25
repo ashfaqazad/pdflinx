@@ -36,6 +36,11 @@
 }
 
 
+.hide-tool-footer .tool-footer-wrap {
+  display: none;
+}
+
+
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
 }

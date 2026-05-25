@@ -28,13 +28,9 @@ const componentMap = {
   "organize-pdf": () => import("@/components/tools/OrganizePdf"),
   "crop-pdf": () => import("@/components/tools/CropPdf"),
   "extract-pdf": () => import("@/components/tools/ExtractPdf"),
-
-
-
-
-
-
-
+  "redact-pdf": () => import("@/components/tools/RedactPdf"),
+  "repair-pdf": () => import("@/components/tools/RepairPdf"),
+  "pdf-to-power-point": () => import("@/components/tools/PdfToPowerPoint"),
 
 };
 

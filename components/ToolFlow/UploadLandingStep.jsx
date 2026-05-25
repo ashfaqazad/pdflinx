@@ -309,7 +309,8 @@ function HeroUploadBox({ onFilesSelect, accept, multiple, uploadTitle, uploadSub
 
   // ── Default upload box ──
   return (
-    <div className="relative overflow-hidden rounded-2xl border border-dashed border-stone-300 bg-white p-8 text-center shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-rose-400 hover:shadow-[0_0_0_4px_rgba(232,66,10,0.08)]">
+    // <div className="relative overflow-hidden rounded-2xl border border-dashed border-stone-300 bg-white p-8 text-center shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-rose-400 hover:shadow-[0_0_0_4px_rgba(232,66,10,0.08)]">
+    <div className="relative overflow-hidden rounded-2xl border border-dashed border-stone-300 bg-white p-8 text-center shadow-sm transition-all duration-200 cursor-pointer hover:-translate-y-0.5 hover:border-rose-400 hover:shadow-[0_0_0_4px_rgba(232,66,10,0.08)]">
       {/* subtle radial glow top-center */}
       <div
         className="pointer-events-none absolute inset-0"
@@ -352,7 +353,8 @@ function HeroUploadBox({ onFilesSelect, accept, multiple, uploadTitle, uploadSub
                 e.stopPropagation();
                 open();
               }}
-              className="inline-flex items-center gap-2 rounded-full bg-[#e8420a] px-8 py-3 text-sm font-medium text-white shadow-[0_4px_14px_rgba(232,66,10,0.28)] transition-all hover:-translate-y-0.5 hover:bg-[#d63a07] hover:shadow-[0_6px_20px_rgba(232,66,10,0.36)]"
+              className="inline-flex items-center gap-2 rounded-full bg-[#e8420a] px-12 py-5 text-base font-medium text-white shadow-[0_4px_14px_rgba(232,66,10,0.28)] transition-all hover:-translate-y-0.5 hover:bg-[#d63a07] cursor-pointer hover:shadow-[0_6px_20px_rgba(232,66,10,0.36)]"
+              // className="inline-flex items-center gap-2 rounded-full bg-[#e8420a] px-8 py-3 text-sm font-medium text-white shadow-[0_4px_14px_rgba(232,66,10,0.28)] transition-all hover:-translate-y-0.5 hover:bg-[#d63a07] hover:shadow-[0_6px_20px_rgba(232,66,10,0.36)]"
             >
               <Upload className="h-4 w-4" />
               Choose File
@@ -848,7 +850,10 @@ export default function UploadLandingStep({
       </div>
 
       {/* ── HERO  (2-col) ── */}
-      <section className="mx-auto grid max-w-6xl items-center gap-12 px-6 pb-16 pt-10 lg:grid-cols-2">
+      {/* <section className="mx-auto flex flex-col-reverse max-w-6xl items-center gap-12 px-6 pb-16 pt-10 lg:grid lg:grid-cols-[1fr_1.2fr]"> */}
+      <section className="mx-auto flex flex-col-reverse max-w-6xl items-center gap-12 px-6 pb-16 pt-10 lg:grid lg:grid-cols-2">
+
+      {/* <section className="mx-auto grid max-w-6xl items-center gap-12 px-6 pb-16 pt-10 lg:grid-cols-2"> */}
         {/* <section className="mx-auto grid max-w-6xl items-center gap-12 px-6 pb-16 pt-10 lg:grid-cols-2"> */}
 
         {/* LEFT — copy */}
