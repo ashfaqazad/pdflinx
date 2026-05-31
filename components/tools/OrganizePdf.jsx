@@ -2,27 +2,37 @@
 
 import { useState, useRef, useEffect, useCallback } from "react";
 import {
-  Download,
-  CheckCircle,
-  MonitorSmartphone,
-  ShieldCheck,
-  RotateCw,
-  Trash2,
   Layers3,
   Plus,
   ArrowUpDown,
-  FilePlus2,
+  GitMerge, Scissors, Trash2, FolderOutput,
+  RotateCw, Hash, Pencil, Minimize2
 } from "lucide-react";
+
 import Script from "next/script";
 import ToolPageLayout from "@/components/ToolFlow/ToolPageLayout";
-import RelatedToolsSection from "@/components/RelatedTools";
 import { useToolFlow } from "@/hooks/useToolFlow";
 import { useProgressBar } from "@/hooks/useProgressBar";
 import { DEFAULT_DONE_LINKS, DEFAULT_SIDEBAR_FEATURES } from "@/lib/toolUiConfig";
+import MobileDrawerLayout from "@/components/ToolFlow/MobileDrawerLayout";
+
+
+
+
+const DONE_LINKS = [
+  { label: "Merge PDF",      href: "/merge-pdf",      icon: <GitMerge        className="h-4 w-4 text-purple-500"  /> },
+  { label: "Split PDF",      href: "/split-pdf",      icon: <Scissors        className="h-4 w-4 text-orange-500"  /> },
+  { label: "Remove Pages",   href: "/remove-pages",   icon: <Trash2          className="h-4 w-4 text-red-500"     /> },
+  { label: "Extract PDF",    href: "/extract-pdf",    icon: <FolderOutput    className="h-4 w-4 text-cyan-500"    /> },
+  { label: "Rotate PDF",     href: "/rotate-pdf",     icon: <RotateCw        className="h-4 w-4 text-cyan-500"    /> },
+  { label: "Add Page Numbers", href: "/add-page-numbers", icon: <Hash        className="h-4 w-4 text-slate-500"   /> },
+  { label: "Edit PDF",       href: "/edit-pdf",       icon: <Pencil          className="h-4 w-4 text-orange-500"  /> },
+  { label: "Compress PDF",   href: "/compress-pdf",   icon: <Minimize2       className="h-4 w-4 text-green-500"   /> },
+];
+
 
 /* =============================================
    PDF PAGE THUMBNAIL
-   Renders a specific page from a File object
 ============================================= */
 function PdfPageThumbnail({ file, pageNumber, rotation = 0 }) {
   const canvasRef = useRef(null);
@@ -38,7 +48,6 @@ function PdfPageThumbnail({ file, pageNumber, rotation = 0 }) {
         if (cancelled) return;
         const page = await pdf.getPage(pageNumber);
         if (cancelled) return;
-        // const viewport = page.getViewport({ scale: 0.4, rotation: 0 });
         const viewport = page.getViewport({ scale: 0.7, rotation: 0 });
         const canvas = canvasRef.current;
         if (!canvas) return;
@@ -80,7 +89,7 @@ function BlankPageThumbnail() {
 }
 
 /* =============================================
-   INSERT BLANK STRIP — hover between pages
+   INSERT BLANK STRIP
 ============================================= */
 function InsertBlankButton({ onClick }) {
   const [hovered, setHovered] = useState(false);
@@ -97,16 +106,16 @@ function InsertBlankButton({ onClick }) {
         className={`
           flex flex-col items-center justify-center gap-0.5 rounded-lg border transition-all duration-200
           ${hovered
-            ? "w-8 h-28 bg-[#fde8e4] border-[#c0392b] opacity-100"
+            ? "w-8 h-28 bg-[#fde8e4] border-[#f24d0d] opacity-100"
             : "w-3 h-20 bg-slate-100 border-slate-200 opacity-40 hover:opacity-80"
           }
         `}
       >
         {hovered && (
           <>
-            <Plus className="h-3.5 w-3.5 text-[#c0392b]" />
+            <Plus className="h-3.5 w-3.5 text-[#f24d0d]" />
             <span
-              className="text-[9px] font-bold text-[#c0392b]"
+              className="text-[9px] font-bold text-[#f24d0d]"
               style={{ writingMode: "vertical-rl", transform: "rotate(180deg)" }}
             >
               Blank
@@ -120,7 +129,7 @@ function InsertBlankButton({ onClick }) {
 }
 
 /* =============================================
-   FILE LABEL BADGE — colored letter per file
+   FILE COLORS
 ============================================= */
 const FILE_COLORS = [
   { bg: "bg-red-100", text: "text-red-700", border: "border-red-200", dot: "bg-red-400" },
@@ -134,23 +143,12 @@ function fileColor(fileIndex) {
 }
 
 /* =============================================
-   PAGE CARD — draggable
+   PAGE CARD
 ============================================= */
 function PageCard({
-  slot,
-  page,
-  rotation,
-  totalSlots,
-  allFiles,
-  onRotate,
-  onDelete,
-  onInsertBlank,
-  dragging,
-  dragOver,
-  onDragStart,
-  onDragEnter,
-  onDragEnd,
-  onDrop,
+  slot, page, rotation, totalSlots, allFiles,
+  onRotate, onDelete, onInsertBlank,
+  dragging, dragOver, onDragStart, onDragEnter, onDragEnd, onDrop,
 }) {
   const isBlank = page.isBlank;
   const isBeingDragged = dragging === slot;
@@ -159,10 +157,8 @@ function PageCard({
 
   return (
     <div className="flex items-stretch">
-      {/* Insert blank BEFORE */}
       <InsertBlankButton onClick={() => onInsertBlank(slot)} />
 
-      {/* Card */}
       <div
         draggable
         onDragStart={() => onDragStart(slot)}
@@ -177,26 +173,23 @@ function PageCard({
         `}
         style={{ width: 210 }}
       >
-        {/* Thumbnail box */}
         <div
           className={`
             relative w-full overflow-hidden rounded-xl border-2 bg-white shadow-sm
             transition-all duration-150
-            ${isDragTarget ? "border-[#c0392b] ring-2 ring-[#c0392b]/30 scale-[1.03]" : "border-slate-200 hover:border-slate-300"}
+            ${isDragTarget ? "border-[#f24d0d] ring-2 ring-[#f24d0d]/30 scale-[1.03]" : "border-slate-200 hover:border-slate-300"}
           `}
           style={{ aspectRatio: "3/4" }}
         >
-          {/* File color tag — top left strip */}
           {!isBlank && (
             <div className={`absolute top-0 left-0 w-1.5 h-full rounded-l-xl ${fc.dot}`} />
           )}
 
-          {/* Top-right action buttons */}
           <div className="absolute top-1.5 right-1.5 z-10 flex flex-col gap-1">
             <button
               type="button"
               onClick={(e) => { e.stopPropagation(); onRotate(slot); }}
-              className="flex h-6 w-6 items-center justify-center rounded-full bg-white/90 border border-slate-200 text-slate-500 shadow-sm hover:bg-orange-50 hover:text-[#c0392b] hover:border-[#c0392b] transition-colors"
+              className="flex h-6 w-6 items-center justify-center rounded-full bg-white/90 border border-slate-200 text-slate-500 shadow-sm hover:bg-orange-50 hover:text-[#f24d0d] hover:border-[#f24d0d] transition-colors"
               title="Rotate 90°"
             >
               <RotateCw className="h-3 w-3" />
@@ -211,7 +204,6 @@ function PageCard({
             </button>
           </div>
 
-          {/* Thumbnail */}
           <div className="absolute inset-0 flex items-center justify-center p-2">
             {isBlank ? (
               <BlankPageThumbnail />
@@ -224,7 +216,6 @@ function PageCard({
             )}
           </div>
 
-          {/* Rotation badge */}
           {rotation !== 0 && (
             <div className="absolute bottom-1.5 right-1.5 rounded bg-orange-500/85 px-1 py-0.5 text-[9px] font-bold text-white">
               {rotation}°
@@ -232,14 +223,168 @@ function PageCard({
           )}
         </div>
 
-        {/* Page number */}
         <span className="text-[11px] font-medium text-slate-400">{slot + 1}</span>
       </div>
 
-      {/* Insert blank AFTER last card */}
       {slot === totalSlots - 1 && (
         <InsertBlankButton onClick={() => onInsertBlank(slot + 1)} />
       )}
+    </div>
+  );
+}
+
+/* =============================================
+   SIDEBAR CONTENT — shared between desktop + mobile drawer
+============================================= */
+function OrganizeSidebarContent({
+  allFiles,
+  totalSlots,
+  blankCount,
+  deletedCount,
+  onSortPages,
+  onReset,
+  onAddMore,
+  onConvert,
+  pageOrder,
+  // onClose, // only in mobile drawer
+}) {
+  return (
+    <div className="flex flex-col h-full">
+
+      {/* Drawer handle + close — mobile only */}
+      {/* {onClose && (
+        <div className="flex items-center justify-between px-5 pt-2 pb-3 border-b border-slate-200">
+          <p className="text-base font-bold text-slate-800">Organize PDF</p>
+          <button
+            type="button"
+            onClick={onClose}
+            className="flex h-8 w-8 items-center justify-center rounded-full text-slate-400 hover:bg-slate-100 hover:text-slate-600 transition"
+          >
+            <X className="h-5 w-5" />
+          </button>
+        </div>
+      )} */}
+
+      {/* Files section */}
+      <div className="border-b border-slate-200 p-4">
+        <div className="flex items-center justify-between mb-2.5">
+          <span className="text-xs font-semibold text-slate-500 uppercase tracking-wide">Files</span>
+          <button
+            type="button"
+            onClick={onReset}
+            className="text-xs text-[#f24d0d] hover:underline font-medium"
+          >
+            Reset all
+          </button>
+        </div>
+
+        <div className="space-y-1.5 max-h-40 overflow-y-auto">
+          {allFiles.map((f, fi) => {
+            const fc = fileColor(fi);
+            const label = String.fromCharCode(65 + fi);
+            return (
+              <div
+                key={fi}
+                className={`flex items-center gap-2 rounded-lg border px-2.5 py-2 ${fc.bg} ${fc.border}`}
+              >
+                <div className={`flex h-5 w-5 shrink-0 items-center justify-center rounded text-[11px] font-bold ${fc.text} bg-white`}>
+                  {label}
+                </div>
+                <span className={`text-xs truncate flex-1 ${fc.text} font-medium`}>{f.name}</span>
+              </div>
+            );
+          })}
+        </div>
+
+        <button
+          type="button"
+          onClick={onAddMore}
+          className="mt-2.5 flex w-full items-center justify-center gap-1.5 rounded-lg border-2 border-dashed border-slate-300 bg-slate-50 py-2 text-xs font-semibold text-slate-500 hover:border-[#f24d0d] hover:text-[#f24d0d] hover:bg-[#fde8e4] transition-colors"
+        >
+          <Plus className="h-3.5 w-3.5" />
+          Add more files
+        </button>
+      </div>
+
+      {/* Stats */}
+      <div className="border-b border-slate-200 px-4 py-3 space-y-1.5">
+        <div className="flex justify-between text-xs text-slate-500">
+          <span>Total pages</span>
+          <span className="font-semibold text-slate-700">{totalSlots}</span>
+        </div>
+        {deletedCount > 0 && (
+          <div className="flex justify-between text-xs text-slate-500">
+            <span>Deleted</span>
+            <span className="font-semibold text-red-500">{deletedCount}</span>
+          </div>
+        )}
+        {blankCount > 0 && (
+          <div className="flex justify-between text-xs text-slate-500">
+            <span>Blank added</span>
+            <span className="font-semibold text-blue-500">{blankCount}</span>
+          </div>
+        )}
+      </div>
+
+      {/* Sort */}
+      <div className="border-b border-slate-200 px-4 py-3">
+        <button
+          type="button"
+          onClick={onSortPages}
+          className="flex w-full items-center gap-2 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-xs font-medium text-slate-700 hover:bg-slate-100 transition-colors"
+        >
+          <ArrowUpDown className="h-3.5 w-3.5 text-slate-400" />
+          Sort pages (File A → B → C)
+        </button>
+      </div>
+
+      {/* Instructions + legend */}
+      <div className="flex-1 overflow-y-auto px-4 py-3 space-y-2">
+        <p className="text-[11px] text-slate-400 leading-relaxed">
+          <span className="font-semibold text-slate-600">Drag</span> pages to reorder.{" "}
+          <span className="font-semibold text-slate-600">Rotate</span> or{" "}
+          <span className="font-semibold text-slate-600">delete</span> with top-right icons.
+          Hover between pages to insert a <span className="font-semibold text-slate-600">blank page</span>.
+        </p>
+
+        {allFiles.length > 1 && (
+          <div className="rounded-lg border border-slate-200 bg-slate-50 p-2.5 space-y-1">
+            <p className="text-[10px] font-semibold text-slate-500 uppercase tracking-wide">Color legend</p>
+            {allFiles.map((f, fi) => {
+              const fc = fileColor(fi);
+              return (
+                <div key={fi} className="flex items-center gap-1.5">
+                  <div className={`h-2.5 w-2.5 rounded-sm ${fc.dot}`} />
+                  <span className="text-[10px] text-slate-500 truncate">{f.name}</span>
+                </div>
+              );
+            })}
+          </div>
+        )}
+
+        <div className="rounded-xl border border-green-200 bg-green-50 p-3">
+          <p className="text-[11px] font-semibold text-green-700">✓ Your PDF is private</p>
+          <p className="text-[10px] text-green-600 mt-0.5 leading-relaxed">
+            Files are auto-deleted after processing.
+          </p>
+        </div>
+      </div>
+
+      {/* Organize button */}
+      <div className="border-t border-slate-200 p-4">
+        <button
+          type="button"
+          onClick={onConvert}
+          disabled={!pageOrder.length}
+          className={`flex w-full items-center justify-center gap-2 rounded-xl py-3.5 text-sm font-bold text-white transition-all active:scale-[0.98] ${pageOrder.length
+            ? "bg-[#f24d0d] hover:bg-[#dc4308] shadow-[0_8px_24px_rgba(242,77,13,0.35)]"
+            : "bg-slate-300 cursor-not-allowed"
+            }`}
+        >
+          <Layers3 className="h-4 w-4" />
+          Organize PDF
+        </button>
+      </div>
     </div>
   );
 }
@@ -252,27 +397,17 @@ export default function OrganizePdf({ seo }) {
   const { progress, startProgress, completeProgress, cancelProgress } = useProgressBar();
 
   const [downloadUrl, setDownloadUrl] = useState(null);
-
-  // allFiles: array of File objects (can grow as user adds more)
   const [allFiles, setAllFiles] = useState([]);
-
-  // pages: flat array of page descriptors
-  // Each: { fileIndex, pageNumber (1-based), isBlank }
   const [pages, setPages] = useState([]);
-
-  // pageOrder: array of indexes into `pages`
   const [pageOrder, setPageOrder] = useState([]);
-
-  // rotations: { slotIndex: degrees }
   const [rotations, setRotations] = useState({});
-
   const [isLoadingPages, setIsLoadingPages] = useState(false);
+  // const [drawerOpen, setDrawerOpen] = useState(false);
 
-  // Hidden file input ref for "Add more files" button
   const addMoreRef = useRef(null);
 
   /* -------------------------------------------
-     Load pages from ONE file and append
+     Load pages from one file
   ------------------------------------------- */
   const loadAndAppendFile = useCallback(async (file, fileIndex) => {
     if (!file || !window.pdfjsLib) return [];
@@ -287,14 +422,11 @@ export default function OrganizePdf({ seo }) {
   }, []);
 
   /* -------------------------------------------
-     Initialize when flow.files first set
+     Initialize when flow.files set
   ------------------------------------------- */
   useEffect(() => {
     if (!flow.files?.length) {
-      setAllFiles([]);
-      setPages([]);
-      setPageOrder([]);
-      setRotations({});
+      setAllFiles([]); setPages([]); setPageOrder([]); setRotations({});
       return;
     }
 
@@ -324,7 +456,7 @@ export default function OrganizePdf({ seo }) {
   }, [flow.files]);
 
   /* -------------------------------------------
-     Add MORE files (from "+" button)
+     Add more files
   ------------------------------------------- */
   const handleAddMoreFiles = async (newRawFiles) => {
     if (!newRawFiles?.length) return;
@@ -333,19 +465,13 @@ export default function OrganizePdf({ seo }) {
       const startFileIndex = allFiles.length;
       const newFileArr = Array.from(newRawFiles);
       let newPageDescs = [];
-
       for (let i = 0; i < newFileArr.length; i++) {
         const descs = await loadAndAppendFile(newFileArr[i], startFileIndex + i);
         newPageDescs = [...newPageDescs, ...descs];
       }
-
-      const updatedFiles = [...allFiles, ...newFileArr];
-      const updatedPages = [...pages, ...newPageDescs];
-      const newSlots = newPageDescs.map((_, i) => pages.length + i);
-
-      setAllFiles(updatedFiles);
-      setPages(updatedPages);
-      setPageOrder((prev) => [...prev, ...newSlots]);
+      setAllFiles([...allFiles, ...newFileArr]);
+      setPages([...pages, ...newPageDescs]);
+      setPageOrder((prev) => [...prev, ...newPageDescs.map((_, i) => pages.length + i)]);
     } catch (err) {
       console.error(err);
     } finally {
@@ -379,14 +505,12 @@ export default function OrganizePdf({ seo }) {
     const newPages = [...pages, { fileIndex: -1, pageNumber: null, isBlank: true }];
     const newOrder = [...pageOrder];
     newOrder.splice(beforeSlot, 0, blankIdx);
-
     const newRotations = {};
     Object.entries(rotations).forEach(([slot, deg]) => {
       const s = parseInt(slot);
       if (s >= beforeSlot) newRotations[s + 1] = deg;
       else newRotations[s] = deg;
     });
-
     setPages(newPages);
     setPageOrder(newOrder);
     setRotations(newRotations);
@@ -396,8 +520,7 @@ export default function OrganizePdf({ seo }) {
     const nonBlank = pageOrder
       .filter((idx) => !pages[idx]?.isBlank)
       .sort((a, b) => {
-        const pa = pages[a];
-        const pb = pages[b];
+        const pa = pages[a], pb = pages[b];
         if (pa.fileIndex !== pb.fileIndex) return pa.fileIndex - pb.fileIndex;
         return pa.pageNumber - pb.pageNumber;
       });
@@ -417,20 +540,15 @@ export default function OrganizePdf({ seo }) {
   const handleDragEnd = () => { setDraggingSlot(null); setDragOverSlot(null); };
 
   const handleDrop = (targetSlot) => {
-    if (draggingSlot === null || draggingSlot === targetSlot) {
-      handleDragEnd(); return;
-    }
+    if (draggingSlot === null || draggingSlot === targetSlot) { handleDragEnd(); return; }
     const newOrder = [...pageOrder];
     const [moved] = newOrder.splice(draggingSlot, 1);
     newOrder.splice(targetSlot, 0, moved);
-
-    const oldOrder = pageOrder;
     const newRotations = {};
     newOrder.forEach((pageIdx, newSlot) => {
-      const oldSlot = oldOrder.indexOf(pageIdx);
+      const oldSlot = pageOrder.indexOf(pageIdx);
       if (rotations[oldSlot] !== undefined) newRotations[newSlot] = rotations[oldSlot];
     });
-
     setPageOrder(newOrder);
     setRotations(newRotations);
     handleDragEnd();
@@ -460,19 +578,13 @@ export default function OrganizePdf({ seo }) {
     startProgress();
     try {
       const formData = new FormData();
-
-      // Append all source files
-      allFiles.forEach((f, i) => formData.append(`files`, f));
-
-      // pageOrder as array of { fileIndex, pageNumber } or null for blank
+      allFiles.forEach((f) => formData.append("files", f));
       const finalOrder = pageOrder.map((idx) => {
         const p = pages[idx];
         if (p.isBlank) return null;
         return { fileIndex: p.fileIndex, pageNumber: p.pageNumber };
       });
       formData.append("pageOrder", JSON.stringify(finalOrder));
-
-      // rotations
       const finalRotations = {};
       pageOrder.forEach((_, slotIndex) => {
         const deg = rotations[slotIndex] || 0;
@@ -480,19 +592,13 @@ export default function OrganizePdf({ seo }) {
       });
       formData.append("rotations", JSON.stringify(finalRotations));
 
-      const res = await fetch("/convert/organize-pdf", {
-        method: "POST",
-        body: formData,
-      });
-
+      const res = await fetch("/convert/organize-pdf", { method: "POST", body: formData });
       if (!res.ok) {
         const errData = await res.json().catch(() => ({}));
         throw new Error(errData.error || "Failed to organize PDF");
       }
-
       const blob = await res.blob();
-      const url = URL.createObjectURL(blob);
-      setDownloadUrl(url);
+      setDownloadUrl(URL.createObjectURL(blob));
       completeProgress();
       flow.finishSuccess();
     } catch (err) {
@@ -510,12 +616,83 @@ export default function OrganizePdf({ seo }) {
   const deletedCount = pages.filter((p) => !p.isBlank).length - pageOrder.filter((idx) => !pages[idx]?.isBlank).length;
 
   /* -------------------------------------------
-     Custom Options Layout
+     Shared sidebar props
+  ------------------------------------------- */
+  const sidebarProps = {
+    allFiles,
+    totalSlots,
+    blankCount,
+    deletedCount,
+    onSortPages: sortPages,
+    onReset: handleRemoveFile,
+    onAddMore: () => addMoreRef.current?.click(),
+    onConvert: handleConvert,
+    pageOrder,
+  };
+
+  /* -------------------------------------------
+     Page canvas area (shared between desktop + mobile)
+  ------------------------------------------- */
+  const PageCanvas = (
+    <div className="relative flex-1 overflow-auto bg-[#f0f0f0] p-5">
+      {isLoadingPages && (
+        <div className="flex h-full items-center justify-center">
+          <div className="flex flex-col items-center gap-3">
+            <div className="h-8 w-8 animate-spin rounded-full border-4 border-[#f24d0d] border-t-transparent" />
+            <p className="text-sm text-slate-500">Loading pages…</p>
+          </div>
+        </div>
+      )}
+
+      {!isLoadingPages && pageOrder.length > 0 && (
+        <div className="flex flex-wrap justify-center gap-x-4 gap-y-6 pb-24">
+          {pageOrder.map((pageIdx, slotIndex) => (
+            <PageCard
+              key={`${pageIdx}-${slotIndex}`}
+              slot={slotIndex}
+              page={pages[pageIdx]}
+              rotation={rotations[slotIndex] || 0}
+              totalSlots={totalSlots}
+              allFiles={allFiles}
+              onRotate={rotatePage}
+              onDelete={deletePage}
+              onInsertBlank={insertBlankPage}
+              dragging={draggingSlot}
+              dragOver={dragOverSlot}
+              onDragStart={handleDragStart}
+              onDragEnter={handleDragEnter}
+              onDragEnd={handleDragEnd}
+              onDrop={handleDrop}
+            />
+          ))}
+        </div>
+      )}
+
+      {!isLoadingPages && pageOrder.length === 0 && (
+        <div className="flex h-full items-center justify-center">
+          <p className="text-sm text-slate-400">All pages deleted. Add more files or reset.</p>
+        </div>
+      )}
+
+      {/* Floating "Add more files" button */}
+      <button
+        type="button"
+        onClick={() => addMoreRef.current?.click()}
+        className="fixed bottom-8 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2 rounded-full bg-white border-2 border-[#f24d0d] px-5 py-2.5 text-sm font-bold text-[#f24d0d] shadow-xl hover:bg-[#fde8e4] transition-all active:scale-95"
+        title="Add more PDF files"
+      >
+        <Plus className="h-4 w-4" />
+        Add more files
+      </button>
+    </div>
+  );
+
+  /* -------------------------------------------
+     Custom options layout
   ------------------------------------------- */
   const customOptionsLayout = (
-    <div className="flex" style={{ height: "calc(100vh - 80px)" }}>
-
-      {/* Hidden file input for adding more files */}
+    <>
+      {/* Hidden file input */}
       <input
         ref={addMoreRef}
         type="file"
@@ -525,200 +702,29 @@ export default function OrganizePdf({ seo }) {
         onChange={(e) => handleAddMoreFiles(e.target.files)}
       />
 
-      {/* ── LEFT: PAGE CANVAS ── */}
-      <div className="relative flex-1 overflow-auto bg-[#f0f0f0] p-5">
+      {/* ── DESKTOP: side-by-side ── */}
+      {/* <div className="hidden lg:flex" style={{ height: "calc(100vh - 80px)" }}>
+        {PageCanvas}
 
-        {/* Loading */}
-        {isLoadingPages && (
-          <div className="flex h-full items-center justify-center">
-            <div className="flex flex-col items-center gap-3">
-              <div className="h-8 w-8 animate-spin rounded-full border-4 border-[#c0392b] border-t-transparent" />
-              <p className="text-sm text-slate-500">Loading pages…</p>
-            </div>
-          </div>
-        )}
-
-        {/* Pages grid */}
-        {!isLoadingPages && pageOrder.length > 0 && (
-          // <div className="flex flex-wrap gap-y-5 pb-20">
-          <div className="flex flex-wrap justify-center gap-x-4 gap-y-6 pb-20">
-            {pageOrder.map((pageIdx, slotIndex) => (
-              <PageCard
-                key={`${pageIdx}-${slotIndex}`}
-                slot={slotIndex}
-                page={pages[pageIdx]}
-                rotation={rotations[slotIndex] || 0}
-                totalSlots={totalSlots}
-                allFiles={allFiles}
-                onRotate={rotatePage}
-                onDelete={deletePage}
-                onInsertBlank={insertBlankPage}
-                dragging={draggingSlot}
-                dragOver={dragOverSlot}
-                onDragStart={handleDragStart}
-                onDragEnter={handleDragEnter}
-                onDragEnd={handleDragEnd}
-                onDrop={handleDrop}
-              />
-            ))}
-          </div>
-        )}
-
-        {!isLoadingPages && pageOrder.length === 0 && (
-          <div className="flex h-full items-center justify-center">
-            <p className="text-sm text-slate-400">All pages deleted. Add more files or reset.</p>
-          </div>
-        )}
-
-        {/* ── Floating "+" Add Files Button ── */}
-        <button
-          type="button"
-          onClick={() => addMoreRef.current?.click()}
-          className="fixed bottom-8 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2 rounded-full bg-white border-2 border-[#c0392b] px-5 py-2.5 text-sm font-bold text-[#c0392b] shadow-xl hover:bg-[#fde8e4] transition-all active:scale-95"
-          title="Add more PDF files"
+        <div
+          className="flex flex-col bg-white border-l border-slate-200"
+          style={{ width: 260, flexShrink: 0 }}
         >
-          <Plus className="h-4 w-4" />
-          Add more files
-        </button>
-      </div>
-
-      {/* ── RIGHT SIDEBAR ── */}
-      <div
-        className="flex flex-col bg-white border-l border-slate-200"
-        style={{ width: 260, flexShrink: 0 }}
-      >
-        {/* Files section */}
-        <div className="border-b border-slate-200 p-4">
-          <div className="flex items-center justify-between mb-2.5">
-            <span className="text-xs font-semibold text-slate-500 uppercase tracking-wide">
-              Files
-            </span>
-            <button
-              type="button"
-              onClick={handleRemoveFile}
-              className="text-xs text-[#c0392b] hover:underline font-medium"
-            >
-              Reset all
-            </button>
-          </div>
-
-          {/* File list */}
-          <div className="space-y-1.5 max-h-40 overflow-y-auto">
-            {allFiles.map((f, fi) => {
-              const fc = fileColor(fi);
-              const label = String.fromCharCode(65 + fi); // A, B, C...
-              return (
-                <div
-                  key={fi}
-                  className={`flex items-center gap-2 rounded-lg border px-2.5 py-2 ${fc.bg} ${fc.border}`}
-                >
-                  <div className={`flex h-5 w-5 shrink-0 items-center justify-center rounded text-[11px] font-bold ${fc.text} bg-white`}>
-                    {label}
-                  </div>
-                  <span className={`text-xs truncate flex-1 ${fc.text} font-medium`}>
-                    {f.name}
-                  </span>
-                </div>
-              );
-            })}
-          </div>
-
-          {/* Add file button */}
-          <button
-            type="button"
-            onClick={() => addMoreRef.current?.click()}
-            className="mt-2.5 flex w-full items-center justify-center gap-1.5 rounded-lg border-2 border-dashed border-slate-300 bg-slate-50 py-2 text-xs font-semibold text-slate-500 hover:border-[#c0392b] hover:text-[#c0392b] hover:bg-[#fde8e4] transition-colors"
-          >
-            <Plus className="h-3.5 w-3.5" />
-            Add more files
-          </button>
+          <OrganizeSidebarContent {...sidebarProps} />
         </div>
+      </div> */}
 
-        {/* Stats */}
-        <div className="border-b border-slate-200 px-4 py-3 space-y-1.5">
-          <div className="flex justify-between text-xs text-slate-500">
-            <span>Total pages</span>
-            <span className="font-semibold text-slate-700">{totalSlots}</span>
-          </div>
-          {deletedCount > 0 && (
-            <div className="flex justify-between text-xs text-slate-500">
-              <span>Deleted</span>
-              <span className="font-semibold text-red-500">{deletedCount}</span>
-            </div>
-          )}
-          {blankCount > 0 && (
-            <div className="flex justify-between text-xs text-slate-500">
-              <span>Blank added</span>
-              <span className="font-semibold text-blue-500">{blankCount}</span>
-            </div>
-          )}
-        </div>
+      {/* ── MOBILE: full-width canvas + floating gear + drawer ── */}
+      <MobileDrawerLayout
+        drawerTitle="Organize PDF"
+        desktopSidebarWidth="w-[260px]"
+        mainContent={PageCanvas}
+        drawerContent={<OrganizeSidebarContent {...sidebarProps} />}
+      />
 
-        {/* Sort */}
-        <div className="border-b border-slate-200 px-4 py-3">
-          <button
-            type="button"
-            onClick={sortPages}
-            className="flex w-full items-center gap-2 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-xs font-medium text-slate-700 hover:bg-slate-100 transition-colors"
-          >
-            <ArrowUpDown className="h-3.5 w-3.5 text-slate-400" />
-            Sort pages (File A → B → C)
-          </button>
-        </div>
 
-        {/* Instructions */}
-        <div className="flex-1 overflow-y-auto px-4 py-3 space-y-2">
-          <p className="text-[11px] text-slate-400 leading-relaxed">
-            <span className="font-semibold text-slate-600">Drag</span> pages to reorder.
-            {" "}<span className="font-semibold text-slate-600">Rotate</span> or{" "}
-            <span className="font-semibold text-slate-600">delete</span> with top-right icons.
-            Hover between pages to insert a <span className="font-semibold text-slate-600">blank page</span>.
-          </p>
 
-          {/* File color legend */}
-          {allFiles.length > 1 && (
-            <div className="rounded-lg border border-slate-200 bg-slate-50 p-2.5 space-y-1">
-              <p className="text-[10px] font-semibold text-slate-500 uppercase tracking-wide">
-                Color legend
-              </p>
-              {allFiles.map((f, fi) => {
-                const fc = fileColor(fi);
-                return (
-                  <div key={fi} className="flex items-center gap-1.5">
-                    <div className={`h-2.5 w-2.5 rounded-sm ${fc.dot}`} />
-                    <span className="text-[10px] text-slate-500 truncate">{f.name}</span>
-                  </div>
-                );
-              })}
-            </div>
-          )}
-
-          <div className="rounded-xl border border-green-200 bg-green-50 p-3">
-            <p className="text-[11px] font-semibold text-green-700">✓ Your PDF is private</p>
-            <p className="text-[10px] text-green-600 mt-0.5 leading-relaxed">
-              Files are auto-deleted after processing.
-            </p>
-          </div>
-        </div>
-
-        {/* Organize button */}
-        <div className="border-t border-slate-200 p-4">
-          <button
-            type="button"
-            onClick={handleConvert}
-            disabled={!pageOrder.length}
-            className={`flex w-full items-center justify-center gap-2 rounded-xl py-3.5 text-sm font-bold text-white transition-all active:scale-[0.98] ${
-              pageOrder.length
-                ? "bg-[#c0392b] hover:bg-[#a93226] shadow-[0_8px_24px_rgba(192,57,43,0.3)]"
-                : "bg-slate-300 cursor-not-allowed"
-            }`}
-          >
-            <Layers3 className="h-4 w-4" />
-            Organize PDF
-          </button>
-        </div>
-      </div>
-    </div>
+    </>
   );
 
   /* -------------------------------------------
@@ -736,7 +742,73 @@ export default function OrganizePdf({ seo }) {
       />
 
       <Script
-        id="faq-schema-organize"
+        id="howto-schema-organize-pdf"
+        type="application/ld+json"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "HowTo",
+            name: "How to Organize PDF Pages Online for Free",
+            description:
+              "Rearrange, rotate, and organize PDF pages online. Sort pages into the correct order and download the updated PDF.",
+            url: "https://pdflinx.com/organize-pdf",
+            step: [
+              {
+                "@type": "HowToStep",
+                name: "Upload PDF",
+                text: "Upload your PDF document from your device."
+              },
+              {
+                "@type": "HowToStep",
+                name: "Arrange pages",
+                text: "Drag and drop pages to reorder them. Rotate or remove pages if needed."
+              },
+              {
+                "@type": "HowToStep",
+                name: "Download organized PDF",
+                text: "Click organize PDF and download the updated document."
+              }
+            ],
+            totalTime: "PT2M",
+            estimatedCost: {
+              "@type": "MonetaryAmount",
+              value: "0",
+              currency: "USD"
+            },
+            image: "https://pdflinx.com/og-image.png"
+          }, null, 2),
+        }}
+      />
+
+      <Script
+        id="breadcrumb-schema-organize-pdf"
+        type="application/ld+json"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            itemListElement: [
+              {
+                "@type": "ListItem",
+                position: 1,
+                name: "Home",
+                item: "https://pdflinx.com"
+              },
+              {
+                "@type": "ListItem",
+                position: 2,
+                name: "Organize PDF",
+                item: "https://pdflinx.com/organize-pdf"
+              }
+            ]
+          }, null, 2),
+        }}
+      />
+
+      <Script
+        id="faq-schema-organize-pdf"
         type="application/ld+json"
         strategy="afterInteractive"
         dangerouslySetInnerHTML={{
@@ -746,24 +818,87 @@ export default function OrganizePdf({ seo }) {
             mainEntity: [
               {
                 "@type": "Question",
-                name: "What is Organize PDF?",
+                name: "What does Organize PDF do?",
                 acceptedAnswer: {
                   "@type": "Answer",
-                  text: "Organize PDF allows you to rearrange, rotate, and remove PDF pages online before downloading a newly organized PDF file.",
-                },
+                  text: "Organize PDF lets you rearrange, rotate, and manage PDF pages online without installing software."
+                }
               },
               {
                 "@type": "Question",
-                name: "Can I rearrange PDF pages online?",
+                name: "Can I reorder PDF pages?",
                 acceptedAnswer: {
                   "@type": "Answer",
-                  text: "Yes. Reorder, rotate, and delete PDF pages directly in your browser with no software installation required.",
-                },
+                  text: "Yes. You can drag and drop pages into any order before downloading the updated PDF."
+                }
               },
-            ],
-          }),
+              {
+                "@type": "Question",
+                name: "Can I rotate pages in a PDF?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "Yes. Individual pages can be rotated before saving the organized PDF."
+                }
+              },
+              {
+                "@type": "Question",
+                name: "Can I remove pages from my PDF?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "Yes. Unwanted pages can be deleted while organizing your PDF."
+                }
+              },
+              {
+                "@type": "Question",
+                name: "Are my PDF files secure?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "Yes. Files are processed securely and automatically removed after processing."
+                }
+              }
+            ]
+          }, null, 2),
         }}
       />
+
+      <Script
+        id="software-schema-organize-pdf"
+        type="application/ld+json"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "SoftwareApplication",
+            name: "Organize PDF",
+            applicationCategory: "BusinessApplication",
+            operatingSystem: "Web Browser",
+            url: "https://pdflinx.com/organize-pdf",
+            description:
+              "Free online PDF organizer to rearrange, sort, rotate, and manage PDF pages. Organize PDF documents quickly without installing software.",
+            image: "https://pdflinx.com/og-image.png",
+            offers: {
+              "@type": "Offer",
+              price: "0",
+              priceCurrency: "USD"
+            },
+            publisher: {
+              "@type": "Organization",
+              name: "PDFLinx",
+              url: "https://pdflinx.com"
+            },
+            featureList: [
+              "Reorder PDF pages",
+              "Drag and drop page arrangement",
+              "Rotate PDF pages",
+              "Delete unwanted pages",
+              "Organize multiple PDF documents",
+              "Free online PDF organizer",
+              "Works in any web browser"
+            ]
+          }, null, 2),
+        }}
+      />
+
 
       <ToolPageLayout
         title={seo?.h1 || "Organize PDF Online"}
@@ -777,6 +912,7 @@ export default function OrganizePdf({ seo }) {
         onConvert={handleConvert}
         onDownload={handleDownload}
         doneLinks={DEFAULT_DONE_LINKS}
+        sidebarLinks={DONE_LINKS}
         showOutputFormat={false}
         showPreserveLayout={false}
         optionsTitle="Organize options"
@@ -795,93 +931,227 @@ export default function OrganizePdf({ seo }) {
         uploadSubtitle="or click to browse — multiple PDFs supported"
         customOptionsLayout={customOptionsLayout}
 
+        // ============================================================
+        // ORGANIZE PDF — uploadLanding content
+        // PdfToWord.jsx pattern ke mutabiq — as-is paste karo
+        // ============================================================
+
         uploadLanding={{
           content: {
-            eyebrow: "ORGANIZE PDF",
+            relatedTools: DONE_LINKS,
+
+            eyebrow: "ORGANIZE PDF PAGES",
+
+            breadcrumbCurrent: "Organize PDF",
+
+            heroBadge: "✦ 100% Free · No Signup · No Watermark",
+
+            // heroTitle: (
+            //   <>
+            //     Organize PDF Pages —{" "}
+            //     <em className="font-bold text-[#e8420a] sm:italic">
+            //       Reorder, Delete & Rotate Free Online
+            //     </em>
+            //   </>
+            // ),
+
+            // heroDescription:
+            //   "Organize your PDF pages online for free. Drag to reorder, rotate, or delete pages — all in one place. No signup, no watermark, no software needed. Works on any device.",
+
+            // pills: [
+            //   "No watermark",
+            //   "Drag to reorder pages",
+            //   "Rotate & delete in one tool",
+            //   "Instant download",
+            // ],
+
             heroTitle: (
               <>
-                Organize PDF Pages{" "}
-                <em className="font-bold not-italic text-[#c0392b] sm:italic">
-                  visually online
+                Organize PDF Pages —{" "}
+                <em className="font-bold text-[#e8420a] sm:italic">
+                  Reorder, Delete & Rearrange Free
                 </em>
               </>
             ),
             heroDescription:
-              "Rearrange, rotate, and remove PDF pages online for free. Add multiple PDFs and organize all pages together visually.",
-            noticeTitle: "Organize features",
+              "Organize PDF pages online for free — drag and drop to reorder, rotate, or delete individual pages from any PDF. Visual thumbnail preview included. No signup, no watermark.",
+            pills: ["Drag to reorder pages", "Delete any page", "Visual thumbnail preview", "No signup"],
+
+
+            uploadTitle: "Drop your PDF here",
+            uploadSubtitle: "or click to browse — PDF files supported",
+
+            trustPills: ["100% Free", "No Sign Up", "No Watermark"],
+
+            noticeTitle: "Organize PDF Info",
             noticeItems: [
               "Drag & drop to reorder pages",
-              "Add multiple PDF files",
-              "Rotate individual pages",
-              "Add blank pages anywhere",
-              "Remove unwanted pages",
+              "Rotate individual pages freely",
+              "Delete unwanted pages in one step",
             ],
-            howToTitle: "How to organize a PDF",
+
+            rating: "4.9/5",
+            ratingText: "Trusted by 50,000+ users monthly",
+
+            pdfTypeSection: {
+              enabled: false,
+            },
+
+            howToEyebrow: "How It Works",
+            howToTitle: "How to Organize a PDF — 3 Simple Steps",
             howToSubtitle:
-              "Upload one or more PDFs, drag pages to rearrange, and download your organized PDF instantly.",
+              "No learning curve. Upload, rearrange pages, download — done in under a minute.",
+
             howToSteps: [
               {
                 n: "1",
-                title: "Upload your PDFs",
-                desc: "Select one or more PDF files. Add more anytime.",
+                title: "Upload Your PDF File",
+                desc: "Select your PDF from your device. Drag and drop supported on all devices — mobile, tablet, and desktop. All pages are shown as visual thumbnails instantly.",
                 color: "bg-blue-600",
               },
               {
                 n: "2",
-                title: "Organize pages",
-                desc: "Drag to reorder, rotate, delete, or add blank pages.",
+                title: "Reorder, Rotate or Delete Pages",
+                desc: "Drag and drop page thumbnails to rearrange them in any order. Rotate individual pages 90° or 180°. Click to delete any page you do not need. All changes preview in real time.",
                 color: "bg-purple-600",
               },
               {
                 n: "3",
-                title: "Download organized PDF",
-                desc: "Save your newly arranged PDF instantly.",
+                title: "Download Your Organized PDF",
+                desc: "Click Save and your reorganized PDF is ready in seconds. All changes applied cleanly — new page order, rotations, and deletions — with all content preserved.",
                 color: "bg-emerald-600",
               },
             ],
-            whyTitle: "Why use PDFLinx Organize PDF?",
-            whyItems: [
+
+            whyTitle: "Why PDFLinx is the Best Free PDF Organizer Online",
+
+            seoBadge: "Organize PDF Guide",
+            seoTitle: "Complete Guide to Organizing PDF Pages Online",
+            seoDescription:
+              "Everything you need to know about reordering, rotating, and deleting pages in a PDF — free, online, instant. No watermark, no signup, no limits.",
+
+            seoSections: [
               {
-                title: "Drag & Drop Reorder",
-                desc: "Intuitively drag pages to any position.",
-                icon: Layers3,
-                iconColor: "text-blue-600",
-                bgColor: "bg-blue-100",
+                title:
+                  "Free PDF Organizer — Reorder, Rotate & Delete PDF Pages Online in One Tool",
+                text: "Need to organize your PDF pages? PDFLinx gives you a full PDF page organizer online for free — drag to reorder, rotate sideways pages, and delete unwanted pages all in one place. Whether you scanned documents in the wrong order, received a PDF with rotated pages, or need to clean up a merged file before sharing, PDFLinx handles everything instantly. No signup, no watermark, no software needed. Works on Windows, Mac, iPhone, and Android.",
               },
               {
-                title: "Multiple Files",
-                desc: "Combine pages from different PDFs into one.",
-                icon: FilePlus2,
-                iconColor: "text-purple-600",
-                bgColor: "bg-purple-100",
+                title: "What Does Organizing a PDF Mean?",
+                text: "Organizing a PDF means taking full control of its page structure — reordering pages into the correct sequence, rotating pages that are upside down or sideways, and removing pages that are blank, duplicate, or irrelevant. A well-organized PDF is easier to read, more professional to share, and simpler to navigate. PDFLinx combines all three actions — reorder, rotate, delete — into a single easy-to-use tool so you do not need three separate tools to clean up one document.",
               },
               {
-                title: "Works Everywhere",
-                desc: "Compatible with desktop, tablet, and mobile.",
-                icon: MonitorSmartphone,
-                iconColor: "text-orange-500",
-                bgColor: "bg-orange-50",
+                title: "Reorder PDF Pages — Put Every Page in the Right Place",
+                text: "Dragging pages into the correct order is the most common PDF organization task. Scanned documents often come in wrong order when pages are fed into the scanner incorrectly. Merged PDFs sometimes have chapters or sections interleaved. PDFLinx shows all pages as visual thumbnails and lets you drag them to any position instantly — what you see is exactly what the final PDF will look like. No command line tools, no complex software — just drag and drop.",
               },
               {
-                title: "Private & Secure",
-                desc: "Files are securely deleted after processing.",
-                icon: ShieldCheck,
-                iconColor: "text-green-600",
-                bgColor: "bg-green-100",
+                title: "Rotate PDF Pages — Fix Sideways and Upside Down Pages",
+                text: "Scanned documents frequently have pages that are rotated 90° or 180° — especially when pages are scanned in mixed orientations. PDFLinx lets you rotate any individual page clockwise or counterclockwise in 90° increments. You can rotate just one page, several pages, or all pages at once. The rotation is applied permanently to the PDF — the page will display correctly in any PDF viewer after download, not just temporarily in the browser.",
               },
               {
-                title: "No Watermark",
-                desc: "Downloaded PDF remains clean and professional.",
-                icon: CheckCircle,
-                iconColor: "text-slate-600",
-                bgColor: "bg-slate-100",
+                title: "Delete PDF Pages — Remove What You Do Not Need",
+                text: "While organizing your PDF, you can also delete any unwanted pages directly from the organizer — blank pages, duplicate pages, cover pages, or any section that should not be in the final document. Deleting pages from the organizer is more efficient than using a separate tool because you can see all pages at once and make all your changes in a single session before downloading.",
+              },
+              {
+                title:
+                  "Why PDFLinx is the Best Free PDF Organizer — No Watermark, No Limits",
+                text: "Most free PDF organizers are either limited to one action per tool, add watermarks, or require account creation. PDFLinx combines reordering, rotating, and deleting into one free tool — no signup, no watermark, no daily limit. Unlike iLovePDF and Smallpdf which restrict page organization features on free tiers, PDFLinx gives you full access at zero cost.",
+              },
+              {
+                title: "Common Use Cases for Organizing a PDF",
+                text: "✓ Fix scanned documents where pages came out in the wrong order from the scanner.\n✓ Rotate sideways or upside-down pages in scanned PDFs before sharing.\n✓ Remove blank pages, duplicate pages, or irrelevant sections from merged PDFs.\n✓ Rearrange chapters or sections in a report or book PDF.\n✓ Clean up a combined PDF received from a client or colleague before forwarding.\n✓ Prepare a finalized PDF for printing, submission, or archiving with all pages in correct order.",
+              },
+              {
+                title:
+                  "Organize PDF on iPhone, Android, Mac & Windows — No App Needed",
+                text: "PDFLinx works entirely in your browser — no download, no installation, no app required. On iPhone or Android, open your browser and upload your PDF directly from your files app — the drag-and-drop organizer works on touchscreens too. On Mac or Windows, drag and drop your PDF and rearrange pages with your mouse in seconds. PDFLinx works seamlessly across every platform and operating system.",
+              },
+              {
+                title: "Privacy and File Security",
+                text: "Your files are processed on secure servers and automatically deleted after 1 hour. We do not store, share, or access your documents at any point. PDFLinx is built with privacy-first principles — your data stays yours. All file transfers use encrypted HTTPS connections for complete security.",
+              },
+              {
+                title: "Organize PDF vs Split & Merge — When to Use Which Tool",
+                text: "The Organize PDF tool is best when you are working with a single PDF and need to rearrange, rotate, or delete its pages. If you need to combine multiple PDFs into one, use our free Merge PDF tool. If you need to break one PDF into separate files, use our free Split PDF tool. For most everyday cleanup tasks on a single document, the Organize PDF tool covers everything you need in one place — without switching between multiple tools.",
               },
             ],
+
+            faqs: [
+              {
+                q: "Is PDFLinx PDF organizer free?",
+                a: "Yes, completely free. No hidden charges, no premium plans, and no limits on the number of pages you reorganize or how many times you use it.",
+              },
+              {
+                q: "Do I need to sign up or create an account?",
+                a: "No account required. Upload your PDF and organize pages instantly — no email, no registration, no friction.",
+              },
+              {
+                q: "Can I reorder, rotate, and delete pages all in one session?",
+                a: "Yes. The PDFLinx organizer lets you reorder, rotate, and delete pages all at once in a single tool — make all your changes and download the final PDF in one step.",
+              },
+              {
+                q: "How do I reorder pages in my PDF?",
+                a: "After uploading, all pages are shown as visual thumbnails. Simply drag and drop any page thumbnail to a new position — the order updates in real time as you drag.",
+              },
+              {
+                q: "Can I rotate individual pages?",
+                a: "Yes. Click the rotate button on any page thumbnail to rotate it 90° clockwise or counterclockwise. You can rotate individual pages or multiple pages independently.",
+              },
+              {
+                q: "Will rotation be permanently saved in the PDF?",
+                a: "Yes. Rotations are permanently applied to the output PDF — the page will display correctly in any PDF viewer after download, not just in the browser.",
+              },
+              {
+                q: "Can I delete pages while organizing?",
+                a: "Yes. Click the delete button on any page thumbnail to remove it from the document. You can delete multiple pages while reordering and rotating in the same session.",
+              },
+              {
+                q: "Does PDFLinx add any watermark to the organized PDF?",
+                a: "No watermarks, ever. Your organized PDF is 100% clean and ready to use or share.",
+              },
+              {
+                q: "Is my file secure and private?",
+                a: "Yes. Files are processed on secure servers over encrypted HTTPS and automatically deleted after 1 hour. We never store, share, or view your documents.",
+              },
+              {
+                q: "Can I use PDFLinx on mobile — iPhone and Android?",
+                a: "Yes. PDFLinx works perfectly in the browser on iPhone, Android, iPad, Windows, and Mac. The drag-and-drop organizer works on touchscreens — no app download or installation needed.",
+              },
+              {
+                q: "What is the maximum file size limit?",
+                a: "Up to 50 MB per file. For very large PDFs, try splitting the file first using our free PDF Split tool, organize each part, then merge them back together.",
+              },
+              {
+                q: "Can I organize a password-protected PDF?",
+                a: "You need to unlock the PDF first. Use our free PDF Unlock tool to remove the password, then organize the pages.",
+              },
+              {
+                q: "What is the difference between Organize PDF and Split PDF?",
+                a: "Organize PDF rearranges, rotates, and deletes pages within a single document and gives you one output file. Split PDF divides one document into multiple separate files. Use Organize for cleanup and reordering, use Split when you need separate files.",
+              },
+              {
+                q: "How long does it take to organize a PDF?",
+                a: "Processing and download typically complete within 5 to 15 seconds after you confirm your changes. The time you spend organizing depends on how many pages you are rearranging.",
+              },
+              {
+                q: "Is PDFLinx better than iLovePDF or Smallpdf for organizing PDF pages?",
+                a: "Yes — PDFLinx combines reorder, rotate, and delete in one free tool with no daily limits, no watermark, and no account required. iLovePDF and Smallpdf restrict page organization features behind paid plans.",
+              },
+            ],
+
+            ctaTitle: (
+              <>
+                Organize your PDF now —<br />
+                free, private, no sign‑up.
+              </>
+            ),
+            ctaDescription:
+              "Join thousands who trust PDFLinx to reorder, rotate, and clean up PDF pages every day.",
+            ctaButton: "Choose PDF File",
           },
         }}
       />
 
-      <RelatedToolsSection />
     </>
   );
 }
@@ -912,10 +1182,15 @@ export default function OrganizePdf({ seo }) {
 
 
 
+
+
+
+
+
+
 // "use client";
 
 // import { useState, useRef, useEffect, useCallback } from "react";
-
 // import {
 //   Download,
 //   CheckCircle,
@@ -924,69 +1199,49 @@ export default function OrganizePdf({ seo }) {
 //   RotateCw,
 //   Trash2,
 //   Layers3,
-//   ChevronLeft,
-//   ChevronRight,
-//   Move,
+//   Plus,
+//   ArrowUpDown,
+//   FilePlus2,
 // } from "lucide-react";
-
 // import Script from "next/script";
 // import ToolPageLayout from "@/components/ToolFlow/ToolPageLayout";
 // import RelatedToolsSection from "@/components/RelatedTools";
-
 // import { useToolFlow } from "@/hooks/useToolFlow";
 // import { useProgressBar } from "@/hooks/useProgressBar";
-
-// import {
-//   DEFAULT_DONE_LINKS,
-//   DEFAULT_SIDEBAR_FEATURES,
-// } from "@/lib/toolUiConfig";
+// import { DEFAULT_DONE_LINKS, DEFAULT_SIDEBAR_FEATURES } from "@/lib/toolUiConfig";
 
 // /* =============================================
 //    PDF PAGE THUMBNAIL
-//    Renders a specific page number from a PDF file
-//    using PDF.js
+//    Renders a specific page from a File object
 // ============================================= */
 // function PdfPageThumbnail({ file, pageNumber, rotation = 0 }) {
 //   const canvasRef = useRef(null);
 
 //   useEffect(() => {
 //     if (!file || !window.pdfjsLib) return;
-
 //     let cancelled = false;
 
 //     const render = async () => {
 //       try {
 //         const arrayBuffer = await file.arrayBuffer();
 //         const pdf = await window.pdfjsLib.getDocument({ data: arrayBuffer }).promise;
-
 //         if (cancelled) return;
-
 //         const page = await pdf.getPage(pageNumber);
-
 //         if (cancelled) return;
-
-//         const viewport = page.getViewport({ scale: 0.5, rotation: 0 });
-
+//         // const viewport = page.getViewport({ scale: 0.4, rotation: 0 });
+//         const viewport = page.getViewport({ scale: 0.7, rotation: 0 });
 //         const canvas = canvasRef.current;
 //         if (!canvas) return;
-
 //         canvas.width = viewport.width;
 //         canvas.height = viewport.height;
-
-//         await page.render({
-//           canvasContext: canvas.getContext("2d"),
-//           viewport,
-//         }).promise;
+//         await page.render({ canvasContext: canvas.getContext("2d"), viewport }).promise;
 //       } catch (err) {
 //         console.error("Thumbnail render error:", err);
 //       }
 //     };
 
 //     render();
-
-//     return () => {
-//       cancelled = true;
-//     };
+//     return () => { cancelled = true; };
 //   }, [file, pageNumber]);
 
 //   return (
@@ -1004,85 +1259,289 @@ export default function OrganizePdf({ seo }) {
 // }
 
 // /* =============================================
+//    BLANK PAGE THUMBNAIL
+// ============================================= */
+// function BlankPageThumbnail() {
+//   return (
+//     <div className="w-full h-full flex items-center justify-center bg-white">
+//       <span className="text-xs text-slate-300 font-medium">Blank</span>
+//     </div>
+//   );
+// }
+
+// /* =============================================
+//    INSERT BLANK STRIP — hover between pages
+// ============================================= */
+// function InsertBlankButton({ onClick }) {
+//   const [hovered, setHovered] = useState(false);
+//   return (
+//     <div
+//       className="flex items-center px-0.5"
+//       onMouseEnter={() => setHovered(true)}
+//       onMouseLeave={() => setHovered(false)}
+//     >
+//       <button
+//         type="button"
+//         onClick={onClick}
+//         title="Add a blank page here"
+//         className={`
+//           flex flex-col items-center justify-center gap-0.5 rounded-lg border transition-all duration-200
+//           ${hovered
+//             ? "w-8 h-28 bg-[#fde8e4] border-[#c0392b] opacity-100"
+//             : "w-3 h-20 bg-slate-100 border-slate-200 opacity-40 hover:opacity-80"
+//           }
+//         `}
+//       >
+//         {hovered && (
+//           <>
+//             <Plus className="h-3.5 w-3.5 text-[#c0392b]" />
+//             <span
+//               className="text-[9px] font-bold text-[#c0392b]"
+//               style={{ writingMode: "vertical-rl", transform: "rotate(180deg)" }}
+//             >
+//               Blank
+//             </span>
+//           </>
+//         )}
+//         {!hovered && <div className="w-0.5 h-10 bg-slate-300 rounded" />}
+//       </button>
+//     </div>
+//   );
+// }
+
+// /* =============================================
+//    FILE LABEL BADGE — colored letter per file
+// ============================================= */
+// const FILE_COLORS = [
+//   { bg: "bg-red-100", text: "text-red-700", border: "border-red-200", dot: "bg-red-400" },
+//   { bg: "bg-blue-100", text: "text-blue-700", border: "border-blue-200", dot: "bg-blue-400" },
+//   { bg: "bg-emerald-100", text: "text-emerald-700", border: "border-emerald-200", dot: "bg-emerald-400" },
+//   { bg: "bg-purple-100", text: "text-purple-700", border: "border-purple-200", dot: "bg-purple-400" },
+//   { bg: "bg-orange-100", text: "text-orange-700", border: "border-orange-200", dot: "bg-orange-400" },
+// ];
+// function fileColor(fileIndex) {
+//   return FILE_COLORS[fileIndex % FILE_COLORS.length];
+// }
+
+// /* =============================================
+//    PAGE CARD — draggable
+// ============================================= */
+// function PageCard({
+//   slot,
+//   page,
+//   rotation,
+//   totalSlots,
+//   allFiles,
+//   onRotate,
+//   onDelete,
+//   onInsertBlank,
+//   dragging,
+//   dragOver,
+//   onDragStart,
+//   onDragEnter,
+//   onDragEnd,
+//   onDrop,
+// }) {
+//   const isBlank = page.isBlank;
+//   const isBeingDragged = dragging === slot;
+//   const isDragTarget = dragOver === slot && !isBeingDragged;
+//   const fc = !isBlank ? fileColor(page.fileIndex) : null;
+
+//   return (
+//     <div className="flex items-stretch">
+//       {/* Insert blank BEFORE */}
+//       <InsertBlankButton onClick={() => onInsertBlank(slot)} />
+
+//       {/* Card */}
+//       <div
+//         draggable
+//         onDragStart={() => onDragStart(slot)}
+//         onDragEnter={() => onDragEnter(slot)}
+//         onDragEnd={onDragEnd}
+//         onDrop={() => onDrop(slot)}
+//         onDragOver={(e) => e.preventDefault()}
+//         className={`
+//           relative flex flex-col items-center gap-1.5 cursor-grab active:cursor-grabbing
+//           transition-all duration-150 select-none
+//           ${isBeingDragged ? "opacity-25 scale-95" : "opacity-100 scale-100"}
+//         `}
+//         style={{ width: 210 }}
+//       >
+//         {/* Thumbnail box */}
+//         <div
+//           className={`
+//             relative w-full overflow-hidden rounded-xl border-2 bg-white shadow-sm
+//             transition-all duration-150
+//             ${isDragTarget ? "border-[#c0392b] ring-2 ring-[#c0392b]/30 scale-[1.03]" : "border-slate-200 hover:border-slate-300"}
+//           `}
+//           style={{ aspectRatio: "3/4" }}
+//         >
+//           {/* File color tag — top left strip */}
+//           {!isBlank && (
+//             <div className={`absolute top-0 left-0 w-1.5 h-full rounded-l-xl ${fc.dot}`} />
+//           )}
+
+//           {/* Top-right action buttons */}
+//           <div className="absolute top-1.5 right-1.5 z-10 flex flex-col gap-1">
+//             <button
+//               type="button"
+//               onClick={(e) => { e.stopPropagation(); onRotate(slot); }}
+//               className="flex h-6 w-6 items-center justify-center rounded-full bg-white/90 border border-slate-200 text-slate-500 shadow-sm hover:bg-orange-50 hover:text-[#c0392b] hover:border-[#c0392b] transition-colors"
+//               title="Rotate 90°"
+//             >
+//               <RotateCw className="h-3 w-3" />
+//             </button>
+//             <button
+//               type="button"
+//               onClick={(e) => { e.stopPropagation(); onDelete(slot); }}
+//               className="flex h-6 w-6 items-center justify-center rounded-full bg-white/90 border border-slate-200 text-slate-500 shadow-sm hover:bg-red-50 hover:text-red-600 hover:border-red-400 transition-colors"
+//               title="Delete page"
+//             >
+//               <Trash2 className="h-3 w-3" />
+//             </button>
+//           </div>
+
+//           {/* Thumbnail */}
+//           <div className="absolute inset-0 flex items-center justify-center p-2">
+//             {isBlank ? (
+//               <BlankPageThumbnail />
+//             ) : (
+//               <PdfPageThumbnail
+//                 file={allFiles[page.fileIndex]}
+//                 pageNumber={page.pageNumber}
+//                 rotation={rotation}
+//               />
+//             )}
+//           </div>
+
+//           {/* Rotation badge */}
+//           {rotation !== 0 && (
+//             <div className="absolute bottom-1.5 right-1.5 rounded bg-orange-500/85 px-1 py-0.5 text-[9px] font-bold text-white">
+//               {rotation}°
+//             </div>
+//           )}
+//         </div>
+
+//         {/* Page number */}
+//         <span className="text-[11px] font-medium text-slate-400">{slot + 1}</span>
+//       </div>
+
+//       {/* Insert blank AFTER last card */}
+//       {slot === totalSlots - 1 && (
+//         <InsertBlankButton onClick={() => onInsertBlank(slot + 1)} />
+//       )}
+//     </div>
+//   );
+// }
+
+// /* =============================================
 //    MAIN COMPONENT
 // ============================================= */
-// export default function OrganizePdf() {
+// export default function OrganizePdf({ seo }) {
 //   const flow = useToolFlow();
 //   const { progress, startProgress, completeProgress, cancelProgress } = useProgressBar();
 
 //   const [downloadUrl, setDownloadUrl] = useState(null);
 
-//   // Pages extracted from PDF: [{ pageNumber: 1 }, { pageNumber: 2 }, ...]
-//   // pageNumber is 1-based (PDF.js convention)
+//   // allFiles: array of File objects (can grow as user adds more)
+//   const [allFiles, setAllFiles] = useState([]);
+
+//   // pages: flat array of page descriptors
+//   // Each: { fileIndex, pageNumber (1-based), isBlank }
 //   const [pages, setPages] = useState([]);
 
-//   // pageOrder: array of 0-based indexes into `pages`
-//   // e.g. [2, 0, 1] means: show page3, page1, page2
+//   // pageOrder: array of indexes into `pages`
 //   const [pageOrder, setPageOrder] = useState([]);
 
-//   // rotations: { slotIndex: degrees } — slot = position in pageOrder
+//   // rotations: { slotIndex: degrees }
 //   const [rotations, setRotations] = useState({});
-
-//   // Which PDF file is loaded (single PDF mode)
-//   const [loadedFile, setLoadedFile] = useState(null);
 
 //   const [isLoadingPages, setIsLoadingPages] = useState(false);
 
+//   // Hidden file input ref for "Add more files" button
+//   const addMoreRef = useRef(null);
+
 //   /* -------------------------------------------
-//      Load pages from the uploaded PDF
+//      Load pages from ONE file and append
 //   ------------------------------------------- */
-//   const loadPagesFromFile = useCallback(async (file) => {
-//     if (!file || !window.pdfjsLib) return;
-
-//     setIsLoadingPages(true);
-
-//     try {
-//       const arrayBuffer = await file.arrayBuffer();
-//       const pdf = await window.pdfjsLib.getDocument({ data: arrayBuffer }).promise;
-//       const totalPages = pdf.numPages;
-
-//       const extracted = Array.from({ length: totalPages }, (_, i) => ({
-//         pageNumber: i + 1, // 1-based
-//       }));
-
-//       setPages(extracted);
-//       setPageOrder(Array.from({ length: totalPages }, (_, i) => i)); // [0,1,2,...]
-//       setRotations({});
-//       setLoadedFile(file);
-//     } catch (err) {
-//       console.error("PDF load error:", err);
-//       flow.handleError("Could not read PDF pages.");
-//     } finally {
-//       setIsLoadingPages(false);
-//     }
-//   }, [flow]);
+//   const loadAndAppendFile = useCallback(async (file, fileIndex) => {
+//     if (!file || !window.pdfjsLib) return [];
+//     const arrayBuffer = await file.arrayBuffer();
+//     const pdf = await window.pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+//     const totalPages = pdf.numPages;
+//     return Array.from({ length: totalPages }, (_, i) => ({
+//       fileIndex,
+//       pageNumber: i + 1,
+//       isBlank: false,
+//     }));
+//   }, []);
 
 //   /* -------------------------------------------
-//      When flow.files changes (user uploads)
+//      Initialize when flow.files first set
 //   ------------------------------------------- */
 //   useEffect(() => {
 //     if (!flow.files?.length) {
+//       setAllFiles([]);
 //       setPages([]);
 //       setPageOrder([]);
 //       setRotations({});
-//       setLoadedFile(null);
 //       return;
 //     }
 
-//     // Always use first file for single-PDF mode
-//     const file = flow.files[0];
-
-//     // Wait for PDF.js to be ready
-//     const tryLoad = () => {
-//       if (window.pdfjsLib) {
-//         loadPagesFromFile(file);
-//       } else {
-//         setTimeout(tryLoad, 150);
+//     const tryLoad = async () => {
+//       if (!window.pdfjsLib) { setTimeout(tryLoad, 150); return; }
+//       setIsLoadingPages(true);
+//       try {
+//         const newFiles = [...flow.files];
+//         let allPageDescs = [];
+//         for (let fi = 0; fi < newFiles.length; fi++) {
+//           const descs = await loadAndAppendFile(newFiles[fi], fi);
+//           allPageDescs = [...allPageDescs, ...descs];
+//         }
+//         setAllFiles(newFiles);
+//         setPages(allPageDescs);
+//         setPageOrder(Array.from({ length: allPageDescs.length }, (_, i) => i));
+//         setRotations({});
+//       } catch (err) {
+//         console.error(err);
+//         flow.handleError("Could not read PDF pages.");
+//       } finally {
+//         setIsLoadingPages(false);
 //       }
 //     };
 
 //     tryLoad();
 //   }, [flow.files]);
+
+//   /* -------------------------------------------
+//      Add MORE files (from "+" button)
+//   ------------------------------------------- */
+//   const handleAddMoreFiles = async (newRawFiles) => {
+//     if (!newRawFiles?.length) return;
+//     setIsLoadingPages(true);
+//     try {
+//       const startFileIndex = allFiles.length;
+//       const newFileArr = Array.from(newRawFiles);
+//       let newPageDescs = [];
+
+//       for (let i = 0; i < newFileArr.length; i++) {
+//         const descs = await loadAndAppendFile(newFileArr[i], startFileIndex + i);
+//         newPageDescs = [...newPageDescs, ...descs];
+//       }
+
+//       const updatedFiles = [...allFiles, ...newFileArr];
+//       const updatedPages = [...pages, ...newPageDescs];
+//       const newSlots = newPageDescs.map((_, i) => pages.length + i);
+
+//       setAllFiles(updatedFiles);
+//       setPages(updatedPages);
+//       setPageOrder((prev) => [...prev, ...newSlots]);
+//     } catch (err) {
+//       console.error(err);
+//     } finally {
+//       setIsLoadingPages(false);
+//     }
+//   };
 
 //   /* -------------------------------------------
 //      Page actions
@@ -1092,9 +1551,7 @@ export default function OrganizePdf({ seo }) {
 //     const newRotations = {};
 //     newOrder.forEach((pageIdx, newSlot) => {
 //       const oldSlot = pageOrder.indexOf(pageIdx);
-//       if (rotations[oldSlot] !== undefined) {
-//         newRotations[newSlot] = rotations[oldSlot];
-//       }
+//       if (rotations[oldSlot] !== undefined) newRotations[newSlot] = rotations[oldSlot];
 //     });
 //     setPageOrder(newOrder);
 //     setRotations(newRotations);
@@ -1107,39 +1564,76 @@ export default function OrganizePdf({ seo }) {
 //     }));
 //   };
 
-//   const movePage = (slotIndex, direction) => {
+//   const insertBlankPage = (beforeSlot) => {
+//     const blankIdx = pages.length;
+//     const newPages = [...pages, { fileIndex: -1, pageNumber: null, isBlank: true }];
 //     const newOrder = [...pageOrder];
-//     const target = slotIndex + direction;
-//     if (target < 0 || target >= newOrder.length) return;
-//     [newOrder[slotIndex], newOrder[target]] = [newOrder[target], newOrder[slotIndex]];
+//     newOrder.splice(beforeSlot, 0, blankIdx);
 
-//     // Swap rotations too
-//     const newRotations = { ...rotations };
-//     const rA = newRotations[slotIndex];
-//     const rB = newRotations[target];
-//     if (rB !== undefined) newRotations[slotIndex] = rB;
-//     else delete newRotations[slotIndex];
-//     if (rA !== undefined) newRotations[target] = rA;
-//     else delete newRotations[target];
+//     const newRotations = {};
+//     Object.entries(rotations).forEach(([slot, deg]) => {
+//       const s = parseInt(slot);
+//       if (s >= beforeSlot) newRotations[s + 1] = deg;
+//       else newRotations[s] = deg;
+//     });
 
+//     setPages(newPages);
 //     setPageOrder(newOrder);
 //     setRotations(newRotations);
 //   };
 
-//   /* -------------------------------------------
-//      Handle remove uploaded file
-//   ------------------------------------------- */
-//   const handleRemoveFile = () => {
-//     flow.reset();
-//     setPages([]);
-//     setPageOrder([]);
+//   const sortPages = () => {
+//     const nonBlank = pageOrder
+//       .filter((idx) => !pages[idx]?.isBlank)
+//       .sort((a, b) => {
+//         const pa = pages[a];
+//         const pb = pages[b];
+//         if (pa.fileIndex !== pb.fileIndex) return pa.fileIndex - pb.fileIndex;
+//         return pa.pageNumber - pb.pageNumber;
+//       });
+//     const blank = pageOrder.filter((idx) => pages[idx]?.isBlank);
+//     setPageOrder([...nonBlank, ...blank]);
 //     setRotations({});
-//     setLoadedFile(null);
 //   };
 
 //   /* -------------------------------------------
-//      Download
+//      Drag & Drop
 //   ------------------------------------------- */
+//   const [draggingSlot, setDraggingSlot] = useState(null);
+//   const [dragOverSlot, setDragOverSlot] = useState(null);
+
+//   const handleDragStart = (slot) => setDraggingSlot(slot);
+//   const handleDragEnter = (slot) => setDragOverSlot(slot);
+//   const handleDragEnd = () => { setDraggingSlot(null); setDragOverSlot(null); };
+
+//   const handleDrop = (targetSlot) => {
+//     if (draggingSlot === null || draggingSlot === targetSlot) {
+//       handleDragEnd(); return;
+//     }
+//     const newOrder = [...pageOrder];
+//     const [moved] = newOrder.splice(draggingSlot, 1);
+//     newOrder.splice(targetSlot, 0, moved);
+
+//     const oldOrder = pageOrder;
+//     const newRotations = {};
+//     newOrder.forEach((pageIdx, newSlot) => {
+//       const oldSlot = oldOrder.indexOf(pageIdx);
+//       if (rotations[oldSlot] !== undefined) newRotations[newSlot] = rotations[oldSlot];
+//     });
+
+//     setPageOrder(newOrder);
+//     setRotations(newRotations);
+//     handleDragEnd();
+//   };
+
+//   /* -------------------------------------------
+//      Handlers
+//   ------------------------------------------- */
+//   const handleRemoveFile = () => {
+//     flow.reset();
+//     setAllFiles([]); setPages([]); setPageOrder([]); setRotations({});
+//   };
+
 //   const handleDownload = () => {
 //     if (!downloadUrl) return;
 //     const a = document.createElement("a");
@@ -1150,28 +1644,25 @@ export default function OrganizePdf({ seo }) {
 //     a.remove();
 //   };
 
-//   /* -------------------------------------------
-//      Convert — send to backend
-//   ------------------------------------------- */
 //   const handleConvert = async () => {
-//     if (!loadedFile || !pageOrder.length) return;
-
+//     if (!pageOrder.length) return;
 //     flow.startProcessing();
 //     startProgress();
-
 //     try {
 //       const formData = new FormData();
 
-//       // Single file
-//       formData.append("file", loadedFile);
+//       // Append all source files
+//       allFiles.forEach((f, i) => formData.append(`files`, f));
 
-//       // Page order: 1-based page numbers in final order
-//       // e.g. pageOrder = [2, 0, 1] → pages[2].pageNumber, pages[0].pageNumber, pages[1].pageNumber
-//       const finalPageOrder = pageOrder.map((idx) => pages[idx].pageNumber);
-//       formData.append("pageOrder", JSON.stringify(finalPageOrder));
+//       // pageOrder as array of { fileIndex, pageNumber } or null for blank
+//       const finalOrder = pageOrder.map((idx) => {
+//         const p = pages[idx];
+//         if (p.isBlank) return null;
+//         return { fileIndex: p.fileIndex, pageNumber: p.pageNumber };
+//       });
+//       formData.append("pageOrder", JSON.stringify(finalOrder));
 
-//       // Rotations keyed by position in final output (0-based slot)
-//       // Convert slot-based rotations to { slotIndex: degrees }
+//       // rotations
 //       const finalRotations = {};
 //       pageOrder.forEach((_, slotIndex) => {
 //         const deg = rotations[slotIndex] || 0;
@@ -1192,7 +1683,6 @@ export default function OrganizePdf({ seo }) {
 //       const blob = await res.blob();
 //       const url = URL.createObjectURL(blob);
 //       setDownloadUrl(url);
-
 //       completeProgress();
 //       flow.finishSuccess();
 //     } catch (err) {
@@ -1203,11 +1693,238 @@ export default function OrganizePdf({ seo }) {
 //   };
 
 //   /* -------------------------------------------
+//      Derived stats
+//   ------------------------------------------- */
+//   const totalSlots = pageOrder.length;
+//   const blankCount = pageOrder.filter((idx) => pages[idx]?.isBlank).length;
+//   const deletedCount = pages.filter((p) => !p.isBlank).length - pageOrder.filter((idx) => !pages[idx]?.isBlank).length;
+
+//   /* -------------------------------------------
+//      Custom Options Layout
+//   ------------------------------------------- */
+//   const customOptionsLayout = (
+//     <div className="flex" style={{ height: "calc(100vh - 80px)" }}>
+
+//       {/* Hidden file input for adding more files */}
+//       <input
+//         ref={addMoreRef}
+//         type="file"
+//         accept=".pdf,application/pdf"
+//         multiple
+//         className="hidden"
+//         onChange={(e) => handleAddMoreFiles(e.target.files)}
+//       />
+
+//       {/* ── LEFT: PAGE CANVAS ── */}
+//       <div className="relative flex-1 overflow-auto bg-[#f0f0f0] p-5">
+
+//         {/* Loading */}
+//         {isLoadingPages && (
+//           <div className="flex h-full items-center justify-center">
+//             <div className="flex flex-col items-center gap-3">
+//               <div className="h-8 w-8 animate-spin rounded-full border-4 border-[#c0392b] border-t-transparent" />
+//               <p className="text-sm text-slate-500">Loading pages…</p>
+//             </div>
+//           </div>
+//         )}
+
+//         {/* Pages grid */}
+//         {!isLoadingPages && pageOrder.length > 0 && (
+//           // <div className="flex flex-wrap gap-y-5 pb-20">
+//           <div className="flex flex-wrap justify-center gap-x-4 gap-y-6 pb-20">
+//             {pageOrder.map((pageIdx, slotIndex) => (
+//               <PageCard
+//                 key={`${pageIdx}-${slotIndex}`}
+//                 slot={slotIndex}
+//                 page={pages[pageIdx]}
+//                 rotation={rotations[slotIndex] || 0}
+//                 totalSlots={totalSlots}
+//                 allFiles={allFiles}
+//                 onRotate={rotatePage}
+//                 onDelete={deletePage}
+//                 onInsertBlank={insertBlankPage}
+//                 dragging={draggingSlot}
+//                 dragOver={dragOverSlot}
+//                 onDragStart={handleDragStart}
+//                 onDragEnter={handleDragEnter}
+//                 onDragEnd={handleDragEnd}
+//                 onDrop={handleDrop}
+//               />
+//             ))}
+//           </div>
+//         )}
+
+//         {!isLoadingPages && pageOrder.length === 0 && (
+//           <div className="flex h-full items-center justify-center">
+//             <p className="text-sm text-slate-400">All pages deleted. Add more files or reset.</p>
+//           </div>
+//         )}
+
+//         {/* ── Floating "+" Add Files Button ── */}
+//         <button
+//           type="button"
+//           onClick={() => addMoreRef.current?.click()}
+//           className="fixed bottom-8 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2 rounded-full bg-white border-2 border-[#c0392b] px-5 py-2.5 text-sm font-bold text-[#c0392b] shadow-xl hover:bg-[#fde8e4] transition-all active:scale-95"
+//           title="Add more PDF files"
+//         >
+//           <Plus className="h-4 w-4" />
+//           Add more files
+//         </button>
+//       </div>
+
+//       {/* ── RIGHT SIDEBAR ── */}
+//       <div
+//         className="flex flex-col bg-white border-l border-slate-200"
+//         style={{ width: 260, flexShrink: 0 }}
+//       >
+//         {/* Files section */}
+//         <div className="border-b border-slate-200 p-4">
+//           <div className="flex items-center justify-between mb-2.5">
+//             <span className="text-xs font-semibold text-slate-500 uppercase tracking-wide">
+//               Files
+//             </span>
+//             <button
+//               type="button"
+//               onClick={handleRemoveFile}
+//               className="text-xs text-[#c0392b] hover:underline font-medium"
+//             >
+//               Reset all
+//             </button>
+//           </div>
+
+//           {/* File list */}
+//           <div className="space-y-1.5 max-h-40 overflow-y-auto">
+//             {allFiles.map((f, fi) => {
+//               const fc = fileColor(fi);
+//               const label = String.fromCharCode(65 + fi); // A, B, C...
+//               return (
+//                 <div
+//                   key={fi}
+//                   className={`flex items-center gap-2 rounded-lg border px-2.5 py-2 ${fc.bg} ${fc.border}`}
+//                 >
+//                   <div className={`flex h-5 w-5 shrink-0 items-center justify-center rounded text-[11px] font-bold ${fc.text} bg-white`}>
+//                     {label}
+//                   </div>
+//                   <span className={`text-xs truncate flex-1 ${fc.text} font-medium`}>
+//                     {f.name}
+//                   </span>
+//                 </div>
+//               );
+//             })}
+//           </div>
+
+//           {/* Add file button */}
+//           <button
+//             type="button"
+//             onClick={() => addMoreRef.current?.click()}
+//             className="mt-2.5 flex w-full items-center justify-center gap-1.5 rounded-lg border-2 border-dashed border-slate-300 bg-slate-50 py-2 text-xs font-semibold text-slate-500 hover:border-[#c0392b] hover:text-[#c0392b] hover:bg-[#fde8e4] transition-colors"
+//           >
+//             <Plus className="h-3.5 w-3.5" />
+//             Add more files
+//           </button>
+//         </div>
+
+//         {/* Stats */}
+//         <div className="border-b border-slate-200 px-4 py-3 space-y-1.5">
+//           <div className="flex justify-between text-xs text-slate-500">
+//             <span>Total pages</span>
+//             <span className="font-semibold text-slate-700">{totalSlots}</span>
+//           </div>
+//           {deletedCount > 0 && (
+//             <div className="flex justify-between text-xs text-slate-500">
+//               <span>Deleted</span>
+//               <span className="font-semibold text-red-500">{deletedCount}</span>
+//             </div>
+//           )}
+//           {blankCount > 0 && (
+//             <div className="flex justify-between text-xs text-slate-500">
+//               <span>Blank added</span>
+//               <span className="font-semibold text-blue-500">{blankCount}</span>
+//             </div>
+//           )}
+//         </div>
+
+//         {/* Sort */}
+//         <div className="border-b border-slate-200 px-4 py-3">
+//           <button
+//             type="button"
+//             onClick={sortPages}
+//             className="flex w-full items-center gap-2 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-xs font-medium text-slate-700 hover:bg-slate-100 transition-colors"
+//           >
+//             <ArrowUpDown className="h-3.5 w-3.5 text-slate-400" />
+//             Sort pages (File A → B → C)
+//           </button>
+//         </div>
+
+//         {/* Instructions */}
+//         <div className="flex-1 overflow-y-auto px-4 py-3 space-y-2">
+//           <p className="text-[11px] text-slate-400 leading-relaxed">
+//             <span className="font-semibold text-slate-600">Drag</span> pages to reorder.
+//             {" "}<span className="font-semibold text-slate-600">Rotate</span> or{" "}
+//             <span className="font-semibold text-slate-600">delete</span> with top-right icons.
+//             Hover between pages to insert a <span className="font-semibold text-slate-600">blank page</span>.
+//           </p>
+
+//           {/* File color legend */}
+//           {allFiles.length > 1 && (
+//             <div className="rounded-lg border border-slate-200 bg-slate-50 p-2.5 space-y-1">
+//               <p className="text-[10px] font-semibold text-slate-500 uppercase tracking-wide">
+//                 Color legend
+//               </p>
+//               {allFiles.map((f, fi) => {
+//                 const fc = fileColor(fi);
+//                 return (
+//                   <div key={fi} className="flex items-center gap-1.5">
+//                     <div className={`h-2.5 w-2.5 rounded-sm ${fc.dot}`} />
+//                     <span className="text-[10px] text-slate-500 truncate">{f.name}</span>
+//                   </div>
+//                 );
+//               })}
+//             </div>
+//           )}
+
+//           <div className="rounded-xl border border-green-200 bg-green-50 p-3">
+//             <p className="text-[11px] font-semibold text-green-700">✓ Your PDF is private</p>
+//             <p className="text-[10px] text-green-600 mt-0.5 leading-relaxed">
+//               Files are auto-deleted after processing.
+//             </p>
+//           </div>
+//         </div>
+
+//         {/* Organize button */}
+//         <div className="border-t border-slate-200 p-4">
+//           <button
+//             type="button"
+//             onClick={handleConvert}
+//             disabled={!pageOrder.length}
+//             className={`flex w-full items-center justify-center gap-2 rounded-xl py-3.5 text-sm font-bold text-white transition-all active:scale-[0.98] ${
+//               pageOrder.length
+//                 ? "bg-[#c0392b] hover:bg-[#a93226] shadow-[0_8px_24px_rgba(192,57,43,0.3)]"
+//                 : "bg-slate-300 cursor-not-allowed"
+//             }`}
+//           >
+//             <Layers3 className="h-4 w-4" />
+//             Organize PDF
+//           </button>
+//         </div>
+//       </div>
+//     </div>
+//   );
+
+//   /* -------------------------------------------
 //      Render
 //   ------------------------------------------- */
 //   return (
 //     <>
-//       {/* ── SEO ── */}
+//       <Script
+//         src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"
+//         strategy="afterInteractive"
+//         onLoad={() => {
+//           window.pdfjsLib.GlobalWorkerOptions.workerSrc =
+//             "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+//         }}
+//       />
+
 //       <Script
 //         id="faq-schema-organize"
 //         type="application/ld+json"
@@ -1238,12 +1955,11 @@ export default function OrganizePdf({ seo }) {
 //         }}
 //       />
 
-//       {/* ── TOOL UI ── */}
 //       <ToolPageLayout
-//         title="Organize PDF Online"
-//         tagline="Rearrange · Rotate · Remove PDF Pages"
+//         title={seo?.h1 || "Organize PDF Online"}
+//         tagline="Reorder · Rotate · Remove PDF Pages"
 //         accept=".pdf,application/pdf"
-//         multiple={false}
+//         multiple={true}
 //         convertLabel="Organize PDF"
 //         flow={flow}
 //         progress={progress}
@@ -1265,232 +1981,45 @@ export default function OrganizePdf({ seo }) {
 //         sidebarIcon={<Layers3 className="h-5 w-5 text-white" />}
 //         sidebarDescription="Reorder, rotate, and remove PDF pages visually in seconds."
 //         sidebarFeatures={DEFAULT_SIDEBAR_FEATURES}
-//         uploadTitle="Drop your PDF here"
-//         uploadSubtitle="or click to browse — PDF supported"
+//         uploadTitle="Drop your PDFs here"
+//         uploadSubtitle="or click to browse — multiple PDFs supported"
+//         customOptionsLayout={customOptionsLayout}
 
-//         /* ── CUSTOM LAYOUT ── */
-//         customOptionsLayout={
-//           <div className="grid grid-cols-1 lg:grid-cols-[1fr_300px] min-h-[calc(100vh-80px)]">
-
-//             {/* ── LEFT: PAGE CANVAS ── */}
-//             <div className="relative bg-slate-100 p-6 overflow-y-auto h-[calc(100vh-80px)]">
-
-//               {/* Loading state */}
-//               {isLoadingPages && (
-//                 <div className="flex h-full items-center justify-center">
-//                   <div className="flex flex-col items-center gap-3">
-//                     <div className="h-8 w-8 animate-spin rounded-full border-4 border-[#f24d0d] border-t-transparent" />
-//                     <p className="text-sm text-slate-500">Loading pages…</p>
-//                   </div>
-//                 </div>
-//               )}
-
-//               {/* Pages grid */}
-//               {!isLoadingPages && pageOrder.length > 0 && (
-//                 <div className="flex flex-wrap justify-center gap-5 pb-6">
-//                   {pageOrder.map((pageIdx, slotIndex) => {
-//                     const page = pages[pageIdx];
-//                     const rotation = rotations[slotIndex] || 0;
-
-//                     return (
-//                       <div
-//                         key={`${pageIdx}-${slotIndex}`}
-//                         className="flex w-[155px] flex-col items-center gap-2"
-//                       >
-//                         {/* Thumbnail card */}
-//                         <div className="relative flex aspect-[3/4] w-full items-center justify-center overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
-
-//                           <PdfPageThumbnail
-//                             file={loadedFile}
-//                             pageNumber={page.pageNumber}
-//                             rotation={rotation}
-//                           />
-
-//                           {/* Delete button */}
-//                           <button
-//                             type="button"
-//                             onClick={() => deletePage(slotIndex)}
-//                             className="absolute right-1.5 top-1.5 z-10 flex h-6 w-6 items-center justify-center rounded-full bg-red-500 text-white shadow hover:bg-red-600 transition-colors"
-//                             title="Delete page"
-//                           >
-//                             <Trash2 className="h-3 w-3" />
-//                           </button>
-
-//                           {/* Page number badge */}
-//                           <div className="absolute bottom-1.5 left-1.5 rounded-md bg-black/60 px-1.5 py-0.5 text-[10px] font-semibold text-white">
-//                             {slotIndex + 1}
-//                           </div>
-
-//                           {/* Rotation badge — only show if rotated */}
-//                           {rotation !== 0 && (
-//                             <div className="absolute bottom-1.5 right-1.5 rounded-md bg-purple-600/80 px-1.5 py-0.5 text-[10px] font-semibold text-white">
-//                               {rotation}°
-//                             </div>
-//                           )}
-//                         </div>
-
-//                         {/* Actions row */}
-//                         <div className="flex items-center gap-1.5">
-//                           <button
-//                             type="button"
-//                             onClick={() => movePage(slotIndex, -1)}
-//                             disabled={slotIndex === 0}
-//                             className="flex h-7 w-7 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-600 hover:bg-slate-100 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
-//                             title="Move left"
-//                           >
-//                             <ChevronLeft className="h-4 w-4" />
-//                           </button>
-
-//                           <button
-//                             type="button"
-//                             onClick={() => rotatePage(slotIndex)}
-//                             className="flex h-7 w-7 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-600 hover:bg-slate-100 transition-colors"
-//                             title="Rotate 90°"
-//                           >
-//                             <RotateCw className="h-3.5 w-3.5" />
-//                           </button>
-
-//                           <button
-//                             type="button"
-//                             onClick={() => movePage(slotIndex, 1)}
-//                             disabled={slotIndex === pageOrder.length - 1}
-//                             className="flex h-7 w-7 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-600 hover:bg-slate-100 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
-//                             title="Move right"
-//                           >
-//                             <ChevronRight className="h-4 w-4" />
-//                           </button>
-//                         </div>
-//                       </div>
-//                     );
-//                   })}
-//                 </div>
-//               )}
-//             </div>
-
-//             {/* ── RIGHT SIDEBAR ── */}
-//             <div className="flex flex-col border-l border-slate-200 bg-white h-[calc(100vh-80px)]">
-//               <div className="flex-1 overflow-y-auto p-5 space-y-4">
-
-//                 <h3 className="border-b border-slate-200 pb-3 text-lg font-semibold text-slate-800">
-//                   Organize PDF
-//                 </h3>
-
-//                 {/* Page count info */}
-//                 {pageOrder.length > 0 && (
-//                   <div className="rounded-xl border border-blue-100 bg-blue-50 p-3">
-//                     <p className="text-sm font-semibold text-blue-700">
-//                       {pageOrder.length} page{pageOrder.length !== 1 ? "s" : ""} loaded
-//                     </p>
-//                     <p className="mt-0.5 text-xs text-blue-500">
-//                       Original had {pages.length} pages
-//                       {pages.length !== pageOrder.length && ` · ${pages.length - pageOrder.length} deleted`}
-//                     </p>
-//                   </div>
-//                 )}
-
-//                 {/* Feature cards */}
-//                 <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
-//                   <div className="flex items-center gap-2">
-//                     <ChevronLeft className="h-4 w-4 text-blue-600" />
-//                     <ChevronRight className="h-4 w-4 text-blue-600" />
-//                     <h4 className="font-semibold text-slate-800">Reorder Pages</h4>
-//                   </div>
-//                   <p className="mt-1.5 text-xs text-slate-500">
-//                     Use ← → arrows under each page to change order.
-//                   </p>
-//                 </div>
-
-//                 <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
-//                   <div className="flex items-center gap-2">
-//                     <RotateCw className="h-4 w-4 text-purple-600" />
-//                     <h4 className="font-semibold text-slate-800">Rotate Pages</h4>
-//                   </div>
-//                   <p className="mt-1.5 text-xs text-slate-500">
-//                     Click rotate button to turn each page 90°.
-//                   </p>
-//                 </div>
-
-//                 <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
-//                   <div className="flex items-center gap-2">
-//                     <Trash2 className="h-4 w-4 text-red-500" />
-//                     <h4 className="font-semibold text-slate-800">Delete Pages</h4>
-//                   </div>
-//                   <p className="mt-1.5 text-xs text-slate-500">
-//                     Click the red × on any page to remove it.
-//                   </p>
-//                 </div>
-
-//                 <div className="rounded-xl border border-green-200 bg-green-50 p-3">
-//                   <p className="text-sm font-semibold text-green-700">
-//                     ✓ Your PDF stays private
-//                   </p>
-//                   <p className="mt-1 text-xs leading-5 text-slate-600">
-//                     Files are securely processed and automatically deleted after processing.
-//                   </p>
-//                 </div>
-//               </div>
-
-//               {/* Organize button */}
-//               <div className="border-t border-slate-200 p-4">
-//                 <button
-//                   type="button"
-//                   onClick={handleConvert}
-//                   disabled={!pageOrder.length}
-//                   className={`flex w-full items-center justify-center gap-2 rounded-xl px-5 py-4 text-base font-bold text-white transition active:scale-[0.98] ${
-//                     pageOrder.length
-//                       ? "bg-[#f24d0d] hover:bg-[#dc4308] shadow-[0_10px_30px_rgba(242,77,13,0.38)]"
-//                       : "cursor-not-allowed bg-slate-300"
-//                   }`}
-//                 >
-//                   <Layers3 className="h-5 w-5" />
-//                   Organize PDF
-//                 </button>
-//               </div>
-//             </div>
-//           </div>
-//         }
-
-//         /* ── UPLOAD LANDING ── */
 //         uploadLanding={{
 //           content: {
 //             eyebrow: "ORGANIZE PDF",
-
 //             heroTitle: (
 //               <>
-//                 Organize PDF Pages <br />
-//                 <em className="font-bold not-italic text-[#e8420a] sm:italic">
+//                 Organize PDF Pages{" "}
+//                 <em className="font-bold not-italic text-[#c0392b] sm:italic">
 //                   visually online
 //                 </em>
 //               </>
 //             ),
-
 //             heroDescription:
-//               "Rearrange, rotate, and remove PDF pages online for free. Organize your PDF visually with page-by-page controls directly in your browser.",
-
+//               "Rearrange, rotate, and remove PDF pages online for free. Add multiple PDFs and organize all pages together visually.",
 //             noticeTitle: "Organize features",
-
 //             noticeItems: [
-//               "Reorder PDF pages",
+//               "Drag & drop to reorder pages",
+//               "Add multiple PDF files",
 //               "Rotate individual pages",
+//               "Add blank pages anywhere",
 //               "Remove unwanted pages",
 //             ],
-
 //             howToTitle: "How to organize a PDF",
-
 //             howToSubtitle:
-//               "Upload your PDF, rearrange pages visually, and download your organized PDF instantly.",
-
+//               "Upload one or more PDFs, drag pages to rearrange, and download your organized PDF instantly.",
 //             howToSteps: [
 //               {
 //                 n: "1",
-//                 title: "Upload your PDF",
-//                 desc: "Select your PDF file from device storage.",
+//                 title: "Upload your PDFs",
+//                 desc: "Select one or more PDF files. Add more anytime.",
 //                 color: "bg-blue-600",
 //               },
 //               {
 //                 n: "2",
 //                 title: "Organize pages",
-//                 desc: "Reorder, rotate, or delete pages visually.",
+//                 desc: "Drag to reorder, rotate, delete, or add blank pages.",
 //                 color: "bg-purple-600",
 //               },
 //               {
@@ -1500,41 +2029,39 @@ export default function OrganizePdf({ seo }) {
 //                 color: "bg-emerald-600",
 //               },
 //             ],
-
 //             whyTitle: "Why use PDFLinx Organize PDF?",
-
 //             whyItems: [
 //               {
-//                 title: "Page-by-Page Control",
-//                 desc: "See every page as a thumbnail and organize individually.",
+//                 title: "Drag & Drop Reorder",
+//                 desc: "Intuitively drag pages to any position.",
 //                 icon: Layers3,
 //                 iconColor: "text-blue-600",
 //                 bgColor: "bg-blue-100",
 //               },
 //               {
-//                 title: "Fast Processing",
-//                 desc: "Rearrange and download PDFs within seconds.",
-//                 icon: Download,
+//                 title: "Multiple Files",
+//                 desc: "Combine pages from different PDFs into one.",
+//                 icon: FilePlus2,
 //                 iconColor: "text-purple-600",
 //                 bgColor: "bg-purple-100",
 //               },
 //               {
 //                 title: "Works Everywhere",
-//                 desc: "Compatible with desktop, tablet, and mobile devices.",
+//                 desc: "Compatible with desktop, tablet, and mobile.",
 //                 icon: MonitorSmartphone,
 //                 iconColor: "text-orange-500",
 //                 bgColor: "bg-orange-50",
 //               },
 //               {
 //                 title: "Private & Secure",
-//                 desc: "Your uploaded files are securely deleted automatically.",
+//                 desc: "Files are securely deleted after processing.",
 //                 icon: ShieldCheck,
 //                 iconColor: "text-green-600",
 //                 bgColor: "bg-green-100",
 //               },
 //               {
 //                 title: "No Watermark",
-//                 desc: "Your downloaded PDF remains clean and professional.",
+//                 desc: "Downloaded PDF remains clean and professional.",
 //                 icon: CheckCircle,
 //                 iconColor: "text-slate-600",
 //                 bgColor: "bg-slate-100",
@@ -1575,28 +2102,21 @@ export default function OrganizePdf({ seo }) {
 
 
 
-
-
-
-
-
-
-
-
 // // "use client";
 
-// // import { useState, useRef, useEffect } from "react";
+// // import { useState, useRef, useEffect, useCallback } from "react";
 
 // // import {
 // //   Download,
 // //   CheckCircle,
 // //   MonitorSmartphone,
 // //   ShieldCheck,
-// //   GripVertical,
-// //   Trash2,
 // //   RotateCw,
-// //   Move,
+// //   Trash2,
 // //   Layers3,
+// //   ChevronLeft,
+// //   ChevronRight,
+// //   Move,
 // // } from "lucide-react";
 
 // // import Script from "next/script";
@@ -1611,125 +2131,243 @@ export default function OrganizePdf({ seo }) {
 // //   DEFAULT_SIDEBAR_FEATURES,
 // // } from "@/lib/toolUiConfig";
 
-// // function PdfThumbnail({ url }) {
+// // /* =============================================
+// //    PDF PAGE THUMBNAIL
+// //    Renders a specific page number from a PDF file
+// //    using PDF.js
+// // ============================================= */
+// // function PdfPageThumbnail({ file, pageNumber, rotation = 0 }) {
 // //   const canvasRef = useRef(null);
 
 // //   useEffect(() => {
-// //     if (!url || !window.pdfjsLib) return;
+// //     if (!file || !window.pdfjsLib) return;
 
-// //     const tryRender = () => {
-// //       if (!window.pdfjsLib) return setTimeout(tryRender, 100);
+// //     let cancelled = false;
 
-// //       window.pdfjsLib
-// //         .getDocument(url)
-// //         .promise.then((pdf) => pdf.getPage(1))
-// //         .then((page) => {
-// //           const viewport = page.getViewport({ scale: 0.6 });
+// //     const render = async () => {
+// //       try {
+// //         const arrayBuffer = await file.arrayBuffer();
+// //         const pdf = await window.pdfjsLib.getDocument({ data: arrayBuffer }).promise;
 
-// //           const canvas = canvasRef.current;
-// //           if (!canvas) return;
+// //         if (cancelled) return;
 
-// //           canvas.width = viewport.width;
-// //           canvas.height = viewport.height;
+// //         const page = await pdf.getPage(pageNumber);
 
-// //           page.render({
-// //             canvasContext: canvas.getContext("2d"),
-// //             viewport,
-// //           });
-// //         })
-// //         .catch(console.error);
+// //         if (cancelled) return;
+
+// //         const viewport = page.getViewport({ scale: 0.5, rotation: 0 });
+
+// //         const canvas = canvasRef.current;
+// //         if (!canvas) return;
+
+// //         canvas.width = viewport.width;
+// //         canvas.height = viewport.height;
+
+// //         await page.render({
+// //           canvasContext: canvas.getContext("2d"),
+// //           viewport,
+// //         }).promise;
+// //       } catch (err) {
+// //         console.error("Thumbnail render error:", err);
+// //       }
 // //     };
 
-// //     tryRender();
-// //   }, [url]);
+// //     render();
+
+// //     return () => {
+// //       cancelled = true;
+// //     };
+// //   }, [file, pageNumber]);
 
 // //   return (
 // //     <canvas
 // //       ref={canvasRef}
-// //       className="h-full w-full object-contain bg-white"
+// //       style={{
+// //         transform: `rotate(${rotation}deg)`,
+// //         transition: "transform 0.3s ease",
+// //         maxWidth: "100%",
+// //         maxHeight: "100%",
+// //       }}
+// //       className="object-contain bg-white"
 // //     />
 // //   );
 // // }
 
+// // /* =============================================
+// //    MAIN COMPONENT
+// // ============================================= */
 // // export default function OrganizePdf() {
 // //   const flow = useToolFlow();
-
-// //   const {
-// //     progress,
-// //     startProgress,
-// //     completeProgress,
-// //     cancelProgress,
-// //   } = useProgressBar();
+// //   const { progress, startProgress, completeProgress, cancelProgress } = useProgressBar();
 
 // //   const [downloadUrl, setDownloadUrl] = useState(null);
+
+// //   // Pages extracted from PDF: [{ pageNumber: 1 }, { pageNumber: 2 }, ...]
+// //   // pageNumber is 1-based (PDF.js convention)
+// //   const [pages, setPages] = useState([]);
+
+// //   // pageOrder: array of 0-based indexes into `pages`
+// //   // e.g. [2, 0, 1] means: show page3, page1, page2
+// //   const [pageOrder, setPageOrder] = useState([]);
+
+// //   // rotations: { slotIndex: degrees } — slot = position in pageOrder
 // //   const [rotations, setRotations] = useState({});
 
+// //   // Which PDF file is loaded (single PDF mode)
+// //   const [loadedFile, setLoadedFile] = useState(null);
 
-// //   const handleRemoveFile = (index) => {
-// //     const updated = flow.files.filter((_, i) => i !== index);
+// //   const [isLoadingPages, setIsLoadingPages] = useState(false);
 
-// //     if (updated.length === 0) flow.reset();
-// //     else flow.selectFiles(updated);
+// //   /* -------------------------------------------
+// //      Load pages from the uploaded PDF
+// //   ------------------------------------------- */
+// //   const loadPagesFromFile = useCallback(async (file) => {
+// //     if (!file || !window.pdfjsLib) return;
+
+// //     setIsLoadingPages(true);
+
+// //     try {
+// //       const arrayBuffer = await file.arrayBuffer();
+// //       const pdf = await window.pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+// //       const totalPages = pdf.numPages;
+
+// //       const extracted = Array.from({ length: totalPages }, (_, i) => ({
+// //         pageNumber: i + 1, // 1-based
+// //       }));
+
+// //       setPages(extracted);
+// //       setPageOrder(Array.from({ length: totalPages }, (_, i) => i)); // [0,1,2,...]
+// //       setRotations({});
+// //       setLoadedFile(file);
+// //     } catch (err) {
+// //       console.error("PDF load error:", err);
+// //       flow.handleError("Could not read PDF pages.");
+// //     } finally {
+// //       setIsLoadingPages(false);
+// //     }
+// //   }, [flow]);
+
+// //   /* -------------------------------------------
+// //      When flow.files changes (user uploads)
+// //   ------------------------------------------- */
+// //   useEffect(() => {
+// //     if (!flow.files?.length) {
+// //       setPages([]);
+// //       setPageOrder([]);
+// //       setRotations({});
+// //       setLoadedFile(null);
+// //       return;
+// //     }
+
+// //     // Always use first file for single-PDF mode
+// //     const file = flow.files[0];
+
+// //     // Wait for PDF.js to be ready
+// //     const tryLoad = () => {
+// //       if (window.pdfjsLib) {
+// //         loadPagesFromFile(file);
+// //       } else {
+// //         setTimeout(tryLoad, 150);
+// //       }
+// //     };
+
+// //     tryLoad();
+// //   }, [flow.files]);
+
+// //   /* -------------------------------------------
+// //      Page actions
+// //   ------------------------------------------- */
+// //   const deletePage = (slotIndex) => {
+// //     const newOrder = pageOrder.filter((_, i) => i !== slotIndex);
+// //     const newRotations = {};
+// //     newOrder.forEach((pageIdx, newSlot) => {
+// //       const oldSlot = pageOrder.indexOf(pageIdx);
+// //       if (rotations[oldSlot] !== undefined) {
+// //         newRotations[newSlot] = rotations[oldSlot];
+// //       }
+// //     });
+// //     setPageOrder(newOrder);
+// //     setRotations(newRotations);
 // //   };
 
-// //   const moveLeft = (index) => {
-// //     if (index === 0) return;
-
-// //     const updated = [...flow.files];
-
-// //     [updated[index - 1], updated[index]] = [
-// //       updated[index],
-// //       updated[index - 1],
-// //     ];
-
-// //     flow.selectFiles(updated);
+// //   const rotatePage = (slotIndex) => {
+// //     setRotations((prev) => ({
+// //       ...prev,
+// //       [slotIndex]: ((prev[slotIndex] || 0) + 90) % 360,
+// //     }));
 // //   };
 
-// //   const moveRight = (index) => {
-// //     if (index === flow.files.length - 1) return;
+// //   const movePage = (slotIndex, direction) => {
+// //     const newOrder = [...pageOrder];
+// //     const target = slotIndex + direction;
+// //     if (target < 0 || target >= newOrder.length) return;
+// //     [newOrder[slotIndex], newOrder[target]] = [newOrder[target], newOrder[slotIndex]];
 
-// //     const updated = [...flow.files];
+// //     // Swap rotations too
+// //     const newRotations = { ...rotations };
+// //     const rA = newRotations[slotIndex];
+// //     const rB = newRotations[target];
+// //     if (rB !== undefined) newRotations[slotIndex] = rB;
+// //     else delete newRotations[slotIndex];
+// //     if (rA !== undefined) newRotations[target] = rA;
+// //     else delete newRotations[target];
 
-// //     [updated[index + 1], updated[index]] = [
-// //       updated[index],
-// //       updated[index + 1],
-// //     ];
-
-// //     flow.selectFiles(updated);
+// //     setPageOrder(newOrder);
+// //     setRotations(newRotations);
 // //   };
 
+// //   /* -------------------------------------------
+// //      Handle remove uploaded file
+// //   ------------------------------------------- */
+// //   const handleRemoveFile = () => {
+// //     flow.reset();
+// //     setPages([]);
+// //     setPageOrder([]);
+// //     setRotations({});
+// //     setLoadedFile(null);
+// //   };
+
+// //   /* -------------------------------------------
+// //      Download
+// //   ------------------------------------------- */
 // //   const handleDownload = () => {
 // //     if (!downloadUrl) return;
-
 // //     const a = document.createElement("a");
-
 // //     a.href = downloadUrl;
 // //     a.download = "organized.pdf";
-
 // //     document.body.appendChild(a);
-
 // //     a.click();
-
 // //     a.remove();
 // //   };
 
+// //   /* -------------------------------------------
+// //      Convert — send to backend
+// //   ------------------------------------------- */
 // //   const handleConvert = async () => {
-// //     if (!flow.files?.length) return;
+// //     if (!loadedFile || !pageOrder.length) return;
 
 // //     flow.startProcessing();
-
 // //     startProgress();
 
 // //     try {
 // //       const formData = new FormData();
 
-// //       flow.files.forEach((file) => {
-// //         formData.append("files", file);
+// //       // Single file
+// //       formData.append("file", loadedFile);
+
+// //       // Page order: 1-based page numbers in final order
+// //       // e.g. pageOrder = [2, 0, 1] → pages[2].pageNumber, pages[0].pageNumber, pages[1].pageNumber
+// //       const finalPageOrder = pageOrder.map((idx) => pages[idx].pageNumber);
+// //       formData.append("pageOrder", JSON.stringify(finalPageOrder));
+
+// //       // Rotations keyed by position in final output (0-based slot)
+// //       // Convert slot-based rotations to { slotIndex: degrees }
+// //       const finalRotations = {};
+// //       pageOrder.forEach((_, slotIndex) => {
+// //         const deg = rotations[slotIndex] || 0;
+// //         if (deg !== 0) finalRotations[slotIndex] = deg;
 // //       });
-
-// //       // 👇 YE ADD KARO ISKE BILKUL BAAD
-// //       formData.append("rotations", JSON.stringify(rotations));
-
+// //       formData.append("rotations", JSON.stringify(finalRotations));
 
 // //       const res = await fetch("/convert/organize-pdf", {
 // //         method: "POST",
@@ -1737,31 +2375,29 @@ export default function OrganizePdf({ seo }) {
 // //       });
 
 // //       if (!res.ok) {
-// //         throw new Error("Failed to organize PDF");
+// //         const errData = await res.json().catch(() => ({}));
+// //         throw new Error(errData.error || "Failed to organize PDF");
 // //       }
 
 // //       const blob = await res.blob();
-
 // //       const url = URL.createObjectURL(blob);
-
 // //       setDownloadUrl(url);
 
 // //       completeProgress();
-
 // //       flow.finishSuccess();
 // //     } catch (err) {
 // //       console.error(err);
-
 // //       cancelProgress();
-
-// //       flow.handleError("Something went wrong");
+// //       flow.handleError(err.message || "Something went wrong");
 // //     }
 // //   };
 
+// //   /* -------------------------------------------
+// //      Render
+// //   ------------------------------------------- */
 // //   return (
 // //     <>
-// //       {/* ================= SEO ================= */}
-
+// //       {/* ── SEO ── */}
 // //       <Script
 // //         id="faq-schema-organize"
 // //         type="application/ld+json"
@@ -1784,7 +2420,7 @@ export default function OrganizePdf({ seo }) {
 // //                 name: "Can I rearrange PDF pages online?",
 // //                 acceptedAnswer: {
 // //                   "@type": "Answer",
-// //                   text: "Yes. Drag, reorder, rotate, and delete PDF pages directly in your browser with no software installation required.",
+// //                   text: "Yes. Reorder, rotate, and delete PDF pages directly in your browser with no software installation required.",
 // //                 },
 // //               },
 // //             ],
@@ -1792,13 +2428,12 @@ export default function OrganizePdf({ seo }) {
 // //         }}
 // //       />
 
-// //       {/* ================= UI ================= */}
-
+// //       {/* ── TOOL UI ── */}
 // //       <ToolPageLayout
 // //         title="Organize PDF Online"
 // //         tagline="Rearrange · Rotate · Remove PDF Pages"
 // //         accept=".pdf,application/pdf"
-// //         multiple={true}
+// //         multiple={false}
 // //         convertLabel="Organize PDF"
 // //         flow={flow}
 // //         progress={progress}
@@ -1811,11 +2446,7 @@ export default function OrganizePdf({ seo }) {
 // //         optionsTitle="Organize options"
 // //         processingTitle="Organizing PDF..."
 // //         processingDescription="Rearranging your pages. Please wait."
-// //         processingStages={[
-// //           "Uploading",
-// //           "Organizing pages",
-// //           "Done",
-// //         ]}
+// //         processingStages={["Uploading", "Organizing pages", "Done"]}
 // //         doneTitle="Your organized PDF is ready"
 // //         doneDescription="Download your newly arranged PDF file."
 // //         downloadLabel="Download Organized PDF"
@@ -1827,212 +2458,189 @@ export default function OrganizePdf({ seo }) {
 // //         uploadTitle="Drop your PDF here"
 // //         uploadSubtitle="or click to browse — PDF supported"
 
+// //         /* ── CUSTOM LAYOUT ── */
 // //         customOptionsLayout={
-// //           <div className="grid grid-cols-1 lg:grid-cols-[1fr_340px] min-h-[calc(100vh-80px)]">
+// //           <div className="grid grid-cols-1 lg:grid-cols-[1fr_300px] min-h-[calc(100vh-80px)]">
 
-// //             {/* LEFT SIDE */}
+// //             {/* ── LEFT: PAGE CANVAS ── */}
+// //             <div className="relative bg-slate-100 p-6 overflow-y-auto h-[calc(100vh-80px)]">
 
-// //             <div className="relative bg-slate-100 p-8 overflow-y-auto h-[calc(100vh-80px)]">
-
-// //               {/* ADD MORE */}
-
-// //               <div className="absolute right-4 top-4">
-// //                 <label className="flex cursor-pointer items-center gap-2 rounded-xl border border-blue-500 bg-white px-4 py-2 text-sm font-semibold text-blue-600 shadow-sm hover:bg-blue-50">
-// //                   + Add PDF
-// //                   <input
-// //                     type="file"
-// //                     accept="application/pdf"
-// //                     multiple
-// //                     className="hidden"
-// //                     onChange={(e) => {
-// //                       const newFiles = Array.from(
-// //                         e.target.files || []
-// //                       );
-
-// //                       if (newFiles.length) {
-// //                         flow.selectFiles([
-// //                           ...flow.files,
-// //                           ...newFiles,
-// //                         ]);
-// //                       }
-// //                     }}
-// //                   />
-// //                 </label>
-// //               </div>
-
-// //               {/* THUMBNAILS */}
-
-// //               <div className="flex flex-wrap justify-center gap-6 pt-10">
-
-// //                 {flow.files.map((file, i) => (
-
-// //                   <div
-// //                     key={i}
-// //                     className="group flex w-[170px] flex-col items-center gap-3"
-// //                   >
-// //                     {/* PAGE */}
-
-// //                     <div
-// //                       style={{ transform: `rotate(${rotations[i] || 0}deg)` }}
-// //                       className="relative aspect-[3/4] w-full overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-md">
-
-// //                       {/* PDF */}
-
-// //                       <PdfThumbnail
-// //                         url={URL.createObjectURL(file)}
-// //                       />
-
-// //                       {/* REMOVE */}
-
-// //                       <button
-// //                         type="button"
-// //                         onClick={() => handleRemoveFile(i)}
-// //                         className="absolute right-2 top-2 z-10 flex h-7 w-7 items-center justify-center rounded-full bg-red-500 text-white hover:bg-red-600"
-// //                       >
-// //                         <Trash2 className="h-4 w-4" />
-// //                       </button>
-
-// //                       {/* MOVE HANDLE */}
-
-// //                       <div className="absolute left-2 top-2 z-10 flex h-7 w-7 items-center justify-center rounded-full bg-black/70 text-white">
-// //                         <GripVertical className="h-4 w-4" />
-// //                       </div>
-// //                     </div>
-
-// //                     {/* FILE NAME */}
-
-// //                     <p className="w-full truncate text-center text-xs text-slate-500">
-// //                       {file.name}
-// //                     </p>
-
-// //                     {/* ACTIONS */}
-
-// //                     <div className="flex items-center gap-2">
-
-// //                       <button
-// //                         onClick={() => moveLeft(i)}
-// //                         className="rounded-lg border border-slate-200 bg-white p-2 hover:bg-slate-100"
-// //                       >
-// //                         ←
-// //                       </button>
-
-// //                       {/* <button
-// //                         className="rounded-lg border border-slate-200 bg-white p-2 hover:bg-slate-100"
-// //                       >
-// //                         <RotateCw className="h-4 w-4" />
-// //                       </button> */}
-
-// //                       <button
-// //                         onClick={() =>
-// //                           setRotations((prev) => ({
-// //                             ...prev,
-// //                             [i]: ((prev[i] || 0) + 90) % 360,
-// //                           }))
-// //                         }
-// //                         className="rounded-lg border border-slate-200 bg-white p-2 hover:bg-slate-100"
-// //                       >
-// //                         <RotateCw className="h-4 w-4" />
-// //                       </button>
-
-
-// //                       <button
-// //                         onClick={() => moveRight(i)}
-// //                         className="rounded-lg border border-slate-200 bg-white p-2 hover:bg-slate-100"
-// //                       >
-// //                         →
-// //                       </button>
-
-// //                     </div>
+// //               {/* Loading state */}
+// //               {isLoadingPages && (
+// //                 <div className="flex h-full items-center justify-center">
+// //                   <div className="flex flex-col items-center gap-3">
+// //                     <div className="h-8 w-8 animate-spin rounded-full border-4 border-[#f24d0d] border-t-transparent" />
+// //                     <p className="text-sm text-slate-500">Loading pages…</p>
 // //                   </div>
-// //                 ))}
-// //               </div>
+// //                 </div>
+// //               )}
+
+// //               {/* Pages grid */}
+// //               {!isLoadingPages && pageOrder.length > 0 && (
+// //                 <div className="flex flex-wrap justify-center gap-5 pb-6">
+// //                   {pageOrder.map((pageIdx, slotIndex) => {
+// //                     const page = pages[pageIdx];
+// //                     const rotation = rotations[slotIndex] || 0;
+
+// //                     return (
+// //                       <div
+// //                         key={`${pageIdx}-${slotIndex}`}
+// //                         className="flex w-[155px] flex-col items-center gap-2"
+// //                       >
+// //                         {/* Thumbnail card */}
+// //                         <div className="relative flex aspect-[3/4] w-full items-center justify-center overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
+
+// //                           <PdfPageThumbnail
+// //                             file={loadedFile}
+// //                             pageNumber={page.pageNumber}
+// //                             rotation={rotation}
+// //                           />
+
+// //                           {/* Delete button */}
+// //                           <button
+// //                             type="button"
+// //                             onClick={() => deletePage(slotIndex)}
+// //                             className="absolute right-1.5 top-1.5 z-10 flex h-6 w-6 items-center justify-center rounded-full bg-red-500 text-white shadow hover:bg-red-600 transition-colors"
+// //                             title="Delete page"
+// //                           >
+// //                             <Trash2 className="h-3 w-3" />
+// //                           </button>
+
+// //                           {/* Page number badge */}
+// //                           <div className="absolute bottom-1.5 left-1.5 rounded-md bg-black/60 px-1.5 py-0.5 text-[10px] font-semibold text-white">
+// //                             {slotIndex + 1}
+// //                           </div>
+
+// //                           {/* Rotation badge — only show if rotated */}
+// //                           {rotation !== 0 && (
+// //                             <div className="absolute bottom-1.5 right-1.5 rounded-md bg-purple-600/80 px-1.5 py-0.5 text-[10px] font-semibold text-white">
+// //                               {rotation}°
+// //                             </div>
+// //                           )}
+// //                         </div>
+
+// //                         {/* Actions row */}
+// //                         <div className="flex items-center gap-1.5">
+// //                           <button
+// //                             type="button"
+// //                             onClick={() => movePage(slotIndex, -1)}
+// //                             disabled={slotIndex === 0}
+// //                             className="flex h-7 w-7 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-600 hover:bg-slate-100 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+// //                             title="Move left"
+// //                           >
+// //                             <ChevronLeft className="h-4 w-4" />
+// //                           </button>
+
+// //                           <button
+// //                             type="button"
+// //                             onClick={() => rotatePage(slotIndex)}
+// //                             className="flex h-7 w-7 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-600 hover:bg-slate-100 transition-colors"
+// //                             title="Rotate 90°"
+// //                           >
+// //                             <RotateCw className="h-3.5 w-3.5" />
+// //                           </button>
+
+// //                           <button
+// //                             type="button"
+// //                             onClick={() => movePage(slotIndex, 1)}
+// //                             disabled={slotIndex === pageOrder.length - 1}
+// //                             className="flex h-7 w-7 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-600 hover:bg-slate-100 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+// //                             title="Move right"
+// //                           >
+// //                             <ChevronRight className="h-4 w-4" />
+// //                           </button>
+// //                         </div>
+// //                       </div>
+// //                     );
+// //                   })}
+// //                 </div>
+// //               )}
 // //             </div>
 
-// //             {/* RIGHT SIDEBAR */}
-
+// //             {/* ── RIGHT SIDEBAR ── */}
 // //             <div className="flex flex-col border-l border-slate-200 bg-white h-[calc(100vh-80px)]">
-
-// //               <div className="flex-1 overflow-y-auto p-5 space-y-6">
+// //               <div className="flex-1 overflow-y-auto p-5 space-y-4">
 
 // //                 <h3 className="border-b border-slate-200 pb-3 text-lg font-semibold text-slate-800">
 // //                   Organize PDF
 // //                 </h3>
 
-// //                 <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
-
-// //                   <div className="flex items-center gap-2">
-// //                     <Move className="h-5 w-5 text-blue-600" />
-// //                     <h4 className="font-semibold text-slate-800">
-// //                       Rearrange Pages
-// //                     </h4>
+// //                 {/* Page count info */}
+// //                 {pageOrder.length > 0 && (
+// //                   <div className="rounded-xl border border-blue-100 bg-blue-50 p-3">
+// //                     <p className="text-sm font-semibold text-blue-700">
+// //                       {pageOrder.length} page{pageOrder.length !== 1 ? "s" : ""} loaded
+// //                     </p>
+// //                     <p className="mt-0.5 text-xs text-blue-500">
+// //                       Original had {pages.length} pages
+// //                       {pages.length !== pageOrder.length && ` · ${pages.length - pageOrder.length} deleted`}
+// //                     </p>
 // //                   </div>
+// //                 )}
 
-// //                   <p className="mt-2 text-sm text-slate-500">
-// //                     Move pages left or right to change their order.
+// //                 {/* Feature cards */}
+// //                 <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+// //                   <div className="flex items-center gap-2">
+// //                     <ChevronLeft className="h-4 w-4 text-blue-600" />
+// //                     <ChevronRight className="h-4 w-4 text-blue-600" />
+// //                     <h4 className="font-semibold text-slate-800">Reorder Pages</h4>
+// //                   </div>
+// //                   <p className="mt-1.5 text-xs text-slate-500">
+// //                     Use ← → arrows under each page to change order.
 // //                   </p>
 // //                 </div>
 
 // //                 <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
-
 // //                   <div className="flex items-center gap-2">
-// //                     <RotateCw className="h-5 w-5 text-purple-600" />
-// //                     <h4 className="font-semibold text-slate-800">
-// //                       Rotate Pages
-// //                     </h4>
+// //                     <RotateCw className="h-4 w-4 text-purple-600" />
+// //                     <h4 className="font-semibold text-slate-800">Rotate Pages</h4>
 // //                   </div>
-
-// //                   <p className="mt-2 text-sm text-slate-500">
-// //                     Rotate individual pages before downloading.
+// //                   <p className="mt-1.5 text-xs text-slate-500">
+// //                     Click rotate button to turn each page 90°.
 // //                   </p>
 // //                 </div>
 
 // //                 <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
-
 // //                   <div className="flex items-center gap-2">
-// //                     <Trash2 className="h-5 w-5 text-red-500" />
-// //                     <h4 className="font-semibold text-slate-800">
-// //                       Remove Pages
-// //                     </h4>
+// //                     <Trash2 className="h-4 w-4 text-red-500" />
+// //                     <h4 className="font-semibold text-slate-800">Delete Pages</h4>
 // //                   </div>
-
-// //                   <p className="mt-2 text-sm text-slate-500">
-// //                     Delete unwanted pages instantly.
+// //                   <p className="mt-1.5 text-xs text-slate-500">
+// //                     Click the red × on any page to remove it.
 // //                   </p>
 // //                 </div>
 
-// //                 <div className="rounded-xl border border-green-200 bg-green-50 p-4">
+// //                 <div className="rounded-xl border border-green-200 bg-green-50 p-3">
 // //                   <p className="text-sm font-semibold text-green-700">
 // //                     ✓ Your PDF stays private
 // //                   </p>
-
-// //                   <p className="mt-2 text-xs leading-5 text-slate-600">
+// //                   <p className="mt-1 text-xs leading-5 text-slate-600">
 // //                     Files are securely processed and automatically deleted after processing.
 // //                   </p>
 // //                 </div>
 // //               </div>
 
-// //               {/* BUTTON */}
-
+// //               {/* Organize button */}
 // //               <div className="border-t border-slate-200 p-4">
-
 // //                 <button
 // //                   type="button"
 // //                   onClick={handleConvert}
-// //                   disabled={!flow.files.length}
-// //                   className={`flex w-full items-center justify-center gap-2 rounded-xl px-5 py-4 text-base font-bold text-white transition active:scale-[0.98] ${flow.files.length
-// //                     ? "bg-[#f24d0d] hover:bg-[#dc4308] shadow-[0_10px_30px_rgba(242,77,13,0.38)]"
-// //                     : "cursor-not-allowed bg-slate-300"
-// //                     }`}
+// //                   disabled={!pageOrder.length}
+// //                   className={`flex w-full items-center justify-center gap-2 rounded-xl px-5 py-4 text-base font-bold text-white transition active:scale-[0.98] ${
+// //                     pageOrder.length
+// //                       ? "bg-[#f24d0d] hover:bg-[#dc4308] shadow-[0_10px_30px_rgba(242,77,13,0.38)]"
+// //                       : "cursor-not-allowed bg-slate-300"
+// //                   }`}
 // //                 >
 // //                   <Layers3 className="h-5 w-5" />
 // //                   Organize PDF
 // //                 </button>
-
 // //               </div>
 // //             </div>
 // //           </div>
 // //         }
 
+// //         /* ── UPLOAD LANDING ── */
 // //         uploadLanding={{
 // //           content: {
 // //             eyebrow: "ORGANIZE PDF",
@@ -2047,13 +2655,13 @@ export default function OrganizePdf({ seo }) {
 // //             ),
 
 // //             heroDescription:
-// //               "Rearrange, rotate, and remove PDF pages online for free. Organize your PDF visually with drag-and-drop style controls directly in your browser.",
+// //               "Rearrange, rotate, and remove PDF pages online for free. Organize your PDF visually with page-by-page controls directly in your browser.",
 
 // //             noticeTitle: "Organize features",
 
 // //             noticeItems: [
 // //               "Reorder PDF pages",
-// //               "Rotate pages",
+// //               "Rotate individual pages",
 // //               "Remove unwanted pages",
 // //             ],
 
@@ -2072,7 +2680,7 @@ export default function OrganizePdf({ seo }) {
 // //               {
 // //                 n: "2",
 // //                 title: "Organize pages",
-// //                 desc: "Reorder, rotate, or remove pages visually.",
+// //                 desc: "Reorder, rotate, or delete pages visually.",
 // //                 color: "bg-purple-600",
 // //               },
 // //               {
@@ -2087,13 +2695,12 @@ export default function OrganizePdf({ seo }) {
 
 // //             whyItems: [
 // //               {
-// //                 title: "Easy Visual Editing",
-// //                 desc: "Organize PDF pages visually with simple controls.",
+// //                 title: "Page-by-Page Control",
+// //                 desc: "See every page as a thumbnail and organize individually.",
 // //                 icon: Layers3,
 // //                 iconColor: "text-blue-600",
 // //                 bgColor: "bg-blue-100",
 // //               },
-
 // //               {
 // //                 title: "Fast Processing",
 // //                 desc: "Rearrange and download PDFs within seconds.",
@@ -2101,7 +2708,6 @@ export default function OrganizePdf({ seo }) {
 // //                 iconColor: "text-purple-600",
 // //                 bgColor: "bg-purple-100",
 // //               },
-
 // //               {
 // //                 title: "Works Everywhere",
 // //                 desc: "Compatible with desktop, tablet, and mobile devices.",
@@ -2109,7 +2715,6 @@ export default function OrganizePdf({ seo }) {
 // //                 iconColor: "text-orange-500",
 // //                 bgColor: "bg-orange-50",
 // //               },
-
 // //               {
 // //                 title: "Private & Secure",
 // //                 desc: "Your uploaded files are securely deleted automatically.",
@@ -2117,7 +2722,6 @@ export default function OrganizePdf({ seo }) {
 // //                 iconColor: "text-green-600",
 // //                 bgColor: "bg-green-100",
 // //               },
-
 // //               {
 // //                 title: "No Watermark",
 // //                 desc: "Your downloaded PDF remains clean and professional.",
@@ -2134,3 +2738,589 @@ export default function OrganizePdf({ seo }) {
 // //     </>
 // //   );
 // // }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// // // "use client";
+
+// // // import { useState, useRef, useEffect } from "react";
+
+// // // import {
+// // //   Download,
+// // //   CheckCircle,
+// // //   MonitorSmartphone,
+// // //   ShieldCheck,
+// // //   GripVertical,
+// // //   Trash2,
+// // //   RotateCw,
+// // //   Move,
+// // //   Layers3,
+// // // } from "lucide-react";
+
+// // // import Script from "next/script";
+// // // import ToolPageLayout from "@/components/ToolFlow/ToolPageLayout";
+// // // import RelatedToolsSection from "@/components/RelatedTools";
+
+// // // import { useToolFlow } from "@/hooks/useToolFlow";
+// // // import { useProgressBar } from "@/hooks/useProgressBar";
+
+// // // import {
+// // //   DEFAULT_DONE_LINKS,
+// // //   DEFAULT_SIDEBAR_FEATURES,
+// // // } from "@/lib/toolUiConfig";
+
+// // // function PdfThumbnail({ url }) {
+// // //   const canvasRef = useRef(null);
+
+// // //   useEffect(() => {
+// // //     if (!url || !window.pdfjsLib) return;
+
+// // //     const tryRender = () => {
+// // //       if (!window.pdfjsLib) return setTimeout(tryRender, 100);
+
+// // //       window.pdfjsLib
+// // //         .getDocument(url)
+// // //         .promise.then((pdf) => pdf.getPage(1))
+// // //         .then((page) => {
+// // //           const viewport = page.getViewport({ scale: 0.6 });
+
+// // //           const canvas = canvasRef.current;
+// // //           if (!canvas) return;
+
+// // //           canvas.width = viewport.width;
+// // //           canvas.height = viewport.height;
+
+// // //           page.render({
+// // //             canvasContext: canvas.getContext("2d"),
+// // //             viewport,
+// // //           });
+// // //         })
+// // //         .catch(console.error);
+// // //     };
+
+// // //     tryRender();
+// // //   }, [url]);
+
+// // //   return (
+// // //     <canvas
+// // //       ref={canvasRef}
+// // //       className="h-full w-full object-contain bg-white"
+// // //     />
+// // //   );
+// // // }
+
+// // // export default function OrganizePdf() {
+// // //   const flow = useToolFlow();
+
+// // //   const {
+// // //     progress,
+// // //     startProgress,
+// // //     completeProgress,
+// // //     cancelProgress,
+// // //   } = useProgressBar();
+
+// // //   const [downloadUrl, setDownloadUrl] = useState(null);
+// // //   const [rotations, setRotations] = useState({});
+
+
+// // //   const handleRemoveFile = (index) => {
+// // //     const updated = flow.files.filter((_, i) => i !== index);
+
+// // //     if (updated.length === 0) flow.reset();
+// // //     else flow.selectFiles(updated);
+// // //   };
+
+// // //   const moveLeft = (index) => {
+// // //     if (index === 0) return;
+
+// // //     const updated = [...flow.files];
+
+// // //     [updated[index - 1], updated[index]] = [
+// // //       updated[index],
+// // //       updated[index - 1],
+// // //     ];
+
+// // //     flow.selectFiles(updated);
+// // //   };
+
+// // //   const moveRight = (index) => {
+// // //     if (index === flow.files.length - 1) return;
+
+// // //     const updated = [...flow.files];
+
+// // //     [updated[index + 1], updated[index]] = [
+// // //       updated[index],
+// // //       updated[index + 1],
+// // //     ];
+
+// // //     flow.selectFiles(updated);
+// // //   };
+
+// // //   const handleDownload = () => {
+// // //     if (!downloadUrl) return;
+
+// // //     const a = document.createElement("a");
+
+// // //     a.href = downloadUrl;
+// // //     a.download = "organized.pdf";
+
+// // //     document.body.appendChild(a);
+
+// // //     a.click();
+
+// // //     a.remove();
+// // //   };
+
+// // //   const handleConvert = async () => {
+// // //     if (!flow.files?.length) return;
+
+// // //     flow.startProcessing();
+
+// // //     startProgress();
+
+// // //     try {
+// // //       const formData = new FormData();
+
+// // //       flow.files.forEach((file) => {
+// // //         formData.append("files", file);
+// // //       });
+
+// // //       // 👇 YE ADD KARO ISKE BILKUL BAAD
+// // //       formData.append("rotations", JSON.stringify(rotations));
+
+
+// // //       const res = await fetch("/convert/organize-pdf", {
+// // //         method: "POST",
+// // //         body: formData,
+// // //       });
+
+// // //       if (!res.ok) {
+// // //         throw new Error("Failed to organize PDF");
+// // //       }
+
+// // //       const blob = await res.blob();
+
+// // //       const url = URL.createObjectURL(blob);
+
+// // //       setDownloadUrl(url);
+
+// // //       completeProgress();
+
+// // //       flow.finishSuccess();
+// // //     } catch (err) {
+// // //       console.error(err);
+
+// // //       cancelProgress();
+
+// // //       flow.handleError("Something went wrong");
+// // //     }
+// // //   };
+
+// // //   return (
+// // //     <>
+// // //       {/* ================= SEO ================= */}
+
+// // //       <Script
+// // //         id="faq-schema-organize"
+// // //         type="application/ld+json"
+// // //         strategy="afterInteractive"
+// // //         dangerouslySetInnerHTML={{
+// // //           __html: JSON.stringify({
+// // //             "@context": "https://schema.org",
+// // //             "@type": "FAQPage",
+// // //             mainEntity: [
+// // //               {
+// // //                 "@type": "Question",
+// // //                 name: "What is Organize PDF?",
+// // //                 acceptedAnswer: {
+// // //                   "@type": "Answer",
+// // //                   text: "Organize PDF allows you to rearrange, rotate, and remove PDF pages online before downloading a newly organized PDF file.",
+// // //                 },
+// // //               },
+// // //               {
+// // //                 "@type": "Question",
+// // //                 name: "Can I rearrange PDF pages online?",
+// // //                 acceptedAnswer: {
+// // //                   "@type": "Answer",
+// // //                   text: "Yes. Drag, reorder, rotate, and delete PDF pages directly in your browser with no software installation required.",
+// // //                 },
+// // //               },
+// // //             ],
+// // //           }),
+// // //         }}
+// // //       />
+
+// // //       {/* ================= UI ================= */}
+
+// // //       <ToolPageLayout
+// // //         title="Organize PDF Online"
+// // //         tagline="Rearrange · Rotate · Remove PDF Pages"
+// // //         accept=".pdf,application/pdf"
+// // //         multiple={true}
+// // //         convertLabel="Organize PDF"
+// // //         flow={flow}
+// // //         progress={progress}
+// // //         onRemoveFile={handleRemoveFile}
+// // //         onConvert={handleConvert}
+// // //         onDownload={handleDownload}
+// // //         doneLinks={DEFAULT_DONE_LINKS}
+// // //         showOutputFormat={false}
+// // //         showPreserveLayout={false}
+// // //         optionsTitle="Organize options"
+// // //         processingTitle="Organizing PDF..."
+// // //         processingDescription="Rearranging your pages. Please wait."
+// // //         processingStages={[
+// // //           "Uploading",
+// // //           "Organizing pages",
+// // //           "Done",
+// // //         ]}
+// // //         doneTitle="Your organized PDF is ready"
+// // //         doneDescription="Download your newly arranged PDF file."
+// // //         downloadLabel="Download Organized PDF"
+// // //         resetLabel="Organize another PDF"
+// // //         sidebarTitle="Organize PDF"
+// // //         sidebarIcon={<Layers3 className="h-5 w-5 text-white" />}
+// // //         sidebarDescription="Reorder, rotate, and remove PDF pages visually in seconds."
+// // //         sidebarFeatures={DEFAULT_SIDEBAR_FEATURES}
+// // //         uploadTitle="Drop your PDF here"
+// // //         uploadSubtitle="or click to browse — PDF supported"
+
+// // //         customOptionsLayout={
+// // //           <div className="grid grid-cols-1 lg:grid-cols-[1fr_340px] min-h-[calc(100vh-80px)]">
+
+// // //             {/* LEFT SIDE */}
+
+// // //             <div className="relative bg-slate-100 p-8 overflow-y-auto h-[calc(100vh-80px)]">
+
+// // //               {/* ADD MORE */}
+
+// // //               <div className="absolute right-4 top-4">
+// // //                 <label className="flex cursor-pointer items-center gap-2 rounded-xl border border-blue-500 bg-white px-4 py-2 text-sm font-semibold text-blue-600 shadow-sm hover:bg-blue-50">
+// // //                   + Add PDF
+// // //                   <input
+// // //                     type="file"
+// // //                     accept="application/pdf"
+// // //                     multiple
+// // //                     className="hidden"
+// // //                     onChange={(e) => {
+// // //                       const newFiles = Array.from(
+// // //                         e.target.files || []
+// // //                       );
+
+// // //                       if (newFiles.length) {
+// // //                         flow.selectFiles([
+// // //                           ...flow.files,
+// // //                           ...newFiles,
+// // //                         ]);
+// // //                       }
+// // //                     }}
+// // //                   />
+// // //                 </label>
+// // //               </div>
+
+// // //               {/* THUMBNAILS */}
+
+// // //               <div className="flex flex-wrap justify-center gap-6 pt-10">
+
+// // //                 {flow.files.map((file, i) => (
+
+// // //                   <div
+// // //                     key={i}
+// // //                     className="group flex w-[170px] flex-col items-center gap-3"
+// // //                   >
+// // //                     {/* PAGE */}
+
+// // //                     <div
+// // //                       style={{ transform: `rotate(${rotations[i] || 0}deg)` }}
+// // //                       className="relative aspect-[3/4] w-full overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-md">
+
+// // //                       {/* PDF */}
+
+// // //                       <PdfThumbnail
+// // //                         url={URL.createObjectURL(file)}
+// // //                       />
+
+// // //                       {/* REMOVE */}
+
+// // //                       <button
+// // //                         type="button"
+// // //                         onClick={() => handleRemoveFile(i)}
+// // //                         className="absolute right-2 top-2 z-10 flex h-7 w-7 items-center justify-center rounded-full bg-red-500 text-white hover:bg-red-600"
+// // //                       >
+// // //                         <Trash2 className="h-4 w-4" />
+// // //                       </button>
+
+// // //                       {/* MOVE HANDLE */}
+
+// // //                       <div className="absolute left-2 top-2 z-10 flex h-7 w-7 items-center justify-center rounded-full bg-black/70 text-white">
+// // //                         <GripVertical className="h-4 w-4" />
+// // //                       </div>
+// // //                     </div>
+
+// // //                     {/* FILE NAME */}
+
+// // //                     <p className="w-full truncate text-center text-xs text-slate-500">
+// // //                       {file.name}
+// // //                     </p>
+
+// // //                     {/* ACTIONS */}
+
+// // //                     <div className="flex items-center gap-2">
+
+// // //                       <button
+// // //                         onClick={() => moveLeft(i)}
+// // //                         className="rounded-lg border border-slate-200 bg-white p-2 hover:bg-slate-100"
+// // //                       >
+// // //                         ←
+// // //                       </button>
+
+// // //                       {/* <button
+// // //                         className="rounded-lg border border-slate-200 bg-white p-2 hover:bg-slate-100"
+// // //                       >
+// // //                         <RotateCw className="h-4 w-4" />
+// // //                       </button> */}
+
+// // //                       <button
+// // //                         onClick={() =>
+// // //                           setRotations((prev) => ({
+// // //                             ...prev,
+// // //                             [i]: ((prev[i] || 0) + 90) % 360,
+// // //                           }))
+// // //                         }
+// // //                         className="rounded-lg border border-slate-200 bg-white p-2 hover:bg-slate-100"
+// // //                       >
+// // //                         <RotateCw className="h-4 w-4" />
+// // //                       </button>
+
+
+// // //                       <button
+// // //                         onClick={() => moveRight(i)}
+// // //                         className="rounded-lg border border-slate-200 bg-white p-2 hover:bg-slate-100"
+// // //                       >
+// // //                         →
+// // //                       </button>
+
+// // //                     </div>
+// // //                   </div>
+// // //                 ))}
+// // //               </div>
+// // //             </div>
+
+// // //             {/* RIGHT SIDEBAR */}
+
+// // //             <div className="flex flex-col border-l border-slate-200 bg-white h-[calc(100vh-80px)]">
+
+// // //               <div className="flex-1 overflow-y-auto p-5 space-y-6">
+
+// // //                 <h3 className="border-b border-slate-200 pb-3 text-lg font-semibold text-slate-800">
+// // //                   Organize PDF
+// // //                 </h3>
+
+// // //                 <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+
+// // //                   <div className="flex items-center gap-2">
+// // //                     <Move className="h-5 w-5 text-blue-600" />
+// // //                     <h4 className="font-semibold text-slate-800">
+// // //                       Rearrange Pages
+// // //                     </h4>
+// // //                   </div>
+
+// // //                   <p className="mt-2 text-sm text-slate-500">
+// // //                     Move pages left or right to change their order.
+// // //                   </p>
+// // //                 </div>
+
+// // //                 <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+
+// // //                   <div className="flex items-center gap-2">
+// // //                     <RotateCw className="h-5 w-5 text-purple-600" />
+// // //                     <h4 className="font-semibold text-slate-800">
+// // //                       Rotate Pages
+// // //                     </h4>
+// // //                   </div>
+
+// // //                   <p className="mt-2 text-sm text-slate-500">
+// // //                     Rotate individual pages before downloading.
+// // //                   </p>
+// // //                 </div>
+
+// // //                 <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+
+// // //                   <div className="flex items-center gap-2">
+// // //                     <Trash2 className="h-5 w-5 text-red-500" />
+// // //                     <h4 className="font-semibold text-slate-800">
+// // //                       Remove Pages
+// // //                     </h4>
+// // //                   </div>
+
+// // //                   <p className="mt-2 text-sm text-slate-500">
+// // //                     Delete unwanted pages instantly.
+// // //                   </p>
+// // //                 </div>
+
+// // //                 <div className="rounded-xl border border-green-200 bg-green-50 p-4">
+// // //                   <p className="text-sm font-semibold text-green-700">
+// // //                     ✓ Your PDF stays private
+// // //                   </p>
+
+// // //                   <p className="mt-2 text-xs leading-5 text-slate-600">
+// // //                     Files are securely processed and automatically deleted after processing.
+// // //                   </p>
+// // //                 </div>
+// // //               </div>
+
+// // //               {/* BUTTON */}
+
+// // //               <div className="border-t border-slate-200 p-4">
+
+// // //                 <button
+// // //                   type="button"
+// // //                   onClick={handleConvert}
+// // //                   disabled={!flow.files.length}
+// // //                   className={`flex w-full items-center justify-center gap-2 rounded-xl px-5 py-4 text-base font-bold text-white transition active:scale-[0.98] ${flow.files.length
+// // //                     ? "bg-[#f24d0d] hover:bg-[#dc4308] shadow-[0_10px_30px_rgba(242,77,13,0.38)]"
+// // //                     : "cursor-not-allowed bg-slate-300"
+// // //                     }`}
+// // //                 >
+// // //                   <Layers3 className="h-5 w-5" />
+// // //                   Organize PDF
+// // //                 </button>
+
+// // //               </div>
+// // //             </div>
+// // //           </div>
+// // //         }
+
+// // //         uploadLanding={{
+// // //           content: {
+// // //             eyebrow: "ORGANIZE PDF",
+
+// // //             heroTitle: (
+// // //               <>
+// // //                 Organize PDF Pages <br />
+// // //                 <em className="font-bold not-italic text-[#e8420a] sm:italic">
+// // //                   visually online
+// // //                 </em>
+// // //               </>
+// // //             ),
+
+// // //             heroDescription:
+// // //               "Rearrange, rotate, and remove PDF pages online for free. Organize your PDF visually with drag-and-drop style controls directly in your browser.",
+
+// // //             noticeTitle: "Organize features",
+
+// // //             noticeItems: [
+// // //               "Reorder PDF pages",
+// // //               "Rotate pages",
+// // //               "Remove unwanted pages",
+// // //             ],
+
+// // //             howToTitle: "How to organize a PDF",
+
+// // //             howToSubtitle:
+// // //               "Upload your PDF, rearrange pages visually, and download your organized PDF instantly.",
+
+// // //             howToSteps: [
+// // //               {
+// // //                 n: "1",
+// // //                 title: "Upload your PDF",
+// // //                 desc: "Select your PDF file from device storage.",
+// // //                 color: "bg-blue-600",
+// // //               },
+// // //               {
+// // //                 n: "2",
+// // //                 title: "Organize pages",
+// // //                 desc: "Reorder, rotate, or remove pages visually.",
+// // //                 color: "bg-purple-600",
+// // //               },
+// // //               {
+// // //                 n: "3",
+// // //                 title: "Download organized PDF",
+// // //                 desc: "Save your newly arranged PDF instantly.",
+// // //                 color: "bg-emerald-600",
+// // //               },
+// // //             ],
+
+// // //             whyTitle: "Why use PDFLinx Organize PDF?",
+
+// // //             whyItems: [
+// // //               {
+// // //                 title: "Easy Visual Editing",
+// // //                 desc: "Organize PDF pages visually with simple controls.",
+// // //                 icon: Layers3,
+// // //                 iconColor: "text-blue-600",
+// // //                 bgColor: "bg-blue-100",
+// // //               },
+
+// // //               {
+// // //                 title: "Fast Processing",
+// // //                 desc: "Rearrange and download PDFs within seconds.",
+// // //                 icon: Download,
+// // //                 iconColor: "text-purple-600",
+// // //                 bgColor: "bg-purple-100",
+// // //               },
+
+// // //               {
+// // //                 title: "Works Everywhere",
+// // //                 desc: "Compatible with desktop, tablet, and mobile devices.",
+// // //                 icon: MonitorSmartphone,
+// // //                 iconColor: "text-orange-500",
+// // //                 bgColor: "bg-orange-50",
+// // //               },
+
+// // //               {
+// // //                 title: "Private & Secure",
+// // //                 desc: "Your uploaded files are securely deleted automatically.",
+// // //                 icon: ShieldCheck,
+// // //                 iconColor: "text-green-600",
+// // //                 bgColor: "bg-green-100",
+// // //               },
+
+// // //               {
+// // //                 title: "No Watermark",
+// // //                 desc: "Your downloaded PDF remains clean and professional.",
+// // //                 icon: CheckCircle,
+// // //                 iconColor: "text-slate-600",
+// // //                 bgColor: "bg-slate-100",
+// // //               },
+// // //             ],
+// // //           },
+// // //         }}
+// // //       />
+
+// // //       <RelatedToolsSection />
+// // //     </>
+// // //   );
+// // // }

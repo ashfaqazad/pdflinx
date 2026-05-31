@@ -4,10 +4,9 @@ import { useEffect, useMemo, useState } from "react";
 import {
   Hash,
   FileText,
-  CheckCircle,
-  Settings,
-  MonitorSmartphone,
   ShieldCheck,
+  Pencil, Stamp, RotateCw, LayoutList,
+  GitMerge, Shield, Minimize2, PenLine
 } from "lucide-react";
 import Script from "next/script";
 import dynamic from "next/dynamic";
@@ -15,6 +14,19 @@ import ToolPageLayout from "@/components/ToolFlow/ToolPageLayout";
 import { useToolFlow } from "@/hooks/useToolFlow";
 import { useProgressBar } from "@/hooks/useProgressBar";
 import { DEFAULT_DONE_LINKS, DEFAULT_SIDEBAR_FEATURES } from "@/lib/toolUiConfig";
+
+
+const DONE_LINKS = [
+  { label: "Edit PDF", href: "/edit-pdf", icon: <Pencil className="h-4 w-4 text-orange-500" /> },
+  { label: "Add Watermark", href: "/add-watermark", icon: <Stamp className="h-4 w-4 text-teal-500" /> },
+  { label: "Rotate PDF", href: "/rotate-pdf", icon: <RotateCw className="h-4 w-4 text-cyan-500" /> },
+  { label: "Organize PDF", href: "/organize-pdf", icon: <LayoutList className="h-4 w-4 text-blue-500" /> },
+  { label: "Merge PDF", href: "/merge-pdf", icon: <GitMerge className="h-4 w-4 text-purple-500" /> },
+  { label: "Protect PDF", href: "/protect-pdf", icon: <Shield className="h-4 w-4 text-red-500" /> },
+  { label: "Compress PDF", href: "/compress-pdf", icon: <Minimize2 className="h-4 w-4 text-green-500" /> },
+  { label: "Sign PDF", href: "/sign-pdf", icon: <PenLine className="h-4 w-4 text-indigo-500" /> },
+];
+
 
 const PageNumberPreview = dynamic(
   () => import("@/components/PageNumberPreview"),
@@ -647,6 +659,7 @@ export default function AddPageNumbers() {
             applicationCategory: "BusinessApplication",
             operatingSystem: "Web Browser",
             url: "https://pdflinx.com/add-page-numbers",
+            screenshot: "https://pdflinx.com/og-image.png",  // ← YAHAN
             offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
           }, null, 2),
         }}
@@ -673,7 +686,10 @@ export default function AddPageNumbers() {
         onRemoveFile={resetAll}
         onConvert={handleConvert}
         onDownload={handleDownload}
+        
         doneLinks={DEFAULT_DONE_LINKS}
+        sidebarLinks={DONE_LINKS}
+
         showOutputFormat={false}
         showPreserveLayout={false}
         customOptionsLayout={customOptionsLayout}
@@ -697,61 +713,223 @@ export default function AddPageNumbers() {
         sidebarFeatures={DEFAULT_SIDEBAR_FEATURES}
         uploadTitle="Drop your PDF here"
         uploadSubtitle="or click to browse — PDF files supported"
+
+        // ============================================================
+        // ADD PAGE NUMBERS TO PDF — uploadLanding content
+        // PdfToWord.jsx pattern ke mutabiq — as-is paste karo
+        // ============================================================
+
         uploadLanding={{
           content: {
-            eyebrow: "ADD PAGE NUMBERS",
+            relatedTools: DONE_LINKS,
+            eyebrow: "ADD PAGE NUMBERS TO PDF",
+
+            breadcrumbCurrent: "Add Page Numbers to PDF",
+
+            heroBadge: "✦ 100% Free · No Signup · No Watermark",
+
+            // heroTitle: (
+            //   <>
+            //     Add Page Numbers to PDF —{" "}
+            //     <em className="font-bold text-[#e8420a] sm:italic">
+            //       Free, Online, Fully Customizable
+            //     </em>
+            //   </>
+            // ),
+
+            // heroDescription:
+            //   "Add page numbers to any PDF online for free. Choose position, style, font, and starting number — applied permanently to every page. No signup, no watermark, no software needed. Works on any device.",
+
+            // pills: [
+            //   "No watermark",
+            //   "Custom position & style",
+            //   "Choose starting page number",
+            //   "Instant download",
+            // ],
+
             heroTitle: (
               <>
-                Add page numbers <br />
-                <em className="font-bold not-italic text-[#e8420a] sm:italic">to any PDF</em>
+                Add Page Numbers to PDF —{" "}
+                <em className="font-bold text-[#e8420a] sm:italic">
+                  Custom Position & Style, Free
+                </em>
               </>
             ),
             heroDescription:
-              "Add page numbers to PDF online for free without changing the rest of your document. Choose the position, starting number, font size, and download your updated PDF instantly — no signup or watermark required.",
-            noticeTitle: "Page numbering",
+              "Add page numbers to PDF online free — insert page numbers in header, footer, left, center, or right position. Choose font, size, and starting number. Free, no signup needed.",
+            pills: ["Header & footer placement", "Custom font & size", "Choose starting number", "No signup"],
+
+
+            uploadTitle: "Drop your PDF here",
+            uploadSubtitle: "or click to browse — PDF files supported",
+
+            trustPills: ["100% Free", "No Sign Up", "No Watermark"],
+
+            noticeTitle: "Add Page Numbers Info",
             noticeItems: [
-              "Single PDF → Updated numbered PDF",
-              "Choose position and start number",
-              "No signup, no watermark",
+              "Choose position — header or footer",
+              "Customize font, size & starting number",
+              "Numbers applied permanently to PDF",
             ],
-            howToTitle: "How to add page numbers to PDF",
-            howToSubtitle: "Upload your PDF, customize the numbering settings, and download the updated file in seconds.",
+
+            rating: "4.9/5",
+            ratingText: "Trusted by 50,000+ users monthly",
+
+            pdfTypeSection: {
+              enabled: false,
+            },
+
+            howToEyebrow: "How It Works",
+            howToTitle: "How to Add Page Numbers to a PDF — 3 Simple Steps",
+            howToSubtitle:
+              "No learning curve. Upload, customize numbering, download — done in under 30 seconds.",
+
             howToSteps: [
-              { n: "1", title: "Upload your PDF", desc: "Choose a PDF from your device or drag & drop it into the uploader.", color: "bg-blue-600" },
-              { n: "2", title: "Choose numbering settings", desc: "Select page number position, alignment, start number, margin, and font size.", color: "bg-purple-600" },
-              { n: "3", title: "Apply & download", desc: "Insert page numbers instantly and download your updated PDF file.", color: "bg-emerald-600" },
+              {
+                n: "1",
+                title: "Upload Your PDF File",
+                desc: "Select your PDF from your device. Drag and drop supported on all devices — mobile, tablet, and desktop. Works with PDFs of any length — from 1 page to hundreds.",
+                color: "bg-blue-600",
+              },
+              {
+                n: "2",
+                title: "Customize Your Page Numbers",
+                desc: "Choose where to place the numbers — top left, top center, top right, bottom left, bottom center, or bottom right. Set the starting number, font size, and number format.",
+                color: "bg-purple-600",
+              },
+              {
+                n: "3",
+                title: "Download Your Numbered PDF",
+                desc: "Click Add Page Numbers and your updated PDF is ready in seconds. Page numbers are permanently embedded — visible in every PDF viewer, ready to print or share.",
+                color: "bg-emerald-600",
+              },
             ],
-            whyTitle: "Why use PDFLinx to add page numbers?",
-            whyItems: [
-              { title: "Add Numbers Anywhere", desc: "Place page numbers at the top or bottom and align them left, center, or right.", icon: Hash, iconColor: "text-indigo-500", bgColor: "bg-indigo-50" },
-              { title: "Keeps Original Layout", desc: "Only the numbering is added. Your PDF design and content remain unchanged.", icon: FileText, iconColor: "text-blue-500", bgColor: "bg-blue-50" },
-              { title: "Fast & Free", desc: "Add page numbers to PDF online in seconds with no watermark or signup.", icon: CheckCircle, iconColor: "text-emerald-500", bgColor: "bg-emerald-50" },
-              { title: "Custom Numbering Options", desc: "Choose the starting page number, font size, color and spacing.", icon: Settings, iconColor: "text-violet-500", bgColor: "bg-violet-50" },
-              { title: "Works on All Devices", desc: "Use PDFLinx on desktop, tablet, Android, iPhone, Windows, macOS, and Linux.", icon: MonitorSmartphone, iconColor: "text-orange-500", bgColor: "bg-orange-50" },
-              { title: "Secure Processing", desc: "Uploaded files are processed securely and automatically deleted after processing.", icon: ShieldCheck, iconColor: "text-rose-500", bgColor: "bg-rose-50" },
-            ],
-            seoBadge: "PDF Numbering Guide",
-            seoTitle: "Free Online Add Page Numbers to PDF Tool by PDFLinx",
-            seoDescription: "Add page numbers to PDF online without changing the original layout. Customize numbering position, alignment, and start number directly in your browser.",
+
+            whyTitle: "Why PDFLinx is the Best Free Tool to Add Page Numbers to PDF Online",
+
+            seoBadge: "Add Page Numbers to PDF Guide",
+            seoTitle: "Complete Guide to Adding Page Numbers to a PDF Online",
+            seoDescription:
+              "Everything you need to know about adding page numbers to a PDF — free, online, fully customizable position and style. No watermark, no signup, no limits.",
+
             seoSections: [
-              { title: "Add Page Numbers Without Editing the Whole PDF", text: "PDFLinx lets you insert page numbers into PDF files without recreating the document from scratch." },
-              { title: "Choose Position, Format, and Start Number", text: "Place page numbers anywhere — top left, bottom center, and more — with 4 format styles." },
-              { title: "Custom Font, Color & Size", text: "Pick font size, family, and color to match your document's branding." },
-              { title: "Works on Desktop and Mobile Devices", text: "Use PDFLinx directly in your browser on all platforms without installing software." },
-              { title: "Fast, Free, and No Watermark", text: "Add page numbers to PDF online for free with no signup and no watermark added." },
-              { title: "Secure PDF Processing", text: "Your uploaded files are processed securely and automatically deleted after processing." },
+              {
+                title:
+                  "Free PDF Page Numbering Tool — Add Page Numbers to Any PDF Online",
+                text: "Need to add page numbers to a PDF? PDFLinx lets you add page numbers to any PDF online for free — instantly and without any software installation. Whether it is a report, thesis, legal document, contract, or any multi-page PDF, PDFLinx stamps clean, professional page numbers in your chosen position and style in seconds. No signup, no watermark, no hidden limits. Works on Windows, Mac, iPhone, and Android.",
+              },
+              {
+                title: "Why Page Numbers Matter in a PDF Document",
+                text: "Page numbers are a fundamental part of any professional document. They make long PDFs navigable — readers can jump to specific pages, reference sections precisely, and follow along during meetings or presentations. For legal documents, contracts, and official reports, page numbers are often required for formal submission. For theses and academic papers, page numbering follows strict formatting guidelines. For business reports shared with clients, numbered pages signal professionalism and make the document easier to discuss. A PDF without page numbers is harder to use, harder to reference, and looks unfinished.",
+              },
+              {
+                title: "Page Number Position Options — Where to Place Your Numbers",
+                text: "PDFLinx gives you six placement options for page numbers — top left, top center, top right, bottom left, bottom center, and bottom right. Bottom center is the most common choice for reports, theses, and formal documents. Bottom right is popular for business documents and contracts. Top right is frequently used in academic and legal formatting. Choose whichever position matches the style guide or personal preference you are working with — PDFLinx applies it consistently across every page.",
+              },
+              {
+                title: "Customize Starting Number, Font, and Format",
+                text: "Not every document starts numbering from page 1. A thesis may have a separately numbered front matter, with the body starting at page 1 on the third physical page. A report may have a cover page that should not be numbered, with numbering starting from the second page. PDFLinx lets you set the exact starting number, choose font size, and select number format — giving you precise control over how numbering appears in your final document.",
+              },
+              {
+                title:
+                  "Why PDFLinx is the Best Free PDF Page Numbering Tool — No Watermark, No Limits",
+                text: "Most free PDF page numbering tools add their own watermark alongside your page numbers, restrict customization options, or require account creation. PDFLinx does none of that — completely free, no signup, no watermark, and no daily usage limit. Unlike iLovePDF and Smallpdf which restrict PDF editing tools on free tiers, PDFLinx gives you full customization and unlimited use at zero cost.",
+              },
+              {
+                title: "Common Use Cases for Adding Page Numbers to a PDF",
+                text: "✓ Students & Academics: Add properly formatted page numbers to theses, dissertations, research papers, and assignments before submission.\n✓ Legal Professionals: Number pages in contracts, agreements, and legal briefs as required for formal filing and reference.\n✓ Business Professionals: Add page numbers to reports, proposals, and presentations for professional, navigable documents.\n✓ Publishers & Editors: Number pages in manuscripts, books, and editorial documents before review or printing.\n✓ HR Teams: Add page numbers to employee handbooks, policy documents, and multi-page forms.\n✓ Freelancers: Professionally number client deliverables, proposals, and project documentation.",
+              },
+              {
+                title:
+                  "Add Page Numbers on iPhone, Android, Mac & Windows — No App Needed",
+                text: "PDFLinx works entirely in your browser — no download, no installation, no app required. On iPhone or Android, open your browser and upload your PDF directly from your files app. On Mac or Windows, drag and drop your PDF and download the numbered file in seconds. Whether you need to add page numbers on mobile or desktop, PDFLinx works seamlessly across every platform and operating system.",
+              },
+              {
+                title: "Privacy and File Security",
+                text: "Your files are processed on secure servers and automatically deleted after 1 hour. We do not store, share, or access your documents at any point. PDFLinx is built with privacy-first principles — your data stays yours. All file transfers use encrypted HTTPS connections for complete security.",
+              },
+              {
+                title: "Are Page Numbers Permanently Saved in the PDF?",
+                text: "Yes. Page numbers added by PDFLinx are permanently embedded into the PDF file — they are not a layer or annotation that can be accidentally removed. Every PDF viewer on every device will display the page numbers exactly as applied. The numbered PDF is ready to print, share, email, or submit immediately after download with no further steps needed.",
+              },
+              {
+                title: "Add Page Numbers vs Adding a Header or Footer",
+                text: "Page numbers are the most common reason people add to PDF headers and footers, but headers and footers can contain more than just numbers — document titles, author names, dates, or custom text. PDFLinx focuses on clean, professional page number insertion as a dedicated tool. If you need to add full custom headers and footers with text and branding, that requires a more advanced editing tool. For straightforward page numbering — which covers the vast majority of use cases — PDFLinx handles it perfectly.",
+              },
             ],
-            faqTitle: "Frequently asked questions",
+
             faqs: [
-              { q: "Is the Add Page Numbers to PDF tool free?", a: "Yes. PDFLinx lets you add page numbers to PDF online for free without signup or hidden charges." },
-              { q: "Can I choose where the page numbers appear?", a: "Yes. You can place page numbers at the top or bottom and align them left, center, or right." },
-              { q: "Can I start numbering from a custom number?", a: "Yes. You can start page numbering from any number such as 5, 10, or another custom value." },
-              { q: "Will the PDF layout remain unchanged?", a: "Yes. Only the page numbers are added. The original PDF formatting and layout stay the same." },
-              { q: "Can I add page numbers to scanned PDFs?", a: "Yes. The tool also works for scanned PDFs, reports, invoices, books, and printable documents." },
-              { q: "Do I need to install software?", a: "No. Everything works directly in your browser on desktop and mobile devices." },
-              { q: "Are my uploaded files secure?", a: "Yes. Files are processed securely and automatically deleted after processing." },
-              { q: "Can I use this tool on mobile?", a: "Yes. PDFLinx works on Android phones, iPhones, tablets, laptops, and desktop browsers." },
+              {
+                q: "Is PDFLinx add page numbers tool free?",
+                a: "Yes, completely free. No hidden charges, no premium plans, and no limits on the number of pages or how many times you use it.",
+              },
+              {
+                q: "Do I need to sign up or create an account?",
+                a: "No account required. Upload your PDF and add page numbers instantly — no email, no registration, no friction.",
+              },
+              {
+                q: "Where can I place the page numbers?",
+                a: "PDFLinx supports six positions — top left, top center, top right, bottom left, bottom center, and bottom right. Choose whichever suits your document style.",
+              },
+              {
+                q: "Can I set a custom starting page number?",
+                a: "Yes. Set any starting number you need — for example start from 1, from 3 if your cover pages are unnumbered, or from any other number that matches your document structure.",
+              },
+              {
+                q: "Can I skip numbering the first page — like a cover page?",
+                a: "Yes. You can configure the tool to start applying numbers from a specific page, leaving your cover page or front matter without a visible number.",
+              },
+              {
+                q: "Are the page numbers permanently saved in the PDF?",
+                a: "Yes. Page numbers are permanently embedded into the PDF file — they appear in every PDF viewer on every device and do not disappear when the file is reopened or printed.",
+              },
+              {
+                q: "Can I choose the font size of the page numbers?",
+                a: "Yes. PDFLinx lets you customize the font size so the page numbers match the style and scale of your document.",
+              },
+              {
+                q: "Does PDFLinx add any watermark alongside the page numbers?",
+                a: "No watermarks, ever. Only the page numbers you configure are added — your PDF stays 100% clean.",
+              },
+              {
+                q: "Is my file secure and private?",
+                a: "Yes. Files are processed on secure servers over encrypted HTTPS and automatically deleted after 1 hour. We never store, share, or view your documents.",
+              },
+              {
+                q: "Can I use PDFLinx on mobile — iPhone and Android?",
+                a: "Yes. PDFLinx works perfectly in the browser on iPhone, Android, iPad, Windows, and Mac — no app download or installation needed.",
+              },
+              {
+                q: "What is the maximum file size limit?",
+                a: "Up to 50 MB per file. For very large PDFs, try splitting the file first using our free PDF Split tool, add numbers to each part, then merge them back.",
+              },
+              {
+                q: "Can I add page numbers to a password-protected PDF?",
+                a: "You need to unlock the PDF first. Use our free PDF Unlock tool to remove the password, then add your page numbers.",
+              },
+              {
+                q: "Will existing content on the pages be affected?",
+                a: "No. Page numbers are added to the margin area of each page — existing content, text, images, and formatting remain completely untouched.",
+              },
+              {
+                q: "How long does it take to add page numbers to a PDF?",
+                a: "Most operations complete within 5 to 15 seconds depending on file size and number of pages.",
+              },
+              {
+                q: "Is PDFLinx better than iLovePDF or Smallpdf for adding page numbers?",
+                a: "Yes — PDFLinx offers unlimited free page numbering with full position and style customization, no daily limits, no watermark, and no account required. iLovePDF and Smallpdf restrict PDF editing tools behind paid plans.",
+              },
             ],
+
+            ctaTitle: (
+              <>
+                Add page numbers to your PDF now —<br />
+                free, private, no sign‑up.
+              </>
+            ),
+            ctaDescription:
+              "Join thousands who trust PDFLinx for fast, professional PDF page numbering every day.",
+            ctaButton: "Choose PDF File",
           },
         }}
       />

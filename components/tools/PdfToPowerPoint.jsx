@@ -2,17 +2,13 @@
 
 import { useState, useRef, useEffect } from "react";
 import {
-  Presentation,
-  Download,
-  MonitorSmartphone,
-  CheckCircle,
-  FileText,
-  ArrowRight,
   Ratio,
+  FileImage,
   Sparkles,
   Layers3,
-  ShieldCheck,
-  X,
+  ShieldCheck, X,
+  Presentation, FileText, FileSpreadsheet,
+  Image as ImageIcon, Minimize2, GitMerge, Stamp, Pencil
 } from "lucide-react";
 import Script from "next/script";
 import ToolPageLayout from "@/components/ToolFlow/ToolPageLayout";
@@ -20,6 +16,23 @@ import RelatedToolsSection from "@/components/RelatedTools";
 import { useToolFlow } from "@/hooks/useToolFlow";
 import { useProgressBar } from "@/hooks/useProgressBar";
 import { DEFAULT_DONE_LINKS, DEFAULT_SIDEBAR_FEATURES } from "@/lib/toolUiConfig";
+
+
+
+
+const DONE_LINKS = [
+  // { label: "PPT to PDF",     href: "/ppt-to-pdf",     icon: <Presentation    className="h-4 w-4 text-orange-500"  /> },
+  { label: "PPT to PDF", href: "/ppt-to-pdf", icon: <FileImage className="h-4 w-4 text-orange-500" /> },
+  { label: "PDF to Word",    href: "/pdf-to-word",    icon: <FileText        className="h-4 w-4 text-blue-500"    /> },
+  { label: "PDF to Excel",   href: "/pdf-to-excel",   icon: <FileSpreadsheet className="h-4 w-4 text-emerald-500" /> },
+  { label: "Image to PDF",   href: "/image-to-pdf",   icon: <ImageIcon       className="h-4 w-4 text-pink-500"    /> },
+  { label: "Compress PDF",   href: "/compress-pdf",   icon: <Minimize2       className="h-4 w-4 text-green-500"   /> },
+  { label: "Merge PDF",      href: "/merge-pdf",      icon: <GitMerge        className="h-4 w-4 text-purple-500"  /> },
+  { label: "Add Watermark",  href: "/add-watermark",  icon: <Stamp           className="h-4 w-4 text-teal-500"    /> },
+  { label: "Edit PDF",       href: "/edit-pdf",       icon: <Pencil          className="h-4 w-4 text-orange-500"  /> },
+];
+
+
 
 /* =============================================
    PDF PAGE THUMBNAIL
@@ -269,16 +282,15 @@ export default function PdfToPowerPoint() {
             <div className="space-y-2">
               {[
                 { value: "widescreen", label: "Widescreen (16:9)", desc: "Best for modern presentations" },
-                { value: "standard",   label: "Standard (4:3)",    desc: "Traditional presentation ratio" },
+                { value: "standard", label: "Standard (4:3)", desc: "Traditional presentation ratio" },
               ].map(opt => (
                 <button
                   key={opt.value}
                   onClick={() => setSlideSize(opt.value)}
-                  className={`w-full rounded-xl border px-4 py-3 text-left transition ${
-                    slideSize === opt.value
-                      ? "border-[#f24d0d] bg-orange-50"
-                      : "border-slate-200 hover:bg-slate-50"
-                  }`}
+                  className={`w-full rounded-xl border px-4 py-3 text-left transition ${slideSize === opt.value
+                    ? "border-[#f24d0d] bg-orange-50"
+                    : "border-slate-200 hover:bg-slate-50"
+                    }`}
                 >
                   <p className="text-sm font-semibold text-slate-800">{opt.label}</p>
                   <p className="mt-0.5 text-xs text-slate-500">{opt.desc}</p>
@@ -296,16 +308,15 @@ export default function PdfToPowerPoint() {
             <div className="space-y-2">
               {[
                 { value: "normal", label: "Normal quality", desc: "Faster conversion & smaller file size" },
-                { value: "high",   label: "High quality",   desc: "Better slide image quality" },
+                { value: "high", label: "High quality", desc: "Better slide image quality" },
               ].map(opt => (
                 <button
                   key={opt.value}
                   onClick={() => setQuality(opt.value)}
-                  className={`w-full rounded-xl border px-4 py-3 text-left transition ${
-                    quality === opt.value
-                      ? "border-[#f24d0d] bg-orange-50"
-                      : "border-slate-200 hover:bg-slate-50"
-                  }`}
+                  className={`w-full rounded-xl border px-4 py-3 text-left transition ${quality === opt.value
+                    ? "border-[#f24d0d] bg-orange-50"
+                    : "border-slate-200 hover:bg-slate-50"
+                    }`}
                 >
                   <p className="text-sm font-semibold text-slate-800">{opt.label}</p>
                   <p className="mt-0.5 text-xs text-slate-500">{opt.desc}</p>
@@ -341,11 +352,10 @@ export default function PdfToPowerPoint() {
             type="button"
             onClick={handleConvert}
             disabled={!hasFiles}
-            className={`flex w-full items-center justify-center gap-2 rounded-xl py-3.5 text-sm font-bold text-white transition-all active:scale-[0.98] ${
-              hasFiles
-                ? "bg-[#f24d0d] hover:bg-[#db4309] shadow-[0_8px_24px_rgba(242,77,13,0.3)]"
-                : "cursor-not-allowed bg-slate-200 text-slate-400"
-            }`}
+            className={`flex w-full items-center justify-center gap-2 rounded-xl py-3.5 text-sm font-bold text-white transition-all active:scale-[0.98] ${hasFiles
+              ? "bg-[#f24d0d] hover:bg-[#db4309] shadow-[0_8px_24px_rgba(242,77,13,0.3)]"
+              : "cursor-not-allowed bg-slate-200 text-slate-400"
+              }`}
           >
             <Presentation className="h-4 w-4" />
             {hasFiles ? "Convert to PPTX" : "Upload PDF first"}
@@ -367,6 +377,71 @@ export default function PdfToPowerPoint() {
       />
 
       <Script
+        id="howto-schema-pdf-to-pptx"
+        type="application/ld+json"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "HowTo",
+            name: "How to Convert PDF to PowerPoint Online for Free",
+            description:
+              "Convert PDF files into editable PowerPoint presentations in a few simple steps.",
+            url: "https://pdflinx.com/pdf-powerpoint",
+            step: [
+              {
+                "@type": "HowToStep",
+                name: "Upload PDF",
+                text: "Select and upload your PDF file."
+              },
+              {
+                "@type": "HowToStep",
+                name: "Convert to PPTX",
+                text: "Click the convert button to transform your PDF into a PowerPoint presentation."
+              },
+              {
+                "@type": "HowToStep",
+                name: "Download PPTX",
+                text: "Download the generated PowerPoint file and edit it in Microsoft PowerPoint or compatible software."
+              }
+            ],
+            totalTime: "PT1M",
+            estimatedCost: {
+              "@type": "MonetaryAmount",
+              value: "0",
+              currency: "USD"
+            },
+            image: "https://pdflinx.com/og-image.png"
+          }, null, 2),
+        }}
+      />
+
+      <Script
+        id="breadcrumb-schema-pdf-to-pptx"
+        type="application/ld+json"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            itemListElement: [
+              {
+                "@type": "ListItem",
+                position: 1,
+                name: "Home",
+                item: "https://pdflinx.com"
+              },
+              {
+                "@type": "ListItem",
+                position: 2,
+                name: "PDF to PowerPoint",
+                item: "https://pdflinx.com/pdf-powerpoint"
+              }
+            ]
+          }, null, 2),
+        }}
+      />
+      <Script
         id="faq-schema-pdf-to-pptx"
         type="application/ld+json"
         strategy="afterInteractive"
@@ -376,10 +451,49 @@ export default function PdfToPowerPoint() {
             "@type": "FAQPage",
             mainEntity: [
               { "@type": "Question", name: "Can I convert PDF to PowerPoint online?", acceptedAnswer: { "@type": "Answer", text: "Yes. PDFLinx lets you convert PDF files to editable PowerPoint presentations online for free." } },
-              { "@type": "Question", name: "Will each PDF page become a slide?",      acceptedAnswer: { "@type": "Answer", text: "Yes. Each page of your PDF becomes a separate PowerPoint slide." } },
-              { "@type": "Question", name: "Does PDF to PPTX work on mobile?",        acceptedAnswer: { "@type": "Answer", text: "Yes. PDF to PowerPoint works on Android, iPhone, tablets, and desktop browsers." } },
+              { "@type": "Question", name: "Will each PDF page become a slide?", acceptedAnswer: { "@type": "Answer", text: "Yes. Each page of your PDF becomes a separate PowerPoint slide." } },
+              { "@type": "Question", name: "Does PDF to PPTX work on mobile?", acceptedAnswer: { "@type": "Answer", text: "Yes. PDF to PowerPoint works on Android, iPhone, tablets, and desktop browsers." } },
             ],
           }),
+        }}
+      />
+
+      <Script
+        id="software-schema-pdf-to-pptx"
+        type="application/ld+json"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "SoftwareApplication",
+            name: "PDF to PowerPoint",
+            applicationCategory: "BusinessApplication",
+            operatingSystem: "Web Browser",
+            url: "https://pdflinx.com/pdf-powerpoint",
+            description:
+              "Free online PDF to PowerPoint converter. Convert PDF documents into editable PPTX presentations while preserving page layout and content structure.",
+            image: "https://pdflinx.com/og-image.png",
+            offers: {
+              "@type": "Offer",
+              price: "0",
+              priceCurrency: "USD"
+            },
+            publisher: {
+              "@type": "Organization",
+              name: "PDFLinx",
+              url: "https://pdflinx.com"
+            },
+            featureList: [
+              "Convert PDF to PowerPoint presentations",
+              "Export to PPTX format",
+              "Editable PowerPoint slides",
+              "Each PDF page becomes a slide",
+              "Batch PDF conversion",
+              "Works on desktop and mobile",
+              "Free online converter",
+              "No software installation required"
+            ]
+          }, null, 2),
         }}
       />
 
@@ -395,6 +509,7 @@ export default function PdfToPowerPoint() {
         onConvert={handleConvert}
         onDownload={handleDownload}
         doneLinks={DEFAULT_DONE_LINKS}
+        sidebarLinks={DONE_LINKS}
         showOutputFormat={false}
         showPreserveLayout={false}
         processingTitle="Converting PDF..."
@@ -412,50 +527,225 @@ export default function PdfToPowerPoint() {
         uploadSubtitle="or click to browse — PDF supported"
         customOptionsLayout={customOptionsLayout}
 
+
+        // ============================================================
+        // PDF TO POWERPOINT — uploadLanding content
+        // PdfToWord.jsx pattern ke mutabiq — as-is paste karo
+        // ============================================================
+
         uploadLanding={{
           content: {
-            eyebrow: "PDF TO POWERPOINT",
+            relatedTools: DONE_LINKS,
+
+            eyebrow: "PDF TO POWERPOINT CONVERTER",
+
+            breadcrumbCurrent: "PDF to PowerPoint Converter",
+
+            heroBadge: "✦ 100% Free · No Signup · No Watermark",
+
+            // heroTitle: (
+            //   <>
+            //     PDF to PowerPoint Converter —{" "}
+            //     <em className="font-bold text-[#e8420a] sm:italic">
+            //       Free, Online, Slides Preserved
+            //     </em>
+            //   </>
+            // ),
+
+            // heroDescription:
+            //   "Convert PDF to PowerPoint online for free. Each PDF page becomes an editable PPTX slide — layout, images, and text preserved. No signup, no watermark, no software needed.",
+
+            // pills: [
+            //   "No watermark",
+            //   "Each page becomes a slide",
+            //   "Works on any device",
+            //   "Instant conversion",
+            // ],
+
             heroTitle: (
               <>
-                Convert PDF to <br />
-                <em className="font-bold not-italic text-[#e8420a] sm:italic">PowerPoint online</em>
+                PDF to PowerPoint Converter —{" "}
+                <em className="font-bold text-[#e8420a] sm:italic">
+                  PDF to PPT & PPTX Free Online
+                </em>
               </>
             ),
             heroDescription:
-              "Convert PDF files into editable PowerPoint presentations online for free. Each PDF page becomes a PPTX slide instantly.",
-            noticeTitle: "PDF to PPTX features",
-            noticeItems: ["Convert PDF pages into slides", "Widescreen & standard formats", "High quality conversion"],
-            howToTitle: "How to convert PDF to PowerPoint",
-            howToSubtitle: "Upload your PDF and download editable PowerPoint slides instantly.",
+              "Convert PDF to PowerPoint online for free — each PDF page converted to an editable PPT or PPTX slide. Text, images, and layout extracted accurately. No signup, no watermark.",
+            pills: ["Editable PPT & PPTX", "Each page = one slide", "Text & images kept", "No signup"],
+
+
+
+            uploadTitle: "Drop your PDF here",
+            uploadSubtitle: "or click to browse — PDF files supported",
+
+            trustPills: ["100% Free", "No Sign Up", "No Watermark"],
+
+            noticeTitle: "PDF to PowerPoint Conversion",
+            noticeItems: [
+              "Each PDF page → one PPTX slide",
+              "Text, images & layout preserved",
+              "Fully editable in PowerPoint",
+            ],
+
+            rating: "4.9/5",
+            ratingText: "Trusted by 50,000+ users monthly",
+
+            pdfTypeSection: {
+              enabled: true,
+              eyebrow: "PDF Types",
+              title: "Standard PDF vs Scanned PDF",
+              subtitle:
+                "Know the difference — text-based PDFs give fully editable slides, scanned PDFs produce image-based slides.",
+            },
+
+            howToEyebrow: "How It Works",
+            howToTitle: "How to Convert PDF to PowerPoint — 3 Simple Steps",
+            howToSubtitle:
+              "No learning curve. Upload, convert, download — done in under 30 seconds.",
+
             howToSteps: [
-              { n: "1", title: "Upload your PDF",  desc: "Select the PDF document you want to convert.", color: "bg-blue-600"    },
-              { n: "2", title: "Choose settings",  desc: "Select slide size and quality options.",       color: "bg-orange-600"  },
-              { n: "3", title: "Download PPTX",    desc: "Download your converted PowerPoint file.",     color: "bg-emerald-600" },
+              {
+                n: "1",
+                title: "Upload Your PDF File",
+                desc: "Select your PDF from your device. Drag and drop supported on all devices — mobile, tablet, and desktop. Works with presentation PDFs, report PDFs, and any multi-page document.",
+                color: "bg-blue-600",
+              },
+              {
+                n: "2",
+                title: "Convert to PowerPoint",
+                desc: "Click Convert — each page of your PDF is converted into an individual PowerPoint slide. Text, images, shapes, and layout are preserved as editable elements in the PPTX file.",
+                color: "bg-purple-600",
+              },
+              {
+                n: "3",
+                title: "Download Your PPTX File",
+                desc: "Your editable PowerPoint file is ready in seconds. Download it instantly — open in PowerPoint or Google Slides, edit slides, add animations, and present immediately.",
+                color: "bg-emerald-600",
+              },
             ],
-            whyTitle: "Why use PDFLinx PDF to PowerPoint?",
-            whyItems: [
-              { title: "Fast Conversion",     desc: "Convert PDF pages into PPTX slides in seconds.",              icon: Presentation,      iconColor: "text-orange-600", bgColor: "bg-orange-100" },
-              { title: "High Quality Slides", desc: "Choose high quality rendering for better presentations.",      icon: Sparkles,          iconColor: "text-blue-600",   bgColor: "bg-blue-100"   },
-              { title: "Works Everywhere",    desc: "Compatible with Windows, Mac, Android, iPhone, and tablets.", icon: MonitorSmartphone, iconColor: "text-purple-600", bgColor: "bg-purple-100" },
-              { title: "Secure Processing",   desc: "Files are encrypted during upload and automatically deleted.", icon: CheckCircle,       iconColor: "text-green-600",  bgColor: "bg-green-100"  },
-            ],
-            seoBadge: "PDF to PPTX Tool",
-            seoTitle: "Convert PDF to PowerPoint Online Free",
-            seoDescription: "Convert PDF files into PowerPoint PPTX presentations online for free. Turn each PDF page into editable slides instantly.",
+
+            whyTitle: "Why PDFLinx is the Best Free PDF to PowerPoint Converter Online",
+
+            seoBadge: "PDF to PowerPoint Guide",
+            seoTitle: "Complete Guide to Converting PDF to PowerPoint Online",
+            seoDescription:
+              "Everything you need to know about converting PDF files to editable PowerPoint presentations — free, online, with slides and layout preserved. No watermark, no signup, no limits.",
+
             seoSections: [
-              { title: "Convert PDF Pages into Slides",      text: "Each page of your PDF becomes a separate PowerPoint slide automatically." },
-              { title: "High Quality PowerPoint Conversion", text: "Choose normal or high quality rendering for professional presentations."   },
-              { title: "Online PDF to PPTX Tool",           text: "Convert PDFs into PowerPoint directly in your browser without installing software." },
+              {
+                title:
+                  "Free PDF to PowerPoint Converter — Convert PDF Pages to Editable PPTX Slides Online",
+                text: "Need to convert a PDF into a PowerPoint presentation? PDFLinx lets you convert PDF to PowerPoint online for free — instantly, with no software installation required. Whether it is a presentation someone shared as PDF, a report you need to repurpose as slides, or a deck exported to PDF that you need to edit again, PDFLinx converts each page into a fully editable PPTX slide in seconds. No signup, no watermark, no hidden limits. Works on Windows, Mac, iPhone, and Android.",
+              },
+              {
+                title: "What is PDF to PowerPoint Conversion?",
+                text: "PDF to PowerPoint conversion turns each page of a PDF document into an individual slide in an editable PPTX file. This allows you to modify text, reposition images, change backgrounds, add animations, and update content — everything you can do in a normal PowerPoint file. It is especially useful when you receive a presentation as PDF and need to edit it, or when you want to repurpose a PDF report as a slide deck without recreating it from scratch.",
+              },
+              {
+                title: "How Well is the Layout Preserved After Conversion?",
+                text: "For text-based PDFs, PDFLinx extracts text blocks, images, and layout elements and places them as editable objects on each slide. Text remains selectable and editable, and images are embedded in their original positions. For scanned PDFs, each page is placed as a high-resolution image on a slide — the slide is viewable but text is not individually editable without OCR. The overall visual appearance of your PDF is preserved accurately in both cases.",
+              },
+              {
+                title:
+                  "Why PDFLinx is the Best Free PDF to PowerPoint Converter — No Watermark, No Limits",
+                text: "Most free PDF to PowerPoint converters produce poor output — text boxes misaligned, images missing, or slides that look nothing like the original PDF. The tools that do it well usually require a paid subscription. PDFLinx gives you accurate, high-quality PDF to PowerPoint conversion for free, with no signup, no watermark, and no daily limit. Unlike iLovePDF and Smallpdf which restrict this conversion on free tiers, PDFLinx gives you full access at zero cost.",
+              },
+              {
+                title: "Common Use Cases for PDF to PowerPoint Conversion",
+                text: "✓ Business Professionals: Recover a presentation that was shared as PDF and needs to be edited or updated.\n✓ Students: Convert PDF lecture slides into editable PowerPoint files for note-taking and study.\n✓ Designers: Repurpose PDF reports, brochures, or portfolios as editable slide decks.\n✓ Sales & Marketing: Update PDF pitch decks and product presentations in PowerPoint without recreating them.\n✓ Teachers: Convert PDF educational materials into editable slides for classroom use.\n✓ Freelancers: Edit client-provided PDF presentations without access to the original source file.",
+              },
+              {
+                title:
+                  "Convert PDF to PowerPoint on iPhone, Android, Mac & Windows — No App Needed",
+                text: "PDFLinx works entirely in your browser — no download, no installation, no app required. On iPhone or Android, open your browser and upload your PDF directly from your files app. On Mac or Windows, drag and drop your PDF and download the PPTX in seconds. Whether you need to convert PDF to PowerPoint on mobile or desktop, PDFLinx works seamlessly across every platform and operating system.",
+              },
+              {
+                title: "Privacy and File Security",
+                text: "Your files are processed on secure servers and automatically deleted after 1 hour. We do not store, share, or access your documents at any point. PDFLinx is built with privacy-first principles — your data stays yours. All file transfers use encrypted HTTPS connections for complete security.",
+              },
+              {
+                title:
+                  "PDF to PowerPoint vs Screenshot Method — Why a Proper Converter is Better",
+                text: "Some people try to convert PDF to PowerPoint by taking screenshots of each page and pasting them as slide images. This approach is extremely time-consuming for multi-page PDFs, produces low-resolution slides, and gives you no editable text or elements. A proper PDF to PowerPoint converter like PDFLinx does this automatically in seconds — with preserved layout, editable text, and properly embedded images — saving hours of manual work.",
+              },
+              {
+                title: "Best For Repurposing and Editing PDF Content",
+                text: "Use the converted PPTX for editing, presenting, updating, and sharing. The output is fully compatible with Microsoft PowerPoint, Google Slides, LibreOffice Impress, and Apple Keynote — easy to open, modify, and present on any device or platform.",
+              },
             ],
-            faqTitle: "Frequently asked questions",
+
             faqs: [
-              { q: "Can I convert PDF to PowerPoint online?", a: "Yes. PDFLinx lets you convert PDF files into PowerPoint presentations online for free." },
-              { q: "Will each PDF page become a slide?",      a: "Yes. Each page of your PDF becomes a separate PowerPoint slide."                       },
-              { q: "Can I choose slide format?",              a: "Yes. You can select widescreen (16:9) or standard (4:3) slide layouts."                },
-              { q: "Does PDF to PPTX work on mobile?",       a: "Yes. It works on Android, iPhone, tablets, and desktop browsers."                      },
+              {
+                q: "Is PDFLinx PDF to PowerPoint converter free?",
+                a: "Yes, completely free. No hidden charges, no premium plans, and no limits on the number of conversions. Convert as many PDFs as you need at zero cost.",
+              },
+              {
+                q: "Do I need to sign up or create an account?",
+                a: "No account required. Upload your PDF and convert instantly — no email, no registration, no friction.",
+              },
+              {
+                q: "Will each page of my PDF become a separate slide?",
+                a: "Yes. Each page of your PDF is converted into one slide in the PPTX file — in the same order as the original PDF pages.",
+              },
+              {
+                q: "Can I edit the text on the slides after conversion?",
+                a: "Yes, for text-based PDFs. Text is extracted and placed as editable text boxes on each slide. For scanned PDFs, each page is placed as an image — text editing requires OCR processing.",
+              },
+              {
+                q: "Will images from the PDF be preserved in the slides?",
+                a: "Yes. Images embedded in the PDF are extracted and placed on the corresponding slides in their original positions.",
+              },
+              {
+                q: "What is the difference between converting a standard PDF vs a scanned PDF?",
+                a: "Standard text-based PDFs give you fully editable slides with selectable text and embedded images. Scanned PDFs produce slides with each page as a high-resolution image — viewable but not individually text-editable without OCR.",
+              },
+              {
+                q: "Does PDFLinx add any watermark to the PowerPoint file?",
+                a: "No watermarks, ever. Your converted PPTX file is 100% clean and ready to use or present.",
+              },
+              {
+                q: "Is my file secure and private?",
+                a: "Yes. Files are processed on secure servers over encrypted HTTPS and automatically deleted after 1 hour. We never store, share, or view your documents.",
+              },
+              {
+                q: "Can I use PDFLinx on mobile — iPhone and Android?",
+                a: "Yes. PDFLinx works perfectly in the browser on iPhone, Android, iPad, Windows, and Mac — no app download or installation needed.",
+              },
+              {
+                q: "What is the maximum file size limit?",
+                a: "Up to 10 MB per file. For larger PDFs, try splitting the file first using our free PDF Split tool, then convert each part separately.",
+              },
+              {
+                q: "Can I convert a password-protected PDF to PowerPoint?",
+                a: "You need to unlock the PDF first. Use our free PDF Unlock tool to remove the password, then convert to PowerPoint.",
+              },
+              {
+                q: "Which applications can open the converted PPTX file?",
+                a: "The PPTX file is compatible with Microsoft PowerPoint, Google Slides, LibreOffice Impress, and Apple Keynote — works on any device and operating system.",
+              },
+              {
+                q: "How long does PDF to PowerPoint conversion take?",
+                a: "Most conversions complete within 10 to 30 seconds depending on file size and the number of pages.",
+              },
+              {
+                q: "Is PDFLinx better than iLovePDF or Smallpdf for free PDF to PowerPoint?",
+                a: "Yes — PDFLinx offers unlimited free conversions with accurate slide output, no daily limits, no watermark, and no account required. iLovePDF and Smallpdf restrict this conversion behind paid plans.",
+              },
             ],
+
+            ctaTitle: (
+              <>
+                Convert PDF to PowerPoint now —<br />
+                free, private, no sign‑up.
+              </>
+            ),
+            ctaDescription:
+              "Join thousands who trust PDFLinx for fast, accurate PDF to PowerPoint conversion every day.",
+            ctaButton: "Choose PDF File",
           },
         }}
+
       />
 
       <RelatedToolsSection />

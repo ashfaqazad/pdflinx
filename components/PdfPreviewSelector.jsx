@@ -51,16 +51,23 @@ export default function PdfPreviewSelector({
             if (cancelled || i > pdf.numPages) return;
 
             pdf.getPage(i).then((page) => {
-              const viewport = page.getViewport({ scale: 0.45 });
+              // const viewport = page.getViewport({ scale: 0.45 });
+              const viewport = page.getViewport({ scale: 0.3 });
+
 
               const wrapper = document.createElement("div");
               wrapper.className =
-                "relative rounded-xl border-2 border-gray-200 bg-white p-3 cursor-pointer transition hover:shadow-md";
+                "relative rounded-xl border-2 border-gray-200 bg-white p-2 cursor-pointer transition hover:shadow-md overflow-hidden flex flex-col items-center";
+
+              // wrapper.className =
+              //   "relative rounded-xl border-2 border-gray-200 bg-white p-3 cursor-pointer transition hover:shadow-md";
 
               const canvas = document.createElement("canvas");
               canvas.height = viewport.height;
               canvas.width = viewport.width;
-              canvas.className = "mx-auto block";
+              // canvas.className = "mx-auto block";
+              canvas.style.cssText = "max-width: 100%; height: auto; display: block;";
+
 
               const label = document.createElement("p");
               label.textContent = `Page ${i}`;

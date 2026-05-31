@@ -7,26 +7,34 @@ import { useToolFlow } from "@/hooks/useToolFlow";
 import ToolPageLayout from "@/components/ToolFlow/ToolPageLayout";
 
 import {
-  FileText,
   AlignLeft,
-  Type,
-  Copy,
-  Minimize2,
   GitMerge,
-  Scissors,
-  FileImage,
-  Search,
+  FileText, FileSpreadsheet, Scan, Pencil,
+  Code, FileType, Minimize2
 } from "lucide-react";
 
 // ── Config ─────────────────────────────────────────────────────────────────
+// const DONE_LINKS = [
+//   { label: "PDF to Word", href: "/pdf-to-word", icon: <FileText className="h-4 w-4 text-blue-500" /> },
+//   { label: "PDF to PNG", href: "/pdf-to-png", icon: <FileImage className="h-4 w-4 text-sky-500" /> },
+//   { label: "PDF to JPG", href: "/pdf-to-jpg", icon: <FileImage className="h-4 w-4 text-amber-500" /> },
+//   { label: "Compress PDF", href: "/compress-pdf", icon: <Minimize2 className="h-4 w-4 text-green-500" /> },
+//   { label: "OCR PDF", href: "/ocr-pdf", icon: <Search className="h-4 w-4 text-purple-500" /> },
+//   { label: "Merge PDF", href: "/merge-pdf", icon: <GitMerge className="h-4 w-4 text-violet-500" /> },
+// ];
+
 const DONE_LINKS = [
-  { label: "PDF to Word",   href: "/pdf-to-word",   icon: <FileText   className="h-4 w-4 text-blue-500"    /> },
-  { label: "PDF to PNG",    href: "/pdf-to-png",    icon: <FileImage  className="h-4 w-4 text-sky-500"     /> },
-  { label: "PDF to JPG",    href: "/pdf-to-jpg",    icon: <FileImage  className="h-4 w-4 text-amber-500"   /> },
-  { label: "Compress PDF",  href: "/compress-pdf",  icon: <Minimize2  className="h-4 w-4 text-green-500"   /> },
-  { label: "OCR PDF",       href: "/ocr-pdf",       icon: <Search     className="h-4 w-4 text-purple-500"  /> },
-  { label: "Merge PDF",     href: "/merge-pdf",     icon: <GitMerge   className="h-4 w-4 text-violet-500"  /> },
+  { label: "PDF to Word",    href: "/pdf-to-word",    icon: <FileText        className="h-4 w-4 text-blue-500"    /> },
+  { label: "PDF to Excel",   href: "/pdf-to-excel",   icon: <FileSpreadsheet className="h-4 w-4 text-emerald-500" /> },
+  { label: "OCR PDF",        href: "/ocr-pdf",        icon: <Scan            className="h-4 w-4 text-violet-500"  /> },
+  { label: "Edit PDF",       href: "/edit-pdf",       icon: <Pencil          className="h-4 w-4 text-orange-500"  /> },
+  { label: "HTML to PDF",    href: "/html-to-pdf",    icon: <Code            className="h-4 w-4 text-indigo-500"  /> },
+  { label: "Text to PDF",    href: "/text-to-pdf",    icon: <FileType        className="h-4 w-4 text-yellow-500"  /> },
+  { label: "Merge PDF",      href: "/merge-pdf",      icon: <GitMerge        className="h-4 w-4 text-purple-500"  /> },
+  { label: "Compress PDF",   href: "/compress-pdf",   icon: <Minimize2       className="h-4 w-4 text-green-500"   /> },
 ];
+
+
 
 const SIDEBAR_NOTICE = (
   <>
@@ -212,6 +220,45 @@ export default function PdfToText({ seo }) {
         }}
       />
 
+      <Script
+        id="software-schema-pdf-text"
+        type="application/ld+json"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "SoftwareApplication",
+            name: "PDF to Text",
+            applicationCategory: "BusinessApplication",
+            operatingSystem: "Web Browser",
+            url: "https://pdflinx.com/pdf-text",
+            description:
+              "Free online PDF to Text converter. Extract plain text from PDF documents quickly and accurately. Convert PDF files into editable TXT format while preserving readable content.",
+            image: "https://pdflinx.com/og-image.png",
+            offers: {
+              "@type": "Offer",
+              price: "0",
+              priceCurrency: "USD"
+            },
+            publisher: {
+              "@type": "Organization",
+              name: "PDFLinx",
+              url: "https://pdflinx.com"
+            },
+            featureList: [
+              "Convert PDF to Text",
+              "Extract text from PDF documents",
+              "Export to TXT format",
+              "Editable text output",
+              "Support for multiple PDF files",
+              "Fast online conversion",
+              "Works in any web browser",
+              "No software installation required"
+            ]
+          }, null, 2),
+        }}
+      />
+
       {/* ── Tool UI ── */}
       <ToolPageLayout
         title={seo?.h1 || "PDF to Text Extractor (Free & Online)"}
@@ -225,6 +272,7 @@ export default function PdfToText({ seo }) {
         onConvert={handleConvert}
         onDownload={handleDownload}
         doneLinks={DONE_LINKS}
+        sidebarLinks={DONE_LINKS}
 
         optionsTitle="Extraction options"
         showOutputFormat={false}
@@ -252,167 +300,228 @@ export default function PdfToText({ seo }) {
         sidebarNotice={SIDEBAR_NOTICE}
         sidebarFeatures={SIDEBAR_FEATURES}
 
+        // ============================================================
+        // PDF TO TEXT — uploadLanding content
+        // PdfToWord.jsx pattern ke mutabiq — as-is paste karo
+        // ============================================================
+
         uploadLanding={{
           content: {
-            eyebrow: "PDF TO TEXT EXTRACTOR",
+            relatedTools: DONE_LINKS,
+
+            eyebrow: "PDF TO TEXT CONVERTER",
+
+            breadcrumbCurrent: "PDF to Text Converter",
+
+            heroBadge: "✦ 100% Free · No Signup · No Watermark",
+
+            // heroTitle: (
+            //   <>
+            //     PDF to Text Converter —{" "}
+            //     <em className="font-bold text-[#e8420a] sm:italic">
+            //       Free, Online, OCR Supported
+            //     </em>
+            //   </>
+            // ),
+
+            // heroDescription:
+            //   "Extract plain text from any PDF online for free — including scanned PDFs via OCR. Get clean, copyable text instantly — no signup, no watermark, no software needed. Works on any device.",
+
+            // pills: [
+            //   "No watermark",
+            //   "OCR for scanned PDFs",
+            //   "Plain text output",
+            //   "Instant extraction",
+            // ],
+
 
             heroTitle: (
               <>
-                Extract Text from PDF <br />
-                <span className="bg-gradient-to-r from-emerald-600 to-teal-500 bg-clip-text text-transparent">
-                  Instantly & Free 📄
-                </span>
+                PDF to Text Converter —{" "}
+                <em className="font-bold text-[#e8420a] sm:italic">
+                  Extract Text from PDF Free
+                </em>
               </>
             ),
-
             heroDescription:
-              "Pull all text from any PDF in seconds — clean plain TXT output, reading order preserved. Single PDF downloads as TXT. Multiple PDFs download as ZIP. No signup, no watermark, completely free.",
+              "Extract text from PDF online for free — convert any PDF to plain TXT file with all content accurately pulled out. OCR supported for scanned PDFs. No signup, no watermark.",
+            pills: ["Plain TXT output", "OCR for scanned PDFs", "Full text extraction", "No signup"],
 
-            bullets: [
-              "All text extracted from every page in reading order",
-              "Plain TXT output — works in every text editor and tool",
-              "Batch extract from multiple PDFs at once",
-            ],
 
             uploadTitle: "Drop your PDF here",
             uploadSubtitle: "or click to browse — PDF files supported",
 
-            privacyTitle: "Your files stay private",
-            privacyText: "Files are processed securely and automatically deleted after extraction. Never stored or shared.",
-
-            noticeTitle: "PDF to Text Output",
-            noticeItems: [
-              "Single PDF → TXT file directly",
-              "Multiple PDFs → ZIP with all TXTs",
-              "Scanned PDFs → use OCR PDF instead",
-            ],
-
-            breadcrumbItems: [
-              { label: "Home", href: "/" },
-              { label: "PDF Tools", href: "/pdf-tools" },
-              { label: "PDF to Text" },
-            ],
-
             trustPills: ["100% Free", "No Sign Up", "No Watermark"],
 
-            supports: [
-              "Supports text-based PDF files",
-              "Auto-deleted after 1 hour",
+            noticeTitle: "PDF to Text Conversion",
+            noticeItems: [
+              "Standard PDF → plain text instantly",
+              "Scanned PDF → text via OCR",
+              "Downloads as clean .txt file",
             ],
 
-            howToTitle: "How to Extract Text from PDF",
+            rating: "4.9/5",
+            ratingText: "Trusted by 50,000+ users monthly",
+
+            pdfTypeSection: {
+              enabled: true,
+              eyebrow: "PDF Types",
+              title: "Standard PDF vs Scanned PDF",
+              subtitle:
+                "Know the difference — standard PDFs give instant text extraction, scanned PDFs need OCR for accurate results.",
+            },
+
+            howToEyebrow: "How It Works",
+            howToTitle: "How to Convert PDF to Text — 3 Simple Steps",
+            howToSubtitle:
+              "No learning curve. Upload, extract, download — done in under 30 seconds.",
 
             howToSteps: [
               {
                 n: "1",
-                title: "Upload Your PDF File(s)",
-                desc: "Select one PDF or upload multiple PDFs for batch extraction. Drag and drop supported on all devices.",
-                color: "bg-emerald-600",
+                title: "Upload Your PDF File",
+                desc: "Select your PDF from your device. Drag and drop supported on all devices — mobile, tablet, and desktop. Works with standard text-based PDFs and scanned image PDFs.",
+                color: "bg-blue-600",
               },
               {
                 n: "2",
-                title: "Text Extracted Automatically",
-                desc: "PDFLinx reads every page of your PDF and extracts all text in reading order — paragraphs, headings, and body content preserved as plain TXT.",
-                color: "bg-teal-600",
+                title: "Enable OCR if Needed & Extract",
+                desc: "For scanned or image-based PDFs, enable OCR before extracting. Click Convert — all text is extracted from every page and compiled into clean, readable plain text.",
+                color: "bg-purple-600",
               },
               {
                 n: "3",
-                title: "Download TXT or ZIP",
-                desc: "Single PDF downloads as one TXT file directly. Multiple PDFs download as a ZIP with one TXT file per document.",
-                color: "bg-cyan-600",
+                title: "Download Your Text File",
+                desc: "Your .txt file is ready in seconds. Download it instantly — all text from the PDF in a clean, copyable, universally compatible plain text format with no formatting clutter.",
+                color: "bg-emerald-600",
               },
             ],
 
-            visualImage: "/images/pdf-to-text-visual.png",
-            visualAlt: "PDF to Text extraction illustration",
+            whyTitle: "Why PDFLinx is the Best Free PDF to Text Converter Online",
 
-            whyTitle: "Why Choose PDFLinx PDF to Text?",
-
-            whyItems: [
-              {
-                title: "Clean Text Extraction",
-                desc: "Every PDF page scanned and all text extracted in reading order — paragraphs, headings, and body content preserved as clean plain TXT.",
-                icon: AlignLeft,
-                iconColor: "text-emerald-500",
-                bgColor: "bg-emerald-50",
-              },
-              {
-                title: "Smart Download",
-                desc: "Single PDF downloads as one TXT directly. Multiple PDFs download as ZIP with one TXT per document — no manual work needed.",
-                icon: FileText,
-                iconColor: "text-teal-500",
-                bgColor: "bg-teal-50",
-              },
-              {
-                title: "Batch Extraction",
-                desc: "Upload multiple PDFs at once — each processed separately and delivered as individual TXT files inside a single ZIP download.",
-                icon: Copy,
-                iconColor: "text-cyan-500",
-                bgColor: "bg-cyan-50",
-              },
-              {
-                title: "Works on Any Device",
-                desc: "Extract PDF text on iPhone, Android, Windows, or Mac — no software installation needed. Fully browser-based.",
-                icon: Type,
-                iconColor: "text-blue-500",
-                bgColor: "bg-blue-50",
-              },
-            ],
-
-            relatedTitle: "You Might Also Need",
-
-            relatedTools: [
-              { label: "PDF to Word",   href: "/pdf-to-word",   desc: "Convert PDF to editable DOCX",      icon: FileText,   iconColor: "text-blue-500",    bgColor: "bg-blue-50"    },
-              { label: "OCR PDF",       href: "/ocr-pdf",       desc: "Make scanned PDFs searchable",       icon: Search,     iconColor: "text-purple-500",  bgColor: "bg-purple-50"  },
-              { label: "PDF to PNG",    href: "/pdf-to-png",    desc: "Convert PDF pages to PNG images",    icon: FileImage,  iconColor: "text-sky-500",     bgColor: "bg-sky-50"     },
-              { label: "PDF to JPG",    href: "/pdf-to-jpg",    desc: "Convert PDF pages to JPG images",    icon: FileImage,  iconColor: "text-amber-500",   bgColor: "bg-amber-50"   },
-              { label: "Compress PDF",  href: "/compress-pdf",  desc: "Reduce PDF file size",              icon: Minimize2,  iconColor: "text-green-500",   bgColor: "bg-green-50"   },
-              { label: "Merge PDF",     href: "/merge-pdf",     desc: "Combine multiple PDFs",             icon: GitMerge,   iconColor: "text-violet-500",  bgColor: "bg-violet-50"  },
-            ],
-
-            faqTitle: "Frequently Asked Questions",
-
-            faqs: [
-              { q: "Is the PDF to Text extractor free?", a: "Yes. PDFLinx PDF to Text extractor is completely free — no hidden charges, no subscription, no premium tier required." },
-              { q: "Do I need to install any software?", a: "No. Everything works directly in your browser. No desktop software, no app download, no plugins needed." },
-              { q: "What type of PDFs can I extract text from?", a: "Any text-based PDF — reports, articles, research papers, invoices, contracts, ebooks. The PDF must contain a real text layer, not just scanned images." },
-              { q: "Why is my extracted text garbled or missing?", a: "This usually means your PDF is a scanned document (image-based) with no embedded text layer. Use the OCR PDF tool instead to extract text from scanned PDFs." },
-              { q: "Will the extracted text keep its formatting?", a: "The output is plain text (.txt) — visual formatting like bold, tables, and columns is not preserved. Text content and paragraph order are extracted as closely as possible to the reading order." },
-              { q: "How does the download work for single vs multiple PDFs?", a: "Single PDF downloads as one TXT file directly. Multiple PDFs download as a ZIP file containing one TXT file per document, named to match the original PDF filenames." },
-              { q: "Can I extract text from multiple PDFs at once?", a: "Yes. Upload multiple PDFs simultaneously — each processed separately and delivered as individual TXT files inside a single ZIP download." },
-              { q: "What is the difference between PDF to Text and PDF to Word?", a: "PDF to Text gives raw plain text — no formatting, smallest file size, works everywhere. PDF to Word attempts to preserve headings, tables, and layout in an editable DOCX file — better when you need to edit the document structure." },
-              { q: "Are my uploaded PDF files safe and private?", a: "Yes. Files are processed securely and permanently deleted after conversion. They are never stored long-term or shared with third parties." },
-              { q: "Can I extract text from a PDF on my phone?", a: "Yes. PDFLinx works on Android and iOS mobile devices, tablets, and all desktop browsers — no app required." },
-            ],
-
-            ctaBadge: "✦ 100% Free",
-            ctaTitle: "Extract Text from Your PDF Now",
-            ctaDescription: "Fast. Secure. Private. No sign up required.",
-            ctaSubtext: "No limits. No hidden charges.",
-            ctaButton: "Choose PDF File",
+            seoBadge: "PDF to Text Guide",
+            seoTitle: "Complete Guide to Converting PDF to Text Online",
+            seoDescription:
+              "Everything you need to know about extracting plain text from PDF files — free, online, with OCR support for scanned PDFs. No watermark, no signup, no limits.",
 
             seoSections: [
               {
-                title: "Free PDF to Text Extractor — Extract Plain Text from Any PDF Instantly",
-                text: "Need to copy text from a PDF without retyping everything manually? PDFLinx pulls all text from your PDF documents in seconds — clean, readable plain text ready to paste into any editor, document, or tool. No software installation, no watermarks, no sign-up required.",
+                title:
+                  "Free PDF to Text Converter — Extract Plain Text from Any PDF Online",
+                text: "Need to extract text from a PDF? PDFLinx lets you convert PDF to plain text online for free — instantly and without any software installation. Whether it is a standard text-based PDF, a scanned document, an invoice, a research paper, or any PDF containing text content, PDFLinx extracts all readable text and delivers it as a clean .txt file in seconds. No signup, no watermark, no hidden limits. Works on Windows, Mac, iPhone, and Android.",
               },
               {
-                title: "How PDF Text Extraction Works",
-                text: "PDFLinx automatically reads every page of your PDF and extracts all embedded text in reading order. A single-page PDF downloads as one TXT directly. A multi-page PDF or batch of PDFs downloads as a ZIP containing one TXT per document.",
+                title: "What is PDF to Text Conversion?",
+                text: "PDF to text conversion extracts all the readable text content from a PDF document and saves it as a plain text file (.txt). Unlike a Word document or PDF, a plain text file contains no formatting — no fonts, no colors, no images, no tables — just raw, clean text. This makes it ideal for copying content into other applications, feeding text into AI tools or scripts, searching and processing large volumes of PDF content, or simply reading the text without PDF software.",
               },
               {
-                title: "PDF to Text vs PDF to Word — Which to Use?",
-                text: "PDF to Text gives raw plain text — no formatting, tiny file size, works in every text editor. Best for data pipelines, AI tools, copy-pasting content, or research. PDF to Word attempts to preserve headings, tables, and layout in an editable DOCX — better when you need to edit the document structure.",
+                title: "Standard PDF vs Scanned PDF — How Text Extraction Works",
+                text: "Standard PDFs contain actual text data embedded in the file — extracting it is fast and nearly perfect. Every word, sentence, and paragraph is pulled out exactly as it appears in the PDF. Scanned PDFs, on the other hand, are essentially images of pages — the text is not embedded as data, it is visually represented in the image. To extract text from scanned PDFs, OCR (Optical Character Recognition) is required. PDFLinx includes built-in OCR support — simply enable it before converting and the engine reads the text from the scanned image and outputs it as plain text.",
+              },
+              {
+                title:
+                  "Why PDFLinx is the Best Free PDF to Text Converter — No Watermark, No Limits",
+                text: "Most free PDF to text tools either produce poor output quality, strip important line breaks, or lock OCR behind a paywall. PDFLinx gives you clean, well-structured plain text output with built-in OCR for scanned PDFs — completely free, no signup, no watermark, and no daily conversion limit. Unlike iLovePDF and Smallpdf which restrict OCR and batch text extraction on free tiers, PDFLinx gives you full access at zero cost.",
+              },
+              {
+                title: "Common Use Cases for PDF to Text Conversion",
+                text: "✓ Developers & Data Scientists: Extract raw text from PDF documents for NLP processing, AI model training, text analysis, or database ingestion.\n✓ Researchers & Academics: Pull text from research papers, journal articles, and academic PDFs for reference, quoting, or further analysis.\n✓ Content Writers: Extract source text from PDF reports, whitepapers, or books for repurposing, summarizing, or rewriting.\n✓ Legal & Compliance Teams: Extract contract text for keyword searching, clause identification, or copy-pasting into other systems.\n✓ Students: Copy text from PDF textbooks, lecture notes, and study materials for notes, flashcards, or essays.\n✓ Business Analysts: Extract data and narrative text from PDF reports for processing in spreadsheets or business intelligence tools.",
+              },
+              {
+                title:
+                  "Convert PDF to Text on iPhone, Android, Mac & Windows — No App Needed",
+                text: "PDFLinx works entirely in your browser — no download, no installation, no app required. On iPhone or Android, open your browser and upload your PDF directly from your files app. On Mac or Windows, drag and drop your PDF and download the text file in seconds. Whether you need to extract text from a PDF on mobile or desktop, PDFLinx works seamlessly across every platform and operating system.",
               },
               {
                 title: "Privacy and File Security",
-                text: "Uploaded PDF files are processed securely and permanently deleted after extraction — never stored long-term, never shared with third parties. No account creation required. Your documents remain completely private.",
+                text: "Your files are processed on secure servers and automatically deleted after 1 hour. We do not store, share, or access your documents at any point. PDFLinx is built with privacy-first principles — your data stays yours. All file transfers use encrypted HTTPS connections for complete security. This is especially important when extracting text from confidential legal, financial, or business documents.",
+              },
+              {
+                title:
+                  "PDF to Text vs PDF to Word — Which Should You Use?",
+                text: "PDF to Text gives you raw, unformatted plain text — ideal when you need the content without any formatting, want to paste text into another tool or system, or need to process text programmatically. PDF to Word gives you an editable document with formatting, tables, images, and layout preserved — ideal when you want to edit the document visually and maintain its structure. If you need to copy and use the content elsewhere without caring about formatting, use PDF to Text. If you need to edit the document as a document, use PDF to Word.",
+              },
+              {
+                title: "What Does the Plain Text Output Look Like?",
+                text: "The output is a .txt file containing all the text from your PDF, organized page by page. Paragraphs are separated by line breaks. Tables may lose their column alignment in plain text format since .txt has no grid structure — if preserving table layout matters to you, PDF to Excel or PDF to Word may be a better choice. For flowing text content like articles, reports, contracts, and books, the plain text output is clean, readable, and immediately usable.",
               },
             ],
 
-            showPdfTypes: false,
+            faqs: [
+              {
+                q: "Is PDFLinx PDF to text converter free?",
+                a: "Yes, completely free. No hidden charges, no premium plans, and no limits on the number of conversions. Extract text from as many PDFs as you need at zero cost.",
+              },
+              {
+                q: "Do I need to sign up or create an account?",
+                a: "No account required. Upload your PDF and extract text instantly — no email, no registration, no friction.",
+              },
+              {
+                q: "Can I extract text from scanned PDFs?",
+                a: "Yes. Enable the OCR option before converting — our OCR engine reads text from scanned or image-based PDFs and outputs it as plain text. Clear, high-resolution scans give the best accuracy.",
+              },
+              {
+                q: "What file format will I receive after conversion?",
+                a: "You will receive a .txt file — plain text, universally compatible with every text editor, word processor, coding environment, and operating system.",
+              },
+              {
+                q: "Will all pages of the PDF be extracted?",
+                a: "Yes. Text from all pages of your PDF is extracted and compiled into a single .txt file, organized page by page.",
+              },
+              {
+                q: "Will formatting like bold, tables, and colors be preserved?",
+                a: "No — plain text (.txt) does not support formatting. You get raw text content only. If you need formatting preserved, use our PDF to Word converter instead.",
+              },
+              {
+                q: "What is the difference between PDF to Text and PDF to Word?",
+                a: "PDF to Text gives you raw plain text with no formatting — ideal for programmatic use, copy-pasting into tools, or text analysis. PDF to Word gives you a formatted, editable document — ideal for editing the document visually with its layout intact.",
+              },
+              {
+                q: "Does PDFLinx add any watermark to the text output?",
+                a: "No watermarks, ever. Your extracted text file is 100% clean — just the raw text content from your PDF.",
+              },
+              {
+                q: "Is my file secure and private?",
+                a: "Yes. Files are processed on secure servers over encrypted HTTPS and automatically deleted after 1 hour. We never store, share, or view your documents.",
+              },
+              {
+                q: "Can I use PDFLinx on mobile — iPhone and Android?",
+                a: "Yes. PDFLinx works perfectly in the browser on iPhone, Android, iPad, Windows, and Mac — no app download or installation needed.",
+              },
+              {
+                q: "What is the maximum file size limit?",
+                a: "Up to 10 MB per file. For larger PDFs, try splitting the file first using our free PDF Split tool, then extract text from each part separately.",
+              },
+              {
+                q: "How accurate is OCR text extraction from scanned PDFs?",
+                a: "OCR accuracy depends on scan quality. Clear, high-resolution scans (300 DPI or above) produce near-perfect text extraction. Blurry, low-contrast, or handwritten scans may have lower accuracy.",
+              },
+              {
+                q: "Can I convert a password-protected PDF to text?",
+                a: "You need to unlock the PDF first. Use our free PDF Unlock tool to remove the password, then extract the text.",
+              },
+              {
+                q: "How long does PDF to text extraction take?",
+                a: "Standard PDFs convert in 5 to 10 seconds. Scanned PDFs with OCR may take 15 to 30 seconds depending on file size and page count.",
+              },
+              {
+                q: "Is PDFLinx better than iLovePDF or Smallpdf for free PDF to text?",
+                a: "Yes — PDFLinx offers unlimited free text extraction with built-in OCR, no daily limits, no watermark, and no account required. iLovePDF and Smallpdf restrict OCR and batch extraction behind paid plans.",
+              },
+            ],
+
+            ctaTitle: (
+              <>
+                Extract PDF text now —<br />
+                free, private, no sign‑up.
+              </>
+            ),
+            ctaDescription:
+              "Join thousands who trust PDFLinx for fast, accurate PDF to text extraction every day.",
+            ctaButton: "Choose PDF File",
           },
         }}
+
       />
     </>
   );

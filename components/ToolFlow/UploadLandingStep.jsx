@@ -37,13 +37,22 @@ import UploadStep from "./UploadStep";
 /* ─────────────────────────────────────────
    DEFAULT DATA  (same keys as before)
 ───────────────────────────────────────── */
+// const defaultRelatedTools = [
+//   { label: "Word to PDF", href: "/word-to-pdf", desc: "Convert back to PDF", icon: FileText, iconColor: "text-blue-500", bgColor: "bg-blue-50" },
+//   { label: "Compress PDF", href: "/compress-pdf", desc: "Reduce PDF file size", icon: FileMinus, iconColor: "text-orange-500", bgColor: "bg-orange-50" },
+//   { label: "Merge PDF", href: "/merge-pdf", desc: "Combine multiple PDFs", icon: FilePlus, iconColor: "text-violet-500", bgColor: "bg-violet-50" },
+//   { label: "Split PDF", href: "/split-pdf", desc: "Separate PDF pages", icon: Scissors, iconColor: "text-pink-500", bgColor: "bg-pink-50" },
+//   { label: "PDF to Excel", href: "/pdf-to-excel", desc: "Extract PDF tables", icon: FileSpreadsheet, iconColor: "text-emerald-500", bgColor: "bg-emerald-50" },
+//   { label: "OCR PDF", href: "/ocr-pdf", desc: "Make scanned PDFs readable", icon: FileSearch, iconColor: "text-teal-500", bgColor: "bg-teal-50" },
+// ];
+
 const defaultRelatedTools = [
-  { label: "Word to PDF", href: "/word-to-pdf", desc: "Convert back to PDF", icon: FileText, iconColor: "text-blue-500", bgColor: "bg-blue-50" },
-  { label: "Compress PDF", href: "/compress-pdf", desc: "Reduce PDF file size", icon: FileMinus, iconColor: "text-orange-500", bgColor: "bg-orange-50" },
-  { label: "Merge PDF", href: "/merge-pdf", desc: "Combine multiple PDFs", icon: FilePlus, iconColor: "text-violet-500", bgColor: "bg-violet-50" },
-  { label: "Split PDF", href: "/split-pdf", desc: "Separate PDF pages", icon: Scissors, iconColor: "text-pink-500", bgColor: "bg-pink-50" },
-  { label: "PDF to Excel", href: "/pdf-to-excel", desc: "Extract PDF tables", icon: FileSpreadsheet, iconColor: "text-emerald-500", bgColor: "bg-emerald-50" },
-  { label: "OCR PDF", href: "/ocr-pdf", desc: "Make scanned PDFs readable", icon: FileSearch, iconColor: "text-teal-500", bgColor: "bg-teal-50" },
+  { label: "Word to PDF", href: "/word-to-pdf", icon: <FileText className="h-4 w-4 text-blue-500" /> },
+  { label: "Compress PDF", href: "/compress-pdf", icon: <FileMinus className="h-4 w-4 text-orange-500" /> },
+  { label: "Merge PDF", href: "/merge-pdf", icon: <FilePlus className="h-4 w-4 text-violet-500" /> },
+  { label: "Split PDF", href: "/split-pdf", icon: <Scissors className="h-4 w-4 text-pink-500" /> },
+  { label: "PDF to Excel", href: "/pdf-to-excel", icon: <FileSpreadsheet className="h-4 w-4 text-emerald-500" /> },
+  { label: "OCR PDF", href: "/ocr-pdf", icon: <FileSearch className="h-4 w-4 text-teal-500" /> },
 ];
 
 const defaultFaqs = [
@@ -141,6 +150,43 @@ function SectionSub({ children }) {
   );
 }
 
+// function RevealOnScroll({ children, delay = 0 }) {
+//   const ref = useRef(null);
+//   const [visible, setVisible] = useState(false);
+
+//   useEffect(() => {
+//     const el = ref.current;
+//     if (!el) return;
+
+//     const observer = new IntersectionObserver(
+//       ([entry]) => {
+//         if (entry.isIntersecting) {
+//           setVisible(true);
+//           observer.unobserve(el);
+//         }
+//       },
+//       { threshold: 0.05 }
+//     );
+
+//     observer.observe(el);
+//     return () => observer.disconnect();
+//   }, []);
+
+//   return (
+//     <div
+//       ref={ref}
+//       style={{ transitionDelay: `${delay}ms` }}
+//       className={`transition-all duration-700 ease-out ${visible
+//         ? "translate-y-0 opacity-100"
+//         : "translate-y-10 opacity-0"
+//         }`}
+//     >
+//       {children}
+//     </div>
+//   );
+// }
+
+
 function RevealOnScroll({ children, delay = 0 }) {
   const ref = useRef(null);
   const [visible, setVisible] = useState(false);
@@ -149,6 +195,13 @@ function RevealOnScroll({ children, delay = 0 }) {
     const el = ref.current;
     if (!el) return;
 
+    // Already viewport mein hai? Turant show karo
+    const rect = el.getBoundingClientRect();
+    if (rect.top < window.innerHeight) {
+      setVisible(true);
+      return;
+    }
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
@@ -156,7 +209,7 @@ function RevealOnScroll({ children, delay = 0 }) {
           observer.unobserve(el);
         }
       },
-      { threshold: 0.18 }
+      { threshold: 0.05 }
     );
 
     observer.observe(el);
@@ -167,9 +220,7 @@ function RevealOnScroll({ children, delay = 0 }) {
     <div
       ref={ref}
       style={{ transitionDelay: `${delay}ms` }}
-      className={`transition-all duration-700 ease-out ${visible
-        ? "translate-y-0 opacity-100"
-        : "translate-y-10 opacity-0"
+      className={`transition-all duration-700 ease-out ${visible ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
         }`}
     >
       {children}
@@ -354,7 +405,7 @@ function HeroUploadBox({ onFilesSelect, accept, multiple, uploadTitle, uploadSub
                 open();
               }}
               className="inline-flex items-center gap-2 rounded-full bg-[#e8420a] px-12 py-5 text-base font-medium text-white shadow-[0_4px_14px_rgba(232,66,10,0.28)] transition-all hover:-translate-y-0.5 hover:bg-[#d63a07] cursor-pointer hover:shadow-[0_6px_20px_rgba(232,66,10,0.36)]"
-              // className="inline-flex items-center gap-2 rounded-full bg-[#e8420a] px-8 py-3 text-sm font-medium text-white shadow-[0_4px_14px_rgba(232,66,10,0.28)] transition-all hover:-translate-y-0.5 hover:bg-[#d63a07] hover:shadow-[0_6px_20px_rgba(232,66,10,0.36)]"
+            // className="inline-flex items-center gap-2 rounded-full bg-[#e8420a] px-8 py-3 text-sm font-medium text-white shadow-[0_4px_14px_rgba(232,66,10,0.28)] transition-all hover:-translate-y-0.5 hover:bg-[#d63a07] hover:shadow-[0_6px_20px_rgba(232,66,10,0.36)]"
             >
               <Upload className="h-4 w-4" />
               Choose File
@@ -537,7 +588,6 @@ function PdfTypesSection({
   );
 }
 
-
 function WhySection({ items, title }) {
   return (
     <div className="bg-stone-50 py-20">
@@ -602,6 +652,8 @@ function SeoSection({
 
   return (
     <div className="bg-white py-16">
+      {/* <div className="mx-auto max-w-6xl px-3 md:px-6"> */}
+
       <div className="mx-auto max-w-6xl px-6">
 
         <div className="mb-8 text-left">
@@ -633,9 +685,11 @@ function SeoSection({
                   <h3 className="font-bold text-stone-900">
                     {section.title}
                   </h3>
-                  <p className="mt-1.5 text-sm leading-7 text-stone-500">
+                  {/* <p className="mt-1.5 text-sm leading-7 text-stone-500">
                     {section.text}
-                  </p>
+                  </p> */}
+                  {/* <p className="whitespace-pre-line">{section.text}</p> */}
+                  <p className="whitespace-pre-line text-sm leading-7 text-stone-500">{section.text}</p>
                 </div>
               </div>
             </div>
@@ -686,19 +740,25 @@ function RelatedToolsSection({ tools, title }) {
         <Eyebrow>More Tools</Eyebrow>
         <SectionTitle>{title || "You might also need"}</SectionTitle>
 
-        <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3">
+        {/* <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3"> */}
+        <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-4">
           {tools.map((tool) => (
             <Link
               key={tool.href}
               href={tool.href}
               className="group flex items-center gap-3 rounded-2xl border border-stone-200 bg-white p-4 text-sm font-medium text-stone-700 transition-all hover:-translate-y-0.5 hover:border-rose-400 hover:shadow-md"
             >
-              <div className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-xl ${tool.bgColor}`}>
-                {/* <tool.icon className={`h-4 w-4 ${tool.iconColor}`} /> */}
-                {tool.icon && (
+              {/* <div className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-xl ${tool.bgColor}`}> */}
+              {/* <tool.icon className={`h-4 w-4 ${tool.iconColor}`} /> */}
+              {/* {tool.icon && (
                   <tool.icon className={`h-4 w-4 ${tool.iconColor}`} />
                 )}
+              </div> */}
+
+              <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-slate-100">
+                {tool.icon}
               </div>
+
               <span className="transition-colors group-hover:text-rose-600">{tool.label}</span>
             </Link>
           ))}
@@ -795,6 +855,7 @@ export default function UploadLandingStep({
   uploadTitle,
   uploadSubtitle,
   uploadInfo,
+  showPdfTypesSection = false,
   content = {},
 }) {
 
@@ -814,9 +875,15 @@ export default function UploadLandingStep({
     { n: "3", title: "Download DOCX or ZIP", desc: "Single files download as DOCX. Multiple files are packed into a ZIP with all converted documents.", color: "bg-emerald-600" },
   ];
 
+  // const breadcrumbItems = content.breadcrumbItems || [
+  //   { label: "Home", href: "/" },
+  //   { label: "PDF Tools", href: "/free-pdf-tools" },
+  //   { label: content.breadcrumbCurrent || "PDF Tool" },
+  // ];
+
   const breadcrumbItems = content.breadcrumbItems || [
     { label: "Home", href: "/" },
-    { label: "PDF Tools", href: "/pdf-tools" },
+    { label: "Free PDF Tools", href: "/free-pdf-tools" },
     { label: content.breadcrumbCurrent || "PDF Tool" },
   ];
 
@@ -853,7 +920,7 @@ export default function UploadLandingStep({
       {/* <section className="mx-auto flex flex-col-reverse max-w-6xl items-center gap-12 px-6 pb-16 pt-10 lg:grid lg:grid-cols-[1fr_1.2fr]"> */}
       <section className="mx-auto flex flex-col-reverse max-w-6xl items-center gap-12 px-6 pb-16 pt-10 lg:grid lg:grid-cols-2">
 
-      {/* <section className="mx-auto grid max-w-6xl items-center gap-12 px-6 pb-16 pt-10 lg:grid-cols-2"> */}
+        {/* <section className="mx-auto grid max-w-6xl items-center gap-12 px-6 pb-16 pt-10 lg:grid-cols-2"> */}
         {/* <section className="mx-auto grid max-w-6xl items-center gap-12 px-6 pb-16 pt-10 lg:grid-cols-2"> */}
 
         {/* LEFT — copy */}
@@ -941,13 +1008,20 @@ export default function UploadLandingStep({
       {/* ── COMPARE ── */}
       {/* <PdfTypesSection /> */}
       <RevealOnScroll>
-        {content.showPdfTypes !== false && (
+        {content?.pdfTypeSection?.enabled && (
+          <PdfTypesSection
+            eyebrow={content.pdfTypeSection.eyebrow}
+            title={content.pdfTypeSection.title}
+            subtitle={content.pdfTypeSection.subtitle}
+          />
+        )}
+        {/* {content.showPdfTypes !== false && (
           <PdfTypesSection
             eyebrow={content.pdfTypesEyebrow}
             title={content.pdfTypesTitle}
             subtitle={content.pdfTypesSubtitle}
           />
-        )}
+        )} */}
         {/* <PdfTypesSection /> */}
       </RevealOnScroll>
 

@@ -7,7 +7,7 @@ import {
   FileMinus, FilePlus, Image as ImageIcon, ScanLine, FileEdit,
   Scissors, RotateCw, Trash2, Hash, Layers, Shield, PenSquare,
   Unlock, Code, Menu, X, Italic, List, FileOutput, Crop, ShieldAlert,
-  Wrench,
+  Wrench, Presentation 
 } from "lucide-react";
 import Image from "next/image";
 
@@ -54,8 +54,8 @@ const dropdownCols = [
       { label: "Excel to PDF", href: "/excel-pdf", Icon: FileSpreadsheet, color: "#16a34a" },
       { label: "PowerPoint to PDF", href: "/ppt-to-pdf", Icon: FileSpreadsheet, color: "#ea580c" },
       { label: "Image to PDF", href: "/image-to-pdf", Icon: FileImage, color: "#ea580c" },
-      { label: "Text to PDF", href: "/text-to-pdf", Icon: FileText, color: "#9333ea" },
       { label: "HTML to PDF", href: "/html-to-pdf", Icon: Code, color: "#4f46e5" },
+      { label: "Text to PDF", href: "/text-to-pdf", Icon: FileText, color: "#9333ea" },
     ],
   },
   {
@@ -63,9 +63,13 @@ const dropdownCols = [
     items: [
       { label: "PDF to Word", href: "/pdf-to-word", Icon: FileText, color: "#e8420a" },
       { label: "PDF to Excel", href: "/pdf-to-excel", Icon: FileSpreadsheet, color: "#16a34a" },
+      {
+        label: "PDF to PowerPoint", href: "/pdf-to-powerpoint", Icon: Presentation, color: "#ea580c"
+      },
       { label: "PDF to JPG", href: "/pdf-to-jpg", Icon: ImageIcon, color: "#ea580c" },
       { label: "PDF to PNG", href: "/pdf-to-png", Icon: ImageIcon, color: "#f97316" },
       { label: "PDF to Text", href: "/pdf-to-text", Icon: FileText, color: "#2563eb" },
+
     ],
   },
   {
@@ -770,7 +774,7 @@ export default function Navbar() {
 //       <nav style={{
 //         position: "sticky", top: 0, zIndex: 100, height: 64,
 //         background: "rgba(250,249,247,0.94)", backdropFilter: "blur(14px)",
-//         borderBottom: "1px solid rgba(15,14,13,0.10)", 
+//         borderBottom: "1px solid rgba(15,14,13,0.10)",
 //       }}>
 //         <div style={{
 //           maxWidth: 1180, margin: "0 auto", padding: isDesktop ? "0 1.5rem" : "0 1rem",

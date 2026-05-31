@@ -1,18 +1,17 @@
 "use client";
 
+import Script from "next/script";
 import { useState, useEffect, useRef } from "react";
 import {
     Wrench,
     Download,
     MonitorSmartphone,
     CheckCircle,
-    FileText,
     ArrowRight,
-    RotateCw,
     Info,
     AlertTriangle,
-    Plus,
-    X,
+    Plus, Scan, Scissors, Pencil, RotateCw,
+    X, Minimize2, LockOpen, Shield, GitMerge
 } from "lucide-react";
 
 import ToolPageLayout from "@/components/ToolFlow/ToolPageLayout";
@@ -23,6 +22,19 @@ import {
     DEFAULT_DONE_LINKS,
     DEFAULT_SIDEBAR_FEATURES,
 } from "@/lib/toolUiConfig";
+
+
+const DONE_LINKS = [
+    { label: "Compress PDF", href: "/compress-pdf", icon: <Minimize2 className="h-4 w-4 text-green-500" /> },
+    { label: "OCR PDF", href: "/ocr-pdf", icon: <Scan className="h-4 w-4 text-violet-500" /> },
+    { label: "Protect PDF", href: "/protect-pdf", icon: <Shield className="h-4 w-4 text-red-500" /> },
+    { label: "Unlock PDF", href: "/unlock-pdf", icon: <LockOpen className="h-4 w-4 text-green-500" /> },
+    { label: "Merge PDF", href: "/merge-pdf", icon: <GitMerge className="h-4 w-4 text-purple-500" /> },
+    { label: "Split PDF", href: "/split-pdf", icon: <Scissors className="h-4 w-4 text-orange-500" /> },
+    { label: "Edit PDF", href: "/edit-pdf", icon: <Pencil className="h-4 w-4 text-orange-500" /> },
+    { label: "Rotate PDF", href: "/rotate-pdf", icon: <RotateCw className="h-4 w-4 text-cyan-500" /> },
+];
+
 
 // ─────────────────────────────────────────────────────────────
 // Load PDF.js dynamically
@@ -299,6 +311,167 @@ export default function RepairPdf() {
     // ─────────────────────────────────────────────────────────
     return (
         <>
+
+            <Script
+                id="howto-schema-repair-pdf"
+                type="application/ld+json"
+                strategy="afterInteractive"
+                dangerouslySetInnerHTML={{
+                    __html: JSON.stringify({
+                        "@context": "https://schema.org",
+                        "@type": "HowTo",
+                        name: "How to Repair a PDF Online for Free",
+                        description:
+                            "Upload a damaged or corrupted PDF file and repair it online in a few simple steps.",
+                        url: "https://pdflinx.com/repair-pdf",
+                        step: [
+                            {
+                                "@type": "HowToStep",
+                                name: "Upload PDF",
+                                text: "Select and upload the damaged or corrupted PDF file."
+                            },
+                            {
+                                "@type": "HowToStep",
+                                name: "Repair PDF",
+                                text: "Start the repair process to analyze and fix PDF file issues."
+                            },
+                            {
+                                "@type": "HowToStep",
+                                name: "Download repaired PDF",
+                                text: "Download the repaired PDF document after processing is complete."
+                            }
+                        ],
+                        totalTime: "PT2M",
+                        estimatedCost: {
+                            "@type": "MonetaryAmount",
+                            value: "0",
+                            currency: "USD"
+                        },
+                        image: "https://pdflinx.com/og-image.png"
+                    }, null, 2),
+                }}
+            />
+
+            <Script
+                id="breadcrumb-schema-repair-pdf"
+                type="application/ld+json"
+                strategy="afterInteractive"
+                dangerouslySetInnerHTML={{
+                    __html: JSON.stringify({
+                        "@context": "https://schema.org",
+                        "@type": "BreadcrumbList",
+                        itemListElement: [
+                            {
+                                "@type": "ListItem",
+                                position: 1,
+                                name: "Home",
+                                item: "https://pdflinx.com"
+                            },
+                            {
+                                "@type": "ListItem",
+                                position: 2,
+                                name: "Repair PDF",
+                                item: "https://pdflinx.com/repair-pdf"
+                            }
+                        ]
+                    }, null, 2),
+                }}
+            />
+
+            <Script
+                id="faq-schema-repair-pdf"
+                type="application/ld+json"
+                strategy="afterInteractive"
+                dangerouslySetInnerHTML={{
+                    __html: JSON.stringify({
+                        "@context": "https://schema.org",
+                        "@type": "FAQPage",
+                        mainEntity: [
+                            {
+                                "@type": "Question",
+                                name: "What does Repair PDF do?",
+                                acceptedAnswer: {
+                                    "@type": "Answer",
+                                    text: "Repair PDF helps fix corrupted, damaged, or unreadable PDF files so they can be opened and used again."
+                                }
+                            },
+                            {
+                                "@type": "Question",
+                                name: "Can all damaged PDF files be repaired?",
+                                acceptedAnswer: {
+                                    "@type": "Answer",
+                                    text: "Many PDF issues can be repaired, but the success depends on the extent of the file corruption."
+                                }
+                            },
+                            {
+                                "@type": "Question",
+                                name: "Will my PDF content remain unchanged?",
+                                acceptedAnswer: {
+                                    "@type": "Answer",
+                                    text: "The repair process focuses on restoring accessibility while preserving as much original content and formatting as possible."
+                                }
+                            },
+                            {
+                                "@type": "Question",
+                                name: "Does Repair PDF work on mobile devices?",
+                                acceptedAnswer: {
+                                    "@type": "Answer",
+                                    text: "Yes. The tool works on Android, iPhone, tablets, and desktop browsers."
+                                }
+                            },
+                            {
+                                "@type": "Question",
+                                name: "Are my files secure?",
+                                acceptedAnswer: {
+                                    "@type": "Answer",
+                                    text: "Yes. Files are processed securely and automatically removed after processing."
+                                }
+                            }
+                        ]
+                    }, null, 2),
+                }}
+            />
+
+            <Script
+                id="software-schema-repair-pdf"
+                type="application/ld+json"
+                strategy="afterInteractive"
+                dangerouslySetInnerHTML={{
+                    __html: JSON.stringify({
+                        "@context": "https://schema.org",
+                        "@type": "SoftwareApplication",
+                        name: "Repair PDF",
+                        applicationCategory: "BusinessApplication",
+                        operatingSystem: "Web Browser",
+                        url: "https://pdflinx.com/repair-pdf",
+                        description:
+                            "Free online PDF repair tool. Fix corrupted, damaged, or unreadable PDF files and restore access to your documents quickly and securely.",
+                        image: "https://pdflinx.com/og-image.png",
+                        offers: {
+                            "@type": "Offer",
+                            price: "0",
+                            priceCurrency: "USD"
+                        },
+                        publisher: {
+                            "@type": "Organization",
+                            name: "PDFLinx",
+                            url: "https://pdflinx.com"
+                        },
+                        featureList: [
+                            "Repair corrupted PDF files",
+                            "Fix damaged PDF documents",
+                            "Restore unreadable PDFs",
+                            "Recover accessible PDF content",
+                            "Fast PDF repair process",
+                            "Works in any web browser",
+                            "Free online PDF repair tool",
+                            "No software installation required"
+                        ]
+                    }, null, 2),
+                }}
+            />
+
+
             <ToolPageLayout
                 title="Repair PDF Online"
                 tagline="Fix Corrupted PDF Files · Recover Damaged Documents"
@@ -310,6 +483,7 @@ export default function RepairPdf() {
                 onConvert={handleConvert}
                 onDownload={handleDownload}
                 doneLinks={DEFAULT_DONE_LINKS}
+                sidebarLinks={DONE_LINKS}
                 showOutputFormat={false}
                 showPreserveLayout={false}
                 processingTitle="Repairing PDF..."
@@ -433,11 +607,10 @@ export default function RepairPdf() {
                                             type="button"
                                             onClick={handleConvert}
                                             disabled={!filesPreview.length}
-                                            className={`w-full rounded-xl px-5 py-3.5 text-base font-bold text-white transition-all active:scale-[0.98] flex items-center justify-center gap-2 ${
-                                                filesPreview.length
-                                                    ? "bg-[#f24d0d] hover:bg-[#db4309] shadow-lg shadow-orange-200"
-                                                    : "cursor-not-allowed bg-slate-200 text-slate-400"
-                                            }`}
+                                            className={`w-full rounded-xl px-5 py-3.5 text-base font-bold text-white transition-all active:scale-[0.98] flex items-center justify-center gap-2 ${filesPreview.length
+                                                ? "bg-[#f24d0d] hover:bg-[#db4309] shadow-lg shadow-orange-200"
+                                                : "cursor-not-allowed bg-slate-200 text-slate-400"
+                                                }`}
                                         >
                                             <span>
                                                 {filesPreview.length ? "Repair PDF" : "Upload PDF first"}
@@ -451,56 +624,210 @@ export default function RepairPdf() {
                     </div>
                 }
 
+                // ============================================================
+                // REPAIR PDF — uploadLanding content
+                // PdfToWord.jsx pattern ke mutabiq — as-is paste karo
+                // ============================================================
+
                 uploadLanding={{
                     content: {
+                        relatedTools: DONE_LINKS,
+
                         eyebrow: "REPAIR PDF",
+
+                        breadcrumbCurrent: "Repair PDF",
+
+                        heroBadge: "✦ 100% Free · No Signup · No Watermark",
+
                         heroTitle: (
                             <>
-                                Repair PDF Files <br />
-                                <em className="font-bold not-italic text-[#e8420a] sm:italic">
-                                    online instantly
+                                Repair PDF Files —{" "}
+                                <em className="font-bold text-[#e8420a] sm:italic">
+                                    Free, Online, Fix Corrupted PDFs
                                 </em>
                             </>
                         ),
+
                         heroDescription:
-                            "Repair damaged and corrupted PDF files online for free. Recover broken, unreadable, or invalid PDF documents instantly.",
-                        noticeTitle: "Repair PDF features",
+                            "Repair corrupted, damaged, or unreadable PDF files online for free. Recover content from broken PDFs that won't open — no signup, no watermark, no software needed. Works on any device.",
+
+                        pills: [
+                            "No watermark",
+                            "Fix corrupted & damaged PDFs",
+                            "Recover unreadable files",
+                            "Instant repair",
+                        ],
+
+                        uploadTitle: "Drop your damaged PDF here",
+                        uploadSubtitle: "or click to browse — corrupted or broken PDF files supported",
+
+                        trustPills: ["100% Free", "No Sign Up", "No Watermark"],
+
+                        noticeTitle: "Repair PDF Info",
                         noticeItems: [
-                            "Fix corrupted PDF files",
-                            "Recover unreadable documents",
-                            "Multiple file support",
+                            "Upload corrupted or damaged PDF",
+                            "PDFLinx attempts full content recovery",
+                            "Downloads as clean, working PDF",
                         ],
-                        howToTitle: "How to repair a PDF",
-                        howToSubtitle: "Upload damaged PDF files and recover them instantly online.",
+
+                        rating: "4.9/5",
+                        ratingText: "Trusted by 50,000+ users monthly",
+
+                        pdfTypeSection: {
+                            enabled: false,
+                        },
+
+                        howToEyebrow: "How It Works",
+                        howToTitle: "How to Repair a PDF — 3 Simple Steps",
+                        howToSubtitle:
+                            "No learning curve. Upload your broken PDF, let PDFLinx repair it, download — done in under a minute.",
+
                         howToSteps: [
-                            { n: "1", title: "Upload your PDFs", desc: "Select damaged PDF files from your device.", color: "bg-blue-600" },
-                            { n: "2", title: "Repair documents", desc: "Our engine analyzes and repairs corrupted PDF structure.", color: "bg-orange-600" },
-                            { n: "3", title: "Download repaired PDF", desc: "Save and use your repaired documents instantly.", color: "bg-emerald-600" },
+                            {
+                                n: "1",
+                                title: "Upload Your Damaged PDF",
+                                desc: "Select your corrupted, broken, or unreadable PDF from your device. Drag and drop supported on all devices — mobile, tablet, and desktop. Upload it even if it won't open normally.",
+                                color: "bg-blue-600",
+                            },
+                            {
+                                n: "2",
+                                title: "PDFLinx Repairs the File",
+                                desc: "Our repair engine analyzes the PDF structure, identifies corrupted sections, rebuilds broken cross-reference tables, and recovers as much content as possible from the damaged file.",
+                                color: "bg-purple-600",
+                            },
+                            {
+                                n: "3",
+                                title: "Download Your Repaired PDF",
+                                desc: "Download the recovered PDF instantly. The repaired file opens normally in any PDF viewer — with as much of the original content restored as the damage level allows.",
+                                color: "bg-emerald-600",
+                            },
                         ],
-                        whyTitle: "Why use PDFLinx Repair PDF?",
-                        whyItems: [
-                            { title: "Repair Corrupted PDFs", desc: "Recover unreadable or broken PDF files instantly.", icon: Wrench, iconColor: "text-orange-600", bgColor: "bg-orange-100" },
-                            { title: "Fast Recovery", desc: "Analyze and repair PDF structure automatically.", icon: CheckCircle, iconColor: "text-green-600", bgColor: "bg-green-100" },
-                            { title: "Works on Any Device", desc: "Compatible with Windows, Mac, Android, iPhone, and tablets.", icon: MonitorSmartphone, iconColor: "text-blue-600", bgColor: "bg-blue-100" },
-                            { title: "Secure Processing", desc: "Files are encrypted and deleted automatically.", icon: Download, iconColor: "text-purple-600", bgColor: "bg-purple-100" },
-                        ],
-                        seoBadge: "PDF Repair Tool",
-                        seoTitle: "Repair PDF Online Free",
-                        seoDescription: "Repair corrupted and damaged PDF files online for free. Recover unreadable PDF documents instantly with no signup required.",
+
+                        whyTitle: "Why PDFLinx is the Best Free PDF Repair Tool Online",
+
+                        seoBadge: "Repair PDF Guide",
+                        seoTitle: "Complete Guide to Repairing Corrupted PDF Files Online",
+                        seoDescription:
+                            "Everything you need to know about repairing corrupted, damaged, and unreadable PDF files — free, online, instant recovery. No watermark, no signup, no limits.",
+
                         seoSections: [
-                            { title: "Fix Corrupted PDF Files", text: "Repair unreadable, broken, or damaged PDF documents online instantly." },
-                            { title: "Recover PDF Structure", text: "Our repair engine attempts to restore PDF formatting and readable content automatically." },
-                            { title: "Online PDF Repair Tool", text: "Repair PDFs directly inside your browser without installing software." },
+                            {
+                                title:
+                                    "Free PDF Repair Tool — Fix Corrupted and Damaged PDF Files Online",
+                                text: "Need to repair a corrupted PDF? PDFLinx lets you fix damaged, broken, and unreadable PDF files online for free — instantly and without any software installation. Whether your PDF shows an error when opening, displays garbled content, is partially viewable, or simply refuses to load in any viewer, PDFLinx analyzes the file structure and attempts to recover as much content as possible. No signup, no watermark, no hidden limits. Works on Windows, Mac, iPhone, and Android.",
+                            },
+                            {
+                                title: "Why PDF Files Get Corrupted",
+                                text: "PDF files get corrupted in several common ways. An interrupted download is the most frequent cause — if a PDF download is cut off before completion, the file is incomplete and unreadable. A failed file transfer over email, USB, or cloud storage can introduce data errors. Storage device failures — a failing hard drive, a corrupted memory card, or a damaged USB drive — can corrupt files saved on them. Software crashes during PDF creation or saving can produce an incomplete or structurally broken file. Virus infections and accidental partial deletion can also corrupt PDF content. In many of these cases, a significant portion of the original content is still present in the damaged file and can be recovered.",
+                            },
+                            {
+                                title: "What Does PDF Repair Actually Do?",
+                                text: "A PDF file has an internal structure — a cross-reference table, object streams, and a file trailer — that tells PDF viewers where to find each piece of content. When this structure is damaged, viewers cannot parse the file and show an error. PDF repair rebuilds this internal structure using whatever valid data remains in the file. PDFLinx scans the raw file data, identifies intact content objects — text, images, page structures — and reconstructs a valid PDF around them. The result is a properly structured file that opens normally, containing all the content that survived the corruption.",
+                            },
+                            {
+                                title: "What Types of PDF Damage Can Be Repaired?",
+                                text: "PDFLinx can repair several types of PDF damage. Truncated PDFs — files that were cut off during download or transfer — are often largely recoverable since most of the content exists but the file ending is missing. Corrupted cross-reference tables — the internal index of a PDF — can be rebuilt from the existing content objects. Minor data corruption affecting only part of the file can often be worked around by reconstructing undamaged sections. Heavily corrupted files where a large portion of the data is destroyed may have limited recovery — the tool always recovers as much as structurally possible.",
+                            },
+                            {
+                                title:
+                                    "Why PDFLinx is the Best Free PDF Repair Tool — No Watermark, No Limits",
+                                text: "Most free PDF repair tools add watermarks to the recovered output, limit file sizes, or require account creation. PDFLinx does none of that — completely free, no signup, no watermark on the repaired file, and no daily usage limit. Unlike paid tools like PDF2Go repair or Stellar PDF Repair which charge for full recovery, PDFLinx gives you the best possible repair result at zero cost.",
+                            },
+                            {
+                                title: "Common Scenarios Where PDF Repair Helps",
+                                text: "✓ Incomplete Downloads: Fix PDFs that were partially downloaded from the internet or a file sharing service and now show an error.\n✓ Failed Email Attachments: Recover PDFs that were corrupted during email transfer and cannot be opened by the recipient.\n✓ Cloud Sync Errors: Repair PDFs damaged during syncing with Dropbox, Google Drive, or OneDrive due to sync conflicts or interruptions.\n✓ Storage Device Failures: Attempt recovery of PDFs from a failing hard drive, corrupted USB drive, or damaged SD card before the device fails completely.\n✓ Software Crash Recovery: Recover PDFs that were being created or edited when the application crashed before saving properly.\n✓ Old or Degraded Files: Attempt to open very old PDF files that have become unreadable due to file system degradation over time.",
+                            },
+                            {
+                                title:
+                                    "Repair PDF on iPhone, Android, Mac & Windows — No App Needed",
+                                text: "PDFLinx works entirely in your browser — no download, no installation, no app required. On iPhone or Android, open your browser and upload your damaged PDF directly from your files app. On Mac or Windows, drag and drop your broken PDF and download the repaired version in seconds. Whether you need to repair a PDF on mobile or desktop, PDFLinx works seamlessly across every platform and operating system.",
+                            },
+                            {
+                                title: "Privacy and File Security",
+                                text: "Your files are processed on secure servers and automatically deleted after 1 hour. We do not store, share, or access your documents at any point. PDFLinx is built with privacy-first principles — your data stays yours. All file transfers use encrypted HTTPS connections for complete security.",
+                            },
+                            {
+                                title: "What to Do If the PDF Cannot Be Fully Repaired",
+                                text: "Not all PDF corruption is recoverable — heavily damaged files where most of the data is destroyed may only yield partial content or nothing at all. If PDFLinx cannot fully restore your PDF, consider these additional steps. Try re-downloading the file from the original source if it was a download. Ask the sender to resend the original file if it was received as an attachment. Check if a backup copy exists on another device, in a cloud backup, or in an email sent folder. If the file was on a failing storage device, stop using the device immediately and consult a professional data recovery service before more data is lost.",
+                            },
                         ],
-                        faqTitle: "Frequently asked questions",
+
                         faqs: [
-                            { q: "Can I repair corrupted PDF files online?", a: "Yes. PDFLinx lets you repair damaged and corrupted PDF files online for free." },
-                            { q: "Will my PDF formatting stay intact?", a: "Our repair system tries to recover original formatting and readable content whenever possible." },
-                            { q: "Does Repair PDF work on mobile?", a: "Yes. Repair PDF works on Android, iPhone, tablets, and desktop browsers." },
-                            { q: "Are my uploaded PDFs secure?", a: "Yes. Files are encrypted during upload and automatically deleted after processing." },
+                            {
+                                q: "Is PDFLinx PDF repair tool free?",
+                                a: "Yes, completely free. No hidden charges, no premium plans, and no limits on the number of PDFs you attempt to repair.",
+                            },
+                            {
+                                q: "Do I need to sign up or create an account?",
+                                a: "No account required. Upload your damaged PDF and attempt repair instantly — no email, no registration, no friction.",
+                            },
+                            {
+                                q: "Can PDFLinx repair any corrupted PDF?",
+                                a: "PDFLinx repairs many types of PDF corruption — truncated files, broken cross-reference tables, and minor data damage. Heavily corrupted files where most of the data is destroyed may only yield partial recovery or none at all.",
+                            },
+                            {
+                                q: "What types of corruption can be repaired?",
+                                a: "Truncated downloads, broken internal structure, corrupted cross-reference tables, and minor data errors. Files cut off during download are often the most successfully repaired since most content is intact.",
+                            },
+                            {
+                                q: "Will all content be recovered after repair?",
+                                a: "PDFLinx recovers as much content as the damage level allows. Lightly damaged files often recover fully. More severely corrupted files may have partial content recovery. There is no guarantee of complete recovery for all damage types.",
+                            },
+                            {
+                                q: "My PDF opens but shows garbled content — can it be repaired?",
+                                a: "Yes. PDFs with display errors, garbled text, or partially missing content are good candidates for repair. Upload the file and let PDFLinx attempt to rebuild the internal structure.",
+                            },
+                            {
+                                q: "My PDF will not open at all — can it still be repaired?",
+                                a: "Yes. Upload it anyway — PDFLinx scans the raw file data even when the file is completely unreadable by standard viewers, and attempts to reconstruct a valid PDF from whatever valid data remains.",
+                            },
+                            {
+                                q: "Does PDFLinx add any watermark to the repaired PDF?",
+                                a: "No watermarks, ever. Your repaired PDF is 100% clean — just the recovered original content with no platform branding added.",
+                            },
+                            {
+                                q: "Is my file secure and private?",
+                                a: "Yes. Files are processed on secure servers over encrypted HTTPS and automatically deleted after 1 hour. We never store, share, or view your documents.",
+                            },
+                            {
+                                q: "Can I use PDFLinx on mobile — iPhone and Android?",
+                                a: "Yes. PDFLinx works perfectly in the browser on iPhone, Android, iPad, Windows, and Mac — no app download or installation needed.",
+                            },
+                            {
+                                q: "What is the maximum file size limit?",
+                                a: "Up to 50 MB per file. Even partially corrupted large files can be uploaded — the tool will attempt recovery regardless of how the file appears.",
+                            },
+                            {
+                                q: "What should I do if the repair does not work?",
+                                a: "Try re-downloading from the original source, ask the sender to resend, check for backup copies on other devices or cloud storage. If the file was on a failing drive, consult a professional data recovery service immediately.",
+                            },
+                            {
+                                q: "Can I repair a PDF that was damaged on a USB drive or memory card?",
+                                a: "Yes, upload the file and attempt repair. However, if the storage device itself is failing, stop using it immediately and consult a data recovery professional — further use can cause additional data loss.",
+                            },
+                            {
+                                q: "How long does PDF repair take?",
+                                a: "Most repair attempts complete within 10 to 30 seconds depending on file size and the type and extent of corruption.",
+                            },
+                            {
+                                q: "Is PDFLinx better than other free PDF repair tools?",
+                                a: "Yes — PDFLinx repairs PDFs with no watermark on output, no daily limits, and no account required. Most other free repair tools add watermarks or restrict recovery quality behind paid plans.",
+                            },
                         ],
+
+                        ctaTitle: (
+                            <>
+                                Repair your PDF now —<br />
+                                free, private, no sign‑up.
+                            </>
+                        ),
+                        ctaDescription:
+                            "Join thousands who trust PDFLinx to recover content from damaged and corrupted PDF files every day.",
+                        ctaButton: "Choose Damaged PDF File",
                     },
                 }}
+
+
             />
 
             <RelatedToolsSection />

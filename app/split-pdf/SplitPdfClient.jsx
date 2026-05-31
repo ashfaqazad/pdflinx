@@ -1,19 +1,37 @@
 "use client";
 
 import { useState, useEffect, useRef, useCallback } from "react";
-import { Scissors, GitMerge, FileText, Minimize2, Lock, X, Settings2 } from "lucide-react";
+import {
+  Scissors, GitMerge,
+  FolderOutput, Trash2, LayoutList,
+  Minimize2, RotateCw, Hash, Pencil
+} from "lucide-react";
 import Script from "next/script";
 import { useProgressBar } from "@/hooks/useProgressBar";
 import { useToolFlow } from "@/hooks/useToolFlow";
 import ToolPageLayout from "@/components/ToolFlow/ToolPageLayout";
+import MobileDrawerLayout from "@/components/ToolFlow/MobileDrawerLayout";
+
 
 // ── CONFIG ─────────────────────────────────
+// const DONE_LINKS = [
+//   { label: "Merge PDF", href: "/merge-pdf", icon: <GitMerge className="h-4 w-4 text-indigo-500" /> },
+//   { label: "Compress PDF", href: "/compress-pdf", icon: <Minimize2 className="h-4 w-4 text-green-500" /> },
+//   { label: "PDF to Word", href: "/pdf-to-word", icon: <FileText className="h-4 w-4 text-blue-500" /> },
+//   { label: "Protect PDF", href: "/protect-pdf", icon: <Lock className="h-4 w-4 text-red-500" /> },
+// ];
+
 const DONE_LINKS = [
-  { label: "Merge PDF", href: "/merge-pdf", icon: <GitMerge className="h-4 w-4 text-indigo-500" /> },
+  { label: "Merge PDF", href: "/merge-pdf", icon: <GitMerge className="h-4 w-4 text-purple-500" /> },
+  { label: "Extract PDF", href: "/extract-pdf", icon: <FolderOutput className="h-4 w-4 text-cyan-500" /> },
+  { label: "Remove Pages", href: "/remove-pages", icon: <Trash2 className="h-4 w-4 text-red-500" /> },
+  { label: "Organize PDF", href: "/organize-pdf", icon: <LayoutList className="h-4 w-4 text-blue-500" /> },
   { label: "Compress PDF", href: "/compress-pdf", icon: <Minimize2 className="h-4 w-4 text-green-500" /> },
-  { label: "PDF to Word", href: "/pdf-to-word", icon: <FileText className="h-4 w-4 text-blue-500" /> },
-  { label: "Protect PDF", href: "/protect-pdf", icon: <Lock className="h-4 w-4 text-red-500" /> },
+  { label: "Rotate PDF", href: "/rotate-pdf", icon: <RotateCw className="h-4 w-4 text-cyan-500" /> },
+  { label: "Add Page Numbers", href: "/add-page-numbers", icon: <Hash className="h-4 w-4 text-slate-500" /> },
+  { label: "Edit PDF", href: "/edit-pdf", icon: <Pencil className="h-4 w-4 text-orange-500" /> },
 ];
+
 
 const SIDEBAR_NOTICE = (
   <>
@@ -149,7 +167,7 @@ function SplitSidebarOptions({
   ranges, setRanges,
   pageRangeInput, onPageRangeChange,
   mergeExtracted, onMergeChange,
-  onClose, // only used in mobile drawer
+  // onClose, // only used in mobile drawer
 }) {
   const tabs = [
     { key: "range", label: "Range" },
@@ -163,9 +181,9 @@ function SplitSidebarOptions({
     <div className="space-y-4">
 
       {/* Title row — with close button in mobile drawer */}
-      <div className="flex items-center justify-between border-b border-slate-200 pb-3">
-        <h3 className="text-xl font-bold text-slate-900">Split PDF</h3>
-        {onClose && (
+      {/* <div className="flex items-center justify-between border-b border-slate-200 pb-3">
+        <h3 className="text-xl font-bold text-slate-900">Split PDF</h3> */}
+      {/* {onClose && (
           <button
             type="button"
             onClick={onClose}
@@ -173,8 +191,10 @@ function SplitSidebarOptions({
           >
             <X className="h-5 w-5" />
           </button>
-        )}
-      </div>
+        )} */}
+
+
+      {/* </div> */}
 
       {/* Tabs */}
       <div className="grid grid-cols-3 overflow-hidden rounded-xl border border-slate-200 bg-slate-50">
@@ -354,7 +374,7 @@ function SplitOptionsLayout({
   mergeExtracted, setMergeExtracted,
 }) {
   // Mobile drawer state
-  const [drawerOpen, setDrawerOpen] = useState(false);
+  // const [drawerOpen, setDrawerOpen] = useState(false);
 
   useEffect(() => {
     if (!file) return;
@@ -402,30 +422,34 @@ function SplitOptionsLayout({
 
   return (
     <>
-      {/* ── DESKTOP layout: side-by-side ── */}
-      <div className="hidden lg:flex h-[calc(100vh-80px)]">
-        {/* Left: Page thumbnails */}
-        <div className="flex-1 overflow-y-auto bg-slate-100 p-6">
-          <PagePreviewArea
-            file={file}
-            totalPages={totalPages}
-            selectedPages={selectedPages}
-            extractMode={extractMode}
-            handleTogglePage={handleTogglePage}
-            onRemoveFile={onRemoveFile}
-          />
-        </div>
 
-        {/* Right: Sidebar */}
-        <aside className="w-[350px] shrink-0 border-l border-slate-200 bg-white p-5 lg:sticky lg:top-0 lg:h-[calc(100vh-80px)] lg:overflow-y-auto">
+      <MobileDrawerLayout
+        drawerTitle="Split PDF"
+        mainContent={
+          <div className="min-h-screen bg-slate-100 p-4 lg:p-6">
+            <PagePreviewArea
+              file={file}
+              totalPages={totalPages}
+              selectedPages={selectedPages}
+              extractMode={extractMode}
+              handleTogglePage={handleTogglePage}
+              onRemoveFile={onRemoveFile}
+            />
+          </div>
+        }
+        drawerContent={
           <SplitSidebarOptions {...sidebarProps} />
-        </aside>
-      </div>
+        }
+        desktopSidebarWidth="w-[350px]"
+      />
+
+
+
 
       {/* ── MOBILE layout: full-width thumbnails + floating gear button + drawer ── */}
-      <div className="lg:hidden">
-        {/* Full-width page thumbnails area */}
-        <div className="min-h-screen bg-slate-100 p-4 pb-24">
+      {/* <div className="lg:hidden"> */}
+      {/* Full-width page thumbnails area */}
+      {/* <div className="min-h-screen bg-slate-100 p-4 pb-24">
           <PagePreviewArea
             file={file}
             totalPages={totalPages}
@@ -434,45 +458,48 @@ function SplitOptionsLayout({
             handleTogglePage={handleTogglePage}
             onRemoveFile={onRemoveFile}
           />
-        </div>
+        </div> */}
 
-        {/* Floating settings button — iLovePDF style */}
-        <button
+      {/* Floating settings button — iLovePDF style */}
+      {/* <button
           type="button"
           onClick={() => setDrawerOpen(true)}
           className="fixed bottom-6 right-4 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-[#f24d0d] text-white shadow-[0_8px_32px_rgba(242,77,13,0.45)] transition active:scale-95 hover:bg-[#dc4308]"
           aria-label="Open split settings"
         >
           <Settings2 className="h-6 w-6" />
-        </button>
+        </button> */}
 
-        {/* Backdrop */}
-        {drawerOpen && (
+      {/* Backdrop */}
+      {/* {drawerOpen && (
           <div
             className="fixed inset-0 z-40 bg-black/40 backdrop-blur-[2px] transition-opacity"
             onClick={() => setDrawerOpen(false)}
           />
-        )}
+        )} */}
 
-        {/* Drawer — slides in from right */}
-        <div
+      {/* Drawer — slides in from right */}
+      {/* <div
           className={`fixed inset-y-0 right-0 z-50 flex w-[min(360px,100vw)] flex-col bg-white shadow-2xl transition-transform duration-300 ease-in-out
             ${drawerOpen ? "translate-x-0" : "translate-x-full"}`}
-        >
-          {/* Drawer handle bar */}
-          <div className="flex items-center justify-center py-3">
+        > */}
+      {/* Drawer handle bar */}
+      {/* <div className="flex items-center justify-center py-3">
             <div className="h-1 w-10 rounded-full bg-slate-200" />
-          </div>
+          </div> */}
 
-          {/* Drawer content — scrollable */}
-          <div className="flex-1 overflow-y-auto px-5 pb-6">
+      {/* Drawer content — scrollable */}
+      {/* <div className="flex-1 overflow-y-auto px-5 pb-6">
             <SplitSidebarOptions
               {...sidebarProps}
               onClose={() => setDrawerOpen(false)}
             />
           </div>
         </div>
-      </div>
+      </div> */}
+
+
+
     </>
   );
 }
@@ -695,6 +722,7 @@ export default function SplitPdf({ seo }) {
         onConvert={handleConvert}
         onDownload={handleDownload}
         doneLinks={DONE_LINKS}
+        sidebarLinks={DONE_LINKS}
         customOptionsLayout={customOptionsLayout}
         optionsTitle="Split options"
         showOutputFormat={false}
@@ -714,45 +742,221 @@ export default function SplitPdf({ seo }) {
         sidebarDescription="Split any PDF into individual pages — every page becomes its own PDF file in a ZIP."
         sidebarNotice={SIDEBAR_NOTICE}
         sidebarFeatures={SIDEBAR_FEATURES}
+
+
+        // ============================================================
+        // SPLIT PDF — uploadLanding content
+        // PdfToWord.jsx pattern ke mutabiq — as-is paste karo
+        // ============================================================
+
         uploadLanding={{
           content: {
-            heroBadge: "✦ Free PDF Splitter · No Signup Required",
-            heroTitle: (<>Split PDF Files Online{" "}<em className="text-[#e8420a]"><br />for Free</em></>),
-            heroDescription: "Split PDF pages online in seconds. Extract, separate, or divide PDF files securely without signup or software. Free PDF splitter that works directly in your browser on Windows, Mac, Android, and iPhone.",
-            pills: ["Separate PDF pages", "ZIP download", "No quality loss", "Works on all devices"],
-            noticeItems: ["Every page becomes separate PDF", "All pages packed into ZIP", "Original quality preserved"],
-            seoBadge: "Split PDF Guide",
-            seoTitle: "Free Online Split PDF Tool by PDFLinx",
-            seoDescription: "Separate PDF pages into individual files online. Fast, secure, and no signup required.",
+            relatedTools: DONE_LINKS,
+
+            eyebrow: "SPLIT PDF",
+
+            breadcrumbCurrent: "Split PDF",
+
+            heroBadge: "✦ 100% Free · No Signup · No Watermark",
+
+            // heroTitle: (
+            //   <>
+            //     Split PDF Files —{" "}
+            //     <em className="font-bold text-[#e8420a] sm:italic">
+            //       Free, Online, Instant
+            //     </em>
+            //   </>
+            // ),
+
+            // heroDescription:
+            //   "Split a PDF into separate pages or custom page ranges online for free. Extract exactly the pages you need — no signup, no watermark, no software needed. Works on any device.",
+
+            // pills: [
+            //   "No watermark",
+            //   "Split by page range",
+            //   "Works on any device",
+            //   "Instant split",
+            // ],
+
+            heroTitle: (
+              <>
+                Split PDF Online —{" "}
+                <em className="font-bold text-[#e8420a] sm:italic">
+                  Extract & Separate Pages Free
+                </em>
+              </>
+            ),
+            heroDescription:
+              "Split PDF online for free — extract specific pages or divide your PDF into multiple files instantly. Choose page ranges or split every page. No signup, no watermark.",
+            pills: ["Split by page range", "Extract specific pages", "Multiple output files", "No signup"],
+
+
+            uploadTitle: "Drop your PDF here",
+            uploadSubtitle: "or click to browse — PDF files supported",
+
+            trustPills: ["100% Free", "No Sign Up", "No Watermark"],
+
+            noticeTitle: "PDF Split Info",
+            noticeItems: [
+              "Single PDF → split into pages or ranges",
+              "Custom page ranges supported",
+              "Downloads as ZIP (multiple files) or single PDF",
+            ],
+
+            rating: "4.9/5",
+            ratingText: "Trusted by 50,000+ users monthly",
+
+            pdfTypeSection: {
+              enabled: false,
+            },
+
+            howToEyebrow: "How It Works",
             howToTitle: "How to Split a PDF — 3 Simple Steps",
-            howToSubtitle: "Upload your PDF, split pages automatically, and download all files in one ZIP.",
+            howToSubtitle:
+              "No learning curve. Upload, choose pages, split — done in under 30 seconds.",
+
             howToSteps: [
-              { n: "1", title: "Upload Your PDF", desc: "Select your PDF file — any size, any number of pages. Drag and drop supported on all devices." },
-              { n: "2", title: "Click Split PDF", desc: "Hit the Split button — the tool separates every page into its own individual PDF file automatically." },
-              { n: "3", title: "Download ZIP", desc: "All split pages are packaged into a ZIP file — download and extract the individual PDF pages you need." },
+              {
+                n: "1",
+                title: "Upload Your PDF File",
+                desc: "Select the PDF you want to split from your device. Drag and drop is supported on all devices — mobile, tablet, and desktop.",
+                color: "bg-blue-600",
+              },
+              {
+                n: "2",
+                title: "Choose How to Split",
+                desc: "Split every page into individual files, or enter custom page ranges to extract exactly the sections you need — for example pages 1-5 or pages 3, 7, 12.",
+                color: "bg-purple-600",
+              },
+              {
+                n: "3",
+                title: "Download Split Files",
+                desc: "Click Split PDF and your files will be ready in seconds. Multiple pages download as a ZIP file. A single page range downloads as one PDF instantly.",
+                color: "bg-emerald-600",
+              },
             ],
-            whyTitle: "Why Use PDFLinx Split PDF Tool?",
-            faqTitle: "Split PDF FAQs",
-            faqs: [
-              { q: "Is the PDF splitter free to use?", a: "Yes. PDFLinx Split PDF is completely free — no hidden charges, no subscription required." },
-              { q: "Do I need to install any software to split a PDF?", a: "No. Everything works directly in your browser. No desktop software or plugins needed." },
-              { q: "How does the PDF get split — what do I receive?", a: "Every page in your PDF is separated into its own individual PDF file. All split pages are packaged into a ZIP file for download." },
-              { q: "Will the quality of my PDF pages change after splitting?", a: "No. PDFLinx extracts the original page data directly — no re-rendering or compression." },
-              { q: "Can I extract only specific pages from a PDF?", a: "Split the PDF to get all pages as individual files, then keep only the specific page PDFs you need from the ZIP." },
-              { q: "Are my uploaded PDF files safe and private?", a: "Yes. Files are processed securely and permanently deleted after splitting." },
-              { q: "Can I split a PDF on my phone?", a: "Yes. PDFLinx works on Android and iOS mobile devices, tablets, and all desktop browsers." },
-              { q: "How do I combine split pages back into one PDF?", a: "After splitting, use the Merge PDF tool — upload the individual page PDFs and download one merged PDF file." },
-            ],
-            relatedTitle: "More PDF Tools",
+
+            whyTitle: "Why PDFLinx is the Best Free PDF Splitter Online",
+
+            seoBadge: "Split PDF Guide",
+            seoTitle: "Complete Guide to Splitting PDF Files Online",
+            seoDescription:
+              "Everything you need to know about splitting a PDF into separate pages or custom ranges — free, online, instant. No watermark, no signup, no limits.",
+
             seoSections: [
-              { title: "Split Large PDF Files Easily", text: "Separate large PDF documents into smaller individual page files without losing quality." },
-              { title: "Keep Original PDF Quality", text: "All split PDF pages preserve original text, images, and formatting." },
-              { title: "Extract Individual PDF Pages", text: "Convert every page of your PDF into separate standalone PDF files for easier sharing and organization." },
-              { title: "Secure PDF Splitting Online", text: "Your uploaded PDF files are processed securely and automatically deleted after processing." },
+              {
+                title:
+                  "Free PDF Splitter — Split Any PDF into Pages or Ranges Online",
+                text: "Need to split a PDF? PDFLinx lets you split PDF files online for free — instantly and without any software installation. Whether you want to extract one page, a specific chapter, or split every page into individual files, PDFLinx handles it in seconds. No signup, no watermark, no file tricks. It is the best free online PDF splitter available today — works on Windows, Mac, iPhone, and Android.",
+              },
+              {
+                title: "What is PDF Splitting?",
+                text: "PDF splitting separates a single PDF document into multiple smaller files. You can split by individual pages — getting one PDF per page — or by custom page ranges to extract specific sections. This is useful when a large document contains multiple reports, chapters, or forms that need to be distributed or used separately. Each split file is a fully independent, properly formatted PDF.",
+              },
+              {
+                title: "How to Split a PDF Without Losing Quality",
+                text: "PDFLinx splits PDF files without any compression or quality loss. Every extracted page is preserved exactly as in the original — fonts, images, tables, hyperlinks, and formatting all remain intact. There is no re-encoding or re-rendering involved, which means each split PDF is identical in quality to its corresponding page in the original file.",
+              },
+              {
+                title:
+                  "Why PDFLinx is the Best Free PDF Splitter — No Watermark, No Limits",
+                text: "Most free PDF splitters add watermarks, limit the number of pages you can extract, or require account creation. PDFLinx does none of that — completely free, no signup, no watermark, and no limit on splits per day. Unlike iLovePDF free tier and Smallpdf free tier which restrict advanced splitting behind paid plans, PDFLinx gives you unlimited splits at zero cost.",
+              },
+              {
+                title: "Common Use Cases for Splitting PDFs",
+                text: "✓ Students & Researchers: Extract specific chapters or pages from a large PDF textbook or paper.\n✓ Professionals: Separate a combined report into individual sections for different team members.\n✓ Legal & Finance: Extract specific exhibits, clauses, or statements from large legal or financial documents.\n✓ HR Teams: Pull out individual forms or pages from bulk onboarding documents.\n✓ Freelancers: Deliver only the relevant pages to each client from a combined project file.\n✓ Anyone: Extract receipts, certificates, or specific pages from merged scan files.",
+              },
+              {
+                title:
+                  "Split PDF on iPhone, Android, Mac & Windows — No App Needed",
+                text: "PDFLinx works entirely in your browser — no download, no installation, no app required. On iPhone or Android, open your browser and upload directly from your files app. On Mac or Windows, drag and drop your PDF and download the split files in seconds. Whether you need to split a PDF on mobile or desktop, PDFLinx works seamlessly across every platform and operating system.",
+              },
+              {
+                title:
+                  "PDFLinx vs iLovePDF vs Smallpdf — Free PDF Splitter Comparison",
+                text: "iLovePDF and Smallpdf both restrict custom range splitting and batch extraction behind paid plans. Adobe Acrobat requires a monthly subscription to extract pages. PDFLinx offers unlimited free PDF splitting with custom page ranges, no account, and no watermark. For anyone looking for the best free iLovePDF alternative or Smallpdf alternative for splitting PDFs, PDFLinx is the clear choice.",
+              },
+              {
+                title: "Privacy and File Security",
+                text: "Your files are processed on secure servers and automatically deleted after 1 hour. We do not store, share, or access your documents at any point. PDFLinx is built with privacy-first principles — your data stays yours. All file transfers use encrypted HTTPS connections for complete security.",
+              },
+              {
+                title: "Split PDF vs Printing Selected Pages — Why a Proper Splitter is Better",
+                text: "Some people try to extract pages by printing to PDF and selecting a page range — but this approach can lose hyperlinks, reformat text, shift images, and reduce quality. A proper PDF splitter like PDFLinx extracts pages at the document level, preserving every element exactly as it is. No content is lost, no formatting is broken, and the result is a clean, high-quality PDF of exactly the pages you need.",
+              },
+              {
+                title: "Best For Everyday Document Management",
+                text: "Use split PDFs for targeted sharing, email attachments, specific submissions, and organized archiving. Each output is a standard PDF file compatible with Adobe Acrobat, Preview, Chrome, and every PDF viewer — easy to share and open on any device.",
+              },
             ],
-            showPdfTypes: false,
+
+            faqs: [
+              {
+                q: "Is PDFLinx PDF splitter free?",
+                a: "Yes, completely free. No hidden charges, no premium plans, and no limits on how many times you can split or how many pages you extract.",
+              },
+              {
+                q: "Can I split a PDF into individual pages?",
+                a: "Yes. Choose the 'Split every page' option and each page of your PDF will be saved as a separate PDF file, all packaged in a ZIP for easy download.",
+              },
+              {
+                q: "Can I extract a specific page range from a PDF?",
+                a: "Yes. Enter the page range you need — for example 1-5 or 3, 7, 12 — and PDFLinx will extract exactly those pages as a new PDF.",
+              },
+              {
+                q: "Do I need to sign up or create an account?",
+                a: "No account required. Upload your file and split instantly — no email, no registration, no friction.",
+              },
+              {
+                q: "Will the quality of my PDF be reduced after splitting?",
+                a: "No. PDFLinx splits files without any compression or quality loss. All pages, images, fonts, and formatting are preserved exactly as in the original.",
+              },
+              {
+                q: "Does PDFLinx add any watermark to the split PDF?",
+                a: "No watermarks, ever. Your split PDF files are 100% clean and ready to use or share.",
+              },
+              {
+                q: "Is my file secure and private?",
+                a: "Yes. Files are processed on secure servers over encrypted HTTPS and automatically deleted after 1 hour. We never store, share, or view your documents.",
+              },
+              {
+                q: "Can I use PDFLinx on mobile — iPhone and Android?",
+                a: "Yes. PDFLinx works perfectly in the browser on iPhone, Android, iPad, Windows, and Mac — no app download or installation needed.",
+              },
+              {
+                q: "What is the maximum file size I can upload?",
+                a: "Up to 50 MB per file. For very large PDFs, try compressing the file first using our free PDF Compress tool before splitting.",
+              },
+              {
+                q: "Can I split a password-protected PDF?",
+                a: "You need to unlock the PDF first before splitting. Use our free PDF Unlock tool to remove the password, then split it.",
+              },
+              {
+                q: "How will my split files be downloaded?",
+                a: "If you split into multiple files, they will be packaged into a single ZIP file for easy download. If you extract a single page range, it downloads as one PDF directly.",
+              },
+              {
+                q: "How long does splitting take?",
+                a: "Most splits complete within 5 to 15 seconds depending on file size and number of pages.",
+              },
+              {
+                q: "Is PDFLinx better than iLovePDF or Smallpdf for free splitting?",
+                a: "Yes — PDFLinx offers unlimited free splits with custom page range support, no daily limits, no watermark, and no account required. iLovePDF and Smallpdf restrict advanced splitting behind paid plans.",
+              },
+            ],
+
+            ctaTitle: (
+              <>
+                Split your PDF now —<br />
+                free, private, no sign‑up.
+              </>
+            ),
+            ctaDescription:
+              "Join thousands who trust PDFLinx for fast, clean PDF splitting every day.",
+            ctaButton: "Choose PDF File",
           },
         }}
+
       />
     </>
   );
@@ -784,29 +988,16 @@ export default function SplitPdf({ seo }) {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // "use client";
 
 // import { useState, useEffect, useRef, useCallback } from "react";
-// import { Scissors, GitMerge, FileText, Minimize2, Lock, X } from "lucide-react";
+// import { Scissors, GitMerge, FileText, Minimize2, Lock, X, Settings2 } from "lucide-react";
 // import Script from "next/script";
 // import { useProgressBar } from "@/hooks/useProgressBar";
 // import { useToolFlow } from "@/hooks/useToolFlow";
 // import ToolPageLayout from "@/components/ToolFlow/ToolPageLayout";
+// import MobileDrawerLayout from "@/components/ToolFlow/MobileDrawerLayout";
+
 
 // // ── CONFIG ─────────────────────────────────
 // const DONE_LINKS = [
@@ -845,7 +1036,6 @@ export default function SplitPdf({ seo }) {
 //   const [rendered, setRendered] = useState(false);
 //   const [visible, setVisible] = useState(false);
 
-//   // Lazy load — sirf tab render karo jab card visible ho viewport mein
 //   useEffect(() => {
 //     const el = wrapperRef.current;
 //     if (!el) return;
@@ -941,7 +1131,7 @@ export default function SplitPdf({ seo }) {
 // }
 // // ───────────────────────────────────────────
 
-// // ── Split Options Sidebar ───────────────────
+// // ── Split Options Sidebar (shared between desktop sidebar + mobile drawer) ─
 // function SplitSidebarOptions({
 //   activeTab, onTabChange,
 //   extractMode, onExtractModeChange,
@@ -951,6 +1141,7 @@ export default function SplitPdf({ seo }) {
 //   ranges, setRanges,
 //   pageRangeInput, onPageRangeChange,
 //   mergeExtracted, onMergeChange,
+//   onClose, // only used in mobile drawer
 // }) {
 //   const tabs = [
 //     { key: "range", label: "Range" },
@@ -963,10 +1154,19 @@ export default function SplitPdf({ seo }) {
 //   return (
 //     <div className="space-y-4">
 
-//       {/* Title */}
-//       <h3 className="border-b border-slate-200 pb-3 text-center text-xl font-bold text-slate-900">
-//         Split PDF
-//       </h3>
+//       {/* Title row — with close button in mobile drawer */}
+//       <div className="flex items-center justify-between border-b border-slate-200 pb-3">
+//         <h3 className="text-xl font-bold text-slate-900">Split PDF</h3>
+//         {onClose && (
+//           <button
+//             type="button"
+//             onClick={onClose}
+//             className="flex h-8 w-8 items-center justify-center rounded-full text-slate-400 hover:bg-slate-100 hover:text-slate-600 transition"
+//           >
+//             <X className="h-5 w-5" />
+//           </button>
+//         )}
+//       </div>
 
 //       {/* Tabs */}
 //       <div className="grid grid-cols-3 overflow-hidden rounded-xl border border-slate-200 bg-slate-50">
@@ -1012,7 +1212,6 @@ export default function SplitPdf({ seo }) {
 //         <div className="space-y-3">
 //           <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">Extract mode:</p>
 
-//           {/* Side-by-side pills */}
 //           <div className="flex overflow-hidden rounded-xl border border-slate-200">
 //             <button
 //               type="button"
@@ -1038,7 +1237,6 @@ export default function SplitPdf({ seo }) {
 //             </button>
 //           </div>
 
-//           {/* Info box */}
 //           {totalPages > 0 && (
 //             <div className="flex items-start gap-2.5 rounded-xl border border-blue-100 bg-blue-50 px-3.5 py-3">
 //               <div className="mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-blue-400">
@@ -1057,7 +1255,6 @@ export default function SplitPdf({ seo }) {
 //             </div>
 //           )}
 
-//           {/* Pages to extract input + Merge checkbox — select mode mein */}
 //           {extractMode === "select" && (
 //             <div className="space-y-3">
 //               <div>
@@ -1088,11 +1285,10 @@ export default function SplitPdf({ seo }) {
 //               </label>
 //             </div>
 //           )}
-
 //         </div>
 //       )}
 
-//       {/* ── RANGE TAB — Coming Soon ── */}
+//       {/* ── RANGE TAB ── */}
 //       {activeTab === "range" && (
 //         <div className="flex flex-col items-center justify-center gap-3 rounded-2xl border border-dashed border-slate-200 bg-slate-50 px-4 py-8 text-center">
 //           <div className="flex h-10 w-10 items-center justify-center rounded-full bg-slate-100">
@@ -1149,6 +1345,8 @@ export default function SplitPdf({ seo }) {
 //   pageRangeInput, setPageRangeInput,
 //   mergeExtracted, setMergeExtracted,
 // }) {
+//   // Mobile drawer state
+//   const [drawerOpen, setDrawerOpen] = useState(false);
 
 //   useEffect(() => {
 //     if (!file) return;
@@ -1177,82 +1375,149 @@ export default function SplitPdf({ seo }) {
 //       const newSelected = prev.includes(pageNum)
 //         ? prev.filter((p) => p !== pageNum)
 //         : [...prev, pageNum];
-//       // Sync text input with thumbnail clicks
 //       setPageRangeInput(newSelected.sort((a, b) => a - b).join(","));
 //       return newSelected;
 //     });
 //   }, [setSelectedPages, setPageRangeInput]);
 
+//   // Shared sidebar props
+//   const sidebarProps = {
+//     activeTab, onTabChange: setActiveTab,
+//     extractMode, onExtractModeChange: setExtractMode,
+//     selectedPages, totalPages,
+//     onConvert, files: file ? [file] : [],
+//     rangeMode, setRangeMode,
+//     ranges, setRanges,
+//     pageRangeInput, onPageRangeChange: setPageRangeInput,
+//     mergeExtracted, onMergeChange: setMergeExtracted,
+//   };
+
 //   return (
-//     <div className="flex h-[calc(100vh-80px)]">
-//       {/* Left: Page thumbnails */}
-//       <div className="flex-1 overflow-y-auto bg-slate-100 p-6">
-//         <div className="mb-5 flex items-center justify-between">
-//           <div className="flex items-center gap-3">
-//             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-white shadow-sm">
-//               <Scissors className="h-4 w-4 text-orange-500" />
-//             </div>
-//             <div>
-//               <p className="max-w-[280px] truncate text-sm font-bold text-slate-800">{file?.name}</p>
-//               <p className="text-xs text-slate-400">
-//                 {totalPages > 0 ? `${totalPages} page${totalPages !== 1 ? "s" : ""}` : "Loading..."}
-//               </p>
-//             </div>
-//           </div>
-//           <button
-//             type="button"
-//             onClick={() => onRemoveFile(0)}
-//             className="flex h-8 w-8 items-center justify-center rounded-full bg-white text-slate-300 shadow-sm transition hover:bg-red-50 hover:text-red-500"
-//           >
-//             <X className="h-4 w-4" />
-//           </button>
+//     <>
+//       {/* ── DESKTOP layout: side-by-side ── */}
+//       <div className="hidden lg:flex h-[calc(100vh-80px)]">
+//         {/* Left: Page thumbnails */}
+//         <div className="flex-1 overflow-y-auto bg-slate-100 p-6">
+//           <PagePreviewArea
+//             file={file}
+//             totalPages={totalPages}
+//             selectedPages={selectedPages}
+//             extractMode={extractMode}
+//             handleTogglePage={handleTogglePage}
+//             onRemoveFile={onRemoveFile}
+//           />
 //         </div>
 
-//         {totalPages > 0 ? (
-//           <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
-//             {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => (
-//               <PdfPageThumb
-//                 key={pageNum}
-//                 file={file}
-//                 pageNum={pageNum}
-//                 isSelected={selectedPages.includes(pageNum)}
-//                 onToggle={handleTogglePage}
-//                 extractMode={extractMode}
-//               />
-//             ))}
-//           </div>
-//         ) : (
-//           <div className="flex h-48 items-center justify-center">
-//             <div className="flex flex-col items-center gap-3 text-slate-400">
-//               <div className="h-8 w-8 animate-spin rounded-full border-2 border-slate-200 border-t-slate-400" />
-//               <p className="text-sm">Loading PDF pages...</p>
-//             </div>
-//           </div>
-//         )}
+//         {/* Right: Sidebar */}
+//         <aside className="w-[350px] shrink-0 border-l border-slate-200 bg-white p-5 lg:sticky lg:top-0 lg:h-[calc(100vh-80px)] lg:overflow-y-auto">
+//           <SplitSidebarOptions {...sidebarProps} />
+//         </aside>
 //       </div>
 
-//       {/* Right: Sidebar */}
-//       <aside className="w-[350px] shrink-0 border-l border-slate-200 bg-white p-5 lg:sticky lg:top-0 lg:h-[calc(100vh-80px)] lg:overflow-y-auto">
-//         <SplitSidebarOptions
-//           activeTab={activeTab}
-//           onTabChange={setActiveTab}
-//           extractMode={extractMode}
-//           onExtractModeChange={setExtractMode}
-//           selectedPages={selectedPages}
-//           totalPages={totalPages}
-//           onConvert={onConvert}
-//           files={file ? [file] : []}
-//           rangeMode={rangeMode}
-//           setRangeMode={setRangeMode}
-//           ranges={ranges}
-//           setRanges={setRanges}
-//           pageRangeInput={pageRangeInput}
-//           onPageRangeChange={setPageRangeInput}
-//           mergeExtracted={mergeExtracted}
-//           onMergeChange={setMergeExtracted}
-//         />
-//       </aside>
-//     </div>
+//       {/* ── MOBILE layout: full-width thumbnails + floating gear button + drawer ── */}
+//       <div className="lg:hidden">
+//         {/* Full-width page thumbnails area */}
+//         <div className="min-h-screen bg-slate-100 p-4 pb-24">
+//           <PagePreviewArea
+//             file={file}
+//             totalPages={totalPages}
+//             selectedPages={selectedPages}
+//             extractMode={extractMode}
+//             handleTogglePage={handleTogglePage}
+//             onRemoveFile={onRemoveFile}
+//           />
+//         </div>
+
+//         {/* Floating settings button — iLovePDF style */}
+//         <button
+//           type="button"
+//           onClick={() => setDrawerOpen(true)}
+//           className="fixed bottom-6 right-4 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-[#f24d0d] text-white shadow-[0_8px_32px_rgba(242,77,13,0.45)] transition active:scale-95 hover:bg-[#dc4308]"
+//           aria-label="Open split settings"
+//         >
+//           <Settings2 className="h-6 w-6" />
+//         </button>
+
+//         {/* Backdrop */}
+//         {drawerOpen && (
+//           <div
+//             className="fixed inset-0 z-40 bg-black/40 backdrop-blur-[2px] transition-opacity"
+//             onClick={() => setDrawerOpen(false)}
+//           />
+//         )}
+
+//         {/* Drawer — slides in from right */}
+//         <div
+//           className={`fixed inset-y-0 right-0 z-50 flex w-[min(360px,100vw)] flex-col bg-white shadow-2xl transition-transform duration-300 ease-in-out
+//             ${drawerOpen ? "translate-x-0" : "translate-x-full"}`}
+//         >
+//           {/* Drawer handle bar */}
+//           <div className="flex items-center justify-center py-3">
+//             <div className="h-1 w-10 rounded-full bg-slate-200" />
+//           </div>
+
+//           {/* Drawer content — scrollable */}
+//           <div className="flex-1 overflow-y-auto px-5 pb-6">
+//             <SplitSidebarOptions
+//               {...sidebarProps}
+//               onClose={() => setDrawerOpen(false)}
+//             />
+//           </div>
+//         </div>
+//       </div>
+//     </>
+//   );
+// }
+
+// // ── Shared page preview area (used in both desktop + mobile) ──
+// function PagePreviewArea({ file, totalPages, selectedPages, extractMode, handleTogglePage, onRemoveFile }) {
+//   return (
+//     <>
+//       {/* File header */}
+//       <div className="mb-5 flex items-center justify-between">
+//         <div className="flex items-center gap-3">
+//           <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-white shadow-sm">
+//             <Scissors className="h-4 w-4 text-orange-500" />
+//           </div>
+//           <div>
+//             <p className="max-w-[200px] truncate text-sm font-bold text-slate-800 sm:max-w-[280px]">{file?.name}</p>
+//             <p className="text-xs text-slate-400">
+//               {totalPages > 0 ? `${totalPages} page${totalPages !== 1 ? "s" : ""}` : "Loading..."}
+//             </p>
+//           </div>
+//         </div>
+//         <button
+//           type="button"
+//           onClick={() => onRemoveFile(0)}
+//           className="flex h-8 w-8 items-center justify-center rounded-full bg-white text-slate-300 shadow-sm transition hover:bg-red-50 hover:text-red-500"
+//         >
+//           <X className="h-4 w-4" />
+//         </button>
+//       </div>
+
+//       {/* Thumbnails grid */}
+//       {totalPages > 0 ? (
+//         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
+//           {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => (
+//             <PdfPageThumb
+//               key={pageNum}
+//               file={file}
+//               pageNum={pageNum}
+//               isSelected={selectedPages.includes(pageNum)}
+//               onToggle={handleTogglePage}
+//               extractMode={extractMode}
+//             />
+//           ))}
+//         </div>
+//       ) : (
+//         <div className="flex h-48 items-center justify-center">
+//           <div className="flex flex-col items-center gap-3 text-slate-400">
+//             <div className="h-8 w-8 animate-spin rounded-full border-2 border-slate-200 border-t-slate-400" />
+//             <p className="text-sm">Loading PDF pages...</p>
+//           </div>
+//         </div>
+//       )}
+//     </>
 //   );
 // }
 // // ───────────────────────────────────────────
@@ -1484,6 +1749,5 @@ export default function SplitPdf({ seo }) {
 //     </>
 //   );
 // }
-
 
 

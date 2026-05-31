@@ -101,7 +101,19 @@ const Footer = () => {
               Calculators
             </h4>
 
-            <ul className="space-y-3 text-sm text-gray-400">
+            <ul className="space-y-2 text-sm">
+              <li>
+                <Link href="/compress-pdf-savings-calculator" className="hover:text-indigo-400 transition flex items-center gap-1">
+                  Savings Calculator
+                </Link>
+              </li>
+              <li>
+                <span className="text-gray-600 text-xs">See how much you save by compressing</span>
+              </li>
+            </ul>
+
+
+            {/* <ul className="space-y-3 text-sm text-gray-400">
               <li>
                 <Link
                   href="/compress-pdf"
@@ -110,11 +122,11 @@ const Footer = () => {
                   Savings Calculator
                 </Link>
               </li>
-            </ul>
+            </ul> */}
 
-            <p className="text-xs text-gray-600 mt-3 leading-6">
+            {/* <p className="text-xs text-gray-600 mt-3 leading-6">
               See how much you save by compressing PDFs.
-            </p>
+            </p> */}
           </div>
 
           {/* Developers */}
@@ -123,20 +135,17 @@ const Footer = () => {
               Developers
             </h4>
 
-            <ul className="space-y-3 text-sm text-gray-400">
+            <ul className="space-y-2 text-sm">
               <li>
-                <Link
-                  href="/developers/embed-pdf-tools"
-                  className="hover:text-white transition"
-                >
+                <Link href="/embed-code" className="hover:text-indigo-400 transition flex items-center gap-1">
                   Embed PDF Tools
                 </Link>
               </li>
+              <li>
+                <span className="text-gray-600 text-xs">Add our tools to your site — free</span>
+              </li>
             </ul>
 
-            <p className="text-xs text-gray-600 mt-3 leading-6">
-              Add our PDF tools to your site — free.
-            </p>
           </div>
 
           {/* CTA */}

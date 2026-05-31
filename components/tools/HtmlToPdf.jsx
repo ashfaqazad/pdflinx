@@ -13,21 +13,34 @@ import {
   Upload,
   CheckCircle,
   Download,
-  FileText,
   Minimize2,
   GitMerge,
   Scissors,
+  FileText, Image as ImageIcon,
+  Shield, Stamp, Pencil, FileType
 } from "lucide-react";
 
 // ── Config ─────────────────────────────────────────────────────────────────
+// const DONE_LINKS = [
+//   { label: "Merge PDF", href: "/merge-pdf", icon: <GitMerge className="h-4 w-4 text-purple-500" /> },
+//   { label: "Compress PDF", href: "/compress-pdf", icon: <Minimize2 className="h-4 w-4 text-green-500" /> },
+//   { label: "Word to PDF", href: "/word-to-pdf", icon: <FileText className="h-4 w-4 text-blue-500" /> },
+//   { label: "Split PDF", href: "/split-pdf", icon: <Scissors className="h-4 w-4 text-pink-500" /> },
+//   { label: "PDF to Word", href: "/pdf-to-word", icon: <FileText className="h-4 w-4 text-indigo-500" /> },
+//   { label: "OCR PDF", href: "/ocr-pdf", icon: <FileCode className="h-4 w-4 text-amber-500" /> },
+// ];
+
 const DONE_LINKS = [
-  { label: "Merge PDF", href: "/merge-pdf", icon: <GitMerge className="h-4 w-4 text-purple-500" /> },
-  { label: "Compress PDF", href: "/compress-pdf", icon: <Minimize2 className="h-4 w-4 text-green-500" /> },
   { label: "Word to PDF", href: "/word-to-pdf", icon: <FileText className="h-4 w-4 text-blue-500" /> },
-  { label: "Split PDF", href: "/split-pdf", icon: <Scissors className="h-4 w-4 text-pink-500" /> },
-  { label: "PDF to Word", href: "/pdf-to-word", icon: <FileText className="h-4 w-4 text-indigo-500" /> },
-  { label: "OCR PDF", href: "/ocr-pdf", icon: <FileCode className="h-4 w-4 text-amber-500" /> },
+  { label: "Text to PDF", href: "/text-to-pdf", icon: <FileType className="h-4 w-4 text-yellow-500" /> },
+  { label: "Image to PDF", href: "/image-to-pdf", icon: <ImageIcon className="h-4 w-4 text-pink-500" /> },
+  { label: "Compress PDF", href: "/compress-pdf", icon: <Minimize2 className="h-4 w-4 text-green-500" /> },
+  { label: "Merge PDF", href: "/merge-pdf", icon: <GitMerge className="h-4 w-4 text-purple-500" /> },
+  { label: "Protect PDF", href: "/protect-pdf", icon: <Shield className="h-4 w-4 text-red-500" /> },
+  { label: "Add Watermark", href: "/add-watermark", icon: <Stamp className="h-4 w-4 text-teal-500" /> },
+  { label: "Edit PDF", href: "/edit-pdf", icon: <Pencil className="h-4 w-4 text-orange-500" /> },
 ];
+
 
 const SIDEBAR_NOTICE = (
   <>
@@ -381,6 +394,36 @@ export default function HtmlToPdf({ seo }) {
         }}
       />
 
+      <Script
+        id="software-schema-html-pdf"
+        type="application/ld+json"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "SoftwareApplication",
+            name: "HTML to PDF Converter - PDFLinx",
+            applicationCategory: "BusinessApplication",
+            operatingSystem: "Web Browser",
+            description: "Convert HTML to PDF online free — paste HTML code or enter a webpage URL. CSS styling, fonts, images, and layout fully preserved. No signup, no watermark.",
+            url: "https://pdflinx.com/html-to-pdf",
+            screenshot: "https://pdflinx.com/og-image.png",
+            offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+            featureList: [
+              "Convert HTML code to PDF",
+              "Convert webpage URL to PDF",
+              "CSS and fonts preserved",
+              "Inline and internal CSS supported",
+              "Free online HTML to PDF converter",
+              "No signup required",
+              "Secure file processing",
+              "Works on mobile and desktop"
+            ],
+            creator: { "@type": "Organization", name: "PDFLinx" }
+          }, null, 2),
+        }}
+      />
+
       {/* ── Tool UI ── */}
       <ToolPageLayout
         title={seo?.h1 || "HTML to PDF Converter (Free & Online)"}
@@ -394,7 +437,7 @@ export default function HtmlToPdf({ seo }) {
         onConvert={handleConvert}
         onDownload={() => { }}
         doneLinks={DONE_LINKS}
-
+        sidebarLinks={DONE_LINKS}
         optionsTitle="HTML input options"
         showOutputFormat={false}
         showPreserveLayout={false}
@@ -507,28 +550,52 @@ export default function HtmlToPdf({ seo }) {
         sidebarNotice={SIDEBAR_NOTICE}
         sidebarFeatures={SIDEBAR_FEATURES}
 
+
+        // ============================================================
+        // HTML TO PDF — uploadLanding content
+        // IMPORTANT: customUploadNode mein code logic as-is hai — mat chhona
+        // Mode toggle, textarea, URL input, file upload — sab as-is
+        // Sirf content strings polish kiye hain
+        // ============================================================
+
         uploadLanding={{
           content: {
+            relatedTools: DONE_LINKS,
             eyebrow: "HTML TO PDF CONVERTER",
+
+            // heroTitle: (
+            //   <>
+            //     Convert HTML to PDF <br />
+            //     <span className="bg-gradient-to-r from-orange-600 to-rose-500 bg-clip-text text-transparent">
+            //       Pixel-Perfect 🎯
+            //     </span>
+            //   </>
+            // ),
+
+            // heroDescription:
+            //   "Paste HTML code, enter a webpage URL, or upload an .html file — get a clean PDF with CSS, fonts, and layout fully preserved. No signup, no watermark, completely free.",
+
+            // bullets: [
+            //   "3 input modes: HTML code, webpage URL, or .html file upload",
+            //   "CSS, custom fonts, images & layout preserved",
+            //   "Headless browser rendering — pixel-perfect output",
+            // ],
 
             heroTitle: (
               <>
-                Convert HTML to PDF <br />
-                <span className="bg-gradient-to-r from-orange-600 to-rose-500 bg-clip-text text-transparent">
-                  Pixel-Perfect 🎯
-                </span>
+                HTML to PDF Converter —{" "}
+                <em className="font-bold text-[#e8420a] sm:italic">
+                  Convert Webpage to PDF Free
+                </em>
               </>
             ),
-
             heroDescription:
-              "Paste HTML code, enter a webpage URL, or upload an .html file — get a clean PDF with CSS, fonts, and layout fully preserved. No signup, no watermark, completely free.",
+              "Convert HTML files or any webpage URL to PDF online for free — layout, fonts, images, and styles preserved exactly as rendered. No signup, no software, instant download.",
+            pills: ["HTML file or URL", "Styles & layout preserved", "Instant PDF output", "No signup"],
 
-            bullets: [
-              "3 input modes: HTML code, webpage URL, or .html file upload",
-              "CSS, custom fonts, images & layout preserved",
-              "Headless browser rendering — pixel-perfect output",
-            ],
 
+
+            // ── Custom upload node — CODE LOGIC AS-IS, DO NOT TOUCH ──
             customUploadNode: (
               <div className="space-y-4 w-full">
                 {/* Mode Toggle */}
@@ -621,33 +688,14 @@ export default function HtmlToPdf({ seo }) {
                   </label>
                 )}
 
-                {/* <button
-                  type="button"
-                  onClick={handleInputReady}
-                  disabled={!isReady}
-                  className={`w-full flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm text-white transition-all duration-200 shadow-sm ${isReady
-                    ? "bg-gradient-to-r from-orange-600 to-rose-500 hover:from-orange-700 hover:to-rose-600 hover:shadow-md active:scale-[0.98]"
-                    : "bg-gray-200 text-gray-400 cursor-not-allowed"
-                    }`}
-                >
-                  <FileCode className="w-4 h-4" />
-                  Continue to Convert
-                </button> */}
-
-
                 <button
                   type="button"
                   onClick={handleConvert}
                   disabled={!isReady}
                   className={`w-full flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm text-white transition-all duration-200 shadow-sm ${isReady
-                      ? "bg-[#e8420a] hover:bg-[#d63a07] shadow-[0_4px_14px_rgba(232,66,10,0.35)] active:scale-[0.98]"
-                      : "bg-gray-200 text-gray-400 cursor-not-allowed"
+                    ? "bg-[#e8420a] hover:bg-[#d63a07] shadow-[0_4px_14px_rgba(232,66,10,0.35)] active:scale-[0.98]"
+                    : "bg-gray-200 text-gray-400 cursor-not-allowed"
                     }`}
-                // className={`w-full flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm text-white transition-all duration-200 shadow-sm ${isReady
-                //   ? "bg-gradient-to-r from-orange-600 to-rose-500 hover:from-orange-700 hover:to-rose-600 hover:shadow-md active:scale-[0.98]"
-                //   : "bg-gray-200 text-gray-400 cursor-not-allowed"
-                //   }`}
-
                 >
                   <FileCode className="w-4 h-4" />
                   Convert to PDF
@@ -660,7 +708,8 @@ export default function HtmlToPdf({ seo }) {
             ),
 
             privacyTitle: "Your files stay private",
-            privacyText: "HTML code and URLs are processed securely and permanently deleted after conversion. Never stored or shared with third parties.",
+            privacyText:
+              "HTML code and URLs are processed securely and permanently deleted after conversion. Never stored or shared with third parties.",
 
             noticeTitle: "HTML to PDF Modes",
             noticeItems: [
@@ -682,25 +731,25 @@ export default function HtmlToPdf({ seo }) {
               "Auto-deleted after conversion",
             ],
 
-            howToTitle: "How to Convert HTML to PDF",
+            howToTitle: "How to Convert HTML to PDF — 3 Simple Steps",
 
             howToSteps: [
               {
                 n: "1",
-                title: "Choose Input Mode",
-                desc: "Paste HTML code, enter a public webpage URL, or upload an .html file — all three modes supported.",
+                title: "Choose Your Input Mode",
+                desc: "Paste raw HTML code, enter any public webpage URL, or upload a saved .html file — all three modes produce the same pixel-perfect PDF output.",
                 color: "bg-orange-600",
               },
               {
                 n: "2",
                 title: "Click Convert to PDF",
-                desc: "PDFLinx renders your HTML using a headless browser — CSS styles, fonts, images, and layout preserved pixel-perfect.",
+                desc: "PDFLinx renders your HTML using a headless browser — CSS styles, custom fonts, images, flexbox layouts, and all visual elements are preserved exactly as in the browser.",
                 color: "bg-rose-600",
               },
               {
                 n: "3",
                 title: "Download PDF Instantly",
-                desc: "Your PDF downloads automatically — no watermark, no signup, auto-deleted after conversion.",
+                desc: "Your PDF downloads automatically — no watermark, no signup, and the file is permanently deleted from our servers after conversion.",
                 color: "bg-amber-600",
               },
             ],
@@ -712,29 +761,29 @@ export default function HtmlToPdf({ seo }) {
 
             whyItems: [
               {
-                title: "3 Input Modes",
-                desc: "Paste raw HTML code, enter any public webpage URL, or upload an .html file — all three modes produce the same pixel-perfect PDF output.",
+                title: "3 Input Modes in One Tool",
+                desc: "Paste raw HTML code with inline CSS, enter any public webpage URL, or upload a saved .html file — all three modes give you the same pixel-perfect PDF output without switching tools.",
                 icon: Code2,
                 iconColor: "text-orange-500",
                 bgColor: "bg-orange-50",
               },
               {
-                title: "CSS & Fonts Preserved",
-                desc: "CSS styling, custom fonts, colors, images, and complex layouts are all preserved — your PDF looks exactly like the original HTML.",
+                title: "CSS, Fonts & Layout Preserved",
+                desc: "CSS styling, Google Fonts, custom font-face, colors, borders, flexbox and grid layouts, and background images are all preserved — your PDF looks exactly like the original HTML.",
                 icon: CheckCircle,
                 iconColor: "text-rose-500",
                 bgColor: "bg-rose-50",
               },
               {
                 title: "Headless Browser Rendering",
-                desc: "HTML is rendered using a full headless browser — exactly as Chrome would display it — before converting to PDF for maximum accuracy.",
+                desc: "HTML is rendered using a full headless browser — exactly as Chrome or Edge would display it — before converting to PDF. No simplified rendering, no missing styles, no layout shifts.",
                 icon: Globe,
                 iconColor: "text-blue-500",
                 bgColor: "bg-blue-50",
               },
               {
                 title: "Works on Any Device",
-                desc: "Convert HTML to PDF on iPhone, Android, Windows, or Mac — no software installation needed. Fully browser-based.",
+                desc: "Convert HTML to PDF on iPhone, Android, Windows, or Mac — no software installation, no plugins, no app required. Fully browser-based and always free.",
                 icon: Download,
                 iconColor: "text-purple-500",
                 bgColor: "bg-purple-50",
@@ -743,58 +792,103 @@ export default function HtmlToPdf({ seo }) {
 
             relatedTitle: "You Might Also Need",
 
-            relatedTools: [
-              { label: "Merge PDF", href: "/merge-pdf", desc: "Combine multiple PDFs", icon: GitMerge, iconColor: "text-purple-500", bgColor: "bg-purple-50" },
-              { label: "Compress PDF", href: "/compress-pdf", desc: "Reduce PDF file size", icon: Minimize2, iconColor: "text-green-500", bgColor: "bg-green-50" },
-              { label: "Word to PDF", href: "/word-to-pdf", desc: "Convert DOCX to PDF", icon: FileText, iconColor: "text-blue-500", bgColor: "bg-blue-50" },
-              { label: "Split PDF", href: "/split-pdf", desc: "Extract specific pages", icon: Scissors, iconColor: "text-pink-500", bgColor: "bg-pink-50" },
-              { label: "PDF to Word", href: "/pdf-to-word", desc: "Convert PDF to editable DOCX", icon: FileText, iconColor: "text-indigo-500", bgColor: "bg-indigo-50" },
-              { label: "OCR PDF", href: "/ocr-pdf", icon: FileCode, iconColor: "text-amber-500", bgColor: "bg-amber-50", desc: "Make scanned PDFs searchable" },
-            ],
+            // relatedTools: [
+            //   { label: "Merge PDF", href: "/merge-pdf", desc: "Combine multiple PDFs", icon: GitMerge, iconColor: "text-purple-500", bgColor: "bg-purple-50" },
+            //   { label: "Compress PDF", href: "/compress-pdf", desc: "Reduce PDF file size", icon: Minimize2, iconColor: "text-green-500", bgColor: "bg-green-50" },
+            //   { label: "Word to PDF", href: "/word-to-pdf", desc: "Convert DOCX to PDF", icon: FileText, iconColor: "text-blue-500", bgColor: "bg-blue-50" },
+            //   { label: "Split PDF", href: "/split-pdf", desc: "Extract specific pages", icon: Scissors, iconColor: "text-pink-500", bgColor: "bg-pink-50" },
+            //   { label: "PDF to Word", href: "/pdf-to-word", desc: "Convert PDF to editable DOCX", icon: FileText, iconColor: "text-indigo-500", bgColor: "bg-indigo-50" },
+            //   { label: "OCR PDF", href: "/ocr-pdf", icon: FileCode, iconColor: "text-amber-500", bgColor: "bg-amber-50", desc: "Make scanned PDFs searchable" },
+            // ],
 
             faqTitle: "Frequently Asked Questions",
 
             faqs: [
-              { q: "Is the HTML to PDF converter free?", a: "Yes. PDFLinx HTML to PDF is completely free — no hidden charges, no subscription required." },
-              { q: "Do I need to install any software?", a: "No. Everything works directly in your browser. No desktop software, no plugins needed." },
-              { q: "Can I convert a live webpage URL to PDF?", a: "Yes. Switch to URL mode and paste any public webpage address. The tool renders the full page including CSS, images, and layout." },
-              { q: "Will CSS styles and fonts be preserved?", a: "Yes. CSS styling, custom fonts, colors, images, and layout are all preserved accurately in the converted PDF." },
-              { q: "Can I convert HTML with inline CSS to PDF?", a: "Yes. Both inline CSS and internal style blocks are fully supported. External stylesheets work when converting from a URL." },
-              { q: "Why are my images not showing in the converted PDF?", a: "In HTML Code mode, use base64-encoded images. External image URLs may not load in code mode. In URL mode, all images load normally." },
-              { q: "Can I convert a password-protected page?", a: "No. Only public pages accessible without login can be converted via URL mode. For private pages, copy the HTML source and use HTML Code mode instead." },
-              { q: "Are my HTML code and URLs safe and private?", a: "Yes. HTML code and URLs are processed securely and permanently deleted after conversion. Never stored or shared." },
-              { q: "Can I convert an .html file directly?", a: "Yes. Switch to the Upload .html File mode, select your .html or .htm file, and convert it directly to PDF." },
-              { q: "How do I optimize my HTML for better PDF output?", a: "Use a max-width of 794px, inline or internal CSS, base64 images in code mode, and @media print CSS rules to control page breaks." },
+              {
+                q: "Is the HTML to PDF converter free?",
+                a: "Yes, completely free. No hidden charges, no subscription required, and no limits on the number of conversions.",
+              },
+              {
+                q: "Do I need to install any software?",
+                a: "No. Everything works directly in your browser. No desktop software, no plugins, no extensions needed.",
+              },
+              {
+                q: "Can I convert a live webpage URL to PDF?",
+                a: "Yes. Switch to URL mode and paste any public webpage address. The tool renders the full page including CSS, images, fonts, and layout — exactly as it appears in a browser.",
+              },
+              {
+                q: "Will CSS styles and custom fonts be preserved?",
+                a: "Yes. CSS styling, Google Fonts, custom font-face declarations, colors, backgrounds, and layouts are all preserved accurately in the converted PDF.",
+              },
+              {
+                q: "Can I convert HTML with inline CSS to PDF?",
+                a: "Yes. Both inline CSS and internal style blocks are fully supported. External stylesheets are resolved when converting from a URL.",
+              },
+              {
+                q: "Why are my images not showing in the converted PDF?",
+                a: "In HTML Code mode, use base64-encoded images for best results — external image URLs may not load. In URL mode, all images load normally from their original servers.",
+              },
+              {
+                q: "Can I convert a password-protected or login-required page?",
+                a: "No. Only publicly accessible pages can be converted via URL mode. For private or login-protected pages, view the page in your browser, copy the HTML source, and use HTML Code mode instead.",
+              },
+              {
+                q: "Are my HTML code and URLs secure and private?",
+                a: "Yes. HTML code and URLs are processed securely over HTTPS and permanently deleted after conversion — never stored long-term, never shared with any third party.",
+              },
+              {
+                q: "Can I upload an .html file directly?",
+                a: "Yes. Switch to the Upload .html File mode, select your .html or .htm file from your device, and convert it directly to PDF in one step.",
+              },
+              {
+                q: "How do I get the best PDF output from my HTML?",
+                a: "Use a max page width of 794px, inline or internal CSS, base64 images in Code mode, and @media print CSS rules to control page breaks. Avoid JavaScript-dependent content for most reliable results.",
+              },
+              {
+                q: "Does JavaScript execute during HTML to PDF conversion?",
+                a: "Basic JavaScript may execute during headless browser rendering. However, content requiring user interaction, delayed API calls, or complex dynamic loading may not fully render. For best results, use HTML with content already present in the markup.",
+              },
+              {
+                q: "What is the difference between the three input modes?",
+                a: "HTML Code mode is for raw HTML with inline or internal CSS — ideal for invoice templates, email layouts, and custom pages. URL mode renders any live public webpage — best for archiving or saving web content. File Upload mode converts a saved .html or .htm file — convenient when you have a local HTML file ready.",
+              },
             ],
 
             ctaBadge: "✦ 100% Free",
             ctaTitle: "Convert HTML to PDF Now",
-            ctaDescription: "Fast. Secure. CSS preserved. No sign up required.",
-            ctaSubtext: "No limits. No hidden charges. 3 input modes.",
+            ctaDescription:
+              "Fast. Secure. CSS preserved. No sign up required.",
+            ctaSubtext: "No limits. No hidden charges. 3 input modes supported.",
             ctaButton: "Start Converting",
 
             seoSections: [
               {
-                title: "Free HTML to PDF Converter — Code, URL, or File",
-                text: "Need to save a webpage or convert an HTML template to PDF? PDFLinx renders your HTML using a headless browser — CSS styles, fonts, images, and layout preserved pixel-perfect. Three input modes: paste HTML code, enter a public URL, or upload an .html file. No software installation, no watermarks, no sign-up required.",
+                title:
+                  "Free HTML to PDF Converter — Code, Webpage URL, or .html File",
+                text: "Need to save a webpage or convert an HTML template to PDF? PDFLinx renders your HTML using a full headless browser — CSS styles, custom fonts, images, and layout preserved pixel-perfect in the output PDF. Three input modes available in one tool: paste raw HTML code with inline CSS, enter any public webpage URL, or upload a saved .html file directly. No software installation required, no watermarks added, no sign-up needed.",
               },
               {
-                title: "HTML Code vs Webpage URL vs File Upload",
-                text: "Use HTML Code mode for raw HTML markup with inline or internal CSS — email templates, invoices, custom pages. Use Webpage URL mode for any public live website — external stylesheets, images, and JavaScript all rendered. Use File Upload mode to convert a saved .html or .htm file directly to PDF.",
+                title: "HTML Code vs Webpage URL vs File Upload — Which Mode to Use",
+                text: "Use HTML Code mode for raw HTML markup with inline or internal CSS — email templates, invoice layouts, custom document pages, and any HTML you have written or copied. Use Webpage URL mode for any publicly accessible live website — external stylesheets, web fonts, images, and basic JavaScript are all rendered as the browser sees them. Use File Upload mode to convert a saved .html or .htm file from your device directly to PDF without copying and pasting the code.",
               },
               {
-                title: "Common Use Cases for HTML to PDF",
-                text: "Developers converting HTML invoice templates to PDF for client billing. Designers exporting HTML email designs to PDF for review. Marketers archiving landing pages as PDF records. Students saving webpages for offline reading. Anyone converting HTML documentation to PDF for distribution.",
+                title: "Common Use Cases for HTML to PDF Conversion",
+                text: "Developers converting HTML invoice and receipt templates to PDF for automated client billing workflows. Designers exporting HTML email layouts and newsletter designs to PDF for client review and approval. Marketers archiving web landing pages and campaign pages as PDF records. Students and researchers saving web articles, documentation pages, and online references as PDF for offline reading and citation. Businesses converting internal HTML reports and dashboards to PDF for distribution.",
               },
               {
                 title: "Privacy and File Security",
-                text: "HTML code and URLs submitted for conversion are processed securely and permanently deleted after conversion — never stored long-term, never shared with third parties. No account creation required. Your data remains completely private.",
+                text: "HTML code, file uploads, and URLs submitted for conversion are processed securely over encrypted HTTPS connections and permanently deleted from our servers after conversion — never stored long-term, never shared with any third party. No account creation required. Your content remains completely private throughout the process.",
+              },
+              {
+                title: "HTML to PDF vs Other Conversion Methods — Why PDFLinx is Better",
+                text: "The browser Print to PDF option adds unwanted headers, footers, URL text, and page break artifacts — and cannot be automated. Browser extensions for saving pages as PDF have inconsistent CSS support and do not handle external stylesheets well. Server-side tools like wkhtmltopdf and Puppeteer require technical setup, hosting, and maintenance. PDFLinx gives you headless browser-quality HTML to PDF conversion directly from your browser — no code, no server setup, no cost, and no compromise on rendering quality.",
               },
             ],
 
             showPdfTypes: false,
           },
         }}
+
       />
     </>
   );

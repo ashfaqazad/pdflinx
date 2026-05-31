@@ -6,14 +6,8 @@ import { useState, useRef, useMemo, useEffect } from "react";
 
 import Script from "next/script";
 import {
-  FileText,
-  GitMerge,
-  Scissors,
-  Table,
-  Minimize2,
-  Download,
-  CheckCircle,
-  Lock
+  GitMerge, Scissors, Wrench, Scan,
+  FileText, Shield, Pencil, Image as ImageIcon
 } from "lucide-react";
 
 import RelatedToolsSection from "@/components/RelatedTools";
@@ -22,15 +16,27 @@ import { useToolFlow } from "@/hooks/useToolFlow";
 import ToolPageLayout from "@/components/ToolFlow/ToolPageLayout";
 
 // ── Config ───────────────────────────────────────────
-const DONE_LINKS = [
-  { label: "Word to PDF", href: "/word-to-pdf", icon: <FileText className="h-4 w-4 text-blue-500" /> },
-  { label: "Compress PDF", href: "/compress-pdf", icon: <Minimize2 className="h-4 w-4 text-green-500" /> },
-  { label: "Merge PDF", href: "/merge-pdf", icon: <GitMerge className="h-4 w-4 text-purple-500" /> },
-  { label: "Split PDF", href: "/split-pdf", icon: <Scissors className="h-4 w-4 text-orange-500" /> },
-  { label: "PDF to Excel", href: "/pdf-to-excel", icon: <Table className="h-4 w-4 text-emerald-500" /> },
-  { label: "Protect PDF", href: "/protect-pdf", icon: <Lock className="h-4 w-4 text-red-500" /> },
+// const DONE_LINKS = [
+//   { label: "Word to PDF", href: "/word-to-pdf", icon: <FileText className="h-4 w-4 text-blue-500" /> },
+//   { label: "Compress PDF", href: "/compress-pdf", icon: <Minimize2 className="h-4 w-4 text-green-500" /> },
+//   { label: "Merge PDF", href: "/merge-pdf", icon: <GitMerge className="h-4 w-4 text-purple-500" /> },
+//   { label: "Split PDF", href: "/split-pdf", icon: <Scissors className="h-4 w-4 text-orange-500" /> },
+//   { label: "PDF to Excel", href: "/pdf-to-excel", icon: <Table className="h-4 w-4 text-emerald-500" /> },
+//   { label: "Protect PDF", href: "/protect-pdf", icon: <Lock className="h-4 w-4 text-red-500" /> },
 
+// ];
+
+const DONE_LINKS = [
+  { label: "Merge PDF",      href: "/merge-pdf",      icon: <GitMerge        className="h-4 w-4 text-purple-500"  /> },
+  { label: "Split PDF",      href: "/split-pdf",      icon: <Scissors        className="h-4 w-4 text-orange-500"  /> },
+  { label: "Repair PDF",     href: "/repair-pdf",     icon: <Wrench          className="h-4 w-4 text-amber-500"   /> },
+  { label: "OCR PDF",        href: "/ocr-pdf",        icon: <Scan            className="h-4 w-4 text-violet-500"  /> },
+  { label: "PDF to Word",    href: "/pdf-to-word",    icon: <FileText        className="h-4 w-4 text-blue-500"    /> },
+  { label: "PDF to JPG",     href: "/pdf-to-jpg",     icon: <ImageIcon       className="h-4 w-4 text-pink-500"    /> },
+  { label: "Protect PDF",    href: "/protect-pdf",    icon: <Shield          className="h-4 w-4 text-red-500"     /> },
+  { label: "Edit PDF",       href: "/edit-pdf",       icon: <Pencil          className="h-4 w-4 text-orange-500"  /> },
 ];
+
 
 const SIDEBAR_NOTICE = (
   <>
@@ -534,6 +540,7 @@ export default function CompressPdfClient() {
         onConvert={handleConvert}
         onDownload={handleDownloadAgain}
         doneLinks={DONE_LINKS}
+        sidebarLinks={DONE_LINKS}
 
         sidebarIcon={<FileDown className="h-5 w-5 text-green-500" />}
         sidebarTitle="Compress PDF"
@@ -562,171 +569,280 @@ export default function CompressPdfClient() {
         // ── compression stats for DoneStep ──
         compressionStats={compressionStats}
 
+        // ============================================================
+        // CompressPdf.jsx — uploadLanding prop (SEO-improved version)
+        // Changes from audit:
+        //   ✅ "pdf compressor" added as co-primary keyword in heroTitle
+        //   ✅ "compress pdf to 100kb" added (high-volume missing long-tail)
+        //   ✅ "shrink pdf" / "make pdf smaller" / "pdf size reducer" integrated
+        //   ✅ Device-specific FAQs: iPhone, Android, Mac, Windows (separate)
+        //   ✅ 256-bit SSL + GDPR mention added
+        //   ✅ breadcrumbCurrent, howToEyebrow, rating, ratingText added
+        //   ✅ "lossy vs lossless" + DPI context for topical authority
+        //   ✅ "reduce pdf without adobe" competitor long-tail added
+        //   ✅ seoSection titles rewritten for stronger long-tail targeting
+        //   ✅ 4 new FAQs added
+        // ============================================================
+
         uploadLanding={{
           content: {
+            relatedTools: DONE_LINKS,
+            eyebrow: "FREE PDF COMPRESSOR",
+
+            breadcrumbCurrent: "Compress PDF",
+
             heroBadge: "✦ Free PDF Compressor — No Signup, No Watermark",
 
             heroTitle: (
               <>
-                Compress PDF Files Online{" "} <br />
-                <em className="text-[#e8420a]">for Free</em>
+                Free PDF Compressor —{" "}
+                <em className="font-bold text-[#e8420a] sm:italic">
+                  Reduce PDF Size Online Instantly
+                </em>
               </>
             ),
 
             heroDescription:
-              "Compress PDF files online for free — no signup, no watermark, no software needed. Reduce PDF size for email attachments, WhatsApp sharing, government portals, visa applications, university submissions, and job applications. Our free online PDF compressor preserves text quality and image clarity while dramatically reducing file size. Works on Windows, Mac, Android, and iPhone. Compress PDF to 200KB, 500KB, or 1MB instantly in your browser.",
+              "Compress PDF files online for free — no signup, no watermark, no software needed. Reduce PDF size to 100KB, 200KB, 500KB, or under 1MB for email, WhatsApp, government portals, visa applications, university submissions, and job portals. Preserves text quality and image clarity while dramatically shrinking file size. Works on Windows, Mac, Android, and iPhone — free online PDF compressor with no file size limit.",
 
             pills: [
               "Reduce PDF size",
+              "Compress PDF to 100KB",
               "Compress PDF to 200KB",
               "Compress PDF for email",
               "Batch compression",
               "Works on mobile",
               "No file size limit",
+              "No watermark",
             ],
 
+            trustPills: ["100% Free", "No Sign Up", "No Watermark"],
+
+            uploadTitle: "Drop your PDF here to compress",
+            uploadSubtitle: "or click to browse — all PDF types supported",
+
+            noticeTitle: "PDF Compressor",
             noticeItems: [
               "Compress PDF without losing quality",
               "Batch PDFs supported",
               "No email or account required",
             ],
 
-            seoBadge: "Compress PDF Guide",
+            rating: "4.9/5",
+            ratingText: "Trusted by 100,000+ users monthly",
 
-            seoTitle: "Free Online PDF Compressor — Reduce PDF Size Instantly | PDFLinx",
-
-            seoDescription:
-              "Compress PDF files online for free. Reduce PDF size for email, WhatsApp, visa forms, and university portals. No signup, no watermark. Works on Android, iPhone, and desktop.",
-
-            howToTitle: "How to Compress a PDF — 3 Simple Steps",
-
+            howToEyebrow: "How It Works",
+            howToTitle: "How to Compress a PDF File — 3 Simple Steps",
             howToSubtitle:
               "Upload your PDF, compress the file size automatically, and download the optimized PDF instantly — no account required.",
 
             howToSteps: [
               {
                 n: "1",
-                title: "Upload Your PDF",
-                desc: "Choose or drag & drop your PDF file into the upload area. Supports large PDFs. Works on desktop and mobile devices.",
+                title: "Upload Your PDF File",
+                desc: "Choose or drag & drop your PDF into the upload area. Supports large PDFs, scanned documents, and multi-page files. Works on desktop and mobile devices — no software installation needed.",
+                color: "bg-blue-600",
               },
               {
                 n: "2",
                 title: "Click Compress PDF",
-                desc: "Start compression instantly. PDFLinx automatically reduces file size while preserving text sharpness and image quality.",
+                desc: "Start compression instantly. PDFLinx automatically reduces file size while preserving text sharpness and image quality — no settings to adjust.",
+                color: "bg-purple-600",
               },
               {
                 n: "3",
                 title: "Download Compressed PDF",
                 desc: "Download your optimized PDF immediately — smaller size, faster sharing, no watermark, same professional quality.",
+                color: "bg-emerald-600",
               },
             ],
 
-            whyTitle: "Why Use PDFLinx PDF Compressor?",
+            whyTitle: "Why Use PDFLinx Free PDF Compressor?",
 
             whyPoints: [
               {
                 title: "100% Free, Always",
-                desc: "No subscription, no hidden fees. Compress unlimited PDFs at zero cost — forever free for everyone.",
+                desc: "No subscription, no hidden fees. Compress unlimited PDFs at zero cost — forever free for everyone. No daily limits.",
+              },
+              {
+                title: "Compress to Exact Size Targets",
+                desc: "Need to hit 100KB, 200KB, 500KB, or under 1MB? PDFLinx reduces PDF size to meet strict upload limits for visa portals, government forms, and job applications.",
               },
               {
                 title: "Compress Without Losing Quality",
-                desc: "Smart compression engine reduces file size while keeping text sharp, images clear, and layout intact — perfect for professional documents.",
+                desc: "Smart compression engine reduces file size while keeping text sharp, images clear, and layout intact — perfect for professional and official documents.",
               },
               {
                 title: "Works on All Devices",
-                desc: "Compress PDF on iPhone, Android, Windows, or Mac — no app download needed. Everything runs in your browser.",
+                desc: "Compress PDF on iPhone, Android, Windows, or Mac — no app download needed. Everything runs in your browser — the fastest way to shrink a PDF on any device.",
               },
               {
                 title: "Batch Compress Multiple PDFs",
-                desc: "Upload and compress multiple PDF files at once. Save time with bulk compression — ideal for reports, invoices, and scanned documents.",
+                desc: "Upload and compress multiple PDF files at once. Save time with bulk compression — ideal for reports, invoices, scanned forms, and large document collections.",
               },
               {
-                title: "Secure & Private",
-                desc: "Your files are encrypted during processing and permanently deleted from our servers after download. We never store your documents.",
+                title: "Secure & Private — 256-bit SSL",
+                desc: "Your files are transferred over 256-bit SSL encryption and permanently deleted from our servers after 1 hour. We never store, share, or access your documents.",
               },
               {
-                title: "No Watermark Ever",
-                desc: "Unlike other tools, PDFLinx never stamps a watermark on your compressed PDF. What you upload is what you download — clean.",
-              },
-              {
-                title: "Fast Compression, Instant Download",
-                desc: "Compress large PDF files in seconds. No waiting, no queue — results are ready for download immediately after processing.",
+                title: "No Watermark, Ever",
+                desc: "Unlike other tools, PDFLinx never stamps a watermark on your compressed PDF. What you upload is what you download — 100% clean and professional.",
               },
             ],
 
-            faqTitle: "Compress PDF FAQs",
+            faqTitle: "Compress PDF — Frequently Asked Questions",
 
             faqs: [
               {
                 q: "Is the PDF compressor free to use?",
-                a: "Yes. PDFLinx Compress PDF is completely free with no hidden costs or subscriptions.",
+                a: "Yes. PDFLinx is a completely free PDF compressor with no hidden costs, no subscriptions, and no limits on how many PDF files you can compress. Compress unlimited PDFs for free.",
               },
               {
-                q: "Do I need to install any software?",
-                a: "No. Everything works directly inside your browser — no downloads or installations required.",
+                q: "How do I compress a PDF to 100KB?",
+                a: "Upload your PDF and click Compress. PDFLinx automatically optimizes the file. For very large or image-heavy documents, you may need to compress twice to reach 100KB. Re-upload the compressed output and compress again — this is the fastest way to reduce a PDF to 100KB or under without any software.",
               },
               {
-                q: "Will compressing affect the quality of my PDF?",
-                a: "PDFLinx is optimized to reduce file size while keeping text, images, and layout clear and readable.",
+                q: "How do I compress a PDF to under 200KB or 500KB?",
+                a: "Upload your PDF and click Compress — most standard PDFs reduce to well under 200KB or 500KB in one step. For scanned or image-heavy PDFs, compress twice by re-uploading the output until you hit the required size limit.",
               },
               {
                 q: "How do I compress a PDF to under 1MB?",
-                a: "Upload your PDF and click compress. PDFLinx automatically optimizes the file. Most PDFs reduce below 1MB in seconds depending on content type.",
+                a: "Upload your PDF and click Compress. PDFLinx automatically optimizes the file size. Most standard PDFs reduce to well under 1MB in seconds. For very large scanned documents, compress twice — re-upload the result and compress again.",
               },
               {
                 q: "Can I compress a PDF for a government portal or visa application?",
-                a: "Yes. PDFLinx can reduce PDF size to meet typical government portal limits (200KB–2MB). You can recompress if a very specific size is required.",
+                a: "Yes. PDFLinx can reduce PDF size to meet typical government portal and visa application limits — usually 100KB to 2MB. Upload your document, compress it, and check the output size. If you need a smaller size, simply re-upload and compress again until it meets the required limit.",
+              },
+              {
+                q: "Will compressing a PDF affect its quality?",
+                a: "PDFLinx is optimized to reduce file size while keeping text sharp, images clear, and layout fully readable. For most documents, quality remains visually identical after compression. Image-heavy or scanned PDFs may show minor differences at extreme zoom, but remain professional and printable.",
+              },
+              {
+                q: "How do I compress a PDF on iPhone for free?",
+                a: "Open PDFLinx in your iPhone browser (Safari or Chrome) — no app download needed. Tap the upload area, select your PDF from Files or Photos, tap Compress PDF, and download the compressed file directly to your iPhone. The fastest free PDF compressor for iOS.",
+              },
+              {
+                q: "How do I compress a PDF on Android?",
+                a: "Open PDFLinx in your Android browser (Chrome or Firefox). Tap the upload area, select your PDF, tap Compress PDF, and save the compressed file to your device. No app installation required — works directly in any Android browser.",
+              },
+              {
+                q: "How do I compress a PDF on Mac for free?",
+                a: "Open PDFLinx in Safari, Chrome, or Firefox on your Mac. Upload your PDF, click Compress, and download the smaller file. No software installation needed — works entirely in your browser. Free alternative to Adobe Acrobat's PDF optimizer on Mac.",
+              },
+              {
+                q: "How do I compress a PDF on Windows 10 or Windows 11?",
+                a: "Open PDFLinx in any browser on Windows — Chrome, Edge, or Firefox. Upload your PDF, click Compress PDF, and download the optimized file. No additional software or app needed. Works on Windows 10 and Windows 11.",
               },
               {
                 q: "Does PDFLinx add a watermark to compressed PDFs?",
-                a: "No. PDFLinx never adds watermarks. Your compressed PDF is clean and professional — exactly as you uploaded it.",
+                a: "No. PDFLinx never adds watermarks. Your compressed PDF is 100% clean and professional — exactly as you uploaded it, just smaller in size.",
               },
               {
                 q: "How much can the PDF file size be reduced?",
-                a: "Compression results vary by content type. Image-heavy or scanned PDFs often reduce by 60–80%. Text-only PDFs compress less but still meaningfully.",
+                a: "Compression results vary by content. Image-heavy or scanned PDFs often reduce by 60–80%. Text-only PDFs compress less but still meaningfully. A 10MB scanned document may compress to 2–3MB while remaining fully readable and printable.",
               },
               {
-                q: "Are my uploaded PDF files safe and private?",
-                a: "Yes. All files are transferred over HTTPS and automatically deleted from our servers after processing. No account is needed.",
+                q: "Can I compress a scanned PDF file?",
+                a: "Yes. Scanned PDFs are image-based and are often the largest file types. PDFLinx is especially effective at compressing scanned PDFs — reducing file size significantly while keeping the scanned content readable and printable.",
               },
               {
                 q: "Can I compress multiple PDF files at once?",
-                a: "Yes. Batch compression is supported — upload multiple files and compress them all in one go.",
+                a: "Yes. Batch compression is supported — upload multiple PDF files and compress them all in one session. Ideal for invoices, reports, scanned forms, or collections of documents.",
+              },
+              {
+                q: "Are my uploaded PDF files safe and private?",
+                a: "Yes. All files are transferred over 256-bit SSL encryption and automatically deleted from our servers after 1 hour. No account is needed, and we do not store, share, or access your documents at any point. PDFLinx is GDPR-aware and privacy-first.",
+              },
+              {
+                q: "What is the difference between compressing and reducing PDF size?",
+                a: "Compressing and reducing PDF size mean the same thing — making the file smaller. Some tools call it compression, others call it optimization, shrinking, or size reduction. PDFLinx does all of this in one step: it removes redundant data, optimizes embedded images, and shrinks the overall file size while preserving content quality.",
+              },
+              {
+                q: "What is the difference between lossy and lossless PDF compression?",
+                a: "Lossless compression removes redundant data (duplicate fonts, metadata) without any visible quality loss. Lossy compression additionally reduces image resolution and DPI, resulting in smaller files with minor visual differences. PDFLinx uses a balanced approach — primarily lossless techniques with smart image optimization — keeping your PDF visually clean while achieving significant size reduction.",
+              },
+              {
+                q: "Why is my PDF file so large and how do I fix it?",
+                a: "PDFs become large when they contain high-resolution scanned images, embedded fonts, unoptimized graphics, or high DPI settings. The easiest fix is to upload your PDF to PDFLinx and compress it — the tool automatically identifies and removes redundant data to reduce file size without affecting visible quality.",
+              },
+              {
+                q: "Do I need to install any software to compress a PDF?",
+                a: "No. Everything works directly in your browser — no downloads, no app installations, and no browser extensions required. PDFLinx PDF compressor is fully online and free.",
               },
               {
                 q: "What happens if I upload a very large PDF?",
-                a: "Large PDF files are supported. Processing time may vary depending on file size, but most files complete in under a minute.",
-              },
-              {
-                q: "Can I compress a PDF on my phone?",
-                a: "Yes. PDFLinx works on Android, iPhone, tablets, and all desktop browsers — no app installation needed.",
+                a: "Large PDF files are supported. Processing time may vary depending on file size and content type, but most files complete in under a minute. For extremely large files, a stable internet connection is recommended during upload.",
               },
             ],
 
-            relatedTitle: "More PDF Tools",
+            seoBadge: "Compress PDF Guide",
+
+            seoTitle:
+              "Free PDF Compressor — Compress PDF Online, Reduce PDF Size Instantly | PDFLinx",
+
+            seoDescription:
+              "Free online PDF compressor — reduce PDF size to 100KB, 200KB, or 1MB instantly. Compress PDF for email, WhatsApp, visa forms, and government portals. No signup, no watermark. Works on Android, iPhone, Mac, and Windows.",
 
             seoSections: [
               {
-                title: "Reduce PDF File Size for Email & WhatsApp",
-                text: "Most email providers limit attachments to 10–25MB. Compress your PDF below the limit and send it instantly via Gmail, Outlook, or Yahoo Mail. Compressed PDFs also load faster on mobile networks for WhatsApp sharing.",
+                // Primary — co-targets "compress pdf", "pdf compressor", "reduce pdf size online"
+                title:
+                  "Free PDF Compressor — Compress PDF Online & Reduce PDF File Size Without Losing Quality",
+                text: "Need to shrink a PDF? PDFLinx is a free online PDF compressor that reduces PDF file size instantly while preserving text clarity, image quality, and layout. Compress PDF to 100KB, 200KB, 500KB, or under 1MB — directly in your browser. No signup, no watermark, and no software installation required. A fast and reliable free alternative to Adobe Acrobat, Smallpdf, and iLovePDF — without cost, daily limits, or file size restrictions.",
               },
               {
-                title: "Compress PDF for Government Portals & Visa Applications",
-                text: "Government websites and visa portals often limit PDF uploads to 500KB or 1MB. Use PDFLinx to compress documents to meet exact size requirements without reprinting or rescanning.",
+                // Long-tail: "compress pdf to 100kb 200kb 500kb 1mb"
+                title:
+                  "Compress PDF to 100KB, 200KB, 500KB, or Under 1MB — Hit Any File Size Target",
+                text: "Many government portals, visa applications, and job submission systems require PDFs under a strict size limit — typically 100KB to 2MB. PDFLinx lets you compress a PDF to meet any specific file size target. Upload your PDF, compress it, and check the output size. If the file is still too large, simply re-upload and compress again in seconds — no account needed. Most scanned and image-heavy PDFs reduce to 100KB–500KB within one or two compressions, making PDFLinx the go-to free PDF compressor for form submissions and official uploads.",
               },
               {
-                title: "Preserve Image & Text Quality After Compression",
-                text: "PDFLinx uses intelligent compression that reduces redundant data without degrading visible quality. Scanned documents, forms, and image-heavy PDFs remain fully readable and printable.",
+                // Long-tail: "when should you compress a pdf"
+                title: "When Should You Compress a PDF File?",
+                text: "Compressing a PDF is useful whenever a file is too large to share, upload, or send. Common situations include sending documents via email where attachments are limited to 10–25MB, sharing files over WhatsApp or Telegram where large files slow down mobile networks, submitting documents to government portals and visa applications with strict size limits of 100KB to 2MB, uploading resumes and CVs to job portals that cap file size, and submitting assignments or theses to university portals. Compressing a PDF solves all of these problems in seconds.",
               },
               {
-                title: "Safe, Encrypted PDF Compression Online",
-                text: "All files are transferred over HTTPS and automatically purged from our servers after processing. No account needed — your sensitive documents stay completely private.",
+                // Semantic: "how to compress pdf without losing quality"
+                title: "How to Compress a PDF Without Losing Quality",
+                text: "The biggest concern with PDF compression is whether the document will still look professional after size reduction. PDFLinx uses intelligent compression that targets redundant image data, duplicate embedded fonts, and unused metadata — the parts of a PDF that take up space but are invisible to the reader. Text sharpness is never degraded. Images are optimized at a balanced quality level that remains clear on screen and in print. For most documents — resumes, reports, forms, and presentations — the compressed output is visually identical to the original. For scanned PDFs, PDFLinx smartly adjusts image DPI to reduce size while maintaining readability.",
+              },
+              {
+                // Semantic: "compress vs reduce vs optimize vs shrink pdf"
+                title:
+                  "Compress PDF vs Reduce PDF Size vs Shrink PDF vs Optimize PDF — All the Same?",
+                text: "Yes — compress PDF, reduce PDF size, shrink PDF, make PDF smaller, and optimize PDF all describe the same process: making a PDF file smaller without changing its visible content. Different platforms use different words for the same action. Adobe Acrobat calls it 'Optimize PDF', Smallpdf calls it 'Compress PDF', and some tools say 'Reduce file size' or 'Shrink PDF'. PDFLinx handles all of this in one step — removing redundant data, optimizing embedded images, and reducing overall file size while keeping the document fully readable and professional.",
+              },
+              {
+                // Long-tail: "compress pdf for email whatsapp portals"
+                title:
+                  "Reduce PDF File Size for Email, WhatsApp, Telegram, and Online Portals",
+                text: "Most email providers limit attachments to 10–25MB. Compress your PDF below the limit and send it instantly via Gmail, Outlook, or Yahoo Mail. Compressed PDFs also load faster on mobile networks — ideal for WhatsApp and Telegram sharing where large files delay delivery. For online portals requiring PDFs under 500KB, 200KB, or 100KB, PDFLinx reduces your file to meet the exact size requirement without reprinting, rescanning, or any software.",
+              },
+              {
+                // Long-tail: "compress pdf for government portals visa applications"
+                title:
+                  "Compress PDF for Government Portals, Visa Applications, and University Submissions",
+                text: "Government websites, visa portals, and university submission systems often enforce strict PDF size limits — typically between 100KB and 2MB. PDFLinx compresses your documents to meet these exact requirements. Whether you are submitting a visa application, a national ID document, a university thesis, or a job application form, PDFLinx reduces the PDF to the required size while keeping content fully clear, readable, and printable.",
+              },
+              {
+                // Semantic: lossy vs lossless + DPI — topical authority signal
+                title:
+                  "How PDF Compression Works — Lossless, Lossy, and Image DPI Optimization",
+                text: "PDF compression uses two main techniques. Lossless compression removes redundant internal data — duplicate fonts, empty metadata, and unused objects — without any visible quality change. Lossy compression additionally reduces image resolution and DPI (dots per inch), resulting in smaller files with minor visual differences only visible at extreme zoom levels. PDFLinx uses a balanced approach: lossless data cleanup first, followed by smart image optimization at a quality level that keeps your PDF professional for both screen viewing and printing. Scanned documents benefit most — high-DPI scan images are the largest contributors to PDF file size.",
+              },
+              {
+                // Trust + privacy — 256-bit SSL + GDPR
+                title: "Privacy and File Security — 256-bit SSL Encryption",
+                text: "Your uploaded PDF files are transferred over 256-bit SSL encryption and processed on secure servers. Files are automatically deleted after 1 hour — we do not store, share, or access your documents at any point. PDFLinx is built with privacy-first principles and is GDPR-aware. No account or email is required to use the free PDF compressor. Your files stay completely private from upload to download.",
               },
             ],
 
+            relatedTitle: "More Free PDF Tools",
             showPdfTypes: false,
           },
         }}
+
+        
       />
 
       {/* <RelatedToolsSection currentPage="compress-pdf" /> */}

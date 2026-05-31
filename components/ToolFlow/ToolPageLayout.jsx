@@ -56,6 +56,7 @@ export default function ToolPageLayout({
   downloadLabel = "Download File",
   resetLabel = "Convert another file",
   doneLinks = [],
+  sidebarLinks = [],
   compressionStats = null,
 
   uploadTitle = "Drop your PDF here",
@@ -79,21 +80,22 @@ export default function ToolPageLayout({
 
 
   // Component ke andar, return se pehle:
-useEffect(() => {
-  if (
-    flow.step === STEPS.OPTIONS ||
-    flow.step === STEPS.DONE
-  ) {
-    document.body.classList.add("hide-tool-footer");
-  } else {
-    document.body.classList.remove("hide-tool-footer");
-  }
+  useEffect(() => {
+    if (
+      flow.step === STEPS.OPTIONS ||
+      flow.step === STEPS.PROCESSING ||
+      flow.step === STEPS.DONE
+    ) {
+      document.body.classList.add("hide-tool-footer");
+    } else {
+      document.body.classList.remove("hide-tool-footer");
+    }
 
-  // Cleanup — page change hone par hata do
-  return () => {
-    document.body.classList.remove("hide-tool-footer");
-  };
-}, [flow.step]);
+    // Cleanup — page change hone par hata do
+    return () => {
+      document.body.classList.remove("hide-tool-footer");
+    };
+  }, [flow.step]);
 
 
   return (
@@ -237,6 +239,7 @@ useEffect(() => {
                   onDownload={onDownload}
                   onReset={flow.reset}
                   relatedLinks={doneLinks}
+                  sidebarLinks={sidebarLinks}
                   compressionStats={compressionStats}
                 />
               )}
@@ -309,8 +312,8 @@ useEffect(() => {
                           onClick={onConvert}
                           disabled={!flow.files.length}
                           className={`w-full rounded-xl px-5 py-4 text-base font-bold text-white transition active:scale-[0.98] ${flow.files.length
-                              ? "bg-[#f24d0d] hover:bg-[#dc4308] shadow-[0_10px_30px_rgba(242,77,13,0.38)]"
-                              : "cursor-not-allowed bg-slate-300"
+                            ? "bg-[#f24d0d] hover:bg-[#dc4308] shadow-[0_10px_30px_rgba(242,77,13,0.38)]"
+                            : "cursor-not-allowed bg-slate-300"
                             }`}
                         >
                           {convertLabel}
@@ -326,7 +329,9 @@ useEffect(() => {
                         Continue with...
                       </h3>
                       <div>
-                        {doneLinks.map((link, i) => (
+                        {/* {doneLinks.map((link, i) => ( */}
+                        {sidebarLinks.map((link, i) => (
+
                           <a
                             key={i}
                             href={link.href}
@@ -342,6 +347,8 @@ useEffect(() => {
                       </div>
                     </div>
                   )}
+
+
                 </aside>
               )}
           </div>

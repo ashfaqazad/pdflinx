@@ -2,6 +2,7 @@
 import { seoData } from "@/lib/seoData";
 import SplitPdfClient from "./SplitPdfClient";
 
+
 const SITE_URL = "https://pdflinx.com";
 
 function normalizePath(path = "/") {

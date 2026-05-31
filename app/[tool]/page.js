@@ -30,7 +30,7 @@ const componentMap = {
   "extract-pdf": () => import("@/components/tools/ExtractPdf"),
   "redact-pdf": () => import("@/components/tools/RedactPdf"),
   "repair-pdf": () => import("@/components/tools/RepairPdf"),
-  "pdf-to-power-point": () => import("@/components/tools/PdfToPowerPoint"),
+  "pdf-to-powerpoint": () => import("@/components/tools/PdfToPowerPoint"),
 
 };
 

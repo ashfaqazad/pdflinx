@@ -7,25 +7,31 @@ import { useToolFlow } from "@/hooks/useToolFlow";
 import ToolPageLayout from "@/components/ToolFlow/ToolPageLayout";
 
 import {
-  FileImage,
-  FileText,
-  Minimize2,
-  GitMerge,
-  Lock,
-  Scissors,
-  FilePlus,
-  Image as ImageIcon,
-} from "lucide-react";
+FileText, Image as ImageIcon, Scan, Minimize2, FileImage,
+RotateCw, Pencil, GitMerge, Crop} 
+from "lucide-react";
 
 // ── Config ─────────────────────────────────────────────────────────────────
+// const DONE_LINKS = [
+//   { label: "Image to PDF", href: "/image-to-pdf", icon: <ImageIcon className="h-4 w-4 text-amber-500" /> },
+//   { label: "Compress PDF", href: "/compress-pdf", icon: <Minimize2 className="h-4 w-4 text-green-500" /> },
+//   { label: "Split PDF", href: "/split-pdf", icon: <Scissors className="h-4 w-4 text-pink-500" /> },
+//   { label: "Merge PDF", href: "/merge-pdf", icon: <GitMerge className="h-4 w-4 text-purple-500" /> },
+//   { label: "PDF to Word", href: "/pdf-to-word", icon: <FileText className="h-4 w-4 text-blue-500" /> },
+//   { label: "Protect PDF", href: "/protect-pdf", icon: <Lock className="h-4 w-4 text-red-500" /> },
+// ];
+
 const DONE_LINKS = [
-  { label: "Image to PDF",  href: "/image-to-pdf", icon: <ImageIcon  className="h-4 w-4 text-amber-500"   /> },
-  { label: "Compress PDF",  href: "/compress-pdf",  icon: <Minimize2  className="h-4 w-4 text-green-500"   /> },
-  { label: "Split PDF",     href: "/split-pdf",     icon: <Scissors   className="h-4 w-4 text-pink-500"    /> },
-  { label: "Merge PDF",     href: "/merge-pdf",     icon: <GitMerge   className="h-4 w-4 text-purple-500"  /> },
-  { label: "PDF to Word",   href: "/pdf-to-word",   icon: <FileText   className="h-4 w-4 text-blue-500"    /> },
-  { label: "Protect PDF",   href: "/protect-pdf",   icon: <Lock       className="h-4 w-4 text-red-500"     /> },
+  { label: "PDF to PNG",     href: "/pdf-to-png",     icon: <ImageIcon       className="h-4 w-4 text-rose-500"    /> },
+  { label: "Image to PDF",   href: "/image-to-pdf",   icon: <ImageIcon       className="h-4 w-4 text-pink-500"    /> },
+  { label: "PDF to Word",    href: "/pdf-to-word",    icon: <FileText        className="h-4 w-4 text-blue-500"    /> },
+  { label: "OCR PDF",        href: "/ocr-pdf",        icon: <Scan            className="h-4 w-4 text-violet-500"  /> },
+  { label: "Compress PDF",   href: "/compress-pdf",   icon: <Minimize2       className="h-4 w-4 text-green-500"   /> },
+  { label: "Rotate PDF",     href: "/rotate-pdf",     icon: <RotateCw        className="h-4 w-4 text-cyan-500"    /> },
+  { label: "Edit PDF",       href: "/edit-pdf",       icon: <Pencil          className="h-4 w-4 text-orange-500"  /> },
+  { label: "Merge PDF",      href: "/merge-pdf",      icon: <GitMerge        className="h-4 w-4 text-purple-500"  /> },
 ];
+
 
 const SIDEBAR_NOTICE = (
   <>
@@ -209,6 +215,45 @@ export default function PdfToJpg({ seo }) {
         }}
       />
 
+      <Script
+        id="software-schema-pdf-jpg"
+        type="application/ld+json"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "SoftwareApplication",
+            name: "PDF to JPG",
+            applicationCategory: "BusinessApplication",
+            operatingSystem: "Web Browser",
+            url: "https://pdflinx.com/pdf-jpg",
+            description:
+              "Free online PDF to JPG converter. Convert PDF pages into high-quality JPG images instantly. Extract individual pages as JPG files while preserving image quality and clarity.",
+            image: "https://pdflinx.com/og-image.png",
+            offers: {
+              "@type": "Offer",
+              price: "0",
+              priceCurrency: "USD"
+            },
+            publisher: {
+              "@type": "Organization",
+              name: "PDFLinx",
+              url: "https://pdflinx.com"
+            },
+            featureList: [
+              "Convert PDF pages to JPG images",
+              "High-quality image output",
+              "Extract individual PDF pages",
+              "Download single or multiple JPG files",
+              "Batch PDF to JPG conversion",
+              "Fast online conversion",
+              "Works in any web browser",
+              "No software installation required"
+            ]
+          }, null, 2),
+        }}
+      />
+
       {/* ── Tool UI ── */}
       <ToolPageLayout
         title={seo?.h1 || "PDF to JPG Converter (Free & Online)"}
@@ -222,6 +267,7 @@ export default function PdfToJpg({ seo }) {
         onConvert={handleConvert}
         onDownload={handleDownload}
         doneLinks={DONE_LINKS}
+        sidebarLinks={DONE_LINKS}
 
         optionsTitle="Conversion options"
         showOutputFormat={false}
@@ -250,169 +296,214 @@ export default function PdfToJpg({ seo }) {
         sidebarFeatures={SIDEBAR_FEATURES}
 
         // uploadLanding={true}
+        // ============================================================
+        // PDF TO JPG — uploadLanding content
+        // PdfToWord.jsx pattern ke mutabiq — as-is paste karo
+        // ============================================================
+
         uploadLanding={{
           content: {
-          eyebrow: "PDF TO JPG CONVERTER",
+          relatedTools: DONE_LINKS,
+            eyebrow: "PDF TO JPG CONVERTER",
 
-          heroTitle: (
-            <>
-              Convert PDF to JPG <br />
-              in{" "}
-              <span className="bg-gradient-to-r from-amber-600 to-orange-500 bg-clip-text text-transparent">
-                Seconds ⚡
-              </span>
-            </>
-          ),
+            breadcrumbCurrent: "PDF to JPG Converter",
 
-          heroDescription:
-            "Extract every PDF page as a high-quality JPG image instantly — no signup, no watermark. Single-page PDF downloads as JPG. Multi-page PDF downloads as ZIP. Works on Windows, Mac, Android, and iOS.",
+            heroBadge: "✦ 100% Free · No Signup · No Watermark",
 
-          bullets: [
-            "Every PDF page extracted as a separate JPG image",
-            "High resolution output — sharp text and vibrant colors",
-            "Batch convert multiple PDFs at once",
-          ],
+            // heroTitle: (
+            //   <>
+            //     PDF to JPG Converter —{" "}
+            //     <em className="font-bold text-[#e8420a] sm:italic">
+            //       Free, Online, High Quality
+            //     </em>
+            //   </>
+            // ),
 
-          uploadTitle: "Drop your PDF here",
-          uploadSubtitle: "or click to browse — PDF files supported",
+            // heroDescription:
+            //   "Convert PDF pages to JPG images online for free. Each page becomes a high-quality JPG — no signup, no watermark, no software needed. Works on any device.",
 
-          privacyTitle: "Your files stay private",
-          privacyText: "Files are processed securely and automatically deleted after conversion. Never stored or shared.",
+            // pills: [
+            //   "No watermark",
+            //   "Each page to separate JPG",
+            //   "High resolution output",
+            //   "Instant conversion",
+            // ],
 
-          noticeTitle: "PDF to JPG Output",
-          noticeItems: [
-            "Single-page PDF → JPG directly",
-            "Multi-page PDF → ZIP with all JPGs",
-            "Multiple PDFs → batch ZIP download",
-          ],
 
-          breadcrumbItems: [
-            { label: "Home", href: "/" },
-            { label: "PDF Tools", href: "/pdf-tools" },
-            { label: "PDF to JPG" },
-          ],
+            heroTitle: (
+              <>
+                PDF to JPG Converter —{" "}
+                <em className="font-bold text-[#e8420a] sm:italic">
+                  High Quality, Free Online
+                </em>
+              </>
+            ),
+            heroDescription:
+              "Convert PDF to JPG online for free — extract every page as a high-resolution JPG image. Download individually or as a ZIP file. No signup, no watermark, no quality loss.",
+            pills: ["High-res JPG output", "All pages extracted", "ZIP download", "No watermark"],
 
-          trustPills: ["100% Free", "No Sign Up", "No Watermark"],
 
-          supports: [
-            "Supports PDF files",
-            "Auto-deleted after 1 hour",
-          ],
 
-          howToTitle: "How to Convert PDF to JPG",
+            uploadTitle: "Drop your PDF here",
+            uploadSubtitle: "or click to browse — PDF files supported",
 
-          howToSteps: [
-            {
-              n: "1",
-              title: "Upload Your PDF File(s)",
-              desc: "Select one PDF or upload multiple PDFs for batch conversion. Drag and drop supported on all devices.",
-              color: "bg-amber-600",
+            trustPills: ["100% Free", "No Sign Up", "No Watermark"],
+
+            noticeTitle: "PDF to JPG Conversion",
+            noticeItems: [
+              "Each PDF page → one JPG image",
+              "High resolution output",
+              "Multiple pages → ZIP download",
+            ],
+
+            rating: "4.9/5",
+            ratingText: "Trusted by 50,000+ users monthly",
+
+            pdfTypeSection: {
+              enabled: false,
             },
-            {
-              n: "2",
-              title: "Pages Rendered Automatically",
-              desc: "PDFLinx renders every page of your PDF as a high-quality JPG image — colors sharp, text clear, layout preserved.",
-              color: "bg-orange-600",
-            },
-            {
-              n: "3",
-              title: "Download JPG or ZIP",
-              desc: "Single-page PDF downloads as one JPG directly. Multi-page PDF downloads as a ZIP with one JPG per page.",
-              color: "bg-purple-600",
-            },
-          ],
 
-          visualImage: "/images/pdf-to-jpg-visual.png",
-          visualAlt: "PDF to JPG conversion illustration",
+            howToEyebrow: "How It Works",
+            howToTitle: "How to Convert PDF to JPG — 3 Simple Steps",
+            howToSubtitle:
+              "No learning curve. Upload, convert, download — done in under 30 seconds.",
 
-          whyTitle: "Why Choose PDFLinx PDF to JPG?",
+            howToSteps: [
+              {
+                n: "1",
+                title: "Upload Your PDF File",
+                desc: "Select your PDF from your device. Drag and drop supported on all devices — mobile, tablet, and desktop. Works with single-page and multi-page PDFs.",
+                color: "bg-blue-600",
+              },
+              {
+                n: "2",
+                title: "Choose Quality & Convert",
+                desc: "Select your preferred image quality — standard or high resolution. Click Convert and each page of your PDF is rendered as a sharp, clean JPG image.",
+                color: "bg-purple-600",
+              },
+              {
+                n: "3",
+                title: "Download Your JPG Images",
+                desc: "Single-page PDFs download as one JPG instantly. Multi-page PDFs are packaged into a ZIP file containing one JPG per page — ready to use immediately.",
+                color: "bg-emerald-600",
+              },
+            ],
 
-          whyItems: [
-            {
-              title: "High Resolution Output",
-              desc: "Every PDF page extracted at full resolution — text stays sharp, colors stay vibrant, no quality loss in the JPG output.",
-              icon: ImageIcon,
-              iconColor: "text-amber-500",
-              bgColor: "bg-amber-50",
-            },
-            {
-              title: "Smart Download",
-              desc: "Single-page PDF downloads as one JPG directly. Multi-page PDF downloads as ZIP with all JPGs inside — no manual work.",
-              icon: FileImage,
-              iconColor: "text-orange-500",
-              bgColor: "bg-orange-50",
-            },
-            {
-              title: "Batch Conversion",
-              desc: "Upload multiple PDFs at once — each processed separately and delivered as individual JPG or ZIP downloads.",
-              icon: FilePlus,
-              iconColor: "text-blue-500",
-              bgColor: "bg-blue-50",
-            },
-            {
-              title: "Works on Any Device",
-              desc: "Convert PDF to JPG on iPhone, Android, Windows, or Mac — no software installation needed. Fully browser-based.",
-              icon: Minimize2,
-              iconColor: "text-purple-500",
-              bgColor: "bg-purple-50",
-            },
-          ],
+            whyTitle: "Why PDFLinx is the Best Free PDF to JPG Converter Online",
 
-          relatedTitle: "You Might Also Need",
+            seoBadge: "PDF to JPG Guide",
+            seoTitle: "Complete Guide to Converting PDF to JPG Online",
+            seoDescription:
+              "Everything you need to know about converting PDF pages to JPG images — free, online, high resolution. No watermark, no signup, no limits.",
 
-          relatedTools: [
-            { label: "Image to PDF",  href: "/image-to-pdf", desc: "Convert JPGs back to PDF",       icon: ImageIcon,  iconColor: "text-amber-500",   bgColor: "bg-amber-50"   },
-            { label: "Compress PDF",  href: "/compress-pdf",  desc: "Reduce PDF file size",           icon: Minimize2,  iconColor: "text-green-500",   bgColor: "bg-green-50"   },
-            { label: "Split PDF",     href: "/split-pdf",     desc: "Extract specific pages",         icon: Scissors,   iconColor: "text-pink-500",    bgColor: "bg-pink-50"    },
-            { label: "Merge PDF",     href: "/merge-pdf",     desc: "Combine multiple PDFs",          icon: GitMerge,   iconColor: "text-violet-500",  bgColor: "bg-violet-50"  },
-            { label: "PDF to Word",   href: "/pdf-to-word",   desc: "Convert PDF to editable DOCX",   icon: FileText,   iconColor: "text-blue-500",    bgColor: "bg-blue-50"    },
-            { label: "Protect PDF",   href: "/protect-pdf",   desc: "Add password to PDF",            icon: Lock,       iconColor: "text-red-500",     bgColor: "bg-red-50"     },
-          ],
+            seoSections: [
+              {
+                title:
+                  "Free PDF to JPG Converter — Convert Every PDF Page to a High Quality JPG Image",
+                text: "Need to convert a PDF to JPG? PDFLinx lets you convert PDF pages to JPG images online for free — instantly and without any software installation. Whether it is a single-page document or a 50-page report, PDFLinx renders each page as a clean, high-resolution JPG image in seconds. No signup, no watermark, no hidden limits. It is the best free PDF to JPG converter available today — works on Windows, Mac, iPhone, and Android.",
+              },
+              {
+                title: "What is PDF to JPG Conversion?",
+                text: "PDF to JPG conversion renders each page of a PDF document as a standalone JPG image file. This is useful when you need to share PDF content as images, embed PDF pages into websites or presentations, use PDF content in image editing tools, or simply view PDF pages without a PDF reader. Each output JPG is a complete, high-resolution snapshot of the corresponding PDF page.",
+              },
+              {
+                title: "How Good is the JPG Quality After Conversion?",
+                text: "PDFLinx renders PDF pages at high resolution — giving you sharp, clear JPG images that accurately represent the original PDF content. Text remains readable, images look crisp, and the overall visual quality is maintained at a level suitable for both screen use and printing. You can choose between standard and high resolution depending on your needs — higher resolution gives larger file sizes but sharper output.",
+              },
+              {
+                title:
+                  "Why PDFLinx is the Best Free PDF to JPG Converter — No Watermark, No Limits",
+                text: "Most free PDF to JPG converters add watermarks, limit the number of pages you can convert, or reduce image quality on free plans. PDFLinx does none of that — completely free, no signup, no watermark, and no daily conversion limit. Unlike iLovePDF and Smallpdf which restrict high-resolution output and batch conversion on free tiers, PDFLinx gives you full-quality output at zero cost.",
+              },
+              {
+                title: "Common Use Cases for PDF to JPG Conversion",
+                text: "✓ Web Designers & Developers: Embed PDF content as images on websites, blogs, and portfolios without requiring a PDF viewer plugin.\n✓ Social Media: Share PDF pages as images on Instagram, Twitter, LinkedIn, and WhatsApp where PDF is not directly supported.\n✓ Presentations: Insert PDF pages as image slides into PowerPoint or Google Slides presentations.\n✓ Thumbnails & Previews: Generate preview thumbnails of PDF documents for display in apps or websites.\n✓ Image Editing: Open PDF content in Photoshop, Canva, or other image editors that don't support PDF directly.\n✓ Email Sharing: Attach PDF content as JPG images to emails when recipients may not have a PDF viewer.",
+              },
+              {
+                title:
+                  "Convert PDF to JPG on iPhone, Android, Mac & Windows — No App Needed",
+                text: "PDFLinx works entirely in your browser — no download, no installation, no app required. On iPhone or Android, open your browser and upload your PDF directly from your files app. On Mac or Windows, drag and drop your PDF and download the JPG images in seconds. Whether you need to convert PDF to JPG on mobile or desktop, PDFLinx works seamlessly across every platform and operating system.",
+              },
+              {
+                title: "Privacy and File Security",
+                text: "Your files are processed on secure servers and automatically deleted after 1 hour. We do not store, share, or access your documents at any point. PDFLinx is built with privacy-first principles — your data stays yours. All file transfers use encrypted HTTPS connections for complete security.",
+              },
+              {
+                title: "PDF to JPG vs Screenshot — Why a Proper Converter is Better",
+                text: "Taking a screenshot of a PDF page gives you a low-resolution image that looks blurry when zoomed in or printed. A proper PDF to JPG converter like PDFLinx renders each page at high resolution using the actual PDF content — text is sharp, images are clear, and the output is suitable for professional use. For multi-page PDFs, screenshots are also extremely time-consuming — PDFLinx converts all pages in one go.",
+              },
+              {
+                title: "JPG vs PNG — Which Format Should You Choose?",
+                text: "JPG is the best choice for most PDF to image conversions — it produces smaller file sizes that are easy to share via email, social media, and messaging apps, while still maintaining good visual quality. If your PDF contains text, diagrams, or content with sharp edges that need to be pixel-perfect, PNG may give slightly better results. For photos and full-color document pages, JPG is almost always the right choice. PDFLinx also offers PDF to PNG conversion if you need a lossless format.",
+              },
+            ],
 
-          faqTitle: "Frequently Asked Questions",
+            faqs: [
+              {
+                q: "Is PDFLinx PDF to JPG converter free?",
+                a: "Yes, completely free. No hidden charges, no premium plans, and no limits on the number of pages or conversions. Convert as many PDFs as you need at zero cost.",
+              },
+              {
+                q: "Do I need to sign up or create an account?",
+                a: "No account required. Upload your PDF and convert instantly — no email, no registration, no friction.",
+              },
+              {
+                q: "Will each page become a separate JPG image?",
+                a: "Yes. Each page of your PDF is converted into one individual JPG image. A single-page PDF gives you one JPG. A multi-page PDF gives you one JPG per page, all packaged in a ZIP.",
+              },
+              {
+                q: "What resolution are the output JPG images?",
+                a: "PDFLinx renders JPG images at high resolution by default — sharp enough for screen use, presentations, and standard printing. A high-resolution option is also available for larger, sharper output.",
+              },
+              {
+                q: "How will multi-page PDFs be downloaded?",
+                a: "Multi-page PDFs are converted to one JPG per page and packaged into a single ZIP file for easy download. Single-page PDFs download as one JPG directly.",
+              },
+              {
+                q: "Does PDFLinx add any watermark to the JPG images?",
+                a: "No watermarks, ever. Your converted JPG images are 100% clean and ready to use or share.",
+              },
+              {
+                q: "Is my file secure and private?",
+                a: "Yes. Files are processed on secure servers over encrypted HTTPS and automatically deleted after 1 hour. We never store, share, or view your documents.",
+              },
+              {
+                q: "Can I use PDFLinx on mobile — iPhone and Android?",
+                a: "Yes. PDFLinx works perfectly in the browser on iPhone, Android, iPad, Windows, and Mac — no app download or installation needed.",
+              },
+              {
+                q: "What is the maximum file size limit?",
+                a: "Up to 20 MB per file. For larger PDFs, try splitting the file first using our free PDF Split tool, then convert each part separately.",
+              },
+              {
+                q: "Can I convert a password-protected PDF to JPG?",
+                a: "You need to unlock the PDF first. Use our free PDF Unlock tool to remove the password, then convert to JPG.",
+              },
+              {
+                q: "What is the difference between PDF to JPG and PDF to PNG?",
+                a: "JPG uses compression and produces smaller file sizes — ideal for photos, sharing, and general use. PNG is lossless with larger file sizes — better for text-heavy documents or content needing sharp edges. PDFLinx offers both options.",
+              },
+              {
+                q: "How long does PDF to JPG conversion take?",
+                a: "Most conversions complete within 5 to 20 seconds depending on file size and the number of pages.",
+              },
+              {
+                q: "Is PDFLinx better than iLovePDF or Smallpdf for free PDF to JPG?",
+                a: "Yes — PDFLinx offers unlimited free conversions with high-resolution output, no daily limits, no watermark, and no account required. iLovePDF and Smallpdf restrict resolution and batch conversion behind paid plans.",
+              },
+            ],
 
-          faqs: [
-            { q: "Is the PDF to JPG converter free?", a: "Yes. PDFLinx PDF to JPG is completely free — no hidden charges, no subscription required." },
-            { q: "Do I need to install any software?", a: "No. Everything works directly in your browser. No desktop software, no plugins needed." },
-            { q: "What quality are the converted JPG images?", a: "JPG images are exported at high resolution — text stays sharp, colors vibrant, and layout preserved from the original PDF pages." },
-            { q: "How does the download work for single vs multi-page PDFs?", a: "Single-page PDFs download as one JPG file directly. Multi-page PDFs download as a ZIP file containing one JPG per page, named sequentially." },
-            { q: "Can I convert multiple PDF files at once?", a: "Yes. Upload multiple PDFs simultaneously — each is processed separately and delivered as individual JPG or ZIP downloads." },
-            { q: "Are my uploaded files safe and private?", a: "Yes. Files are processed securely and permanently deleted after conversion. Never stored or shared with third parties." },
-            { q: "Can I convert PDF to JPG on my phone?", a: "Yes. PDFLinx works on Android and iOS mobile devices, tablets, and all desktop browsers — no app required." },
-            { q: "What is the difference between JPG and PNG for PDF conversion?", a: "JPG is smaller in file size and universally compatible — best for social media and websites. PNG is lossless and better for sharp text-heavy pages." },
-            { q: "Can I convert the JPG images back to PDF?", a: "Yes. Use the Image to PDF tool on PDFLinx to convert your extracted JPG images back into a PDF document." },
-            { q: "What if I only need one page from a multi-page PDF?", a: "Use the Split PDF tool first to extract the specific page, then convert that single-page PDF to JPG for a direct download without a ZIP." },
-          ],
-
-          ctaBadge: "✦ 100% Free",
-          ctaTitle: "Start Converting PDF Pages to JPG Now",
-          ctaDescription: "Fast. Secure. Private. No sign up required.",
-          ctaSubtext: "No limits. No hidden charges.",
-          ctaButton: "Choose PDF File",
-
-          seoSections: [
-            {
-              title: "Free PDF to JPG Converter — Extract Every Page as a High-Quality Image",
-              text: "Need PDF pages as images for social media, a website, or a presentation? PDFLinx extracts every page from your PDF as a high-quality JPEG image — colors sharp, text clear, layout preserved. No software installation, no watermarks, no sign-up required.",
-            },
-            {
-              title: "How PDF to JPG Download Works",
-              text: "PDFLinx automatically detects the number of pages in your PDF. A single-page PDF downloads as one JPG directly. A multi-page PDF downloads as a ZIP containing one JPG per page. Multiple PDFs are processed separately and delivered individually.",
-            },
-            {
-              title: "Common Use Cases for PDF to JPG Conversion",
-              text: "Social media content — extract pages from PDF reports and share as images on Instagram and LinkedIn. Presentations — insert PDF pages as JPG into PowerPoint or Google Slides. Website use — convert PDF infographics and charts to JPG for embedding in web pages.",
-            },
-            {
-              title: "Privacy and File Security",
-              text: "Uploaded PDF files are processed securely and permanently deleted after conversion — never stored long-term, never shared with third parties. No account creation required. Your documents remain completely private.",
-            },
-          ],
-
-          showPdfTypes: false,
-        },
-        }}
-      />
+            ctaTitle: (
+              <>
+                Convert PDF to JPG now —<br />
+                free, private, no sign‑up.
+              </>
+            ),
+            ctaDescription:
+              "Join thousands who trust PDFLinx for fast, high-quality PDF to JPG conversion every day.",
+            ctaButton: "Choose PDF File",
+          },
+        }} />
     </>
   );
 }

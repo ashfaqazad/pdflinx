@@ -3,11 +3,6 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import {
   Crop,
-  Download,
-  ShieldCheck,
-  MonitorSmartphone,
-  CheckCircle,
-  Move,
   ScanLine,
   Info,
   RotateCcw,
@@ -17,6 +12,8 @@ import {
   ChevronLeft,
   ChevronRight,
   ArrowRight,
+  Pencil, RotateCw, Trash2, LayoutList,
+  Hash, Minimize2, GitMerge, PenLine
 } from "lucide-react";
 import Script from "next/script";
 import ToolPageLayout from "@/components/ToolFlow/ToolPageLayout";
@@ -24,6 +21,21 @@ import RelatedToolsSection from "@/components/RelatedTools";
 import { useToolFlow } from "@/hooks/useToolFlow";
 import { useProgressBar } from "@/hooks/useProgressBar";
 import { DEFAULT_DONE_LINKS, DEFAULT_SIDEBAR_FEATURES } from "@/lib/toolUiConfig";
+
+
+
+
+const DONE_LINKS = [
+  { label: "Edit PDF",       href: "/edit-pdf",       icon: <Pencil          className="h-4 w-4 text-orange-500"  /> },
+  { label: "Rotate PDF",     href: "/rotate-pdf",     icon: <RotateCw        className="h-4 w-4 text-cyan-500"    /> },
+  { label: "Remove Pages",   href: "/remove-pages",   icon: <Trash2          className="h-4 w-4 text-red-500"     /> },
+  { label: "Organize PDF",   href: "/organize-pdf",   icon: <LayoutList      className="h-4 w-4 text-blue-500"    /> },
+  { label: "Add Page Numbers", href: "/add-page-numbers", icon: <Hash        className="h-4 w-4 text-slate-500"   /> },
+  { label: "Compress PDF",   href: "/compress-pdf",   icon: <Minimize2       className="h-4 w-4 text-green-500"   /> },
+  { label: "Merge PDF",      href: "/merge-pdf",      icon: <GitMerge        className="h-4 w-4 text-purple-500"  /> },
+  { label: "Sign PDF",       href: "/sign-pdf",       icon: <PenLine         className="h-4 w-4 text-indigo-500"  /> },
+];
+
 
 // ── Crop Selection Component ──────────────────────────────────────────────────
 function CropCanvas({ file, cropRect, setCropRect, applyToPages, scale, setScale }) {
@@ -125,10 +137,10 @@ function CropCanvas({ file, cropRect, setCropRect, applyToPages, scale, setScale
       "ne": { x: rect.x + rect.w, y: rect.y },
       "sw": { x: rect.x, y: rect.y + rect.h },
       "se": { x: rect.x + rect.w, y: rect.y + rect.h },
-      "n":  { x: rect.x + rect.w / 2, y: rect.y },
-      "s":  { x: rect.x + rect.w / 2, y: rect.y + rect.h },
-      "w":  { x: rect.x, y: rect.y + rect.h / 2 },
-      "e":  { x: rect.x + rect.w, y: rect.y + rect.h / 2 },
+      "n": { x: rect.x + rect.w / 2, y: rect.y },
+      "s": { x: rect.x + rect.w / 2, y: rect.y + rect.h },
+      "w": { x: rect.x, y: rect.y + rect.h / 2 },
+      "e": { x: rect.x + rect.w, y: rect.y + rect.h / 2 },
     };
     for (const [key, p] of Object.entries(corners)) {
       if (Math.abs(pos.x - p.x) < HIT && Math.abs(pos.y - p.y) < HIT) return key;
@@ -201,10 +213,10 @@ function CropCanvas({ file, cropRect, setCropRect, applyToPages, scale, setScale
     { key: "ne", x: cropRect.x + cropRect.w, y: cropRect.y },
     { key: "sw", x: cropRect.x, y: cropRect.y + cropRect.h },
     { key: "se", x: cropRect.x + cropRect.w, y: cropRect.y + cropRect.h },
-    { key: "n",  x: cropRect.x + cropRect.w / 2, y: cropRect.y },
-    { key: "s",  x: cropRect.x + cropRect.w / 2, y: cropRect.y + cropRect.h },
-    { key: "w",  x: cropRect.x, y: cropRect.y + cropRect.h / 2 },
-    { key: "e",  x: cropRect.x + cropRect.w, y: cropRect.y + cropRect.h / 2 },
+    { key: "n", x: cropRect.x + cropRect.w / 2, y: cropRect.y },
+    { key: "s", x: cropRect.x + cropRect.w / 2, y: cropRect.y + cropRect.h },
+    { key: "w", x: cropRect.x, y: cropRect.y + cropRect.h / 2 },
+    { key: "e", x: cropRect.x + cropRect.w, y: cropRect.y + cropRect.h / 2 },
   ] : [];
 
   return (
@@ -434,6 +446,45 @@ export default function CropPdf() {
   return (
     <>
       <Script
+        id="howto-schema-crop-pdf"
+        type="application/ld+json"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "HowTo",
+            name: "How to Crop PDF Pages Online for Free",
+            description: "Crop and trim PDF pages in 3 quick steps. Upload your file, select the crop area, and download the cropped PDF instantly.",
+            url: "https://pdflinx.com/crop-pdf",
+            step: [
+              { "@type": "HowToStep", name: "Upload PDF", text: "Upload the PDF file whose pages you want to crop." },
+              { "@type": "HowToStep", name: "Select crop area", text: "Drag to select the area you want to keep on each page." },
+              { "@type": "HowToStep", name: "Download cropped PDF", text: "Click crop and download your trimmed PDF instantly." }
+            ],
+            totalTime: "PT30S",
+            estimatedCost: { "@type": "MonetaryAmount", value: "0", currency: "USD" },
+            image: "https://pdflinx.com/og-image.png"
+          }, null, 2),
+        }}
+      />
+
+      <Script
+        id="breadcrumb-schema-crop-pdf"
+        type="application/ld+json"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            itemListElement: [
+              { "@type": "ListItem", position: 1, name: "Home", item: "https://pdflinx.com" },
+              { "@type": "ListItem", position: 2, name: "Crop PDF", item: "https://pdflinx.com/crop-pdf" }
+            ]
+          }, null, 2),
+        }}
+      />
+
+      <Script
         id="faq-schema-crop-pdf"
         type="application/ld+json"
         strategy="afterInteractive"
@@ -442,22 +493,68 @@ export default function CropPdf() {
             "@context": "https://schema.org",
             "@type": "FAQPage",
             mainEntity: [
-              { "@type": "Question", name: "What does Crop PDF do?", acceptedAnswer: { "@type": "Answer", text: "Crop PDF removes unwanted outer areas, white margins, and extra space from PDF pages online." } },
-              { "@type": "Question", name: "Can I crop PDF pages online for free?", acceptedAnswer: { "@type": "Answer", text: "Yes. You can crop PDF pages online directly in your browser without installing software." } },
-              { "@type": "Question", name: "Will cropping reduce PDF quality?", acceptedAnswer: { "@type": "Answer", text: "No. Cropping only trims visible page areas and does not reduce PDF quality." } },
-            ],
-          }),
+              {
+                "@type": "Question",
+                name: "Is the Crop PDF tool free?",
+                acceptedAnswer: { "@type": "Answer", text: "Yes. PDFLinx lets you crop PDF pages online for free with no signup required." }
+              },
+              {
+                "@type": "Question",
+                name: "What does Crop PDF do?",
+                acceptedAnswer: { "@type": "Answer", text: "Crop PDF removes unwanted outer areas, white margins, and extra space from PDF pages — you select the area to keep and the rest is trimmed." }
+              },
+              {
+                "@type": "Question",
+                name: "Can I crop all pages at once?",
+                acceptedAnswer: { "@type": "Answer", text: "Yes. You can apply the same crop area to all pages of your PDF in one click." }
+              },
+              {
+                "@type": "Question",
+                name: "Will cropping reduce PDF quality?",
+                acceptedAnswer: { "@type": "Answer", text: "No. Cropping only trims the visible page area and does not reduce PDF resolution or quality." }
+              },
+              {
+                "@type": "Question",
+                name: "Are my files safe?",
+                acceptedAnswer: { "@type": "Answer", text: "Yes. All uploaded files are processed securely and deleted automatically after a short time." }
+              },
+              {
+                "@type": "Question",
+                name: "Can I crop PDF on mobile?",
+                acceptedAnswer: { "@type": "Answer", text: "Yes. PDFLinx works on desktop, tablet, and mobile browsers without any software installation." }
+              }
+            ]
+          }, null, 2),
         }}
       />
 
       <Script
-        src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"
+        id="software-schema-crop-pdf"
+        type="application/ld+json"
         strategy="afterInteractive"
-        onReady={() => {
-          if (window?.pdfjsLib) {
-            window.pdfjsLib.GlobalWorkerOptions.workerSrc =
-              "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
-          }
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "SoftwareApplication",
+            name: "Crop PDF - PDFLinx",
+            applicationCategory: "BusinessApplication",
+            operatingSystem: "Web Browser",
+            description: "Crop PDF pages online free — trim margins, remove white borders, or select a custom crop area on any PDF page. No signup, no watermark.",
+            url: "https://pdflinx.com/crop-pdf",
+            screenshot: "https://pdflinx.com/og-image.png",
+            offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+            featureList: [
+              "Crop PDF pages online",
+              "Remove white margins from PDF",
+              "Custom crop area selection",
+              "Apply crop to all pages",
+              "Free online PDF crop tool",
+              "No signup required",
+              "Secure file processing",
+              "Works on mobile and desktop"
+            ],
+            creator: { "@type": "Organization", name: "PDFLinx" }
+          }, null, 2),
         }}
       />
 
@@ -473,6 +570,7 @@ export default function CropPdf() {
         onConvert={handleConvert}
         onDownload={handleDownload}
         doneLinks={DEFAULT_DONE_LINKS}
+        sidebarLinks={DONE_LINKS}
         showOutputFormat={false}
         showPreserveLayout={false}
         processingTitle="Cropping PDF..."
@@ -597,11 +695,10 @@ export default function CropPdf() {
                           >
                             {/* iLovePDF green radio */}
                             <div
-                              className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all ${
-                                applyToPages === opt.value
-                                  ? "border-[#4caf50] bg-[#4caf50]"
-                                  : "border-slate-300 bg-white"
-                              }`}
+                              className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all ${applyToPages === opt.value
+                                ? "border-[#4caf50] bg-[#4caf50]"
+                                : "border-slate-300 bg-white"
+                                }`}
                             >
                               {applyToPages === opt.value && (
                                 <div className="w-2 h-2 rounded-full bg-white" />
@@ -633,11 +730,10 @@ export default function CropPdf() {
                       type="button"
                       onClick={handleConvert}
                       disabled={!file || !cropRect || cropRect.w < 10}
-                      className={`w-full rounded-xl px-5 py-3.5 text-base font-bold text-white transition-all active:scale-[0.98] flex items-center justify-center gap-2 ${
-                        file && cropRect && cropRect.w > 10
-                          ? "bg-[#f24d0d] hover:bg-[#db4309] shadow-lg shadow-orange-200"
-                          : "cursor-not-allowed bg-slate-200 text-slate-400"
-                      }`}
+                      className={`w-full rounded-xl px-5 py-3.5 text-base font-bold text-white transition-all active:scale-[0.98] flex items-center justify-center gap-2 ${file && cropRect && cropRect.w > 10
+                        ? "bg-[#f24d0d] hover:bg-[#db4309] shadow-lg shadow-orange-200"
+                        : "cursor-not-allowed bg-slate-200 text-slate-400"
+                        }`}
                     >
                       <span>{file ? "Crop PDF" : "Upload a PDF first"}</span>
                       {file && cropRect && cropRect.w > 10 && (
@@ -651,54 +747,217 @@ export default function CropPdf() {
           </div>
         }
 
+        // ============================================================
+        // CROP PDF — uploadLanding content
+        // PdfToWord.jsx pattern ke mutabiq — as-is paste karo
+        // ============================================================
+
         uploadLanding={{
           content: {
-            eyebrow: "CROP PDF",
+          relatedTools: DONE_LINKS,
+
+            eyebrow: "CROP PDF PAGES",
+
+            breadcrumbCurrent: "Crop PDF",
+
+            heroBadge: "✦ 100% Free · No Signup · No Watermark",
+
             heroTitle: (
               <>
-                Crop PDF Pages <br />
-                <em className="font-bold not-italic text-[#e8420a] sm:italic">online instantly</em>
+                Crop PDF Pages —{" "}
+                <em className="font-bold text-[#e8420a] sm:italic">
+                  Free, Online, Precise Margins
+                </em>
               </>
             ),
+
             heroDescription:
-              "Crop PDF online for free. Remove white margins, trim page edges, and resize visible page areas directly in your browser without installing software.",
-            noticeTitle: "Crop PDF features",
-            noticeItems: ["Remove white margins", "Trim unwanted page areas", "Preserve PDF quality"],
-            howToTitle: "How to crop a PDF",
-            howToSubtitle: "Upload your PDF, drag to select crop area, and download instantly.",
+              "Crop any PDF page online for free. Remove unwanted margins, whitespace, or borders — crop all pages uniformly or each page individually. No signup, no watermark, no software needed. Works on any device.",
+
+            pills: [
+              "No watermark",
+              "Crop all pages or individual pages",
+              "Remove margins & whitespace",
+              "Instant download",
+            ],
+
+            uploadTitle: "Drop your PDF here",
+            uploadSubtitle: "or click to browse — PDF files supported",
+
+            trustPills: ["100% Free", "No Sign Up", "No Watermark"],
+
+            noticeTitle: "Crop PDF Info",
+            noticeItems: [
+              "Set crop margins — top, bottom, left, right",
+              "Apply to all pages or specific pages",
+              "Cropped area removed permanently",
+            ],
+
+            rating: "4.9/5",
+            ratingText: "Trusted by 50,000+ users monthly",
+
+            pdfTypeSection: {
+              enabled: false,
+            },
+
+            howToEyebrow: "How It Works",
+            howToTitle: "How to Crop a PDF — 3 Simple Steps",
+            howToSubtitle:
+              "No learning curve. Upload, set crop area, download — done in under 30 seconds.",
+
             howToSteps: [
-              { n: "1", title: "Upload your PDF", desc: "Select your PDF file from your device.", color: "bg-blue-600" },
-              { n: "2", title: "Drag to select crop area", desc: "Click and drag on the PDF preview to select the area you want to keep.", color: "bg-purple-600" },
-              { n: "3", title: "Download cropped PDF", desc: "Save your cleaned and trimmed PDF instantly.", color: "bg-emerald-600" },
+              {
+                n: "1",
+                title: "Upload Your PDF File",
+                desc: "Select your PDF from your device. Drag and drop supported on all devices — mobile, tablet, and desktop. All pages load instantly so you can see exactly what needs cropping.",
+                color: "bg-blue-600",
+              },
+              {
+                n: "2",
+                title: "Set Your Crop Area",
+                desc: "Drag the crop handles to define the area you want to keep, or enter precise margin values for top, bottom, left, and right. Apply the same crop to all pages or set different crops per page.",
+                color: "bg-purple-600",
+              },
+              {
+                n: "3",
+                title: "Download Your Cropped PDF",
+                desc: "Click Crop and your trimmed PDF is ready in seconds. The defined crop area is applied permanently — all unwanted margins and whitespace removed cleanly.",
+                color: "bg-emerald-600",
+              },
             ],
-            whyTitle: "Why use PDFLinx Crop PDF?",
-            whyItems: [
-              { title: "Remove White Margins", desc: "Clean up scanned PDFs and remove extra outer white space.", icon: Crop, iconColor: "text-orange-500", bgColor: "bg-orange-100" },
-              { title: "Preserve Quality", desc: "Cropping does not reduce PDF quality or text sharpness.", icon: CheckCircle, iconColor: "text-green-600", bgColor: "bg-green-100" },
-              { title: "Fast Online Tool", desc: "Crop PDFs directly in your browser with instant processing.", icon: Download, iconColor: "text-purple-600", bgColor: "bg-purple-100" },
-              { title: "Works on Any Device", desc: "Compatible with Windows, Mac, Android, iPhone, and tablets.", icon: MonitorSmartphone, iconColor: "text-blue-600", bgColor: "bg-blue-100" },
-              { title: "Private & Secure", desc: "Files are securely processed and automatically deleted.", icon: ShieldCheck, iconColor: "text-emerald-600", bgColor: "bg-emerald-100" },
-            ],
-            seoBadge: "PDF Crop Tool",
-            seoTitle: "Crop PDF Online Free",
-            seoDescription: "Remove white margins and unwanted page areas from PDF files online for free. Crop PDFs instantly with no watermark or signup required.",
+
+            whyTitle: "Why PDFLinx is the Best Free PDF Cropping Tool Online",
+
+            seoBadge: "Crop PDF Guide",
+            seoTitle: "Complete Guide to Cropping PDF Pages Online",
+            seoDescription:
+              "Everything you need to know about cropping PDF pages — remove margins, whitespace, and borders free online. Crop all pages or individual pages. No watermark, no signup, no limits.",
+
             seoSections: [
-              { title: "Remove White Margins from PDFs", text: "Trim unwanted white space and empty page borders from scanned and digital PDF files instantly." },
-              { title: "Crop PDF Pages Online", text: "Resize visible page areas and remove unnecessary content while preserving original quality." },
-              { title: "Perfect for Scanned Documents", text: "Clean scanned PDFs by trimming uneven edges and unwanted page borders." },
-              { title: "No Software Installation Needed", text: "Crop PDFs directly inside your browser on desktop and mobile devices." },
+              {
+                title:
+                  "Free PDF Cropper — Remove Margins, Whitespace & Borders from Any PDF Online",
+                text: "Need to crop a PDF? PDFLinx lets you crop PDF pages online for free — instantly and without any software installation. Whether you need to remove large white margins from a scanned document, trim borders from a PDF book, cut out a specific region of a page, or resize pages to a custom dimension, PDFLinx handles it precisely in seconds. No signup, no watermark, no hidden limits. Works on Windows, Mac, iPhone, and Android.",
+              },
+              {
+                title: "Why You Might Need to Crop a PDF",
+                text: "PDF cropping is needed more often than most people realize. Scanned documents frequently have large uneven white margins from the scanner bed that waste space and look unprofessional. PDF books and academic papers often have wide margins and headers or footers with page references that are not needed when the content is extracted for a specific use. Presentation slides exported as PDF sometimes have oversized borders around each slide. Technical drawings and architectural plans often have title block borders that need to be removed when sharing just the drawing content. In all these cases, cropping gives you a clean, properly sized page.",
+              },
+              {
+                title: "Crop All Pages Uniformly vs Crop Individual Pages",
+                text: "PDFLinx gives you two cropping modes for maximum flexibility. Uniform cropping applies the same margin trim to every page in the PDF — ideal for scanned documents or books where all pages have consistent oversized margins. Individual page cropping lets you set different crop areas for different pages — useful for mixed-content PDFs where different pages have different layouts or different amounts of whitespace to remove. Both modes show you a live preview so you can verify the crop before applying.",
+              },
+              {
+                title: "Precise Margin Control — Top, Bottom, Left, Right",
+                text: "Unlike simple screenshot-based cropping that clips at arbitrary points, PDFLinx gives you precise numeric margin control. Enter exact values in millimeters or points for each side — top, bottom, left, and right — independently. This means you can remove only the bottom margin without touching the top, trim just the left side without affecting the right, or set asymmetric crops for specific layout requirements. Precise control is essential for professional document preparation, print-ready PDF output, and consistent formatting across a document series.",
+              },
+              {
+                title:
+                  "Why PDFLinx is the Best Free PDF Cropper — No Watermark, No Limits",
+                text: "Most free PDF cropping tools produce low-quality output, add watermarks, restrict the number of pages, or require account creation. PDFLinx does none of that — completely free, no signup, no watermark, and no daily usage limit. Unlike iLovePDF and Smallpdf which restrict advanced page editing on free tiers, PDFLinx gives you precise, professional PDF cropping at zero cost.",
+              },
+              {
+                title: "Common Use Cases for Cropping a PDF",
+                text: "✓ Scanned Documents: Remove large scanner bed margins from scanned pages to produce clean, tight document scans.\n✓ PDF Books & Articles: Trim wide headers, footers, and page number areas from academic PDFs and ebooks for cleaner reading or extraction.\n✓ Presentation Slides: Remove thick borders around slides in PDF presentations to make slide content fill the full page.\n✓ Technical Drawings: Crop title blocks and borders from engineering drawings or floor plans when sharing just the drawing area.\n✓ Print Preparation: Trim bleed areas and crop marks from print-ready PDFs before final distribution.\n✓ Content Extraction: Crop to isolate a specific region of a page — a chart, table, diagram, or image — without removing the page from the document.",
+              },
+              {
+                title:
+                  "Crop PDF on iPhone, Android, Mac & Windows — No App Needed",
+                text: "PDFLinx works entirely in your browser — no download, no installation, no app required. On iPhone or Android, open your browser and upload your PDF directly from your files app — the crop tool works on touchscreens with drag handles. On Mac or Windows, drag and drop your PDF and download the cropped file in seconds. PDFLinx works seamlessly across every platform and operating system.",
+              },
+              {
+                title: "Privacy and File Security",
+                text: "Your files are processed on secure servers and automatically deleted after 1 hour. We do not store, share, or access your documents at any point. PDFLinx is built with privacy-first principles — your data stays yours. All file transfers use encrypted HTTPS connections for complete security.",
+              },
+              {
+                title: "Does Cropping a PDF Reduce File Size?",
+                text: "Cropping a PDF reduces the visible page area but does not always reduce the file size as dramatically as you might expect. In standard PDFs, content outside the crop area is hidden rather than deleted from the file structure — meaning the underlying data may still exist in the file. For significant file size reduction, use our free PDF Compress tool after cropping. For scanned PDFs where each page is an image, cropping that removes large whitespace areas does result in a meaningfully smaller file.",
+              },
+              {
+                title: "Crop PDF vs Edit PDF — What is the Difference?",
+                text: "Cropping a PDF changes the visible page dimensions — trimming away the outer areas of each page to remove margins, borders, or whitespace. Editing a PDF adds new content on top of existing pages — text boxes, highlights, shapes, and annotations. If you need to change the size and shape of pages by removing their outer edges, use Crop PDF. If you need to add or annotate content on the pages, use our free Edit PDF tool. Both are free on PDFLinx.",
+              },
             ],
-            faqTitle: "Frequently asked questions",
+
             faqs: [
-              { q: "What does Crop PDF do?", a: "Crop PDF removes unwanted outer areas, white margins, and extra space from PDF pages online." },
-              { q: "Can I crop PDF pages online for free?", a: "Yes. You can crop PDF pages online directly in your browser without installing software." },
-              { q: "Will cropping reduce PDF quality?", a: "No. Cropping only trims visible page areas and does not reduce PDF quality." },
-              { q: "Can I remove white margins from scanned PDFs?", a: "Yes. PDFLinx can trim white borders and clean scanned documents instantly." },
-              { q: "Does Crop PDF work on mobile?", a: "Yes. Crop PDF works on Android, iPhone, tablets, and desktop browsers." },
-              { q: "Are my uploaded PDFs secure?", a: "Yes. Files are encrypted during upload and automatically deleted after processing." },
+              {
+                q: "Is PDFLinx PDF cropping tool free?",
+                a: "Yes, completely free. No hidden charges, no premium plans, and no limits on the number of pages you crop or how many times you use it.",
+              },
+              {
+                q: "Do I need to sign up or create an account?",
+                a: "No account required. Upload your PDF and crop it instantly — no email, no registration, no friction.",
+              },
+              {
+                q: "Can I crop all pages of a PDF with the same settings?",
+                a: "Yes. Apply the same crop margins to all pages at once — ideal for scanned documents and books with consistent oversized margins throughout.",
+              },
+              {
+                q: "Can I crop individual pages differently?",
+                a: "Yes. Set different crop areas for different pages in the same session — useful for mixed-content PDFs where different pages need different cropping.",
+              },
+              {
+                q: "How do I set the crop area?",
+                a: "Drag the crop handles on the page preview to define the area you want to keep, or enter precise margin values for top, bottom, left, and right sides independently.",
+              },
+              {
+                q: "Is the crop permanent in the output PDF?",
+                a: "Yes. The crop is applied permanently — the defined page area is what every page shows in all PDF viewers after download.",
+              },
+              {
+                q: "Will cropping reduce the file size of my PDF?",
+                a: "It depends on the PDF type. For scanned PDFs where pages are images, removing large whitespace areas reduces file size meaningfully. For standard PDFs, cropping hides content at the edges but may not reduce file size significantly — use our PDF Compress tool for that.",
+              },
+              {
+                q: "Can I crop a PDF to a specific page size — like A4 or Letter?",
+                a: "Yes. Enter the exact margin values needed to trim the page to your required dimensions — useful for standardizing mixed-size pages in a single PDF.",
+              },
+              {
+                q: "Does PDFLinx add any watermark to the cropped PDF?",
+                a: "No watermarks, ever. Your cropped PDF is 100% clean and ready to use or share.",
+              },
+              {
+                q: "Is my file secure and private?",
+                a: "Yes. Files are processed on secure servers over encrypted HTTPS and automatically deleted after 1 hour. We never store, share, or view your documents.",
+              },
+              {
+                q: "Can I use PDFLinx on mobile — iPhone and Android?",
+                a: "Yes. PDFLinx works perfectly in the browser on iPhone, Android, iPad, Windows, and Mac — the crop handles work on touchscreens too. No app needed.",
+              },
+              {
+                q: "What is the maximum file size limit?",
+                a: "Up to 50 MB per file. For very large PDFs, try splitting first using our free PDF Split tool, crop each part, then merge them back.",
+              },
+              {
+                q: "Can I crop a password-protected PDF?",
+                a: "You need to unlock the PDF first. Use our free PDF Unlock tool to remove the password, then crop the pages.",
+              },
+              {
+                q: "What is the difference between Crop PDF and Edit PDF?",
+                a: "Crop PDF trims the outer dimensions of pages — removing margins and whitespace. Edit PDF adds new content on top of existing pages. Use Crop to resize pages, use Edit to annotate or add content.",
+              },
+              {
+                q: "How long does PDF cropping take?",
+                a: "Most operations complete within 5 to 15 seconds depending on file size and number of pages.",
+              },
+              {
+                q: "Is PDFLinx better than iLovePDF or Smallpdf for cropping PDFs?",
+                a: "Yes — PDFLinx offers precise margin control with no watermark, no daily limits, and no account required. iLovePDF and Smallpdf restrict advanced page editing behind paid plans.",
+              },
             ],
+
+            ctaTitle: (
+              <>
+                Crop your PDF now —<br />
+                free, private, no sign‑up.
+              </>
+            ),
+            ctaDescription:
+              "Join thousands who trust PDFLinx for fast, precise PDF page cropping every day.",
+            ctaButton: "Choose PDF File",
           },
         }}
+
       />
 
       <RelatedToolsSection />

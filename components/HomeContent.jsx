@@ -15,28 +15,68 @@ import {
 /* ─────────────────────────────────────────────────────────────
    SCROLL REVEAL HOOK
 ───────────────────────────────────────────────────────────── */
-function useScrollReveal() {
-    useEffect(() => {
-        const els = document.querySelectorAll(`.${styles.revealItem}`);
-        const observer = new IntersectionObserver(
-            (entries) => {
-                entries.forEach((entry, i) => {
-                    if (entry.isIntersecting) {
-                        const delay = entry.target.dataset.delay || 0;
-                        setTimeout(() => {
-                            entry.target.classList.add(styles.visible);
-                        }, delay);
-                        observer.unobserve(entry.target);
-                    }
-                });
-            },
-            { threshold: 0.1 }
-        );
-        els.forEach((el) => observer.observe(el));
-        return () => observer.disconnect();
-    }, []);
-}
+// function useScrollReveal() {
+//     useEffect(() => {
+//         const els = document.querySelectorAll(`.${styles.revealItem}`);
+//         const observer = new IntersectionObserver(
+//             (entries) => {
+//                 entries.forEach((entry, i) => {
+//                     if (entry.isIntersecting) {
+//                         const delay = entry.target.dataset.delay || 0;
+//                         setTimeout(() => {
+//                             entry.target.classList.add(styles.visible);
+//                         }, delay);
+//                         observer.unobserve(entry.target);
+//                     }
+//                 });
+//             },
+//             { threshold: 0.1 }
+//         );
+//         els.forEach((el) => observer.observe(el));
+//         return () => observer.disconnect();
+//     }, []);
+// }
 
+
+function useScrollReveal(dep) {
+    useEffect(() => {
+        // Thoda wait karo taake React naye cards render kar sake
+        const timer = setTimeout(() => {
+            const els = document.querySelectorAll(`.${styles.revealItem}`);
+
+            const observer = new IntersectionObserver(
+                (entries) => {
+                    entries.forEach((entry) => {
+                        if (entry.isIntersecting) {
+                            const delay = entry.target.dataset.delay || 0;
+                            setTimeout(() => {
+                                entry.target.classList.add(styles.visible);
+                            }, delay);
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                },
+                { threshold: 0.05 }
+            );
+
+            els.forEach((el) => {
+                const rect = el.getBoundingClientRect();
+                if (rect.top < window.innerHeight) {
+                    const delay = el.dataset.delay || 0;
+                    setTimeout(() => {
+                        el.classList.add(styles.visible);
+                    }, delay);
+                } else {
+                    observer.observe(el);
+                }
+            });
+
+            return () => observer.disconnect();
+        }, 50); // ← 50ms wait — React render complete hone do
+
+        return () => clearTimeout(timer);
+    }, [dep]); // ← dep change hone par dobara run karo
+}
 /* ─────────────────────────────────────────────────────────────
    DATA
 ───────────────────────────────────────────────────────────── */
@@ -289,7 +329,9 @@ export default function HomeContent() {
     const [activeCategory, setActiveCategory] = useState("all");
     const [showBackToTop, setShowBackToTop] = useState(false);
 
-    useScrollReveal();
+    // useScrollReveal();
+    useScrollReveal(activeCategory); // ← activeCategory pass karo
+
 
     useEffect(() => {
         const onScroll = () => setShowBackToTop(window.scrollY > 600);

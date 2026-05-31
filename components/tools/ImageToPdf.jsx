@@ -237,6 +237,34 @@ export default function ImageToPdf({ seo }) {
     }
   };
 
+
+  const compressImage = async (file) => {
+    if (file.size < 500 * 1024) return file; // 500KB se chota — skip
+
+    const bitmap = await createImageBitmap(file);
+    const canvas = document.createElement("canvas");
+
+    const MAX = 1800;
+    let w = bitmap.width;
+    let h = bitmap.height;
+
+    if (w > MAX || h > MAX) {
+      if (w > h) { h = Math.round(h * MAX / w); w = MAX; }
+      else { w = Math.round(w * MAX / h); h = MAX; }
+    }
+
+    canvas.width = w;
+    canvas.height = h;
+    canvas.getContext("2d").drawImage(bitmap, 0, 0, w, h);
+
+    return new Promise((resolve) => {
+      canvas.toBlob((blob) => {
+        resolve(new File([blob], file.name.replace(/\.[^/.]+$/, ".jpg"), { type: "image/jpeg" }));
+      }, "image/jpeg", 0.85);
+    });
+  };
+
+
   const handleConvert = async () => {
     if (!flow.files.length) {
       return alert("Please select at least one image");
@@ -260,18 +288,18 @@ export default function ImageToPdf({ seo }) {
     setDownloadUrl(null);
 
     const formData = new FormData();
-    flow.files.forEach((file) => formData.append("images", file));
+    // flow.files.forEach((file) => formData.append("images", file));
+    const compressed = await Promise.all(flow.files.map(compressImage));
+    compressed.forEach((file) => formData.append("images", file));
+
     formData.append("orientation", pageOrientation);
     formData.append("pageSize", pageSize);
     formData.append("margin", margin);
     formData.append("mergeAll", String(mergeAll));
     formData.append("rotations", JSON.stringify(rotations));
 
-
-
-
     try {
-      const res = await fetch("/convert/image-to-pdf", {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/convert/image-to-pdf`, {
         method: "POST",
         body: formData,
       });
@@ -291,7 +319,7 @@ export default function ImageToPdf({ seo }) {
 
       const finalName = getDownloadName();
 
-      setDownloadUrl(data.download);
+      setDownloadUrl(`${process.env.NEXT_PUBLIC_BACKEND_URL}${data.download}`);
       setDownloadName(finalName);
 
       completeProgress();
@@ -304,6 +332,190 @@ export default function ImageToPdf({ seo }) {
 
   return (
     <>
+
+      {/* ==================== PAGE-SPECIFIC SEO SCHEMAS (Safe for Next.js) ==================== */}
+
+      {/* HowTo Schema - Image to PDF */}
+      <Script
+        id="howto-schema-image-to-pdf"
+        type="application/ld+json"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "HowTo",
+            name: "How to Convert Images to PDF Online for Free",
+            description:
+              "Convert JPG, PNG, or WebP images to PDF online free — no signup, no watermark. Up to 50 images combined into one PDF. Works on Windows, Mac, Android, iOS.",
+            url: "https://pdflinx.com/image-to-pdf",
+            step: [
+              {
+                "@type": "HowToStep",
+                name: "Select Images",
+                text: "Click the upload area and select one or multiple images (JPG, PNG, GIF, WebP supported)."
+              },
+              {
+                "@type": "HowToStep",
+                name: "Convert to PDF",
+                text: "Click 'Convert to PDF' and wait a few seconds while we process your images."
+              },
+              {
+                "@type": "HowToStep",
+                name: "Download PDF",
+                text: "Your PDF file will be ready - click download to save it instantly."
+              }
+            ],
+            totalTime: "PT30S",
+            estimatedCost: {
+              "@type": "MonetaryAmount",
+              value: "0",
+              currency: "USD"
+            },
+            image: "https://pdflinx.com/og-image.png"
+          }, null, 2)
+        }}
+      />
+
+      {/* Breadcrumb Schema - Image to PDF */}
+      <Script
+        id="breadcrumb-schema-image-to-pdf"
+        type="application/ld+json"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            itemListElement: [
+              {
+                "@type": "ListItem",
+                position: 1,
+                name: "Home",
+                item: "https://pdflinx.com"
+              },
+              {
+                "@type": "ListItem",
+                position: 2,
+                name: "Image to PDF",
+                item: "https://pdflinx.com/image-to-pdf"
+              }
+            ]
+          }, null, 2)
+        }}
+      />
+
+      {/* FAQ Schema - Image to PDF */}
+      <Script
+        id="faq-schema-image-to-pdf"
+        type="application/ld+json"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            mainEntity: [
+              {
+                "@type": "Question",
+                name: "Is the Image to PDF converter free to use?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "Yes. PDFLinx Image to PDF converter is completely free — no hidden charges, no subscription, no premium tier required."
+                }
+              },
+              {
+                "@type": "Question",
+                name: "Do I need to install any software?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "No. Everything works directly in your browser. No desktop software, no app download, no plugins needed."
+                }
+              },
+              {
+                "@type": "Question",
+                name: "Which image formats are supported?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "JPG, JPEG, PNG, and WebP are all supported. These cover the most common photo and screenshot formats used on phones, cameras, and computers."
+                }
+              },
+              {
+                "@type": "Question",
+                name: "Can I convert multiple images into one PDF?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "Yes. Upload up to 50 images at once — all images are combined into one PDF with each image on its own page."
+                }
+              },
+              {
+                "@type": "Question",
+                name: "Are my uploaded images safe and private?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "Yes. Files are processed securely and permanently deleted after conversion. They are never stored long-term or shared with third parties."
+                }
+              },
+              {
+                "@type": "Question",
+                name: "Can I convert images to PDF on my phone?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "Yes. PDFLinx works on Android and iOS mobile devices, tablets, and all desktop browsers — no app required."
+                }
+              },
+              {
+                "@type": "Question",
+                name: "Will my image quality be preserved after conversion?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "Yes. Images are embedded into the PDF at full resolution — colors, sharpness, and detail stay exactly as they were in the original file."
+                }
+              },
+              {
+                "@type": "Question",
+                name: "What should I do if the converted PDF file is too large?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "Use the Compress PDF tool on PDFLinx to reduce the file size after conversion — useful when emailing or uploading to portals with strict size limits."
+                }
+              }
+            ]
+          }, null, 2)
+        }}
+      />
+
+      {/* SoftwareApplication Schema - Image to PDF */}
+      <Script
+        id="software-schema-image-to-pdf"
+        type="application/ld+json"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "SoftwareApplication",
+            name: "Image to PDF Converter",
+            applicationCategory: "UtilityApplication",
+            operatingSystem: "Windows, macOS, Linux, Android, iOS",
+            description:
+              "Convert JPG, PNG, and WebP images to PDF online for free. No signup, no watermark, and no software installation required.",
+            url: "https://pdflinx.com/image-to-pdf",
+            offers: {
+              "@type": "Offer",
+              price: "0",
+              priceCurrency: "USD"
+            },
+            featureList: [
+              "Convert JPG to PDF",
+              "Convert PNG to PDF",
+              "Convert WebP to PDF",
+              "Merge multiple images into one PDF",
+              "Works on mobile and desktop",
+              "No installation required",
+              "Secure file processing"
+            ],
+            image: "https://pdflinx.com/og-image.png"
+          }, null, 2)
+        }}
+      />
+
       <ToolPageLayout
         title={seo?.h1 || "Image to PDF Converter (Free & Online)"}
         tagline="No Signup · No Watermark · Instant Download"
@@ -316,6 +528,7 @@ export default function ImageToPdf({ seo }) {
         onConvert={handleConvert}
         onDownload={handleDownload}
         doneLinks={DONE_LINKS}
+        sidebarLinks={DONE_LINKS}
         optionsTitle="Conversion options"
         showOutputFormat={false}
         showPreserveLayout={false}
@@ -604,258 +817,220 @@ export default function ImageToPdf({ seo }) {
         // ImageToPdf.jsx ke andar ToolPageLayout mein paste karo
         // uploadLanding prop ke andar
 
+
+        // ============================================================
+        // IMAGE TO PDF — uploadLanding content
+        // PdfToWord.jsx pattern ke mutabiq — as-is paste karo
+        // ============================================================
+
         uploadLanding={{
           content: {
             eyebrow: "IMAGE TO PDF CONVERTER",
 
+            breadcrumbCurrent: "Image to PDF Converter",
+
+            heroBadge: "✦ 100% Free · No Signup · No Watermark",
+
+            // heroTitle: (
+            //   <>
+            //     Image to PDF Converter —{" "}
+            //     <em className="font-bold text-[#e8420a] sm:italic">
+            //       Free, Online, Multiple Images Supported
+            //     </em>
+            //   </>
+            // ),
+
+            // heroDescription:
+            //   "Convert JPG, PNG, WebP, and other images to PDF online for free. Combine multiple images into one PDF — no signup, no watermark, no software needed. Works on any device.",
+
+            // pills: [
+            //   "No watermark",
+            //   "Multiple images to one PDF",
+            //   "JPG, PNG, WebP supported",
+            //   "Instant conversion",
+            // ],
+
             heroTitle: (
               <>
-                Convert Images to PDF{" "}
-                <br />
-                in{" "}
-                <span className="bg-gradient-to-r from-violet-600 to-blue-500 bg-clip-text text-transparent">
-                  Seconds ⚡
-                </span>
+                Image to PDF Converter —{" "}
+                <em className="font-bold text-[#e8420a] sm:italic">
+                  JPG to PDF & PNG to PDF Free
+                </em>
               </>
             ),
-
             heroDescription:
-              "Convert JPG, PNG, WebP and other images into a high-quality PDF instantly — no signup, no watermark. Single image downloads as PDF. Multiple images combined into one PDF. Works on Windows, Mac, Android, and iOS.",
+              "Convert JPG, PNG, WebP, or BMP images to PDF online for free — combine multiple images into one PDF, control page size, and download instantly. No account required. Works on any device.",
+            pills: ["JPG, PNG, WebP, BMP", "Combine multiple images", "Custom page size", "Instant download"],
 
-            bullets: [
-              "JPG, PNG & WebP supported",
-              "Full quality preserved — sharp text and vibrant colors",
-              "Fast & Private — files auto-deleted after conversion",
-            ],
 
-            uploadTitle: "Drop your image files here",
-            uploadSubtitle: "or click to browse — JPG, PNG, WebP supported",
-
-            privacyTitle: "Your files stay private",
-            privacyText:
-              "Files are processed securely and automatically deleted after conversion. Never stored or shared.",
-
-            noticeTitle: "Image to PDF Conversion",
-            noticeItems: [
-              "Single image → PDF directly",
-              "Multiple images → combined into one PDF",
-              "Supports JPG, PNG, WebP formats",
-            ],
-
-            breadcrumbItems: [
-              { label: "Home", href: "/" },
-              { label: "PDF Tools", href: "/pdf-tools" },
-              { label: "Image to PDF" },
-            ],
+            uploadTitle: "Drop your images here",
+            uploadSubtitle: "or click to browse — JPG, PNG, WebP, BMP, GIF supported",
 
             trustPills: ["100% Free", "No Sign Up", "No Watermark"],
 
-            supports: [
-              "Supports JPG, PNG, WebP",
-              "Auto-deleted after 1 hour",
+            noticeTitle: "Image to PDF Conversion",
+            noticeItems: [
+              "Supports JPG, PNG, WebP, BMP, GIF",
+              "Multiple images → single PDF",
+              "Drag to reorder before converting",
             ],
 
+            rating: "4.9/5",
+            ratingText: "Trusted by 50,000+ users monthly",
+
+            pdfTypeSection: {
+              enabled: false,
+            },
+
+            howToEyebrow: "How It Works",
             howToTitle: "How to Convert Images to PDF — 3 Simple Steps",
+            howToSubtitle:
+              "No learning curve. Upload, arrange, convert — done in under 30 seconds.",
 
             howToSteps: [
               {
                 n: "1",
-                title: "Upload Your Images",
-                desc: "Select one or multiple image files. Drag and drop supported on all devices. JPG, PNG, WebP all accepted.",
-                color: "bg-violet-600",
+                title: "Upload Your Image Files",
+                desc: "Select one or multiple images from your device — JPG, PNG, WebP, BMP, or GIF. Drag and drop supported on all devices — mobile, tablet, and desktop.",
+                color: "bg-blue-600",
               },
               {
                 n: "2",
-                title: "Review & Remove if Needed",
-                desc: "Preview your uploaded images, reorder or remove any before converting. Full control before download.",
-                color: "bg-blue-600",
+                title: "Arrange the Order",
+                desc: "Drag and drop the images to set the order you want them to appear in the PDF. Each image becomes one page — arrange them exactly the way you need.",
+                color: "bg-purple-600",
               },
               {
                 n: "3",
                 title: "Convert & Download PDF",
-                desc: "Click Convert — all images are merged into one high-quality PDF and downloaded instantly. No watermark.",
+                desc: "Click Convert and your PDF is ready in seconds. Download it instantly — all images combined into a single clean PDF, no watermark, no quality loss.",
                 color: "bg-emerald-600",
               },
             ],
 
-            visualImage: "/images/image-to-pdf-visual.png",
-            visualAlt: "Image to PDF conversion illustration",
+            whyTitle: "Why PDFLinx is the Best Free Image to PDF Converter Online",
 
-            whyTitle: "Why Choose PDFLinx Image to PDF?",
-
-            whyItems: [
-              {
-                title: "JPG, PNG & WebP Supported",
-                desc: "Upload any common image format — JPG, PNG, WebP, and more. All converted to a clean, high-quality PDF.",
-                icon: Image, // ImageIcon — import karo tool file mein
-                iconColor: "text-violet-500",
-                bgColor: "bg-violet-50",
-              },
-              {
-                title: "Full Quality Preserved",
-                desc: "Images are embedded at full resolution — sharp text, vibrant colors, no quality loss in the output PDF.",
-                icon: Image, // FileImage
-                iconColor: "text-blue-500",
-                bgColor: "bg-blue-50",
-              },
-              {
-                title: "Fast & Private",
-                desc: "Conversion happens instantly in your browser. Files are auto-deleted after processing — never stored or shared.",
-                icon: Image, // Zap
-                iconColor: "text-emerald-500",
-                bgColor: "bg-emerald-50",
-              },
-              {
-                title: "Works on Any Device",
-                desc: "Convert images to PDF on iPhone, Android, Windows, or Mac — no software installation needed.",
-                icon: Image, // MonitorSmartphone
-                iconColor: "text-orange-500",
-                bgColor: "bg-orange-50",
-              },
-            ],
-
-            relatedTitle: "You Might Also Need",
-
-            // relatedTools: [
-            //   { label: "PDF to Word",   href: "/pdf-to-word",   desc: "Convert PDF to editable DOCX",   iconColor: "text-blue-500",   bgColor: "bg-blue-50"   },
-            //   { label: "Merge PDF",     href: "/merge-pdf",     desc: "Combine multiple PDFs",           iconColor: "text-violet-500", bgColor: "bg-violet-50" },
-            //   { label: "Compress PDF",  href: "/compress-pdf",  desc: "Reduce PDF file size",            iconColor: "text-green-500",  bgColor: "bg-green-50"  },
-            //   { label: "Split PDF",     href: "/split-pdf",     desc: "Extract specific pages",          iconColor: "text-pink-500",   bgColor: "bg-pink-50"   },
-            //   { label: "PDF to JPG",    href: "/pdf-to-jpg",    desc: "Extract PDF pages as images",     iconColor: "text-amber-500",  bgColor: "bg-amber-50"  },
-            //   { label: "Protect PDF",   href: "/protect-pdf",   desc: "Add password to PDF",             iconColor: "text-red-500",    bgColor: "bg-red-50"    },
-            // ],
-
-            relatedTools: [
-              {
-                label: "PDF to Word",
-                href: "/pdf-to-word",
-                desc: "Convert PDF to editable DOCX",
-                icon: FileText,
-                iconColor: "text-blue-500",
-                bgColor: "bg-blue-50",
-              },
-
-              {
-                label: "Merge PDF",
-                href: "/merge-pdf",
-                desc: "Combine multiple PDFs",
-                icon: FilePlus,
-                iconColor: "text-violet-500",
-                bgColor: "bg-violet-50",
-              },
-
-              {
-                label: "Compress PDF",
-                href: "/compress-pdf",
-                desc: "Reduce PDF file size",
-                icon: FileMinus,
-                iconColor: "text-green-500",
-                bgColor: "bg-green-50",
-              },
-
-              {
-                label: "Split PDF",
-                href: "/split-pdf",
-                desc: "Extract specific pages",
-                icon: Scissors,
-                iconColor: "text-pink-500",
-                bgColor: "bg-pink-50",
-              },
-
-              {
-                label: "PDF to JPG",
-                href: "/pdf-to-jpg",
-                desc: "Extract PDF pages as images",
-                icon: Image,
-                iconColor: "text-amber-500",
-                bgColor: "bg-amber-50",
-              },
-
-              {
-                label: "Protect PDF",
-                href: "/protect-pdf",
-                desc: "Add password to PDF",
-                icon: Lock,
-                iconColor: "text-red-500",
-                bgColor: "bg-red-50",
-              },
-            ],
-
-            faqTitle: "Frequently Asked Questions — Image to PDF",
-
-            faqs: [
-              {
-                q: "Is the Image to PDF converter free to use?",
-                a: "Yes, completely free. No hidden charges, no subscription, no limits on conversions.",
-              },
-              {
-                q: "Do I need to install any software?",
-                a: "No. Everything works directly in your browser. No desktop software or plugins needed.",
-              },
-              {
-                q: "Will my image quality be preserved after conversion?",
-                a: "Yes. Images are embedded at full resolution — sharp text, vibrant colors, no quality loss in the output PDF.",
-              },
-              {
-                q: "Which image formats are supported?",
-                a: "PDFLinx supports JPG, JPEG, PNG, and WebP image formats for PDF conversion.",
-              },
-              {
-                q: "Can I convert multiple images into one PDF?",
-                a: "Yes. Upload multiple images and they will all be combined into a single PDF file in order.",
-              },
-              {
-                q: "How is the page order determined in the PDF?",
-                a: "Pages appear in the order you upload the images. You can reorder them before converting.",
-              },
-              {
-                q: "Are my uploaded images safe and private?",
-                a: "Yes. Files are processed securely and permanently deleted after conversion. Never stored or shared.",
-              },
-              {
-                q: "Can I convert images to PDF on my phone?",
-                a: "Yes. PDFLinx works on Android and iOS mobile devices, tablets, and all desktop browsers — no app required.",
-              },
-              {
-                q: "Can I combine images with other PDF documents?",
-                a: "For that, first convert your images to PDF using this tool, then use the Merge PDF tool to combine them with other PDFs.",
-              },
-              {
-                q: "What should I do if the converted PDF file is too large?",
-                a: "Use the Compress PDF tool on PDFLinx to reduce the file size of your converted PDF without losing quality.",
-              },
-            ],
-
-            ctaBadge: "✦ 100% Free",
-            ctaTitle: "Start Converting Images to PDF Now",
-            ctaDescription: "Fast. Secure. Private. No sign up required.",
-            ctaSubtext: "No limits. No hidden charges.",
-            ctaButton: "Choose Image Files",
+            seoBadge: "Image to PDF Guide",
+            seoTitle: "Complete Guide to Converting Images to PDF Online",
+            seoDescription:
+              "Everything you need to know about converting JPG, PNG, and other images to PDF — free, online, with full quality preserved. No watermark, no signup, no limits.",
 
             seoSections: [
               {
-                title: "Free Image to PDF Converter — Convert JPG, PNG & WebP to PDF in Seconds",
-                text: "Need to turn photos, screenshots, or scanned images into a PDF? PDFLinx converts JPG, PNG, and WebP images into a professional PDF instantly — full quality, no watermarks, no sign-up required. Upload a single image or combine up to 50 images into one PDF — fast, private, and completely free.",
+                title:
+                  "Free Image to PDF Converter — Convert JPG, PNG & WebP to PDF Online",
+                text: "Need to convert images to PDF? PDFLinx lets you convert JPG, PNG, WebP, BMP, and GIF images to PDF online for free — instantly and without any software installation. Whether you have a single photo or a batch of scanned documents, PDFLinx combines them into a clean, properly formatted PDF in seconds. No signup, no watermark, no hidden limits. It is the best free image to PDF converter available online today — works on Windows, Mac, iPhone, and Android.",
               },
               {
                 title: "What is Image to PDF Conversion?",
-                text: "Image to PDF conversion turns image files — like JPG, PNG, or WebP — into a shareable, printable PDF document. Each image is placed on its own page at full resolution. PDFLinx handles the conversion entirely in your browser without requiring any desktop software, making it accessible on any device or OS.",
+                text: "Image to PDF conversion turns one or more image files into a PDF document, with each image placed on its own page. This is useful when you need to share photos as a professional document, combine scanned pages into a single file, submit image-based documents to a portal that only accepts PDF, or archive a set of images in a universally readable format. The output PDF is fully compatible with every PDF viewer and can be opened on any device without special software.",
               },
               {
-                title: "Why Convert Images to PDF?",
-                text: "PDFs are universally compatible — open on any device, any OS, any browser without special software. Common reasons to convert images to PDF include: sharing receipts, invoices, and ID scans professionally; combining multiple photos into one document; submitting scanned forms and signed documents; preserving image content in a fixed, printable format.",
+                title: "How to Convert Images to PDF Without Losing Quality",
+                text: "PDFLinx preserves the original resolution and quality of every image during conversion. There is no compression applied to the image content unless you specifically choose it — your photos and scans will look exactly as sharp in the PDF as they do in the original files. For best results, upload the highest quality version of your images before converting.",
+              },
+              {
+                title:
+                  "Why PDFLinx is the Best Free Image to PDF Converter — No Watermark, No Limits",
+                text: "Most free image to PDF converters add watermarks, limit the number of images you can combine, or require account creation. PDFLinx does none of that — completely free, no signup, no watermark, and no daily conversion limit. Unlike iLovePDF free tier and Smallpdf free tier which restrict batch image uploads behind paid plans, PDFLinx gives you unlimited conversions at zero cost.",
+              },
+              {
+                title: "Common Use Cases for Image to PDF Conversion",
+                text: "✓ Students & Researchers: Combine scanned handwritten notes, assignment pages, and reference images into one PDF for submission.\n✓ Professionals: Package multiple document scans, receipts, or certificates into a single PDF for record keeping.\n✓ Job Seekers: Convert scanned certificates, ID cards, and supporting documents into one PDF for job applications.\n✓ Legal & Finance: Combine scanned contracts, invoices, and evidence images into a single organized PDF.\n✓ Photographers: Package a portfolio or photo set into a single viewable PDF document.\n✓ Anyone: Combine phone camera scans of physical documents into a clean PDF for sharing or submission.",
+              },
+              {
+                title:
+                  "Convert Images to PDF on iPhone, Android, Mac & Windows — No App Needed",
+                text: "PDFLinx works entirely in your browser — no download, no installation, no app required. On iPhone or Android, open your browser and upload images directly from your camera roll or files app. On Mac or Windows, drag and drop your images and download the PDF in seconds. Whether you need to convert images to PDF on mobile or desktop, PDFLinx works seamlessly across every platform and operating system.",
+              },
+              {
+                title:
+                  "PDFLinx vs iLovePDF vs Smallpdf — Free Image to PDF Converter Comparison",
+                text: "iLovePDF and Smallpdf both restrict batch image uploads and file sizes behind paid plans. Adobe Acrobat requires a monthly subscription for image to PDF conversion. PDFLinx offers unlimited free conversions with no image count limit, no account, and no watermark. For anyone looking for the best free iLovePDF alternative or Smallpdf alternative for image to PDF conversion, PDFLinx is the clear choice.",
               },
               {
                 title: "Privacy and File Security",
-                text: "PDFLinx takes your privacy seriously. Uploaded image files are processed securely and permanently deleted after conversion — never stored long-term, never shared with third parties. No account creation is required. Your images remain completely private throughout the process.",
+                text: "Your files are processed on secure servers and automatically deleted after 1 hour. We do not store, share, or access your documents at any point. PDFLinx is built with privacy-first principles — your data stays yours. All file transfers use encrypted HTTPS connections for complete security.",
               },
               {
-                title: "Convert Images to PDF on Any Device",
-                text: "Works on Windows, macOS, Linux, Android, and iOS — directly in your browser. No app download needed. PDFLinx is fully responsive and works with drag-and-drop on desktop and image picker on mobile phones. Convert images to PDF anywhere, anytime.",
+                title:
+                  "Image to PDF vs Printing to PDF — Why a Proper Converter Gives Better Results",
+                text: "Some people try to convert images to PDF by opening them in a browser and using Print to PDF — but this approach adds margins, scales images incorrectly, and often introduces white borders or page breaks at wrong positions. A dedicated image to PDF converter like PDFLinx places each image as a full page without margins or distortion, giving you a clean, properly formatted PDF that looks exactly as intended.",
+              },
+              {
+                title: "Supported Image Formats",
+                text: "PDFLinx supports all common image formats for PDF conversion — JPG and JPEG for photographs, PNG for graphics and screenshots with transparency, WebP for modern web images, BMP for Windows bitmap files, and GIF for simple graphics. If you have HEIC images from an iPhone, convert them to JPG first before uploading for best compatibility.",
+              },
+              {
+                title: "Best For Everyday Document Management",
+                text: "Use the converted PDF for submissions, email attachments, official applications, archiving, and sharing. The output is a standard PDF file compatible with Adobe Acrobat, Preview, Chrome, and every PDF viewer — easy to share and open on any device without requiring any image viewer software.",
               },
             ],
 
-            showPdfTypes: false,
+            faqs: [
+              {
+                q: "Is PDFLinx image to PDF converter free?",
+                a: "Yes, completely free. No hidden charges, no premium plans, and no limits on the number of images or conversions. Convert as many images as you need at zero cost.",
+              },
+              {
+                q: "Which image formats are supported?",
+                a: "PDFLinx supports JPG, JPEG, PNG, WebP, BMP, and GIF. For iPhone HEIC images, convert to JPG first before uploading.",
+              },
+              {
+                q: "Can I combine multiple images into one PDF?",
+                a: "Yes. Upload multiple images and they will all be combined into a single PDF — one image per page. Drag to reorder them before converting.",
+              },
+              {
+                q: "Do I need to sign up or create an account?",
+                a: "No account required. Upload your images and convert instantly — no email, no registration, no friction.",
+              },
+              {
+                q: "Will image quality be reduced in the PDF?",
+                a: "No. PDFLinx preserves the original resolution and quality of every image. Your photos and scans will look exactly as sharp in the PDF as in the original files.",
+              },
+              {
+                q: "Can I change the order of images before converting?",
+                a: "Yes. After uploading, drag and drop the images to arrange them in the order you want. Each image becomes one page in the PDF in the order you set.",
+              },
+              {
+                q: "Does PDFLinx add any watermark to the PDF?",
+                a: "No watermarks, ever. Your converted PDF is 100% clean and ready to use or share.",
+              },
+              {
+                q: "Is my file secure and private?",
+                a: "Yes. Files are processed on secure servers over encrypted HTTPS and automatically deleted after 1 hour. We never store, share, or view your documents.",
+              },
+              {
+                q: "Can I use PDFLinx on mobile — iPhone and Android?",
+                a: "Yes. PDFLinx works perfectly in the browser on iPhone, Android, iPad, Windows, and Mac — no app download or installation needed.",
+              },
+              {
+                q: "What is the maximum file size per image?",
+                a: "Up to 10 MB per image and up to 100 MB combined for all images in a single conversion. For very large photos, compress them slightly before uploading.",
+              },
+              {
+                q: "How many images can I convert to PDF at once?",
+                a: "You can upload and combine as many images as you need in a single session. There is no fixed limit on the number of images.",
+              },
+              {
+                q: "How long does image to PDF conversion take?",
+                a: "Most conversions complete within 5 to 15 seconds depending on the number and size of images.",
+              },
+              {
+                q: "Is PDFLinx better than iLovePDF or Smallpdf for free image to PDF?",
+                a: "Yes — PDFLinx offers unlimited free conversions with no image count limit, no daily limits, no watermark, and no account required. iLovePDF and Smallpdf restrict batch uploads behind paid plans.",
+              },
+            ],
+
+            ctaTitle: (
+              <>
+                Convert images to PDF now —<br />
+                free, private, no sign‑up.
+              </>
+            ),
+            ctaDescription:
+              "Join thousands who trust PDFLinx for fast, clean image to PDF conversion every day.",
+            ctaButton: "Choose Image Files",
           },
         }}
       />

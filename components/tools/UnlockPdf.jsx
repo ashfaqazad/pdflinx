@@ -4,14 +4,10 @@
 import { useState, useRef, useEffect } from "react";
 
 import {
-  FileText,
   Key,
   LockOpen,
-  Download,
-  ShieldCheck,
-  MonitorSmartphone,
-  CheckCircle,
-  Lock,
+  Shield, PenLine, FileText, Scissors,
+  Minimize2, GitMerge, EyeOff, Scan, Pencil, Stamp  
 } from "lucide-react";
 import Script from "next/script";
 import RelatedToolsSection from "@/components/RelatedTools";
@@ -19,6 +15,20 @@ import ToolPageLayout from "@/components/ToolFlow/ToolPageLayout";
 import { useToolFlow } from "@/hooks/useToolFlow";
 import { useProgressBar } from "@/hooks/useProgressBar";
 import { DEFAULT_DONE_LINKS, DEFAULT_SIDEBAR_FEATURES } from "@/lib/toolUiConfig";
+
+
+
+const DONE_LINKS = [
+  { label: "Protect PDF", href: "/protect-pdf", icon: <Shield className="h-4 w-4 text-red-500" /> },
+  { label: "Sign PDF", href: "/sign-pdf", icon: <PenLine className="h-4 w-4 text-indigo-500" /> },
+  { label: "Edit PDF", href: "/edit-pdf", icon: <Pencil className="h-4 w-4 text-orange-500" /> },
+  { label: "Compress PDF", href: "/compress-pdf", icon: <Minimize2 className="h-4 w-4 text-green-500" /> },
+  { label: "Merge PDF", href: "/merge-pdf", icon: <GitMerge className="h-4 w-4 text-purple-500" /> },
+  { label: "Redact PDF", href: "/redact-pdf", icon: <EyeOff className="h-4 w-4 text-gray-500" /> },
+  { label: "OCR PDF", href: "/ocr-pdf", icon: <Scan className="h-4 w-4 text-violet-500" /> },
+  { label: "Add Watermark", href: "/add-watermark", icon: <Stamp className="h-4 w-4 text-teal-500" /> },
+];
+
 
 
 function PdfThumbnail({ url }) {
@@ -348,6 +358,45 @@ export default function UnlockPdf() {
         }}
       />
 
+      <Script
+        id="software-schema-unlock-pdf"
+        type="application/ld+json"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "SoftwareApplication",
+            name: "Unlock PDF",
+            applicationCategory: "BusinessApplication",
+            operatingSystem: "Web Browser",
+            url: "https://pdflinx.com/unlock-pdf",
+            description:
+              "Free online PDF unlock tool. Remove password protection and restrictions from PDF files when you have authorization to access the document. Quickly unlock PDFs for viewing, editing, printing, and copying.",
+            image: "https://pdflinx.com/og-image.png",
+            offers: {
+              "@type": "Offer",
+              price: "0",
+              priceCurrency: "USD"
+            },
+            publisher: {
+              "@type": "Organization",
+              name: "PDFLinx",
+              url: "https://pdflinx.com"
+            },
+            featureList: [
+              "Unlock protected PDF files",
+              "Remove PDF password restrictions",
+              "Enable PDF editing and printing",
+              "Allow text copying from PDFs",
+              "Fast PDF unlocking",
+              "Works in any web browser",
+              "Free online PDF unlock tool",
+              "No software installation required"
+            ]
+          }, null, 2),
+        }}
+      />
+
       {/* ==================== TOOL UI ==================== */}
       <ToolPageLayout
         title="Unlock PDF Online Free"
@@ -361,6 +410,7 @@ export default function UnlockPdf() {
         onConvert={handleConvert}
         onDownload={handleDownload}
         doneLinks={DEFAULT_DONE_LINKS}
+        sidebarLinks={DONE_LINKS}
         showOutputFormat={false}
         showPreserveLayout={false}
         optionsTitle="Unlock options"
@@ -430,8 +480,8 @@ export default function UnlockPdf() {
                 <button type="button" onClick={handleConvert}
                   disabled={!flow.files.length}
                   className={`flex w-full items-center justify-center gap-2 rounded-xl px-5 py-4 text-base font-bold text-white transition active:scale-[0.98] ${flow.files.length
-                      ? "bg-[#f24d0d] hover:bg-[#dc4308] shadow-[0_10px_30px_rgba(242,77,13,0.38)]"
-                      : "cursor-not-allowed bg-slate-300"
+                    ? "bg-[#f24d0d] hover:bg-[#dc4308] shadow-[0_10px_30px_rgba(242,77,13,0.38)]"
+                    : "cursor-not-allowed bg-slate-300"
                     }`}
                 >
                   <LockOpen className="h-5 w-5" />
@@ -466,175 +516,224 @@ export default function UnlockPdf() {
         sidebarFeatures={DEFAULT_SIDEBAR_FEATURES}
         uploadTitle="Drop your PDF file(s) here"
         uploadSubtitle="or click to browse — PDF files supported"
+
+
+        // ============================================================
+        // UNLOCK PDF — uploadLanding content
+        // PdfToWord.jsx pattern ke mutabiq — as-is paste karo
+        // ============================================================
+
         uploadLanding={{
           content: {
+            relatedTools: DONE_LINKS,
             eyebrow: "UNLOCK PDF",
+
+            breadcrumbCurrent: "Unlock PDF",
+
+            heroBadge: "✦ 100% Free · No Signup · No Watermark",
+
+            // heroTitle: (
+            //   <>
+            //     Unlock PDF —{" "}
+            //     <em className="font-bold text-[#e8420a] sm:italic">
+            //       Remove Password Free Online
+            //     </em>
+            //   </>
+            // ),
+
+            // heroDescription:
+            //   "Remove password protection from any PDF online for free. Unlock PDFs you own instantly — no signup, no watermark, no software needed. Works on any device.",
+
+            // pills: [
+            //   "No watermark",
+            //   "Remove open password",
+            //   "Remove permission restrictions",
+            //   "Instant unlock",
+            // ],
 
             heroTitle: (
               <>
-                Unlock PDF Restrictions <br />
-                <em className="font-bold not-italic text-[#e8420a] sm:italic">
-                  instantly
+                Unlock PDF — Remove PDF Password{" "}
+                <em className="font-bold text-[#e8420a] sm:italic">
+                  Free Online, Instant
                 </em>
               </>
             ),
-
             heroDescription:
-              "Unlock PDF online for free — remove printing, copying, and editing restrictions instantly. No signup, no watermark, no software needed. If your PDF requires a password to open, just enter it and we'll unlock it for you.",
+              "Unlock PDF and remove password protection online for free — get a fully unlocked, editable PDF in seconds. Works on owner-restricted and encrypted PDFs. No signup required.",
+            pills: ["Remove PDF password", "Owner restrictions lifted", "Instant unlock", "No signup"],
 
-            noticeTitle: "Unlock output",
 
+
+            uploadTitle: "Drop your password-protected PDF here",
+            uploadSubtitle: "or click to browse — enter password when prompted",
+
+            trustPills: ["100% Free", "No Sign Up", "No Watermark"],
+
+            noticeTitle: "Unlock PDF Info",
             noticeItems: [
-              "Single PDF → Unlocked PDF download",
-              "Multiple PDFs → ZIP download",
-              "Owner lock removed automatically",
+              "Enter the known PDF password to unlock",
+              "Removes open password & permission locks",
+              "Downloads as fully unlocked PDF",
             ],
 
-            howToTitle: "How to unlock a PDF",
+            rating: "4.9/5",
+            ratingText: "Trusted by 50,000+ users monthly",
 
+            pdfTypeSection: {
+              enabled: false,
+            },
+
+            howToEyebrow: "How It Works",
+            howToTitle: "How to Unlock a PDF — 3 Simple Steps",
             howToSubtitle:
-              "Upload your PDF, enter a password only if needed, and download a fully unlocked restriction-free PDF instantly.",
+              "No learning curve. Upload, enter your password, download — done in under 30 seconds.",
 
             howToSteps: [
               {
                 n: "1",
-                title: "Upload your PDF file(s)",
-                desc: "Select one PDF or upload up to 10 files at once for batch unlocking. Drag and drop supported on all devices.",
+                title: "Upload Your Protected PDF",
+                desc: "Select your password-protected PDF from your device. Drag and drop supported on all devices — mobile, tablet, and desktop. The tool detects the protection type automatically.",
                 color: "bg-blue-600",
               },
               {
                 n: "2",
-                title: "Enter password (if required)",
-                desc: "Leave blank for owner-locked PDFs with print/copy restrictions. Enter password only if the PDF requires one to open.",
+                title: "Enter the PDF Password",
+                desc: "Type the password you already know for this PDF. PDFLinx verifies it and removes the protection — open password, permission restrictions, or both.",
                 color: "bg-purple-600",
               },
               {
                 n: "3",
-                title: "Download unlocked PDF",
-                desc: "Single file downloads as an unlocked PDF. Multiple files are packaged into a ZIP with all unlocked PDFs inside.",
+                title: "Download Your Unlocked PDF",
+                desc: "Click Unlock and your password-free PDF is ready in seconds. No password needed to open it — edit, print, copy, and share without restrictions.",
                 color: "bg-emerald-600",
               },
             ],
 
-            whyTitle: "Why use PDFLinx to unlock PDF?",
+            whyTitle: "Why PDFLinx is the Best Free PDF Unlock Tool Online",
 
-            whyItems: [
-              {
-                title: "Remove Restrictions Instantly",
-                desc: "Unlock printing, copying, and editing restrictions (owner protection) in one click — no password needed for owner-locked PDFs.",
-                icon: LockOpen,
-                iconColor: "text-blue-600",
-                bgColor: "bg-blue-100",
-              },
-              {
-                title: "Password When Needed",
-                desc: "If your PDF requires a password to open (user protection), enter it to unlock safely — content and layout stay exactly as original.",
-                icon: Key,
-                iconColor: "text-green-600",
-                bgColor: "bg-green-100",
-              },
-              {
-                title: "Batch PDF Unlocking",
-                desc: "Unlock one PDF or up to 10 files at once. All unlocked PDFs are delivered as a single ZIP download.",
-                icon: Download,
-                iconColor: "text-purple-600",
-                bgColor: "bg-purple-100",
-              },
-              {
-                title: "Content Unchanged",
-                desc: "Unlocking only removes restrictions — it does not change text, images, layout, or quality in any way.",
-                icon: CheckCircle,
-                iconColor: "text-slate-600",
-                bgColor: "bg-slate-100",
-              },
-              {
-                title: "Works Everywhere",
-                desc: "Use PDFLinx on Windows, macOS, Linux, Android, iPhone, tablet, or any modern desktop browser with no app needed.",
-                icon: MonitorSmartphone,
-                iconColor: "text-orange-500",
-                bgColor: "bg-orange-50",
-              },
-              {
-                title: "Privacy First",
-                desc: "Files are processed over encrypted connections and permanently deleted after unlocking. No account or signup needed.",
-                icon: ShieldCheck,
-                iconColor: "text-rose-500",
-                bgColor: "bg-rose-50",
-              },
-            ],
-
-            seoBadge: "PDF Unlock Guide",
-
-            seoTitle: "Free Online PDF Unlock Tool by PDFLinx",
-
+            seoBadge: "Unlock PDF Guide",
+            seoTitle: "Complete Guide to Unlocking Password-Protected PDFs Online",
             seoDescription:
-              "Remove PDF restrictions online for free. Unlock printing, copying, and editing from owner-locked PDFs. Enter password for user-locked PDFs. No signup or software needed.",
+              "Everything you need to know about removing password protection from PDFs you own — free, online, instant. No watermark, no signup, no limits.",
 
             seoSections: [
               {
-                title: "Remove Owner Restrictions Without a Password",
-                text: "PDFLinx automatically removes owner permission restrictions — unlock printing, copying, and editing from restricted PDFs without needing the owner password.",
+                title:
+                  "Free PDF Unlocker — Remove Password Protection from Any PDF You Own Online",
+                text: "Need to unlock a PDF? PDFLinx lets you remove password protection from any PDF online for free — instantly and without any software installation. If you have a PDF that requires a password to open, or a PDF that blocks printing, copying, and editing due to permission restrictions, PDFLinx removes all of that in seconds once you provide the correct password. No signup, no watermark, no hidden limits. Works on Windows, Mac, iPhone, and Android.",
               },
               {
-                title: "User Password vs Owner Password",
-                text: "Owner password restricts actions like printing and copying (removable automatically). User password is required to open the file — enter it to unlock user-locked PDFs.",
+                title: "Why Do PDFs Get Locked — Common Reasons",
+                text: "PDFs end up password protected for several common reasons. Documents sent by banks, insurance companies, HR departments, and government agencies are often password-protected by default — with the password communicated separately via email or SMS. PDFs you protected yourself months or years ago may become inconvenient when you need to edit or use them again. Downloaded PDF forms from official websites sometimes have permission restrictions that prevent filling or printing. Received PDFs from colleagues or clients may have editing locks that prevent you from annotating or signing them. In all these cases where you own or have legitimate access to the document, PDFLinx removes the protection instantly.",
               },
               {
-                title: "Batch PDF Unlocking",
-                text: "Upload up to 10 PDFs at once — all unlocked with the same password if provided. All unlocked PDFs are delivered as a single ZIP download.",
+                title: "Open Password Removal vs Permission Restriction Removal",
+                text: "There are two types of PDF locks that PDFLinx can remove. An open password lock requires anyone who tries to open the PDF to enter a password — completely blocking access without it. PDFLinx removes this by verifying the password you provide and stripping it from the file. A permissions lock does not block viewing but restricts actions — printing, copying text, editing, or extracting pages. PDFLinx removes permission restrictions so you can freely print, copy, edit, and use the document without limitations. Both types of locks are handled in the same simple workflow.",
               },
               {
-                title: "Content and Quality Unchanged",
-                text: "Unlocking only removes encryption restrictions — your text, images, layout, and formatting remain exactly as in the original PDF.",
+                title: "Important — PDFLinx Only Unlocks PDFs You Have the Password For",
+                text: "PDFLinx is a legitimate tool for removing protection from PDFs you own or have authorized access to — documents you protected yourself, files sent to you with the password, or PDFs from your own organization. To unlock a PDF, you must provide the correct password. PDFLinx does not crack, bypass, or brute-force unknown passwords. This is intentional — it keeps the tool ethical and legal. If you have genuinely lost access to a document you own, contact the original sender or your organization's IT department for the password.",
               },
               {
-                title: "Works on Mobile and Desktop",
-                text: "Use the PDFLinx unlock PDF tool directly in your browser on Windows, macOS, Linux, Android, iPhone, and tablets — no app or software installation required.",
+                title:
+                  "Why PDFLinx is the Best Free PDF Unlock Tool — No Watermark, No Limits",
+                text: "Most free PDF unlock tools add watermarks to the unlocked output, restrict file sizes, or require account creation. PDFLinx does none of that — completely free, no signup, no watermark, and no daily limit. Unlike iLovePDF and Smallpdf which restrict PDF unlocking on free tiers, PDFLinx gives you clean, watermark-free unlocked PDFs at zero cost.",
               },
               {
-                title: "No Signup, No Watermark",
-                text: "Unlock your PDF online for free with no account required, no watermark added, and files permanently deleted after processing.",
+                title: "Common Use Cases for Unlocking a PDF",
+                text: "✓ Bank & Financial Statements: Unlock PDFs sent by banks and financial institutions with auto-generated passwords so you can access, print, or file them easily.\n✓ Government & Official Documents: Remove restrictions from officially issued PDFs that block printing or copying when you need to use the content.\n✓ HR Documents: Unlock protected offer letters, payslips, and employee records you have received with a known password.\n✓ Own Protected Files: Remove protection from PDFs you previously locked yourself when the password is no longer needed.\n✓ Permission-Locked PDFs: Unlock PDFs that allow viewing but block editing, printing, or copying so you can annotate, sign, or print them freely.\n✓ Before Using Other PDF Tools: Most PDF tools — merge, split, compress, edit — require an unlocked PDF. Use PDFLinx Unlock first, then use any other tool.",
+              },
+              {
+                title:
+                  "Unlock PDF on iPhone, Android, Mac & Windows — No App Needed",
+                text: "PDFLinx works entirely in your browser — no download, no installation, no app required. On iPhone or Android, open your browser and upload your protected PDF directly from your files app. On Mac or Windows, drag and drop your PDF and download the unlocked file in seconds. Whether you need to unlock a PDF on mobile or desktop, PDFLinx works seamlessly across every platform and operating system.",
+              },
+              {
+                title: "Privacy and File Security — Your Password Is Never Stored",
+                text: "Your files are processed on secure servers over encrypted HTTPS and automatically deleted after 1 hour. The password you enter is used only to decrypt the file during processing — it is never stored, logged, or recorded by PDFLinx. We do not store, share, or access your documents at any point. Your data and your password stay completely private.",
+              },
+              {
+                title: "After Unlocking — What You Can Do With the PDF",
+                text: "Once unlocked, your PDF is a fully open, unrestricted document. You can open it without entering any password. You can print it freely. You can copy and paste text from it. You can edit and annotate it using our free PDF Editor. You can merge it with other PDFs using our free Merge tool. You can split it, compress it, convert it to Word or Excel — any action that was previously blocked by the protection is now fully available. Unlocking is often the first step before using any other PDF tool on the document.",
               },
             ],
-
-            faqTitle: "Frequently asked questions",
 
             faqs: [
               {
-                q: "Can I unlock a PDF without a password?",
-                a: "Yes — if the PDF only has printing, copying, or editing restrictions (owner lock). If it requires a password to open (user lock), you must enter the correct password.",
+                q: "Is PDFLinx PDF unlock tool free?",
+                a: "Yes, completely free. No hidden charges, no premium plans, and no limits on the number of PDFs you unlock or how many times you use it.",
               },
               {
-                q: "What is the difference between user password and owner password?",
-                a: "User password is required to open and view the PDF. Owner password restricts actions like printing, copying, or editing. Owner restrictions can often be removed without needing any password.",
+                q: "Do I need to sign up or create an account?",
+                a: "No account required. Upload your PDF and unlock it instantly — no email, no registration, no friction.",
               },
               {
-                q: "Will my unlocked PDF look the same after conversion?",
-                a: "Yes. Unlocking only removes restrictions — it does not change text, images, layout, or quality in any way.",
+                q: "Do I need to know the PDF password to unlock it?",
+                a: "Yes. PDFLinx removes protection from PDFs for which you already have the correct password. Enter the password when prompted and PDFLinx strips it from the file.",
               },
               {
-                q: "Are my files safe and private?",
-                a: "Yes. Files are processed securely over encrypted connections and permanently deleted after unlocking. They are never stored long-term or shared with third parties.",
+                q: "Can PDFLinx crack or bypass an unknown PDF password?",
+                a: "No. PDFLinx is a legitimate unlock tool — it removes protection when you provide the correct password. It does not crack, guess, or brute-force unknown passwords.",
               },
               {
-                q: "Can I unlock multiple PDFs at once?",
-                a: "Yes. Upload up to 10 PDF files simultaneously. All unlocked PDFs are delivered as a single ZIP download.",
+                q: "Can I remove permission restrictions — like printing and copying blocks?",
+                a: "Yes. If a PDF has permission restrictions that block printing, copying, or editing, PDFLinx removes those restrictions so you can use the document freely.",
               },
               {
-                q: "Is PDFLinx cracking or bypassing passwords?",
-                a: "No. PDFLinx removes owner permission restrictions, or unlocks files using the password you provide. PDFs that require an opening password cannot be unlocked without the correct password.",
+                q: "What is the difference between an open password lock and a permissions lock?",
+                a: "An open password lock blocks anyone from viewing the PDF without the password. A permissions lock allows viewing but restricts actions like printing and editing. PDFLinx handles both.",
               },
               {
-                q: "Can I unlock a PDF on my phone?",
-                a: "Yes. PDFLinx works on Android and iOS mobile browsers — no app download required.",
+                q: "Does PDFLinx add any watermark to the unlocked PDF?",
+                a: "No watermarks, ever. Your unlocked PDF is 100% clean — just the original content with the password and restrictions removed.",
               },
               {
-                q: "What should I do after unlocking a PDF?",
-                a: "After unlocking, you can protect it again with a new password using the Protect PDF tool, merge it with other documents using Merge PDF, compress it for sharing, or split it into individual pages.",
+                q: "Is my file and password secure and private?",
+                a: "Yes. Files are processed on secure servers over encrypted HTTPS and deleted after 1 hour. The password you enter is used only during processing and is never stored or logged by PDFLinx.",
+              },
+              {
+                q: "Can I use PDFLinx on mobile — iPhone and Android?",
+                a: "Yes. PDFLinx works perfectly in the browser on iPhone, Android, iPad, Windows, and Mac — no app download or installation needed.",
+              },
+              {
+                q: "What is the maximum file size limit?",
+                a: "Up to 50 MB per file. For very large protected PDFs, contact us if you experience issues — we can advise on the best approach.",
+              },
+              {
+                q: "Why should I unlock a PDF before using other PDF tools?",
+                a: "Most PDF tools — including merge, split, compress, rotate, and edit — require an unlocked PDF to function. Unlock your PDF first using PDFLinx, then use any other tool on it freely.",
+              },
+              {
+                q: "Can I re-protect a PDF with a new password after unlocking?",
+                a: "Yes. After unlocking, use our free Protect PDF tool to add a new password and encryption settings to the document.",
+              },
+              {
+                q: "Will the PDF content or quality change after unlocking?",
+                a: "No. Unlocking only removes the encryption and restriction layer — all content, formatting, images, and quality remain exactly as in the original.",
+              },
+              {
+                q: "How long does PDF unlocking take?",
+                a: "Most operations complete within 5 to 10 seconds depending on file size.",
+              },
+              {
+                q: "Is PDFLinx better than iLovePDF or Smallpdf for unlocking PDFs?",
+                a: "Yes — PDFLinx unlocks PDFs with no watermark on output, no daily limits, and no account required. iLovePDF and Smallpdf restrict PDF unlocking behind paid plans.",
               },
             ],
+
+            ctaTitle: (
+              <>
+                Unlock your PDF now —<br />
+                free, private, no sign‑up.
+              </>
+            ),
+            ctaDescription:
+              "Join thousands who trust PDFLinx to remove PDF passwords and restrictions instantly every day.",
+            ctaButton: "Choose PDF File",
           },
         }}
+
       />
 
     </>

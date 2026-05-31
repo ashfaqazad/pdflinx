@@ -14,16 +14,28 @@
 /* ─────────────────────────────────────────────────────────────
    SCROLL REVEAL
 ───────────────────────────────────────────────────────────── */
-.revealItem {
+/* .revealItem {
   opacity: 0;
   transform: translateY(22px);
   transition: opacity 0.58s ease, transform 0.58s ease;
+} */
+
+.revealItem {
+  opacity: 1;        /* ← hamesha visible */
+  transform: none;   /* ← koi animation nahi */
+  transition: none;
 }
 
 .revealItem.visible {
+  opacity: 1;
+  transform: none;
+}
+
+
+/* .revealItem.visible {
   opacity: 1 !important;
   transform: translateY(0) !important;
-}
+} */
 
 /* ─────────────────────────────────────────────────────────────
    HERO
@@ -518,7 +530,8 @@
 .ctaOuter {
   /* removed padding so banner goes full width */
   background: #faf9f7;
-  padding: 5rem 0 6rem;  /* last 0 → 6rem */
+  padding: 5rem 0 6rem;
+  /* last 0 → 6rem */
 
   /* padding: 5rem 0 0; */
 }
@@ -783,7 +796,8 @@
   /* cta banner */
   .ctaOuter {
     padding: 3rem 0 0;
-    padding: 5rem 0 6rem;  /* last 0 → 6rem */
+    padding: 5rem 0 6rem;
+    /* last 0 → 6rem */
 
   }
 
