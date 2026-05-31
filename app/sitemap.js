@@ -44,6 +44,14 @@ export default function sitemap() {
     "/pdf-to-png",
     "/pdf-to-text",
     "/text-to-pdf",
+    // New tools added
+    "/pdf-to-powerpoint",
+    "/crop-pdf",
+    "/extract-pdf",
+    "/organize-pdf",
+    "/repair-pdf",
+    "/redact-pdf",
+    "/compare-pdf",
 
   ].map((url) => ({
     url,
