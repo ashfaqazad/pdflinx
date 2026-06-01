@@ -4,7 +4,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import {
   Scissors, GitMerge,
   FolderOutput, Trash2, LayoutList,
-  Minimize2, RotateCw, Hash, Pencil
+  Minimize2, RotateCw, Hash, Pencil, X
 } from "lucide-react";
 import Script from "next/script";
 import { useProgressBar } from "@/hooks/useProgressBar";
