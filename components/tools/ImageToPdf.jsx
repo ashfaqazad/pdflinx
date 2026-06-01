@@ -1,5 +1,6 @@
 "use client";
 
+import Script from "next/script";
 import { useState } from "react";
 import RelatedToolsSection from "@/components/RelatedTools";
 import { useProgressBar } from "@/hooks/useProgressBar";
