@@ -9,29 +9,34 @@ import ToolPageLayout from "@/components/ToolFlow/ToolPageLayout";
 
 import {
   Image,
-  FileImage,
-  Zap,
-  MonitorSmartphone,
-  FileText,
-  FilePlus,
-  FileMinus,
-  Scissors,
-  Lock,
-  Minimize2,
-  GitMerge,
-  RotateCw
+  GitMerge, FileText,
+  Image as ImageIcon,
+  Minimize2, RotateCw, Scan, Stamp
 
 
 } from "lucide-react";
 
+// const DONE_LINKS = [
+//   { label: "Compress PDF", href: "/compress-pdf", icon: <Minimize2 className="h-4 w-4 text-green-500" /> },
+//   { label: "Merge PDF", href: "/merge-pdf", icon: <GitMerge className="h-4 w-4 text-purple-500" /> },
+//   { label: "PDF to JPG", href: "/pdf-to-jpg", icon: <FileImage className="h-4 w-4 text-pink-500" /> },
+//   { label: "PDF to Word", href: "/pdf-to-word", icon: <FileText className="h-4 w-4 text-blue-500" /> },
+//   { label: "Split PDF", href: "/split-pdf", icon: <Scissors className="h-4 w-4 text-orange-500" /> },
+//   { label: "Rotate PDF", href: "/rotate-pdf", icon: <RotateCw className="h-4 w-4 text-indigo-500" /> },
+// ];
+
+
 const DONE_LINKS = [
-  { label: "Compress PDF", href: "/compress-pdf", icon: <Minimize2 className="h-4 w-4 text-green-500" /> },
-  { label: "Merge PDF", href: "/merge-pdf", icon: <GitMerge className="h-4 w-4 text-purple-500" /> },
-  { label: "PDF to JPG", href: "/pdf-to-jpg", icon: <FileImage className="h-4 w-4 text-pink-500" /> },
-  { label: "PDF to Word", href: "/pdf-to-word", icon: <FileText className="h-4 w-4 text-blue-500" /> },
-  { label: "Split PDF", href: "/split-pdf", icon: <Scissors className="h-4 w-4 text-orange-500" /> },
-  { label: "Rotate PDF", href: "/rotate-pdf", icon: <RotateCw className="h-4 w-4 text-indigo-500" /> },
+  { label: "PDF to JPG",     href: "/pdf-to-jpg",     icon: <ImageIcon       className="h-4 w-4 text-pink-500"    /> },
+  { label: "PDF to PNG",     href: "/pdf-to-png",     icon: <ImageIcon       className="h-4 w-4 text-rose-500"    /> },
+  { label: "Word to PDF",    href: "/word-to-pdf",    icon: <FileText        className="h-4 w-4 text-blue-500"    /> },
+  { label: "Merge PDF",      href: "/merge-pdf",      icon: <GitMerge        className="h-4 w-4 text-purple-500"  /> },
+  { label: "Compress PDF",   href: "/compress-pdf",   icon: <Minimize2       className="h-4 w-4 text-green-500"   /> },
+  { label: "Rotate PDF",     href: "/rotate-pdf",     icon: <RotateCw        className="h-4 w-4 text-cyan-500"    /> },
+  { label: "OCR PDF",        href: "/ocr-pdf",        icon: <Scan            className="h-4 w-4 text-violet-500"  /> },
+  { label: "Add Watermark",  href: "/add-watermark",  icon: <Stamp           className="h-4 w-4 text-teal-500"    /> },
 ];
+
 
 const SIDEBAR_NOTICE = (
   <>
@@ -826,6 +831,8 @@ export default function ImageToPdf({ seo }) {
 
         uploadLanding={{
           content: {
+            relatedTools: DONE_LINKS,
+
             eyebrow: "IMAGE TO PDF CONVERTER",
 
             breadcrumbCurrent: "Image to PDF Converter",
