@@ -625,7 +625,16 @@ export default function ExtractPdf({ seo }) {
     }
 
     try {
-      const res = await fetch("/convert/split-pdf", { method: "POST", body: formData });
+
+      // const res = await fetch("/convert/split-pdf", { method: "POST", body: formData });
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/convert/split-pdf`, {
+        method: "POST",
+        body: formData,
+      });
+
+
+
       const data = await res.json();
       if (data.success) {
         setDownloadUrl(`/api${data.download}`);
@@ -786,7 +795,7 @@ export default function ExtractPdf({ seo }) {
 
         uploadLanding={{
           content: {
-          relatedTools: DONE_LINKS,
+            relatedTools: DONE_LINKS,
 
             eyebrow: "EXTRACT PDF PAGES",
 

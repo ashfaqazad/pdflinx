@@ -292,10 +292,18 @@ export default function RepairPdf() {
         try {
             const formData = new FormData();
             filesPreview.forEach(({ file }) => formData.append("files", file));
-            const res = await fetch("/convert/repair-pdf", {
+
+            // const res = await fetch("/convert/repair-pdf", {
+            //     method: "POST",
+            //     body: formData,
+            // });
+
+            const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/convert/repair-pdf`, {
                 method: "POST",
                 body: formData,
             });
+
+
             if (!res.ok) throw new Error("Failed to repair PDF");
             const blob = await res.blob();
             setDownloadUrl(URL.createObjectURL(blob));

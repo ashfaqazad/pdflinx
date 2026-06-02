@@ -205,10 +205,16 @@ export default function RotatePdf({ seo }) {
     formData.append("angle", String(rotationAngle));
 
     try {
-      const res = await fetch("/convert/rotate-pdf", {
+      // const res = await fetch("/convert/rotate-pdf", {
+      //   method: "POST",
+      //   body: formData,
+      // });
+
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/convert/rotate-pdf`, {
         method: "POST",
         body: formData,
       });
+
 
       if (!res.ok) {
         let msg = "Rotation failed";

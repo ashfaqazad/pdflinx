@@ -8,22 +8,6 @@ import { useProgressBar } from "@/hooks/useProgressBar";
 import { useToolFlow } from "@/hooks/useToolFlow";
 import ToolPageLayout from "@/components/ToolFlow/ToolPageLayout";
 
-// import {
-//   Download,
-//   CheckCircle,
-//   Type,
-//   Lock,
-//   Scissors,
-//   FileImage,
-//   Code,
-//   FileText,
-//   Image as ImageIcon,
-//   Minimize2,
-//   Pencil,
-//   Hash,
-//   Shield,
-//   GitMerge,
-// } from "lucide-react";
 import {
   Download,
   Code,

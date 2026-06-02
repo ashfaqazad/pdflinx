@@ -498,10 +498,17 @@ export default function EditPdf({ seo }) {
       formData.append("pdfFile", pdfFile);
       formData.append("edits", JSON.stringify(objects));
 
-      const res = await fetch("/convert/edit-pdf", {
+      // const res = await fetch("/convert/edit-pdf", {
+      //   method: "POST",
+      //   body: formData,
+      // });
+
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/convert/edit-pdf`, {
         method: "POST",
         body: formData,
       });
+
 
       if (!res.ok) {
         let msg = "Edit failed";

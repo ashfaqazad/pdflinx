@@ -307,10 +307,20 @@ export default function AddPageNumbers() {
     formData.append("fontFamily", fontFamily);
 
     try {
-      const res = await fetch("/convert/add-page-numbers", {
+
+      // const res = await fetch("/convert/add-page-numbers", {
+      //   method: "POST",
+      //   body: formData,
+      // });
+
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/convert/add-page-numbers`, {
         method: "POST",
         body: formData,
       });
+
+
+
       if (!res.ok) {
         let msg = "Failed to add page numbers";
         try { const j = await res.json(); msg = j?.error || msg; } catch { }
@@ -686,7 +696,7 @@ export default function AddPageNumbers() {
         onRemoveFile={resetAll}
         onConvert={handleConvert}
         onDownload={handleDownload}
-        
+
         doneLinks={DEFAULT_DONE_LINKS}
         sidebarLinks={DONE_LINKS}
 

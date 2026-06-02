@@ -119,7 +119,7 @@ export default function PdfToPng({ seo }) {
     flow.files.forEach((f) => formData.append("files", f));
 
     try {
-      const res = await fetch("/convert/pdf-to-png", {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/convert/pdf-to-png`, {
         method: "POST",
         body: formData,
       });

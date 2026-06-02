@@ -125,10 +125,22 @@ export default function PdfToExcel({ seo }) {
     formData.append("mode", flow.files.length === 1 ? "single" : "multiple");
 
     try {
-      const res = await fetch("/convert/pdf-excel", {
-        method: "POST",
-        body: formData,
-      });
+
+
+      // const res = await fetch("/convert/pdf-excel", {
+      //   method: "POST",
+      //   body: formData,
+      // });
+
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/convert/pdf-excel`,
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+
+
 
       const data = await res.json();
 
@@ -300,25 +312,6 @@ export default function PdfToExcel({ seo }) {
             breadcrumbCurrent: "PDF to Excel Converter",
 
             heroBadge: "✦ 100% Free · No Signup · No Watermark",
-
-            // heroTitle: (
-            //   <>
-            //     PDF to Excel Converter —{" "}
-            //     <em className="font-bold text-[#e8420a] sm:italic">
-            //       Free, Online, Tables Extracted
-            //     </em>
-            //   </>
-            // ),
-
-            // heroDescription:
-            //   "Convert PDF to Excel online for free. Extract tables, data, and numbers into fully editable XLSX spreadsheets — no signup, no watermark, no software needed. Works on any device.",
-
-            // pills: [
-            //   "No watermark",
-            //   "Tables extracted accurately",
-            //   "Works on any device",
-            //   "Instant conversion",
-            // ],
 
             heroTitle: (
               <>

@@ -19,14 +19,14 @@ import { DEFAULT_DONE_LINKS, DEFAULT_SIDEBAR_FEATURES } from "@/lib/toolUiConfig
 
 
 const DONE_LINKS = [
-  { label: "Unlock PDF",     href: "/unlock-pdf",     icon: <LockOpen        className="h-4 w-4 text-green-500"   /> },
-  { label: "Sign PDF",       href: "/sign-pdf",       icon: <PenLine         className="h-4 w-4 text-indigo-500"  /> },
-  { label: "Add Watermark",  href: "/add-watermark",  icon: <Stamp           className="h-4 w-4 text-teal-500"    /> },
-  { label: "Redact PDF",     href: "/redact-pdf",     icon: <EyeOff          className="h-4 w-4 text-gray-500"    /> },
-  { label: "Compress PDF",   href: "/compress-pdf",   icon: <Minimize2       className="h-4 w-4 text-green-500"   /> },
-  { label: "Merge PDF",      href: "/merge-pdf",      icon: <GitMerge        className="h-4 w-4 text-purple-500"  /> },
-  { label: "Edit PDF",       href: "/edit-pdf",       icon: <Pencil          className="h-4 w-4 text-orange-500"  /> },
-  { label: "OCR PDF",        href: "/ocr-pdf",        icon: <Scan            className="h-4 w-4 text-violet-500"  /> },
+  { label: "Unlock PDF", href: "/unlock-pdf", icon: <LockOpen className="h-4 w-4 text-green-500" /> },
+  { label: "Sign PDF", href: "/sign-pdf", icon: <PenLine className="h-4 w-4 text-indigo-500" /> },
+  { label: "Add Watermark", href: "/add-watermark", icon: <Stamp className="h-4 w-4 text-teal-500" /> },
+  { label: "Redact PDF", href: "/redact-pdf", icon: <EyeOff className="h-4 w-4 text-gray-500" /> },
+  { label: "Compress PDF", href: "/compress-pdf", icon: <Minimize2 className="h-4 w-4 text-green-500" /> },
+  { label: "Merge PDF", href: "/merge-pdf", icon: <GitMerge className="h-4 w-4 text-purple-500" /> },
+  { label: "Edit PDF", href: "/edit-pdf", icon: <Pencil className="h-4 w-4 text-orange-500" /> },
+  { label: "OCR PDF", href: "/ocr-pdf", icon: <Scan className="h-4 w-4 text-violet-500" /> },
 ];
 
 
@@ -117,10 +117,16 @@ export default function ProtectPdf() {
     formData.append("allowEdit", String(allowEdit));
 
     try {
-      const res = await fetch("/convert/protect-pdf", {
+      // const res = await fetch("/convert/protect-pdf", {
+      //   method: "POST",
+      //   body: formData,
+      // });
+
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/convert/protect-pdf`, {
         method: "POST",
         body: formData,
       });
+
 
       if (!res.ok) {
         let msg = "Protection failed";
@@ -588,7 +594,7 @@ export default function ProtectPdf() {
 
         uploadLanding={{
           content: {
-            relatedTools: DONE_LINKS, 
+            relatedTools: DONE_LINKS,
             eyebrow: "PROTECT PDF WITH PASSWORD",
 
             breadcrumbCurrent: "Protect PDF",

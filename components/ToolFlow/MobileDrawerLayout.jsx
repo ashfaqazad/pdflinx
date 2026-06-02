@@ -98,7 +98,9 @@ export default function MobileDrawerLayout({
 
                             transition={{ type: "spring", damping: 30, stiffness: 300 }}
                             // className="fixed bottom-0 left-0 right-0 z-50 rounded-t-2xl bg-white shadow-2xl max-h-[80vh] flex flex-col"
-                            className="fixed inset-y-0 right-0 z-50 rounded-l-2xl bg-white shadow-2xl w-[min(360px,100vw)] flex flex-col"
+                            className="fixed inset-y-0 right-0 z-50 rounded-l-2xl bg-white shadow-2xl 
+                            w-[260px] flex flex-col"
+
 
                         >
                             {/* Drawer handle */}

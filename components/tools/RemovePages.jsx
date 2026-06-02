@@ -87,10 +87,16 @@ export default function RemovePdf() {
     formData.append("pages", selectedPages.join(","));
 
     try {
-      const res = await fetch("/convert/remove-pages", {
+      // const res = await fetch("/convert/remove-pages", {
+      //   method: "POST",
+      //   body: formData,
+      // });
+
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/convert/remove-pages`, {
         method: "POST",
         body: formData,
       });
+
 
       if (!res.ok) {
         let msg = "Failed to remove pages";
@@ -375,7 +381,7 @@ export default function RemovePdf() {
 
         uploadLanding={{
           content: {
-            relatedTools: DONE_LINKS, 
+            relatedTools: DONE_LINKS,
             eyebrow: "REMOVE PAGES FROM PDF",
 
             breadcrumbCurrent: "Remove Pages from PDF",

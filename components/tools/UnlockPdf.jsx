@@ -7,7 +7,7 @@ import {
   Key,
   LockOpen,
   Shield, PenLine, FileText, Scissors,
-  Minimize2, GitMerge, EyeOff, Scan, Pencil, Stamp  
+  Minimize2, GitMerge, EyeOff, Scan, Pencil, Stamp
 } from "lucide-react";
 import Script from "next/script";
 import RelatedToolsSection from "@/components/RelatedTools";
@@ -95,10 +95,15 @@ export default function UnlockPdf() {
     if (password.trim()) formData.append("password", password.trim());
 
     try {
-      const res = await fetch("/convert/unlock-pdf", {
+      // const res = await fetch("/convert/unlock-pdf", {
+      //   method: "POST",
+      //   body: formData,
+      // });
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/convert/unlock-pdf`, {
         method: "POST",
         body: formData,
       });
+
 
       if (!res.ok) {
         let msg = "Unlock failed";

@@ -24,14 +24,14 @@ import {
 // ];
 
 const DONE_LINKS = [
-  { label: "PDF to Word",    href: "/pdf-to-word",    icon: <FileText        className="h-4 w-4 text-blue-500"    /> },
-  { label: "PDF to Excel",   href: "/pdf-to-excel",   icon: <FileSpreadsheet className="h-4 w-4 text-emerald-500" /> },
-  { label: "OCR PDF",        href: "/ocr-pdf",        icon: <Scan            className="h-4 w-4 text-violet-500"  /> },
-  { label: "Edit PDF",       href: "/edit-pdf",       icon: <Pencil          className="h-4 w-4 text-orange-500"  /> },
-  { label: "HTML to PDF",    href: "/html-to-pdf",    icon: <Code            className="h-4 w-4 text-indigo-500"  /> },
-  { label: "Text to PDF",    href: "/text-to-pdf",    icon: <FileType        className="h-4 w-4 text-yellow-500"  /> },
-  { label: "Merge PDF",      href: "/merge-pdf",      icon: <GitMerge        className="h-4 w-4 text-purple-500"  /> },
-  { label: "Compress PDF",   href: "/compress-pdf",   icon: <Minimize2       className="h-4 w-4 text-green-500"   /> },
+  { label: "PDF to Word", href: "/pdf-to-word", icon: <FileText className="h-4 w-4 text-blue-500" /> },
+  { label: "PDF to Excel", href: "/pdf-to-excel", icon: <FileSpreadsheet className="h-4 w-4 text-emerald-500" /> },
+  { label: "OCR PDF", href: "/ocr-pdf", icon: <Scan className="h-4 w-4 text-violet-500" /> },
+  { label: "Edit PDF", href: "/edit-pdf", icon: <Pencil className="h-4 w-4 text-orange-500" /> },
+  { label: "HTML to PDF", href: "/html-to-pdf", icon: <Code className="h-4 w-4 text-indigo-500" /> },
+  { label: "Text to PDF", href: "/text-to-pdf", icon: <FileType className="h-4 w-4 text-yellow-500" /> },
+  { label: "Merge PDF", href: "/merge-pdf", icon: <GitMerge className="h-4 w-4 text-purple-500" /> },
+  { label: "Compress PDF", href: "/compress-pdf", icon: <Minimize2 className="h-4 w-4 text-green-500" /> },
 ];
 
 
@@ -119,10 +119,16 @@ export default function PdfToText({ seo }) {
     flow.files.forEach((f) => formData.append("files", f));
 
     try {
-      const res = await fetch("/convert/pdf-to-text", {
+      // const res = await fetch("/convert/pdf-to-text", {
+      //   method: "POST",
+      //   body: formData,
+      // });
+
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/convert/pdf-to-text`, {
         method: "POST",
         body: formData,
       });
+
 
       if (!res.ok) {
         const errorText = await res.text();

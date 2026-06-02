@@ -292,7 +292,7 @@ export default function CompressPdfClient() {
     formData.append("compressionLevel", compressionLevel);
 
     try {
-      const res = await fetch("/convert/compress-pdf", {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/convert/compress-pdf`, {
         method: "POST",
         body: formData,
       });

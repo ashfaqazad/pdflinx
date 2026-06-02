@@ -23,11 +23,16 @@ export default function WordToPdfCore({ compact = false }) {
     for (const f of files) formData.append("files", f);
 
     try {
-      const res = await fetch("/convert/word-to-pdf", { method: "POST", body: formData });
+      // const res = await fetch("/convert/word-to-pdf", { method: "POST", body: formData });
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/convert/word-to-pdf`,
+        { method: "POST", body: formData }
+      );
+
 
       if (!res.ok) {
         let msg = "Conversion failed";
-        try { const j = await res.json(); msg = j?.error || msg; } catch {}
+        try { const j = await res.json(); msg = j?.error || msg; } catch { }
         throw new Error(msg);
       }
 

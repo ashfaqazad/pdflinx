@@ -25,15 +25,15 @@ import {
 } from "lucide-react";
 // ── Config ───────────────────────────────────────────
 const DONE_LINKS = [
-  { label: "PDF to Word",    href: "/pdf-to-word",    icon: <FileText        className="h-4 w-4 text-blue-500"    /> },
-  { label: "Excel to PDF",   href: "/excel-pdf",      icon: <FileSpreadsheet className="h-4 w-4 text-emerald-500" /> },
+  { label: "PDF to Word", href: "/pdf-to-word", icon: <FileText className="h-4 w-4 text-blue-500" /> },
+  { label: "Excel to PDF", href: "/excel-pdf", icon: <FileSpreadsheet className="h-4 w-4 text-emerald-500" /> },
   // { label: "PPT to PDF",     href: "/ppt-to-pdf",     icon: <Presentation    className="h-4 w-4 text-orange-500"  /> },
   { label: "PPT to PDF", href: "/ppt-to-pdf", icon: <FileImage className="h-4 w-4 text-orange-500" /> },
-  { label: "Image to PDF",   href: "/image-to-pdf",   icon: <ImageIcon       className="h-4 w-4 text-pink-500"    /> },
-  { label: "HTML to PDF",    href: "/html-to-pdf",    icon: <Code            className="h-4 w-4 text-indigo-500"  /> },
-  { label: "Text to PDF",    href: "/text-to-pdf",    icon: <FileType        className="h-4 w-4 text-yellow-500"  /> },
-  { label: "Compress PDF",   href: "/compress-pdf",   icon: <Minimize2       className="h-4 w-4 text-green-500"   /> },
-  { label: "Merge PDF",      href: "/merge-pdf",      icon: <GitMerge        className="h-4 w-4 text-purple-500"  /> },
+  { label: "Image to PDF", href: "/image-to-pdf", icon: <ImageIcon className="h-4 w-4 text-pink-500" /> },
+  { label: "HTML to PDF", href: "/html-to-pdf", icon: <Code className="h-4 w-4 text-indigo-500" /> },
+  { label: "Text to PDF", href: "/text-to-pdf", icon: <FileType className="h-4 w-4 text-yellow-500" /> },
+  { label: "Compress PDF", href: "/compress-pdf", icon: <Minimize2 className="h-4 w-4 text-green-500" /> },
+  { label: "Merge PDF", href: "/merge-pdf", icon: <GitMerge className="h-4 w-4 text-purple-500" /> },
 ];
 
 // const DONE_LINKS = [
@@ -91,6 +91,7 @@ export default function WordToPdf({ seo }) {
     useProgressBar();
 
   const [downloadUrl, setDownloadUrl] = useState(null);
+  const [downloadFileName, setDownloadFileName] = useState("pdflinx-word-to-pdf.pdf");
 
   const handleRemoveFile = (index) => {
     const updated = flow.files.filter((_, i) => i !== index);
@@ -98,18 +99,6 @@ export default function WordToPdf({ seo }) {
     else flow.selectFiles(updated);
   };
 
-  // ── DOWNLOAD HANDLER ─────────────────────
-  const handleDownload = () => {
-    if (!downloadUrl) return;
-    const a = document.createElement("a");
-    a.href = downloadUrl;
-    a.download = "pdflinx-word-to-pdf.pdf";
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-  };
-
-  // ── API LOGIC ────────────────────────────
   const handleConvert = async () => {
     if (!flow.files.length) return alert("Please select a Word file first!");
 
@@ -120,10 +109,10 @@ export default function WordToPdf({ seo }) {
     for (const f of flow.files) formData.append("files", f);
 
     try {
-      const res = await fetch("/convert/word-to-pdf", {
-        method: "POST",
-        body: formData,
-      });
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/convert/word-to-pdf`,
+        { method: "POST", body: formData }
+      );
 
       if (!res.ok) {
         let msg = "Conversion failed";
@@ -135,12 +124,13 @@ export default function WordToPdf({ seo }) {
       }
 
       const contentType = (res.headers.get("content-type") || "").toLowerCase();
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
 
-      // CASE A: Single PDF stream
+      // CASE A: Single PDF
       if (contentType.includes("application/pdf")) {
-        const blob = await res.blob();
-        const url = URL.createObjectURL(blob);
         setDownloadUrl(url);
+        setDownloadFileName("pdflinx-word-to-pdf.pdf");
         completeProgress();
         flow.finishSuccess();
         return;
@@ -151,29 +141,8 @@ export default function WordToPdf({ seo }) {
         contentType.includes("application/zip") ||
         contentType.includes("application/octet-stream")
       ) {
-        // const blob = await res.blob();
-        // const url = URL.createObjectURL(blob);
-        // setDownloadUrl(url);
-        // completeProgress();
-        // flow.finishSuccess();
-        // return;
-
-        const blob = await res.blob();
-        const url = window.URL.createObjectURL(blob);
-
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = "pdflinx-word-to-pdf.zip";
-
-        document.body.appendChild(a);
-        a.click();
-        a.remove();
-
-        // optional
-        setTimeout(() => {
-          window.URL.revokeObjectURL(url);
-        }, 1000);
-
+        setDownloadUrl(url);                              // ← yahi fix hai
+        setDownloadFileName("pdflinx-word-to-pdf.zip");  // ← correct extension
         completeProgress();
         flow.finishSuccess();
         return;
@@ -185,6 +154,18 @@ export default function WordToPdf({ seo }) {
       flow.handleError(err.message || "Something went wrong, please try again.");
     }
   };
+
+  // ── DOWNLOAD HANDLER ─────────────────────
+  const handleDownload = () => {
+    if (!downloadUrl) return;
+    const a = document.createElement("a");
+    a.href = downloadUrl;
+    a.download = downloadFileName;  // ← state se filename
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+  };
+
   // ── END API LOGIC ────────────────────────
 
   return (

@@ -162,10 +162,16 @@ export default function OCRPdf({ seo }) {
     formData.append("language", language);
 
     try {
-      const res = await fetch("/convert/ocr-pdf", {
+      // const res = await fetch("/convert/ocr-pdf", {
+      //   method: "POST",
+      //   body: formData,
+      // });
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/convert/ocr-pdf`, {
         method: "POST",
         body: formData,
       });
+
 
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));

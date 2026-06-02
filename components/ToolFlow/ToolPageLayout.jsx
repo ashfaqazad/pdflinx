@@ -151,8 +151,11 @@ export default function ToolPageLayout({
               className={
                 isPremiumUpload
                   ? "min-w-0 bg-white p-0 overflow-visible"
+                  // : isCustomOptions
+                  //   ? "min-w-0 overflow-hidden"
                   : isCustomOptions
-                    ? "min-w-0 overflow-hidden"
+                    ? "min-w-0"
+
                     : `min-w-0 bg-slate-100 p-8 ${flow.step === STEPS.UPLOAD
                       ? "overflow-hidden"
                       : "custom-tool-scroll overflow-y-auto"

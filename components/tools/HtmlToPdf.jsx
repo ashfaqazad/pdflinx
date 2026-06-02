@@ -289,11 +289,20 @@ export default function HtmlToPdf({ seo }) {
         bodyPayload = { mode: "url", url: urlInput };
       }
 
-      const res = await fetch("/convert/html-pdf", {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/convert/html-pdf`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(bodyPayload),
+
       });
+
+
+      // const res = await fetch("/convert/html-pdf", {
+      //   method: "POST",
+      //   headers: { "Content-Type": "application/json" },
+      //   body: JSON.stringify(bodyPayload),
+      // });
 
       if (!res.ok) {
         const err = await res.json().catch(() => ({}));

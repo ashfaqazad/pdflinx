@@ -305,7 +305,7 @@ export default function ImageToPdf({ seo }) {
     formData.append("rotations", JSON.stringify(rotations));
 
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_IMAGE_API}/convert/image-to-pdf`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/convert/image-to-pdf`, {
         method: "POST",
         body: formData,
       });
@@ -325,7 +325,7 @@ export default function ImageToPdf({ seo }) {
 
       const finalName = getDownloadName();
 
-      setDownloadUrl(`${process.env.NEXT_PUBLIC_IMAGE_API}${data.download}`);
+      setDownloadUrl(`${process.env.NEXT_PUBLIC_BACKEND_URL}${data.download}`);
       setDownloadName(finalName);
 
       completeProgress();

@@ -480,10 +480,17 @@ export default function OrganizePdf({ seo }) {
       });
       formData.append("rotations", JSON.stringify(finalRotations));
 
-      const res = await fetch("/convert/organize-pdf", {
+      // const res = await fetch("/convert/organize-pdf", {
+      //   method: "POST",
+      //   body: formData,
+      // });
+
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/convert/organize-pdf`, {
         method: "POST",
         body: formData,
       });
+
 
       if (!res.ok) {
         const errData = await res.json().catch(() => ({}));
@@ -707,11 +714,10 @@ export default function OrganizePdf({ seo }) {
             type="button"
             onClick={handleConvert}
             disabled={!pageOrder.length}
-            className={`flex w-full items-center justify-center gap-2 rounded-xl py-3.5 text-sm font-bold text-white transition-all active:scale-[0.98] ${
-              pageOrder.length
-                ? "bg-[#c0392b] hover:bg-[#a93226] shadow-[0_8px_24px_rgba(192,57,43,0.3)]"
-                : "bg-slate-300 cursor-not-allowed"
-            }`}
+            className={`flex w-full items-center justify-center gap-2 rounded-xl py-3.5 text-sm font-bold text-white transition-all active:scale-[0.98] ${pageOrder.length
+              ? "bg-[#c0392b] hover:bg-[#a93226] shadow-[0_8px_24px_rgba(192,57,43,0.3)]"
+              : "bg-slate-300 cursor-not-allowed"
+              }`}
           >
             <Layers3 className="h-4 w-4" />
             Organize PDF

@@ -784,7 +784,12 @@ export default function SignPdf({ seo }) {
       formData.append("previewWidth", String(displayRect.width));
       formData.append("previewHeight", String(displayRect.height));
 
-      const res = await fetch("/convert/sign-pdf", { method: "POST", body: formData });
+      // const res = await fetch("/convert/sign-pdf", { method: "POST", body: formData });
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/convert/sign-pdf`, {
+        method: "POST",
+        body: formData,
+      });
+
       if (!res.ok) {
         let msg = "Signing failed";
         try { const j = await res.json(); msg = j?.error || msg; } catch { }

@@ -26,14 +26,14 @@ import { DEFAULT_DONE_LINKS, DEFAULT_SIDEBAR_FEATURES } from "@/lib/toolUiConfig
 
 
 const DONE_LINKS = [
-  { label: "Edit PDF",       href: "/edit-pdf",       icon: <Pencil          className="h-4 w-4 text-orange-500"  /> },
-  { label: "Rotate PDF",     href: "/rotate-pdf",     icon: <RotateCw        className="h-4 w-4 text-cyan-500"    /> },
-  { label: "Remove Pages",   href: "/remove-pages",   icon: <Trash2          className="h-4 w-4 text-red-500"     /> },
-  { label: "Organize PDF",   href: "/organize-pdf",   icon: <LayoutList      className="h-4 w-4 text-blue-500"    /> },
-  { label: "Add Page Numbers", href: "/add-page-numbers", icon: <Hash        className="h-4 w-4 text-slate-500"   /> },
-  { label: "Compress PDF",   href: "/compress-pdf",   icon: <Minimize2       className="h-4 w-4 text-green-500"   /> },
-  { label: "Merge PDF",      href: "/merge-pdf",      icon: <GitMerge        className="h-4 w-4 text-purple-500"  /> },
-  { label: "Sign PDF",       href: "/sign-pdf",       icon: <PenLine         className="h-4 w-4 text-indigo-500"  /> },
+  { label: "Edit PDF", href: "/edit-pdf", icon: <Pencil className="h-4 w-4 text-orange-500" /> },
+  { label: "Rotate PDF", href: "/rotate-pdf", icon: <RotateCw className="h-4 w-4 text-cyan-500" /> },
+  { label: "Remove Pages", href: "/remove-pages", icon: <Trash2 className="h-4 w-4 text-red-500" /> },
+  { label: "Organize PDF", href: "/organize-pdf", icon: <LayoutList className="h-4 w-4 text-blue-500" /> },
+  { label: "Add Page Numbers", href: "/add-page-numbers", icon: <Hash className="h-4 w-4 text-slate-500" /> },
+  { label: "Compress PDF", href: "/compress-pdf", icon: <Minimize2 className="h-4 w-4 text-green-500" /> },
+  { label: "Merge PDF", href: "/merge-pdf", icon: <GitMerge className="h-4 w-4 text-purple-500" /> },
+  { label: "Sign PDF", href: "/sign-pdf", icon: <PenLine className="h-4 w-4 text-indigo-500" /> },
 ];
 
 
@@ -428,7 +428,13 @@ export default function CropPdf() {
       formData.append("cropH", String(cropRect.h));
       formData.append("scale", String(scale));
 
-      const res = await fetch("/convert/crop-pdf", { method: "POST", body: formData });
+      // const res = await fetch("/convert/crop-pdf", { method: "POST", body: formData });
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/convert/crop-pdf`, {
+        method: "POST",
+        body: formData,
+      });
+
       if (!res.ok) throw new Error("Failed to crop PDF");
 
       const blob = await res.blob();
@@ -754,7 +760,7 @@ export default function CropPdf() {
 
         uploadLanding={{
           content: {
-          relatedTools: DONE_LINKS,
+            relatedTools: DONE_LINKS,
 
             eyebrow: "CROP PDF PAGES",
 

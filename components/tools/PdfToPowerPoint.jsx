@@ -23,13 +23,13 @@ import { DEFAULT_DONE_LINKS, DEFAULT_SIDEBAR_FEATURES } from "@/lib/toolUiConfig
 const DONE_LINKS = [
   // { label: "PPT to PDF",     href: "/ppt-to-pdf",     icon: <Presentation    className="h-4 w-4 text-orange-500"  /> },
   { label: "PPT to PDF", href: "/ppt-to-pdf", icon: <FileImage className="h-4 w-4 text-orange-500" /> },
-  { label: "PDF to Word",    href: "/pdf-to-word",    icon: <FileText        className="h-4 w-4 text-blue-500"    /> },
-  { label: "PDF to Excel",   href: "/pdf-to-excel",   icon: <FileSpreadsheet className="h-4 w-4 text-emerald-500" /> },
-  { label: "Image to PDF",   href: "/image-to-pdf",   icon: <ImageIcon       className="h-4 w-4 text-pink-500"    /> },
-  { label: "Compress PDF",   href: "/compress-pdf",   icon: <Minimize2       className="h-4 w-4 text-green-500"   /> },
-  { label: "Merge PDF",      href: "/merge-pdf",      icon: <GitMerge        className="h-4 w-4 text-purple-500"  /> },
-  { label: "Add Watermark",  href: "/add-watermark",  icon: <Stamp           className="h-4 w-4 text-teal-500"    /> },
-  { label: "Edit PDF",       href: "/edit-pdf",       icon: <Pencil          className="h-4 w-4 text-orange-500"  /> },
+  { label: "PDF to Word", href: "/pdf-to-word", icon: <FileText className="h-4 w-4 text-blue-500" /> },
+  { label: "PDF to Excel", href: "/pdf-to-excel", icon: <FileSpreadsheet className="h-4 w-4 text-emerald-500" /> },
+  { label: "Image to PDF", href: "/image-to-pdf", icon: <ImageIcon className="h-4 w-4 text-pink-500" /> },
+  { label: "Compress PDF", href: "/compress-pdf", icon: <Minimize2 className="h-4 w-4 text-green-500" /> },
+  { label: "Merge PDF", href: "/merge-pdf", icon: <GitMerge className="h-4 w-4 text-purple-500" /> },
+  { label: "Add Watermark", href: "/add-watermark", icon: <Stamp className="h-4 w-4 text-teal-500" /> },
+  { label: "Edit PDF", href: "/edit-pdf", icon: <Pencil className="h-4 w-4 text-orange-500" /> },
 ];
 
 
@@ -168,10 +168,17 @@ export default function PdfToPowerPoint() {
       formData.append("slide_size", slideSize); // FIXED: underscore wala naam
       formData.append("quality", quality);
 
-      const uploadRes = await fetch("/convert/pdf-to-pptx", {
+      // const uploadRes = await fetch("/convert/pdf-to-pptx", {
+      //   method: "POST",
+      //   body: formData,
+      // });
+
+      const uploadRes = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/convert/pdf-to-pptx`, {
         method: "POST",
         body: formData,
       });
+
+
 
       if (!uploadRes.ok) throw new Error("Upload failed");
 

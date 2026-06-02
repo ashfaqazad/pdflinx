@@ -7,9 +7,10 @@ import { useToolFlow } from "@/hooks/useToolFlow";
 import ToolPageLayout from "@/components/ToolFlow/ToolPageLayout";
 
 import {
-FileText, Image as ImageIcon, Scan, Minimize2, FileImage,
-RotateCw, Pencil, GitMerge, Crop} 
-from "lucide-react";
+  FileText, Image as ImageIcon, Scan, Minimize2, FileImage,
+  RotateCw, Pencil, GitMerge, Crop
+}
+  from "lucide-react";
 
 // ── Config ─────────────────────────────────────────────────────────────────
 // const DONE_LINKS = [
@@ -22,14 +23,14 @@ from "lucide-react";
 // ];
 
 const DONE_LINKS = [
-  { label: "PDF to PNG",     href: "/pdf-to-png",     icon: <ImageIcon       className="h-4 w-4 text-rose-500"    /> },
-  { label: "Image to PDF",   href: "/image-to-pdf",   icon: <ImageIcon       className="h-4 w-4 text-pink-500"    /> },
-  { label: "PDF to Word",    href: "/pdf-to-word",    icon: <FileText        className="h-4 w-4 text-blue-500"    /> },
-  { label: "OCR PDF",        href: "/ocr-pdf",        icon: <Scan            className="h-4 w-4 text-violet-500"  /> },
-  { label: "Compress PDF",   href: "/compress-pdf",   icon: <Minimize2       className="h-4 w-4 text-green-500"   /> },
-  { label: "Rotate PDF",     href: "/rotate-pdf",     icon: <RotateCw        className="h-4 w-4 text-cyan-500"    /> },
-  { label: "Edit PDF",       href: "/edit-pdf",       icon: <Pencil          className="h-4 w-4 text-orange-500"  /> },
-  { label: "Merge PDF",      href: "/merge-pdf",      icon: <GitMerge        className="h-4 w-4 text-purple-500"  /> },
+  { label: "PDF to PNG", href: "/pdf-to-png", icon: <ImageIcon className="h-4 w-4 text-rose-500" /> },
+  { label: "Image to PDF", href: "/image-to-pdf", icon: <ImageIcon className="h-4 w-4 text-pink-500" /> },
+  { label: "PDF to Word", href: "/pdf-to-word", icon: <FileText className="h-4 w-4 text-blue-500" /> },
+  { label: "OCR PDF", href: "/ocr-pdf", icon: <Scan className="h-4 w-4 text-violet-500" /> },
+  { label: "Compress PDF", href: "/compress-pdf", icon: <Minimize2 className="h-4 w-4 text-green-500" /> },
+  { label: "Rotate PDF", href: "/rotate-pdf", icon: <RotateCw className="h-4 w-4 text-cyan-500" /> },
+  { label: "Edit PDF", href: "/edit-pdf", icon: <Pencil className="h-4 w-4 text-orange-500" /> },
+  { label: "Merge PDF", href: "/merge-pdf", icon: <GitMerge className="h-4 w-4 text-purple-500" /> },
 ];
 
 
@@ -115,10 +116,19 @@ export default function PdfToJpg({ seo }) {
     flow.files.forEach((f) => formData.append("files", f));
 
     try {
-      const res = await fetch("/convert/pdf-to-jpg", {
-        method: "POST",
-        body: formData,
-      });
+      // const res = await fetch("/convert/pdf-to-jpg", {
+      //   method: "POST",
+      //   body: formData,
+      // });
+
+      const res = await fetch(
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/convert/pdf-to-jpg`,
+          {
+            method: "POST",
+            body: formData,
+          }
+        );
+
 
       if (!res.ok) {
         const errorText = await res.text();
@@ -303,7 +313,7 @@ export default function PdfToJpg({ seo }) {
 
         uploadLanding={{
           content: {
-          relatedTools: DONE_LINKS,
+            relatedTools: DONE_LINKS,
             eyebrow: "PDF TO JPG CONVERTER",
 
             breadcrumbCurrent: "PDF to JPG Converter",

@@ -134,10 +134,17 @@ export default function PptToPdf({ seo }) {
     formData.append("mode", flow.files.length === 1 ? "single" : "multiple");
 
     try {
-      const res = await fetch("/convert/ppt-to-pdf", {
+
+      // const res = await fetch("/convert/ppt-to-pdf", {
+      //   method: "POST",
+      //   body: formData,
+      // });
+
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/convert/ppt-to-pdf`, {
         method: "POST",
         body: formData,
       });
+
 
       if (!res.ok) {
         const text = await res.text().catch(() => "");
@@ -377,7 +384,7 @@ export default function PptToPdf({ seo }) {
 
         uploadLanding={{
           content: {
-            relatedTools: DONE_LINKS, 
+            relatedTools: DONE_LINKS,
             eyebrow: "POWERPOINT TO PDF CONVERTER",
 
             breadcrumbCurrent: "PowerPoint to PDF Converter",
