@@ -2,12 +2,22 @@
 
 import React from "react";
 import Link from "next/link";
+// import {
+//     Scissors, Layers3, Trash2, FolderOpen, FileOutput,
+//     Minimize2, ScanSearch, FileText, FileSpreadsheet,
+//     Presentation, ImageIcon, Type, Code2, FileImage,
+//     FileType, RotateCw, Hash, Droplets, Pencil, Crop,
+//     Shield, Unlock, PenSquare,
+// } from "lucide-react";
+
 import {
     Scissors, Layers3, Trash2, FolderOpen, FileOutput,
     Minimize2, ScanSearch, FileText, FileSpreadsheet,
     Presentation, ImageIcon, Type, Code2, FileImage,
     FileType, RotateCw, Hash, Droplets, Pencil, Crop,
     Shield, Unlock, PenSquare,
+    Wrench,
+    ShieldAlert,
 } from "lucide-react";
 
 const groupColors = [
@@ -73,11 +83,20 @@ const ToolsFooter = () => {
                 { name: "Extract PDF", href: "/extract-pdf", icon: FileOutput },
             ],
         },
+        // {
+        //     title: "Optimize PDF",
+        //     items: [
+        //         { name: "Compress PDF", href: "/compress-pdf", icon: Minimize2 },
+        //         { name: "OCR PDF", href: "/ocr-pdf", icon: ScanSearch },
+        //     ],
+        // },
+
         {
             title: "Optimize PDF",
             items: [
                 { name: "Compress PDF", href: "/compress-pdf", icon: Minimize2 },
                 { name: "OCR PDF", href: "/ocr-pdf", icon: ScanSearch },
+                { name: "Repair PDF", href: "/repair-pdf", icon: Wrench },
             ],
         },
         {
@@ -91,11 +110,23 @@ const ToolsFooter = () => {
                 { name: "HTML to PDF", href: "/html-to-pdf", icon: Code2 },
             ],
         },
+        // {
+        //     title: "Convert From PDF",
+        //     items: [
+        //         { name: "PDF to Word", href: "/pdf-to-word", icon: FileText },
+        //         { name: "PDF to Excel", href: "/pdf-to-excel", icon: FileSpreadsheet },
+        //         { name: "PDF to JPG", href: "/pdf-to-jpg", icon: FileImage },
+        //         { name: "PDF to PNG", href: "/pdf-to-png", icon: ImageIcon },
+        //         { name: "PDF to Text", href: "/pdf-to-text", icon: FileType },
+        //     ],
+        // },
+
         {
             title: "Convert From PDF",
             items: [
                 { name: "PDF to Word", href: "/pdf-to-word", icon: FileText },
                 { name: "PDF to Excel", href: "/pdf-to-excel", icon: FileSpreadsheet },
+                { name: "PDF to PowerPoint", href: "/pdf-to-powerpoint", icon: Presentation },
                 { name: "PDF to JPG", href: "/pdf-to-jpg", icon: FileImage },
                 { name: "PDF to PNG", href: "/pdf-to-png", icon: ImageIcon },
                 { name: "PDF to Text", href: "/pdf-to-text", icon: FileType },
@@ -111,12 +142,22 @@ const ToolsFooter = () => {
                 { name: "Crop PDF", href: "/crop-pdf", icon: Crop },
             ],
         },
+        // {
+        //     title: "PDF Security",
+        //     items: [
+        //         { name: "Protect PDF", href: "/protect-pdf", icon: Shield },
+        //         { name: "Unlock PDF", href: "/unlock-pdf", icon: Unlock },
+        //         { name: "Sign PDF", href: "/sign-pdf", icon: PenSquare },
+        //     ],
+        // },
+
         {
             title: "PDF Security",
             items: [
                 { name: "Protect PDF", href: "/protect-pdf", icon: Shield },
                 { name: "Unlock PDF", href: "/unlock-pdf", icon: Unlock },
                 { name: "Sign PDF", href: "/sign-pdf", icon: PenSquare },
+                { name: "Redact PDF", href: "/redact-pdf", icon: ShieldAlert },
             ],
         },
     ];
@@ -148,7 +189,7 @@ const ToolsFooter = () => {
                             <div
                                 key={index}
                                 className={`
-                                    px-3 sm:px-4 lg:px-5
+                                    px-6 sm:px-5 lg:px-5
                                     first:pl-0 last:pr-0
                                     lg:border-r lg:last:border-r-0 lg:border-[#e5e3de]
                                 `}
@@ -156,7 +197,7 @@ const ToolsFooter = () => {
                                 {/* Group title */}
                                 <h3 className={`
                                     text-[11px] md:text-[10.5px] font-bold uppercase
-                                    tracking-[0.16em] mb-3 pb-2 border-b-2
+                                    tracking-[0.16em] mb-3 pb-2 border-b-2 whitespace-nowrap
                                     ${color.title} ${color.border}
                                 `}>
                                     {group.title}
@@ -186,7 +227,7 @@ const ToolsFooter = () => {
                                                             ${color.iconDefault} ${color.iconHover}
                                                         `}
                                                     />
-                                                    <span className="leading-snug">{item.name}</span>
+                                                    <span className="leading-snug whitespace-nowrap">{item.name}</span>
                                                 </Link>
                                             </li>
                                         );
