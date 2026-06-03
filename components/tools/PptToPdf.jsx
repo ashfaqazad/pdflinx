@@ -26,7 +26,7 @@ import {
 // ];
 
 const DONE_LINKS = [
-  { label: "PDF to PPT", href: "/pdf-to-ppt", icon: <Presentation className="h-4 w-4 text-orange-500" /> },
+  { label: "PDF to PPT", href: "/pdf-to-powerpoint", icon: <Presentation className="h-4 w-4 text-orange-500" /> },
   { label: "Word to PDF", href: "/word-to-pdf", icon: <FileText className="h-4 w-4 text-blue-500" /> },
   { label: "Excel to PDF", href: "/excel-pdf", icon: <FileSpreadsheet className="h-4 w-4 text-emerald-500" /> },
   { label: "Image to PDF", href: "/image-to-pdf", icon: <ImageIcon className="h-4 w-4 text-pink-500" /> },

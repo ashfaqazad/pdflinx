@@ -97,7 +97,7 @@ export default function FreePdfToolsPage() {
         { label: "Excel to PDF",       href: "/excel-pdf",         emoji: "📊", desc: "Export XLS and XLSX spreadsheets to clean, print-ready PDF format." },
         { label: "PowerPoint to PDF",  href: "/ppt-to-pdf",        emoji: "📽️", desc: "Convert PowerPoint presentations to PDF — slides stay pixel-perfect." },
         { label: "Image to PDF",       href: "/image-to-pdf",      emoji: "🖼️", desc: "Combine JPG and PNG images into a single PDF. Supports batch upload." },
-        { label: "JPG to PDF",         href: "/jpg-to-pdf",        emoji: "🖼️", desc: "Convert JPG images into a PDF document quickly and easily." },
+        // { label: "JPG to PDF",         href: "/jpg-to-pdf",        emoji: "🖼️", desc: "Convert JPG images into a PDF document quickly and easily." },
         { label: "Text to PDF",        href: "/text-to-pdf",       emoji: "📄", desc: "Convert plain text into a clean PDF document instantly." },
         { label: "HTML to PDF",        href: "/html-to-pdf",       emoji: "💻", desc: "Convert HTML content into PDF while preserving layout and structure." },
       ],

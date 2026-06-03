@@ -729,10 +729,9 @@ export default function HtmlToPdf({ seo }) {
 
             breadcrumbItems: [
               { label: "Home", href: "/" },
-              { label: "PDF Tools", href: "/pdf-tools" },
+              { label: "Free PDF Tools", href: "/free-pdf-tools" },
               { label: "HTML to PDF" },
             ],
-
             trustPills: ["100% Free", "No Sign Up", "CSS Preserved"],
 
             supports: [

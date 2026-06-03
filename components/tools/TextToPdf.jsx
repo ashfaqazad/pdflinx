@@ -501,10 +501,9 @@ export default function TextToPdf({ seo }) {
 
             breadcrumbItems: [
               { label: "Home", href: "/" },
-              { label: "PDF Tools", href: "/pdf-tools" },
+              { label: "Free PDF Tools", href: "/free-pdf-tools" },
               { label: "Text to PDF" },
             ],
-
             trustPills: ["100% Free", "No Sign Up", "No Upload"],
 
             supports: [

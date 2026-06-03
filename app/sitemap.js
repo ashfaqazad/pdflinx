@@ -51,7 +51,6 @@ export default function sitemap() {
     "/organize-pdf",
     "/repair-pdf",
     "/redact-pdf",
-    "/compare-pdf",
 
   ].map((url) => ({
     url,
