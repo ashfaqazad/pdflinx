@@ -137,19 +137,34 @@ export default function PdfToPng({ seo }) {
         filename = disposition.split("filename=")[1].replace(/"/g, "");
       }
 
-      const blob = await res.blob();
-      const url = window.URL.createObjectURL(blob);
+      // const blob = await res.blob();
+      // const url = window.URL.createObjectURL(blob);
 
-      setDownloadUrl(url);
-      setDownloadName(filename);
+      // setDownloadUrl(url);
+      // setDownloadName(filename);
 
-      // Auto-download
+      // // Auto-download
+      // const a = document.createElement("a");
+      // a.href = url;
+      // a.download = filename;
+      // document.body.appendChild(a);
+      // a.click();
+      // document.body.removeChild(a);
+
+      const data = await res.json();
+      const directUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL}${data.download}`;
+
+      setDownloadUrl(directUrl);
+      setDownloadName(data.filename);
+
+      // Auto-download direct from VPS
       const a = document.createElement("a");
-      a.href = url;
-      a.download = filename;
+      a.href = directUrl;
+      a.download = data.filename;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
+
 
       completeProgress();
       flow.finishSuccess();
