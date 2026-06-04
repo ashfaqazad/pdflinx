@@ -123,32 +123,64 @@ export default function WordToPdf({ seo }) {
         throw new Error(msg);
       }
 
-      const contentType = (res.headers.get("content-type") || "").toLowerCase();
-      const blob = await res.blob();
-      const url = URL.createObjectURL(blob);
+      // const contentType = (res.headers.get("content-type") || "").toLowerCase();
+      // const blob = await res.blob();
+      // const url = URL.createObjectURL(blob);
 
-      // CASE A: Single PDF
-      if (contentType.includes("application/pdf")) {
-        setDownloadUrl(url);
-        setDownloadFileName("pdflinx-word-to-pdf.pdf");
-        completeProgress();
-        flow.finishSuccess();
-        return;
-      }
+      // // CASE A: Single PDF
+      // if (contentType.includes("application/pdf")) {
+      //   setDownloadUrl(url);
+      //   setDownloadFileName("pdflinx-word-to-pdf.pdf");
+      //   completeProgress();
+      //   flow.finishSuccess();
+      //   return;
+      // }
 
-      // CASE B: Multiple → ZIP
-      if (
-        contentType.includes("application/zip") ||
-        contentType.includes("application/octet-stream")
-      ) {
-        setDownloadUrl(url);                              // ← yahi fix hai
-        setDownloadFileName("pdflinx-word-to-pdf.zip");  // ← correct extension
-        completeProgress();
-        flow.finishSuccess();
-        return;
-      }
+      // // CASE B: Multiple → ZIP
+      // if (
+      //   contentType.includes("application/zip") ||
+      //   contentType.includes("application/octet-stream")
+      // ) {
+      //   setDownloadUrl(url);                              // ← yahi fix hai
+      //   setDownloadFileName("pdflinx-word-to-pdf.zip");  // ← correct extension
+      //   completeProgress();
+      //   flow.finishSuccess();
+      //   return;
+      // }
 
-      throw new Error("Unexpected response from server.");
+      // throw new Error("Unexpected response from server.");
+
+
+      const data = await res.json();
+      const directUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL}${data.download}`;
+
+      setDownloadUrl(directUrl);
+      setDownloadFileName(data.filename);
+
+      // Auto-download
+      // const a = document.createElement("a");
+      // a.href = directUrl;
+      // a.download = data.filename;
+      // document.body.appendChild(a);
+      // a.click();
+      // document.body.removeChild(a);
+
+      const blobRes = await fetch(directUrl);
+      const blob = await blobRes.blob();
+      const blobUrl = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = blobUrl;
+      a.download = data.filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(blobUrl);
+
+
+      completeProgress();
+      flow.finishSuccess();
+
+
     } catch (err) {
       cancelProgress();
       flow.handleError(err.message || "Something went wrong, please try again.");
@@ -156,15 +188,34 @@ export default function WordToPdf({ seo }) {
   };
 
   // ── DOWNLOAD HANDLER ─────────────────────
-  const handleDownload = () => {
+  // const handleDownload = () => {
+  //   if (!downloadUrl) return;
+  //   const a = document.createElement("a");
+  //   a.href = downloadUrl;
+  //   a.download = downloadFileName;  // ← state se filename
+  //   document.body.appendChild(a);
+  //   a.click();
+  //   a.remove();
+  // };
+
+  const handleDownload = async () => {
     if (!downloadUrl) return;
-    const a = document.createElement("a");
-    a.href = downloadUrl;
-    a.download = downloadFileName;  // ← state se filename
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
+    try {
+      const blobRes = await fetch(downloadUrl);
+      const blob = await blobRes.blob();
+      const blobUrl = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = blobUrl;
+      a.download = downloadFileName;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(blobUrl);
+    } catch {
+      alert("Download failed. Please try again.");
+    }
   };
+
 
   // ── END API LOGIC ────────────────────────
 
