@@ -437,8 +437,7 @@ function SplitOptionsLayout({
       <MobileDrawerLayout
         drawerTitle="Split PDF"
         mainContent={
-          // <div className="min-h-screen bg-slate-100 p-4 lg:p-6">
-          <div className="bg-slate-100 p-4 lg:p-6">
+          <div className="min-h-screen bg-slate-100 p-4 lg:p-6">
             <PagePreviewArea
               file={file}
               totalPages={totalPages}
