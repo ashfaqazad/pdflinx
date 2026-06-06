@@ -41,17 +41,34 @@ export default function MobileDrawerLayout({
     return (
         <>
             {/* ── Desktop Layout ── */}
-            <div className="hidden lg:flex gap-4 w-full">
-                {/* Main canvas — grows to fill space */}
-                <div className="flex-1 min-w-0">{mainContent}</div>
+            {/* <div className="hidden lg:flex gap-4 w-full"> */}
+            {/* Main canvas — grows to fill space */}
+            {/* <div className="flex-1 min-w-0">{mainContent}</div> */}
 
-                {/* Sidebar options — fixed width */}
-                <div className={`${desktopSidebarWidth} shrink-0`}>
+            {/* Sidebar options — fixed width */}
+            {/* <div className={`${desktopSidebarWidth} shrink-0`}>
                     <div className="rounded-xl border border-gray-200 bg-white shadow-sm p-4 h-full">
                         {drawerContent}
                     </div>
                 </div>
+            </div> */}
+
+            <div className="hidden lg:flex gap-4 w-full" style={{ height: "calc(100vh - 80px)" }}>
+                {/* Main canvas — scrollable */}
+                <div className="flex-1 min-w-0 overflow-y-auto">
+                    {mainContent}
+                </div>
+
+                {/* Sidebar — fixed, sticky */}
+                <div className={`${desktopSidebarWidth} shrink-0 sticky top-0 h-full`}>
+                    <div className="rounded-xl border border-gray-200 bg-white shadow-sm p-4 h-full overflow-y-auto">
+                        {drawerContent}
+                    </div>
+                </div>
             </div>
+
+
+
 
             {/* ── Mobile Layout ── */}
             <div className="lg:hidden w-full">
