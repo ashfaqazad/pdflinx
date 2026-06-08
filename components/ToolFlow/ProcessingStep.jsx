@@ -12,10 +12,10 @@ export default function ProcessingStep({
   fileCount = 1,
 }) {
   const [stageIndex, setStageIndex] = useState(0);
-  // displayProgress — actual progress se aage nahi jayega lekin rukta nahi
   const [displayProgress, setDisplayProgress] = useState(0);
   const animRef = useRef(null);
   const displayRef = useRef(0);
+  const progressRef = useRef(0);
 
   // Stage index update
   useEffect(() => {
@@ -27,29 +27,47 @@ export default function ProcessingStep({
     setStageIndex(idx);
   }, [progress, stages.length]);
 
-  // ✅ Animated progress — kabhi rukta nahi, slow crawl karta rehta hai
+  // Progress ref sync
   useEffect(() => {
-    const target = progress >= 100 ? 100 : Math.min(progress, 92); // max 92% jab tak done nahi
+    progressRef.current = progress;
+  }, [progress]);
 
+  // Continuous animation — bar aur number hamesha milke chalte hain
+  useEffect(() => {
     const animate = () => {
       const current = displayRef.current;
+      const actual = progressRef.current;
 
-      if (current >= target) {
-        // Target pe pahunch gaye — slow crawl mode
-        // Agar 88% pe atak gaye hain to aage badhte raho slowly
-        if (current < 92 && progress < 100) {
-          displayRef.current = current + 0.02; // bohot slow crawl
-          setDisplayProgress(Math.min(displayRef.current, 99));
+      if (actual >= 100) {
+        // Done — 100 tak jao
+        if (current < 100) {
+          displayRef.current = Math.min(current + 1.5, 100);
+          setDisplayProgress(displayRef.current);
         }
         animRef.current = requestAnimationFrame(animate);
         return;
       }
 
-      // Target tak pohnchna hai — fast move
-      const diff = target - current;
-      const step = Math.max(diff * 0.04, 0.3); // min 0.3% per frame
-      displayRef.current = Math.min(current + step, target);
-      setDisplayProgress(displayRef.current);
+      // Conversion chal rahi hai — 0 se 94 tak slow crawl
+      // Kabhi rukta nahi, hamesha aage badhta hai
+      if (current < 94) {
+        // Slow oscillation — aage peechhe nahi, sirf aage
+        // Speed: 0-50% fast, 50-80% medium, 80-94% very slow
+        let speed;
+        if (current < 50) {
+          speed = 0.12;
+        } else if (current < 80) {
+          speed = 0.06;
+        } else {
+          speed = 0.02; // bohot slow but never stops
+        }
+
+        displayRef.current = current + speed;
+        setDisplayProgress(displayRef.current);
+      }
+      // 94% pe ruko — conversion complete hone ka wait karo
+      // Jab progress 100 aaye tab 94→100 fast jump
+
       animRef.current = requestAnimationFrame(animate);
     };
 
@@ -57,7 +75,7 @@ export default function ProcessingStep({
     return () => {
       if (animRef.current) cancelAnimationFrame(animRef.current);
     };
-  }, [progress]);
+  }, []);
 
   const currentStageLabel = stages[stageIndex] || description;
   const roundedProgress = Math.round(displayProgress);
@@ -104,21 +122,21 @@ export default function ProcessingStep({
       {/* Stage label */}
       <p className="mt-2 text-sm text-[#7a7772]">{currentStageLabel}</p>
 
-      {/* ✅ Progress bar — big number + thick bar */}
+      {/* Progress bar */}
       <div className="mt-6 w-full max-w-xs">
 
-        {/* Big percentage number — center */}
+        {/* Big percentage number */}
         <p className="mb-3 text-5xl font-extrabold tracking-tight text-[#f24d0d]">
           {roundedProgress}%
         </p>
 
-        {/* Thick bar with track */}
+        {/* Thick bar */}
         <div className="h-4 overflow-hidden rounded-full bg-[#f3f4f6] shadow-inner">
           <div
             className="h-full rounded-full bg-[#f24d0d] shadow-[0_2px_10px_rgba(242,77,13,0.45)]"
             style={{
               width: `${Math.min(displayProgress, 100)}%`,
-              transition: "width 0.1s linear",
+              // transition: "width 0.1s linear",
             }}
           />
         </div>
@@ -133,6 +151,183 @@ export default function ProcessingStep({
     </div>
   );
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// "use client";
+
+// import { useEffect, useState, useRef } from "react";
+// import Link from "next/link";
+// import Image from "next/image";
+
+// export default function ProcessingStep({
+//   progress = 0,
+//   title = "Converting your PDF",
+//   description = "Extracting text and layout...",
+//   stages = ["Uploading file", "Extracting content", "Generating file"],
+//   fileCount = 1,
+// }) {
+//   const [stageIndex, setStageIndex] = useState(0);
+//   // displayProgress — actual progress se aage nahi jayega lekin rukta nahi
+//   const [displayProgress, setDisplayProgress] = useState(0);
+//   const animRef = useRef(null);
+//   const displayRef = useRef(0);
+
+//   // Stage index update
+//   useEffect(() => {
+//     if (!stages.length) return;
+//     const idx = Math.min(
+//       Math.floor((progress / 100) * stages.length),
+//       stages.length - 1
+//     );
+//     setStageIndex(idx);
+//   }, [progress, stages.length]);
+
+//   // ✅ Animated progress — kabhi rukta nahi, slow crawl karta rehta hai
+//   useEffect(() => {
+//     const target = progress >= 100 ? 100 : Math.min(progress, 92); // max 92% jab tak done nahi
+
+//     const animate = () => {
+//       const current = displayRef.current;
+
+//       if (current >= target) {
+//         // Target pe pahunch gaye — slow crawl mode
+//         // Agar 88% pe atak gaye hain to aage badhte raho slowly
+//         if (current < 92 && progress < 100) {
+//           displayRef.current = current + 0.02; // bohot slow crawl
+//           setDisplayProgress(Math.min(displayRef.current, 99));
+//         }
+//         animRef.current = requestAnimationFrame(animate);
+//         return;
+//       }
+
+//       // Target tak pohnchna hai — fast move
+//       const diff = target - current;
+//       const step = Math.max(diff * 0.04, 0.3); // min 0.3% per frame
+//       displayRef.current = Math.min(current + step, target);
+//       setDisplayProgress(displayRef.current);
+//       animRef.current = requestAnimationFrame(animate);
+//     };
+
+//     animRef.current = requestAnimationFrame(animate);
+//     return () => {
+//       if (animRef.current) cancelAnimationFrame(animRef.current);
+//     };
+//   }, [progress]);
+
+//   const currentStageLabel = stages[stageIndex] || description;
+//   const roundedProgress = Math.round(displayProgress);
+
+//   return (
+//     <div className="flex min-h-[420px] flex-col items-center justify-start px-6 pt-2 pb-12 text-center">
+
+//       {/* Brand */}
+//       <div className="mb-10">
+//         <Link href="/" className="flex items-center gap-2">
+//           <Image
+//             src="/pdflinx_logo.svg"
+//             alt="PDFLinx Logo"
+//             width={36}
+//             height={36}
+//             priority
+//           />
+//           <span className="font-semibold text-xl italic text-[#0f0e0d]">
+//             pdflinx
+//           </span>
+//         </Link>
+//       </div>
+
+//       {/* Spinner */}
+//       <div className="relative mb-8 h-20 w-20">
+//         <svg className="h-20 w-20 animate-spin" viewBox="0 0 64 64" fill="none">
+//           <circle cx="32" cy="32" r="28" stroke="#e5e7eb" strokeWidth="6" />
+//           <circle
+//             cx="32"
+//             cy="32"
+//             r="28"
+//             stroke="#f24d0d"
+//             strokeWidth="6"
+//             strokeLinecap="round"
+//             strokeDasharray="175.9"
+//             strokeDashoffset="110"
+//           />
+//         </svg>
+//       </div>
+
+//       {/* Title */}
+//       <h3 className="text-xl font-bold text-[#0f0e0d]">{title}</h3>
+
+//       {/* Stage label */}
+//       <p className="mt-2 text-sm text-[#7a7772]">{currentStageLabel}</p>
+
+//       {/* ✅ Progress bar — big number + thick bar */}
+//       <div className="mt-6 w-full max-w-xs">
+
+//         {/* Big percentage number — center */}
+//         <p className="mb-3 text-5xl font-extrabold tracking-tight text-[#f24d0d]">
+//           {roundedProgress}%
+//         </p>
+
+//         {/* Thick bar with track */}
+//         <div className="h-4 overflow-hidden rounded-full bg-[#f3f4f6] shadow-inner">
+//           <div
+//             className="h-full rounded-full bg-[#f24d0d] shadow-[0_2px_10px_rgba(242,77,13,0.45)]"
+//             style={{
+//               width: `${Math.min(displayProgress, 100)}%`,
+//               transition: "width 0.1s linear",
+//             }}
+//           />
+//         </div>
+
+//       </div>
+
+//       {fileCount > 1 && (
+//         <p className="mt-5 text-xs text-gray-400">
+//           Processing {fileCount} files — please don&apos;t close this tab.
+//         </p>
+//       )}
+//     </div>
+//   );
+// }
 
 
 

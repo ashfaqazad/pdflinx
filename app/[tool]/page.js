@@ -34,7 +34,6 @@ const componentMap = {
   "ai-summarize": () => import("@/components/tools/AiSummarize"),
   "translate-pdf": () => import("@/components/tools/AiTranslate"),
   "chat-with-pdf": () => import("@/components/tools/AiChat"),
-  "ai-proofread-pdf": () => import("@/components/tools/AiProofread"),
 
 };
 
