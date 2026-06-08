@@ -31,6 +31,9 @@ const componentMap = {
   "redact-pdf": () => import("@/components/tools/RedactPdf"),
   "repair-pdf": () => import("@/components/tools/RepairPdf"),
   "pdf-to-powerpoint": () => import("@/components/tools/PdfToPowerPoint"),
+  "ai-summarize": () => import("@/components/tools/AiSummarize"),
+  "translate-pdf": () => import("@/components/tools/AiTranslate"),
+  "chat-with-pdf": () => import("@/components/tools/AiChat"),
 
 };
 

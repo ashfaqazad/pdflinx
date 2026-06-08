@@ -316,7 +316,7 @@ const pills = [
 ];
 
 const stats = [
-    { num: "23+", label: "Free PDF Tools" },
+    { num: "31+", label: "Free PDF Tools" },
     { num: "Zero", label: "Ads or Popups" },
     { num: "100%", label: "Browser-Based" },
     { num: "Free", label: "No Hidden Costs" },

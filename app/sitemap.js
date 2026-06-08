@@ -50,6 +50,10 @@ export default function sitemap() {
     "/organize-pdf",
     "/repair-pdf",
     "/redact-pdf",
+    "/ai-summarize",
+    "/chat-with-pdf",
+
+
   ].map((url) => ({
     url,
     changeFrequency: "weekly",
