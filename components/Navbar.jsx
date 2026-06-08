@@ -7,7 +7,7 @@ import {
   FileMinus, FilePlus, Image as ImageIcon, ScanLine, FileEdit,
   Scissors, RotateCw, Trash2, Hash, Layers, Shield, PenSquare,
   Unlock, Code, Menu, X, Italic, List, FileOutput, Crop, ShieldAlert,
-  Wrench, Presentation, FileSearch, MessageSquare
+  Wrench, Presentation, FileSearch, MessageSquare, SpellCheck
 } from "lucide-react";
 import Image from "next/image";
 
@@ -110,7 +110,9 @@ const dropdownCols = [
     heading: "AI PDF",
     items: [
       { label: "AI Summarize", href: "/ai-summarize", Icon: FileSearch, color: "#e8420a" },
+      { label: "AI Proofread", href: "/ai-proofread-pdf", Icon: SpellCheck, color: "#e8420a" },
       { label: "Chat with PDF", href: "/chat-with-pdf", Icon: MessageSquare, color: "#e8420a" },
+
     ],
   },
 

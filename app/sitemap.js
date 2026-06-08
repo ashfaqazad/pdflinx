@@ -52,6 +52,7 @@ export default function sitemap() {
     "/redact-pdf",
     "/ai-summarize",
     "/chat-with-pdf",
+    "/ai-proofread-pdf"
 
 
   ].map((url) => ({
