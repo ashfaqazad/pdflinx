@@ -80,6 +80,9 @@ export default function sitemap() {
     "/blog/watermark-pdf-for-freelancers",
     "/blog/word-to-pdf-windows-vs-mac",
     "/blog/compress-pdf-mobile-vs-desktop",
+    "/blog/chat-with-pdf-ai-questions-answers-any-document",
+    "/blog/how-to-summarize-a-pdf-with-ai-instantly",
+
 
     // ── Existing blogs (as-is) ──
     "/blog/pdf-to-word-formatting-messed-up",

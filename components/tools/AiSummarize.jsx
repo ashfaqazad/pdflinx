@@ -18,8 +18,8 @@ import {
 
 // ── Config ───────────────────────────────────────────
 const DONE_LINKS = [
-//   { label: "Translate PDF", href: "/translate-pdf", icon: <Languages className="h-4 w-4 text-blue-500" /> },
-{ label: "Text to PDF", href: "/text-to-pdf", icon: <FileOutput className="h-4 w-4 text-yellow-500" /> },
+  //   { label: "Translate PDF", href: "/translate-pdf", icon: <Languages className="h-4 w-4 text-blue-500" /> },
+  { label: "Text to PDF", href: "/text-to-pdf", icon: <FileOutput className="h-4 w-4 text-yellow-500" /> },
 
   { label: "Chat with PDF", href: "/ai-chat", icon: <MessageSquare className="h-4 w-4 text-purple-500" /> },
   { label: "PDF to Word", href: "/pdf-to-word", icon: <FileText className="h-4 w-4 text-orange-500" /> },
@@ -72,6 +72,7 @@ export default function AiSummarize({ seo }) {
     useProgressBar();
 
   const [summary, setSummary] = useState(null);
+  
 
   const handleRemoveFile = (index) => {
     const updated = flow.files.filter((_, i) => i !== index);
@@ -99,7 +100,7 @@ export default function AiSummarize({ seo }) {
         try {
           const maybeJson = await res.json();
           msg = maybeJson?.error || msg;
-        } catch {}
+        } catch { }
         throw new Error(msg);
       }
 
@@ -288,13 +289,26 @@ export default function AiSummarize({ seo }) {
         processingStages={["Uploading PDF", "Extracting text", "AI summarizing"]}
         // Done Step
         doneTitle="Summary Ready!"
+
+        // doneDescription={
+        //   summary ? (
+        //     <div className="mt-4 rounded-lg border border-slate-200 bg-slate-50 p-4 text-left text-sm text-slate-700 whitespace-pre-wrap max-h-64 overflow-y-auto">
+        //       {summary}
+        //     </div>
+        //   ) : "Your PDF has been summarized successfully."
+        // }
+
         doneDescription={
           summary ? (
-            <div className="mt-4 rounded-lg border border-slate-200 bg-slate-50 p-4 text-left text-sm text-slate-700 whitespace-pre-wrap max-h-64 overflow-y-auto">
-              {summary}
+            <div className="mt-4 rounded-lg border border-slate-200 bg-slate-50 p-4 text-left text-sm text-slate-700 overflow-y-auto max-h-[500px]">
+              {summary.split('\n').map((line, i) => {
+                const formatted = line.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+                return <p key={i} className="mb-1" dangerouslySetInnerHTML={{ __html: formatted }} />;
+              })}
             </div>
           ) : "Your PDF has been summarized successfully."
         }
+
         doneFileName="pdflinx-summary.txt"
         downloadLabel="Download Summary"
         resetLabel="Summarize another PDF"

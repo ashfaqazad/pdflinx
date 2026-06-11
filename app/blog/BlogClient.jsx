@@ -5,19 +5,21 @@ import { useState } from "react";
 
 // ─── Category Config ──────────────────────────────────────────────────────────
 const CATEGORIES = {
-  convert:  { label: "Convert PDF",   color: "#E8380D", dot: "#E8380D" },
-  compress: { label: "Compress",      color: "#1A7F5A", dot: "#1A7F5A" },
-  mobile:   { label: "Mobile",        color: "#2563EB", dot: "#2563EB" },
-  students: { label: "Students",      color: "#7C3AED", dot: "#7C3AED" },
-  tips:     { label: "Tips & Tricks", color: "#D97706", dot: "#D97706" },
+  convert: { label: "Convert PDF", color: "#E8380D", dot: "#E8380D" },
+  compress: { label: "Compress", color: "#1A7F5A", dot: "#1A7F5A" },
+  mobile: { label: "Mobile", color: "#2563EB", dot: "#2563EB" },
+  students: { label: "Students", color: "#7C3AED", dot: "#7C3AED" },
+  tips: { label: "Tips & Tricks", color: "#D97706", dot: "#D97706" },
+  "ai-tools": { label: "AI Tools", color: "#0EA5E9", dot: "#0EA5E9" },  // ADD THIS
 };
 
 const THUMB_STYLES = {
-  convert:  { bg: "linear-gradient(135deg,#E8380D 0%,#c4300b 100%)" },
+  convert: { bg: "linear-gradient(135deg,#E8380D 0%,#c4300b 100%)" },
   compress: { bg: "linear-gradient(135deg,#1A7F5A 0%,#145e43 100%)" },
-  mobile:   { bg: "linear-gradient(135deg,#2563EB 0%,#1d4fc4 100%)" },
+  mobile: { bg: "linear-gradient(135deg,#2563EB 0%,#1d4fc4 100%)" },
   students: { bg: "linear-gradient(135deg,#7C3AED 0%,#5b27b8 100%)" },
-  tips:     { bg: "linear-gradient(135deg,#D97706 0%,#b86006 100%)" },
+  tips: { bg: "linear-gradient(135deg,#D97706 0%,#b86006 100%)" },
+  "ai-tools": { bg: "linear-gradient(135deg,#0EA5E9 0%,#0284c7 100%)" },  // ADD THIS
 };
 
 // ─── Articles Data ────────────────────────────────────────────────────────────
@@ -204,6 +206,21 @@ const articles = [
     date: "Apr 15, 2026", read: "3 min", slug: "pdf-not-editable-fix",
   },
 
+  // ── AI ──
+  {
+  cat: "ai-tools", icon: "🤖", featured: true,
+  title: "How to Summarize a PDF with AI Instantly — No Reading Required",
+  excerpt: "Forty pages of research, sixty pages of contract, a hundred-page report — and you need the key points in the next ten minutes. AI PDF summarization does not skim, it reads everything and surfaces what actually matters. This guide covers how the technology works, which document types get the best results, when to use summarization versus chat, and the small preparation steps that make a big difference in output quality.",
+  date: "Jun 11, 2025", read: "6 min", slug: "how-to-summarize-a-pdf-with-ai-instantly",
+},
+
+{
+  cat: "ai-tools", icon: "💬", featured: true,
+  title: "Chat with PDF Using AI — Ask Any Question, Get Instant Answers from Your Document",
+  excerpt: "Ctrl+F finds words — it does not find answers. When you need to know the termination clause in a 90-page contract, the Q3 revenue in a 120-page report, or the methodology buried in Chapter 4 of a thesis, keyword search wastes your time. Chat with PDF lets you ask plain-English questions and get direct, synthesized answers from the full document. This guide covers what kinds of questions work best, real-world use cases across legal, academic, and financial documents, and how to get the most accurate results.",
+  date: "Jun 11, 2025", read: "7 min", slug: "chat-with-pdf-ai-questions-answers-any-document",
+},
+
   // ── TIPS ──
   {
     cat: "tips", icon: "🔒",
@@ -291,7 +308,7 @@ function FilterButton({ label, dot, active, onClick }) {
       }}
     >
       {dot && (
-        <span style={{ width:"7px", height:"7px", borderRadius:"50%", background:dot, display:"inline-block" }} />
+        <span style={{ width: "7px", height: "7px", borderRadius: "50%", background: dot, display: "inline-block" }} />
       )}
       {label}
     </button>
@@ -324,35 +341,35 @@ function FeaturedCard({ article }) {
       onMouseLeave={() => setHovered(false)}
     >
       {/* Thumbnail */}
-      <div style={{ background:thumb.bg, display:"flex", alignItems:"center", justifyContent:"center", position:"relative", overflow:"hidden", minHeight:"240px" }}>
-        <div style={{ position:"absolute", top:"-40px", right:"-40px", width:"180px", height:"180px", borderRadius:"50%", background:"rgba(255,255,255,0.08)" }} />
-        <div style={{ position:"absolute", bottom:"-50px", left:"-30px", width:"140px", height:"140px", borderRadius:"50%", background:"rgba(255,255,255,0.05)" }} />
-        <span style={{ fontSize:"4rem", position:"relative", zIndex:1 }}>{article.icon}</span>
+      <div style={{ background: thumb.bg, display: "flex", alignItems: "center", justifyContent: "center", position: "relative", overflow: "hidden", minHeight: "240px" }}>
+        <div style={{ position: "absolute", top: "-40px", right: "-40px", width: "180px", height: "180px", borderRadius: "50%", background: "rgba(255,255,255,0.08)" }} />
+        <div style={{ position: "absolute", bottom: "-50px", left: "-30px", width: "140px", height: "140px", borderRadius: "50%", background: "rgba(255,255,255,0.05)" }} />
+        <span style={{ fontSize: "4rem", position: "relative", zIndex: 1 }}>{article.icon}</span>
       </div>
 
       {/* Body */}
-      <div style={{ padding:"2rem", display:"flex", flexDirection:"column", justifyContent:"center", background:"#FFFFFF" }}>
-        <div style={{ display:"flex", alignItems:"center", gap:"6px", fontSize:"12px", fontWeight:600, color:"#888", marginBottom:"0.8rem", textTransform:"uppercase", letterSpacing:"0.06em" }}>
-          <span style={{ width:"8px", height:"8px", borderRadius:"50%", background:cat.color, display:"inline-block" }} />
+      <div style={{ padding: "2rem", display: "flex", flexDirection: "column", justifyContent: "center", background: "#FFFFFF" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "12px", fontWeight: 600, color: "#888", marginBottom: "0.8rem", textTransform: "uppercase", letterSpacing: "0.06em" }}>
+          <span style={{ width: "8px", height: "8px", borderRadius: "50%", background: cat.color, display: "inline-block" }} />
           {cat.label} · Featured
         </div>
-        <h2 style={{ fontFamily:"'Instrument Serif', serif", fontSize:"1.6rem", lineHeight:1.25, color:"#111111", marginBottom:"0.8rem" }}>
+        <h2 style={{ fontFamily: "'Instrument Serif', serif", fontSize: "1.6rem", lineHeight: 1.25, color: "#111111", marginBottom: "0.8rem" }}>
           {article.title}
         </h2>
         {/* <p style={{ fontSize:"14px", color:"#444444", lineHeight:1.75, marginBottom:"1.2rem" }}> */}
-        <p style={{ fontSize:"14px", color:"#444444", lineHeight:1.75, marginBottom:"1.2rem", display:"-webkit-box", WebkitLineClamp:4, WebkitBoxOrient:"vertical", overflow:"hidden" }}>
+        <p style={{ fontSize: "14px", color: "#444444", lineHeight: 1.75, marginBottom: "1.2rem", display: "-webkit-box", WebkitLineClamp: 4, WebkitBoxOrient: "vertical", overflow: "hidden" }}>
 
           {article.excerpt}
         </p>
-        <div style={{ display:"flex", alignItems:"center", gap:"8px", fontSize:"13px", color:"#888", marginBottom:"1rem", flexWrap:"wrap" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "13px", color: "#888", marginBottom: "1rem", flexWrap: "wrap" }}>
           <span>{article.date}</span>
           <span>·</span>
           <span>{article.read} read</span>
-          <span style={{ background:"#FEF0ED", color:"#E8380D", fontSize:"11px", fontWeight:600, padding:"3px 10px", borderRadius:"100px" }}>
+          <span style={{ background: "#FEF0ED", color: "#E8380D", fontSize: "11px", fontWeight: 600, padding: "3px 10px", borderRadius: "100px" }}>
             Most Popular
           </span>
         </div>
-        <span style={{ fontSize:"14px", fontWeight:600, color:"#E8380D" }}>
+        <span style={{ fontSize: "14px", fontWeight: 600, color: "#E8380D" }}>
           Read Article →
         </span>
       </div>
@@ -384,25 +401,30 @@ function ArticleCard({ article }) {
       onMouseLeave={() => setHovered(false)}
     >
       {/* Thumbnail */}
-      <div style={{ background:thumb.bg, height:"140px", position:"relative", display:"flex", alignItems:"center", justifyContent:"center", overflow:"hidden" }}>
-        <span style={{ position:"absolute", top:"12px", left:"12px", background:"rgba(0,0,0,0.25)", color:"#fff", fontSize:"10px", fontWeight:700, padding:"3px 10px", borderRadius:"100px", textTransform:"uppercase", letterSpacing:"0.06em" }}>
+      <div style={{ background: thumb.bg, height: "140px", position: "relative", display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden" }}>
+        <span style={{ position: "absolute", top: "12px", left: "12px", background: "rgba(0,0,0,0.25)", color: "#fff", fontSize: "10px", fontWeight: 700, padding: "3px 10px", borderRadius: "100px", textTransform: "uppercase", letterSpacing: "0.06em" }}>
           {cat.label}
         </span>
-        <div style={{ position:"absolute", top:"-30px", right:"-30px", width:"100px", height:"100px", borderRadius:"50%", background:"rgba(255,255,255,0.1)" }} />
-        <span style={{ fontSize:"2.4rem", position:"relative", zIndex:1 }}>{article.icon}</span>
+        <div style={{ position: "absolute", top: "-30px", right: "-30px", width: "100px", height: "100px", borderRadius: "50%", background: "rgba(255,255,255,0.1)" }} />
+        <span style={{ fontSize: "2.4rem", position: "relative", zIndex: 1 }}>{article.icon}</span>
       </div>
 
       {/* Body */}
-      <div style={{ padding:"1.2rem 1.4rem 1.4rem" }}>
-        <h3 style={{ fontFamily:"'Instrument Serif', serif", fontSize:"1.05rem", lineHeight:1.35, color:"#111111", marginBottom:"0.5rem" }}>
+      <div style={{ padding: "1.2rem 1.4rem 1.4rem" }}>
+        {/* <h3 style={{ fontFamily:"'Instrument Serif', serif", fontSize:"1.05rem", lineHeight:1.35, color:"#111111", marginBottom:"0.5rem", fontWeight: 700 }}>
+          {article.title}
+        </h3> */}
+
+        <h3 style={{ fontSize: "1.05rem", lineHeight: 1.35, color: "#111111", marginBottom: "0.5rem", fontWeight: 700 }}>
           {article.title}
         </h3>
-        <p style={{ fontSize:"13.5px", color:"#444444", lineHeight:1.7, marginBottom:"1rem", display:"-webkit-box", WebkitLineClamp:4, WebkitBoxOrient:"vertical", overflow:"hidden" }}>
+
+        <p style={{ fontSize: "13.5px", color: "#444444", lineHeight: 1.7, marginBottom: "1rem", display: "-webkit-box", WebkitLineClamp: 4, WebkitBoxOrient: "vertical", overflow: "hidden" }}>
           {article.excerpt}
         </p>
-        <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between" }}>
-          <span style={{ fontSize:"12px", color:"#888" }}>{article.date} · {article.read}</span>
-          <span style={{ fontSize:"13px", fontWeight:600, color:"#E8380D" }}>Read →</span>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+          <span style={{ fontSize: "12px", color: "#888" }}>{article.date} · {article.read}</span>
+          <span style={{ fontSize: "13px", fontWeight: 600, color: "#E8380D" }}>Read →</span>
         </div>
       </div>
     </Link>
@@ -461,41 +483,41 @@ export default function BlogClient() {
         .nl-btn:hover { background: #c4300b; }
       `}</style>
 
-      <div className="blog-page" style={{ fontFamily:"'DM Sans', sans-serif", background:"#F7F5F2", color:"#111111", minHeight:"100vh" }}>
+      <div className="blog-page" style={{ fontFamily: "'DM Sans', sans-serif", background: "#F7F5F2", color: "#111111", minHeight: "100vh" }}>
 
         {/* ── HERO ── */}
         <div
           className="blog-hero-wrap"
-          style={{ padding:"4rem 2rem 2.5rem", maxWidth:"1100px", margin:"0 auto", display:"flex", alignItems:"flex-end", justifyContent:"space-between", gap:"2rem", flexWrap:"wrap" }}
+          style={{ padding: "4rem 2rem 2.5rem", maxWidth: "1100px", margin: "0 auto", display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: "2rem", flexWrap: "wrap" }}
         >
           <div>
-            <div style={{ display:"flex", alignItems:"center", gap:"8px", fontSize:"11px", fontWeight:600, letterSpacing:"0.08em", textTransform:"uppercase", color:"#E8380D", marginBottom:"0.8rem" }}>
-              <span style={{ width:"20px", height:"2px", background:"#E8380D", display:"inline-block" }} />
+            <div style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "11px", fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase", color: "#E8380D", marginBottom: "0.8rem" }}>
+              <span style={{ width: "20px", height: "2px", background: "#E8380D", display: "inline-block" }} />
               PDF Linx Blog
             </div>
-            <h1 style={{ fontFamily:"'Instrument Serif', serif", fontSize:"clamp(2.2rem, 5vw, 3.8rem)", lineHeight:1.1, color:"#111111", marginBottom:"0.6rem" }}>
+            <h1 style={{ fontFamily: "'Instrument Serif', serif", fontSize: "clamp(2.2rem, 5vw, 3.8rem)", lineHeight: 1.1, color: "#111111", marginBottom: "0.6rem" }}>
               Real guides for{" "}
-              <em style={{ fontStyle:"italic", color:"#E8380D" }}>real</em>{" "}
+              <em style={{ fontStyle: "italic", color: "#E8380D" }}>real</em>{" "}
               PDF problems
             </h1>
-            <p style={{ fontSize:"15px", color:"#888", maxWidth:"440px", lineHeight:1.6 }}>
+            <p style={{ fontSize: "15px", color: "#888", maxWidth: "440px", lineHeight: 1.6 }}>
               Simple, no-nonsense guides for PDF tools — tested in real life, completely free.
             </p>
           </div>
 
-          <div style={{ display:"flex", gap:"2rem", flexShrink:0 }}>
-            {[["39+","Articles"],["5","Categories"],["Free","Always"]].map(([num, label]) => (
-              <div key={label} style={{ textAlign:"right" }}>
-                <span style={{ fontFamily:"'Instrument Serif', serif", fontSize:"2rem", color:"#111111", display:"block" }}>{num}</span>
-                <span style={{ fontSize:"12px", color:"#888" }}>{label}</span>
+          <div style={{ display: "flex", gap: "2rem", flexShrink: 0 }}>
+            {[["39+", "Articles"], ["5", "Categories"], ["Free", "Always"]].map(([num, label]) => (
+              <div key={label} style={{ textAlign: "center" }}>
+                <span style={{ fontFamily: "'Instrument Serif', serif", fontSize: "2rem", color: "#111111", display: "block" }}>{num}</span>
+                <span style={{ fontSize: "12px", color: "#888" }}>{label}</span>
               </div>
             ))}
           </div>
         </div>
 
         {/* ── FILTERS ── */}
-        <div style={{ maxWidth:"1100px", margin:"0 auto", padding:"0 2rem 2rem" }}>
-          <div style={{ display:"flex", gap:"8px", flexWrap:"wrap", borderBottom:"1px solid #E5E2DC", paddingBottom:"1.5rem" }}>
+        <div style={{ maxWidth: "1100px", margin: "0 auto", padding: "0 2rem 2rem" }}>
+          <div style={{ display: "flex", gap: "8px", flexWrap: "wrap", borderBottom: "1px solid #E5E2DC", paddingBottom: "1.5rem" }}>
             <FilterButton label="All Articles" active={activeFilter === "all"} onClick={() => setActiveFilter("all")} />
             {Object.entries(CATEGORIES).map(([key, cat]) => (
               <FilterButton key={key} label={cat.label} dot={cat.dot} active={activeFilter === key} onClick={() => setActiveFilter(key)} />
@@ -504,8 +526,8 @@ export default function BlogClient() {
         </div>
 
         {/* ── SEARCH ── */}
-        <div style={{ maxWidth:"1100px", margin:"0 auto", padding:"0 2rem 2rem" }}>
-          <div style={{ display:"flex", alignItems:"center", gap:"10px", background:"#FFFFFF", border:"1px solid #E5E2DC", borderRadius:"10px", padding:"10px 16px", maxWidth:"400px" }}>
+        <div style={{ maxWidth: "1100px", margin: "0 auto", padding: "0 2rem 2rem" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "10px", background: "#FFFFFF", border: "1px solid #E5E2DC", borderRadius: "10px", padding: "10px 16px", maxWidth: "400px" }}>
             <svg width="16" height="16" fill="none" stroke="#888" strokeWidth="2" viewBox="0 0 24 24">
               <circle cx="11" cy="11" r="8" /><path d="M21 21l-4.35-4.35" />
             </svg>
@@ -514,35 +536,35 @@ export default function BlogClient() {
               placeholder="Search articles..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              style={{ border:"none", outline:"none", fontFamily:"'DM Sans', sans-serif", fontSize:"14px", color:"#111111", background:"transparent", width:"100%" }}
+              style={{ border: "none", outline: "none", fontFamily: "'DM Sans', sans-serif", fontSize: "14px", color: "#111111", background: "transparent", width: "100%" }}
             />
           </div>
         </div>
 
         {/* ── FEATURED ── */}
         {showFeatured && (
-          <div style={{ maxWidth:"1100px", margin:"0 auto", padding:"0 2rem 2rem" }}>
+          <div style={{ maxWidth: "1100px", margin: "0 auto", padding: "0 2rem 2rem" }}>
             <FeaturedCard article={featuredArticle} />
           </div>
         )}
 
         {/* ── ARTICLE GRID ── */}
-        <div style={{ maxWidth:"1100px", margin:"0 auto", padding:"0 2rem 4rem" }}>
-          <div style={{ display:"flex", alignItems:"baseline", justifyContent:"space-between", marginBottom:"1.5rem" }}>
-            <h2 style={{ fontFamily:"'Instrument Serif', serif", fontSize:"1.6rem", color:"#111111" }}>
+        <div style={{ maxWidth: "1100px", margin: "0 auto", padding: "0 2rem 4rem" }}>
+          <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", marginBottom: "1.5rem" }}>
+            <h2 style={{ fontFamily: "'Instrument Serif', serif", fontSize: "1.6rem", color: "#111111" }}>
               {activeFilter === "all" ? "All Articles" : CATEGORIES[activeFilter].label}
             </h2>
-            <span style={{ fontSize:"13px", color:"#888" }}>{gridArticles.length} articles</span>
+            <span style={{ fontSize: "13px", color: "#888" }}>{gridArticles.length} articles</span>
           </div>
 
           {gridArticles.length === 0 ? (
-            <div style={{ textAlign:"center", padding:"4rem 2rem", color:"#888", fontSize:"15px" }}>
+            <div style={{ textAlign: "center", padding: "4rem 2rem", color: "#888", fontSize: "15px" }}>
               No articles found. Try a different search.
             </div>
           ) : (
             <div
               className="article-grid"
-              style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill, minmax(300px, 1fr))", gap:"20px" }}
+              style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", gap: "20px" }}
             >
               {gridArticles.map((article, i) => (
                 <ArticleCard key={article.slug + i} article={article} />
@@ -552,14 +574,14 @@ export default function BlogClient() {
         </div>
 
         {/* ── NEWSLETTER ── */}
-        <div style={{ background:"#111111", padding:"4rem 2rem", textAlign:"center" }}>
-          <h3 style={{ fontFamily:"'Instrument Serif', serif", fontSize:"clamp(1.6rem, 3vw, 2.2rem)", color:"#FFFFFF", marginBottom:"0.6rem" }}>
+        <div style={{ background: "#111111", padding: "4rem 2rem", textAlign: "center" }}>
+          <h3 style={{ fontFamily: "'Instrument Serif', serif", fontSize: "clamp(1.6rem, 3vw, 2.2rem)", color: "#FFFFFF", marginBottom: "0.6rem" }}>
             Get PDF tips in your inbox
           </h3>
-          <p style={{ fontSize:"15px", color:"rgba(255,255,255,0.6)", marginBottom:"1.8rem" }}>
+          <p style={{ fontSize: "15px", color: "rgba(255,255,255,0.6)", marginBottom: "1.8rem" }}>
             One useful tip per week. No spam, no subscriptions — unsubscribe anytime.
           </p>
-          <div style={{ display:"flex", gap:"10px", justifyContent:"center", flexWrap:"wrap" }}>
+          <div style={{ display: "flex", gap: "10px", justifyContent: "center", flexWrap: "wrap" }}>
             <input type="email" placeholder="your@email.com" className="nl-input" />
             <button className="nl-btn">Subscribe Free</button>
           </div>
@@ -571,1195 +593,4 @@ export default function BlogClient() {
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// "use client";
-
-// import Link from "next/link";
-// import { useState } from "react";
-
-// // ─── Category Config ──────────────────────────────────────────────────────────
-// const CATEGORIES = {
-//   convert:  { label: "Convert PDF",   color: "#E8380D", dot: "#E8380D" },
-//   compress: { label: "Compress",      color: "#1A7F5A", dot: "#1A7F5A" },
-//   mobile:   { label: "Mobile",        color: "#2563EB", dot: "#2563EB" },
-//   students: { label: "Students",      color: "#7C3AED", dot: "#7C3AED" },
-//   tips:     { label: "Tips & Tricks", color: "#D97706", dot: "#D97706" },
-// };
-
-// const THUMB_STYLES = {
-//   convert:  { bg: "linear-gradient(135deg,#E8380D 0%,#c4300b 100%)" },
-//   compress: { bg: "linear-gradient(135deg,#1A7F5A 0%,#145e43 100%)" },
-//   mobile:   { bg: "linear-gradient(135deg,#2563EB 0%,#1d4fc4 100%)" },
-//   students: { bg: "linear-gradient(135deg,#7C3AED 0%,#5b27b8 100%)" },
-//   tips:     { bg: "linear-gradient(135deg,#D97706 0%,#b86006 100%)" },
-// };
-
-// // ─── Articles Data ────────────────────────────────────────────────────────────
-// const articles = [
-//   // ── CONVERT ──
-//   {
-//     cat: "convert", icon: "📝", featured: true,
-//     title: "PDF to Word Conversion Accuracy Tips — Get Better Results Every Time",
-//     excerpt: "Most people upload a PDF and hope for the best — then spend 20 minutes fixing garbled text, broken tables, and shifted images. The real issue isn't the tool, it's the preparation. This guide covers exactly what to check before converting, when to enable OCR, how to handle scanned vs digital PDFs differently, and what to review in the output so you waste as little cleanup time as possible.",
-//     date: "Aug 24, 2025", read: "5 min", slug: "pdf-to-word-accuracy-tips",
-//   },
-//   {
-//     cat: "convert", icon: "🔧",
-//     title: "PDF to Word Formatting Messed Up? Here's How to Fix It",
-//     excerpt: "Fonts changing, tables breaking, images shifting — PDF to Word conversion messes up formatting more often than not. Here's how to fix it fast.",
-//     date: "Feb 22, 2026", read: "4 min", slug: "pdf-to-word-formatting-messed-up",
-//   },
-//   {
-//     cat: "convert", icon: "🔍",
-//     title: "How to Edit Scanned PDF in Word (The Easy Way with OCR)",
-//     excerpt: "Scanned PDFs are just images — no way to copy text, highlight, or edit anything. Here's how I quickly turn any scanned PDF into a fully editable Word file using OCR.",
-//     date: "Feb 23, 2026", read: "5 min", slug: "how-to-edit-scanned-pdf-in-word",
-//   },
-//   {
-//     cat: "convert", icon: "📄",
-//     title: "Convert PDF Resume to Editable Word Without Losing Layout",
-//     excerpt: "Job portals demand Word resumes, but converting PDF versions often ruins columns, bullets, photos, and spacing.",
-//     date: "Feb 24, 2026", read: "3 min", slug: "convert-pdf-resume-to-editable-word",
-//   },
-//   {
-//     cat: "convert", icon: "⚡",
-//     title: "Word to PDF Best Practices — Convert Documents the Right Way",
-//     excerpt: "Converting Word to PDF seems simple until the fonts change, tables shift, or images land in the wrong place. Before you hit convert, there are eight things worth checking — from saving as DOCX instead of DOC, to embedding fonts, to verifying margins in Print Preview. This guide walks through every best practice so your PDF looks exactly like your Word document, every time.",
-//     date: "Aug 23, 2025", read: "5 min", slug: "word-to-pdf-best-practices",
-//   },
-//   {
-//     cat: "convert", icon: "🖼️",
-//     title: "Image to PDF Quality Guide — Get Sharp, Clean Results Every Time",
-//     excerpt: "Blurry PDFs, pixelated scans, and low-resolution photos are almost always caused by one thing: the source image quality before conversion. This guide explains DPI and resolution targets for different use cases, how to scan or photograph documents correctly for best results, whether to use JPG or PNG before converting, and what to check in the final PDF to catch quality issues before you share it.",
-//     date: "Aug 22, 2025", read: "4 min", slug: "image-to-pdf-quality-guide",
-//   },
-//   {
-//     cat: "convert", icon: "📊",
-//     title: "When to Merge PDF Files — Smart Situations Where Combining Makes Sense",
-//     excerpt: "Merging PDFs isn't always the right move — but when it is, it saves a lot of friction. This guide covers the specific situations where combining PDFs genuinely helps: scanned multi-page documents, job applications requiring one file, project deliverables, legal documents with exhibits, and monthly reports compiled from multiple sources. It also covers when NOT to merge, and what to do instead.",
-//     date: "Aug 21, 2025", read: "4 min", slug: "when-to-merge-pdf-files",
-//   },
-//   {
-//     cat: "convert", icon: "✂️",
-//     title: "How to Split PDF for Sharing — Send Only What People Need",
-//     excerpt: "Sending a 60-page document when someone needs pages 12 to 18 is a waste of everyone's time — and sometimes a privacy issue. This guide explains when splitting a PDF before sharing makes sense, how to extract specific pages and reassemble them into section-specific documents for different recipients, and how splitting reduces file size more effectively than compression for documents where only part of the content is needed.",
-//     date: "Aug 20, 2025", read: "4 min", slug: "split-pdf-for-sharing",
-//   },
-//   {
-//     cat: "convert", icon: "📑",
-//     title: "Excel to PDF Print Layout — Fix Columns, Pages and Formatting",
-//     excerpt: "Excel spreadsheets were never designed for fixed pages — which is exactly why converting them to PDF produces cut-off columns, dozens of unnecessary pages, missing headers on page 2 onwards, and content scaled so small it becomes unreadable. This guide explains each layout problem, what causes it, and the exact Excel settings to fix before converting so the PDF looks clean and professional.",
-//     date: "Aug 18, 2025", read: "5 min", slug: "excel-to-pdf-print-layout",
-//   },
-//   {
-//     cat: "convert", icon: "🎯",
-//     title: "PDF to JPG vs PNG — Which Format Should You Export To?",
-//     excerpt: "JPG and PNG look similar at first glance but behave very differently — and choosing the wrong one affects file size, text sharpness, and edit quality in ways that matter. This guide explains the core difference between lossy and lossless formats, when JPG is the right choice for PDF page exports, when PNG produces noticeably better results, and which format to use for social media, slide decks, technical diagrams, and documents you plan to edit further.",
-//     date: "Sep 7, 2025", read: "4 min", slug: "pdf-to-jpg-vs-png",
-//   },
-//   {
-//     cat: "convert", icon: "🖥️",
-//     title: "PPT to PDF Fonts Missing or Wrong? Here's How to Fix It",
-//     excerpt: "You spend hours on a presentation, convert it to PDF, and the fonts are completely wrong — or text boxes have shifted because the substitute font has different spacing. This is one of the most common PowerPoint to PDF complaints, and it happens for a specific reason. This guide explains why fonts go missing during conversion, which fonts are safe to use, how to embed fonts directly in your PPTX file, and what to do when embedding is not an option.",
-//     date: "Sep 9, 2025", read: "4 min", slug: "ppt-to-pdf-fonts-missing",
-//   },
-//   {
-//     cat: "convert", icon: "🆓",
-//     title: "Free vs Paid Word to PDF Tools — What's Actually Different?",
-//     excerpt: "Do you really need to pay for Word to PDF conversion? Here's the real difference between free and paid tools.",
-//     date: "Mar 20, 2026", read: "7 min", slug: "free-vs-paid-word-to-pdf-tools",
-//   },
-//   {
-//     cat: "convert", icon: "🌐",
-//     title: "Word to PDF on Windows vs Mac — Differences and Best Method",
-//     excerpt: "Word on Windows and Word on Mac are different applications — and they produce slightly different PDF output from the same DOCX file. Font rendering differs, text spacing behaves differently, and the export method you choose on Mac affects the result more than most people realize. This guide explains exactly what differs between platforms, which export method produces the best output on each, and when a browser-based converter eliminates platform variability entirely.",
-//     date: "Mar 15, 2026", read: "5 min", slug: "word-to-pdf-windows-vs-mac",
-//   },
-//   {
-//     cat: "convert", icon: "📐",
-//     title: "How to Convert Word to PDF Without Losing Formatting",
-//     excerpt: "Fonts changing, tables breaking, and layout shifting after conversion? Here's how to convert Word to PDF without losing formatting.",
-//     date: "Mar 16, 2026", read: "5 min", slug: "convert-word-to-pdf-without-losing-formatting",
-//   },
-//   {
-//     cat: "convert", icon: "🛠️",
-//     title: "Word to PDF Not Working? Here's How to Fix It",
-//     excerpt: "Getting blank PDFs, upload errors, or broken formatting? Here's how to fix common Word to PDF conversion problems.",
-//     date: "Mar 18, 2026", read: "4 min", slug: "word-to-pdf-not-working-fix",
-//   },
-//   {
-//     cat: "convert", icon: "🤖",
-//     title: "ChatGPT Generated a PDF — How to Convert It to Word?",
-//     excerpt: "Can't edit a PDF created by ChatGPT? This free tool fixes it in 30 seconds — no signup, no watermark, OCR included.",
-//     date: "Apr 14, 2026", read: "4 min", slug: "how-to-convert-chatgpt-pdf-to-word",
-//   },
-
-//   // ── COMPRESS ──
-//   {
-//     cat: "compress", icon: "🗜️",
-//     title: "PDF Too Large for Email? How to Compress It Under the Limit",
-//     excerpt: "Gmail rejects attachments over 25MB. Corporate mail servers often cap at 10MB. And large PDFs bounce without warning, leaving you wondering why the delivery failed. This guide explains exactly how email size limits work, how much different types of PDFs compress, and what to do when compression alone is not enough — including splitting and file sharing alternatives for very heavy documents.",
-//     date: "Aug 19, 2025", read: "5 min", slug: "compress-pdf-email-limit",
-//   },
-//   {
-//     cat: "compress", icon: "📦",
-//     title: "PDF Too Large to Upload? Fix It in Seconds",
-//     excerpt: "PDF too large to upload or send? Fix file size issues instantly with simple compression methods — no quality loss.",
-//     date: "Apr 17, 2026", read: "3 min", slug: "pdf-file-too-large-compress",
-//   },
-//   {
-//     cat: "compress", icon: "⚖️",
-//     title: "Compress PDF on Mobile vs Desktop — Which Is Better?",
-//     excerpt: "If you compress a PDF from your phone instead of a computer, does the quality suffer? The short answer is no — but the practical experience differs in ways that affect when each option makes more sense. This guide explains how browser-based compression actually works, what differs between mobile and desktop in terms of upload speed, file management, and output review, and when to use each for the fastest and most convenient workflow.",
-//     date: "Mar 22, 2026", read: "4 min", slug: "compress-pdf-mobile-vs-desktop",
-//   },
-//   {
-//     cat: "compress", icon: "✨",
-//     title: "How to Compress a PDF Without Losing Quality",
-//     excerpt: "Worried compression will ruin your PDF? Here's exactly what happens to images and text — and how to reduce size without visible quality loss.",
-//     date: "Mar 23, 2026", read: "5 min", slug: "compress-pdf-without-losing-quality",
-//   },
-//   {
-//     cat: "compress", icon: "📉",
-//     title: "PDF Still Too Large After Compression? Here's How to Fix It",
-//     excerpt: "Compressed your PDF but it's still too big? Here are the real reasons compression sometimes doesn't work.",
-//     date: "Mar 25, 2026", read: "4 min", slug: "pdf-still-too-large-after-compression",
-//   },
-//   {
-//     cat: "compress", icon: "📏",
-//     title: "Why Are PDF Files So Large? (And How to Fix It)",
-//     excerpt: "Ever wondered why a simple PDF ends up being 50MB? Here's what actually makes PDFs large — and the fastest fix.",
-//     date: "Mar 26, 2026", read: "5 min", slug: "why-are-pdf-files-so-large",
-//   },
-
-//   // ── MOBILE ──
-//   {
-//     cat: "mobile", icon: "📱",
-//     title: "How to Compress a PDF on Mobile (Android & iPhone)",
-//     excerpt: "Need to shrink a PDF from your phone before sending? Here's how to compress any PDF directly in your mobile browser.",
-//     date: "Mar 24, 2026", read: "3 min", slug: "compress-pdf-on-mobile",
-//   },
-//   {
-//     cat: "mobile", icon: "🤳",
-//     title: "How to Convert Word to PDF on Mobile (Android & iPhone)",
-//     excerpt: "Convert Word documents to PDF directly on your phone — no app needed. Works on Android and iPhone in under a minute.",
-//     date: "Mar 17, 2026", read: "3 min", slug: "word-to-pdf-on-mobile",
-//   },
-//   {
-//     cat: "mobile", icon: "🌐",
-//     title: "How Small Should I Compress My PDF? (Size Guide by Use Case)",
-//     excerpt: "Email, WhatsApp, university portals, websites — every use case needs a different PDF size. Here's the exact target for each.",
-//     date: "Mar 27, 2026", read: "4 min", slug: "how-small-should-i-compress-my-pdf",
-//   },
-
-//   // ── STUDENTS ──
-//   {
-//     cat: "students", icon: "🎓",
-//     title: "Best Tools for Students to Study Smarter in 2025",
-//     excerpt: "Assignments piling up, group projects, exams, and PDFs that won't cooperate — here are the tools that actually help.",
-//     date: "Dec 11, 2025", read: "6 min", slug: "best-tools-for-students",
-//   },
-//   {
-//     cat: "students", icon: "📚",
-//     title: "Word to PDF for Students — How to Submit Assignments as PDF",
-//     excerpt: "Submitting assignments as DOCX can break formatting or get rejected. Here's how students can convert Word to PDF properly.",
-//     date: "Mar 21, 2026", read: "2 min", slug: "word-to-pdf-for-students",
-//   },
-//   {
-//     cat: "students", icon: "🤖",
-//     title: "ChatGPT Generated a PDF — How to Convert It to Word?",
-//     excerpt: "Can't edit a PDF created by ChatGPT? This free tool fixes it in 30 seconds — no signup, no watermark, OCR included.",
-//     date: "Apr 14, 2026", read: "4 min", slug: "how-to-convert-chatgpt-pdf-to-word",
-//   },
-//   {
-//     cat: "students", icon: "📖",
-//     title: "PDF File Opens but Not Editable — Fix It in 30 Seconds",
-//     excerpt: "PDF opens but you can't edit anything? Here's the fastest free way to fix a non-editable PDF using OCR.",
-//     date: "Apr 15, 2026", read: "3 min", slug: "pdf-not-editable-fix",
-//   },
-
-//   // ── TIPS ──
-//   {
-//     cat: "tips", icon: "🔒",
-//     title: "PDF Password Best Practices — How to Protect Documents the Right Way",
-//     excerpt: "Adding a password to a PDF is easy — but most people do it wrong. Weak passwords offer false security. Complex passwords get forgotten, locking out even the document owner. And protecting every file the same way creates unnecessary friction. This guide covers strong password creation, secure storage, how to communicate passwords safely to recipients, which documents actually need protection, and how to use watermarks alongside passwords for a complete document security workflow.",
-//     date: "Sep 11, 2025", read: "5 min", slug: "pdf-password-best-practices",
-//   },
-//   {
-//     cat: "tips", icon: "🔓",
-//     title: "Forgot Your PDF Password? Here Are Your Options",
-//     excerpt: "PDF encryption has no built-in recovery mechanism — forget the password and the document is locked permanently. But before assuming the worst, there are several realistic options worth trying. This guide covers systematic password recall methods, how to search your email for the original password, contacting the document source, using the Unlock PDF tool when you have the correct password, and what third-party recovery tools can and cannot realistically do for modern encrypted PDFs.",
-//     date: "Sep 13, 2025", read: "5 min", slug: "forgot-pdf-password-options",
-//   },
-//   {
-//     cat: "tips", icon: "🔄",
-//     title: "PDF Pages Upside Down or Sideways? Fix Orientation Instantly",
-//     excerpt: "Wrong page orientation is one of the most common PDF problems — and one of the easiest to fix. Scanner placement, phone photography angle, design software export settings, and merged documents from different sources all produce pages that end up sideways or upside down. This guide explains exactly which rotation to apply for each scenario, whether rotation affects quality (it doesn't for digital PDFs), and why fixing orientation before running OCR matters significantly for accuracy.",
-//     date: "Sep 15, 2025", read: "3 min", slug: "pdf-pages-upside-down-fix",
-//   },
-//   {
-//     cat: "tips", icon: "✍️",
-//     title: "Digital vs Electronic Signature on PDF — What's the Difference?",
-//     excerpt: "Digital signature and electronic signature are used as if they mean the same thing — but they refer to completely different technologies with very different legal implications. One is a visual mark placed on a document. The other is a cryptographic proof that the document has not changed since signing. This guide explains both clearly, which one you actually need for everyday contracts and agreements, and when a certified digital signature is legally required in your jurisdiction.",
-//     date: "Sep 17, 2025", read: "5 min", slug: "digital-vs-electronic-signature-pdf",
-//   },
-//   {
-//     cat: "tips", icon: "🔡",
-//     title: "OCR PDF Accuracy and Language Support — What to Expect",
-//     excerpt: "OCR accuracy is not a fixed number — it changes dramatically depending on scan resolution, font type, document condition, page orientation, and the language being processed. This guide explains each factor clearly, gives you resolution targets for different use cases, describes which fonts convert reliably and which cause errors, explains how language support varies across major language groups, and tells you exactly what to review in the output to catch the most common OCR mistakes before they cause problems.",
-//     date: "Sep 19, 2025", read: "5 min", slug: "ocr-pdf-accuracy-languages",
-//   },
-//   {
-//     cat: "tips", icon: "🖊️",
-//     title: "How to Edit a PDF Without Word — Free Browser-Based Methods",
-//     excerpt: "The assumption that editing a PDF requires Microsoft Word is wrong — and often leads people to unnecessary conversions, reformatting work, and paid software subscriptions. This guide covers four practical methods for editing PDFs without Word: direct browser-based editing for minor changes, Google Docs for moderate edits, LibreOffice Draw for offline layout work, and conversion to Word only when major rewrites make it genuinely the best option.",
-//     date: "Sep 21, 2025", read: "4 min", slug: "edit-pdf-without-word",
-//   },
-//   {
-//     cat: "tips", icon: "🖼️",
-//     title: "How Freelancers Should Watermark PDFs — Protect Your Work",
-//     excerpt: "As a freelancer, you share work before payment is confirmed — design previews, draft documents, writing samples, and project proposals. Without protection, clients can use your draft and disappear. This guide covers what watermarks actually prevent and what they don't, four practical watermarking strategies for different freelance situations, the opacity and placement settings that work best, and how to manage clean final delivery once payment is confirmed.",
-//     date: "Sep 23, 2025", read: "4 min", slug: "watermark-pdf-for-freelancers",
-//   },
-//   {
-//     cat: "tips", icon: "🔧",
-//     title: "Why Does Formatting Break When Converting Word to PDF?",
-//     excerpt: "Ever wondered why your Word document looks perfect but the PDF gets messed up? Here's the real reason — and how to prevent it.",
-//     date: "Mar 19, 2026", read: "5 min", slug: "why-formatting-breaks-in-word-to-pdf",
-//   },
-//   {
-//     cat: "tips", icon: "🏢",
-//     title: "Client Sent a PDF? How Freelancers Edit It for Free",
-//     excerpt: "Got a PDF from a client that you can't edit? Here's how freelancers convert any locked PDF into an editable Word file.",
-//     date: "Apr 16, 2026", read: "5 min", slug: "freelancer-edit-pdf-free",
-//   },
-//   {
-//     cat: "tips", icon: "🖨️",
-//     title: "Best Free Image Converter Tools Online in 2025",
-//     excerpt: "Need to convert HEIC to JPG, WebP to PNG, or resize images? I tested 10+ tools and found one that actually works — no watermarks.",
-//     date: "Apr 2, 2026", read: "5 min", slug: "best-free-image-converter-tools",
-//   },
-// ];
-
-// const featuredArticle = articles.find((a) => a.featured);
-
-// // ─── Filter Button ────────────────────────────────────────────────────────────
-// function FilterButton({ label, dot, active, onClick }) {
-//   return (
-//     <button
-//       onClick={onClick}
-//       style={{
-//         padding: "7px 18px",
-//         borderRadius: "100px",
-//         border: "1px solid " + (active ? "#111111" : "#E5E2DC"),
-//         background: active ? "#111111" : "#FFFFFF",
-//         fontSize: "13px",
-//         fontWeight: 500,
-//         color: active ? "#FFFFFF" : "#444444",
-//         cursor: "pointer",
-//         fontFamily: "'DM Sans', sans-serif",
-//         display: "flex",
-//         alignItems: "center",
-//         gap: "6px",
-//         transition: "all .2s",
-//       }}
-//     >
-//       {dot && (
-//         <span style={{ width:"7px", height:"7px", borderRadius:"50%", background:dot, display:"inline-block" }} />
-//       )}
-//       {label}
-//     </button>
-//   );
-// }
-
-// // ─── Featured Card ────────────────────────────────────────────────────────────
-// function FeaturedCard({ article }) {
-//   const [hovered, setHovered] = useState(false);
-//   const thumb = THUMB_STYLES[article.cat];
-//   const cat = CATEGORIES[article.cat];
-
-//   return (
-//     <Link
-//       href={"/blog/" + article.slug}
-//       style={{
-//         background: "#FFFFFF",
-//         borderRadius: "16px",
-//         border: "1px solid #E5E2DC",
-//         display: "grid",
-//         gridTemplateColumns: "1fr 1fr",
-//         overflow: "hidden",
-//         textDecoration: "none",
-//         transition: "box-shadow .3s, transform .3s",
-//         boxShadow: hovered ? "0 12px 40px rgba(0,0,0,0.12)" : "0 2px 8px rgba(0,0,0,0.04)",
-//         transform: hovered ? "translateY(-3px)" : "none",
-//       }}
-//       className="featured-grid"
-//       onMouseEnter={() => setHovered(true)}
-//       onMouseLeave={() => setHovered(false)}
-//     >
-//       {/* Thumbnail */}
-//       <div style={{ background:thumb.bg, display:"flex", alignItems:"center", justifyContent:"center", position:"relative", overflow:"hidden", minHeight:"240px" }}>
-//         <div style={{ position:"absolute", top:"-40px", right:"-40px", width:"180px", height:"180px", borderRadius:"50%", background:"rgba(255,255,255,0.08)" }} />
-//         <div style={{ position:"absolute", bottom:"-50px", left:"-30px", width:"140px", height:"140px", borderRadius:"50%", background:"rgba(255,255,255,0.05)" }} />
-//         <span style={{ fontSize:"4rem", position:"relative", zIndex:1 }}>{article.icon}</span>
-//       </div>
-
-//       {/* Body */}
-//       <div style={{ padding:"2rem", display:"flex", flexDirection:"column", justifyContent:"center", background:"#FFFFFF" }}>
-//         <div style={{ display:"flex", alignItems:"center", gap:"6px", fontSize:"12px", fontWeight:600, color:"#888", marginBottom:"0.8rem", textTransform:"uppercase", letterSpacing:"0.06em" }}>
-//           <span style={{ width:"8px", height:"8px", borderRadius:"50%", background:cat.color, display:"inline-block" }} />
-//           {cat.label} · Featured
-//         </div>
-//         <h2 style={{ fontFamily:"'Instrument Serif', serif", fontSize:"1.6rem", lineHeight:1.25, color:"#111111", marginBottom:"0.8rem" }}>
-//           {article.title}
-//         </h2>
-//         <p style={{ fontSize:"14px", color:"#444444", lineHeight:1.75, marginBottom:"1.2rem" }}>
-//           {article.excerpt}
-//         </p>
-//         <div style={{ display:"flex", alignItems:"center", gap:"8px", fontSize:"13px", color:"#888", marginBottom:"1rem", flexWrap:"wrap" }}>
-//           <span>{article.date}</span>
-//           <span>·</span>
-//           <span>{article.read} read</span>
-//           <span style={{ background:"#FEF0ED", color:"#E8380D", fontSize:"11px", fontWeight:600, padding:"3px 10px", borderRadius:"100px" }}>
-//             Most Popular
-//           </span>
-//         </div>
-//         <span style={{ fontSize:"14px", fontWeight:600, color:"#E8380D" }}>
-//           Read Article →
-//         </span>
-//       </div>
-//     </Link>
-//   );
-// }
-
-// // ─── Article Card ─────────────────────────────────────────────────────────────
-// function ArticleCard({ article }) {
-//   const [hovered, setHovered] = useState(false);
-//   const thumb = THUMB_STYLES[article.cat];
-//   const cat = CATEGORIES[article.cat];
-
-//   return (
-//     <Link
-//       href={"/blog/" + article.slug}
-//       style={{
-//         background: "#FFFFFF",
-//         border: "1px solid #E5E2DC",
-//         borderRadius: "14px",
-//         overflow: "hidden",
-//         display: "block",
-//         textDecoration: "none",
-//         transition: "transform .25s, box-shadow .25s",
-//         transform: hovered ? "translateY(-4px)" : "none",
-//         boxShadow: hovered ? "0 12px 32px rgba(0,0,0,0.08)" : "0 1px 4px rgba(0,0,0,0.04)",
-//       }}
-//       onMouseEnter={() => setHovered(true)}
-//       onMouseLeave={() => setHovered(false)}
-//     >
-//       {/* Thumbnail */}
-//       <div style={{ background:thumb.bg, height:"140px", position:"relative", display:"flex", alignItems:"center", justifyContent:"center", overflow:"hidden" }}>
-//         <span style={{ position:"absolute", top:"12px", left:"12px", background:"rgba(0,0,0,0.25)", color:"#fff", fontSize:"10px", fontWeight:700, padding:"3px 10px", borderRadius:"100px", textTransform:"uppercase", letterSpacing:"0.06em" }}>
-//           {cat.label}
-//         </span>
-//         <div style={{ position:"absolute", top:"-30px", right:"-30px", width:"100px", height:"100px", borderRadius:"50%", background:"rgba(255,255,255,0.1)" }} />
-//         <span style={{ fontSize:"2.4rem", position:"relative", zIndex:1 }}>{article.icon}</span>
-//       </div>
-
-//       {/* Body */}
-//       <div style={{ padding:"1.2rem 1.4rem 1.4rem" }}>
-//         <h3 style={{ fontFamily:"'Instrument Serif', serif", fontSize:"1.05rem", lineHeight:1.35, color:"#111111", marginBottom:"0.5rem" }}>
-//           {article.title}
-//         </h3>
-//         <p style={{ fontSize:"13.5px", color:"#444444", lineHeight:1.7, marginBottom:"1rem", display:"-webkit-box", WebkitLineClamp:2, WebkitBoxOrient:"vertical", overflow:"hidden" }}>
-//           {article.excerpt}
-//         </p>
-//         <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between" }}>
-//           <span style={{ fontSize:"12px", color:"#888" }}>{article.date} · {article.read}</span>
-//           <span style={{ fontSize:"13px", fontWeight:600, color:"#E8380D" }}>Read →</span>
-//         </div>
-//       </div>
-//     </Link>
-//   );
-// }
-
-// // ─── Main Export ──────────────────────────────────────────────────────────────
-// export default function BlogClient() {
-//   const [activeFilter, setActiveFilter] = useState("all");
-//   const [searchQuery, setSearchQuery] = useState("");
-
-//   const uniqueArticles = articles.filter(
-//     (a, idx, self) => self.findIndex((b) => b.slug === a.slug) === idx
-//   );
-
-//   const filtered = uniqueArticles.filter((a) => {
-//     const matchCat = activeFilter === "all" || a.cat === activeFilter;
-//     const q = searchQuery.toLowerCase();
-//     const matchSearch = !q || a.title.toLowerCase().includes(q) || a.excerpt.toLowerCase().includes(q);
-//     return matchCat && matchSearch;
-//   });
-
-//   const showFeatured = activeFilter === "all" && !searchQuery;
-//   const gridArticles = showFeatured
-//     ? filtered.filter((a) => a.slug !== featuredArticle.slug)
-//     : filtered;
-
-//   return (
-//     <>
-//       <style>{`
-//         @import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap');
-//         .blog-page * { box-sizing: border-box; }
-//         @media (max-width: 680px) {
-//           .featured-grid { grid-template-columns: 1fr !important; }
-//           .blog-hero-wrap { flex-direction: column !important; align-items: flex-start !important; }
-//         }
-//         @media (max-width: 520px) {
-//           .article-grid { grid-template-columns: 1fr !important; }
-//         }
-//         .nl-input {
-//           flex: 1; max-width: 300px;
-//           border: 1px solid rgba(255,255,255,0.15);
-//           background: rgba(255,255,255,0.08);
-//           color: #fff; padding: 10px 16px;
-//           border-radius: 8px; font-size: 14px;
-//           font-family: 'DM Sans', sans-serif; outline: none;
-//         }
-//         .nl-input::placeholder { color: rgba(255,255,255,0.4); }
-//         .nl-btn {
-//           background: #E8380D; color: #fff; border: none;
-//           padding: 10px 22px; border-radius: 8px;
-//           font-size: 13px; font-weight: 600; cursor: pointer;
-//           font-family: 'DM Sans', sans-serif; white-space: nowrap;
-//           transition: background .2s;
-//         }
-//         .nl-btn:hover { background: #c4300b; }
-//       `}</style>
-
-//       <div className="blog-page" style={{ fontFamily:"'DM Sans', sans-serif", background:"#F7F5F2", color:"#111111", minHeight:"100vh" }}>
-
-//         {/* ── HERO ── */}
-//         <div
-//           className="blog-hero-wrap"
-//           style={{ padding:"4rem 2rem 2.5rem", maxWidth:"1100px", margin:"0 auto", display:"flex", alignItems:"flex-end", justifyContent:"space-between", gap:"2rem", flexWrap:"wrap" }}
-//         >
-//           <div>
-//             <div style={{ display:"flex", alignItems:"center", gap:"8px", fontSize:"11px", fontWeight:600, letterSpacing:"0.08em", textTransform:"uppercase", color:"#E8380D", marginBottom:"0.8rem" }}>
-//               <span style={{ width:"20px", height:"2px", background:"#E8380D", display:"inline-block" }} />
-//               PDF Linx Blog
-//             </div>
-//             <h1 style={{ fontFamily:"'Instrument Serif', serif", fontSize:"clamp(2.2rem, 5vw, 3.8rem)", lineHeight:1.1, color:"#111111", marginBottom:"0.6rem" }}>
-//               Real guides for{" "}
-//               <em style={{ fontStyle:"italic", color:"#E8380D" }}>real</em>{" "}
-//               PDF problems
-//             </h1>
-//             <p style={{ fontSize:"15px", color:"#888", maxWidth:"440px", lineHeight:1.6 }}>
-//               Simple, no-nonsense guides for PDF tools — tested in real life, completely free.
-//             </p>
-//           </div>
-
-//           <div style={{ display:"flex", gap:"2rem", flexShrink:0 }}>
-//             {[["39+","Articles"],["5","Categories"],["Free","Always"]].map(([num, label]) => (
-//               <div key={label} style={{ textAlign:"right" }}>
-//                 <span style={{ fontFamily:"'Instrument Serif', serif", fontSize:"2rem", color:"#111111", display:"block" }}>{num}</span>
-//                 <span style={{ fontSize:"12px", color:"#888" }}>{label}</span>
-//               </div>
-//             ))}
-//           </div>
-//         </div>
-
-//         {/* ── FILTERS ── */}
-//         <div style={{ maxWidth:"1100px", margin:"0 auto", padding:"0 2rem 2rem" }}>
-//           <div style={{ display:"flex", gap:"8px", flexWrap:"wrap", borderBottom:"1px solid #E5E2DC", paddingBottom:"1.5rem" }}>
-//             <FilterButton label="All Articles" active={activeFilter === "all"} onClick={() => setActiveFilter("all")} />
-//             {Object.entries(CATEGORIES).map(([key, cat]) => (
-//               <FilterButton key={key} label={cat.label} dot={cat.dot} active={activeFilter === key} onClick={() => setActiveFilter(key)} />
-//             ))}
-//           </div>
-//         </div>
-
-//         {/* ── SEARCH ── */}
-//         <div style={{ maxWidth:"1100px", margin:"0 auto", padding:"0 2rem 2rem" }}>
-//           <div style={{ display:"flex", alignItems:"center", gap:"10px", background:"#FFFFFF", border:"1px solid #E5E2DC", borderRadius:"10px", padding:"10px 16px", maxWidth:"400px" }}>
-//             <svg width="16" height="16" fill="none" stroke="#888" strokeWidth="2" viewBox="0 0 24 24">
-//               <circle cx="11" cy="11" r="8" /><path d="M21 21l-4.35-4.35" />
-//             </svg>
-//             <input
-//               type="text"
-//               placeholder="Search articles..."
-//               value={searchQuery}
-//               onChange={(e) => setSearchQuery(e.target.value)}
-//               style={{ border:"none", outline:"none", fontFamily:"'DM Sans', sans-serif", fontSize:"14px", color:"#111111", background:"transparent", width:"100%" }}
-//             />
-//           </div>
-//         </div>
-
-//         {/* ── FEATURED ── */}
-//         {showFeatured && (
-//           <div style={{ maxWidth:"1100px", margin:"0 auto", padding:"0 2rem 2rem" }}>
-//             <FeaturedCard article={featuredArticle} />
-//           </div>
-//         )}
-
-//         {/* ── ARTICLE GRID ── */}
-//         <div style={{ maxWidth:"1100px", margin:"0 auto", padding:"0 2rem 4rem" }}>
-//           <div style={{ display:"flex", alignItems:"baseline", justifyContent:"space-between", marginBottom:"1.5rem" }}>
-//             <h2 style={{ fontFamily:"'Instrument Serif', serif", fontSize:"1.6rem", color:"#111111" }}>
-//               {activeFilter === "all" ? "All Articles" : CATEGORIES[activeFilter].label}
-//             </h2>
-//             <span style={{ fontSize:"13px", color:"#888" }}>{gridArticles.length} articles</span>
-//           </div>
-
-//           {gridArticles.length === 0 ? (
-//             <div style={{ textAlign:"center", padding:"4rem 2rem", color:"#888", fontSize:"15px" }}>
-//               No articles found. Try a different search.
-//             </div>
-//           ) : (
-//             <div
-//               className="article-grid"
-//               style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill, minmax(300px, 1fr))", gap:"20px" }}
-//             >
-//               {gridArticles.map((article, i) => (
-//                 <ArticleCard key={article.slug + i} article={article} />
-//               ))}
-//             </div>
-//           )}
-//         </div>
-
-//         {/* ── NEWSLETTER ── */}
-//         <div style={{ background:"#111111", padding:"4rem 2rem", textAlign:"center" }}>
-//           <h3 style={{ fontFamily:"'Instrument Serif', serif", fontSize:"clamp(1.6rem, 3vw, 2.2rem)", color:"#FFFFFF", marginBottom:"0.6rem" }}>
-//             Get PDF tips in your inbox
-//           </h3>
-//           <p style={{ fontSize:"15px", color:"rgba(255,255,255,0.6)", marginBottom:"1.8rem" }}>
-//             One useful tip per week. No spam, no subscriptions — unsubscribe anytime.
-//           </p>
-//           <div style={{ display:"flex", gap:"10px", justifyContent:"center", flexWrap:"wrap" }}>
-//             <input type="email" placeholder="your@email.com" className="nl-input" />
-//             <button className="nl-btn">Subscribe Free</button>
-//           </div>
-//         </div>
-
-//       </div>
-//     </>
-//   );
-// }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// // "use client";
-
-// // import Link from "next/link";
-// // import { useState } from "react";
-
-// // // ─── Category Config ──────────────────────────────────────────────────────────
-// // const CATEGORIES = {
-// //   convert:  { label: "Convert PDF",   color: "#E8380D", dot: "#E8380D" },
-// //   compress: { label: "Compress",      color: "#1A7F5A", dot: "#1A7F5A" },
-// //   mobile:   { label: "Mobile",        color: "#2563EB", dot: "#2563EB" },
-// //   students: { label: "Students",      color: "#7C3AED", dot: "#7C3AED" },
-// //   tips:     { label: "Tips & Tricks", color: "#D97706", dot: "#D97706" },
-// // };
-
-// // const THUMB_STYLES = {
-// //   convert:  { bg: "linear-gradient(135deg,#E8380D 0%,#c4300b 100%)" },
-// //   compress: { bg: "linear-gradient(135deg,#1A7F5A 0%,#145e43 100%)" },
-// //   mobile:   { bg: "linear-gradient(135deg,#2563EB 0%,#1d4fc4 100%)" },
-// //   students: { bg: "linear-gradient(135deg,#7C3AED 0%,#5b27b8 100%)" },
-// //   tips:     { bg: "linear-gradient(135deg,#D97706 0%,#b86006 100%)" },
-// // };
-
-// // // ─── Articles Data ────────────────────────────────────────────────────────────
-// // const articles = [
-// //   // ── CONVERT ──
-// //   {
-// //     cat: "convert", icon: "📝", featured: true,
-// //     title: "Convert PDF to Word Online Without Losing Formatting",
-// //     excerpt: "Locked PDFs driving you crazy? Here's how I turn any PDF into an editable Word file without ruining the layout, fonts, or images.",
-// //     date: "Aug 24, 2025", read: "5 min", slug: "pdf-to-word",
-// //   },
-// //   {
-// //     cat: "convert", icon: "🔧",
-// //     title: "PDF to Word Formatting Messed Up? Here's How to Fix It",
-// //     excerpt: "Fonts changing, tables breaking, images shifting — PDF to Word conversion messes up formatting more often than not. Here's how to fix it fast.",
-// //     date: "Feb 22, 2026", read: "4 min", slug: "pdf-to-word-formatting-messed-up",
-// //   },
-// //   {
-// //     cat: "convert", icon: "🔍",
-// //     title: "How to Edit Scanned PDF in Word (The Easy Way with OCR)",
-// //     excerpt: "Scanned PDFs are just images — no way to copy text, highlight, or edit anything. Here's how I quickly turn any scanned PDF into a fully editable Word file using OCR.",
-// //     date: "Feb 23, 2026", read: "5 min", slug: "how-to-edit-scanned-pdf-in-word",
-// //   },
-// //   {
-// //     cat: "convert", icon: "📄",
-// //     title: "Convert PDF Resume to Editable Word Without Losing Layout",
-// //     excerpt: "Job portals demand Word resumes, but converting PDF versions often ruins columns, bullets, photos, and spacing.",
-// //     date: "Feb 24, 2026", read: "3 min", slug: "convert-pdf-resume-to-editable-word",
-// //   },
-// //   {
-// //     cat: "convert", icon: "⚡",
-// //     title: "Convert Word to PDF Instantly (No Software Needed)",
-// //     excerpt: "Need to turn your Word doc into a clean, professional PDF? Here's how I do it in seconds — no software, no watermarks.",
-// //     date: "Aug 26, 2025", read: "2 min", slug: "word-to-pdf",
-// //   },
-// //   {
-// //     cat: "convert", icon: "🖼️",
-// //     title: "Convert Images (JPG, PNG) to PDF in Seconds",
-// //     excerpt: "Combine multiple images into one clear, professional PDF document. Supports JPG, PNG, and more — perfect for portfolios.",
-// //     date: "Aug 28, 2025", read: "3 min", slug: "image-to-pdf",
-// //   },
-// //   {
-// //     cat: "convert", icon: "📊",
-// //     title: "Merge Multiple PDF Files into One Online",
-// //     excerpt: "Got a bunch of separate PDFs you need to combine? Here's how I quickly merge them into one clean file.",
-// //     date: "Aug 30, 2025", read: "3 min", slug: "merge-pdf",
-// //   },
-// //   {
-// //     cat: "convert", icon: "✂️",
-// //     title: "Split PDF Files Online (Extract Specific Pages Easily)",
-// //     excerpt: "Got a big PDF and only need a few pages? Here's how I quickly pull out exactly what I want.",
-// //     date: "Sep 1, 2025", read: "3 min", slug: "split-pdf",
-// //   },
-// //   {
-// //     cat: "convert", icon: "📑",
-// //     title: "Convert Excel to PDF Without Losing Formatting",
-// //     excerpt: "Need to turn your Excel spreadsheet into a clean PDF that keeps all the tables, charts, and formatting perfect?",
-// //     date: "Sep 5, 2025", read: "4 min", slug: "excel-pdf",
-// //   },
-// //   {
-// //     cat: "convert", icon: "🎯",
-// //     title: "Convert PDF Pages to JPG Images Online",
-// //     excerpt: "Need images from a PDF fast? Here's how I convert every PDF page into high-quality JPG files in seconds.",
-// //     date: "Sep 7, 2025", read: "3 min", slug: "pdf-to-jpg",
-// //   },
-// //   {
-// //     cat: "convert", icon: "🖥️",
-// //     title: "Convert PowerPoint to PDF Without Breaking the Layout",
-// //     excerpt: "Want to share slides without worrying about fonts, spacing, or compatibility issues? Here's how I convert PowerPoint to PDF.",
-// //     date: "Sep 9, 2025", read: "3 min", slug: "ppt-to-pdf",
-// //   },
-// //   {
-// //     cat: "convert", icon: "🆓",
-// //     title: "Free vs Paid Word to PDF Tools — What's Actually Different?",
-// //     excerpt: "Do you really need to pay for Word to PDF conversion? Here's the real difference between free and paid tools.",
-// //     date: "Mar 20, 2026", read: "7 min", slug: "free-vs-paid-word-to-pdf-tools",
-// //   },
-// //   {
-// //     cat: "convert", icon: "🌐",
-// //     title: "How to Convert Word to PDF Free Online (No Software Needed)",
-// //     excerpt: "Need to convert a Word document to PDF quickly without installing software? Here's the fastest way online.",
-// //     date: "Mar 15, 2026", read: "3 min", slug: "how-to-convert-word-to-pdf",
-// //   },
-// //   {
-// //     cat: "convert", icon: "📐",
-// //     title: "How to Convert Word to PDF Without Losing Formatting",
-// //     excerpt: "Fonts changing, tables breaking, and layout shifting after conversion? Here's how to convert Word to PDF without losing formatting.",
-// //     date: "Mar 16, 2026", read: "5 min", slug: "convert-word-to-pdf-without-losing-formatting",
-// //   },
-// //   {
-// //     cat: "convert", icon: "🛠️",
-// //     title: "Word to PDF Not Working? Here's How to Fix It",
-// //     excerpt: "Getting blank PDFs, upload errors, or broken formatting? Here's how to fix common Word to PDF conversion problems.",
-// //     date: "Mar 18, 2026", read: "4 min", slug: "word-to-pdf-not-working-fix",
-// //   },
-// //   {
-// //     cat: "convert", icon: "🤖",
-// //     title: "ChatGPT Generated a PDF — How to Convert It to Word?",
-// //     excerpt: "Can't edit a PDF created by ChatGPT? This free tool fixes it in 30 seconds — no signup, no watermark, OCR included.",
-// //     date: "Apr 14, 2026", read: "4 min", slug: "how-to-convert-chatgpt-pdf-to-word",
-// //   },
-
-// //   // ── COMPRESS ──
-// //   {
-// //     cat: "compress", icon: "🗜️",
-// //     title: "Compress PDF Files Without Losing Quality (Complete Guide)",
-// //     excerpt: "Learn how to compress PDF files without losing quality using the best methods. Reduce file size fast for email, upload, and sharing.",
-// //     date: "Sep 3, 2025", read: "6 min", slug: "compress-pdf",
-// //   },
-// //   {
-// //     cat: "compress", icon: "📦",
-// //     title: "PDF Too Large to Upload? Fix It in Seconds",
-// //     excerpt: "PDF too large to upload or send? Fix file size issues instantly with simple compression methods — no quality loss.",
-// //     date: "Apr 17, 2026", read: "3 min", slug: "pdf-file-too-large-compress",
-// //   },
-// //   {
-// //     cat: "compress", icon: "⚖️",
-// //     title: "How to Compress a PDF Free Online (Reduce File Size Instantly)",
-// //     excerpt: "PDF too large to email or upload? Here's how to compress any PDF in seconds — no software, no signup, no watermark.",
-// //     date: "Mar 22, 2026", read: "4 min", slug: "how-to-compress-a-pdf",
-// //   },
-// //   {
-// //     cat: "compress", icon: "✨",
-// //     title: "How to Compress a PDF Without Losing Quality",
-// //     excerpt: "Worried compression will ruin your PDF? Here's exactly what happens to images and text — and how to reduce size without visible quality loss.",
-// //     date: "Mar 23, 2026", read: "5 min", slug: "compress-pdf-without-losing-quality",
-// //   },
-// //   {
-// //     cat: "compress", icon: "📉",
-// //     title: "PDF Still Too Large After Compression? Here's How to Fix It",
-// //     excerpt: "Compressed your PDF but it's still too big? Here are the real reasons compression sometimes doesn't work.",
-// //     date: "Mar 25, 2026", read: "4 min", slug: "pdf-still-too-large-after-compression",
-// //   },
-// //   {
-// //     cat: "compress", icon: "📏",
-// //     title: "Why Are PDF Files So Large? (And How to Fix It)",
-// //     excerpt: "Ever wondered why a simple PDF ends up being 50MB? Here's what actually makes PDFs large — and the fastest fix.",
-// //     date: "Mar 26, 2026", read: "5 min", slug: "why-are-pdf-files-so-large",
-// //   },
-
-// //   // ── MOBILE ──
-// //   {
-// //     cat: "mobile", icon: "📱",
-// //     title: "How to Compress a PDF on Mobile (Android & iPhone)",
-// //     excerpt: "Need to shrink a PDF from your phone before sending? Here's how to compress any PDF directly in your mobile browser.",
-// //     date: "Mar 24, 2026", read: "3 min", slug: "compress-pdf-on-mobile",
-// //   },
-// //   {
-// //     cat: "mobile", icon: "🤳",
-// //     title: "How to Convert Word to PDF on Mobile (Android & iPhone)",
-// //     excerpt: "Convert Word documents to PDF directly on your phone — no app needed. Works on Android and iPhone in under a minute.",
-// //     date: "Mar 17, 2026", read: "3 min", slug: "word-to-pdf-on-mobile",
-// //   },
-// //   {
-// //     cat: "mobile", icon: "🌐",
-// //     title: "How Small Should I Compress My PDF? (Size Guide by Use Case)",
-// //     excerpt: "Email, WhatsApp, university portals, websites — every use case needs a different PDF size. Here's the exact target for each.",
-// //     date: "Mar 27, 2026", read: "4 min", slug: "how-small-should-i-compress-my-pdf",
-// //   },
-
-// //   // ── STUDENTS ──
-// //   {
-// //     cat: "students", icon: "🎓",
-// //     title: "Best Tools for Students to Study Smarter in 2025",
-// //     excerpt: "Assignments piling up, group projects, exams, and PDFs that won't cooperate — here are the tools that actually help.",
-// //     date: "Dec 11, 2025", read: "6 min", slug: "best-tools-for-students",
-// //   },
-// //   {
-// //     cat: "students", icon: "📚",
-// //     title: "Word to PDF for Students — How to Submit Assignments as PDF",
-// //     excerpt: "Submitting assignments as DOCX can break formatting or get rejected. Here's how students can convert Word to PDF properly.",
-// //     date: "Mar 21, 2026", read: "2 min", slug: "word-to-pdf-for-students",
-// //   },
-// //   {
-// //     cat: "students", icon: "🤖",
-// //     title: "ChatGPT Generated a PDF — How to Convert It to Word?",
-// //     excerpt: "Can't edit a PDF created by ChatGPT? This free tool fixes it in 30 seconds — no signup, no watermark, OCR included.",
-// //     date: "Apr 14, 2026", read: "4 min", slug: "how-to-convert-chatgpt-pdf-to-word",
-// //   },
-// //   {
-// //     cat: "students", icon: "📖",
-// //     title: "PDF File Opens but Not Editable — Fix It in 30 Seconds",
-// //     excerpt: "PDF opens but you can't edit anything? Here's the fastest free way to fix a non-editable PDF using OCR.",
-// //     date: "Apr 15, 2026", read: "3 min", slug: "pdf-not-editable-fix",
-// //   },
-
-// //   // ── TIPS ──
-// //   {
-// //     cat: "tips", icon: "🔒",
-// //     title: "Protect PDF with a Password Online for Free",
-// //     excerpt: "Need to lock a PDF before sending it? Here's how I add password protection to sensitive files in seconds.",
-// //     date: "Sep 11, 2025", read: "3 min", slug: "protect-pdf",
-// //   },
-// //   {
-// //     cat: "tips", icon: "🔓",
-// //     title: "Unlock PDF Files Online Without Hassle",
-// //     excerpt: "Got a password-protected PDF you need easier access to? Here's how I unlock PDF files quickly and securely.",
-// //     date: "Sep 13, 2025", read: "4 min", slug: "unlock-pdf",
-// //   },
-// //   {
-// //     cat: "tips", icon: "🔄",
-// //     title: "Rotate PDF Pages Online to Fix Wrong Orientation",
-// //     excerpt: "Ever opened a PDF and found half the pages sideways or upside down? Here's how to fix orientation in seconds.",
-// //     date: "Sep 15, 2025", read: "2 min", slug: "rotate-pdf",
-// //   },
-// //   {
-// //     cat: "tips", icon: "✍️",
-// //     title: "Sign PDF Online with a Digital Signature",
-// //     excerpt: "Need to sign a contract or form fast? Here's how I add a digital signature to PDFs online without printing or scanning.",
-// //     date: "Sep 17, 2025", read: "3 min", slug: "sign-pdf",
-// //   },
-// //   {
-// //     cat: "tips", icon: "🔡",
-// //     title: "Use OCR to Extract Text from Scanned PDFs",
-// //     excerpt: "Scanned PDFs are frustrating when you can't copy or edit anything. Here's how OCR turns them into editable text.",
-// //     date: "Sep 19, 2025", read: "4 min", slug: "ocr-pdf",
-// //   },
-// //   {
-// //     cat: "tips", icon: "🖊️",
-// //     title: "Edit PDF Files Online Without Installing Software",
-// //     excerpt: "Need to fix text, add content, or update a PDF quickly? Here's how I edit PDFs online without any desktop software.",
-// //     date: "Sep 21, 2025", read: "3 min", slug: "edit-pdf",
-// //   },
-// //   {
-// //     cat: "tips", icon: "🖼️",
-// //     title: "Add Watermark to PDF Files Online",
-// //     excerpt: "Want to protect your PDF with branding or ownership text? Here's how I add watermarks while keeping documents readable.",
-// //     date: "Sep 23, 2025", read: "3 min", slug: "add-watermark",
-// //   },
-// //   {
-// //     cat: "tips", icon: "🔧",
-// //     title: "Why Does Formatting Break When Converting Word to PDF?",
-// //     excerpt: "Ever wondered why your Word document looks perfect but the PDF gets messed up? Here's the real reason — and how to prevent it.",
-// //     date: "Mar 19, 2026", read: "5 min", slug: "why-formatting-breaks-in-word-to-pdf",
-// //   },
-// //   {
-// //     cat: "tips", icon: "🏢",
-// //     title: "Client Sent a PDF? How Freelancers Edit It for Free",
-// //     excerpt: "Got a PDF from a client that you can't edit? Here's how freelancers convert any locked PDF into an editable Word file.",
-// //     date: "Apr 16, 2026", read: "5 min", slug: "freelancer-edit-pdf-free",
-// //   },
-// //   {
-// //     cat: "tips", icon: "🖨️",
-// //     title: "Best Free Image Converter Tools Online in 2025",
-// //     excerpt: "Need to convert HEIC to JPG, WebP to PNG, or resize images? I tested 10+ tools and found one that actually works — no watermarks.",
-// //     date: "Apr 2, 2026", read: "5 min", slug: "best-free-image-converter-tools",
-// //   },
-// // ];
-
-// // const featuredArticle = articles.find((a) => a.featured);
-
-// // // ─── Filter Button ────────────────────────────────────────────────────────────
-// // function FilterButton({ label, dot, active, onClick }) {
-// //   return (
-// //     <button
-// //       onClick={onClick}
-// //       style={{
-// //         padding: "7px 18px",
-// //         borderRadius: "100px",
-// //         border: "1px solid " + (active ? "#111111" : "#E5E2DC"),
-// //         background: active ? "#111111" : "#FFFFFF",
-// //         fontSize: "13px",
-// //         fontWeight: 500,
-// //         color: active ? "#FFFFFF" : "#444444",
-// //         cursor: "pointer",
-// //         fontFamily: "'DM Sans', sans-serif",
-// //         display: "flex",
-// //         alignItems: "center",
-// //         gap: "6px",
-// //         transition: "all .2s",
-// //       }}
-// //     >
-// //       {dot && (
-// //         <span style={{ width:"7px", height:"7px", borderRadius:"50%", background:dot, display:"inline-block" }} />
-// //       )}
-// //       {label}
-// //     </button>
-// //   );
-// // }
-
-// // // ─── Featured Card ────────────────────────────────────────────────────────────
-// // function FeaturedCard({ article }) {
-// //   const [hovered, setHovered] = useState(false);
-// //   const thumb = THUMB_STYLES[article.cat];
-// //   const cat = CATEGORIES[article.cat];
-
-// //   return (
-// //     <Link
-// //       href={"/blog/" + article.slug}
-// //       style={{
-// //         background: "#FFFFFF",
-// //         borderRadius: "16px",
-// //         border: "1px solid #E5E2DC",
-// //         display: "grid",
-// //         gridTemplateColumns: "1fr 1fr",
-// //         overflow: "hidden",
-// //         textDecoration: "none",
-// //         transition: "box-shadow .3s, transform .3s",
-// //         boxShadow: hovered ? "0 12px 40px rgba(0,0,0,0.12)" : "0 2px 8px rgba(0,0,0,0.04)",
-// //         transform: hovered ? "translateY(-3px)" : "none",
-// //       }}
-// //       className="featured-grid"
-// //       onMouseEnter={() => setHovered(true)}
-// //       onMouseLeave={() => setHovered(false)}
-// //     >
-// //       {/* Thumbnail */}
-// //       <div style={{ background:thumb.bg, display:"flex", alignItems:"center", justifyContent:"center", position:"relative", overflow:"hidden", minHeight:"240px" }}>
-// //         <div style={{ position:"absolute", top:"-40px", right:"-40px", width:"180px", height:"180px", borderRadius:"50%", background:"rgba(255,255,255,0.08)" }} />
-// //         <div style={{ position:"absolute", bottom:"-50px", left:"-30px", width:"140px", height:"140px", borderRadius:"50%", background:"rgba(255,255,255,0.05)" }} />
-// //         <span style={{ fontSize:"4rem", position:"relative", zIndex:1 }}>{article.icon}</span>
-// //       </div>
-
-// //       {/* Body */}
-// //       <div style={{ padding:"2rem", display:"flex", flexDirection:"column", justifyContent:"center", background:"#FFFFFF" }}>
-// //         <div style={{ display:"flex", alignItems:"center", gap:"6px", fontSize:"12px", fontWeight:600, color:"#888", marginBottom:"0.8rem", textTransform:"uppercase", letterSpacing:"0.06em" }}>
-// //           <span style={{ width:"8px", height:"8px", borderRadius:"50%", background:cat.color, display:"inline-block" }} />
-// //           {cat.label} · Featured
-// //         </div>
-// //         <h2 style={{ fontFamily:"'Instrument Serif', serif", fontSize:"1.6rem", lineHeight:1.25, color:"#111111", marginBottom:"0.8rem" }}>
-// //           {article.title}
-// //         </h2>
-// //         <p style={{ fontSize:"14px", color:"#444444", lineHeight:1.75, marginBottom:"1.2rem" }}>
-// //           {article.excerpt}
-// //         </p>
-// //         <div style={{ display:"flex", alignItems:"center", gap:"8px", fontSize:"13px", color:"#888", marginBottom:"1rem", flexWrap:"wrap" }}>
-// //           <span>{article.date}</span>
-// //           <span>·</span>
-// //           <span>{article.read} read</span>
-// //           <span style={{ background:"#FEF0ED", color:"#E8380D", fontSize:"11px", fontWeight:600, padding:"3px 10px", borderRadius:"100px" }}>
-// //             Most Popular
-// //           </span>
-// //         </div>
-// //         <span style={{ fontSize:"14px", fontWeight:600, color:"#E8380D" }}>
-// //           Read Article →
-// //         </span>
-// //       </div>
-// //     </Link>
-// //   );
-// // }
-
-// // // ─── Article Card ─────────────────────────────────────────────────────────────
-// // function ArticleCard({ article }) {
-// //   const [hovered, setHovered] = useState(false);
-// //   const thumb = THUMB_STYLES[article.cat];
-// //   const cat = CATEGORIES[article.cat];
-
-// //   return (
-// //     <Link
-// //       href={"/blog/" + article.slug}
-// //       style={{
-// //         background: "#FFFFFF",
-// //         border: "1px solid #E5E2DC",
-// //         borderRadius: "14px",
-// //         overflow: "hidden",
-// //         display: "block",
-// //         textDecoration: "none",
-// //         transition: "transform .25s, box-shadow .25s",
-// //         transform: hovered ? "translateY(-4px)" : "none",
-// //         boxShadow: hovered ? "0 12px 32px rgba(0,0,0,0.08)" : "0 1px 4px rgba(0,0,0,0.04)",
-// //       }}
-// //       onMouseEnter={() => setHovered(true)}
-// //       onMouseLeave={() => setHovered(false)}
-// //     >
-// //       {/* Thumbnail */}
-// //       <div style={{ background:thumb.bg, height:"140px", position:"relative", display:"flex", alignItems:"center", justifyContent:"center", overflow:"hidden" }}>
-// //         <span style={{ position:"absolute", top:"12px", left:"12px", background:"rgba(0,0,0,0.25)", color:"#fff", fontSize:"10px", fontWeight:700, padding:"3px 10px", borderRadius:"100px", textTransform:"uppercase", letterSpacing:"0.06em" }}>
-// //           {cat.label}
-// //         </span>
-// //         <div style={{ position:"absolute", top:"-30px", right:"-30px", width:"100px", height:"100px", borderRadius:"50%", background:"rgba(255,255,255,0.1)" }} />
-// //         <span style={{ fontSize:"2.4rem", position:"relative", zIndex:1 }}>{article.icon}</span>
-// //       </div>
-
-// //       {/* Body */}
-// //       <div style={{ padding:"1.2rem 1.4rem 1.4rem" }}>
-// //         <h3 style={{ fontFamily:"'Instrument Serif', serif", fontSize:"1.05rem", lineHeight:1.35, color:"#111111", marginBottom:"0.5rem" }}>
-// //           {article.title}
-// //         </h3>
-// //         <p style={{ fontSize:"13.5px", color:"#444444", lineHeight:1.7, marginBottom:"1rem", display:"-webkit-box", WebkitLineClamp:2, WebkitBoxOrient:"vertical", overflow:"hidden" }}>
-// //           {article.excerpt}
-// //         </p>
-// //         <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between" }}>
-// //           <span style={{ fontSize:"12px", color:"#888" }}>{article.date} · {article.read}</span>
-// //           <span style={{ fontSize:"13px", fontWeight:600, color:"#E8380D" }}>Read →</span>
-// //         </div>
-// //       </div>
-// //     </Link>
-// //   );
-// // }
-
-// // // ─── Main Export ──────────────────────────────────────────────────────────────
-// // export default function BlogClient() {
-// //   const [activeFilter, setActiveFilter] = useState("all");
-// //   const [searchQuery, setSearchQuery] = useState("");
-
-// //   // Deduplicate by slug (some articles appear in 2 categories)
-// //   const uniqueArticles = articles.filter(
-// //     (a, idx, self) => self.findIndex((b) => b.slug === a.slug) === idx
-// //   );
-
-// //   const filtered = uniqueArticles.filter((a) => {
-// //     const matchCat = activeFilter === "all" || a.cat === activeFilter;
-// //     const q = searchQuery.toLowerCase();
-// //     const matchSearch = !q || a.title.toLowerCase().includes(q) || a.excerpt.toLowerCase().includes(q);
-// //     return matchCat && matchSearch;
-// //   });
-
-// //   const showFeatured = activeFilter === "all" && !searchQuery;
-// //   const gridArticles = showFeatured
-// //     ? filtered.filter((a) => a.slug !== featuredArticle.slug)
-// //     : filtered;
-
-// //   return (
-// //     <>
-// //       <style>{`
-// //         @import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap');
-// //         .blog-page * { box-sizing: border-box; }
-// //         @media (max-width: 680px) {
-// //           .featured-grid { grid-template-columns: 1fr !important; }
-// //           .blog-hero-wrap { flex-direction: column !important; align-items: flex-start !important; }
-// //         }
-// //         @media (max-width: 520px) {
-// //           .article-grid { grid-template-columns: 1fr !important; }
-// //         }
-// //         .nl-input {
-// //           flex: 1; max-width: 300px;
-// //           border: 1px solid rgba(255,255,255,0.15);
-// //           background: rgba(255,255,255,0.08);
-// //           color: #fff; padding: 10px 16px;
-// //           border-radius: 8px; font-size: 14px;
-// //           font-family: 'DM Sans', sans-serif; outline: none;
-// //         }
-// //         .nl-input::placeholder { color: rgba(255,255,255,0.4); }
-// //         .nl-btn {
-// //           background: #E8380D; color: #fff; border: none;
-// //           padding: 10px 22px; border-radius: 8px;
-// //           font-size: 13px; font-weight: 600; cursor: pointer;
-// //           font-family: 'DM Sans', sans-serif; white-space: nowrap;
-// //           transition: background .2s;
-// //         }
-// //         .nl-btn:hover { background: #c4300b; }
-// //       `}</style>
-
-// //       <div className="blog-page" style={{ fontFamily:"'DM Sans', sans-serif", background:"#F7F5F2", color:"#111111", minHeight:"100vh" }}>
-
-// //         {/* ── HERO ── */}
-// //         <div
-// //           className="blog-hero-wrap"
-// //           style={{ padding:"4rem 2rem 2.5rem", maxWidth:"1100px", margin:"0 auto", display:"flex", alignItems:"flex-end", justifyContent:"space-between", gap:"2rem", flexWrap:"wrap" }}
-// //         >
-// //           <div>
-// //             <div style={{ display:"flex", alignItems:"center", gap:"8px", fontSize:"11px", fontWeight:600, letterSpacing:"0.08em", textTransform:"uppercase", color:"#E8380D", marginBottom:"0.8rem" }}>
-// //               <span style={{ width:"20px", height:"2px", background:"#E8380D", display:"inline-block" }} />
-// //               PDF Linx Blog
-// //             </div>
-// //             <h1 style={{ fontFamily:"'Instrument Serif', serif", fontSize:"clamp(2.2rem, 5vw, 3.8rem)", lineHeight:1.1, color:"#111111", marginBottom:"0.6rem" }}>
-// //               Real guides for{" "}
-// //               <em style={{ fontStyle:"italic", color:"#E8380D" }}>real</em>{" "}
-// //               PDF problems
-// //             </h1>
-// //             <p style={{ fontSize:"15px", color:"#888", maxWidth:"440px", lineHeight:1.6 }}>
-// //               Simple, no-nonsense guides for PDF tools — tested in real life, completely free.
-// //             </p>
-// //           </div>
-
-// //           <div style={{ display:"flex", gap:"2rem", flexShrink:0 }}>
-// //             {[["39+","Articles"],["5","Categories"],["Free","Always"]].map(([num, label]) => (
-// //               <div key={label} style={{ textAlign:"right" }}>
-// //                 <span style={{ fontFamily:"'Instrument Serif', serif", fontSize:"2rem", color:"#111111", display:"block" }}>{num}</span>
-// //                 <span style={{ fontSize:"12px", color:"#888" }}>{label}</span>
-// //               </div>
-// //             ))}
-// //           </div>
-// //         </div>
-
-// //         {/* ── FILTERS ── */}
-// //         <div style={{ maxWidth:"1100px", margin:"0 auto", padding:"0 2rem 2rem" }}>
-// //           <div style={{ display:"flex", gap:"8px", flexWrap:"wrap", borderBottom:"1px solid #E5E2DC", paddingBottom:"1.5rem" }}>
-// //             <FilterButton label="All Articles" active={activeFilter === "all"} onClick={() => setActiveFilter("all")} />
-// //             {Object.entries(CATEGORIES).map(([key, cat]) => (
-// //               <FilterButton key={key} label={cat.label} dot={cat.dot} active={activeFilter === key} onClick={() => setActiveFilter(key)} />
-// //             ))}
-// //           </div>
-// //         </div>
-
-// //         {/* ── SEARCH ── */}
-// //         <div style={{ maxWidth:"1100px", margin:"0 auto", padding:"0 2rem 2rem" }}>
-// //           <div style={{ display:"flex", alignItems:"center", gap:"10px", background:"#FFFFFF", border:"1px solid #E5E2DC", borderRadius:"10px", padding:"10px 16px", maxWidth:"400px" }}>
-// //             <svg width="16" height="16" fill="none" stroke="#888" strokeWidth="2" viewBox="0 0 24 24">
-// //               <circle cx="11" cy="11" r="8" /><path d="M21 21l-4.35-4.35" />
-// //             </svg>
-// //             <input
-// //               type="text"
-// //               placeholder="Search articles..."
-// //               value={searchQuery}
-// //               onChange={(e) => setSearchQuery(e.target.value)}
-// //               style={{ border:"none", outline:"none", fontFamily:"'DM Sans', sans-serif", fontSize:"14px", color:"#111111", background:"transparent", width:"100%" }}
-// //             />
-// //           </div>
-// //         </div>
-
-// //         {/* ── FEATURED ── */}
-// //         {showFeatured && (
-// //           <div style={{ maxWidth:"1100px", margin:"0 auto", padding:"0 2rem 2rem" }}>
-// //             <FeaturedCard article={featuredArticle} />
-// //           </div>
-// //         )}
-
-// //         {/* ── ARTICLE GRID ── */}
-// //         <div style={{ maxWidth:"1100px", margin:"0 auto", padding:"0 2rem 4rem" }}>
-// //           <div style={{ display:"flex", alignItems:"baseline", justifyContent:"space-between", marginBottom:"1.5rem" }}>
-// //             <h2 style={{ fontFamily:"'Instrument Serif', serif", fontSize:"1.6rem", color:"#111111" }}>
-// //               {activeFilter === "all" ? "All Articles" : CATEGORIES[activeFilter].label}
-// //             </h2>
-// //             <span style={{ fontSize:"13px", color:"#888" }}>{gridArticles.length} articles</span>
-// //           </div>
-
-// //           {gridArticles.length === 0 ? (
-// //             <div style={{ textAlign:"center", padding:"4rem 2rem", color:"#888", fontSize:"15px" }}>
-// //               No articles found. Try a different search.
-// //             </div>
-// //           ) : (
-// //             <div
-// //               className="article-grid"
-// //               style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill, minmax(300px, 1fr))", gap:"20px" }}
-// //             >
-// //               {gridArticles.map((article, i) => (
-// //                 <ArticleCard key={article.slug + i} article={article} />
-// //               ))}
-// //             </div>
-// //           )}
-// //         </div>
-
-// //         {/* ── NEWSLETTER ── */}
-// //         <div style={{ background:"#111111", padding:"4rem 2rem", textAlign:"center" }}>
-// //           <h3 style={{ fontFamily:"'Instrument Serif', serif", fontSize:"clamp(1.6rem, 3vw, 2.2rem)", color:"#FFFFFF", marginBottom:"0.6rem" }}>
-// //             Get PDF tips in your inbox
-// //           </h3>
-// //           <p style={{ fontSize:"15px", color:"rgba(255,255,255,0.6)", marginBottom:"1.8rem" }}>
-// //             One useful tip per week. No spam, no subscriptions — unsubscribe anytime.
-// //           </p>
-// //           <div style={{ display:"flex", gap:"10px", justifyContent:"center", flexWrap:"wrap" }}>
-// //             <input type="email" placeholder="your@email.com" className="nl-input" />
-// //             <button className="nl-btn">Subscribe Free</button>
-// //           </div>
-// //         </div>
-
-// //       </div>
-// //     </>
-// //   );
-// // }
 

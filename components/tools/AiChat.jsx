@@ -71,11 +71,10 @@ function ChatBubble({ role, text }) {
   return (
     <div className={`flex ${isUser ? "justify-end" : "justify-start"} mb-3`}>
       <div
-        className={`max-w-[80%] rounded-2xl px-4 py-2.5 text-sm whitespace-pre-wrap ${
-          isUser
+        className={`max-w-[80%] rounded-2xl px-4 py-2.5 text-sm whitespace-pre-wrap ${isUser
             ? "bg-blue-600 text-white rounded-br-sm"
             : "bg-slate-100 text-slate-800 rounded-bl-sm"
-        }`}
+          }`}
       >
         {!isUser && (
           <span className="text-xs font-semibold text-blue-600 block mb-1">
@@ -129,7 +128,7 @@ export default function AiChat({ seo }) {
         try {
           const maybeJson = await res.json();
           msg = maybeJson?.error || msg;
-        } catch {}
+        } catch { }
         throw new Error(msg);
       }
 
@@ -190,9 +189,12 @@ export default function AiChat({ seo }) {
     }
   };
 
+  // const CHAT_UI = (
+  //   <div className="mt-4 flex flex-col gap-3">
+  //     <div className="rounded-xl border border-slate-200 bg-white p-4 h-64 overflow-y-auto">
   const CHAT_UI = (
     <div className="mt-4 flex flex-col gap-3">
-      <div className="rounded-xl border border-slate-200 bg-white p-4 h-64 overflow-y-auto">
+      <div className="rounded-xl border border-slate-200 bg-white p-4 h-[420px] overflow-y-auto">
         {messages.map((msg, i) => (
           <ChatBubble key={i} role={msg.role} text={msg.text} />
         ))}
