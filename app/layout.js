@@ -138,27 +138,23 @@ export default function RootLayout({ children }) {
       className={`${sora.variable} ${dmSans.variable} ${instrumentSerif.variable}`}
     >
       <head>
-        <meta
-          name="p:domain_verify"
-          content="c1ab788f2cb7d222782d9d6ed6196669"
-        />
+        <meta name="p:domain_verify" content="c1ab788f2cb7d222782d9d6ed6196669" />
         <meta name="ai-access" content="allow" />
         <link rel="dns-prefetch" href="//www.googletagmanager.com" />
         <link rel="preconnect" href="https://www.googletagmanager.com" />
-      </head>
 
+        {/* Google AdSense Verification */}
+
+        <script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4413863635768994"
+          crossOrigin="anonymous"
+        />
+      </head>
       {/* <body className="flex min-h-screen flex-col bg-gray-50 font-sans"> */}
       <body className="flex min-h-screen flex-col bg-gray-50 font-dm">
         <LayoutShell>{children}</LayoutShell>
 
-
-    {/* Google AdSense Verification */}
-      <Script
-        async
-        strategy="afterInteractive"
-        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4413863635768994"
-      crossOrigin="anonymous"
-      />
 
         {/* Google Analytics */}
         <Script
