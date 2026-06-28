@@ -151,6 +151,15 @@ export default function RootLayout({ children }) {
       <body className="flex min-h-screen flex-col bg-gray-50 font-dm">
         <LayoutShell>{children}</LayoutShell>
 
+
+    {/* Google AdSense Verification */}
+      <Script
+        async
+        strategy="afterInteractive"
+        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4413863635768994"
+      crossOrigin="anonymous"
+      />
+
         {/* Google Analytics */}
         <Script
           strategy="afterInteractive"
