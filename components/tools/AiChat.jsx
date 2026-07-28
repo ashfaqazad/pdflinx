@@ -36,7 +36,7 @@ const SIDEBAR_NOTICE = (
     </p>
     <ul className="mt-3 list-disc space-y-2 pl-4 text-xs text-slate-600">
       <li>Upload PDF once, ask unlimited questions</li>
-      <li>First 3 pages used as context</li>
+      <li>AI reads your full document and finds the most relevant sections to answer your questions accurately.</li>
       <li>Works on text-based PDFs only</li>
     </ul>
   </>
@@ -57,7 +57,7 @@ const OPTIONS_SLOT = (
     <ul className="space-y-1.5 text-xs text-slate-600">
       <li>✓ PDF uploaded once, context stored</li>
       <li>✓ Ask unlimited questions</li>
-      <li>✓ First 3 pages used as context</li>
+      <li>✓ AI reads your full document and finds the most relevant sections to answer your questions accurately.</li>
       <li>✓ Works on text-based PDFs only</li>
       <li>✓ Each answer takes 10–20 seconds</li>
     </ul>
@@ -484,7 +484,7 @@ export default function AiChat({ seo }) {
         uploadInfo={
           <>
             <p>⏱️ PDF loads in 5–10 seconds — then ask unlimited questions</p>
-            <p className="mt-1">🔢 Single PDF only · First 3 pages used as context</p>
+            <p className="mt-1">🔢 Single PDF only · AI reads your full document and finds the most relevant sections to answer your questions accurately.</p>
           </>
         }
 
@@ -517,7 +517,7 @@ export default function AiChat({ seo }) {
             noticeTitle: "Chat with PDF",
             noticeItems: [
               "Upload once, ask unlimited questions",
-              "First 3 pages used as context",
+              "AI reads your full document and finds the most relevant sections to answer your questions accurately.",
               "Text-based PDFs only",
             ],
 
