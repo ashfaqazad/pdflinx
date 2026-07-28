@@ -92,7 +92,8 @@ export default function AiChat({ seo }) {
   const { progress, startProgress, completeProgress, cancelProgress } =
     useProgressBar();
 
-  const [pdfContext, setPdfContext] = useState(null);
+  // const [pdfContext, setPdfContext] = useState(null);
+  const [documentId, setDocumentId] = useState(null);
   const [messages, setMessages] = useState([]);
   const [question, setQuestion] = useState("");
   const [isAsking, setIsAsking] = useState(false);
@@ -108,6 +109,47 @@ export default function AiChat({ seo }) {
     else flow.selectFiles(updated);
   };
 
+  // const handleConvert = async () => {
+  //   if (!flow.files.length) return alert("Please select a PDF file first!");
+
+  //   flow.startProcessing();
+  //   startProgress();
+
+  //   const formData = new FormData();
+  //   formData.append("pdf", flow.files[0]);
+
+  //   try {
+  //     const res = await fetch(
+  //       `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/ai/extract`,
+  //       { method: "POST", body: formData }
+  //     );
+
+  //     if (!res.ok) {
+  //       let msg = "Failed to process PDF";
+  //       try {
+  //         const maybeJson = await res.json();
+  //         msg = maybeJson?.error || msg;
+  //       } catch { }
+  //       throw new Error(msg);
+  //     }
+
+  //     const data = await res.json();
+  //     setPdfContext(data.text);
+  //     setMessages([
+  //       {
+  //         role: "ai",
+  //         text: "✅ PDF loaded! Ask me anything about this document.",
+  //       },
+  //     ]);
+
+  //     completeProgress();
+  //     flow.finishSuccess();
+  //   } catch (err) {
+  //     cancelProgress();
+  //     flow.handleError(err.message || "Something went wrong, please try again.");
+  //   }
+  // };
+
   const handleConvert = async () => {
     if (!flow.files.length) return alert("Please select a PDF file first!");
 
@@ -119,7 +161,7 @@ export default function AiChat({ seo }) {
 
     try {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/ai/extract`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/ai/chat/upload`,
         { method: "POST", body: formData }
       );
 
@@ -133,7 +175,7 @@ export default function AiChat({ seo }) {
       }
 
       const data = await res.json();
-      setPdfContext(data.text);
+      setDocumentId(data.documentId);
       setMessages([
         {
           role: "ai",
@@ -149,6 +191,41 @@ export default function AiChat({ seo }) {
     }
   };
 
+
+
+  // const handleAsk = async () => {
+  //   if (!question.trim() || isAsking) return;
+
+  //   const userMsg = question.trim();
+  //   setQuestion("");
+  //   setMessages((prev) => [...prev, { role: "user", text: userMsg }]);
+  //   setIsAsking(true);
+
+  //   try {
+  //     const res = await fetch(
+  //       `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/ai/chat`,
+  //       {
+  //         method: "POST",
+  //         headers: { "Content-Type": "application/json" },
+  //         body: JSON.stringify({ question: userMsg, context: pdfContext }),
+  //       }
+  //     );
+
+  //     const data = await res.json();
+  //     setMessages((prev) => [
+  //       ...prev,
+  //       { role: "ai", text: data.answer || "Sorry, I could not answer that." },
+  //     ]);
+  //   } catch {
+  //     setMessages((prev) => [
+  //       ...prev,
+  //       { role: "ai", text: "❌ Error getting answer. Please try again." },
+  //     ]);
+  //   } finally {
+  //     setIsAsking(false);
+  //   }
+  // };
+
   const handleAsk = async () => {
     if (!question.trim() || isAsking) return;
 
@@ -159,11 +236,11 @@ export default function AiChat({ seo }) {
 
     try {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/ai/chat`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/ai/chat/ask`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ question: userMsg, context: pdfContext }),
+          body: JSON.stringify({ documentId, question: userMsg }),
         }
       );
 
