@@ -67,6 +67,24 @@ const nextConfig = {
       { source: "/blog/unit-converter", destination: "https://convertlinx.com/blog/free-online-unit-converter-guide", permanent: true },
       { source: "/blog/password-gen", destination: "https://convertlinx.com/blog/how-to-create-strong-password-online", permanent: true },
       { source: "/blog/qr-generator", destination: "https://convertlinx.com/blog/how-to-generate-qr-code-online-free", permanent: true },
+
+      // ===== Blog routes renamed WITHIN pdflinx.com (old slug -> current live slug) =====
+      { source: "/blog/pdf-to-word", destination: "/blog/pdf-to-word-accuracy-tips", permanent: true },
+      { source: "/blog/word-to-pdf", destination: "/blog/word-to-pdf-best-practices", permanent: true },
+      { source: "/blog/image-to-pdf", destination: "/blog/image-to-pdf-quality-guide", permanent: true },
+      { source: "/blog/merge-pdf", destination: "/blog/when-to-merge-pdf-files", permanent: true },
+      { source: "/blog/split-pdf", destination: "/blog/split-pdf-for-sharing", permanent: true },
+      { source: "/blog/compress-pdf", destination: "/blog/compress-pdf-without-losing-quality", permanent: true },
+      { source: "/blog/excel-pdf", destination: "/blog/excel-to-pdf-print-layout", permanent: true },
+      { source: "/blog/pdf-to-jpg", destination: "/blog/pdf-to-jpg-vs-png", permanent: true },
+      { source: "/blog/ppt-to-pdf", destination: "/blog/ppt-to-pdf-fonts-missing", permanent: true },
+      { source: "/blog/protect-pdf", destination: "/blog/pdf-password-best-practices", permanent: true },
+      { source: "/blog/unlock-pdf", destination: "/blog/forgot-pdf-password-options", permanent: true },
+      { source: "/blog/rotate-pdf", destination: "/blog/pdf-pages-upside-down-fix", permanent: true },
+      { source: "/blog/sign-pdf", destination: "/blog/digital-vs-electronic-signature-pdf", permanent: true },
+      { source: "/blog/ocr-pdf", destination: "/blog/ocr-pdf-accuracy-languages", permanent: true },
+      { source: "/blog/edit-pdf", destination: "/blog/edit-pdf-without-word", permanent: true },
+      { source: "/blog/add-watermark", destination: "/blog/watermark-pdf-for-freelancers", permanent: true },
     ];
   },
 
@@ -110,8 +128,6 @@ const nextConfig = {
 };
 
 export default nextConfig;
-
-
 
 
 
@@ -184,6 +200,28 @@ export default nextConfig;
 //       { source: "/tools/:slug*", destination: "/:slug*", permanent: true },
 //       { source: "/excel-to-pdf", destination: "/excel-pdf", permanent: true },
 //       { source: "/blog/excel-to-pdf", destination: "/blog/excel-pdf", permanent: true },
+
+//       // ===== Tool Pages migrated to convertlinx.com (same slug) =====
+//       { source: "/image-converter", destination: "https://convertlinx.com/image-converter", permanent: true },
+//       { source: "/heic-to-jpg", destination: "https://convertlinx.com/heic-to-jpg", permanent: true },
+//       { source: "/signature-maker", destination: "https://convertlinx.com/signature-maker", permanent: true },
+//       { source: "/image-to-text", destination: "https://convertlinx.com/image-to-text", permanent: true },
+//       { source: "/image-compressor", destination: "https://convertlinx.com/image-compressor", permanent: true },
+//       { source: "/youtube-thumbnail", destination: "https://convertlinx.com/youtube-thumbnail", permanent: true },
+//       { source: "/unit-converter", destination: "https://convertlinx.com/unit-converter", permanent: true },
+//       { source: "/password-gen", destination: "https://convertlinx.com/password-gen", permanent: true },
+//       { source: "/qr-generator", destination: "https://convertlinx.com/qr-generator", permanent: true },
+//       { source: "/image-resizer", destination: "https://convertlinx.com/image-resizer", permanent: true },
+
+//       // ===== Old Blog Pages migrated to convertlinx.com (updated slugs) =====
+//       { source: "/blog/heic-to-jpg", destination: "https://convertlinx.com/blog/convert-heic-to-jpg-free-online", permanent: true },
+//       { source: "/blog/signature-maker", destination: "https://convertlinx.com/blog/create-digital-signature-online-free", permanent: true },
+//       { source: "/blog/image-to-text", destination: "https://convertlinx.com/blog/extract-text-from-image-ocr-free", permanent: true },
+//       { source: "/blog/image-compressor", destination: "https://convertlinx.com/blog/compress-images-without-losing-quality", permanent: true },
+//       { source: "/blog/youtube-thumbnail", destination: "https://convertlinx.com/blog/download-youtube-thumbnail-hd-free", permanent: true },
+//       { source: "/blog/unit-converter", destination: "https://convertlinx.com/blog/free-online-unit-converter-guide", permanent: true },
+//       { source: "/blog/password-gen", destination: "https://convertlinx.com/blog/how-to-create-strong-password-online", permanent: true },
+//       { source: "/blog/qr-generator", destination: "https://convertlinx.com/blog/how-to-generate-qr-code-online-free", permanent: true },
 //     ];
 //   },
 
@@ -254,23 +292,16 @@ export default nextConfig;
 
 
 
-
-
-
-
 // // /** @type {import('next').NextConfig} */
 // // const nextConfig = {
-// //   // ✅ Performance: CSS & Console optimization
 // //   experimental: {
 // //     optimizeCss: true,
-// //     browsersListForSwc: true, // ✅ Sirf yeh add karo
-
+// //     browsersListForSwc: true,
 // //   },
 // //   compiler: {
 // //     removeConsole: process.env.NODE_ENV === "production",
 // //   },
 
-// //   // ✅ Performance: Image optimization
 // //   images: {
 // //     formats: ["image/avif", "image/webp"],
 // //     minimumCacheTTL: 60,
@@ -278,10 +309,7 @@ export default nextConfig;
 // //     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
 // //   },
 
-// //   // ✅ Performance: Compression enable
 // //   compress: true,
-
-// //   // ✅ Performance: Power by header hatao (minor security + perf)
 // //   poweredByHeader: false,
 
 // //   async rewrites() {
@@ -289,6 +317,10 @@ export default nextConfig;
 // //       {
 // //         source: "/api/converted/:path*",
 // //         destination: `${process.env.NEXT_PUBLIC_BACKEND_URL}/convert/converted/:path*`,
+// //       },
+// //       {
+// //       source: "/converted/:path*",
+// //       destination: `${process.env.NEXT_PUBLIC_BACKEND_URL}/converted/:path*`,
 // //       },
 // //       {
 // //         source: "/convert/:path*",
@@ -303,117 +335,15 @@ export default nextConfig;
 
 // //   async redirects() {
 // //     return [
-// //       // Existing redirects
+// //       // Internal redirects only
 // //       { source: "/tools/:slug*", destination: "/:slug*", permanent: true },
 // //       { source: "/excel-to-pdf", destination: "/excel-pdf", permanent: true },
 // //       { source: "/blog/excel-to-pdf", destination: "/blog/excel-pdf", permanent: true },
-
-// //       // Utility Tools -> ConvertLinx
-// //       {
-// //         source: "/qr-generator",
-// //         destination: "https://convertlinx.com/qr-generator",
-// //         permanent: true,
-// //       },
-// //       {
-// //         source: "/password-gen",
-// //         destination: "https://convertlinx.com/password-gen",
-// //         permanent: true,
-// //       },
-// //       {
-// //         source: "/unit-converter",
-// //         destination: "https://convertlinx.com/unit-converter",
-// //         permanent: true,
-// //       },
-// //       {
-// //         source: "/youtube-thumbnail",
-// //         destination: "https://convertlinx.com/youtube-thumbnail",
-// //         permanent: true,
-// //       },
-// //       {
-// //         source: "/image-compressor",
-// //         destination: "https://convertlinx.com/image-compressor",
-// //         permanent: true,
-// //       },
-// //       {
-// //         source: "/image-to-text",
-// //         destination: "https://convertlinx.com/image-to-text",
-// //         permanent: true,
-// //       },
-// //       {
-// //         source: "/signature-maker",
-// //         destination: "https://convertlinx.com/signature-maker",
-// //         permanent: true,
-// //       },
-
-// //       // {
-// //       //   source: "/text-to-pdf",
-// //       //   destination: "https://convertlinx.com/text-to-pdf",
-// //       //   permanent: true,
-// //       // },
-// //       {
-// //         source: "/heic-to-jpg",
-// //         destination: "https://convertlinx.com/heic-to-jpg",
-// //         permanent: true,
-// //       },
-// //       {
-// //         source: "/image-converter",
-// //         destination: "https://convertlinx.com/image-converter",
-// //         permanent: true,
-// //       },
-
-// //       // Utility Tool Blogs -> ConvertLinx
-// //       {
-// //         source: "/blog/qr-generator",
-// //         destination: "https://convertlinx.com/blog/qr-generator",
-// //         permanent: true,
-// //       },
-// //       {
-// //         source: "/blog/password-gen",
-// //         destination: "https://convertlinx.com/blog/password-gen",
-// //         permanent: true,
-// //       },
-// //       {
-// //         source: "/blog/unit-converter",
-// //         destination: "https://convertlinx.com/blog/unit-converter",
-// //         permanent: true,
-// //       },
-// //       {
-// //         source: "/blog/youtube-thumbnail",
-// //         destination: "https://convertlinx.com/blog/youtube-thumbnail",
-// //         permanent: true,
-// //       },
-// //       {
-// //         source: "/blog/image-compressor",
-// //         destination: "https://convertlinx.com/blog/image-compressor",
-// //         permanent: true,
-// //       },
-// //       {
-// //         source: "/blog/image-to-text",
-// //         destination: "https://convertlinx.com/blog/image-to-text",
-// //         permanent: true,
-// //       },
-// //       {
-// //         source: "/blog/signature-maker",
-// //         destination: "https://convertlinx.com/blog/signature-maker",
-// //         permanent: true,
-// //       },
-
-// //       // {
-// //       //   source: "/blog/text-to-pdf",
-// //       //   destination: "https://convertlinx.com/blog/text-to-pdf",
-// //       //   permanent: true,
-// //       // },
-// //       {
-// //         source: "/blog/heic-to-jpg",
-// //         destination: "https://convertlinx.com/blog/heic-to-jpg",
-// //         permanent: true,
-// //       },
 // //     ];
 // //   },
 
 // //   async headers() {
 // //     return [
-// //       // Existing: iframe embed support
 // //       {
 // //         source: "/embed/:path*",
 // //         headers: [
@@ -421,8 +351,6 @@ export default nextConfig;
 // //           { key: "Content-Security-Policy", value: "frame-ancestors *" },
 // //         ],
 // //       },
-
-// //       // ✅ Performance: Static assets ko 1 saal ke liye cache karo
 // //       {
 // //         source: "/:path*\\.(js|css|woff|woff2|ttf|otf|eot)",
 // //         headers: [
@@ -432,8 +360,6 @@ export default nextConfig;
 // //           },
 // //         ],
 // //       },
-
-// //       // ✅ Performance: Images cache - 30 din
 // //       {
 // //         source: "/:path*\\.(png|jpg|jpeg|gif|svg|ico|webp|avif)",
 // //         headers: [
@@ -443,8 +369,6 @@ export default nextConfig;
 // //           },
 // //         ],
 // //       },
-
-// //       // ✅ Security + Performance: HTML pages ke liye
 // //       {
 // //         source: "/(.*)",
 // //         headers: [
@@ -469,286 +393,4 @@ export default nextConfig;
 
 
 
-
-
-
-
-
-
-
-
-
-
-// // // /** @type {import('next').NextConfig} */
-// // // const nextConfig = {
-// // //   async rewrites() {
-// // //     return [
-// // //       {
-// // //         source: "/api/converted/:path*",
-// // //         destination: `${process.env.NEXT_PUBLIC_BACKEND_URL}/convert/converted/:path*`,
-// // //       },
-// // //       {
-// // //         source: "/convert/:path*",
-// // //         destination: `${process.env.NEXT_PUBLIC_BACKEND_URL}/convert/:path*`,
-// // //       },
-// // //       {
-// // //         source: "/api/:path((?!convert).*)",
-// // //         destination: `${process.env.NEXT_PUBLIC_BACKEND_URL}/:path*`,
-// // //       },
-// // //     ];
-// // //   },
-
-// // //   async redirects() {
-// // //     return [
-// // //       // Existing redirects
-// // //       { source: "/tools/:slug*", destination: "/:slug*", permanent: true },
-// // //       { source: "/excel-to-pdf", destination: "/excel-pdf", permanent: true },
-// // //       { source: "/blog/excel-to-pdf", destination: "/blog/excel-pdf", permanent: true },
-
-// // //       // Utility Tools -> ConvertLinx
-// // //       {
-// // //         source: "/qr-generator",
-// // //         destination: "https://convertlinx.com/qr-generator",
-// // //         permanent: true,
-// // //       },
-// // //       {
-// // //         source: "/password-gen",
-// // //         destination: "https://convertlinx.com/password-gen",
-// // //         permanent: true,
-// // //       },
-// // //       {
-// // //         source: "/unit-converter",
-// // //         destination: "https://convertlinx.com/unit-converter",
-// // //         permanent: true,
-// // //       },
-// // //       {
-// // //         source: "/youtube-thumbnail",
-// // //         destination: "https://convertlinx.com/youtube-thumbnail",
-// // //         permanent: true,
-// // //       },
-// // //       {
-// // //         source: "/image-compressor",
-// // //         destination: "https://convertlinx.com/image-compressor",
-// // //         permanent: true,
-// // //       },
-// // //       {
-// // //         source: "/image-to-text",
-// // //         destination: "https://convertlinx.com/image-to-text",
-// // //         permanent: true,
-// // //       },
-// // //       {
-// // //         source: "/signature-maker",
-// // //         destination: "https://convertlinx.com/signature-maker",
-// // //         permanent: true,
-// // //       },
-// // //       {
-// // //         source: "/text-to-pdf",
-// // //         destination: "https://convertlinx.com/text-to-pdf",
-// // //         permanent: true,
-// // //       },
-// // //       {
-// // //         source: "/heic-to-jpg",
-// // //         destination: "https://convertlinx.com/heic-to-jpg",
-// // //         permanent: true,
-// // //       },
-// // //       {
-// // //         source: "/image-converter",
-// // //         destination: "https://convertlinx.com/image-converter",
-// // //         permanent: true,
-// // //       },
-
-// // //       // Utility Tool Blogs -> ConvertLinx
-// // //       {
-// // //         source: "/blog/qr-generator",
-// // //         destination: "https://convertlinx.com/blog/qr-generator",
-// // //         permanent: true,
-// // //       },
-// // //       {
-// // //         source: "/blog/password-gen",
-// // //         destination: "https://convertlinx.com/blog/password-gen",
-// // //         permanent: true,
-// // //       },
-// // //       {
-// // //         source: "/blog/unit-converter",
-// // //         destination: "https://convertlinx.com/blog/unit-converter",
-// // //         permanent: true,
-// // //       },
-// // //       {
-// // //         source: "/blog/youtube-thumbnail",
-// // //         destination: "https://convertlinx.com/blog/youtube-thumbnail",
-// // //         permanent: true,
-// // //       },
-// // //       {
-// // //         source: "/blog/image-compressor",
-// // //         destination: "https://convertlinx.com/blog/image-compressor",
-// // //         permanent: true,
-// // //       },
-// // //       {
-// // //         source: "/blog/image-to-text",
-// // //         destination: "https://convertlinx.com/blog/image-to-text",
-// // //         permanent: true,
-// // //       },
-// // //       {
-// // //         source: "/blog/signature-maker",
-// // //         destination: "https://convertlinx.com/blog/signature-maker",
-// // //         permanent: true,
-// // //       },
-// // //       {
-// // //         source: "/blog/text-to-pdf",
-// // //         destination: "https://convertlinx.com/blog/text-to-pdf",
-// // //         permanent: true,
-// // //       },
-// // //       {
-// // //         source: "/blog/heic-to-jpg",
-// // //         destination: "https://convertlinx.com/blog/heic-to-jpg",
-// // //         permanent: true,
-// // //       },
-// // //     ];
-// // //   },
-
-// // //   async headers() {
-// // //     return [
-// // //       {
-// // //         source: "/embed/:path*",
-// // //         headers: [
-// // //           { key: "X-Frame-Options", value: "ALLOWALL" },
-// // //           { key: "Content-Security-Policy", value: "frame-ancestors *" },
-// // //         ],
-// // //       },
-// // //     ];
-// // //   },
-// // // };
-
-// // // export default nextConfig;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// // // // /** @type {import('next').NextConfig} */
-// // // // const nextConfig = {
-// // // //   async rewrites() {
-// // // //     return [
-// // // //       {
-// // // //         source: "/api/converted/:path*",
-// // // //         destination: `${process.env.NEXT_PUBLIC_BACKEND_URL}/convert/converted/:path*`,
-// // // //       },
-// // // //       {
-// // // //         source: "/convert/:path*",
-// // // //         destination: `${process.env.NEXT_PUBLIC_BACKEND_URL}/convert/:path*`,
-// // // //       },
-// // // //       {
-// // // //         source: "/api/:path((?!convert).*)",
-// // // //         destination: `${process.env.NEXT_PUBLIC_BACKEND_URL}/:path*`,
-// // // //       },
-// // // //     ];
-// // // //   },
-
-// // // //   async redirects() {
-// // // //     return [
-// // // //       { source: "/tools/:slug*", destination: "/:slug*", permanent: true },
-// // // //       { source: "/excel-to-pdf", destination: "/excel-pdf", permanent: true },
-// // // //       { source: "/blog/excel-to-pdf", destination: "/blog/excel-pdf", permanent: true },
-// // // //     ];
-// // // //   },
-
-// // // //   async headers() {
-// // // //     return [
-// // // //       {
-// // // //         source: "/embed/:path*",
-// // // //         headers: [
-// // // //           { key: "X-Frame-Options", value: "ALLOWALL" },
-// // // //           { key: "Content-Security-Policy", value: "frame-ancestors *" },
-// // // //         ],
-// // // //       },
-// // // //     ];
-// // // //   },
-// // // // };
-
-// // // // export default nextConfig;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// // // // // /** @type {import('next').NextConfig} */
-// // // // // const nextConfig = {
-// // // // //   async rewrites() {
-// // // // //     return [
-
-// // // // //       {
-// // // // //       source: "/api/converted/:path*",
-// // // // //       destination: `${process.env.NEXT_PUBLIC_BACKEND_URL}/convert/converted/:path*`,
-// // // // //     },
-// // // // //       {
-// // // // //         source: "/convert/:path*",
-// // // // //         destination: `${process.env.NEXT_PUBLIC_BACKEND_URL}/convert/:path*`,
-// // // // //       },
-
-// // // // //       {
-// // // // //         source: "/api/:path((?!convert).*)",
-// // // // //         destination: `${process.env.NEXT_PUBLIC_BACKEND_URL}/:path*`,
-// // // // //       },
-
-// // // // //     ];
-// // // // //   },
-
-// // // // //   async redirects() {
-// // // // //     return [
-// // // // //       { source: "/tools/:slug*", destination: "/:slug*", permanent: true },
-// // // // //       { source: "/excel-to-pdf", destination: "/excel-pdf", permanent: true },
-// // // // //       { source: "/blog/excel-to-pdf", destination: "/blog/excel-pdf", permanent: true },
-// // // // //     ];
-// // // // //   },
-// // // // // };
-
-// // // // // export default nextConfig;
 
