@@ -675,6 +675,19 @@ export default function SplitPdf({ seo }) {
 
   return (
     <>
+
+
+        {/* ── PDF.js LOADER (self-contained, OrganizePdf pattern) ── */}
+      <Script
+        src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"
+        strategy="afterInteractive"
+        onLoad={() => {
+          window.pdfjsLib.GlobalWorkerOptions.workerSrc =
+            "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+        }}
+      />
+
+
       {/* ── SEO SCHEMAS ── */}
       <Script id="howto-schema-split-pdf" type="application/ld+json" strategy="afterInteractive"
         dangerouslySetInnerHTML={{
