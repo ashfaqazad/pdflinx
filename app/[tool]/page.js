@@ -1,47 +1,56 @@
 import { notFound } from "next/navigation";
 import { seoData } from "@/lib/seoData";
+import ToolLoader from "@/components/ToolLoader";
 
 const SITE_URL = "https://pdflinx.com";
 
 // 🔹 Lazy import map (BASE tools only)
-const componentMap = {
-  "pdf-to-word": () => import("@/components/tools/PdfToWord"),
-  "word-to-pdf": () => import("@/components/tools/WordToPdf"),
-  "image-to-pdf": () => import("@/components/tools/ImageToPdf"),
-  "excel-pdf": () => import("@/components/tools/ExcelToPdf"),
-  "text-to-pdf": () => import("@/components/tools/TextToPdf"),
-  "pdf-to-jpg": () => import("@/components/tools/PdfToJpg"),
-  "add-watermark": () => import("@/components/tools/AddWatermark"),
-  "ppt-to-pdf": () => import("@/components/tools/PptToPdf"),
-  "protect-pdf": () => import("@/components/tools/ProtectPdf"),
-  "unlock-pdf": () => import("@/components/tools/UnlockPdf"),
-  "rotate-pdf": () => import("@/components/tools/RotatePdf"),
-  "sign-pdf": () => import("@/components/tools/SignPdf"),
-  "ocr-pdf": () => import("@/components/tools/OCRPdf"),
-  "edit-pdf": () => import("@/components/tools/EditPdf"),
-  "pdf-to-excel": () => import("@/components/tools/PdfToExcel"),
-  "remove-pages": () => import("@/components/tools/RemovePages"),
-  "add-page-numbers": () => import("@/components/tools/AddPageNumbers"),
-  "html-to-pdf": () => import("@/components/tools/HtmlToPdf"),
-  "pdf-to-png": () => import("@/components/tools/PdfToPng"),
-  "pdf-to-text": () => import("@/components/tools/PdfToText"),
-  "organize-pdf": () => import("@/components/tools/OrganizePdf"),
-  "crop-pdf": () => import("@/components/tools/CropPdf"),
-  "extract-pdf": () => import("@/components/tools/ExtractPdf"),
-  "redact-pdf": () => import("@/components/tools/RedactPdf"),
-  "repair-pdf": () => import("@/components/tools/RepairPdf"),
-  "pdf-to-powerpoint": () => import("@/components/tools/PdfToPowerPoint"),
-  "ai-summarize": () => import("@/components/tools/AiSummarize"),
-  "translate-pdf": () => import("@/components/tools/AiTranslate"),
-  "chat-with-pdf": () => import("@/components/tools/AiChat"),
+// const componentMap = {
+//   "pdf-to-word": () => import("@/components/tools/PdfToWord"),
+//   "word-to-pdf": () => import("@/components/tools/WordToPdf"),
+//   "image-to-pdf": () => import("@/components/tools/ImageToPdf"),
+//   "excel-pdf": () => import("@/components/tools/ExcelToPdf"),
+//   "text-to-pdf": () => import("@/components/tools/TextToPdf"),
+//   "pdf-to-jpg": () => import("@/components/tools/PdfToJpg"),
+//   "add-watermark": () => import("@/components/tools/AddWatermark"),
+//   "ppt-to-pdf": () => import("@/components/tools/PptToPdf"),
+//   "protect-pdf": () => import("@/components/tools/ProtectPdf"),
+//   "unlock-pdf": () => import("@/components/tools/UnlockPdf"),
+//   "rotate-pdf": () => import("@/components/tools/RotatePdf"),
+//   "sign-pdf": () => import("@/components/tools/SignPdf"),
+//   "ocr-pdf": () => import("@/components/tools/OCRPdf"),
+//   "edit-pdf": () => import("@/components/tools/EditPdf"),
+//   "pdf-to-excel": () => import("@/components/tools/PdfToExcel"),
+//   "remove-pages": () => import("@/components/tools/RemovePages"),
+//   "add-page-numbers": () => import("@/components/tools/AddPageNumbers"),
+//   "html-to-pdf": () => import("@/components/tools/HtmlToPdf"),
+//   "pdf-to-png": () => import("@/components/tools/PdfToPng"),
+//   "pdf-to-text": () => import("@/components/tools/PdfToText"),
+//   "organize-pdf": () => import("@/components/tools/OrganizePdf"),
+//   "crop-pdf": () => import("@/components/tools/CropPdf"),
+//   "extract-pdf": () => import("@/components/tools/ExtractPdf"),
+//   "redact-pdf": () => import("@/components/tools/RedactPdf"),
+//   "repair-pdf": () => import("@/components/tools/RepairPdf"),
+//   "pdf-to-powerpoint": () => import("@/components/tools/PdfToPowerPoint"),
+//   "ai-summarize": () => import("@/components/tools/AiSummarize"),
+//   "translate-pdf": () => import("@/components/tools/AiTranslate"),
+//   "chat-with-pdf": () => import("@/components/tools/AiChat"),
 
-};
+// };
 
 // 🔹 Resolve base tool (for variants)
 function resolveBaseTool(slug) {
   const meta = seoData[slug];
   if (!meta) return null;
   return meta.baseTool || slug;
+}
+
+// 🔹 Pre-generate static pages for every known tool slug
+// Isse Next.js build time pe har tool ka ALAG bundle banayega
+export async function generateStaticParams() {
+  return Object.keys(seoData).map((slug) => ({
+    tool: slug,
+  }));
 }
 
 // ✅ Keep your no-trailing-slash URLs ("/merge-pdf" style)
@@ -104,6 +113,24 @@ export async function generateMetadata({ params }) {
 }
 
 // 🔹 Dynamic Page Loader (BASE + VARIANTS)
+// export default async function ToolPage({ params }) {
+//   const { tool } = params;
+
+//   const pageData = seoData[tool];
+//   if (!pageData) notFound();
+
+//   const baseTool = resolveBaseTool(tool);
+//   if (!baseTool || !componentMap[baseTool]) notFound();
+
+//   // const Component = (await componentMap[baseTool]()).default;
+
+//   // ✅ seo prop pass (variants + base dono ke liye)
+//   // return <Component seo={pageData} />;
+//   // ✅ YE LAGAO:
+// return <ToolLoader tool={baseTool} seo={pageData} />;
+// }
+
+// 🔹 Dynamic Page Loader (BASE + VARIANTS)
 export default async function ToolPage({ params }) {
   const { tool } = params;
 
@@ -111,13 +138,30 @@ export default async function ToolPage({ params }) {
   if (!pageData) notFound();
 
   const baseTool = resolveBaseTool(tool);
-  if (!baseTool || !componentMap[baseTool]) notFound();
+  if (!baseTool) notFound();
 
-  const Component = (await componentMap[baseTool]()).default;
-
-  // ✅ seo prop pass (variants + base dono ke liye)
-  return <Component seo={pageData} />;
+  // ✅ ToolLoader client pe sahi tool ka chunk load karega
+  return <ToolLoader tool={baseTool} seo={pageData} />;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

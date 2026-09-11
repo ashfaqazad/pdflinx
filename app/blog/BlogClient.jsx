@@ -115,6 +115,14 @@ const articles = [
     excerpt: "Blank PDFs, upload errors, conversion timeouts, and broken formatting are the four most common Word to PDF failure modes — and each one has a different cause and a different fix. Blank output usually means the file is password-protected or corrupted. Upload errors are almost always a file size issue. Timeouts happen with unusually complex documents. Broken formatting is a font or layout problem. This guide covers the diagnostic steps for each failure, the fastest fix for each scenario, and what to try when the standard solutions don't work.",
     date: "Mar 18, 2026", read: "4 min", slug: "word-to-pdf-not-working-fix",
   },
+
+  {
+    cat: "convert", icon: "🆓",
+    title: "Convert Word to PDF Free — No Sign Up, No Watermark, No Catch",
+    excerpt: "So-called free Word to PDF tools often cap your daily conversions, force account creation, or add a watermark to your document. This guide explains exactly how PDF Linx converts Word to PDF at no cost with no sign up, no watermark, and no hidden limits, and what to actually expect from the process.",
+    date: "Sep 6, 2026", read: "6 min", slug: "word-to-pdf-free-no-signup",
+  },
+
   {
     cat: "convert", icon: "🤖",
     title: "ChatGPT Generated a PDF — How to Convert It to Word?",
@@ -454,7 +462,7 @@ export default function BlogClient() {
 
   return (
     <>
-      <style>{`
+      {/* <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap');
         .blog-page * { box-sizing: border-box; }
         @media (max-width: 680px) {
@@ -481,7 +489,38 @@ export default function BlogClient() {
           transition: background .2s;
         }
         .nl-btn:hover { background: #c4300b; }
-      `}</style>
+      `}</style> */}
+
+
+      <style dangerouslySetInnerHTML={{ __html: `
+        @import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap');
+        .blog-page * { box-sizing: border-box; }
+        @media (max-width: 680px) {
+          .featured-grid { grid-template-columns: 1fr !important; }
+          .blog-hero-wrap { flex-direction: column !important; align-items: flex-start !important; }
+        }
+        @media (max-width: 520px) {
+          .article-grid { grid-template-columns: 1fr !important; }
+        }
+        .nl-input {
+          flex: 1; max-width: 300px;
+          border: 1px solid rgba(255,255,255,0.15);
+          background: rgba(255,255,255,0.08);
+          color: #fff; padding: 10px 16px;
+          border-radius: 8px; font-size: 14px;
+          font-family: 'DM Sans', sans-serif; outline: none;
+        }
+        .nl-input::placeholder { color: rgba(255,255,255,0.4); }
+        .nl-btn {
+          background: #E8380D; color: #fff; border: none;
+          padding: 10px 22px; border-radius: 8px;
+          font-size: 13px; font-weight: 600; cursor: pointer;
+          font-family: 'DM Sans', sans-serif; white-space: nowrap;
+          transition: background .2s;
+        }
+        .nl-btn:hover { background: #c4300b; }
+      ` }} />
+
 
       <div className="blog-page" style={{ fontFamily: "'DM Sans', sans-serif", background: "#F7F5F2", color: "#111111", minHeight: "100vh" }}>
 

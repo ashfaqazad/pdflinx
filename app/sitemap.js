@@ -102,6 +102,7 @@ export default function sitemap() {
     "/blog/why-formatting-breaks-in-word-to-pdf",
     "/blog/free-vs-paid-word-to-pdf-tools",
     "/blog/word-to-pdf-for-students",
+    "/blog/word-to-pdf-free-no-signup",
 
     // ── Compress PDF Cluster ──
     "/blog/compress-pdf-without-losing-quality",

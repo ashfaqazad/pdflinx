@@ -1253,6 +1253,7 @@ export default function SignPdf({ seo }) {
   // ==================== RENDER ====================
   return (
     <>
+
       {/* ============================================================
           SEO SCHEMAS — 4 types:
           1. HowTo       → Rich result: step-by-step process
