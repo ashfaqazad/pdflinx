@@ -2,7 +2,7 @@
 import "./globals.css";
 import { Sora, DM_Sans, Instrument_Serif } from "next/font/google";
 import Script from "next/script";
-import HistatsTracker from "@/components/HistatsTracker";
+// import HistatsTracker from "@/components/HistatsTracker";
 import LayoutShell from "@/components/LayoutShell";
 
 const sora = Sora({
@@ -259,7 +259,7 @@ export default function RootLayout({ children }) {
           }}
         />
 
-        <HistatsTracker />
+        {/* <HistatsTracker />
 
         <noscript style={{ display: "none" }}>
           <img
@@ -269,7 +269,8 @@ export default function RootLayout({ children }) {
             height="0"
             aria-hidden="true"
           />
-        </noscript>
+        </noscript> */}
+        
 
         <Script
           src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"
