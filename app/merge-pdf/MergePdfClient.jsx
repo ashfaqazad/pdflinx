@@ -10,6 +10,8 @@ import RelatedToolsSection from "@/components/RelatedTools";
 import { useProgressBar } from "@/hooks/useProgressBar";
 import { useToolFlow } from "@/hooks/useToolFlow";
 import ToolPageLayout from "@/components/ToolFlow/ToolPageLayout";
+import { renderWithLinks } from "@/utils/renderWithLinks";
+
 
 // ── CONFIG ─────────────────────────────────
 // const DONE_LINKS = [
@@ -489,56 +491,105 @@ export default function MergePdf({ seo }) {
             seoDescription:
               "Free online PDF merger — combine multiple PDF files into one document instantly. Merge PDFs in the correct order, no quality loss, no watermark, no signup. Works on Android, iPhone, Mac, and Windows.",
 
-            seoSections: [
-              {
-                // Primary — all main keywords covered
-                title:
-                  "Free PDF Merger — Merge PDF Files Online & Combine Multiple PDFs into One Document",
-                text: "Need to join multiple PDF files into one document? PDFLinx is a free online PDF merger that combines PDF files instantly — without losing quality, formatting, or page order. Whether you want to merge 2 PDFs or combine a large batch of files, PDFLinx handles it directly in your browser. No signup, no watermark, and no software installation required. A fast and reliable free alternative to Adobe Acrobat, Smallpdf, and ILovePDF — without cost, daily limits, or file size restrictions.",
-              },
-              {
-                // Long-tail: "when should you merge pdf files"
-                title: "When Should You Merge PDF Files?",
-                text: "Merging PDF files is useful when you want to combine multiple related documents into one organized file. Students often merge assignments, research papers, and study notes into a single PDF before submission. Businesses combine invoices, reports, contracts, quotations, and presentations for easier sharing and record keeping. Instead of sending multiple separate files, one merged PDF keeps everything clean, professional, and easier to manage. PDF merging also helps reduce confusion when printing, emailing, or archiving important documents.",
-              },
-              {
-                // Semantic: "what is pdf merging"
-                title: "What is PDF Merging?",
-                text: "PDF merging is the process of combining two or more separate PDF files into a single unified document. Also known as PDF joining, PDF combining, or PDF appending, this process preserves the original content, fonts, images, layout, and page order of every file. The result is one clean PDF that contains all the pages from your uploaded files in the exact sequence you chose. PDF merging is different from PDF conversion — no content is changed, only the files are joined together.",
-              },
-              {
-                // Topical authority: "best free pdf merger"
-                title: "Why PDFLinx is the Best Free PDF Merger Online",
-                text: "Most free PDF merger tools limit how many files you can combine, add watermarks, or require account creation. PDFLinx does none of that — merge unlimited PDF files completely free, with no signup and no watermark. What makes PDFLinx different is the lossless merge engine — your original page quality, fonts, images, and layout are preserved exactly as uploaded. No re-rendering, no compression, no quality loss. A reliable free alternative to Adobe Acrobat and Smallpdf premium plans.",
-              },
-              {
-                // Use cases — text format with checkmarks
-                title: "Common Use Cases for Merging PDF Files",
-                text: "✓ Students & Researchers: Merge assignments, research papers, reference pages, and study notes into one submission-ready PDF before university or college submission.\n✓ Business Professionals: Combine invoices, quotations, contracts, and reports into a single organized document for clients or management — cleaner than sending multiple attachments.\n✓ HR & Admin Teams: Merge offer letters, ID documents, forms, and policies into one complete employee file for onboarding or record keeping.\n✓ Lawyers & Accountants: Join legal contracts, agreements, financial statements, and supporting documents into one organized case file or audit package.\n✓ Teachers & Educators: Combine worksheets, answer keys, and reading materials into a single printable PDF for easy distribution to students.\n✓ Freelancers & Agencies: Merge project deliverables, proposals, invoices, and contracts into one professional client package for clean, organized handover.",
-              },
-              {
-                // Long-tail: "merge pdf in correct order page sequence"
-                title: "How to Merge PDF Files in the Right Order — Page Sequence Tips",
-                text: "Page order matters when merging PDFs — especially for reports, legal documents, and multi-chapter files. PDFLinx merges files in the exact order you upload them. To control the final sequence, arrange your files before uploading: upload the cover page PDF first, then body sections, then appendices. If you make a mistake, remove the file and re-upload it in the correct position. For large document packages with 10+ files, plan your upload order in advance — rename files with numbers (01_intro.pdf, 02_body.pdf) so the correct sequence is clear before you start.",
-              },
-              {
-                // Long-tail: "merge pdf for email whatsapp"
-                title: "Merge PDFs for Email, WhatsApp, and Online Portals",
-                text: "Sending multiple PDFs as separate email attachments looks unprofessional and risks hitting attachment size limits. Merging all files into one PDF before sending keeps your email clean, organized, and easy for the recipient to manage. One merged PDF attachment is also faster to share over WhatsApp and Telegram on mobile networks. For online portals that accept a single PDF upload — university submissions, HR systems, or client portals — merging your documents first ensures a smooth, error-free submission.",
-              },
-              {
-                // Device-specific long-tails
-                title: "Merge PDF Files on Any Device — iPhone, Android, Mac, Windows",
-                text: "No software installation needed. PDFLinx PDF merger works perfectly on Windows, Mac, Linux, Android, iPhone, iPad, and tablets — directly in your browser without any app. On iPhone, open PDFLinx in Safari, tap upload, select your PDFs from Files, and download the merged result. On Android, open in Chrome or Firefox and follow the same steps. On Mac or Windows, open in any browser — no extensions or plugins needed. The fastest way to merge PDF files on any device, for free.",
-              },
-              {
-                // Trust + privacy — 256-bit SSL + GDPR
-                title: "Privacy and File Security — 256-bit SSL Encryption",
-                text: "Your uploaded PDF files are transferred over 256-bit SSL encryption and processed on secure servers. Files are automatically deleted after 1 hour — we do not store, share, or access your documents at any point. PDFLinx is built with privacy-first principles and is GDPR-aware. No account or email is required to use the free PDF merger. Your files stay completely private from upload to download.",
-              },
-            ],
+            // seoSections: [
+            //   {
+            //     // Primary — all main keywords covered
+            //     title:
+            //       "Free PDF Merger — Merge PDF Files Online & Combine Multiple PDFs into One Document",
+            //     text: "Need to join multiple PDF files into one document? PDFLinx is a free online PDF merger that combines PDF files instantly — without losing quality, formatting, or page order. Whether you want to merge 2 PDFs or combine a large batch of files, PDFLinx handles it directly in your browser. No signup, no watermark, and no software installation required. A fast and reliable free alternative to Adobe Acrobat, Smallpdf, and ILovePDF — without cost, daily limits, or file size restrictions.",
+            //   },
+            //   {
+            //     // Long-tail: "when should you merge pdf files"
+            //     title: "When Should You Merge PDF Files?",
+            //     text: "Merging PDF files is useful when you want to combine multiple related documents into one organized file. Students often merge assignments, research papers, and study notes into a single PDF before submission. Businesses combine invoices, reports, contracts, quotations, and presentations for easier sharing and record keeping. Instead of sending multiple separate files, one merged PDF keeps everything clean, professional, and easier to manage. PDF merging also helps reduce confusion when printing, emailing, or archiving important documents.",
+            //   },
+            //   {
+            //     // Semantic: "what is pdf merging"
+            //     title: "What is PDF Merging?",
+            //     text: "PDF merging is the process of combining two or more separate PDF files into a single unified document. Also known as PDF joining, PDF combining, or PDF appending, this process preserves the original content, fonts, images, layout, and page order of every file. The result is one clean PDF that contains all the pages from your uploaded files in the exact sequence you chose. PDF merging is different from PDF conversion — no content is changed, only the files are joined together.",
+            //   },
+            //   {
+            //     // Topical authority: "best free pdf merger"
+            //     title: "Why PDFLinx is the Best Free PDF Merger Online",
+            //     text: "Most free PDF merger tools limit how many files you can combine, add watermarks, or require account creation. PDFLinx does none of that — merge unlimited PDF files completely free, with no signup and no watermark. What makes PDFLinx different is the lossless merge engine — your original page quality, fonts, images, and layout are preserved exactly as uploaded. No re-rendering, no compression, no quality loss. A reliable free alternative to Adobe Acrobat and Smallpdf premium plans.",
+            //   },
+            //   {
+            //     // Use cases — text format with checkmarks
+            //     title: "Common Use Cases for Merging PDF Files",
+            //     text: "✓ Students & Researchers: Merge assignments, research papers, reference pages, and study notes into one submission-ready PDF before university or college submission.\n✓ Business Professionals: Combine invoices, quotations, contracts, and reports into a single organized document for clients or management — cleaner than sending multiple attachments.\n✓ HR & Admin Teams: Merge offer letters, ID documents, forms, and policies into one complete employee file for onboarding or record keeping.\n✓ Lawyers & Accountants: Join legal contracts, agreements, financial statements, and supporting documents into one organized case file or audit package.\n✓ Teachers & Educators: Combine worksheets, answer keys, and reading materials into a single printable PDF for easy distribution to students.\n✓ Freelancers & Agencies: Merge project deliverables, proposals, invoices, and contracts into one professional client package for clean, organized handover.",
+            //   },
+            //   {
+            //     // Long-tail: "merge pdf in correct order page sequence"
+            //     title: "How to Merge PDF Files in the Right Order — Page Sequence Tips",
+            //     text: "Page order matters when merging PDFs — especially for reports, legal documents, and multi-chapter files. PDFLinx merges files in the exact order you upload them. To control the final sequence, arrange your files before uploading: upload the cover page PDF first, then body sections, then appendices. If you make a mistake, remove the file and re-upload it in the correct position. For large document packages with 10+ files, plan your upload order in advance — rename files with numbers (01_intro.pdf, 02_body.pdf) so the correct sequence is clear before you start.",
+            //   },
+            //   {
+            //     // Long-tail: "merge pdf for email whatsapp"
+            //     title: "Merge PDFs for Email, WhatsApp, and Online Portals",
+            //     text: "Sending multiple PDFs as separate email attachments looks unprofessional and risks hitting attachment size limits. Merging all files into one PDF before sending keeps your email clean, organized, and easy for the recipient to manage. One merged PDF attachment is also faster to share over WhatsApp and Telegram on mobile networks. For online portals that accept a single PDF upload — university submissions, HR systems, or client portals — merging your documents first ensures a smooth, error-free submission.",
+            //   },
+            //   {
+            //     // Device-specific long-tails
+            //     title: "Merge PDF Files on Any Device — iPhone, Android, Mac, Windows",
+            //     text: "No software installation needed. PDFLinx PDF merger works perfectly on Windows, Mac, Linux, Android, iPhone, iPad, and tablets — directly in your browser without any app. On iPhone, open PDFLinx in Safari, tap upload, select your PDFs from Files, and download the merged result. On Android, open in Chrome or Firefox and follow the same steps. On Mac or Windows, open in any browser — no extensions or plugins needed. The fastest way to merge PDF files on any device, for free.",
+            //   },
+            //   {
+            //     // Trust + privacy — 256-bit SSL + GDPR
+            //     title: "Privacy and File Security — 256-bit SSL Encryption",
+            //     text: "Your uploaded PDF files are transferred over 256-bit SSL encryption and processed on secure servers. Files are automatically deleted after 1 hour — we do not store, share, or access your documents at any point. PDFLinx is built with privacy-first principles and is GDPR-aware. No account or email is required to use the free PDF merger. Your files stay completely private from upload to download.",
+            //   },
+            // ],
 
-            relatedTitle: "More Free PDF Tools",
+        
+      seoSections: [
+  {
+    title:
+      "Free PDF Merger — Merge PDF Files Online & Combine Multiple PDFs into One Document",
+    text: "Need to join multiple PDF files into one document? PDFLinx is a free online PDF merger that combines PDF files instantly — without losing quality, formatting, or page order. Whether you want to merge 2 PDFs or combine a large batch of files, PDFLinx handles it directly in your browser. No signup, no watermark, and no software installation required. After merging, you can [compress the file](/compress-pdf) or [split it back](/split-pdf) — all free. A fast and reliable free alternative to Adobe Acrobat, Smallpdf, and ILovePDF.",
+  },
+
+  {
+    title: "When Should You Merge PDF Files?",
+    text: "Merging PDF files is useful when you want to combine multiple related documents into one organized file. Students often merge assignments, research papers, and study notes into a single PDF before submission. Businesses combine invoices, reports, contracts, quotations, and presentations for easier sharing and record keeping. Instead of sending multiple separate files, one merged PDF keeps everything clean, professional, and easier to manage. PDF merging also helps reduce confusion when printing, emailing, or archiving important documents. If your final document becomes too large, you can compress your PDF before sharing it.",
+  },
+
+  {
+    title: "What is PDF Merging?",
+    text: "PDF merging is the process of combining two or more separate PDF files into a single unified document. Also known as PDF joining, PDF combining, or PDF appending, this process preserves the original content, fonts, images, layout, and page order of every file. The result is one clean PDF that contains all the pages from your uploaded files in the exact sequence you chose. PDF merging is different from PDF conversion — no content is changed, only the files are joined together. If you need to change the format instead, try [PDF to Word](/pdf-to-word) or [Word to PDF](/word-to-pdf) conversion.",
+  },
+
+  {
+    title: "Why PDFLinx is the Best Free PDF Merger Online",
+    text: "Most free PDF merger tools limit how many files you can combine, add watermarks, or require account creation. PDFLinx does none of that — merge unlimited PDF files completely free, with no signup and no watermark. What makes PDFLinx different is the lossless merge process — your original page quality, fonts, images, and layout are preserved as much as possible throughout the merging process. No unnecessary conversion and no intentional quality reduction. A reliable free alternative to popular online PDF tools.",
+  },
+
+  {
+    title: "Common Use Cases for Merging PDF Files",
+    text: "✓ Students & Researchers: Merge assignments, research papers, reference pages, and study notes into one submission-ready PDF before university or college submission.\n✓ Business Professionals: Combine invoices, quotations, contracts, and reports into a single organized document for clients or management — cleaner than sending multiple attachments.\n✓ HR & Admin Teams: Merge offer letters, ID documents, forms, and policies into one complete employee file for onboarding or record keeping.\n✓ Lawyers & Accountants: Join legal contracts, agreements, financial statements, and supporting documents into one organized case file or audit package.\n✓ Teachers & Educators: Combine worksheets, answer keys, and reading materials into a single printable PDF for easy distribution to students.\n✓ Freelancers & Agencies: Merge project deliverables, proposals, invoices, and contracts into one professional client package for clean, organized handover.",
+  },
+
+  {
+    title: "How to Merge PDF Files in the Right Order — Page Sequence Tips",
+    text: "Page order matters when merging PDFs — especially for reports, legal documents, and multi-chapter files. Arrange your PDF files in the correct sequence before starting the merge process. Upload the cover page PDF first, followed by body sections, and then appendices. For large document packages with 10+ files, plan your file order in advance — rename files with numbers such as 01_intro.pdf and 02_body.pdf so the correct sequence is clear before you start.",
+  },
+
+  {
+    title: "Merge PDFs for Email, WhatsApp, and Online Portals",
+    text: "Sending multiple PDFs as separate email attachments looks unprofessional and risks hitting attachment size limits. Merging all files into one PDF before sending keeps your email clean, organized, and easy for the recipient to manage. If the merged file is still too large, [compress the PDF](/compress-pdf) to reduce its file size before sending. One merged PDF attachment is also easier to share over WhatsApp and Telegram on mobile networks. For online portals that accept a single PDF upload — university submissions, HR systems, or client portals — merging your documents first can make submission easier and more organized.",
+  },
+
+  {
+    title: "Merge PDF Files on Any Device — iPhone, Android, Mac, Windows",
+    text: "No software installation needed. PDFLinx PDF merger works directly in your browser on Windows, Mac, Linux, Android, iPhone, iPad, and tablets. On iPhone, open PDFLinx in Safari, tap upload, select your PDFs from Files, and download the merged result. On Android, open the tool in Chrome or another supported browser and follow the same steps. On Mac or Windows, open PDFLinx in your browser — no extensions or plugins needed.",
+  },
+
+  {
+    title: "Privacy and File Security",
+    text: "Your uploaded PDF files are handled through PDFLinx's file processing system with privacy and security in mind. No account or email is required to use the PDF merger. For best results, avoid uploading documents containing highly sensitive information unless you understand and are comfortable with the service's file handling policies.",
+  },
+],
+
+      relatedTitle: "More Free PDF Tools",
             showPdfTypes: false,
           },
         }}
