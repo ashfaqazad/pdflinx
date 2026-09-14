@@ -1,8 +1,6 @@
-
 // components/ToolFlow/UploadLandingStep.jsx
 "use client";
 import { useEffect, useRef, useState } from "react";
-import { renderWithLinks } from "@/utils/renderWithLinks";
 
 import Link from "next/link";
 import {
@@ -691,11 +689,7 @@ function SeoSection({
                     {section.text}
                   </p> */}
                   {/* <p className="whitespace-pre-line">{section.text}</p> */}
-                  {/* <p className="whitespace-pre-line text-sm leading-7 text-stone-500">{section.text}</p> */}
-                  {/* <p className="whitespace-pre-line text-sm leading-7 text-stone-500">{renderWithLinks(section.text)}</p> */}
-                  <p className="whitespace-pre-line text-sm leading-7 text-stone-500">
-                    {typeof section.text === "string" ? renderWithLinks(section.text) : section.text}
-                  </p>
+                  <p className="whitespace-pre-line text-sm leading-7 text-stone-500">{section.text}</p>
                 </div>
               </div>
             </div>

@@ -1,6 +1,5 @@
 "use client";
 
-import "@/app/styles/tool-flow-animations.css";
 import UploadStep from "@/components/ToolFlow/UploadStep";
 import UploadLandingStep from "@/components/ToolFlow/UploadLandingStep";
 import OptionsStep from "@/components/ToolFlow/OptionsStep";
@@ -361,3 +360,6 @@ export default function ToolPageLayout({
     </main>
   );
 }
+
+
+

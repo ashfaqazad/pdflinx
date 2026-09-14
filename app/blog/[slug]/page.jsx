@@ -1,6 +1,3 @@
-import "@/app/styles/blog.css";
-
-
 const blogs = [
 
   {

@@ -1,5 +1,5 @@
 // app/layout.js
-// import "./globals.css";
+import "./globals.css";
 import { Sora, DM_Sans, Instrument_Serif } from "next/font/google";
 import Script from "next/script";
 // import HistatsTracker from "@/components/HistatsTracker";
@@ -272,21 +272,20 @@ export default function RootLayout({ children }) {
         </noscript> */}
         
 
-        {/* <Script
+        <Script
           src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"
           strategy="afterInteractive"
         />
-          <Script id="pdfjs-worker-init" strategy="afterInteractive">
-
+        <Script id="pdfjs-worker-init" strategy="afterInteractive">
           {`
-            window.addEventListener('load', function() {
-              if (window.pdfjsLib) {
-                window.pdfjsLib.GlobalWorkerOptions.workerSrc =
-                  "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
-              }
-            });
-          `}
-        </Script> */}
+    window.addEventListener('load', function() {
+      if (window.pdfjsLib) {
+        window.pdfjsLib.GlobalWorkerOptions.workerSrc =
+          "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+      }
+    });
+  `}
+        </Script>
 
 
       </body>
