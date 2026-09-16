@@ -272,7 +272,7 @@ export default function RootLayout({ children }) {
         </noscript> */}
         
 
-        <Script
+        {/* <Script
           src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"
           strategy="afterInteractive"
         />
@@ -285,8 +285,7 @@ export default function RootLayout({ children }) {
       }
     });
   `}
-        </Script>
-
+        </Script> */}
 
       </body>
     </html>
