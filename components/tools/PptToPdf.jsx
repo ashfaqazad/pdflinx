@@ -475,58 +475,162 @@ export default function PptToPdf({ seo }) {
             seoDescription:
               "Everything you need to know about converting PowerPoint presentations to PDF — free, online, with all slides and formatting preserved. No watermark, no signup, no limits.",
 
-            seoSections: [
-              {
-                title:
-                  "Free PowerPoint to PDF Converter — Convert PPT & PPTX to PDF Online",
-                text: "Need to convert a PowerPoint file to PDF? PDFLinx lets you convert PowerPoint to PDF online for free — instantly, with no software installation required. Whether it is a simple slide deck, a business presentation with charts, or a university lecture with embedded images, PDFLinx converts it to a clean, properly formatted PDF in seconds. No signup, no watermark, no hidden limits. It is the best free PowerPoint to PDF converter available online today — works on Windows, Mac, iPhone, and Android.",
-              },
-              {
-                title: "What is PowerPoint to PDF Conversion?",
-                text: "PowerPoint to PDF conversion turns your editable slide deck into a fixed-layout PDF document. A PDF cannot be accidentally edited, looks identical on every device, and is universally accepted for sharing and submission. Converting PowerPoint to PDF is essential when you need to send a presentation to someone who does not have PowerPoint installed, share slides before a meeting, submit a deck to a client or institution, or archive a final version of a presentation without risk of accidental changes.",
-              },
-              {
-                title: "How to Convert PowerPoint to PDF Without Losing Formatting",
-                text: "One of the most common concerns when converting PowerPoint to PDF is whether slide backgrounds, custom fonts, image positions, shapes, and text formatting are preserved. PDFLinx uses high-fidelity rendering to ensure the output PDF looks exactly like your presentation. Each slide is rendered as a full-page PDF — backgrounds, shapes, text boxes, and images all in their correct positions. Embedded charts and SmartArt are rendered accurately, and the overall slide layout is maintained without any shifting or clipping.",
-              },
-              {
-                title:
-                  "Why PDFLinx is the Best Free PowerPoint to PDF Converter — No Watermark, No Limits",
-                text: "Most free PowerPoint to PDF converters add watermarks, restrict file sizes, or require account creation. PDFLinx does none of that — completely free, no signup, no watermark, and no daily conversion limit. Unlike iLovePDF free tier and Smallpdf free tier which restrict batch conversions and large file uploads behind paid plans, PDFLinx gives you unlimited conversions at zero cost.",
-              },
-              {
-                title: "Common Use Cases for PowerPoint to PDF Conversion",
-                text: "✓ Business Professionals: Share pitch decks, board presentations, and project updates as locked, professional PDFs.\n✓ Students & Teachers: Submit assignments, lecture slides, and class presentations as PDF for coursework or distribution.\n✓ Sales & Marketing: Send product decks, proposals, and portfolio presentations to clients as polished PDFs.\n✓ Conference Speakers: Distribute slide decks to attendees as PDF handouts after a talk.\n✓ Freelancers: Deliver project presentations and creative briefs to clients as PDF.\n✓ HR Teams: Share company overview slides, training materials, and onboarding decks as non-editable PDFs.",
-              },
-              {
-                title:
-                  "Convert PowerPoint to PDF on iPhone, Android, Mac & Windows — No App Needed",
-                text: "PDFLinx works entirely in your browser — no download, no installation, no app required. On iPhone or Android, open your browser and upload your PowerPoint file directly from your files app. On Mac or Windows, drag and drop your presentation and download the PDF in seconds. Unlike desktop software like Microsoft PowerPoint or Adobe Acrobat, PDFLinx is fully online and free. Whether you need to convert PowerPoint to PDF on mobile or desktop, PDFLinx works seamlessly on every device and operating system.",
-              },
-              {
-                title:
-                  "PDFLinx vs iLovePDF vs Smallpdf — Free PowerPoint to PDF Converter Comparison",
-                text: "iLovePDF and Smallpdf both limit free PowerPoint to PDF conversions per day and require sign-up for full access. Adobe Acrobat charges a monthly subscription for PowerPoint to PDF export. PDFLinx offers unlimited free conversions with no account, no watermark, and no daily limits. For anyone looking for the best free iLovePDF alternative or Smallpdf alternative for PowerPoint to PDF conversion, PDFLinx is the clear choice.",
-              },
-              {
-                title: "Privacy and File Security",
-                text: "Your files are processed on secure servers and automatically deleted after 1 hour. We do not store, share, or access your documents at any point. PDFLinx is built with privacy-first principles — your data stays yours. All file transfers use encrypted HTTPS connections for complete security.",
-              },
-              {
-                title:
-                  "PowerPoint to PDF vs Save As PDF in PowerPoint — Why an Online Converter is More Convenient",
-                text: "Microsoft PowerPoint's built-in Save As PDF feature works well — but only if you have PowerPoint installed and a licensed copy available. On mobile devices, older computers, or shared systems without Office, this option is simply not available. PDFLinx fills this gap perfectly — convert any PowerPoint file to PDF from any browser, on any device, without needing Microsoft Office or any other software installed.",
-              },
-              {
-                title:
-                  "What Happens to Animations and Transitions in the PDF?",
-                text: "PDF is a static format, so animations and slide transitions cannot be preserved in the output. Each slide is rendered as a single static page in the PDF — showing the final state of all animated elements. Text, images, and shapes that appear through animations are all visible in the PDF in their end positions. This is the standard behavior for any PowerPoint to PDF converter and gives you a clean, universally viewable document.",
-              },
-              {
-                title: "Best For Professional Presentation Sharing",
-                text: "Use the converted PDF for client submissions, email attachments, conference handouts, printed materials, and archiving. The output is a standard PDF file compatible with Adobe Acrobat, Preview, Chrome, and every PDF viewer — easy to share and open on any device without requiring PowerPoint.",
-              },
-            ],
+seoSections: [
+  {
+    title: "Free PowerPoint to PDF Converter — Convert PPT & PPTX to PDF Online",
+    text: (
+      <>
+        Need to convert a PowerPoint file to PDF? PDFLinx lets you convert PowerPoint to PDF online for free — instantly, with no software installation required. Whether it is a simple slide deck, a business presentation with charts, or a university lecture with embedded images, PDFLinx converts it to a clean, properly formatted PDF in seconds. If you also need to convert Microsoft Word documents or Excel sheets, check out our{" "}
+        <a
+          href="/word-to-pdf"
+          className="text-blue-600 hover:underline font-medium"
+        >
+          Word to PDF
+        </a>{" "}
+        and{" "}
+        <a
+          href="/excel-to-pdf"
+          className="text-blue-600 hover:underline font-medium"
+        >
+          Excel to PDF
+        </a>{" "}
+        tools. No signup, no watermark, no hidden limits. It is the best free PowerPoint to PDF converter available online today — works on Windows, Mac, iPhone, and Android.
+      </>
+    ),
+  },
+  {
+    title: "What is PowerPoint to PDF Conversion?",
+    text: (
+      <>
+        PowerPoint to PDF conversion turns your editable slide deck into a fixed-layout PDF document. A PDF cannot be accidentally edited, looks identical on every device, and is universally accepted for sharing and submission. Converting PowerPoint to PDF is essential when you need to send a presentation to someone who does not have PowerPoint installed, share slides before a meeting, submit a deck to a client or institution, or archive a final version of a presentation without risk of accidental changes. If you ever need to turn your PDFs back into editable documents, try our{" "}
+        <a
+          href="/pdf-to-powerpoint"
+          className="text-blue-600 hover:underline font-medium"
+        >
+          PDF to PPTX
+        </a>{" "}
+        or{" "}
+        <a
+          href="/pdf-to-word"
+          className="text-blue-600 hover:underline font-medium"
+        >
+          PDF to Word
+        </a>{" "}
+        tools.
+      </>
+    ),
+  },
+  {
+    title: "How to Convert PowerPoint to PDF Without Losing Formatting",
+    text: (
+      <>
+        One of the most common concerns when converting PowerPoint to PDF is whether slide backgrounds, custom fonts, image positions, shapes, and text formatting are preserved. PDFLinx uses high-fidelity rendering to ensure the output PDF looks exactly like your presentation. Each slide is rendered as a full-page PDF — backgrounds, shapes, text boxes, and images all in their correct positions. Embedded charts and SmartArt are rendered accurately, and the overall slide layout is maintained without any shifting or clipping.
+      </>
+    ),
+  },
+  {
+    title: "Why PDFLinx is the Best Free PowerPoint to PDF Converter — No Watermark, No Limits",
+    text: (
+      <>
+        Most free PowerPoint to PDF converters add watermarks, restrict file sizes, or require account creation. PDFLinx does none of that — completely free, no signup, no watermark, and no daily conversion limit. Unlike iLovePDF free tier and Smallpdf free tier which restrict batch conversions and large file uploads behind paid plans, PDFLinx gives you unlimited conversions at zero cost. Explore all our web-based tools on the{" "}
+        <a
+          href="/"
+          className="text-blue-600 hover:underline font-medium"
+        >
+          PDFLinx homepage
+        </a>{" "}
+        to handle all your document workflows.
+      </>
+    ),
+  },
+  {
+    title: "Common Use Cases for PowerPoint to PDF Conversion",
+    text: (
+      <>
+        ✓ Business Professionals: Share pitch decks, board presentations, and project updates as locked, professional PDFs.
+        <br />
+        ✓ Students & Teachers: Submit assignments, lecture slides, and class presentations as PDF for coursework or distribution.
+        <br />
+        ✓ Sales & Marketing: Send product decks, proposals, and portfolio presentations to clients as polished PDFs.
+        <br />
+        ✓ Conference Speakers: Distribute slide decks to attendees as PDF handouts after a talk.
+        <br />
+        ✓ Freelancers: Deliver project presentations and creative briefs to clients as PDF.
+        <br />
+        ✓ HR Teams: Share company overview slides, training materials, and onboarding decks as non-editable PDFs.
+      </>
+    ),
+  },
+  {
+    title: "Convert PowerPoint to PDF on iPhone, Android, Mac & Windows — No App Needed",
+    text: (
+      <>
+        PDFLinx works entirely in your browser — no download, no installation, no app required. On iPhone or Android, open your browser and upload your PowerPoint file directly from your files app. On Mac or Windows, drag and drop your presentation and download the PDF in seconds. Unlike desktop software like Microsoft PowerPoint or Adobe Acrobat, PDFLinx is fully online and free. Whether you need to convert PowerPoint to PDF on mobile or desktop, PDFLinx works seamlessly on every device and operating system.
+      </>
+    ),
+  },
+  {
+    title: "PDFLinx vs iLovePDF vs Smallpdf — Free PowerPoint to PDF Converter Comparison",
+    text: (
+      <>
+        iLovePDF and Smallpdf both limit free PowerPoint to PDF conversions per day and require sign-up for full access. Adobe Acrobat charges a monthly subscription for PowerPoint to PDF export. PDFLinx offers unlimited free conversions with no account, no watermark, and no daily limits. For anyone looking for the best free iLovePDF alternative or Smallpdf alternative for PowerPoint to PDF conversion, PDFLinx is the clear choice.
+      </>
+    ),
+  },
+  {
+    title: "Privacy and File Security",
+    text: (
+      <>
+        Your files are processed on secure servers and automatically deleted after 1 hour. We do not store, share, or access your documents at any point. PDFLinx is built with privacy-first principles — your data stays yours. All file transfers use encrypted HTTPS connections for complete security. If your converted presentation file is too large to email, you can easily use our{" "}
+        <a
+          href="/compress-pdf"
+          className="text-blue-600 hover:underline font-medium"
+        >
+          Compress PDF
+        </a>{" "}
+        tool to reduce file size while maintaining visual quality.
+      </>
+    ),
+  },
+  {
+    title: "PowerPoint to PDF vs Save As PDF in PowerPoint — Why an Online Converter is More Convenient",
+    text: (
+      <>
+        Microsoft PowerPoint's built-in Save As PDF feature works well — but only if you have PowerPoint installed and a licensed copy available. On mobile devices, older computers, or shared systems without Office, this option is simply not available. PDFLinx fills this gap perfectly — convert any PowerPoint file to PDF from any browser, on any device, without needing Microsoft Office or any other software installed.
+      </>
+    ),
+  },
+  {
+    title: "What Happens to Animations and Transitions in the PDF?",
+    text: (
+      <>
+        PDF is a static format, so animations and slide transitions cannot be preserved in the output. Each slide is rendered as a single static page in the PDF — showing the final state of all animated elements. Text, images, and shapes that appear through animations are all visible in the PDF in their end positions. This is the standard behavior for any PowerPoint to PDF converter and gives you a clean, universally viewable document.
+      </>
+    ),
+  },
+  {
+    title: "Best For Professional Presentation Sharing",
+    text: (
+      <>
+        Use the converted PDF for client submissions, email attachments, conference handouts, printed materials, and archiving. The output is a standard PDF file compatible with Adobe Acrobat, Preview, Chrome, and every PDF viewer — easy to share and open on any device without requiring PowerPoint. Need to combine multiple presentation files or extract specific slides? Check our{" "}
+        <a
+          href="/merge-pdf"
+          className="text-blue-600 hover:underline font-medium"
+        >
+          Merge PDF
+        </a>{" "}
+        and{" "}
+        <a
+          href="/split-pdf"
+          className="text-blue-600 hover:underline font-medium"
+        >
+          Split PDF
+        </a>{" "}
+        tools to manage your documents effortlessly.
+      </>
+    ),
+  },
+],
 
             faqs: [
               {

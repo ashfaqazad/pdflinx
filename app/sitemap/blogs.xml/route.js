@@ -1,4 +1,4 @@
-// app/sitemap/blogs.sxml/route.js
+// app/sitemap/blogs.xml/route.js
 
 export async function GET() {
   const baseUrl = "https://pdflinx.com";

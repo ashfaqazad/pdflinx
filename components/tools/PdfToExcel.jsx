@@ -383,48 +383,89 @@ export default function PdfToExcel({ seo }) {
             seoDescription:
               "Everything you need to know about converting PDF files to editable Excel spreadsheets — free, online, with tables and data accurately extracted. No watermark, no signup, no limits.",
 
-            seoSections: [
-              {
-                title:
-                  "Free PDF to Excel Converter — Extract Tables & Data from PDF to XLSX Online",
-                text: "Need to extract data from a PDF into Excel? PDFLinx lets you convert PDF to Excel online for free — instantly, with no software installation required. Whether it is a financial report, invoice, bank statement, price list, or any PDF containing tables and numbers, PDFLinx extracts all structured data into a clean, fully editable XLSX spreadsheet in seconds. No signup, no watermark, no hidden limits. It is the best free PDF to Excel converter available today — works on Windows, Mac, iPhone, and Android.",
-              },
-              {
-                title: "What is PDF to Excel Conversion?",
-                text: "PDF to Excel conversion extracts tables, numbers, and structured data from a static PDF document and places them into editable spreadsheet cells. This means you can filter, sort, calculate, chart, and analyze the data immediately — without manually retyping a single number. It is especially valuable for financial reports, invoices, bank statements, inventory lists, and research data where the original editable source file is unavailable.",
-              },
-              {
-                title: "How Accurate is PDF to Excel Table Extraction?",
-                text: "For standard text-based PDFs, PDFLinx achieves very high extraction accuracy — table borders, column headers, merged cells, and multi-row data are all detected and placed in the correct Excel cells. For scanned PDFs or image-based tables, OCR is used to recognize text within the image before extraction. Accuracy depends on scan quality — clear, high-resolution scans produce near-perfect results. Complex nested tables or heavily styled PDFs may need minor cleanup in Excel after conversion.",
-              },
-              {
-                title:
-                  "Why PDFLinx is the Best Free PDF to Excel Converter — No Watermark, No Limits",
-                text: "Most free PDF to Excel converters add watermarks, limit the number of pages you can convert, or lock accurate table extraction behind a paid plan. PDFLinx does none of that — completely free, no signup, no watermark, and no daily conversion limit. Unlike iLovePDF and Smallpdf which restrict PDF to Excel conversion on free tiers, PDFLinx gives you full access at zero cost.",
-              },
-              {
-                title: "Common Use Cases for PDF to Excel Conversion",
-                text: "✓ Finance & Accounting: Extract bank statements, financial reports, and balance sheets into Excel for analysis and reconciliation.\n✓ Business Analysts: Pull data tables from PDF reports into Excel for further processing, charting, and modeling.\n✓ Procurement & Inventory: Convert supplier price lists and inventory PDFs into editable spreadsheets.\n✓ Researchers: Extract tabular research data from published PDF papers into Excel for statistical analysis.\n✓ HR Teams: Pull attendance records, payroll summaries, and employee data from PDF reports into Excel.\n✓ Students: Extract data tables from textbooks, case studies, and research PDFs for assignments.",
-              },
-              {
-                title:
-                  "Convert PDF to Excel on iPhone, Android, Mac & Windows — No App Needed",
-                text: "PDFLinx works entirely in your browser — no download, no installation, no app required. On iPhone or Android, open your browser and upload your PDF directly from your files app. On Mac or Windows, drag and drop your PDF and download the XLSX in seconds. Whether you need to convert PDF to Excel on mobile or desktop, PDFLinx works seamlessly across every platform and operating system.",
-              },
-              {
-                title: "Privacy and File Security",
-                text: "Your files are processed on secure servers and automatically deleted after 1 hour. We do not store, share, or access your documents at any point. PDFLinx is built with privacy-first principles — your data stays yours. All file transfers use encrypted HTTPS connections for complete security. This is especially important for financial documents and confidential business data.",
-              },
-              {
-                title:
-                  "PDF to Excel vs Manual Data Entry — Why a Converter Saves Hours",
-                text: "Manually retyping tables from a PDF into Excel is time-consuming, error-prone, and simply unnecessary. A 10-page financial report with 50 rows of data per page could take hours to enter manually — PDFLinx extracts it in under 30 seconds. Even if minor cleanup is needed after conversion, it is always faster than starting from scratch. For large datasets, PDF to Excel conversion is not just convenient — it is essential.",
-              },
-              {
-                title: "Best For Data-Heavy Documents",
-                text: "Use the converted Excel file for financial analysis, data processing, reporting, and decision-making. The XLSX output is fully compatible with Microsoft Excel, Google Sheets, LibreOffice Calc, and Apple Numbers — easy to open, edit, and share across any platform.",
-              },
-            ],
+seoSections: [
+  {
+    title:
+      "Free PDF to Excel Converter — Extract Tables & Data from PDF to XLSX Online",
+    text: (
+      <>
+        Need to extract data from a PDF into Excel? PDFLinx lets you <a href="/pdf-to-excel" className="text-blue-600 hover:underline font-medium">convert PDF to Excel</a> online for free — instantly, with no software installation required. Whether it is a financial report, invoice, bank statement, price list, or any PDF containing tables and numbers, PDFLinx extracts all structured data into a clean, fully editable XLSX spreadsheet in seconds. Need to convert text documents instead? Use our <a href="/pdf-to-word" className="text-blue-600 hover:underline font-medium">PDF to Word converter</a>. No signup, no watermark, no hidden limits. Works on Windows, Mac, iPhone, and Android.
+      </>
+    ),
+  },
+  {
+    title: "What is PDF to Excel Conversion?",
+    text: (
+      <>
+        PDF to Excel conversion extracts tables, numbers, and structured data from a static PDF document and places them into editable spreadsheet cells. This means you can filter, sort, calculate, chart, and analyze the data immediately — without manually retyping a single number. If you ever need to turn spreadsheets back into documents, you can use our <a href="/excel-to-pdf" className="text-blue-600 hover:underline font-medium">Excel to PDF tool</a>. It is especially valuable for financial reports, invoices, bank statements, and research data where the original editable source file is unavailable.
+      </>
+    ),
+  },
+  {
+    title: "How Accurate is PDF to Excel Table Extraction?",
+    text: (
+      <>
+        For standard text-based PDFs, PDFLinx achieves very high extraction accuracy — table borders, column headers, merged cells, and multi-row data are all detected and placed in the correct Excel cells. For scanned PDFs or image-based tables, our built-in <a href="/ocr-pdf" className="text-blue-600 hover:underline font-medium">OCR PDF engine</a> recognizes text within images before extraction. Want to analyze your spreadsheet data faster? You can also use <a href="/ai-summarize" className="text-blue-600 hover:underline font-medium">AI Summarize PDF</a> or <a href="/chat-with-pdf" className="text-blue-600 hover:underline font-medium">Chat with PDF</a> to query key metrics before exporting.
+      </>
+    ),
+  },
+  {
+    title:
+      "Why PDFLinx is the Best Free PDF to Excel Converter — No Watermark, No Limits",
+    text: (
+      <>
+        Most free PDF to Excel converters add watermarks, limit the number of pages you can convert, or lock accurate table extraction behind a paid plan. PDFLinx does none of that — completely free, no signup, no watermark, and no daily conversion limit. Unlike iLovePDF and Smallpdf which restrict PDF to Excel conversion on free tiers, PDFLinx gives you full access at zero cost. Read our detailed <a href="/compare/pdflinx-vs-ilovepdf" className="text-blue-600 hover:underline font-medium">PDFLinx vs iLovePDF</a> comparison to see how we stack up.
+      </>
+    ),
+  },
+  {
+    title: "Common Use Cases for PDF to Excel Conversion",
+    text: (
+      <>
+        ✓ <strong>Finance & Accounting:</strong> Extract bank statements and financial reports into Excel. You can also <a href="/redact-pdf" className="text-blue-600 hover:underline font-medium">redact sensitive PDF info</a> before sharing.<br />
+        ✓ <strong>Business Analysts:</strong> Pull data tables from reports into Excel, or <a href="/merge-pdf" className="text-blue-600 hover:underline font-medium">merge PDF reports</a> together before converting.<br />
+        ✓ <strong>Procurement & Inventory:</strong> Convert supplier price lists and inventory PDFs into editable spreadsheets.<br />
+        ✓ <strong>Researchers:</strong> Extract tabular research data from published PDF papers. Use <a href="/split-pdf" className="text-blue-600 hover:underline font-medium">split PDF</a> if you only need specific pages.<br />
+        ✓ <strong>HR Teams:</strong> Pull attendance records and payroll summaries from PDF reports into Excel.<br />
+        ✓ <strong>Students:</strong> Extract data tables from textbooks and research PDFs for assignments.
+      </>
+    ),
+  },
+  {
+    title:
+      "Convert PDF to Excel on iPhone, Android, Mac & Windows — No App Needed",
+    text: (
+      <>
+        PDFLinx works entirely in your browser — no download, no installation, no app required. On iPhone or Android, open your browser and upload your PDF directly from your files app. On Mac or Windows, drag and drop your PDF and download the XLSX in seconds. Whether you need to convert PDF to Excel on mobile or desktop, PDFLinx works seamlessly across every platform and operating system.
+      </>
+    ),
+  },
+  {
+    title: "Privacy and File Security",
+    text: (
+      <>
+        Your files are processed on secure servers and automatically deleted after 1 hour. We do not store, share, or access your documents at any point. All file transfers use encrypted HTTPS connections for complete security. Need extra privacy? You can <a href="/protect-pdf" className="text-blue-600 hover:underline font-medium">protect PDF with password</a>, or use <a href="/unlock-pdf" className="text-blue-600 hover:underline font-medium">Unlock PDF</a> if your financial source file is locked. If your file has corruption issues during upload, fix it with our <a href="/repair-pdf" className="text-blue-600 hover:underline font-medium">Repair PDF tool</a>.
+      </>
+    ),
+  },
+  {
+    title:
+      "PDF to Excel vs Manual Data Entry — Why a Converter Saves Hours",
+    text: (
+      <>
+        Manually retyping tables from a PDF into Excel is time-consuming, error-prone, and simply unnecessary. A 10-page financial report with 50 rows of data per page could take hours to enter manually — PDFLinx extracts it in under 30 seconds. If your financial file is very large, you can <a href="/compress-pdf" className="text-blue-600 hover:underline font-medium">compress PDF size online</a> first for faster upload times. For large datasets, automated PDF to Excel conversion is essential.
+      </>
+    ),
+  },
+  {
+    title: "Best For Data-Heavy Documents",
+    text: (
+      <>
+        Use the converted Excel file for financial analysis, data processing, reporting, and decision-making. The XLSX output is fully compatible with Microsoft Excel, Google Sheets, LibreOffice Calc, and Apple Numbers — easy to open, edit, and share across any platform.
+      </>
+    ),
+  },
+],
 
             faqs: [
               {
