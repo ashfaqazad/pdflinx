@@ -922,58 +922,106 @@ export default function ImageToPdf({ seo }) {
             seoTitle: "Complete Guide to Converting Images to PDF Online",
             seoDescription:
               "Everything you need to know about converting JPG, PNG, and other images to PDF — free, online, with full quality preserved. No watermark, no signup, no limits.",
-
-            seoSections: [
-              {
-                title:
-                  "Free Image to PDF Converter — Convert JPG, PNG & WebP to PDF Online",
-                text: "Need to convert images to PDF? PDFLinx lets you convert JPG, PNG, WebP, BMP, and GIF images to PDF online for free — instantly and without any software installation. Whether you have a single photo or a batch of scanned documents, PDFLinx combines them into a clean, properly formatted PDF in seconds. No signup, no watermark, no hidden limits. It is the best free image to PDF converter available online today — works on Windows, Mac, iPhone, and Android.",
-              },
-              {
-                title: "What is Image to PDF Conversion?",
-                text: "Image to PDF conversion turns one or more image files into a PDF document, with each image placed on its own page. This is useful when you need to share photos as a professional document, combine scanned pages into a single file, submit image-based documents to a portal that only accepts PDF, or archive a set of images in a universally readable format. The output PDF is fully compatible with every PDF viewer and can be opened on any device without special software.",
-              },
-              {
-                title: "How to Convert Images to PDF Without Losing Quality",
-                text: "PDFLinx preserves the original resolution and quality of every image during conversion. There is no compression applied to the image content unless you specifically choose it — your photos and scans will look exactly as sharp in the PDF as they do in the original files. For best results, upload the highest quality version of your images before converting.",
-              },
-              {
-                title:
-                  "Why PDFLinx is the Best Free Image to PDF Converter — No Watermark, No Limits",
-                text: "Most free image to PDF converters add watermarks, limit the number of images you can combine, or require account creation. PDFLinx does none of that — completely free, no signup, no watermark, and no daily conversion limit. Unlike iLovePDF free tier and Smallpdf free tier which restrict batch image uploads behind paid plans, PDFLinx gives you unlimited conversions at zero cost.",
-              },
-              {
-                title: "Common Use Cases for Image to PDF Conversion",
-                text: "✓ Students & Researchers: Combine scanned handwritten notes, assignment pages, and reference images into one PDF for submission.\n✓ Professionals: Package multiple document scans, receipts, or certificates into a single PDF for record keeping.\n✓ Job Seekers: Convert scanned certificates, ID cards, and supporting documents into one PDF for job applications.\n✓ Legal & Finance: Combine scanned contracts, invoices, and evidence images into a single organized PDF.\n✓ Photographers: Package a portfolio or photo set into a single viewable PDF document.\n✓ Anyone: Combine phone camera scans of physical documents into a clean PDF for sharing or submission.",
-              },
-              {
-                title:
-                  "Convert Images to PDF on iPhone, Android, Mac & Windows — No App Needed",
-                text: "PDFLinx works entirely in your browser — no download, no installation, no app required. On iPhone or Android, open your browser and upload images directly from your camera roll or files app. On Mac or Windows, drag and drop your images and download the PDF in seconds. Whether you need to convert images to PDF on mobile or desktop, PDFLinx works seamlessly across every platform and operating system.",
-              },
-              {
-                title:
-                  "PDFLinx vs iLovePDF vs Smallpdf — Free Image to PDF Converter Comparison",
-                text: "iLovePDF and Smallpdf both restrict batch image uploads and file sizes behind paid plans. Adobe Acrobat requires a monthly subscription for image to PDF conversion. PDFLinx offers unlimited free conversions with no image count limit, no account, and no watermark. For anyone looking for the best free iLovePDF alternative or Smallpdf alternative for image to PDF conversion, PDFLinx is the clear choice.",
-              },
-              {
-                title: "Privacy and File Security",
-                text: "Your files are processed on secure servers and automatically deleted after 1 hour. We do not store, share, or access your documents at any point. PDFLinx is built with privacy-first principles — your data stays yours. All file transfers use encrypted HTTPS connections for complete security.",
-              },
-              {
-                title:
-                  "Image to PDF vs Printing to PDF — Why a Proper Converter Gives Better Results",
-                text: "Some people try to convert images to PDF by opening them in a browser and using Print to PDF — but this approach adds margins, scales images incorrectly, and often introduces white borders or page breaks at wrong positions. A dedicated image to PDF converter like PDFLinx places each image as a full page without margins or distortion, giving you a clean, properly formatted PDF that looks exactly as intended.",
-              },
-              {
-                title: "Supported Image Formats",
-                text: "PDFLinx supports all common image formats for PDF conversion — JPG and JPEG for photographs, PNG for graphics and screenshots with transparency, WebP for modern web images, BMP for Windows bitmap files, and GIF for simple graphics. If you have HEIC images from an iPhone, convert them to JPG first before uploading for best compatibility.",
-              },
-              {
-                title: "Best For Everyday Document Management",
-                text: "Use the converted PDF for submissions, email attachments, official applications, archiving, and sharing. The output is a standard PDF file compatible with Adobe Acrobat, Preview, Chrome, and every PDF viewer — easy to share and open on any device without requiring any image viewer software.",
-              },
-            ],
+seoSections: [
+  {
+    title:
+      "Free Image to PDF Converter — Convert JPG, PNG & WebP to PDF Online",
+    text: (
+      <>
+        Need to convert images to PDF? PDFLinx lets you convert JPG, PNG, WebP, BMP, and GIF images to PDF online for free — instantly and without any software installation. Whether you have a single photo or a batch of scanned documents, PDFLinx combines them into a clean, properly formatted PDF in seconds. If you ever need to extract images back from a document, try our <a href="/pdf-to-png" className="text-blue-600 hover:underline font-medium">PDF to PNG converter</a>. No signup, no watermark, no hidden limits — works on Windows, Mac, iPhone, and Android.
+      </>
+    ),
+  },
+  {
+    title: "What is Image to PDF Conversion?",
+    text: (
+      <>
+        Image to PDF conversion turns one or more image files into a PDF document, with each image placed on its own page. This is useful when you need to share photos as a professional document, combine scanned pages into a single file, submit image-based documents to a portal that only accepts PDF, or archive a set of images in a universally readable format. If you need to turn scanned image text into editable Word files, check our <a href="/ocr-pdf" className="text-blue-600 hover:underline font-medium">OCR PDF tool</a> or <a href="/pdf-to-word" className="text-blue-600 hover:underline font-medium">PDF to Word converter</a>.
+      </>
+    ),
+  },
+  {
+    title: "How to Convert Images to PDF Without Losing Quality",
+    text: (
+      <>
+        PDFLinx preserves the original resolution and quality of every image during conversion. There is no compression applied to the image content unless you specifically choose it — your photos and scans will look exactly as sharp in the PDF as they do in the original files. Read our guide on <a href="/blog/image-to-pdf-quality-guide" className="text-blue-600 hover:underline font-medium">how to convert images to PDF without losing quality</a> to learn optimal resolution settings for scans and photos.
+      </>
+    ),
+  },
+  {
+    title:
+      "Why PDFLinx is the Best Free Image to PDF Converter — No Watermark, No Limits",
+    text: (
+      <>
+        Most free image to PDF converters add watermarks, limit the number of images you can combine, or require account creation. PDFLinx does none of that — completely free, no signup, no watermark, and no daily conversion limit. Unlike iLovePDF free tier and Smallpdf free tier which restrict batch image uploads behind paid plans, PDFLinx gives you unlimited conversions at zero cost. Read our <a href="/compare/pdflinx-vs-ilovepdf" className="text-blue-600 hover:underline font-medium">PDFLinx vs iLovePDF</a> guide for a detailed comparison.
+      </>
+    ),
+  },
+  {
+    title: "Common Use Cases for Image to PDF Conversion",
+    text: (
+      <>
+        ✓ <strong>Students & Researchers:</strong> Combine scanned handwritten notes, assignment pages, and reference images into one PDF for submission.<br />
+        ✓ <strong>Professionals:</strong> Package multiple document scans, receipts, or certificates into a single PDF. You can also <a href="/merge-pdf" className="text-blue-600 hover:underline font-medium">merge PDF files</a> to group related reports together.<br />
+        ✓ <strong>Job Seekers:</strong> Convert scanned certificates, ID cards, and supporting documents into one PDF for job applications.<br />
+        ✓ <strong>Legal & Finance:</strong> Combine scanned contracts, invoices, and evidence images into a single organized PDF.<br />
+        ✓ <strong>Photographers & Creators:</strong> Package a portfolio or photo set into a single viewable document.<br />
+        ✓ <strong>Anyone:</strong> Combine phone camera scans of physical documents into a clean PDF for sharing or submission.
+      </>
+    ),
+  },
+  {
+    title:
+      "Convert Images to PDF on iPhone, Android, Mac & Windows — No App Needed",
+    text: (
+      <>
+        PDFLinx works entirely in your browser — no download, no installation, no app required. On iPhone or Android, open your browser and upload images directly from your camera roll or files app. On Mac or Windows, drag and drop your images and download the PDF in seconds. Whether you need to convert images to PDF on mobile or desktop, PDFLinx works seamlessly across every platform and operating system.
+      </>
+    ),
+  },
+  {
+    title:
+      "PDFLinx vs iLovePDF vs Smallpdf — Free Image to PDF Converter Comparison",
+    text: (
+      <>
+        iLovePDF and Smallpdf both restrict batch image uploads and file sizes behind paid plans. Adobe Acrobat requires a monthly subscription for image to PDF conversion. PDFLinx offers unlimited free conversions with no image count limit, no account, and no watermark. Check out our detailed breakdowns like <a href="/compare/pdflinx-vs-ilovepdf" className="text-blue-600 hover:underline font-medium">PDFLinx vs iLovePDF</a> and <a href="/compare/pdflinx-vs-smallpdf" className="text-blue-600 hover:underline font-medium">PDFLinx vs Smallpdf</a> to see why PDFLinx is the top choice.
+      </>
+    ),
+  },
+  {
+    title: "Privacy and File Security",
+    text: (
+      <>
+        Your files are processed on secure servers and automatically deleted after 1 hour. We do not store, share, or access your documents at any point. PDFLinx is built with privacy-first principles — your data stays yours. All file transfers use encrypted HTTPS connections for complete security. Need to protect confidential image documents? Secure them with a password using our <a href="/protect-pdf" className="text-blue-600 hover:underline font-medium">Protect PDF tool</a>.
+      </>
+    ),
+  },
+  {
+    title:
+      "Image to PDF vs Printing to PDF — Why a Proper Converter Gives Better Results",
+    text: (
+      <>
+        Some people try to convert images to PDF by opening them in a browser and using Print to PDF — but this approach adds margins, scales images incorrectly, and often introduces white borders or page breaks at wrong positions. A dedicated image to PDF converter like PDFLinx places each image as a full page without margins or distortion, giving you a clean, properly formatted PDF that looks exactly as intended.
+      </>
+    ),
+  },
+  {
+    title: "Supported Image Formats",
+    text: (
+      <>
+        PDFLinx supports all common image formats for PDF conversion — JPG and JPEG for photographs, PNG for graphics and screenshots with transparency, WebP for modern web images, BMP for Windows bitmap files, and GIF for simple graphics. Read our blog guide on <a href="/blog/pdf-to-jpg-vs-png" className="text-blue-600 hover:underline font-medium">PDF to JPG vs PNG differences</a> or explore our roundup of the <a href="/blog/best-free-image-converter-tools" className="text-blue-600 hover:underline font-medium">best free image converter tools</a>.
+      </>
+    ),
+  },
+  {
+    title: "Best For Everyday Document Management",
+    text: (
+      <>
+        Use the converted PDF for submissions, email attachments, official applications, archiving, and sharing. The output is a standard PDF file compatible with Adobe Acrobat, Preview, Chrome, and every PDF viewer. If the generated PDF is too large for email attachments, quickly <a href="/compress-pdf" className="text-blue-600 hover:underline font-medium">compress your PDF file size</a> before sending.
+      </>
+    ),
+  },
+],
 
             faqs: [
               {

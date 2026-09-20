@@ -867,52 +867,144 @@ export default function SplitPdf({ seo }) {
             seoDescription:
               "Everything you need to know about splitting a PDF into separate pages or custom ranges — free, online, instant. No watermark, no signup, no limits.",
 
-            seoSections: [
-              {
-                title:
-                  "Free PDF Splitter — Split Any PDF into Pages or Ranges Online",
-                text: "Need to split a PDF? PDFLinx lets you split PDF files online for free — instantly and without any software installation. Whether you want to extract one page, a specific chapter, or split every page into individual files, PDFLinx handles it in seconds. No signup, no watermark, no file tricks. It is the best free online PDF splitter available today — works on Windows, Mac, iPhone, and Android.",
-              },
-              {
-                title: "What is PDF Splitting?",
-                text: "PDF splitting separates a single PDF document into multiple smaller files. You can split by individual pages — getting one PDF per page — or by custom page ranges to extract specific sections. This is useful when a large document contains multiple reports, chapters, or forms that need to be distributed or used separately. Each split file is a fully independent, properly formatted PDF.",
-              },
-              {
-                title: "How to Split a PDF Without Losing Quality",
-                text: "PDFLinx splits PDF files without any compression or quality loss. Every extracted page is preserved exactly as in the original — fonts, images, tables, hyperlinks, and formatting all remain intact. There is no re-encoding or re-rendering involved, which means each split PDF is identical in quality to its corresponding page in the original file.",
-              },
-              {
-                title:
-                  "Why PDFLinx is the Best Free PDF Splitter — No Watermark, No Limits",
-                text: "Most free PDF splitters add watermarks, limit the number of pages you can extract, or require account creation. PDFLinx does none of that — completely free, no signup, no watermark, and no limit on splits per day. Unlike iLovePDF free tier and Smallpdf free tier which restrict advanced splitting behind paid plans, PDFLinx gives you unlimited splits at zero cost.",
-              },
-              {
-                title: "Common Use Cases for Splitting PDFs",
-                text: "✓ Students & Researchers: Extract specific chapters or pages from a large PDF textbook or paper.\n✓ Professionals: Separate a combined report into individual sections for different team members.\n✓ Legal & Finance: Extract specific exhibits, clauses, or statements from large legal or financial documents.\n✓ HR Teams: Pull out individual forms or pages from bulk onboarding documents.\n✓ Freelancers: Deliver only the relevant pages to each client from a combined project file.\n✓ Anyone: Extract receipts, certificates, or specific pages from merged scan files.",
-              },
-              {
-                title:
-                  "Split PDF on iPhone, Android, Mac & Windows — No App Needed",
-                text: "PDFLinx works entirely in your browser — no download, no installation, no app required. On iPhone or Android, open your browser and upload directly from your files app. On Mac or Windows, drag and drop your PDF and download the split files in seconds. Whether you need to split a PDF on mobile or desktop, PDFLinx works seamlessly across every platform and operating system.",
-              },
-              {
-                title:
-                  "PDFLinx vs iLovePDF vs Smallpdf — Free PDF Splitter Comparison",
-                text: "iLovePDF and Smallpdf both restrict custom range splitting and batch extraction behind paid plans. Adobe Acrobat requires a monthly subscription to extract pages. PDFLinx offers unlimited free PDF splitting with custom page ranges, no account, and no watermark. For anyone looking for the best free iLovePDF alternative or Smallpdf alternative for splitting PDFs, PDFLinx is the clear choice.",
-              },
-              {
-                title: "Privacy and File Security",
-                text: "Your files are processed on secure servers and automatically deleted after 1 hour. We do not store, share, or access your documents at any point. PDFLinx is built with privacy-first principles — your data stays yours. All file transfers use encrypted HTTPS connections for complete security.",
-              },
-              {
-                title: "Split PDF vs Printing Selected Pages — Why a Proper Splitter is Better",
-                text: "Some people try to extract pages by printing to PDF and selecting a page range — but this approach can lose hyperlinks, reformat text, shift images, and reduce quality. A proper PDF splitter like PDFLinx extracts pages at the document level, preserving every element exactly as it is. No content is lost, no formatting is broken, and the result is a clean, high-quality PDF of exactly the pages you need.",
-              },
-              {
-                title: "Best For Everyday Document Management",
-                text: "Use split PDFs for targeted sharing, email attachments, specific submissions, and organized archiving. Each output is a standard PDF file compatible with Adobe Acrobat, Preview, Chrome, and every PDF viewer — easy to share and open on any device.",
-              },
-            ],
+            // seoSections: [
+            //   {
+            //     title:
+            //       "Free PDF Splitter — Split Any PDF into Pages or Ranges Online",
+            //     text: "Need to split a PDF? PDFLinx lets you split PDF files online for free — instantly and without any software installation. Whether you want to extract one page, a specific chapter, or split every page into individual files, PDFLinx handles it in seconds. No signup, no watermark, no file tricks. It is the best free online PDF splitter available today — works on Windows, Mac, iPhone, and Android.",
+            //   },
+            //   {
+            //     title: "What is PDF Splitting?",
+            //     text: "PDF splitting separates a single PDF document into multiple smaller files. You can split by individual pages — getting one PDF per page — or by custom page ranges to extract specific sections. This is useful when a large document contains multiple reports, chapters, or forms that need to be distributed or used separately. Each split file is a fully independent, properly formatted PDF.",
+            //   },
+            //   {
+            //     title: "How to Split a PDF Without Losing Quality",
+            //     text: "PDFLinx splits PDF files without any compression or quality loss. Every extracted page is preserved exactly as in the original — fonts, images, tables, hyperlinks, and formatting all remain intact. There is no re-encoding or re-rendering involved, which means each split PDF is identical in quality to its corresponding page in the original file.",
+            //   },
+            //   {
+            //     title:
+            //       "Why PDFLinx is the Best Free PDF Splitter — No Watermark, No Limits",
+            //     text: "Most free PDF splitters add watermarks, limit the number of pages you can extract, or require account creation. PDFLinx does none of that — completely free, no signup, no watermark, and no limit on splits per day. Unlike iLovePDF free tier and Smallpdf free tier which restrict advanced splitting behind paid plans, PDFLinx gives you unlimited splits at zero cost.",
+            //   },
+            //   {
+            //     title: "Common Use Cases for Splitting PDFs",
+            //     text: "✓ Students & Researchers: Extract specific chapters or pages from a large PDF textbook or paper.\n✓ Professionals: Separate a combined report into individual sections for different team members.\n✓ Legal & Finance: Extract specific exhibits, clauses, or statements from large legal or financial documents.\n✓ HR Teams: Pull out individual forms or pages from bulk onboarding documents.\n✓ Freelancers: Deliver only the relevant pages to each client from a combined project file.\n✓ Anyone: Extract receipts, certificates, or specific pages from merged scan files.",
+            //   },
+            //   {
+            //     title:
+            //       "Split PDF on iPhone, Android, Mac & Windows — No App Needed",
+            //     text: "PDFLinx works entirely in your browser — no download, no installation, no app required. On iPhone or Android, open your browser and upload directly from your files app. On Mac or Windows, drag and drop your PDF and download the split files in seconds. Whether you need to split a PDF on mobile or desktop, PDFLinx works seamlessly across every platform and operating system.",
+            //   },
+            //   {
+            //     title:
+            //       "PDFLinx vs iLovePDF vs Smallpdf — Free PDF Splitter Comparison",
+            //     text: "iLovePDF and Smallpdf both restrict custom range splitting and batch extraction behind paid plans. Adobe Acrobat requires a monthly subscription to extract pages. PDFLinx offers unlimited free PDF splitting with custom page ranges, no account, and no watermark. For anyone looking for the best free iLovePDF alternative or Smallpdf alternative for splitting PDFs, PDFLinx is the clear choice.",
+            //   },
+            //   {
+            //     title: "Privacy and File Security",
+            //     text: "Your files are processed on secure servers and automatically deleted after 1 hour. We do not store, share, or access your documents at any point. PDFLinx is built with privacy-first principles — your data stays yours. All file transfers use encrypted HTTPS connections for complete security.",
+            //   },
+            //   {
+            //     title: "Split PDF vs Printing Selected Pages — Why a Proper Splitter is Better",
+            //     text: "Some people try to extract pages by printing to PDF and selecting a page range — but this approach can lose hyperlinks, reformat text, shift images, and reduce quality. A proper PDF splitter like PDFLinx extracts pages at the document level, preserving every element exactly as it is. No content is lost, no formatting is broken, and the result is a clean, high-quality PDF of exactly the pages you need.",
+            //   },
+            //   {
+            //     title: "Best For Everyday Document Management",
+            //     text: "Use split PDFs for targeted sharing, email attachments, specific submissions, and organized archiving. Each output is a standard PDF file compatible with Adobe Acrobat, Preview, Chrome, and every PDF viewer — easy to share and open on any device.",
+            //   },
+            // ],
+
+seoSections: [
+  {
+    title:
+      "Free PDF Splitter — Split Any PDF into Pages or Ranges Online",
+    text: (
+      <>
+        Need to split a PDF? PDFLinx lets you split PDF files online for free — instantly and without any software installation. Whether you want to extract one page, a specific chapter, or split every page into individual files, PDFLinx handles it in seconds. No signup, no watermark, no file tricks. Read our quick guide on <a href="/blog/split-pdf-for-sharing" className="text-blue-600 hover:underline font-medium">how to split PDF files for easy sharing</a>. If you need to combine pages back together later, try our <a href="/merge-pdf" className="text-blue-600 hover:underline font-medium">Merge PDF tool</a> or <a href="/compress-pdf" className="text-blue-600 hover:underline font-medium">compress your PDF file size</a> directly in your browser.
+      </>
+    ),
+  },
+  {
+    title: "What is PDF Splitting?",
+    text: (
+      <>
+        PDF splitting separates a single PDF document into multiple smaller files. You can split by individual pages — getting one PDF per page — or by custom page ranges to extract specific sections. This is useful when a large document contains multiple reports, chapters, or forms that need to be distributed separately. Check our guide on <a href="/blog/when-to-merge-pdf-files" className="text-blue-600 hover:underline font-medium">when to split vs when to merge PDF files</a> to organize your workflow. If you want to rearrange, delete, or reorder pages instead, use our <a href="/organize-pdf" className="text-blue-600 hover:underline font-medium">Organize PDF tool</a> to reorder document pages easily.
+      </>
+    ),
+  },
+  {
+    title: "How to Split a PDF Without Losing Quality",
+    text: (
+      <>
+        PDFLinx splits PDF files without any compression or quality loss. Every extracted page is preserved exactly as in the original — fonts, images, tables, hyperlinks, and formatting all remain intact. There is no re-encoding or re-rendering involved, which means each split PDF is identical in quality to its corresponding page in the original file. If you only need to pull out images or specific text elements, try our <a href="/extract-pdf" className="text-blue-600 hover:underline font-medium">Extract PDF tool</a> or convert it using <a href="/pdf-to-word" className="text-blue-600 hover:underline font-medium">PDF to Word</a> and <a href="/ocr-pdf" className="text-blue-600 hover:underline font-medium">OCR PDF</a>.
+      </>
+    ),
+  },
+  {
+    title:
+      "Why PDFLinx is the Best Free PDF Splitter — No Watermark, No Limits",
+    text: (
+      <>
+        Most free PDF splitters add watermarks, limit the number of pages you can extract, or require account creation. PDFLinx does none of that — completely free, no signup, no watermark, and no limit on splits per day. Unlike iLovePDF free tier and Smallpdf free tier which restrict advanced splitting behind paid plans, PDFLinx gives you unlimited splits at zero cost. Read our <a href="/compare/pdflinx-vs-ilovepdf" className="text-blue-600 hover:underline font-medium">PDFLinx vs iLovePDF</a> guide to learn more.
+      </>
+    ),
+  },
+  {
+    title: "Common Use Cases for Splitting PDFs",
+    text: (
+      <>
+        ✓ <strong>Students & Researchers:</strong> Extract specific chapters or pages from a large PDF textbook or paper — learn more in our <a href="/blog/best-tools-for-students" className="text-blue-600 hover:underline font-medium">best PDF tools for students guide</a>.<br />
+        ✓ <strong>Professionals:</strong> Separate a combined report into individual sections for different team members. You can also <a href="/pdf-to-excel" className="text-blue-600 hover:underline font-medium">convert PDF to Excel</a> for extracted financial sheets.<br />
+        ✓ <strong>Legal & Finance:</strong> Extract specific exhibits, clauses, or statements from large legal or financial documents.<br />
+        ✓ <strong>HR Teams:</strong> Pull out individual forms or pages from bulk onboarding documents.<br />
+        ✓ <strong>Freelancers:</strong> Deliver only relevant pages to each client from a combined project file, or <a href="/sign-pdf" className="text-blue-600 hover:underline font-medium">sign PDF documents online</a>.<br />
+        ✓ <strong>Email Attachments:</strong> If your document exceeds email limits, read <a href="/blog/compress-pdf-email-limit" className="text-blue-600 hover:underline font-medium">how to handle large PDF attachments</a> or use our <a href="/compress-pdf" className="text-blue-600 hover:underline font-medium">Compress PDF tool</a>.
+      </>
+    ),
+  },
+  {
+    title:
+      "Split PDF on iPhone, Android, Mac & Windows — No App Needed",
+    text: (
+      <>
+        PDFLinx works entirely in your browser — no download, no installation, no app required. On iPhone or Android, open your browser and upload directly from your files app. On Mac or Windows, drag and drop your PDF and download the split files in seconds. Whether you need to split a PDF on mobile or desktop, PDFLinx works seamlessly across every platform and operating system. You can also easily <a href="/image-to-pdf" className="text-blue-600 hover:underline font-medium">convert images to PDF</a> on mobile devices.
+      </>
+    ),
+  },
+  {
+    title:
+      "PDFLinx vs iLovePDF vs Smallpdf — Free PDF Splitter Comparison",
+    text: (
+      <>
+        iLovePDF and Smallpdf both restrict custom range splitting and batch extraction behind paid plans. Adobe Acrobat requires a monthly subscription to extract pages. PDFLinx offers unlimited free PDF splitting with custom page ranges, no account, and no watermark. Check out our detailed comparisons like <a href="/compare/pdflinx-vs-ilovepdf" className="text-blue-600 hover:underline font-medium">PDFLinx vs iLovePDF</a> and <a href="/compare/pdflinx-vs-smallpdf" className="text-blue-600 hover:underline font-medium">PDFLinx vs Smallpdf</a> for complete feature breakdowns.
+      </>
+    ),
+  },
+  {
+    title: "Privacy and File Security",
+    text: (
+      <>
+        Your files are processed on secure servers and automatically deleted after 1 hour. We do not store, share, or access your documents at any point. PDFLinx is built with privacy-first principles — your data stays yours. All file transfers use encrypted HTTPS connections for complete security. Need to protect confidential extracted pages? Secure them with our <a href="/protect-pdf" className="text-blue-600 hover:underline font-medium">Protect PDF tool</a>.
+      </>
+    ),
+  },
+  {
+    title: "Split PDF vs Printing Selected Pages — Why a Proper Splitter is Better",
+    text: (
+      <>
+        Some people try to extract pages by printing to PDF and selecting a page range — but this approach can lose hyperlinks, reformat text, shift images, and reduce quality. A proper PDF splitter like PDFLinx extracts pages at the document level, preserving every element exactly as it is. If you ever face file size problems after extraction, check our troubleshooting guide on <a href="/blog/pdf-file-too-large-compress" className="text-blue-600 hover:underline font-medium">why PDF files become too large</a>.
+      </>
+    ),
+  },
+  {
+    title: "Best For Everyday Document Management",
+    text: (
+      <>
+        Use split PDFs for targeted sharing, email attachments, specific submissions, and organized archiving. Each output is a standard PDF file compatible with Adobe Acrobat, Preview, Chrome, and every PDF viewer — easy to share and open on any device. Explore all available options on our <a href="/free-pdf-tools" className="text-blue-600 hover:underline font-medium">free online PDF tools list</a>.
+      </>
+    ),
+  },
+],
 
             faqs: [
               {

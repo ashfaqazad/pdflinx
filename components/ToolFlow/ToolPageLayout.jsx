@@ -360,6 +360,3 @@ export default function ToolPageLayout({
     </main>
   );
 }
-
-
-

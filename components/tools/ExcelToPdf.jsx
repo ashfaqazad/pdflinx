@@ -458,53 +458,91 @@ export default function ExcelToPdf({ seo }) {
               "Everything you need to know about converting Excel spreadsheets to PDF — free, online, with all formatting preserved. No watermark, no signup, no limits.",
 
             seoSections: [
-              {
-                title:
-                  "Free Excel to PDF Converter — Convert XLS & XLSX to PDF Online",
-                text: "Need to convert an Excel file to PDF? PDFLinx lets you convert Excel to PDF online for free — instantly, with no software installation required. Whether it is a simple spreadsheet, a financial model with charts, or a multi-sheet workbook, PDFLinx converts it to a clean, properly formatted PDF in seconds. No signup, no watermark, no hidden limits. It is the best free Excel to PDF converter available online today — works on Windows, Mac, iPhone, and Android.",
-              },
-              {
-                title: "What is Excel to PDF Conversion?",
-                text: "Excel to PDF conversion turns your spreadsheet into a fixed-layout PDF document. Unlike an editable Excel file, a PDF cannot be accidentally modified, looks identical on every device, and is universally accepted for sharing and submission. Converting Excel to PDF is essential when you need to send financial reports, invoices, data tables, or any spreadsheet to someone who does not have Excel installed — or when you want to lock the content before sharing.",
-              },
-              {
-                title: "How to Convert Excel to PDF Without Losing Formatting",
-                text: "One of the most common concerns when converting Excel to PDF is whether cell borders, column widths, chart styles, merged cells, and colors are preserved. PDFLinx uses high-fidelity rendering to ensure the output PDF looks exactly like your spreadsheet on screen. Tables stay aligned, charts render correctly, and multi-sheet workbooks are handled page by page. For best results, make sure your Excel print area is properly set before uploading — but even without it, PDFLinx handles the layout intelligently.",
-              },
-              {
-                title:
-                  "Why PDFLinx is the Best Free Excel to PDF Converter — No Watermark, No Limits",
-                text: "Most free Excel to PDF converters add watermarks, restrict file sizes, or require account creation. PDFLinx does none of that — completely free, no signup, no watermark, and no daily conversion limit. Unlike iLovePDF free tier and Smallpdf free tier which restrict batch conversions behind paid plans, PDFLinx gives you unlimited conversions at zero cost.",
-              },
-              {
-                title: "Common Use Cases for Excel to PDF Conversion",
-                text: "✓ Finance & Accounting: Share financial reports, balance sheets, and budget summaries as locked, non-editable PDFs.\n✓ Business Professionals: Send proposals, pricing tables, and project trackers that look polished and professional.\n✓ Students: Submit data analysis assignments, charts, and spreadsheets as PDF for coursework.\n✓ HR Teams: Distribute salary structures, attendance records, and leave trackers as PDF.\n✓ Freelancers: Send invoices and project cost sheets as professional PDFs to clients.\n✓ Developers & Analysts: Share data tables and reports without requiring recipients to have Excel.",
-              },
-              {
-                title:
-                  "Convert Excel to PDF on iPhone, Android, Mac & Windows — No App Needed",
-                text: "PDFLinx works entirely in your browser — no download, no installation, no app required. On iPhone or Android, open your browser and upload your Excel file directly from your files app. On Mac or Windows, drag and drop and download the PDF in seconds. Unlike desktop software like Microsoft Excel or Adobe Acrobat, PDFLinx is fully online and free. Whether you need to convert Excel to PDF on mobile or desktop, PDFLinx works seamlessly on every device and operating system.",
-              },
-              {
-                title:
-                  "PDFLinx vs iLovePDF vs Smallpdf — Free Excel to PDF Converter Comparison",
-                text: "iLovePDF and Smallpdf both limit free Excel to PDF conversions per day and require sign-up for full access. Adobe Acrobat charges a monthly subscription for Excel to PDF export. PDFLinx offers unlimited free conversions with no account, no watermark, and no daily limits. For anyone looking for the best free iLovePDF alternative or Smallpdf alternative for Excel to PDF conversion, PDFLinx is the clear choice.",
-              },
-              {
-                title: "Privacy and File Security",
-                text: "Your files are processed on secure servers and automatically deleted after 1 hour. We do not store, share, or access your documents at any point. PDFLinx is built with privacy-first principles — your data stays yours. All file transfers use encrypted HTTPS connections for complete security.",
-              },
-              {
-                title:
-                  "Excel to PDF vs Print to PDF — Why a Proper Converter Gives Better Results",
-                text: "Many people try to convert Excel to PDF using the browser's Print to PDF function or File > Save As PDF in Excel — but this approach often cuts off columns, breaks page layout, and loses chart formatting. A dedicated Excel to PDF converter like PDFLinx handles column widths, page breaks, and multi-sheet layouts correctly, giving you a PDF that looks exactly like your spreadsheet without any clipping or misalignment.",
-              },
-              {
-                title: "Best For Professional Document Sharing",
-                text: "Use the converted PDF for client deliverables, email attachments, official submissions, and archiving. The output is a standard PDF file compatible with Adobe Acrobat, Preview, Chrome, and every PDF viewer — easy to share and open on any device without requiring Excel.",
-              },
-            ],
-
+  {
+    title: "Free Excel to PDF Converter — Convert XLS & XLSX to PDF Online",
+    text: (
+      <>
+        Need to convert an Excel file to PDF? PDFLinx lets you convert Excel to PDF online for free — instantly, with no software installation required. Whether it is a simple spreadsheet, a financial model with charts, or a multi-sheet workbook, PDFLinx converts it to a clean, properly formatted PDF in seconds. If you ever need to extract data back into spreadsheets, try our <a href="/pdf-to-excel" className="text-blue-600 hover:underline font-medium">PDF to Excel converter</a>. No signup, no watermark, no hidden limits — works on Windows, Mac, iPhone, and Android.
+      </>
+    ),
+  },
+  {
+    title: "What is Excel to PDF Conversion?",
+    text: (
+      <>
+        Excel to PDF conversion turns your spreadsheet into a fixed-layout PDF document. Unlike an editable Excel file, a PDF cannot be accidentally modified, looks identical on every device, and is universally accepted for sharing and submission. Converting Excel to PDF is essential when sending financial reports, invoices, or data tables to someone without Excel installed. If you need to make quick text or layout adjustments after converting, check our <a href="/edit-pdf" className="text-blue-600 hover:underline font-medium">online PDF Editor</a>.
+      </>
+    ),
+  },
+  {
+    title: "How to Convert Excel to PDF Without Losing Formatting",
+    text: (
+      <>
+        One of the most common concerns when converting Excel to PDF is whether cell borders, column widths, chart styles, merged cells, and colors are preserved. PDFLinx uses high-fidelity rendering to ensure the output PDF looks exactly like your spreadsheet. Tables stay aligned, charts render correctly, and multi-sheet workbooks are handled page by page. For best results, make sure your Excel print area is properly set before uploading — but even without it, PDFLinx handles the layout intelligently.
+      </>
+    ),
+  },
+  {
+    title: "Why PDFLinx is the Best Free Excel to PDF Converter — No Watermark, No Limits",
+    text: (
+      <>
+        Most free Excel to PDF converters add watermarks, restrict file sizes, or require account creation. PDFLinx does none of that — completely free, no signup, no watermark, and no daily conversion limit. Unlike iLovePDF free tier and Smallpdf free tier which restrict batch conversions behind paid plans, PDFLinx gives you unlimited conversions at zero cost.
+      </>
+    ),
+  },
+  {
+    title: "Common Use Cases for Excel to PDF Conversion",
+    text: (
+      <>
+        ✓ <strong>Finance & Accounting:</strong> Share financial reports, balance sheets, and budget summaries as locked PDFs.<br />
+        ✓ <strong>Business Professionals:</strong> Send proposals, pricing tables, and project trackers that look polished. You can also <a href="/merge-pdf" className="text-blue-600 hover:underline font-medium">merge multiple PDF files</a> into a single report package.<br />
+        ✓ <strong>Students & Researchers:</strong> Submit data analysis assignments and spreadsheets cleanly as PDF.<br />
+        ✓ <strong>HR Teams:</strong> Distribute salary structures and attendance records securely.<br />
+        ✓ <strong>Freelancers & Agencies:</strong> Send invoices and project cost sheets, then digitally <a href="/sign-pdf" className="text-blue-600 hover:underline font-medium">sign PDF documents online</a>.
+      </>
+    ),
+  },
+  {
+    title: "Convert Excel to PDF on iPhone, Android, Mac & Windows — No App Needed",
+    text: (
+      <>
+        PDFLinx works entirely in your browser — no download, no installation, no app required. On iPhone or Android, open your browser and upload your Excel file directly from your files app. On Mac or Windows, drag and drop and download the PDF in seconds. Unlike desktop software like Microsoft Excel or Adobe Acrobat, PDFLinx is fully online and free. Whether you need to convert Excel to PDF on mobile or desktop, PDFLinx works seamlessly on every device and operating system.
+      </>
+    ),
+  },
+  {
+    title: "PDFLinx vs iLovePDF vs Smallpdf — Free Excel to PDF Converter Comparison",
+    text: (
+      <>
+        iLovePDF and Smallpdf limit free Excel to PDF conversions per day and require sign-ups for advanced features. Adobe Acrobat requires an expensive monthly subscription. PDFLinx offers unlimited free conversions with no account and no watermark. Check our comprehensive <a href="/compare/pdflinx-vs-ilovepdf" className="text-blue-600 hover:underline font-medium">PDFLinx vs iLovePDF</a> and <a href="/compare/pdflinx-vs-smallpdf" className="text-blue-600 hover:underline font-medium">PDFLinx vs Smallpdf</a> comparisons for a full breakdown.
+      </>
+    ),
+  },
+  {
+    title: "Privacy and File Security",
+    text: (
+      <>
+        Your files are processed on secure servers over encrypted HTTPS connections and automatically deleted after 1 hour. We do not store, share, or access your documents at any point. If your converted PDF contains sensitive financial data, you can lock it with a password using our <a href="/protect-pdf" className="text-blue-600 hover:underline font-medium">Protect PDF tool</a> or explore all options on our <a href="/free-pdf-tools" className="text-blue-600 hover:underline font-medium">free PDF tools directory</a>.
+      </>
+    ),
+  },
+  {
+    title: "Excel to PDF vs Print to PDF — Why a Proper Converter Gives Better Results",
+    text: (
+      <>
+        Using a browser's "Print to PDF" or basic "Save As PDF" functions often cuts off columns, breaks page margins, and distorts chart rendering. A dedicated Excel to PDF converter like PDFLinx handles column widths, page breaks, and multi-sheet layouts correctly, giving you a PDF that looks exactly like your spreadsheet without any clipping or misalignment.
+      </>
+    ),
+  },
+  {
+    title: "Best For Professional Document Sharing",
+    text: (
+      <>
+        Use converted PDFs for client deliverables, official submissions, and archiving. The final files are standard PDFs fully compatible with Adobe Acrobat, Chrome, and Preview. If your spreadsheet produces a file that is too large for email attachments, quickly <a href="/compress-pdf" className="text-blue-600 hover:underline font-medium">compress the PDF file size</a> before sending.
+      </>
+    ),
+  },
+],
             faqs: [
               {
                 q: "Is PDFLinx Excel to PDF converter free?",

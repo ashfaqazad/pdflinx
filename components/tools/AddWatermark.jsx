@@ -878,47 +878,88 @@ export default function AddWatermark({ seo }) {
             seoDescription:
               "Everything you need to know about adding text and image watermarks to a PDF — free, online, fully customizable. No signup, no limits, we add no watermark of our own.",
 
-            seoSections: [
-              {
-                title:
-                  "Free PDF Watermark Tool — Add Text or Image Watermarks to Any PDF Online",
-                text: "Need to add a watermark to a PDF? PDFLinx lets you stamp any text or image watermark onto a PDF online for free — instantly and without any software installation. Whether you need to mark a document as CONFIDENTIAL, DRAFT, or SAMPLE, add your company logo as a brand stamp, or protect a PDF with a DO NOT COPY notice, PDFLinx applies it cleanly and permanently to every page in seconds. No signup, no hidden limits — and unlike most tools, we add no watermark of our own to your document.",
-              },
-              {
-                title: "Text Watermarks vs Image Watermarks — Which to Use",
-                text: "PDFLinx supports both types of watermarks. Text watermarks are ideal for status labels — CONFIDENTIAL, DRAFT, FOR REVIEW, SAMPLE, VOID, COPY — typed directly and styled with your choice of font size, color, and opacity. Image watermarks are used for logos, company stamps, signatures, or any graphic mark you want applied across pages. Upload your logo as a PNG or JPG and PDFLinx places it on every page exactly where you specify. Both types support full position, size, rotation, and opacity control.",
-              },
-              {
-                title: "Watermark Customization — Position, Opacity, Rotation & Color",
-                text: "A watermark that is too dark obscures the document content. A watermark placed incorrectly clashes with text. PDFLinx gives you full control over every aspect of your watermark. Set opacity from subtle to prominent — typically 20 to 40 percent works well for background watermarks. Choose from nine positions across the page — top left, top center, top right, middle, bottom corners, and center diagonal. Rotate the watermark at any angle — diagonal watermarks at 45 degrees are the most common for CONFIDENTIAL and DRAFT stamps. Adjust font size and color for text watermarks. Everything is configurable before you apply.",
-              },
-              {
-                title: "Why Add a Watermark — Common Reasons and Use Cases",
-                text: "Watermarks serve several important purposes across business, legal, creative, and academic contexts. Confidentiality marking protects sensitive documents shared for review — the CONFIDENTIAL stamp signals that the document is not for public distribution. Draft marking prevents an unfinished version from being mistaken for a final document. Copyright protection adds a visible deterrent to unauthorized reproduction of creative or proprietary content. Brand watermarking stamps company logos on client-facing documents for brand consistency. Sample marking prevents recipients from using a document as a real deliverable before payment or approval.",
-              },
-              {
-                title:
-                  "Why PDFLinx is the Best Free PDF Watermark Tool — We Add No Watermark of Our Own",
-                text: "The irony of most free watermark tools is that they add their own watermark to your document along with yours — completely undermining the purpose. PDFLinx adds only your watermark and nothing else. Completely free, no signup, no platform watermark, and no daily usage limit. Unlike iLovePDF and Smallpdf which restrict watermark customization and add branding on free tiers, PDFLinx gives you clean, professional watermarking at zero cost.",
-              },
-              {
-                title: "Common Use Cases for Adding Watermarks to PDF",
-                text: "✓ Legal & Compliance: Mark contracts, NDAs, and legal documents as CONFIDENTIAL or FOR INTERNAL USE ONLY before sharing for review.\n✓ Business & Finance: Stamp financial reports, invoices, and proposals as DRAFT until finalized and approved.\n✓ Design & Creative: Watermark portfolio PDFs, mockups, and creative work with a logo or SAMPLE stamp before client approval and payment.\n✓ Publishing & Education: Mark review copies, advance reader copies, or student handouts with appropriate status labels.\n✓ HR & Administration: Stamp employee documents, offer letters, and policies with DRAFT or CONFIDENTIAL as appropriate.\n✓ Photography & Media: Add logo or copyright watermarks to PDF portfolios and image collections before distribution.",
-              },
-              {
-                title:
-                  "Add Watermark to PDF on iPhone, Android, Mac & Windows — No App Needed",
-                text: "PDFLinx works entirely in your browser — no download, no installation, no app required. On iPhone or Android, open your browser and upload your PDF directly from your files app. On Mac or Windows, drag and drop your PDF and download the watermarked file in seconds. Whether you need to watermark a PDF on mobile or desktop, PDFLinx works seamlessly across every platform and operating system.",
-              },
-              {
-                title: "Privacy and File Security",
-                text: "Your files are processed on secure servers and automatically deleted after 1 hour. We do not store, share, or access your documents at any point. This is especially important when watermarking confidential business, legal, or financial documents. All file transfers use encrypted HTTPS connections for complete security.",
-              },
-              {
-                title: "Is the Watermark Permanent — Can It Be Removed?",
-                text: "Watermarks added by PDFLinx are permanently embedded into the PDF page content — they are not a removable annotation or an editable layer. The watermark becomes part of every page image and cannot be stripped out using a standard PDF viewer. For most practical purposes — sharing, printing, reviewing — the watermark is permanent and effective. Keep in mind that no watermark is completely tamper-proof against advanced PDF editing software, but for all everyday use cases, a PDFLinx watermark provides reliable, visible protection.",
-              },
-            ],
+seoSections: [
+  {
+    title:
+      "Free PDF Watermark Tool — Add Text or Image Watermarks to Any PDF Online",
+    text: (
+      <>
+        Need to add a watermark to a PDF? PDFLinx lets you stamp any text or image watermark onto a PDF online for free — instantly and without any software installation. Whether you need to mark a document as CONFIDENTIAL, DRAFT, or SAMPLE, add your company logo as a brand stamp, or protect a PDF with a DO NOT COPY notice, PDFLinx applies it cleanly and permanently to every page in seconds. Before adding a stamp, you can also <a href="/rotate-pdf" className="text-blue-600 hover:underline font-medium">rotate PDF pages</a> or <a href="/organize-pdf" className="text-blue-600 hover:underline font-medium">organize PDF pages</a> for proper alignment. No signup, no hidden limits — and unlike most tools, we add no watermark of our own to your document.
+      </>
+    ),
+  },
+  {
+    title: "Text Watermarks vs Image Watermarks — Which to Use",
+    text: (
+      <>
+        PDFLinx supports both types of watermarks. Text watermarks are ideal for status labels — CONFIDENTIAL, DRAFT, FOR REVIEW, SAMPLE, VOID, COPY — typed directly and styled with your choice of font size, color, and opacity. Image watermarks are used for logos, company stamps, signatures, or any graphic mark you want applied across pages. Upload your logo as a PNG or JPG and PDFLinx places it on every page exactly where you specify. Both types support full position, size, rotation, and opacity control. If you need to permanently hide sensitive details rather than adding an overlay, use our <a href="/redact-pdf" className="text-blue-600 hover:underline font-medium">Redact PDF tool</a>.
+      </>
+    ),
+  },
+  {
+    title: "Watermark Customization — Position, Opacity, Rotation & Color",
+    text: (
+      <>
+        A watermark that is too dark obscures the document content. A watermark placed incorrectly clashes with text. PDFLinx gives you full control over every aspect of your watermark. Set opacity from subtle to prominent — typically 20 to 40 percent works well for background watermarks. Choose from nine positions across the page — top left, top center, top right, middle, bottom corners, and center diagonal. Rotate the watermark at any angle — diagonal watermarks at 45 degrees are the most common for CONFIDENTIAL and DRAFT stamps. Adjust font size and color for text watermarks. Need to add official page headers or footers along with your stamp? Easily <a href="/add-page-numbers" className="text-blue-600 hover:underline font-medium">add page numbers to PDF</a> as well.
+      </>
+    ),
+  },
+  {
+    title: "Why Add a Watermark — Common Reasons and Use Cases",
+    text: (
+      <>
+        Watermarks serve several important purposes across business, legal, creative, and academic contexts. Confidentiality marking protects sensitive documents shared for review — the CONFIDENTIAL stamp signals that the document is not for public distribution. Draft marking prevents an unfinished version from being mistaken for a final document. Copyright protection adds a visible deterrent to unauthorized reproduction of creative or proprietary content. Brand watermarking stamps company logos on client-facing documents for brand consistency. If you need to make broader modifications, you can use our <a href="/edit-pdf" className="text-blue-600 hover:underline font-medium">online PDF Editor</a> or <a href="/crop-pdf" className="text-blue-600 hover:underline font-medium">crop PDF pages</a> to trim unwanted borders.
+      </>
+    ),
+  },
+  {
+    title:
+      "Why PDFLinx is the Best Free PDF Watermark Tool — We Add No Watermark of Our Own",
+    text: (
+      <>
+        The irony of most free watermark tools is that they add their own watermark to your document along with yours — completely undermining the purpose. PDFLinx adds only your watermark and nothing else. Completely free, no signup, no platform watermark, and no daily usage limit. Unlike iLovePDF and Smallpdf which restrict watermark customization and add branding on free tiers, PDFLinx gives you clean, professional watermarking at zero cost. Check our <a href="/compare/pdflinx-vs-ilovepdf" className="text-blue-600 hover:underline font-medium">PDFLinx vs iLovePDF</a> guide for a complete breakdown.
+      </>
+    ),
+  },
+  {
+    title: "Common Use Cases for Adding Watermarks to PDF",
+    text: (
+      <>
+        ✓ <strong>Legal & Compliance:</strong> Mark contracts, NDAs, and legal documents as CONFIDENTIAL before sharing. You can also <a href="/protect-pdf" className="text-blue-600 hover:underline font-medium">protect PDF with password</a> for double security.<br />
+        ✓ <strong>Business & Finance:</strong> Stamp financial reports, invoices, and proposals as DRAFT until finalized. You can also <a href="/merge-pdf" className="text-blue-600 hover:underline font-medium">merge PDF files</a> into a single package.<br />
+        ✓ <strong>Design & Creative:</strong> Watermark portfolio PDFs, mockups, and creative work before client approval. Easily <a href="/extract-pdf" className="text-blue-600 hover:underline font-medium">extract PDF pages</a> or <a href="/remove-pages" className="text-blue-600 hover:underline font-medium">remove pages from PDF</a> if needed.<br />
+        ✓ <strong>Publishing & Education:</strong> Mark review copies or student handouts with appropriate status labels. Use <a href="/split-pdf" className="text-blue-600 hover:underline font-medium">split PDF</a> to distribute specific sections.<br />
+        ✓ <strong>HR & Administration:</strong> Stamp employee documents, offer letters, and policies. Digitally <a href="/sign-pdf" className="text-blue-600 hover:underline font-medium">sign PDF online</a> to execute official approvals.<br />
+        ✓ <strong>Photography & Media:</strong> Add logo or copyright watermarks to PDF portfolios before distribution.
+      </>
+    ),
+  },
+  {
+    title:
+      "Add Watermark to PDF on iPhone, Android, Mac & Windows — No App Needed",
+    text: (
+      <>
+        PDFLinx works entirely in your browser — no download, no installation, no app required. On iPhone or Android, open your browser and upload your PDF directly from your files app. On Mac or Windows, drag and drop your PDF and download the watermarked file in seconds. Whether you need to watermark a PDF on mobile or desktop, PDFLinx works seamlessly across every platform and operating system.
+      </>
+    ),
+  },
+  {
+    title: "Privacy and File Security",
+    text: (
+      <>
+        Your files are processed on secure servers and automatically deleted after 1 hour. We do not store, share, or access your documents at any point. This is especially important when watermarking confidential business, legal, or financial documents. All file transfers use encrypted HTTPS connections for complete security. Working with locked files? Use our <a href="/unlock-pdf" className="text-blue-600 hover:underline font-medium">Unlock PDF tool</a> first, or fix corrupted uploads with <a href="/repair-pdf" className="text-blue-600 hover:underline font-medium">Repair PDF</a>.
+      </>
+    ),
+  },
+  {
+    title: "Is the Watermark Permanent — Can It Be Removed?",
+    text: (
+      <>
+        Watermarks added by PDFLinx are permanently embedded into the PDF page content — they are not a removable annotation or an editable layer. The watermark becomes part of every page image and cannot be stripped out using a standard PDF viewer. For most practical purposes — sharing, printing, reviewing — the watermark is permanent and effective. If adding watermarks increases your file size, you can quickly <a href="/compress-pdf" className="text-blue-600 hover:underline font-medium">compress PDF online</a> before sending email attachments.
+      </>
+    ),
+  },
+],
 
             faqs: [
               {

@@ -406,48 +406,88 @@ export default function PdfToJpg({ seo }) {
             seoDescription:
               "Everything you need to know about converting PDF pages to JPG images — free, online, high resolution. No watermark, no signup, no limits.",
 
-            seoSections: [
-              {
-                title:
-                  "Free PDF to JPG Converter — Convert Every PDF Page to a High Quality JPG Image",
-                text: "Need to convert a PDF to JPG? PDFLinx lets you convert PDF pages to JPG images online for free — instantly and without any software installation. Whether it is a single-page document or a 50-page report, PDFLinx renders each page as a clean, high-resolution JPG image in seconds. No signup, no watermark, no hidden limits. It is the best free PDF to JPG converter available today — works on Windows, Mac, iPhone, and Android.",
-              },
-              {
-                title: "What is PDF to JPG Conversion?",
-                text: "PDF to JPG conversion renders each page of a PDF document as a standalone JPG image file. This is useful when you need to share PDF content as images, embed PDF pages into websites or presentations, use PDF content in image editing tools, or simply view PDF pages without a PDF reader. Each output JPG is a complete, high-resolution snapshot of the corresponding PDF page.",
-              },
-              {
-                title: "How Good is the JPG Quality After Conversion?",
-                text: "PDFLinx renders PDF pages at high resolution — giving you sharp, clear JPG images that accurately represent the original PDF content. Text remains readable, images look crisp, and the overall visual quality is maintained at a level suitable for both screen use and printing. You can choose between standard and high resolution depending on your needs — higher resolution gives larger file sizes but sharper output.",
-              },
-              {
-                title:
-                  "Why PDFLinx is the Best Free PDF to JPG Converter — No Watermark, No Limits",
-                text: "Most free PDF to JPG converters add watermarks, limit the number of pages you can convert, or reduce image quality on free plans. PDFLinx does none of that — completely free, no signup, no watermark, and no daily conversion limit. Unlike iLovePDF and Smallpdf which restrict high-resolution output and batch conversion on free tiers, PDFLinx gives you full-quality output at zero cost.",
-              },
-              {
-                title: "Common Use Cases for PDF to JPG Conversion",
-                text: "✓ Web Designers & Developers: Embed PDF content as images on websites, blogs, and portfolios without requiring a PDF viewer plugin.\n✓ Social Media: Share PDF pages as images on Instagram, Twitter, LinkedIn, and WhatsApp where PDF is not directly supported.\n✓ Presentations: Insert PDF pages as image slides into PowerPoint or Google Slides presentations.\n✓ Thumbnails & Previews: Generate preview thumbnails of PDF documents for display in apps or websites.\n✓ Image Editing: Open PDF content in Photoshop, Canva, or other image editors that don't support PDF directly.\n✓ Email Sharing: Attach PDF content as JPG images to emails when recipients may not have a PDF viewer.",
-              },
-              {
-                title:
-                  "Convert PDF to JPG on iPhone, Android, Mac & Windows — No App Needed",
-                text: "PDFLinx works entirely in your browser — no download, no installation, no app required. On iPhone or Android, open your browser and upload your PDF directly from your files app. On Mac or Windows, drag and drop your PDF and download the JPG images in seconds. Whether you need to convert PDF to JPG on mobile or desktop, PDFLinx works seamlessly across every platform and operating system.",
-              },
-              {
-                title: "Privacy and File Security",
-                text: "Your files are processed on secure servers and automatically deleted after 1 hour. We do not store, share, or access your documents at any point. PDFLinx is built with privacy-first principles — your data stays yours. All file transfers use encrypted HTTPS connections for complete security.",
-              },
-              {
-                title: "PDF to JPG vs Screenshot — Why a Proper Converter is Better",
-                text: "Taking a screenshot of a PDF page gives you a low-resolution image that looks blurry when zoomed in or printed. A proper PDF to JPG converter like PDFLinx renders each page at high resolution using the actual PDF content — text is sharp, images are clear, and the output is suitable for professional use. For multi-page PDFs, screenshots are also extremely time-consuming — PDFLinx converts all pages in one go.",
-              },
-              {
-                title: "JPG vs PNG — Which Format Should You Choose?",
-                text: "JPG is the best choice for most PDF to image conversions — it produces smaller file sizes that are easy to share via email, social media, and messaging apps, while still maintaining good visual quality. If your PDF contains text, diagrams, or content with sharp edges that need to be pixel-perfect, PNG may give slightly better results. For photos and full-color document pages, JPG is almost always the right choice. PDFLinx also offers PDF to PNG conversion if you need a lossless format.",
-              },
-            ],
-
+seoSections: [
+  {
+    title:
+      "Free PDF to JPG Converter — Convert Every PDF Page to a High Quality JPG Image",
+    text: (
+      <>
+        Need to convert a PDF to JPG? PDFLinx lets you convert PDF pages to JPG images online for free — instantly and without any software installation. Whether it is a single-page document or a 50-page report, PDFLinx renders each page as a clean, high-resolution JPG image in seconds. If you need to turn pictures back into a document, try our <a href="/image-to-pdf" className="text-blue-600 hover:underline font-medium">Image to PDF converter</a>. No signup, no watermark, no hidden limits. It is the best free PDF to JPG converter available today — works on Windows, Mac, iPhone, and Android.
+      </>
+    ),
+  },
+  {
+    title: "What is PDF to JPG Conversion?",
+    text: (
+      <>
+        PDF to JPG conversion renders each page of a PDF document as a standalone JPG image file. This is useful when you need to share PDF content as images, embed PDF pages into websites or presentations, use PDF content in image editing tools, or simply view PDF pages without a PDF reader. Each output JPG is a complete, high-resolution snapshot of the corresponding PDF page.
+      </>
+    ),
+  },
+  {
+    title: "How Good is the JPG Quality After Conversion?",
+    text: (
+      <>
+        PDFLinx renders PDF pages at high resolution — giving you sharp, clear JPG images that accurately represent the original PDF content. Text remains readable, images look crisp, and the overall visual quality is maintained at a level suitable for both screen use and printing. Read our guide on <a href="/blog/pdf-to-jpg-vs-png" className="text-blue-600 hover:underline font-medium">PDF to JPG vs PNG quality differences</a> to decide which format fits your document.
+      </>
+    ),
+  },
+  {
+    title:
+      "Why PDFLinx is the Best Free PDF to JPG Converter — No Watermark, No Limits",
+    text: (
+      <>
+        Most free PDF to JPG converters add watermarks, limit the number of pages you can convert, or reduce image quality on free plans. PDFLinx does none of that — completely free, no signup, no watermark, and no daily conversion limit. Unlike iLovePDF and Smallpdf which restrict high-resolution output on free tiers, PDFLinx gives you full-quality output at zero cost. Read our <a href="/compare/pdflinx-vs-ilovepdf" className="text-blue-600 hover:underline font-medium">PDFLinx vs iLovePDF comparison</a> for full details.
+      </>
+    ),
+  },
+  {
+    title: "Common Use Cases for PDF to JPG Conversion",
+    text: (
+      <>
+        ✓ <strong>Web Designers & Developers:</strong> Embed PDF content as images on websites, blogs, and portfolios without requiring a PDF viewer plugin.<br />
+        ✓ <strong>Social Media:</strong> Share PDF pages as images on Instagram, Twitter, LinkedIn, and WhatsApp where PDF is not directly supported.<br />
+        ✓ <strong>Presentations:</strong> Insert PDF pages as image slides into PowerPoint or Google Slides presentations.<br />
+        ✓ <strong>Thumbnails & Previews:</strong> Generate preview thumbnails of PDF documents for display in apps or websites.<br />
+        ✓ <strong>Image Editing:</strong> Open PDF content in Photoshop, Canva, or other image editors that don't support PDF directly.<br />
+        ✓ <strong>Email Sharing:</strong> Attach PDF content as JPG images to emails when recipients may not have a PDF viewer.
+      </>
+    ),
+  },
+  {
+    title:
+      "Convert PDF to JPG on iPhone, Android, Mac & Windows — No App Needed",
+    text: (
+      <>
+        PDFLinx works entirely in your browser — no download, no installation, no app required. On iPhone or Android, open your browser and upload your PDF directly from your files app. On Mac or Windows, drag and drop your PDF and download the JPG images in seconds. Whether you need to convert PDF to JPG on mobile or desktop, PDFLinx works seamlessly across every platform and operating system.
+      </>
+    ),
+  },
+  {
+    title: "Privacy and File Security",
+    text: (
+      <>
+        Your files are processed on secure servers and automatically deleted after 1 hour. We do not store, share, or access your documents at any point. PDFLinx is built with privacy-first principles — your data stays yours. All file transfers use encrypted HTTPS connections for complete security.
+      </>
+    ),
+  },
+  {
+    title: "PDF to JPG vs Screenshot — Why a Proper Converter is Better",
+    text: (
+      <>
+        Taking a screenshot of a PDF page gives you a low-resolution image that looks blurry when zoomed in or printed. A proper PDF to JPG converter like PDFLinx renders each page at high resolution using the actual PDF content — text is sharp, images are clear, and the output is suitable for professional use. Check out our detailed comparison guides like <a href="/compare/pdflinx-vs-smallpdf" className="text-blue-600 hover:underline font-medium">PDFLinx vs Smallpdf</a> to see how dedicated browser tools perform faster.
+      </>
+    ),
+  },
+  {
+    title: "JPG vs PNG — Which Format Should You Choose?",
+    text: (
+      <>
+        JPG is the best choice for most PDF to image conversions — it produces smaller file sizes that are easy to share via email, social media, and messaging apps, while still maintaining good visual quality. If your PDF contains text, diagrams, or content with sharp edges that need to be pixel-perfect, PNG may give slightly better results. For photos and full-color document pages, JPG is almost always the right choice. PDFLinx also offers dedicated <a href="/pdf-to-png" className="text-blue-600 hover:underline font-medium">PDF to PNG conversion</a> if you need a lossless format, or explore our list of the <a href="/blog/best-free-image-converter-tools" className="text-blue-600 hover:underline font-medium">best free image converter tools</a>.
+      </>
+    ),
+  },
+],
             faqs: [
               {
                 q: "Is PDFLinx PDF to JPG converter free?",

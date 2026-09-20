@@ -6,10 +6,12 @@ const withBundleAnalyzer = bundleAnalyzer({
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+
   experimental: {
-    optimizeCss: true,
-    browsersListForSwc: true,
+    // optimizeCss: true,
+    // browsersListForSwc: true,
   },
+
   compiler: {
     removeConsole: process.env.NODE_ENV === "production",
   },

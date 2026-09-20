@@ -472,45 +472,81 @@ export default function RemovePdf() {
             seoDescription:
               "Everything you need to know about deleting unwanted pages from a PDF — free, online, instant. No watermark, no signup, no limits.",
 
-            seoSections: [
-              {
-                title:
-                  "Free PDF Page Remover — Delete Any Page from a PDF Online in Seconds",
-                text: "Need to remove pages from a PDF? PDFLinx lets you delete any page from a PDF online for free — instantly and without any software installation. Whether it is a blank page at the end, a confidential section in the middle, a cover page you no longer need, or a range of pages from a large document, PDFLinx removes them cleanly in seconds. No signup, no watermark, no hidden limits. Works on Windows, Mac, iPhone, and Android.",
-              },
-              {
-                title: "Why You Might Need to Remove Pages from a PDF",
-                text: "There are many everyday situations where removing pages from a PDF is necessary. A scanned document may include blank pages between content. A report may have an internal section that should not be shared with clients. A downloaded PDF may include advertisement pages or terms pages that are not relevant. A merged PDF may have duplicate pages. A legal document may need confidential pages removed before submission. In all these cases, PDFLinx removes exactly the pages you choose — without touching anything else in the document.",
-              },
-              {
-                title: "How Page Removal Works — What Happens to the Rest of the PDF",
-                text: "When you remove pages using PDFLinx, only the selected pages are deleted from the document. All remaining pages stay completely intact — their content, formatting, images, fonts, hyperlinks, and page order are preserved exactly as in the original. The output is a properly structured PDF with continuous page numbering and no broken layout — as if the removed pages were never there.",
-              },
-              {
-                title:
-                  "Why PDFLinx is the Best Free PDF Page Remover — No Watermark, No Limits",
-                text: "Most free PDF page removal tools add watermarks to the output, restrict the number of pages you can delete, or require account creation. PDFLinx does none of that — completely free, no signup, no watermark, and no daily limit. Unlike iLovePDF and Smallpdf which restrict page editing tools on free tiers, PDFLinx gives you full access at zero cost.",
-              },
-              {
-                title: "Common Use Cases for Removing Pages from a PDF",
-                text: "✓ Remove blank or empty pages from scanned documents before sharing.\n✓ Delete confidential or internal pages from reports before sending to clients.\n✓ Strip cover pages, table of contents, or appendix pages from a document.\n✓ Remove advertisement or filler pages from downloaded PDF files.\n✓ Clean up merged PDFs that contain duplicate or unwanted pages.\n✓ Trim a long PDF down to only the pages relevant to a specific recipient or submission.",
-              },
-              {
-                title:
-                  "Remove PDF Pages on iPhone, Android, Mac & Windows — No App Needed",
-                text: "PDFLinx works entirely in your browser — no download, no installation, no app required. On iPhone or Android, open your browser and upload your PDF directly from your files app. On Mac or Windows, drag and drop your PDF and download the cleaned file in seconds. Whether you need to remove pages on mobile or desktop, PDFLinx works seamlessly across every platform and operating system.",
-              },
-              {
-                title: "Privacy and File Security",
-                text: "Your files are processed on secure servers and automatically deleted after 1 hour. We do not store, share, or access your documents at any point. This is especially important when removing confidential or sensitive pages from business or legal documents. All file transfers use encrypted HTTPS connections for complete security.",
-              },
-              {
-                title:
-                  "Remove Pages vs Split PDF — What is the Difference?",
-                text: "Removing pages and splitting a PDF are related but different actions. Removing pages deletes specific pages and gives you back the same document without them. Splitting a PDF separates it into multiple files — either by individual pages or by page ranges. If you want to clean up a document by deleting unwanted pages, use Remove Pages. If you want to divide a document into separate files for different purposes, use our free PDF Split tool. Both are free on PDFLinx.",
-              },
-            ],
-
+seoSections: [
+  {
+    title:
+      "Free PDF Page Remover — Delete Any Page from a PDF Online in Seconds",
+    text: (
+      <>
+        Need to remove pages from a PDF? PDFLinx lets you <a href="/remove-pages" className="text-blue-600 hover:underline font-medium">remove pages from PDF</a> online for free — instantly and without any software installation. Whether it is a blank page at the end, a confidential section in the middle, a cover page you no longer need, or a range of pages from a large document, PDFLinx removes them cleanly in seconds. If you also need to reorder or resequence the remaining pages, try our <a href="/organize-pdf" className="text-blue-600 hover:underline font-medium">Organize PDF tool</a>. No signup, no watermark, no hidden limits. Works on Windows, Mac, iPhone, and Android.
+      </>
+    ),
+  },
+  {
+    title: "Why You Might Need to Remove Pages from a PDF",
+    text: (
+      <>
+        There are many everyday situations where removing pages from a PDF is necessary. A scanned document may include blank pages between content or incorrectly oriented pages that you need to <a href="/rotate-pdf" className="text-blue-600 hover:underline font-medium">rotate PDF pages</a> first. A report may have an internal section that should not be shared with clients — though if you want to keep the page and hide sensitive text, you can <a href="/redact-pdf" className="text-blue-600 hover:underline font-medium">redact PDF online</a> instead. A downloaded PDF may include advertisement pages, or you may need to <a href="/crop-pdf" className="text-blue-600 hover:underline font-medium">crop PDF borders</a> to trim unwanted edges. In all these cases, PDFLinx handles your files cleanly and efficiently.
+      </>
+    ),
+  },
+  {
+    title: "How Page Removal Works — What Happens to the Rest of the PDF",
+    text: (
+      <>
+        When you remove pages using PDFLinx, only the selected pages are deleted from the document. All remaining pages stay completely intact — their content, formatting, images, fonts, hyperlinks, and page layout are preserved exactly as in the original. After removing pages, you can easily <a href="/add-page-numbers" className="text-blue-600 hover:underline font-medium">add page numbers to PDF</a> to ensure your new document maintains proper continuous numbering.
+      </>
+    ),
+  },
+  {
+    title:
+      "Why PDFLinx is the Best Free PDF Page Remover — No Watermark, No Limits",
+    text: (
+      <>
+        Most free PDF page removal tools add watermarks to the output, restrict the number of pages you can delete, or require account creation. PDFLinx does none of that — completely free, no signup, no watermark, and no daily limit. Unlike iLovePDF and Smallpdf which restrict page editing tools on free tiers, PDFLinx gives you full access to all features, including the ability to <a href="/edit-pdf" className="text-blue-600 hover:underline font-medium">edit PDF online</a> at zero cost. Check our <a href="/compare/pdflinx-vs-ilovepdf" className="text-blue-600 hover:underline font-medium">PDFLinx vs iLovePDF comparison</a> to learn more.
+      </>
+    ),
+  },
+  {
+    title: "Common Use Cases for Removing Pages from a PDF",
+    text: (
+      <>
+        ✓ <strong>Scanned Documents:</strong> Delete blank or empty pages from scanned files before sharing.<br />
+        ✓ <strong>Confidential Reports:</strong> Strip sensitive pages, or use <a href="/protect-pdf" className="text-blue-600 hover:underline font-medium">Protect PDF with password</a> to secure the final copy.<br />
+        ✓ <strong>Legal & HR Docs:</strong> Remove unneeded agreement sheets before sending documents to <a href="/sign-pdf" className="text-blue-600 hover:underline font-medium">sign PDF online</a>.<br />
+        ✓ <strong>Downloaded PDF Files:</strong> Strip cover pages, table of contents, or advertisement pages.<br />
+        ✓ <strong>Merged PDFs:</strong> Clean up merged documents that contain duplicate or unwanted pages.<br />
+        ✓ <strong>Custom Submissions:</strong> Trim a long PDF down to only the pages relevant to a specific recipient.
+      </>
+    ),
+  },
+  {
+    title:
+      "Remove PDF Pages on iPhone, Android, Mac & Windows — No App Needed",
+    text: (
+      <>
+        PDFLinx works entirely in your browser — no download, no installation, no app required. On iPhone or Android, open your browser and upload your PDF directly from your files app. On Mac or Windows, drag and drop your PDF and download the cleaned file in seconds. Whether you need to remove pages on mobile or desktop, PDFLinx works seamlessly across every platform and operating system.
+      </>
+    ),
+  },
+  {
+    title: "Privacy and File Security",
+    text: (
+      <>
+        Your files are processed on secure servers and automatically deleted after 1 hour. We do not store, share, or access your documents at any point. This is especially important when removing confidential or sensitive pages from business or legal documents. If your document is password protected, use our <a href="/unlock-pdf" className="text-blue-600 hover:underline font-medium">Unlock PDF tool</a> first. If your uploaded file has corruption issues, try our <a href="/repair-pdf" className="text-blue-600 hover:underline font-medium">Repair PDF tool</a> to fix it before processing.
+      </>
+    ),
+  },
+  {
+    title:
+      "Remove Pages vs Split PDF — What is the Difference?",
+    text: (
+      <>
+        Removing pages and splitting a PDF are related but different actions. Removing pages deletes specific pages and gives you back the same document without them. Splitting a PDF separates it into multiple files — either by individual pages or by page ranges. If you want to clean up a document by deleting unwanted pages, use <a href="/remove-pages" className="text-blue-600 hover:underline font-medium">Remove Pages</a>. If you want to divide a document into separate files for different purposes, use our free <a href="/split-pdf" className="text-blue-600 hover:underline font-medium">Split PDF tool</a>. Both are completely free on PDFLinx.
+      </>
+    ),
+  },
+],
             faqs: [
               {
                 q: "Is PDFLinx remove pages tool free?",

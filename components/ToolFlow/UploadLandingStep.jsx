@@ -1,6 +1,8 @@
+
 // components/ToolFlow/UploadLandingStep.jsx
 "use client";
 import { useEffect, useRef, useState } from "react";
+import { renderWithLinks } from "@/utils/renderWithLinks";
 
 import Link from "next/link";
 import {
@@ -83,11 +85,25 @@ const defaultWhyItems = [
   { icon: Zap, title: "Lightning Fast", desc: "Most conversions complete in under 30 seconds. No waiting, no queues.", iconColor: "text-amber-500", bgColor: "bg-amber-50" },
 ];
 
+// const defaultStats = [
+//   { num: "4.9★", label: "User Rating" },
+//   { num: "50K+", label: "Monthly Users" },
+//   { num: "<30s", label: "Avg. Conversion Time" },
+//   { num: "100%", label: "Free, Always" },
+// ];
+
+// const defaultStats = [
+//   { num: "Free", label: "Forever" },
+//   { num: "No Signup", label: "Required" },
+//   { num: "<30s", label: "Avg. Time" },  // ye rakh sakte ho agar backend se roughly verify ho
+//   { num: "SSL", label: "Encrypted" },
+// ];
+
 const defaultStats = [
-  { num: "4.9★", label: "User Rating" },
-  { num: "50K+", label: "Monthly Users" },
-  { num: "<30s", label: "Avg. Conversion Time" },
-  { num: "100%", label: "Free, Always" },
+  { icon: Infinity, num: "Free", label: "Forever, No Cost" },
+  { icon: Zap, num: "Instant", label: "No Signup Needed" },
+  { icon: Timer, num: "<30s", label: "Avg. Processing Time" },
+  { icon: ShieldCheck, num: "256-bit", label: "SSL Encrypted" },
 ];
 
 /* ─────────────────────────────────────────
@@ -426,7 +442,10 @@ function HeroUploadBox({ onFilesSelect, accept, multiple, uploadTitle, uploadSub
 
       {/* Feature list */}
       <div className="mt-5 rounded-lg bg-stone-50 p-3 text-left">
-        <p className="mb-1.5 text-xs font-medium text-stone-400">PDF to Word Conversion includes:</p>
+        {/* <p className="mb-1.5 text-xs font-medium text-stone-400">PDF to Word Conversion includes:</p> */}
+          <p className="mb-1.5 text-xs font-medium text-stone-400">
+            {content?.noticeTitle || "This conversion includes:"}
+          </p>
         <ul className="space-y-1">
           {(content?.noticeItems || [
             "Single PDF → DOCX",
@@ -689,7 +708,11 @@ function SeoSection({
                     {section.text}
                   </p> */}
                   {/* <p className="whitespace-pre-line">{section.text}</p> */}
-                  <p className="whitespace-pre-line text-sm leading-7 text-stone-500">{section.text}</p>
+                  {/* <p className="whitespace-pre-line text-sm leading-7 text-stone-500">{section.text}</p> */}
+                  {/* <p className="whitespace-pre-line text-sm leading-7 text-stone-500">{renderWithLinks(section.text)}</p> */}
+                  <p className="whitespace-pre-line text-sm leading-7 text-stone-500">
+                    {typeof section.text === "string" ? renderWithLinks(section.text) : section.text}
+                  </p>
                 </div>
               </div>
             </div>
@@ -703,13 +726,21 @@ function SeoSection({
 /* ─────────────────────────────────────────
    FAQ  (accordion, full-width border lines)
 ───────────────────────────────────────── */
-function FaqSection({ faqs, title }) {
+// function FaqSection({ faqs, title }) {
+//   return (
+//     <div className="bg-white py-20">
+//       <div className="mx-auto max-w-6xl px-6">
+//         <Eyebrow color="text-violet-600">Help Center</Eyebrow>
+//         <SectionTitle>{title || "Frequently asked questions"}</SectionTitle>
+//         <SectionSub>Quick answers about PDF to Word conversion, OCR, file safety, and more.</SectionSub>
+
+function FaqSection({ faqs, title, subtitle }) {
   return (
     <div className="bg-white py-20">
       <div className="mx-auto max-w-6xl px-6">
         <Eyebrow color="text-violet-600">Help Center</Eyebrow>
         <SectionTitle>{title || "Frequently asked questions"}</SectionTitle>
-        <SectionSub>Quick answers about PDF to Word conversion, OCR, file safety, and more.</SectionSub>
+        <SectionSub>{subtitle || "Quick answers about your questions, file safety, and more."}</SectionSub>
 
         <div className="mt-8 divide-y divide-stone-100 border-t border-stone-100">
           {faqs.map((faq) => (
@@ -958,7 +989,7 @@ export default function UploadLandingStep({
           </div>
 
           {/* social proof */}
-          <div className="mt-7 flex items-center gap-3">
+          {/* <div className="mt-7 flex items-center gap-3">
             <div className="flex text-amber-400">
               {Array.from({ length: 5 }).map((_, i) => (
                 <Star key={i} className="h-4 w-4 fill-current" />
@@ -966,7 +997,8 @@ export default function UploadLandingStep({
             </div>
             <span className="text-sm font-semibold text-stone-900">{content.rating || "4.9/5"}</span>
             <span className="text-sm text-stone-400">{content.ratingText || "Trusted by 50,000+ users monthly"}</span>
-          </div>
+          </div> */}
+
         </div>
 
         {/* RIGHT — upload box */}
@@ -1047,8 +1079,13 @@ export default function UploadLandingStep({
 
       {/* ── FAQ ── */}
       {/* <FaqSection faqs={faqs} title={content.faqTitle} /> */}
-      <RevealOnScroll>
+      {/* <RevealOnScroll>
         <FaqSection faqs={faqs} title={content.faqTitle} />
+      </RevealOnScroll> */}
+
+      {/* ── FAQ ── */}
+      <RevealOnScroll>
+        <FaqSection faqs={faqs} title={content.faqTitle} subtitle={content.faqSubtitle} />
       </RevealOnScroll>
 
       {/* ── RELATED TOOLS ── */}
