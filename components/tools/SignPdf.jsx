@@ -1391,7 +1391,6 @@ export default function SignPdf({ seo }) {
               priceCurrency: "USD",
             },
 
-            
             description:
               "Free online tool to add digital signatures to PDF documents. Draw or upload your signature, position with live preview, download instantly. No signup required. Works on iPhone, Android, Mac, and Windows.",
             featureList: [
