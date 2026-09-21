@@ -434,48 +434,89 @@ export default function PdfToPng({ seo }) {
             seoDescription:
               "Everything you need to know about converting PDF pages to PNG images — free, online, lossless quality. No watermark, no signup, no limits.",
 
-            seoSections: [
-              {
-                title:
-                  "Free PDF to PNG Converter — Convert PDF Pages to Lossless PNG Images Online",
-                text: "Need to convert a PDF to PNG? PDFLinx lets you convert PDF pages to PNG images online for free — instantly and without any software installation. Whether it is a text-heavy document, a technical diagram, a certificate, or a presentation slide, PDFLinx renders each page as a clean, lossless PNG image in seconds. No signup, no watermark, no hidden limits. It is the best free PDF to PNG converter available today — works on Windows, Mac, iPhone, and Android.",
-              },
-              {
-                title: "What is PDF to PNG Conversion?",
-                text: "PDF to PNG conversion renders each page of a PDF document as a standalone PNG image file. Unlike JPG, PNG uses lossless compression — meaning no image data is lost and there are no compression artifacts. This makes PNG the ideal format when you need pixel-perfect output from your PDF pages, especially for documents with sharp text, line art, logos, diagrams, and transparent elements.",
-              },
-              {
-                title: "Why PNG is Better Than JPG for Certain PDF Content",
-                text: "JPG compression is excellent for photographs but introduces visible artifacts on sharp edges, thin text lines, and diagrams — a phenomenon called compression noise. PNG avoids this entirely by using lossless compression. For PDFs containing text-heavy pages, technical drawings, charts, logos, or UI screenshots, converting to PNG gives you noticeably sharper and cleaner output than JPG. If file size is a concern and your PDF contains mostly photographs, JPG may be a better choice — but for quality-critical content, PNG wins every time.",
-              },
-              {
-                title:
-                  "Why PDFLinx is the Best Free PDF to PNG Converter — No Watermark, No Limits",
-                text: "Most free PDF to PNG converters add watermarks, limit the number of pages you can convert, or reduce image quality on free plans. PDFLinx does none of that — completely free, no signup, no watermark, and no daily conversion limit. Unlike iLovePDF and Smallpdf which restrict high-resolution output and batch conversion on free tiers, PDFLinx gives you full-quality lossless PNG output at zero cost.",
-              },
-              {
-                title: "Common Use Cases for PDF to PNG Conversion",
-                text: "✓ Graphic Designers: Extract PDF pages as PNG for use in Photoshop, Illustrator, Figma, or Canva — without quality loss.\n✓ Web Developers: Use PDF page renders as high-quality PNG images on websites, apps, and landing pages.\n✓ Document Thumbnails: Generate sharp, clear preview thumbnails of PDF pages for document management systems.\n✓ Certificates & Badges: Convert certificate PDFs to PNG for embedding in emails, LinkedIn profiles, and websites.\n✓ Technical Documentation: Extract engineering drawings, flowcharts, and technical diagrams from PDFs as crisp PNG images.\n✓ Social Media: Share PDF content as lossless PNG images on platforms where PDF is not directly supported.",
-              },
-              {
-                title:
-                  "Convert PDF to PNG on iPhone, Android, Mac & Windows — No App Needed",
-                text: "PDFLinx works entirely in your browser — no download, no installation, no app required. On iPhone or Android, open your browser and upload your PDF directly from your files app. On Mac or Windows, drag and drop your PDF and download the PNG images in seconds. Whether you need to convert PDF to PNG on mobile or desktop, PDFLinx works seamlessly across every platform and operating system.",
-              },
-              {
-                title: "Privacy and File Security",
-                text: "Your files are processed on secure servers and automatically deleted after 1 hour. We do not store, share, or access your documents at any point. PDFLinx is built with privacy-first principles — your data stays yours. All file transfers use encrypted HTTPS connections for complete security.",
-              },
-              {
-                title:
-                  "Does PDF to PNG Support Transparency?",
-                text: "Yes. PNG natively supports transparent backgrounds, and PDFLinx preserves transparency where it exists in the original PDF. This is especially useful for PDFs with logos, icons, or design elements that sit on transparent backgrounds — the exported PNG will retain the transparency, making it easy to place the image on any background color in design tools without a white box appearing around it.",
-              },
-              {
-                title: "PDF to PNG vs PDF to JPG — Which Should You Use?",
-                text: "Choose PNG when your PDF contains text, diagrams, logos, charts, screenshots, or any content with sharp edges — lossless quality ensures everything stays pixel-perfect. Choose JPG when your PDF contains mostly photographs or when file size matters more than pixel-perfect sharpness, such as for email sharing or social media. For professional design work, document archiving, and technical content, PNG is almost always the better choice. PDFLinx offers both — use whichever fits your need.",
-              },
-            ],
+seoSections: [
+  {
+    title: "Free PDF to PNG Converter — Convert PDF Pages to Lossless PNG Images Online",
+    text: (
+      <>
+        Need to convert a PDF to PNG? PDFLinx lets you convert PDF pages to PNG images online for free — instantly and without any software installation. If you ever need to perform the reverse operation, try our{" "}
+        <a href="/image-to-pdf" className="text-blue-600 hover:underline font-medium">
+          Image to PDF converter
+        </a>{" "}
+        or explore all available conversion utilities on our{" "}
+        <a href="/free-pdf-tools" className="text-blue-600 hover:underline font-medium">
+          free PDF tools directory
+        </a>. Whether it is a text-heavy document, a technical diagram, a certificate, or a presentation slide, PDFLinx renders each page as a clean, lossless PNG image in seconds.
+      </>
+    ),
+  },
+  {
+    title: "What is PDF to PNG Conversion?",
+    text: "PDF to PNG conversion renders each page of a PDF document as a standalone PNG image file. Unlike JPG, PNG uses lossless compression — meaning no image data is lost and there are no compression artifacts. This makes PNG the ideal format when you need pixel-perfect output from your PDF pages, especially for documents with sharp text, line art, logos, diagrams, and transparent elements.",
+  },
+  {
+    title: "Why PNG is Better Than JPG for Certain PDF Content",
+    text: "JPG compression is excellent for photographs but introduces visible artifacts on sharp edges, thin text lines, and diagrams — a phenomenon called compression noise. PNG avoids this entirely by using lossless compression. For PDFs containing text-heavy pages, technical drawings, charts, logos, or UI screenshots, converting to PNG gives you noticeably sharper and cleaner output than JPG.",
+  },
+  {
+    title: "Why PDFLinx is the Best Free PDF to PNG Converter — No Watermark, No Limits",
+    text: "Most free PDF to PNG converters add watermarks, limit the number of pages you can convert, or reduce image quality on free plans. PDFLinx does none of that — completely free, no signup, no watermark, and no daily conversion limit. Unlike iLovePDF and Smallpdf which restrict high-resolution output and batch conversion on free tiers, PDFLinx gives you full-quality lossless PNG output at zero cost.",
+  },
+  {
+    title: "Common Use Cases for PDF to PNG Conversion",
+    text: (
+      <>
+        ✓ Graphic Designers: Extract PDF pages as PNG for use in Photoshop, Illustrator, Figma, or Canva. Before exporting, if you need to touch up text or layouts, feel free to use our{" "}
+        <a href="/edit-pdf" className="text-blue-600 hover:underline font-medium">
+          Edit PDF
+        </a>{" "}
+        tool.
+        <br />
+        ✓ Web Developers: Use PDF page renders as high-quality PNG images on websites, apps, and landing pages.
+        <br />
+        ✓ Document Thumbnails: Generate sharp, clear preview thumbnails of PDF pages for document management systems.
+        <br />
+        ✓ Certificates & Badges: Convert certificate PDFs to PNG for embedding in emails, LinkedIn profiles, and websites.
+        <br />
+        ✓ Technical Documentation: Extract engineering drawings, flowcharts, and technical diagrams from PDFs as crisp PNG images.
+        <br />
+        ✓ Social Media: Share PDF content as lossless PNG images on platforms where PDF is not directly supported.
+      </>
+    ),
+  },
+  {
+    title: "Convert PDF to PNG on iPhone, Android, Mac & Windows — No App Needed",
+    text: "PDFLinx works entirely in your browser — no download, no installation, no app required. On iPhone or Android, open your browser and upload your PDF directly from your files app. On Mac or Windows, drag and drop your PDF and download the PNG images in seconds. Whether you need to convert PDF to PNG on mobile or desktop, PDFLinx works seamlessly across every platform and operating system.",
+  },
+  {
+    title: "Privacy and File Security",
+    text: (
+      <>
+        Your files are processed on secure servers and automatically deleted after 1 hour. We do not store, share, or access your documents at any point. If you want to secure sensitive documents before sharing or converting, check out our{" "}
+        <a href="/protect-pdf" className="text-blue-600 hover:underline font-medium">
+          Protect PDF
+        </a>{" "}
+        tool to apply strong password encryption.
+      </>
+    ),
+  },
+  {
+    title: "Does PDF to PNG Support Transparency?",
+    text: "Yes. PNG natively supports transparent backgrounds, and PDFLinx preserves transparency where it exists in the original PDF. This is especially useful for PDFs with logos, icons, or design elements that sit on transparent backgrounds — the exported PNG will retain the transparency, making it easy to place the image on any background color in design tools without a white box appearing around it.",
+  },
+  {
+    title: "PDF to PNG vs PDF to JPG — Which Should You Use?",
+    text: (
+      <>
+        Choose PNG when your PDF contains text, diagrams, logos, charts, screenshots, or any content with sharp edges — lossless quality ensures everything stays pixel-perfect. Choose JPG when your PDF contains mostly photographs or when file size matters more. If large output image sizes become an issue after conversion, you can reduce the original file size first with our{" "}
+        <a href="/compress-pdf" className="text-blue-600 hover:underline font-medium">
+          Compress PDF
+        </a>{" "}
+        tool. PDFLinx offers solutions for both needs.
+      </>
+    ),
+  },
+],
 
             faqs: [
               {
