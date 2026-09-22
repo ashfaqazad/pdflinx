@@ -103,7 +103,7 @@ const ToolsFooter = () => {
             title: "Convert To PDF",
             items: [
                 { name: "Word to PDF", href: "/word-to-pdf", icon: FileText },
-                { name: "Excel to PDF", href: "/excel-to-pdf", icon: FileSpreadsheet },
+                { name: "Excel to PDF", href: "/excel-pdf", icon: FileSpreadsheet },
                 { name: "PowerPoint to PDF", href: "/ppt-to-pdf", icon: Presentation },
                 { name: "Image to PDF", href: "/image-to-pdf", icon: ImageIcon },
                 { name: "Text to PDF", href: "/text-to-pdf", icon: Type },
