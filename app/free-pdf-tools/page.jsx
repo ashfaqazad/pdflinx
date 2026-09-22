@@ -153,7 +153,7 @@ export default function FreePdfToolsPage() {
       desc: "Use AI to summarize, analyze, and chat with your PDF documents instantly.",
       tools: [
         { label: "AI Summarize", href: "/ai-summarize", emoji: "✨", desc: "Summarize any PDF instantly using AI. Get key points, insights, and takeaways in seconds." },
-        { label: "Chat with PDF", href: "/ai-chat", emoji: "💬", desc: "Ask questions about your PDF and get instant AI-powered answers. Like a chat with your document." },
+        { label: "Chat with PDF", href: "/chat-with-pdf", emoji: "💬", desc: "Ask questions about your PDF and get instant AI-powered answers. Like a chat with your document." },
       ],
     },
 
@@ -194,7 +194,12 @@ export default function FreePdfToolsPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd).replace(/</g, "\\u003c") }}
       />
 
-      <style suppressHydrationWarning>{`
+      {/* <style suppressHydrationWarning>{`
+        @import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap'); */}
+
+      <style
+        dangerouslySetInnerHTML={{
+          __html: `
         @import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap');
 
         .fpt-page {
@@ -492,8 +497,9 @@ export default function FreePdfToolsPage() {
           .fpt-pill         { font-size: 12px; padding: 5px 11px; }
           .fpt-cta-band::before,
           .fpt-cta-band::after { display: none; }
-        }
-      `}</style>
+       `,
+        }}
+      />
 
       <main className="fpt-page min-h-screen">
 
@@ -589,7 +595,7 @@ export default function FreePdfToolsPage() {
                 { label: "Sign documents digitally:", links: [{ text: "Sign PDF", href: tSign.href }], extra: "— draw, type, or upload your signature" },
                 { label: "Brand and protect documents:", links: [{ text: "Add Watermark", href: tWatermark.href }, { text: "Protect PDF", href: tProtect.href }, { text: "Unlock PDF", href: tUnlock.href }] },
                 { label: "Fix and repair PDF files:", links: [{ text: "Rotate PDF", href: tRotate.href }, { text: "Repair PDF", href: "/repair-pdf" }, { text: "Organize PDF", href: "/organize-pdf" }] },
-                { label: "AI-powered PDF tools:", links: [{ text: "AI Summarize", href: "/ai-summarize" }, { text: "Chat with PDF", href: "/ai-chat" }], extra: "— instant AI insights and Q&A from your documents" },
+                { label: "AI-powered PDF tools:", links: [{ text: "AI Summarize", href: "/ai-summarize" }, { text: "Chat with PDF", href: "/chat-with-pdf" }], extra: "— instant AI insights and Q&A from your documents" },
 
               ].map((item, i) => (
                 <li key={i}>
