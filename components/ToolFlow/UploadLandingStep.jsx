@@ -648,7 +648,6 @@ function WhySection({ items, title }) {
 /* ─────────────────────────────────────────
    SEO SECTIONS  (numbered cards)
 ───────────────────────────────────────── */
-// function SeoSection({ sections }) {
 function SeoSection({
   sections,
   content,
@@ -658,21 +657,10 @@ function SeoSection({
 }) {
   if (!sections?.length) return null;
 
-  const finalSections =
-    sections.length % 2 !== 0
-      ? [
-        ...sections,
-        {
-          title: "Best For Everyday Document Editing",
-          text: "Use the converted Word file for reports, assignments, invoices, contracts, forms, and office documents. The DOCX output is easy to edit, share, and reuse.",
-        },
-      ]
-      : sections;
+  const finalSections = sections;
 
   return (
     <div className="bg-white py-16">
-      {/* <div className="mx-auto max-w-6xl px-3 md:px-6"> */}
-
       <div className="mx-auto max-w-6xl px-6">
 
         <div className="mb-8 text-left">
@@ -689,39 +677,146 @@ function SeoSection({
               "Convert standard and scanned PDF files into editable Word documents with a clean, simple, and secure experience."}
           </p>
         </div>
-        <div className="grid gap-4 md:grid-cols-2">
-          {finalSections.map((section, idx) => (
-            <div
-              key={section.title}
-              className="rounded-2xl border border-stone-100 bg-stone-50 p-5"
-            >
-              <div className="flex items-start gap-3">
-                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-blue-100 text-xs font-black text-blue-700">
-                  {idx + 1}
-                </span>
+        
 
-                <div>
-                  <h3 className="font-bold text-stone-900">
-                    {section.title}
-                  </h3>
-                  {/* <p className="mt-1.5 text-sm leading-7 text-stone-500">
-                    {section.text}
-                  </p> */}
-                  {/* <p className="whitespace-pre-line">{section.text}</p> */}
-                  {/* <p className="whitespace-pre-line text-sm leading-7 text-stone-500">{section.text}</p> */}
-                  {/* <p className="whitespace-pre-line text-sm leading-7 text-stone-500">{renderWithLinks(section.text)}</p> */}
-                  <p className="whitespace-pre-line text-sm leading-7 text-stone-500">
-                    {typeof section.text === "string" ? renderWithLinks(section.text) : section.text}
-                  </p>
+        {/* <div className="grid gap-4 md:grid-cols-2">
+          {finalSections.map((section, idx) => {
+            const isLastOdd =
+              finalSections.length % 2 !== 0 && idx === finalSections.length - 1;
+
+            return (
+              <div
+                key={section.title}
+                className={`rounded-2xl border border-stone-100 bg-stone-50 p-5 ${
+                  isLastOdd ? "md:col-span-2" : ""
+                }`}
+              >
+                <div className="flex items-start gap-3">
+                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-blue-100 text-xs font-black text-blue-700">
+                    {idx + 1}
+                  </span>
+
+                  <div>
+                    <h3 className="font-bold text-stone-900">
+                      {section.title}
+                    </h3>
+                    <p className="whitespace-pre-line text-sm leading-7 text-stone-500">
+                      {typeof section.text === "string" ? renderWithLinks(section.text) : section.text}
+                    </p>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
+ */}
+
+
+ <div className="grid gap-4 md:grid-cols-2">
+  {finalSections.map((section, idx) => (
+    <div
+      key={section.title}
+      className="rounded-2xl border border-stone-100 bg-stone-50 p-5"
+    >
+      <div className="flex items-start gap-3">
+        <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-blue-100 text-xs font-black text-blue-700">
+          {idx + 1}
+        </span>
+
+        <div>
+          <h3 className="font-bold text-stone-900">
+            {section.title}
+          </h3>
+          <p className="whitespace-pre-line text-sm leading-7 text-stone-500">
+            {typeof section.text === "string" ? renderWithLinks(section.text) : section.text}
+          </p>
+        </div>
+      </div>
+    </div>
+  ))}
+</div>
+
+
       </div>
     </div>
   );
 }
+
+
+
+// function SeoSection({
+//   sections,
+//   content,
+//   badge,
+//   title,
+//   description,
+// }) {
+//   if (!sections?.length) return null;
+
+//   const finalSections =
+//     sections.length % 2 !== 0
+//       ? [
+//         ...sections,
+//         {
+//           title: "Best For Everyday Document Editing",
+//           text: "Use the converted Word file for reports, assignments, invoices, contracts, forms, and office documents. The DOCX output is easy to edit, share, and reuse.",
+//         },
+//       ]
+//       : sections;
+
+//   return (
+//     <div className="bg-white py-16">
+//       {/* <div className="mx-auto max-w-6xl px-3 md:px-6"> */}
+
+//       <div className="mx-auto max-w-6xl px-6">
+
+//         <div className="mb-8 text-left">
+//           <span className="inline-flex rounded-full bg-blue-50 px-3 py-1 text-xs font-bold uppercase tracking-widest text-blue-700">
+//             {badge || "PDF Guide"}
+//           </span>
+
+//           <SectionTitle className="mt-3 text-left">
+//             {title || "Free Online PDF Tool by PDFLinx"}
+//           </SectionTitle>
+
+//           <p className="mt-3 max-w-2xl text-sm leading-7 text-stone-500">
+//             {description ||
+//               "Convert standard and scanned PDF files into editable Word documents with a clean, simple, and secure experience."}
+//           </p>
+//         </div>
+//         <div className="grid gap-4 md:grid-cols-2">
+//           {finalSections.map((section, idx) => (
+//             <div
+//               key={section.title}
+//               className="rounded-2xl border border-stone-100 bg-stone-50 p-5"
+//             >
+//               <div className="flex items-start gap-3">
+//                 <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-blue-100 text-xs font-black text-blue-700">
+//                   {idx + 1}
+//                 </span>
+
+//                 <div>
+//                   <h3 className="font-bold text-stone-900">
+//                     {section.title}
+//                   </h3>
+//                   {/* <p className="mt-1.5 text-sm leading-7 text-stone-500">
+//                     {section.text}
+//                   </p> */}
+//                   {/* <p className="whitespace-pre-line">{section.text}</p> */}
+//                   {/* <p className="whitespace-pre-line text-sm leading-7 text-stone-500">{section.text}</p> */}
+//                   {/* <p className="whitespace-pre-line text-sm leading-7 text-stone-500">{renderWithLinks(section.text)}</p> */}
+//                   <p className="whitespace-pre-line text-sm leading-7 text-stone-500">
+//                     {typeof section.text === "string" ? renderWithLinks(section.text) : section.text}
+//                   </p>
+//                 </div>
+//               </div>
+//             </div>
+//           ))}
+//         </div>
+//       </div>
+//     </div>
+//   );
+// }
 
 /* ─────────────────────────────────────────
    FAQ  (accordion, full-width border lines)
