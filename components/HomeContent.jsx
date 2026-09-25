@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useState, useEffect, useRef } from "react";
 import styles from "./HomeContent.module.css";
+import { PdfIntroSection, PdfFaqSection } from "./HomePageSeoContent"; // apni file ke exact naam ke mutabiq
 
 import {
   ShieldCheck, RotateCw, PenTool, FileText, FileType,
@@ -445,6 +446,12 @@ export default function HomeContent() {
                 </div>
             </section>
 
+
+
+            <PdfIntroSection />
+
+
+
             {/* ── STATS STRIP ── */}
             <div className={styles.statsStrip}>
                 <div className={styles.statsInner}>
@@ -558,6 +565,9 @@ export default function HomeContent() {
                     </div>
                 </div>
             </section>
+
+
+            <PdfFaqSection />
 
             {/* ── CTA BANNER ── */}
             <section className={styles.ctaOuter}>

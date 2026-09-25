@@ -103,6 +103,16 @@
   animation: pulseDot 2s infinite;
 }
 
+.seoSection {
+  padding: 48px 24px;
+}
+
+@media (max-width: 768px) {
+  .seoSection {
+    padding: 48px 20px;
+  }
+}
+
 @keyframes pulseDot {
 
   0%,
@@ -460,7 +470,7 @@
 ───────────────────────────────────────────────────────────── */
 .whySection {
   background: #faf9f7;
-  padding: 5rem 1.5rem;
+  padding: 3rem 1.5rem;
   border-top: 1px solid rgba(15, 14, 13, 0.08);
 }
 
@@ -794,12 +804,17 @@
   }
 
   /* cta banner */
-  .ctaOuter {
+  /* .ctaOuter {
     padding: 3rem 0 0;
-    padding: 5rem 0 6rem;
+    padding: 5rem 0 6rem; */
     /* last 0 → 6rem */
 
-  }
+  /* } */
+
+  .ctaOuter {
+  background: #faf9f7;
+  padding: 1.5rem 0 6rem;    /* ← 5rem se 1.5rem kar diya, bottom 6rem waisa hi */
+}
 
   .ctaBanner {
     flex-direction: column;
