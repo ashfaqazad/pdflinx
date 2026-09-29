@@ -559,67 +559,119 @@ export default function HtmlToPdf({ seo }) {
               </div>
             ),
 
-            seoSections: [
-  {
-    title: "Free HTML to PDF Converter — Code, Webpage URL, or .html File",
-    text: (
-      <>
-        Need to save a webpage or convert an HTML template to PDF? PDFLinx renders your HTML using a full headless browser — CSS styles, custom fonts, images, and layout preserved pixel-perfect in the output PDF. If you have plain text files instead, check out our{" "}
-        <a href="/text-to-pdf" className="text-blue-600 hover:underline font-medium">
-          Text to PDF converter
-        </a>{" "}
-        or explore our full directory of{" "}
-        <a href="/free-pdf-tools" className="text-blue-600 hover:underline font-medium">
-          free PDF tools
-        </a>. Three input modes available in one tool: paste raw HTML code with inline CSS, enter any public webpage URL, or upload a saved .html file directly. No software installation required, no watermarks added, no sign-up needed.
-      </>
-    ),
-  },
-  {
-    title: "How to Convert HTML to PDF Online in 3 Simple Steps",
-    text: "Converting HTML content to a clean PDF with PDFLinx is fast and effortless: 1. Choose your input mode — HTML Code, Webpage URL, or File Upload. 2. Paste your code, enter the URL, or upload your .html file, then customize your page settings if needed. 3. Click Convert to PDF and download your high-quality PDF document instantly.",
-  },
-  {
-    title: "Key Features of PDFLinx HTML to PDF Converter",
-    text: "PDFLinx delivers pixel-perfect rendering with complete CSS3 and media query support. Enjoy fast conversion speeds, accurate page break handling, responsive design preservation, custom margins, and full cross-browser compatibility across desktop and mobile devices without quality loss.",
-  },
-  {
-    title: "HTML Code vs Webpage URL vs File Upload — Which Mode to Use",
-    text: "Use HTML Code mode for raw HTML markup with inline or internal CSS — email templates, invoice layouts, custom document pages, and any HTML you have written or copied. Use Webpage URL mode for any publicly accessible live website — external stylesheets, web fonts, images, and basic JavaScript are all rendered as the browser sees them. Use File Upload mode to convert a saved .html or .htm file from your device directly to PDF without copying and pasting the code.",
-  },
-  {
-    title: "Common Use Cases for HTML to PDF Conversion",
-    text: (
-      <>
-        Developers converting HTML invoice and receipt templates to PDF for automated client billing workflows. Designers exporting HTML email layouts and newsletter designs to PDF for client review and approval. Once rendered, if you need to quickly add annotations or legally sign your output documents, use our{" "}
-        <a href="/sign-pdf" className="text-blue-600 hover:underline font-medium">
-          Sign PDF
-        </a>{" "}
-        or{" "}
-        <a href="/edit-pdf" className="text-blue-600 hover:underline font-medium">
-          Edit PDF
-        </a>{" "}
-        tools. Marketers archiving web landing pages and campaign pages as PDF records.
-      </>
-    ),
-  },
-  {
-    title: "Privacy and File Security",
-    text: (
-      <>
-        HTML code, file uploads, and URLs submitted for conversion are processed securely over encrypted HTTPS connections and permanently deleted from our servers after conversion — never stored long-term, never shared with any third party. If you are handling sensitive documents, you can also use our{" "}
-        <a href="/protect-pdf" className="text-blue-600 hover:underline font-medium">
-          Protect PDF
-        </a>{" "}
-        tool to apply password encryption before sharing.
-      </>
-    ),
-  },
-  {
-    title: "HTML to PDF vs Other Conversion Methods — Why PDFLinx is Better",
-    text: "The browser Print to PDF option adds unwanted headers, footers, URL text, and page break artifacts — and cannot be automated. Browser extensions for saving pages as PDF have inconsistent CSS support and do not handle external stylesheets well. Server-side tools like wkhtmltopdf and Puppeteer require technical setup, hosting, and maintenance. PDFLinx gives you headless browser-quality HTML to PDF conversion directly from your browser — no code, no server setup, no cost, and no compromise on rendering quality.",
-  },
-],
+        seoSections: [
+          {
+            title: "Free HTML to PDF Converter — Code, Webpage URL, or .html File",
+            text: (
+              <>
+                Need to save a webpage or convert an HTML template to PDF? PDFLinx renders your HTML using a full headless browser — CSS styles, custom fonts, images, and layout preserved pixel-perfect in the output PDF. If you have plain text files instead, check out our{" "}
+                <a href="/text-to-pdf" className="text-blue-600 hover:underline font-medium">
+                  Text to PDF converter
+                </a>{" "}
+                or explore our full directory of{" "}
+                <a href="/free-pdf-tools" className="text-blue-600 hover:underline font-medium">
+                  free PDF tools
+                </a>. Three input modes available in one tool: paste raw HTML code with inline CSS, enter any public webpage URL, or upload a saved .html file directly. No software installation required, no watermarks added, no sign-up needed.
+              </>
+            ),
+          },
+          {
+            title: "How to Convert HTML to PDF Online in 3 Simple Steps",
+            text: "Converting HTML content to a clean PDF with PDFLinx is fast and effortless: 1. Choose your input mode — HTML Code, Webpage URL, or File Upload. 2. Paste your code, enter the URL, or upload your .html file, then customize your page settings if needed. 3. Click Convert to PDF and download your high-quality PDF document instantly.",
+          },
+          {
+            title: "Key Features of PDFLinx HTML to PDF Converter",
+            text: "PDFLinx delivers pixel-perfect rendering with complete CSS3 and media query support. Enjoy fast conversion speeds, accurate page break handling, responsive design preservation, custom margins, and full cross-browser compatibility across desktop and mobile devices without quality loss.",
+          },
+          {
+            title: "HTML Code vs Webpage URL vs File Upload — Which Mode to Use",
+            text: "Use HTML Code mode for raw HTML markup with inline or internal CSS — email templates, invoice layouts, custom document pages, and any HTML you have written or copied. Use Webpage URL mode for any publicly accessible live website — external stylesheets, web fonts, images, and basic JavaScript are all rendered as the browser sees them. Use File Upload mode to convert a saved .html or .htm file from your device directly to PDF without copying and pasting the code.",
+          },
+          {
+            title: "Common Use Cases for HTML to PDF Conversion",
+            text: (
+              <>
+                Developers converting HTML invoice and receipt templates to PDF for automated client billing workflows. Designers exporting HTML email layouts and newsletter designs to PDF for client review and approval. Once rendered, if you need to quickly add annotations or legally sign your output documents, use our{" "}
+                <a href="/sign-pdf" className="text-blue-600 hover:underline font-medium">
+                  Sign PDF
+                </a>{" "}
+                or{" "}
+                <a href="/edit-pdf" className="text-blue-600 hover:underline font-medium">
+                  Edit PDF
+                </a>{" "}
+                tools. Marketers archiving web landing pages and campaign pages as PDF records.
+              </>
+            ),
+          },
+          {
+            title: "Privacy and File Security",
+            text: (
+              <>
+                HTML code, file uploads, and URLs submitted for conversion are processed securely over encrypted HTTPS connections and permanently deleted from our servers after conversion — never stored long-term, never shared with any third party. If you are handling sensitive documents, you can also use our{" "}
+                <a href="/protect-pdf" className="text-blue-600 hover:underline font-medium">
+                  Protect PDF
+                </a>{" "}
+                tool to apply password encryption before sharing.
+              </>
+            ),
+          },
+          {
+            title: "HTML to PDF vs Other Conversion Methods — Why PDFLinx is Better",
+            text: "The browser Print to PDF option adds unwanted headers, footers, URL text, and page break artifacts — and cannot be automated. Browser extensions for saving pages as PDF have inconsistent CSS support and do not handle external stylesheets well. Server-side tools like wkhtmltopdf and Puppeteer require technical setup, hosting, and maintenance. PDFLinx gives you headless browser-quality HTML to PDF conversion directly from your browser — no code, no server setup, no cost, and no compromise on rendering quality.",
+          },
+        ],
+
+
+         faqs: [
+              {
+                q: "Is the HTML to PDF converter free?",
+                a: "Yes, completely free. No hidden charges, no subscription required, and no limits on the number of conversions.",
+              },
+              {
+                q: "Do I need to install any software?",
+                a: "No. Everything works directly in your browser. No desktop software, no plugins, no extensions needed.",
+              },
+              {
+                q: "Can I convert a live webpage URL to PDF?",
+                a: "Yes. Switch to URL mode and paste any public webpage address. The tool renders the full page including CSS, images, fonts, and layout — exactly as it appears in a browser.",
+              },
+              {
+                q: "Will CSS styles and custom fonts be preserved?",
+                a: "Yes. CSS styling, Google Fonts, custom font-face declarations, colors, backgrounds, and layouts are all preserved accurately in the converted PDF.",
+              },
+              {
+                q: "Can I convert HTML with inline CSS to PDF?",
+                a: "Yes. Both inline CSS and internal style blocks are fully supported. External stylesheets are resolved when converting from a URL.",
+              },
+              {
+                q: "Why are my images not showing in the converted PDF?",
+                a: "In HTML Code mode, use base64-encoded images for best results — external image URLs may not load. In URL mode, all images load normally from their original servers.",
+              },
+              {
+                q: "Can I convert a password-protected or login-required page?",
+                a: "No. Only publicly accessible pages can be converted via URL mode. For private or login-protected pages, view the page in your browser, copy the HTML source, and use HTML Code mode instead.",
+              },
+              {
+                q: "Are my HTML code and URLs secure and private?",
+                a: "Yes. HTML code and URLs are processed securely over HTTPS and permanently deleted after conversion — never stored long-term, never shared with any third party.",
+              },
+              {
+                q: "Can I upload an .html file directly?",
+                a: "Yes. Switch to the Upload .html File mode, select your .html or .htm file from your device, and convert it directly to PDF in one step.",
+              },
+              {
+                q: "How do I get the best PDF output from my HTML?",
+                a: "Use a max page width of 794px, inline or internal CSS, base64 images in Code mode, and @media print CSS rules to control page breaks. Avoid JavaScript-dependent content for most reliable results.",
+              },
+              {
+                q: "Does JavaScript execute during HTML to PDF conversion?",
+                a: "Basic JavaScript may execute during headless browser rendering. However, content requiring user interaction, delayed API calls, or complex dynamic loading may not fully render. For best results, use HTML with content already present in the markup.",
+              },
+              {
+                q: "What is the difference between the three input modes?",
+                a: "HTML Code mode is for raw HTML with inline or internal CSS — ideal for invoice templates, email layouts, and custom pages. URL mode renders any live public webpage — best for archiving or saving web content. File Upload mode converts a saved .html or .htm file — convenient when you have a local HTML file ready.",
+              },
+            ],
 
           },
         }}
@@ -1532,56 +1584,56 @@ export default function HtmlToPdf({ seo }) {
 
 //             faqTitle: "Frequently Asked Questions",
 
-//             faqs: [
-//               {
-//                 q: "Is the HTML to PDF converter free?",
-//                 a: "Yes, completely free. No hidden charges, no subscription required, and no limits on the number of conversions.",
-//               },
-//               {
-//                 q: "Do I need to install any software?",
-//                 a: "No. Everything works directly in your browser. No desktop software, no plugins, no extensions needed.",
-//               },
-//               {
-//                 q: "Can I convert a live webpage URL to PDF?",
-//                 a: "Yes. Switch to URL mode and paste any public webpage address. The tool renders the full page including CSS, images, fonts, and layout — exactly as it appears in a browser.",
-//               },
-//               {
-//                 q: "Will CSS styles and custom fonts be preserved?",
-//                 a: "Yes. CSS styling, Google Fonts, custom font-face declarations, colors, backgrounds, and layouts are all preserved accurately in the converted PDF.",
-//               },
-//               {
-//                 q: "Can I convert HTML with inline CSS to PDF?",
-//                 a: "Yes. Both inline CSS and internal style blocks are fully supported. External stylesheets are resolved when converting from a URL.",
-//               },
-//               {
-//                 q: "Why are my images not showing in the converted PDF?",
-//                 a: "In HTML Code mode, use base64-encoded images for best results — external image URLs may not load. In URL mode, all images load normally from their original servers.",
-//               },
-//               {
-//                 q: "Can I convert a password-protected or login-required page?",
-//                 a: "No. Only publicly accessible pages can be converted via URL mode. For private or login-protected pages, view the page in your browser, copy the HTML source, and use HTML Code mode instead.",
-//               },
-//               {
-//                 q: "Are my HTML code and URLs secure and private?",
-//                 a: "Yes. HTML code and URLs are processed securely over HTTPS and permanently deleted after conversion — never stored long-term, never shared with any third party.",
-//               },
-//               {
-//                 q: "Can I upload an .html file directly?",
-//                 a: "Yes. Switch to the Upload .html File mode, select your .html or .htm file from your device, and convert it directly to PDF in one step.",
-//               },
-//               {
-//                 q: "How do I get the best PDF output from my HTML?",
-//                 a: "Use a max page width of 794px, inline or internal CSS, base64 images in Code mode, and @media print CSS rules to control page breaks. Avoid JavaScript-dependent content for most reliable results.",
-//               },
-//               {
-//                 q: "Does JavaScript execute during HTML to PDF conversion?",
-//                 a: "Basic JavaScript may execute during headless browser rendering. However, content requiring user interaction, delayed API calls, or complex dynamic loading may not fully render. For best results, use HTML with content already present in the markup.",
-//               },
-//               {
-//                 q: "What is the difference between the three input modes?",
-//                 a: "HTML Code mode is for raw HTML with inline or internal CSS — ideal for invoice templates, email layouts, and custom pages. URL mode renders any live public webpage — best for archiving or saving web content. File Upload mode converts a saved .html or .htm file — convenient when you have a local HTML file ready.",
-//               },
-//             ],
+            // faqs: [
+            //   {
+            //     q: "Is the HTML to PDF converter free?",
+            //     a: "Yes, completely free. No hidden charges, no subscription required, and no limits on the number of conversions.",
+            //   },
+            //   {
+            //     q: "Do I need to install any software?",
+            //     a: "No. Everything works directly in your browser. No desktop software, no plugins, no extensions needed.",
+            //   },
+            //   {
+            //     q: "Can I convert a live webpage URL to PDF?",
+            //     a: "Yes. Switch to URL mode and paste any public webpage address. The tool renders the full page including CSS, images, fonts, and layout — exactly as it appears in a browser.",
+            //   },
+            //   {
+            //     q: "Will CSS styles and custom fonts be preserved?",
+            //     a: "Yes. CSS styling, Google Fonts, custom font-face declarations, colors, backgrounds, and layouts are all preserved accurately in the converted PDF.",
+            //   },
+            //   {
+            //     q: "Can I convert HTML with inline CSS to PDF?",
+            //     a: "Yes. Both inline CSS and internal style blocks are fully supported. External stylesheets are resolved when converting from a URL.",
+            //   },
+            //   {
+            //     q: "Why are my images not showing in the converted PDF?",
+            //     a: "In HTML Code mode, use base64-encoded images for best results — external image URLs may not load. In URL mode, all images load normally from their original servers.",
+            //   },
+            //   {
+            //     q: "Can I convert a password-protected or login-required page?",
+            //     a: "No. Only publicly accessible pages can be converted via URL mode. For private or login-protected pages, view the page in your browser, copy the HTML source, and use HTML Code mode instead.",
+            //   },
+            //   {
+            //     q: "Are my HTML code and URLs secure and private?",
+            //     a: "Yes. HTML code and URLs are processed securely over HTTPS and permanently deleted after conversion — never stored long-term, never shared with any third party.",
+            //   },
+            //   {
+            //     q: "Can I upload an .html file directly?",
+            //     a: "Yes. Switch to the Upload .html File mode, select your .html or .htm file from your device, and convert it directly to PDF in one step.",
+            //   },
+            //   {
+            //     q: "How do I get the best PDF output from my HTML?",
+            //     a: "Use a max page width of 794px, inline or internal CSS, base64 images in Code mode, and @media print CSS rules to control page breaks. Avoid JavaScript-dependent content for most reliable results.",
+            //   },
+            //   {
+            //     q: "Does JavaScript execute during HTML to PDF conversion?",
+            //     a: "Basic JavaScript may execute during headless browser rendering. However, content requiring user interaction, delayed API calls, or complex dynamic loading may not fully render. For best results, use HTML with content already present in the markup.",
+            //   },
+            //   {
+            //     q: "What is the difference between the three input modes?",
+            //     a: "HTML Code mode is for raw HTML with inline or internal CSS — ideal for invoice templates, email layouts, and custom pages. URL mode renders any live public webpage — best for archiving or saving web content. File Upload mode converts a saved .html or .htm file — convenient when you have a local HTML file ready.",
+            //   },
+            // ],
 
 //             ctaBadge: "✦ 100% Free",
 //             ctaTitle: "Convert HTML to PDF Now",
