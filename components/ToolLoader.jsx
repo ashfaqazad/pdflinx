@@ -23,12 +23,16 @@ const toolMap = {
   'unlock-pdf':        dynamic(() => import('@/components/tools/UnlockPdf')),
   'rotate-pdf':        dynamic(() => import('@/components/tools/RotatePdf')),
   'sign-pdf':          dynamic(() => import('@/components/tools/SignPdf')),
-  'ocr-pdf':           dynamic(() => import('@/components/tools/OCRPdf'), { ssr: false, loading: ToolLoading }),
+  'ocr-pdf':            dynamic(() => import('@/components/tools/OCRPdf')),
+
+  // 'ocr-pdf':           dynamic(() => import('@/components/tools/OCRPdf'), { ssr: false, loading: ToolLoading }),
+
   'edit-pdf':          dynamic(() => import('@/components/tools/EditPdf')),
   'pdf-to-excel':      dynamic(() => import('@/components/tools/PdfToExcel')),
   'remove-pages':      dynamic(() => import('@/components/tools/RemovePages')),
   'add-page-numbers':  dynamic(() => import('@/components/tools/AddPageNumbers')),
-  'html-to-pdf':       dynamic(() => import('@/components/tools/HtmlToPdf'), { ssr: false, loading: ToolLoading }),
+  'html-to-pdf': dynamic(() => import('@/components/tools/HtmlToPdf')),
+  // 'html-to-pdf':       dynamic(() => import('@/components/tools/HtmlToPdf'), { ssr: false, loading: ToolLoading }),
   'pdf-to-png':        dynamic(() => import('@/components/tools/PdfToPng')),
   'pdf-to-text':       dynamic(() => import('@/components/tools/PdfToText')),
   'organize-pdf':      dynamic(() => import('@/components/tools/OrganizePdf')),
@@ -37,9 +41,12 @@ const toolMap = {
   'redact-pdf':        dynamic(() => import('@/components/tools/RedactPdf')),
   'repair-pdf':        dynamic(() => import('@/components/tools/RepairPdf')),
   'pdf-to-powerpoint': dynamic(() => import('@/components/tools/PdfToPowerPoint')),
-  'ai-summarize':      dynamic(() => import('@/components/tools/AiSummarize'), { ssr: false, loading: ToolLoading }),
-  'translate-pdf':     dynamic(() => import('@/components/tools/AiTranslate'), { ssr: false, loading: ToolLoading }),
-  'chat-with-pdf':     dynamic(() => import('@/components/tools/AiChat'), { ssr: false, loading: ToolLoading }),
+  'ai-summarize':  dynamic(() => import('@/components/tools/AiSummarize')),
+  // 'translate-pdf': dynamic(() => import('@/components/tools/AiTranslate')),
+  'chat-with-pdf':  dynamic(() => import('@/components/tools/AiChat')),
+  // 'ai-summarize':      dynamic(() => import('@/components/tools/AiSummarize'), { ssr: false, loading: ToolLoading }),
+  // 'translate-pdf':     dynamic(() => import('@/components/tools/AiTranslate'), { ssr: false, loading: ToolLoading }),
+  // 'chat-with-pdf':     dynamic(() => import('@/components/tools/AiChat'), { ssr: false, loading: ToolLoading }),
 }
 
 export default function ToolLoader({ tool, seo }) {
@@ -47,3 +54,4 @@ export default function ToolLoader({ tool, seo }) {
   if (!Component) return null
   return <Component seo={seo} />
 }
+

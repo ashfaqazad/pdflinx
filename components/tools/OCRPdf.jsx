@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import Script from "next/script";
+// import Script from "next/script";
 import { useProgressBar } from "@/hooks/useProgressBar";
 import { useToolFlow } from "@/hooks/useToolFlow";
 import ToolPageLayout from "@/components/ToolFlow/ToolPageLayout";
@@ -65,6 +65,27 @@ const SIDEBAR_FEATURES = [
   "✓ 100+ languages",
   "✓ Batch processing",
 ];
+
+
+const OCR_FAQS = [
+  { q: "Is PDFLinx OCR PDF tool free?", a: "Yes, completely free. No hidden charges, no premium plans, and no limits on the number of pages you process or how many times you use it." },
+  { q: "Do I need to sign up or create an account?", a: "No account required. Upload your scanned PDF and apply OCR instantly — no email, no registration, no friction." },
+  { q: "What does OCR do to my PDF?", a: "OCR reads the text from each scanned page image and adds a hidden searchable text layer behind it. The PDF looks identical after OCR — but now you can search, select, and copy the text." },
+  { q: "Will the appearance of my PDF change after OCR?", a: "No. The visual appearance of every page remains exactly the same. OCR only adds an invisible text layer behind the existing page images — nothing visible changes." },
+  { q: "Can I search for text in the PDF after OCR?", a: "Yes. After OCR, use Ctrl+F (Windows) or Cmd+F (Mac) in any PDF viewer to search for any word or phrase across the entire document." },
+  { q: "Can I copy and paste text from the PDF after OCR?", a: "Yes. After OCR, you can click and drag to select text on any page and copy it to your clipboard — just like in a standard text-based PDF." },
+  { q: "Does my PDF already have selectable text — do I still need OCR?", a: "If you can already select and copy text in your PDF, it is a standard text-based PDF and does not need OCR. OCR is only needed for scanned or image-based PDFs where text cannot be selected." },
+  { q: "How accurate is the OCR text recognition?", a: "Accuracy depends on scan quality. Clear, high-resolution scans at 300 DPI or above produce near-perfect results. Lower resolution, faded, or skewed scans produce lower accuracy. Printed text is recognized much more accurately than handwriting." },
+  { q: "Can I choose the language of my document for better OCR accuracy?", a: "Yes. Select the language of your document before applying OCR — language-specific character sets and patterns significantly improve recognition accuracy for non-English documents." },
+  { q: "Does OCR work on handwritten documents?", a: "OCR is designed for printed text. Handwritten content may be partially recognized but with significantly lower accuracy than printed documents. For clean image output of handwritten pages, use PDF to JPG or PDF to PNG instead." },
+  { q: "Does PDFLinx add any watermark to the OCR PDF?", a: "No watermarks, ever. Your OCR-processed PDF is 100% clean — only the searchable text layer is added, nothing else." },
+  { q: "Is my file secure and private?", a: "Yes. Files are processed on secure servers over encrypted HTTPS and automatically deleted after 1 hour. We never store, share, or view your documents." },
+  { q: "Can I use PDFLinx on mobile — iPhone and Android?", a: "Yes. PDFLinx works perfectly in the browser on iPhone, Android, iPad, Windows, and Mac — no app download or installation needed." },
+  { q: "What is the maximum file size limit?", a: "Up to 20 MB per file. For larger scanned PDFs, try splitting the file first using our free PDF Split tool, apply OCR to each part, then merge them back." },
+  { q: "What is the difference between OCR PDF and PDF to Word?", a: "OCR PDF keeps the document as a PDF but adds a searchable text layer — layout and appearance unchanged. PDF to Word converts the scanned content into an editable Word document. Use OCR PDF to keep the PDF format, use PDF to Word to edit and reformat the content." },
+  { q: "Is PDFLinx better than iLovePDF or Smallpdf for free OCR?", a: "Yes — PDFLinx offers unlimited free OCR processing with language support, no page limits, no watermark, and no account required. iLovePDF and Smallpdf restrict OCR and limit pages per conversion on free tiers." },
+];
+
 
 // ── Language Selector — goes into optionsSlot ──────────────────────────────
 function LanguageSelector({ language, onChange }) {
@@ -205,100 +226,83 @@ export default function OCRPdf({ seo }) {
 
   return (
     <>
-      {/* ── SEO Schemas ── */}
-      <Script
-        id="howto-schema-ocr"
-        type="application/ld+json"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "HowTo",
-            name: "How to OCR PDF Online for Free (Make Scanned PDFs Searchable)",
-            description: "Convert scanned PDFs to searchable PDFs using OCR. Extract text from images and make your documents searchable, text-selectable, and copyable. Single or multiple file upload supported.",
-            url: "https://pdflinx.com/ocr-pdf",
-            step: [
-              { "@type": "HowToStep", name: "Upload scanned PDF(s)", text: "Upload one scanned PDF or select multiple PDFs at once." },
-              { "@type": "HowToStep", name: "Select language", text: "Choose the language of your document (English, Spanish, French, etc.)." },
-              { "@type": "HowToStep", name: "OCR and download", text: "Click 'Make Searchable' and download your OCR-processed PDF. Multiple files download as ZIP." },
-            ],
-            totalTime: "PT2M",
-            estimatedCost: { "@type": "MonetaryAmount", value: "0", currency: "USD" },
-            image: "https://pdflinx.com/og-image.png",
-          }, null, 2),
-        }}
-      />
-      <Script
-        id="breadcrumb-schema-ocr"
-        type="application/ld+json"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "BreadcrumbList",
-            itemListElement: [
-              { "@type": "ListItem", position: 1, name: "Home", item: "https://pdflinx.com" },
-              { "@type": "ListItem", position: 2, name: "OCR PDF", item: "https://pdflinx.com/ocr-pdf" },
-            ],
-          }, null, 2),
-        }}
-      />
-      <Script
-        id="faq-schema-ocr"
-        type="application/ld+json"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "FAQPage",
-            mainEntity: [
-              { "@type": "Question", name: "What is OCR PDF?", acceptedAnswer: { "@type": "Answer", text: "OCR (Optical Character Recognition) converts scanned documents and images into searchable, selectable text. It makes image-based PDFs searchable and lets you copy text (Ctrl/Cmd + C)." } },
-              { "@type": "Question", name: "Can I OCR multiple PDFs at once?", acceptedAnswer: { "@type": "Answer", text: "Yes! Upload multiple scanned PDFs and we'll process them together. Download as a ZIP file." } },
-              { "@type": "Question", name: "What languages are supported?", acceptedAnswer: { "@type": "Answer", text: "We support 100+ languages including English, Spanish, French, German, Chinese, Arabic, Hindi, and many more." } },
-              { "@type": "Question", name: "Will OCR change my PDF layout?", acceptedAnswer: { "@type": "Answer", text: "No. OCR adds a searchable text layer behind your images. The visual appearance stays exactly the same." } },
-              { "@type": "Question", name: "Are my files safe?", acceptedAnswer: { "@type": "Answer", text: "Yes. Files are processed securely and automatically deleted after OCR. No storage, no sharing." } },
-            ],
-          }, null, 2),
-        }}
-      />
+{/* ── SEO Schemas ── */}
+<script
+  type="application/ld+json"
+  dangerouslySetInnerHTML={{
+    __html: JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "HowTo",
+      name: "How to OCR PDF Online for Free (Make Scanned PDFs Searchable)",
+      description: "Convert scanned PDFs to searchable PDFs using OCR. Extract text from images and make your documents searchable, text-selectable, and copyable. Single or multiple file upload supported.",
+      url: "https://pdflinx.com/ocr-pdf",
+      step: [
+        { "@type": "HowToStep", name: "Upload scanned PDF(s)", text: "Upload one scanned PDF or select multiple PDFs at once." },
+        { "@type": "HowToStep", name: "Select language", text: "Choose the language of your document (English, Spanish, French, etc.)." },
+        { "@type": "HowToStep", name: "OCR and download", text: "Click 'Make Searchable' and download your OCR-processed PDF. Multiple files download as ZIP." },
+      ],
+      totalTime: "PT2M",
+      estimatedCost: { "@type": "MonetaryAmount", value: "0", currency: "USD" },
+      image: "https://pdflinx.com/og-image.png",
+    }),
+  }}
+/>
 
-      <Script
-        id="software-schema-ocr-pdf"
-        type="application/ld+json"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "SoftwareApplication",
-            name: "OCR PDF",
-            applicationCategory: "BusinessApplication",
-            operatingSystem: "Web Browser",
-            url: "https://pdflinx.com/ocr-pdf",
-            description:
-              "Free online OCR PDF tool to convert scanned PDFs into searchable and selectable documents. Extract text from image-based PDFs while preserving layout. Supports multiple files and 100+ languages.",
-            image: "https://pdflinx.com/og-image.png",
-            offers: {
-              "@type": "Offer",
-              price: "0",
-              priceCurrency: "USD"
-            },
-            publisher: {
-              "@type": "Organization",
-              name: "PDFLinx",
-              url: "https://pdflinx.com"
-            },
-            featureList: [
-              "Convert scanned PDFs to searchable PDFs",
-              "Extract text from image-based documents",
-              "Supports multiple PDF files",
-              "100+ OCR languages supported",
-              "Preserves original document layout",
-              "Free online OCR processing",
-              "No software installation required"
-            ]
-          }, null, 2),
-        }}
-      />
+<script
+  type="application/ld+json"
+  dangerouslySetInnerHTML={{
+    __html: JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Home", item: "https://pdflinx.com" },
+        { "@type": "ListItem", position: 2, name: "OCR PDF", item: "https://pdflinx.com/ocr-pdf" },
+      ],
+    }),
+  }}
+/>
+
+<script
+  type="application/ld+json"
+  dangerouslySetInnerHTML={{
+    __html: JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      mainEntity: OCR_FAQS.map((item) => ({
+        "@type": "Question",
+        name: item.q,
+        acceptedAnswer: { "@type": "Answer", text: item.a },
+      })),
+    }),
+  }}
+/>
+
+<script
+  type="application/ld+json"
+  dangerouslySetInnerHTML={{
+    __html: JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      name: "OCR PDF",
+      applicationCategory: "BusinessApplication",
+      operatingSystem: "Web Browser",
+      url: "https://pdflinx.com/ocr-pdf",
+      description: "Free online OCR PDF tool to convert scanned PDFs into searchable and selectable documents. Extract text from image-based PDFs while preserving layout. Supports multiple files and 100+ languages.",
+      image: "https://pdflinx.com/og-image.png",
+      offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+      publisher: { "@type": "Organization", name: "PDFLinx", url: "https://pdflinx.com" },
+      featureList: [
+        "Convert scanned PDFs to searchable PDFs",
+        "Extract text from image-based documents",
+        "Supports multiple PDF files",
+        "100+ OCR languages supported",
+        "Preserves original document layout",
+        "Free online OCR processing",
+        "No software installation required",
+      ],
+    }),
+  }}
+/>
 
       {/* ── Tool UI ── */}
       <ToolPageLayout
@@ -481,72 +485,74 @@ export default function OCRPdf({ seo }) {
               },
             ],
 
-            faqs: [
-              {
-                q: "Is PDFLinx OCR PDF tool free?",
-                a: "Yes, completely free. No hidden charges, no premium plans, and no limits on the number of pages you process or how many times you use it.",
-              },
-              {
-                q: "Do I need to sign up or create an account?",
-                a: "No account required. Upload your scanned PDF and apply OCR instantly — no email, no registration, no friction.",
-              },
-              {
-                q: "What does OCR do to my PDF?",
-                a: "OCR reads the text from each scanned page image and adds a hidden searchable text layer behind it. The PDF looks identical after OCR — but now you can search, select, and copy the text.",
-              },
-              {
-                q: "Will the appearance of my PDF change after OCR?",
-                a: "No. The visual appearance of every page remains exactly the same. OCR only adds an invisible text layer behind the existing page images — nothing visible changes.",
-              },
-              {
-                q: "Can I search for text in the PDF after OCR?",
-                a: "Yes. After OCR, use Ctrl+F (Windows) or Cmd+F (Mac) in any PDF viewer to search for any word or phrase across the entire document.",
-              },
-              {
-                q: "Can I copy and paste text from the PDF after OCR?",
-                a: "Yes. After OCR, you can click and drag to select text on any page and copy it to your clipboard — just like in a standard text-based PDF.",
-              },
-              {
-                q: "Does my PDF already have selectable text — do I still need OCR?",
-                a: "If you can already select and copy text in your PDF, it is a standard text-based PDF and does not need OCR. OCR is only needed for scanned or image-based PDFs where text cannot be selected.",
-              },
-              {
-                q: "How accurate is the OCR text recognition?",
-                a: "Accuracy depends on scan quality. Clear, high-resolution scans at 300 DPI or above produce near-perfect results. Lower resolution, faded, or skewed scans produce lower accuracy. Printed text is recognized much more accurately than handwriting.",
-              },
-              {
-                q: "Can I choose the language of my document for better OCR accuracy?",
-                a: "Yes. Select the language of your document before applying OCR — language-specific character sets and patterns significantly improve recognition accuracy for non-English documents.",
-              },
-              {
-                q: "Does OCR work on handwritten documents?",
-                a: "OCR is designed for printed text. Handwritten content may be partially recognized but with significantly lower accuracy than printed documents. For clean image output of handwritten pages, use PDF to JPG or PDF to PNG instead.",
-              },
-              {
-                q: "Does PDFLinx add any watermark to the OCR PDF?",
-                a: "No watermarks, ever. Your OCR-processed PDF is 100% clean — only the searchable text layer is added, nothing else.",
-              },
-              {
-                q: "Is my file secure and private?",
-                a: "Yes. Files are processed on secure servers over encrypted HTTPS and automatically deleted after 1 hour. We never store, share, or view your documents.",
-              },
-              {
-                q: "Can I use PDFLinx on mobile — iPhone and Android?",
-                a: "Yes. PDFLinx works perfectly in the browser on iPhone, Android, iPad, Windows, and Mac — no app download or installation needed.",
-              },
-              {
-                q: "What is the maximum file size limit?",
-                a: "Up to 20 MB per file. For larger scanned PDFs, try splitting the file first using our free PDF Split tool, apply OCR to each part, then merge them back.",
-              },
-              {
-                q: "What is the difference between OCR PDF and PDF to Word?",
-                a: "OCR PDF keeps the document as a PDF but adds a searchable text layer — layout and appearance unchanged. PDF to Word converts the scanned content into an editable Word document. Use OCR PDF to keep the PDF format, use PDF to Word to edit and reformat the content.",
-              },
-              {
-                q: "Is PDFLinx better than iLovePDF or Smallpdf for free OCR?",
-                a: "Yes — PDFLinx offers unlimited free OCR processing with language support, no page limits, no watermark, and no account required. iLovePDF and Smallpdf restrict OCR and limit pages per conversion on free tiers.",
-              },
-            ],
+            faqs: OCR_FAQS,
+
+            // faqs: [
+            //   {
+            //     q: "Is PDFLinx OCR PDF tool free?",
+            //     a: "Yes, completely free. No hidden charges, no premium plans, and no limits on the number of pages you process or how many times you use it.",
+            //   },
+            //   {
+            //     q: "Do I need to sign up or create an account?",
+            //     a: "No account required. Upload your scanned PDF and apply OCR instantly — no email, no registration, no friction.",
+            //   },
+            //   {
+            //     q: "What does OCR do to my PDF?",
+            //     a: "OCR reads the text from each scanned page image and adds a hidden searchable text layer behind it. The PDF looks identical after OCR — but now you can search, select, and copy the text.",
+            //   },
+            //   {
+            //     q: "Will the appearance of my PDF change after OCR?",
+            //     a: "No. The visual appearance of every page remains exactly the same. OCR only adds an invisible text layer behind the existing page images — nothing visible changes.",
+            //   },
+            //   {
+            //     q: "Can I search for text in the PDF after OCR?",
+            //     a: "Yes. After OCR, use Ctrl+F (Windows) or Cmd+F (Mac) in any PDF viewer to search for any word or phrase across the entire document.",
+            //   },
+            //   {
+            //     q: "Can I copy and paste text from the PDF after OCR?",
+            //     a: "Yes. After OCR, you can click and drag to select text on any page and copy it to your clipboard — just like in a standard text-based PDF.",
+            //   },
+            //   {
+            //     q: "Does my PDF already have selectable text — do I still need OCR?",
+            //     a: "If you can already select and copy text in your PDF, it is a standard text-based PDF and does not need OCR. OCR is only needed for scanned or image-based PDFs where text cannot be selected.",
+            //   },
+            //   {
+            //     q: "How accurate is the OCR text recognition?",
+            //     a: "Accuracy depends on scan quality. Clear, high-resolution scans at 300 DPI or above produce near-perfect results. Lower resolution, faded, or skewed scans produce lower accuracy. Printed text is recognized much more accurately than handwriting.",
+            //   },
+            //   {
+            //     q: "Can I choose the language of my document for better OCR accuracy?",
+            //     a: "Yes. Select the language of your document before applying OCR — language-specific character sets and patterns significantly improve recognition accuracy for non-English documents.",
+            //   },
+            //   {
+            //     q: "Does OCR work on handwritten documents?",
+            //     a: "OCR is designed for printed text. Handwritten content may be partially recognized but with significantly lower accuracy than printed documents. For clean image output of handwritten pages, use PDF to JPG or PDF to PNG instead.",
+            //   },
+            //   {
+            //     q: "Does PDFLinx add any watermark to the OCR PDF?",
+            //     a: "No watermarks, ever. Your OCR-processed PDF is 100% clean — only the searchable text layer is added, nothing else.",
+            //   },
+            //   {
+            //     q: "Is my file secure and private?",
+            //     a: "Yes. Files are processed on secure servers over encrypted HTTPS and automatically deleted after 1 hour. We never store, share, or view your documents.",
+            //   },
+            //   {
+            //     q: "Can I use PDFLinx on mobile — iPhone and Android?",
+            //     a: "Yes. PDFLinx works perfectly in the browser on iPhone, Android, iPad, Windows, and Mac — no app download or installation needed.",
+            //   },
+            //   {
+            //     q: "What is the maximum file size limit?",
+            //     a: "Up to 20 MB per file. For larger scanned PDFs, try splitting the file first using our free PDF Split tool, apply OCR to each part, then merge them back.",
+            //   },
+            //   {
+            //     q: "What is the difference between OCR PDF and PDF to Word?",
+            //     a: "OCR PDF keeps the document as a PDF but adds a searchable text layer — layout and appearance unchanged. PDF to Word converts the scanned content into an editable Word document. Use OCR PDF to keep the PDF format, use PDF to Word to edit and reformat the content.",
+            //   },
+            //   {
+            //     q: "Is PDFLinx better than iLovePDF or Smallpdf for free OCR?",
+            //     a: "Yes — PDFLinx offers unlimited free OCR processing with language support, no page limits, no watermark, and no account required. iLovePDF and Smallpdf restrict OCR and limit pages per conversion on free tiers.",
+            //   },
+            // ],
 
             ctaTitle: (
               <>
