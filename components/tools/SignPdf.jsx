@@ -47,6 +47,70 @@ const DONE_LINKS = [
 //   2. <Script id="faq-schema-sign">    (JSON-LD FAQPage schema)
 // DO NOT duplicate inline in uploadLanding — always reference here.
 // ============================================================
+// const FAQ_DATA = [
+//   {
+//     q: "Is the PDFLinx digital signature tool free?",
+//     a: "Yes. PDFLinx is a completely free digital signature tool — no hidden costs, no subscriptions, and no limits on how many PDFs you can sign. Create a free digital signature and add it to unlimited PDFs.",
+//   },
+//   {
+//     q: "How do I create a free digital signature online?",
+//     a: "Upload your PDF to PDFLinx, then use the drawing canvas to draw your signature with your mouse, trackpad, or finger on touchscreen. Alternatively, upload a PNG or JPG image of your handwritten signature. Position it on the PDF using the live preview and download the signed document instantly — no account required.",
+//   },
+//   {
+//     q: "Can I create a digital signature for free without software?",
+//     a: "Yes. PDFLinx works entirely in your browser — no software, no app, and no browser extension required. Create a free digital signature online and sign any PDF instantly without installing anything.",
+//   },
+//   {
+//     q: "How do I sign a PDF on iPhone for free?",
+//     a: "Open PDFLinx in your iPhone browser (Safari or Chrome) — no app download needed. Tap the upload area, select your PDF from Files, draw or upload your signature using touch, position it on the live preview, and download the signed PDF to your iPhone instantly. The fastest free digital signature tool for iOS.",
+//   },
+//   {
+//     q: "How do I sign a PDF on Android for free?",
+//     a: "Open PDFLinx in your Android browser (Chrome or Firefox). Upload your PDF, draw your signature using your finger on the touchscreen or upload a signature image, position it, and download the signed PDF. No app installation required — works directly in any Android browser.",
+//   },
+//   {
+//     q: "How do I sign a PDF on Mac for free?",
+//     a: "Open PDFLinx in Safari, Chrome, or Firefox on your Mac. Upload your PDF, draw or upload your signature, position it on the live preview, and download the signed PDF. No software installation needed — completely free alternative to Adobe Acrobat Sign on Mac.",
+//   },
+//   {
+//     q: "How do I sign a PDF on Windows 10 or Windows 11?",
+//     a: "Open PDFLinx in any browser on Windows — Chrome, Edge, or Firefox. Upload your PDF, create your digital signature by drawing or uploading an image, position it, and download the signed PDF. No additional software needed. Works on Windows 10 and Windows 11.",
+//   },
+//   {
+//     q: "Can I upload a signature image instead of drawing?",
+//     a: "Yes. If you already have a scanned or photographed signature, upload any PNG or JPG image and it will be overlaid on your PDF exactly where you position it. Both drawing and image upload are supported.",
+//   },
+//   {
+//     q: "Does PDFLinx add a watermark to signed PDFs?",
+//     a: "No. PDFLinx never adds any watermark to your signed PDF. The output is 100% clean and professional — just your signature on the document, nothing else.",
+//   },
+//   {
+//     q: "Is a digital signature the same as an e-signature?",
+//     a: "Digital signature and e-signature (electronic signature) are often used interchangeably for online document signing. Both refer to adding a signature to a document electronically — without printing, signing by hand, and scanning. PDFLinx lets you create a free e-signature online in seconds.",
+//   },
+//   {
+//     q: "Can I sign a multi-page PDF?",
+//     a: "Yes. PDFLinx supports multi-page PDFs. You can select the specific page where your signature needs to appear and position it precisely using the live preview before downloading.",
+//   },
+//   {
+//     q: "Are my uploaded PDF files secure?",
+//     a: "Yes. All files are transferred over 256-bit SSL encryption and permanently deleted from our servers immediately after signing. We do not store, share, or view your documents at any point. PDFLinx is GDPR-aware and privacy-first.",
+//   },
+//   {
+//     q: "Do I need to sign up to sign a PDF?",
+//     a: "No. No account, no registration, and no email required. Sign PDF files instantly for free — completely anonymous.",
+//   },
+//   {
+//     q: "Can I download my digital signature as an image?",
+//     a: "The signed PDF is available for direct download immediately after signing. If you need the signature as a standalone image file, you can draw your signature, take a screenshot, and save it — or use the upload option with a pre-saved signature image for future use.",
+//   },
+//   {
+//     q: "What is the difference between a digital signature and a handwritten signature?",
+//     a: "A handwritten signature is a physical mark made with pen on paper. A digital signature (or e-signature) is an electronic version added to a document online — drawn with a mouse, finger, or stylus, or uploaded as an image. PDFLinx lets you create a free digital signature that looks identical to your handwritten signature and can be added to any PDF instantly.",
+//   },
+// ];
+
+
 const FAQ_DATA = [
   {
     q: "Is the PDFLinx digital signature tool free?",
@@ -90,7 +154,18 @@ const FAQ_DATA = [
   },
   {
     q: "Can I sign a multi-page PDF?",
-    a: "Yes. PDFLinx supports multi-page PDFs. You can select the specific page where your signature needs to appear and position it precisely using the live preview before downloading.",
+    a: (
+      <>
+        Yes. PDFLinx supports multi-page PDFs. You can select the specific page where your signature needs to appear and position it precisely using the live preview before downloading. If you need to rearrange or organize pages first, try our{" "}
+        <a
+          href="/reorder-pdf-pages"
+          className="text-blue-600 hover:underline font-medium"
+        >
+          Organize PDF tool
+        </a>
+        .
+      </>
+    ),
   },
   {
     q: "Are my uploaded PDF files secure?",
@@ -106,7 +181,25 @@ const FAQ_DATA = [
   },
   {
     q: "What is the difference between a digital signature and a handwritten signature?",
-    a: "A handwritten signature is a physical mark made with pen on paper. A digital signature (or e-signature) is an electronic version added to a document online — drawn with a mouse, finger, or stylus, or uploaded as an image. PDFLinx lets you create a free digital signature that looks identical to your handwritten signature and can be added to any PDF instantly.",
+    a: (
+      <>
+        A handwritten signature is a physical mark made with pen on paper. A digital signature (or e-signature) is an electronic version added to a document online — drawn with a mouse, finger, or stylus, or uploaded as an image. PDFLinx lets you create a free digital signature that looks identical to your handwritten signature and can be added to any PDF instantly. After signing, you can also protect it using our{" "}
+        <a
+          href="/protect-pdf"
+          className="text-blue-600 hover:underline font-medium"
+        >
+          Protect PDF tool
+        </a>{" "}
+        or reduce file size with{" "}
+        <a
+          href="/compress-pdf"
+          className="text-blue-600 hover:underline font-medium"
+        >
+          Compress PDF
+        </a>
+        .
+      </>
+    ),
   },
 ];
 
@@ -1581,41 +1674,118 @@ export default function SignPdf({ seo }) {
             seoDescription:
               "Free digital signature tool — sign PDF online, draw your e-signature or upload an image, position with live preview, and download instantly. No signup, no watermark. Works on Android, iPhone, Mac, and Windows.",
 
-            seoSections: [
+           seoSections: [
               {
-                title: "Free Digital Signature — Sign PDF Online & Create Free E-Signature Instantly",
-                text: "Need to sign a PDF online for free? PDFLinx is a free digital signature tool that lets you create and add a free e-signature to any PDF instantly — no signup, no watermark, and no software required. Draw your signature with a mouse or touchscreen, or upload a PNG/JPG image of your handwritten signature. Position it precisely using the live PDF preview and download your signed document in seconds. A fast and reliable free alternative to Adobe Acrobat Sign, DocuSign, and Smallpdf — without any cost or account.",
+                title: "Free Digital Signature Online — Sign PDF Free, No Signup",
+                text: "Looking for a free digital signature you can use right now? PDFLinx lets you create a digital signature free of charge and add it to any PDF in seconds — no signup, no watermark, and no software to install. Draw your signature with a mouse or touchscreen, or upload a PNG/JPG image of your handwritten signature. Place it exactly where you need it using the live PDF preview, then download your signed document instantly. It is a fast, free alternative to Adobe Acrobat Sign, DocuSign, and Smallpdf, with no account and no hidden cost.",
               },
               {
-                title: "How to Create a Free Digital Signature Online — Draw or Upload",
-                text: "Creating a free digital signature online with PDFLinx takes under a minute. Upload your PDF, then choose your signing method: draw your signature using the built-in canvas with your mouse, trackpad, or finger on touchscreen — or upload a PNG or JPG image of your existing handwritten signature. Both methods produce a clean, professional signature that can be dragged to any position on any page of your PDF. No stylus, no special hardware, and no software installation required. The fastest way to create a free digital signature online.",
+                title: "How to Create a Digital Signature Free — Draw or Upload in Under a Minute",
+                text: (
+                  <>
+                    Want to create a digital signature free of charge? With PDFLinx it takes less than a minute. Upload your PDF, then choose how to sign: draw your signature on the built-in canvas using a mouse, trackpad, or finger, or upload a PNG or JPG image of your existing handwritten signature. Either way you get a clean, professional result that you can drag to any position on any page. No stylus, no special hardware, and no installation needed. This is one of the quickest ways to create a free digital signature online and apply it straight to your document. If your document is password protected, you can use our{" "}
+                    <a
+                      href="/unlock-pdf"
+                      className="text-blue-600 hover:underline font-medium"
+                    >
+                      Unlock PDF tool
+                    </a>{" "}
+                    first before signing.
+                  </>
+                ),
               },
               {
-                title: "Free E-Signature Download — Sign PDF and Download Instantly",
-                text: "After creating your free digital signature and positioning it on your PDF, PDFLinx generates the signed document and makes it available for immediate download — no waiting, no email delivery, no account needed. Your signed PDF downloads directly to your device in seconds. This is the fastest free e-signature download experience online — upload, sign, position, and download, all in under two minutes. Works on any device without installing software or browser extensions.",
+                title: "Digital Signature Online Free — Works in Your Browser on Any Device",
+                text: (
+                  <>
+                    PDFLinx is a digital signature online free tool that runs entirely in your browser, so there is nothing to download or set up. Whether you are on Windows, Mac, Linux, Android, iPhone, iPad, or a tablet, you can sign a PDF online free without creating an account. Your document is processed securely and the signed file is ready for download as soon as you finish. Use it at the office, at home, or on the go whenever a document needs your signature quickly. You can also explore our complete suite of{" "}
+                    <a
+                      href="/free-pdf-tools"
+                      className="text-blue-600 hover:underline font-medium"
+                    >
+                      free PDF tools
+                    </a>{" "}
+                    for all your document needs.
+                  </>
+                ),
+              },
+              {
+                title: "Free E-Signature Download — Sign PDF and Save the Signed File Instantly",
+                text: (
+                  <>
+                    Need an e signature download free of cost? After you create your free digital signature and position it on the PDF, PDFLinx generates the signed document and makes it available for immediate download. There is no waiting, no email delivery, and no account required. The signed PDF is saved straight to your device in seconds, so the whole process of uploading, signing, positioning, and downloading takes about two minutes. There are no browser extensions or apps to install, which makes it a simple free e-signature option for anyone. If you need to make additional text changes, check out our{" "}
+                    <a
+                      href="/edit-pdf"
+                      className="text-blue-600 hover:underline font-medium"
+                    >
+                      Edit PDF tool
+                    </a>
+                    .
+                  </>
+                ),
+              },
+              {
+                title: "Free Digital Signature for Contracts, Agreements, and Official Forms",
+                text: (
+                  <>
+                    A free digital signature from PDFLinx works for all kinds of PDF documents: employment contracts and offer letters, rental agreements, business NDAs, client proposals, invoices, purchase orders, consent forms, insurance paperwork, and government applications. Upload the PDF, add your signature, and place it exactly where required. The signed output is a standard PDF that opens in Adobe Acrobat Reader, Google Chrome, Apple Preview, and any other PDF viewer, so the person receiving it does not need special software. Need to secure your signed agreement? Use our{" "}
+                    <a
+                      href="/protect-pdf"
+                      className="text-blue-600 hover:underline font-medium"
+                    >
+                      Protect PDF tool
+                    </a>{" "}
+                    to add password security.
+                  </>
+                ),
               },
               {
                 title: "When Should You Use a Digital Signature on a PDF?",
-                text: "Digital signatures are used whenever a document requires an authorized signature but printing, signing, and scanning is inconvenient. Common use cases include signing employment contracts and offer letters remotely, approving business agreements and NDAs without meeting in person, signing rental agreements and property documents, authorizing government forms and applications, signing invoices and purchase orders for clients, and approving medical consent forms and insurance documents. A free digital signature from PDFLinx is legally valid for informal agreements and internal business processes across most jurisdictions.",
+                text: (
+                  <>
+                    Digital signatures are useful whenever a document needs an authorized signature but printing, signing by hand, and scanning is inconvenient. Typical examples include signing employment contracts remotely, approving agreements without meeting in person, signing property or rental documents, authorizing forms and applications, and approving invoices for clients. A free e-signature created with PDFLinx is generally suitable for everyday business and personal agreements. For high-stakes or regulated documents, always check the legal requirements that apply in your country or jurisdiction. If you need to combine multiple signed files, try our{" "}
+                    <a
+                      href="/merge-pdf"
+                      className="text-blue-600 hover:underline font-medium"
+                    >
+                      Merge PDF tool
+                    </a>
+                    .
+                  </>
+                ),
               },
               {
                 title: "Digital Signature vs Electronic Signature vs E-Signature — What Is the Difference?",
-                text: "The terms digital signature, electronic signature, and e-signature are commonly used interchangeably, and in most everyday contexts they mean the same thing — adding a signature to a document electronically without printing. Technically, a cryptographic digital signature uses encryption keys to verify identity and document integrity, while a visual e-signature is an image or drawn mark added to a PDF. For most personal and business purposes — contracts, agreements, approvals, and forms — a visual e-signature created with PDFLinx is sufficient and universally accepted. Always check the legal requirements for your specific jurisdiction when signing legally binding documents.",
-              },
-              {
-                title: "Sign PDF Free on Any Device — iPhone, Android, Mac, Windows",
-                text: "No software installation needed. PDFLinx digital signature tool works perfectly on Windows, Mac, Linux, Android, iPhone, iPad, and tablets — directly in your browser without any app. On iPhone, open PDFLinx in Safari and draw your signature with your finger on the touchscreen. On Android, open in Chrome or Firefox and sign using touch. On Mac or Windows, draw with a mouse or trackpad. The live preview works across all screen sizes — desktop and mobile — making PDFLinx the most accessible free e-signature tool available on any device.",
-              },
-              {
-                title: "Sign PDF Documents for Contracts, Agreements, and Official Forms",
-                text: "PDFLinx is designed for signing all types of PDF documents — employment contracts, rental agreements, business NDAs, client proposals, consent forms, government applications, and internal approval documents. Upload any PDF, create your free digital signature, and position it exactly where required. The signed output is a standard PDF compatible with all PDF viewers including Adobe Acrobat Reader, Google Chrome, and Apple Preview — no special software needed to open or verify the signed document.",
+                text: (
+                  <>
+                    The terms digital signature, electronic signature, and e-signature are often used interchangeably, and in everyday use they all mean adding a signature to a document electronically instead of printing it. Technically, a cryptographic digital signature uses encryption keys to verify identity and document integrity, while a visual e-signature is a drawn or uploaded signature image placed on the PDF. PDFLinx creates the visual kind, which is sufficient for most personal and business needs such as contracts, approvals, and forms. If your situation requires a certificate-based signature, confirm the requirements with the party requesting it. After signing, you can easily convert your document to editable text with our{" "}
+                    <a
+                      href="/pdf-to-word"
+                      className="text-blue-600 hover:underline font-medium"
+                    >
+                      PDF to Word converter
+                    </a>
+                    .
+                  </>
+                ),
               },
               {
                 title: "Privacy and File Security — 256-bit SSL Encryption",
-                text: "Your uploaded PDF files and signature data are transferred over 256-bit SSL encryption and processed on secure servers. Files are permanently deleted immediately after signing — we do not store, share, or access your documents or signature at any point. PDFLinx is built with privacy-first principles and is GDPR-aware. No account or email is required to use the free digital signature tool. Your documents stay completely private from upload to download.",
+                text: (
+                  <>
+                    Your uploaded PDF files and signature data are transferred over 256-bit SSL encryption and processed on secure servers. Files are permanently deleted right after signing, and we do not store, share, or access your documents or signature at any point. PDFLinx is built with privacy-first principles and is GDPR-aware. No account or email is required to use the free digital signature tool, so your documents stay private from upload to download. If you need to reduce your signed file size for emailing, use our{" "}
+                    <a
+                      href="/compress-pdf"
+                      className="text-blue-600 hover:underline font-medium"
+                    >
+                      Compress PDF tool
+                    </a>
+                    .
+                  </>
+                ),
               },
             ],
-
+                        
             relatedTitle: "More Free PDF Tools",
             showPdfTypes: false,
           },

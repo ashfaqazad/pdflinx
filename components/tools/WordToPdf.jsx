@@ -498,18 +498,46 @@ export default function WordToPdf({ seo }) {
             // ],
 
 
-            seoSections: [
+seoSections: [
+
+  // {
+  //   // ✅ TWEAKED — added "No Sign Up" to strengthen match with GSC query
+  //   // "word to pdf converter free no sign up" (currently position ~17)
+  //   title:
+  //     "Free Word to PDF Converter — Convert DOC & DOCX to PDF Online, No Sign Up, No Watermark",
+  //   text: (
+  //     <>
+  //       Need to share a Word document professionally? PDFLinx lets you convert Word to PDF online for free — instantly, without losing formatting, fonts, tables, or images. Whether it is a DOC or DOCX file, PDFLinx converts it into a clean, print-ready, universally compatible PDF. No signup, no watermark, and no software installation required. Learn more about <a href="/blog/word-to-pdf-free-no-signup" className="text-blue-600 hover:underline font-medium">free Word to PDF conversion without signup</a>. If you ever need to turn it back into an editable file, you can use our <a href="/pdf-to-word" className="text-blue-600 hover:underline font-medium">PDF to Word converter</a> or try <a href="/pdf-to-word-for-students" className="text-blue-600 hover:underline font-medium">PDF to Word for Students</a>.
+  //     </>
+  //   ),
+  // },
+
   {
-    // ✅ TWEAKED — added "No Sign Up" to strengthen match with GSC query
-    // "word to pdf converter free no sign up" (currently position ~17)
-    title:
-      "Free Word to PDF Converter — Convert DOC & DOCX to PDF Online, No Sign Up, No Watermark",
-    text: (
-      <>
-        Need to share a Word document professionally? PDFLinx lets you convert Word to PDF online for free — instantly, without losing formatting, fonts, tables, or images. Whether it is a DOC or DOCX file, PDFLinx converts it into a clean, print-ready, universally compatible PDF. No signup, no watermark, and no software installation required. Learn more about <a href="/blog/word-to-pdf-free-no-signup" className="text-blue-600 hover:underline font-medium">free Word to PDF conversion without signup</a>. If you ever need to turn it back into an editable file, you can use our <a href="/pdf-to-word" className="text-blue-600 hover:underline font-medium">PDF to Word converter</a> or try <a href="/pdf-to-word-for-students" className="text-blue-600 hover:underline font-medium">PDF to Word for Students</a>.
-      </>
-    ),
-  },
+  title:
+    "Free Word to PDF Converter — Convert DOC & DOCX Online, No Sign Up",
+  text: (
+    <>
+      Need to convert a Word document to PDF? PDFLinx is a free Word to PDF
+      converter that lets you convert DOC and DOCX files online with no sign up,
+      no watermark, and no software installation. Preserve fonts, tables,
+      images, spacing, and page layout, then download your PDF instantly.
+      Whether you need a Word to PDF converter free for personal, academic, or
+      professional documents, PDFLinx works directly in your browser. You can
+      also convert Word files to PDF for easy sharing, printing, and
+      downloading. If you need to convert a PDF back into an editable Word
+      document, use our{" "}
+      <a
+        href="/pdf-to-word"
+        className="text-blue-600 hover:underline font-medium"
+      >
+        PDF to Word converter
+      </a>
+      .
+    </>
+  ),
+},
+
+
   {
     title: "Why Convert Word Documents to PDF?",
     text: (
