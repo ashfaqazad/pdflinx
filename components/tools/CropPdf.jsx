@@ -839,53 +839,155 @@ export default function CropPdf() {
             seoDescription:
               "Everything you need to know about cropping PDF pages — remove margins, whitespace, and borders free online. Crop all pages or individual pages. No watermark, no signup, no limits.",
 
-            seoSections: [
-              {
-                title:
-                  "Free PDF Cropper — Remove Margins, Whitespace & Borders from Any PDF Online",
-                text: "Need to crop a PDF? PDFLinx lets you crop PDF pages online for free — instantly and without any software installation. Whether you need to remove large white margins from a scanned document, trim borders from a PDF book, cut out a specific region of a page, or resize pages to a custom dimension, PDFLinx handles it precisely in seconds. No signup, no watermark, no hidden limits. Works on Windows, Mac, iPhone, and Android.",
-              },
-              {
-                title: "Why You Might Need to Crop a PDF",
-                text: "PDF cropping is needed more often than most people realize. Scanned documents frequently have large uneven white margins from the scanner bed that waste space and look unprofessional. PDF books and academic papers often have wide margins and headers or footers with page references that are not needed when the content is extracted for a specific use. Presentation slides exported as PDF sometimes have oversized borders around each slide. Technical drawings and architectural plans often have title block borders that need to be removed when sharing just the drawing content. In all these cases, cropping gives you a clean, properly sized page.",
-              },
-              {
-                title: "Crop All Pages Uniformly vs Crop Individual Pages",
-                text: "PDFLinx gives you two cropping modes for maximum flexibility. Uniform cropping applies the same margin trim to every page in the PDF — ideal for scanned documents or books where all pages have consistent oversized margins. Individual page cropping lets you set different crop areas for different pages — useful for mixed-content PDFs where different pages have different layouts or different amounts of whitespace to remove. Both modes show you a live preview so you can verify the crop before applying.",
-              },
-              {
-                title: "Precise Margin Control — Top, Bottom, Left, Right",
-                text: "Unlike simple screenshot-based cropping that clips at arbitrary points, PDFLinx gives you precise numeric margin control. Enter exact values in millimeters or points for each side — top, bottom, left, and right — independently. This means you can remove only the bottom margin without touching the top, trim just the left side without affecting the right, or set asymmetric crops for specific layout requirements. Precise control is essential for professional document preparation, print-ready PDF output, and consistent formatting across a document series.",
-              },
-              {
-                title:
-                  "Why PDFLinx is the Best Free PDF Cropper — No Watermark, No Limits",
-                text: "Most free PDF cropping tools produce low-quality output, add watermarks, restrict the number of pages, or require account creation. PDFLinx does none of that — completely free, no signup, no watermark, and no daily usage limit. Unlike iLovePDF and Smallpdf which restrict advanced page editing on free tiers, PDFLinx gives you precise, professional PDF cropping at zero cost.",
-              },
-              {
-                title: "Common Use Cases for Cropping a PDF",
-                text: "✓ Scanned Documents: Remove large scanner bed margins from scanned pages to produce clean, tight document scans.\n✓ PDF Books & Articles: Trim wide headers, footers, and page number areas from academic PDFs and ebooks for cleaner reading or extraction.\n✓ Presentation Slides: Remove thick borders around slides in PDF presentations to make slide content fill the full page.\n✓ Technical Drawings: Crop title blocks and borders from engineering drawings or floor plans when sharing just the drawing area.\n✓ Print Preparation: Trim bleed areas and crop marks from print-ready PDFs before final distribution.\n✓ Content Extraction: Crop to isolate a specific region of a page — a chart, table, diagram, or image — without removing the page from the document.",
-              },
-              {
-                title:
-                  "Crop PDF on iPhone, Android, Mac & Windows — No App Needed",
-                text: "PDFLinx works entirely in your browser — no download, no installation, no app required. On iPhone or Android, open your browser and upload your PDF directly from your files app — the crop tool works on touchscreens with drag handles. On Mac or Windows, drag and drop your PDF and download the cropped file in seconds. PDFLinx works seamlessly across every platform and operating system.",
-              },
-              {
-                title: "Privacy and File Security",
-                text: "Your files are processed on secure servers and automatically deleted after 1 hour. We do not store, share, or access your documents at any point. PDFLinx is built with privacy-first principles — your data stays yours. All file transfers use encrypted HTTPS connections for complete security.",
-              },
-              {
-                title: "Does Cropping a PDF Reduce File Size?",
-                text: "Cropping a PDF reduces the visible page area but does not always reduce the file size as dramatically as you might expect. In standard PDFs, content outside the crop area is hidden rather than deleted from the file structure — meaning the underlying data may still exist in the file. For significant file size reduction, use our free PDF Compress tool after cropping. For scanned PDFs where each page is an image, cropping that removes large whitespace areas does result in a meaningfully smaller file.",
-              },
-              {
-                title: "Crop PDF vs Edit PDF — What is the Difference?",
-                text: "Cropping a PDF changes the visible page dimensions — trimming away the outer areas of each page to remove margins, borders, or whitespace. Editing a PDF adds new content on top of existing pages — text boxes, highlights, shapes, and annotations. If you need to change the size and shape of pages by removing their outer edges, use Crop PDF. If you need to add or annotate content on the pages, use our free Edit PDF tool. Both are free on PDFLinx.",
-              },
-            ],
+seoSections: [
+  {
+  title:
+    "Free PDF Cropper — Remove Margins, Whitespace & Borders from Any PDF Online",
+  text: "Need to crop a PDF? PDFLinx lets you crop PDF pages online for free — instantly and without any software installation. Whether you need to remove large white margins from a scanned document, trim borders from a PDF book, cut out a specific region of a page, or resize pages to a custom dimension, PDFLinx handles it precisely in seconds. No signup, no watermark, no hidden limits. Works on Windows, Mac, iPhone, and Android.",
+},
+  
+  {
+    title: "Why You Might Need to Crop a PDF",
+    text: (
+      <>
+        PDF cropping is needed more often than most people realize. Scanned documents frequently have large uneven white margins from the scanner bed. If your scanned document text is not selectable, you can run it through our{" "}
+        <a
+          href="/ocr-pdf"
+          className="text-blue-600 hover:underline font-medium"
+        >
+          OCR PDF tool
+        </a>{" "}
+        after cropping. PDF books and academic papers often have wide margins and unwanted headers or footers. Technical drawings and architectural plans also have title block borders that need trimming before sharing.
+      </>
+    ),
+  },
+  {
+    title: "Crop All Pages Uniformly vs Crop Individual Pages",
+    text: (
+      <>
+        PDFLinx gives you two cropping modes for maximum flexibility. Uniform cropping applies the same margin trim to every page in the PDF — ideal for scanned documents or books with consistent margins. Individual page cropping lets you set different crop areas for different pages. If your document has misaligned pages before cropping, use our{" "}
+        <a
+          href="/rotate-pdf"
+          className="text-blue-600 hover:underline font-medium"
+        >
+          Rotate PDF tool
+        </a>{" "}
+        to fix page orientation first.
+      </>
+    ),
+  },
+  {
+    title: "Precise Margin Control — Top, Bottom, Left, Right",
+    text: (
+      <>
+        Unlike simple screenshot-based cropping that clips at arbitrary points, PDFLinx gives you precise numeric margin control. Enter exact values in millimeters or points for each side — top, bottom, left, and right — independently. If you need to reorder or manage these cropped pages afterwards, our{" "}
+        <a
+          href="/organize-pdf"
+          className="text-blue-600 hover:underline font-medium"
+        >
+          Organize PDF tool
+        </a>{" "}
+        makes document restructuring effortless.
+      </>
+    ),
+  },
+  {
+    title:
+      "Why PDFLinx is the Best Free PDF Cropper — No Watermark, No Limits",
+    text: (
+      <>
+        Most free PDF cropping tools produce low-quality output, add watermarks, restrict the number of pages, or require account creation. PDFLinx does none of that — completely free, no signup, no watermark, and no daily usage limit. Explore our entire library of{" "}
+        <a
+          href="/free-pdf-tools"
+          className="text-blue-600 hover:underline font-medium"
+        >
+          free PDF tools
+        </a>{" "}
+        for all your document management needs without restrictions.
+      </>
+    ),
+  },
+  {
+    title: "Common Use Cases for Cropping a PDF",
+    text: (
+      <>
+        ✓ <strong>Scanned Documents:</strong> Remove large scanner bed margins from scanned pages to produce clean, tight document scans.
+        <br />
+        ✓ <strong>Ebooks & Articles:</strong> Trim wide headers, footers, and margins from academic PDFs before converting pages using{" "}
+        <a
+          href="/pdf-to-jpg"
+          className="text-blue-600 hover:underline font-medium"
+        >
+          PDF to JPG
+        </a>
+        .<br />
+        ✓ <strong>Presentation Slides:</strong> Remove thick borders around slides in PDF presentations so slide content fills the full page.
+        <br />
+        ✓ <strong>Technical Drawings:</strong> Crop title blocks and borders from engineering drawings or floor plans.
+        <br />
+        ✓ <strong>Print Preparation:</strong> Trim bleed areas and crop marks from print-ready PDFs before final distribution.
+        <br />
+        ✓ <strong>Content Extraction:</strong> Isolate specific regions like charts or tables, or extract full pages with our{" "}
+        <a
+          href="/extract-pdf"
+          className="text-blue-600 hover:underline font-medium"
+        >
+          Extract PDF tool
+        </a>
+        .
+      </>
+    ),
+  },
+  {
+    title:
+      "Crop PDF on iPhone, Android, Mac & Windows — No App Needed",
+    text: (
+      <>
+        PDFLinx works entirely in your browser — no download, no installation, no app required. On iPhone or Android, open your browser and upload your PDF directly from your files app — the crop tool works on touchscreens with drag handles. On Mac or Windows, drag and drop your PDF and download the cropped file in seconds. PDFLinx works seamlessly across every platform and operating system.
+      </>
+    ),
+  },
+  {
+    title: "Privacy and File Security",
+    text: (
+      <>
+        Your files are processed on secure servers and automatically deleted after 1 hour. We do not store, share, or access your documents at any point. PDFLinx is built with privacy-first principles — your data stays yours. All file transfers use encrypted HTTPS connections for complete security.
+      </>
+    ),
+  },
+  {
+    title: "Does Cropping a PDF Reduce File Size?",
+    text: (
+      <>
+        Cropping a PDF reduces the visible page area but does not always reduce the file size as dramatically as expected, because hidden background stream data may still exist in the PDF structure. For significant file size reduction after cropping, run your document through our free{" "}
+        <a
+          href="/compress-pdf"
+          className="text-blue-600 hover:underline font-medium"
+        >
+          Compress PDF tool
+        </a>
+        .
+      </>
+    ),
+  },
+  {
+    title: "Crop PDF vs Edit PDF — What is the Difference?",
+    text: (
+      <>
+        Cropping a PDF changes the visible page dimensions — trimming away the outer areas of each page to remove margins, borders, or whitespace. Editing a PDF adds new content on top of existing pages — text boxes, highlights, shapes, and annotations. If you need to change page dimensions, use Crop PDF. If you need to add text or markup to your document, use our free{" "}
+        <a
+          href="/edit-pdf"
+          className="text-blue-600 hover:underline font-medium"
+        >
+          Edit PDF tool
+        </a>
+        .
+      </>
+    ),
+  },
+],
 
-            faqs: [
+              faqs: [
               {
                 q: "Is PDFLinx PDF cropping tool free?",
                 a: "Yes, completely free. No hidden charges, no premium plans, and no limits on the number of pages you crop or how many times you use it.",

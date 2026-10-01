@@ -410,48 +410,106 @@ export default function PdfToText({ seo }) {
             seoDescription:
               "Everything you need to know about extracting plain text from PDF files — free, online, with OCR support for scanned PDFs. No watermark, no signup, no limits.",
 
-            seoSections: [
+
+                          seoSections: [
               {
                 title:
                   "Free PDF to Text Converter — Extract Plain Text from Any PDF Online",
-                text: "Need to extract text from a PDF? PDFLinx lets you convert PDF to plain text online for free — instantly and without any software installation. Whether it is a standard text-based PDF, a scanned document, an invoice, a research paper, or any PDF containing text content, PDFLinx extracts all readable text and delivers it as a clean .txt file in seconds. No signup, no watermark, no hidden limits. Works on Windows, Mac, iPhone, and Android.",
+                text: (
+                  <>
+                    Need to extract text from a PDF? PDFLinx lets you convert PDF to plain text online for free — instantly and without any software installation. Whether it is a standard text-based PDF, a scanned document, an invoice, a research paper, or any PDF containing text content, PDFLinx extracts all readable text and delivers it as a clean .txt file in seconds. If you need the formatting kept too, try our <a href="/pdf-to-word" className="text-blue-600 hover:underline font-medium">PDF to Word converter</a> instead. No signup, no watermark, no hidden limits. Works on Windows, Mac, iPhone, and Android.
+                  </>
+                ),
               },
               {
                 title: "What is PDF to Text Conversion?",
-                text: "PDF to text conversion extracts all the readable text content from a PDF document and saves it as a plain text file (.txt). Unlike a Word document or PDF, a plain text file contains no formatting — no fonts, no colors, no images, no tables — just raw, clean text. This makes it ideal for copying content into other applications, feeding text into AI tools or scripts, searching and processing large volumes of PDF content, or simply reading the text without PDF software.",
+                text: (
+                  <>
+                    PDF to text conversion extracts all the readable text content from a PDF document and saves it as a plain text file (.txt). Unlike a Word document or PDF, a plain text file contains no formatting — no fonts, no colors, no images, no tables — just raw, clean text. This makes it ideal for copying content into other applications, feeding text into AI tools or scripts, searching and processing large volumes of PDF content, or simply reading the text without PDF software. Need to go the other way? Turn plain text back into a document with our <a href="/text-to-pdf" className="text-blue-600 hover:underline font-medium">Text to PDF converter</a>.
+                  </>
+                ),
               },
               {
                 title: "Standard PDF vs Scanned PDF — How Text Extraction Works",
-                text: "Standard PDFs contain actual text data embedded in the file — extracting it is fast and nearly perfect. Every word, sentence, and paragraph is pulled out exactly as it appears in the PDF. Scanned PDFs, on the other hand, are essentially images of pages — the text is not embedded as data, it is visually represented in the image. To extract text from scanned PDFs, OCR (Optical Character Recognition) is required. PDFLinx includes built-in OCR support — simply enable it before converting and the engine reads the text from the scanned image and outputs it as plain text.",
+                text: (
+                  <>
+                    Standard PDFs contain actual text data embedded in the file — extracting it is fast and nearly perfect. Every word, sentence, and paragraph is pulled out exactly as it appears in the PDF. Scanned PDFs, on the other hand, are essentially images of pages — the text is not embedded as data, it is visually represented in the image. To extract text from scanned PDFs, OCR (Optical Character Recognition) is required. PDFLinx includes built-in OCR support — simply enable it before converting and the engine reads the text from the scanned image and outputs it as plain text. If you would rather keep the scan as a PDF but make it searchable, use our <a href="/ocr-pdf" className="text-blue-600 hover:underline font-medium">OCR PDF tool</a>.
+                  </>
+                ),
+              },
+              {
+                title: "Password-Protected PDF? Unlock It First",
+                text: (
+                  <>
+                    Text cannot be extracted from a PDF that is locked with a password. If your file asks for a password before opening, use our <a href="/unlock-pdf" className="text-blue-600 hover:underline font-medium">Unlock PDF tool</a> first (you must know the password), then run the unlocked file through PDF to Text. Only unlock documents you own or have permission to access.
+                  </>
+                ),
               },
               {
                 title:
                   "Why PDFLinx is the Best Free PDF to Text Converter — No Watermark, No Limits",
-                text: "Most free PDF to text tools either produce poor output quality, strip important line breaks, or lock OCR behind a paywall. PDFLinx gives you clean, well-structured plain text output with built-in OCR for scanned PDFs — completely free, no signup, no watermark, and no daily conversion limit. Unlike iLovePDF and Smallpdf which restrict OCR and batch text extraction on free tiers, PDFLinx gives you full access at zero cost.",
+                text: (
+                  <>
+                    Most free PDF to text tools either produce poor output quality, strip important line breaks, or lock OCR behind a paywall. PDFLinx gives you clean, well-structured plain text output with built-in OCR for scanned PDFs — completely free, no signup, no watermark, and no daily conversion limit. Unlike iLovePDF and Smallpdf which restrict OCR and batch text extraction on free tiers, PDFLinx gives you full access at zero cost. Read our <a href="/compare/pdflinx-vs-ilovepdf" className="text-blue-600 hover:underline font-medium">PDFLinx vs iLovePDF</a> guide for a detailed comparison.
+                  </>
+                ),
               },
               {
                 title: "Common Use Cases for PDF to Text Conversion",
-                text: "✓ Developers & Data Scientists: Extract raw text from PDF documents for NLP processing, AI model training, text analysis, or database ingestion.\n✓ Researchers & Academics: Pull text from research papers, journal articles, and academic PDFs for reference, quoting, or further analysis.\n✓ Content Writers: Extract source text from PDF reports, whitepapers, or books for repurposing, summarizing, or rewriting.\n✓ Legal & Compliance Teams: Extract contract text for keyword searching, clause identification, or copy-pasting into other systems.\n✓ Students: Copy text from PDF textbooks, lecture notes, and study materials for notes, flashcards, or essays.\n✓ Business Analysts: Extract data and narrative text from PDF reports for processing in spreadsheets or business intelligence tools.",
+                text: (
+                  <>
+                    ✓ <strong>Developers & Data Scientists:</strong> Extract raw text from PDF documents for NLP processing, AI model training, text analysis, or database ingestion.<br />
+                    ✓ <strong>Researchers & Academics:</strong> Pull text from research papers, journal articles, and academic PDFs for reference, quoting, or further analysis. Only need a few pages? <a href="/split-pdf" className="text-blue-600 hover:underline font-medium">Split the PDF</a> first.<br />
+                    ✓ <strong>Content Writers:</strong> Extract source text from PDF reports, whitepapers, or books for repurposing, summarizing, or rewriting.<br />
+                    ✓ <strong>Legal & Compliance Teams:</strong> Extract contract text for keyword searching, clause identification, or copy-pasting into other systems. Before sharing a document, <a href="/redact-pdf" className="text-blue-600 hover:underline font-medium">redact sensitive information</a> from the PDF.<br />
+                    ✓ <strong>Students:</strong> Copy text from PDF textbooks, lecture notes, and study materials for notes, flashcards, or essays.<br />
+                    ✓ <strong>Business Analysts:</strong> Extract data and narrative text from PDF reports for processing in spreadsheets or business intelligence tools. For tables, use <a href="/pdf-to-excel" className="text-blue-600 hover:underline font-medium">PDF to Excel</a> instead.
+                  </>
+                ),
               },
               {
                 title:
                   "Convert PDF to Text on iPhone, Android, Mac & Windows — No App Needed",
-                text: "PDFLinx works entirely in your browser — no download, no installation, no app required. On iPhone or Android, open your browser and upload your PDF directly from your files app. On Mac or Windows, drag and drop your PDF and download the text file in seconds. Whether you need to extract text from a PDF on mobile or desktop, PDFLinx works seamlessly across every platform and operating system.",
+                text: (
+                  <>
+                    PDFLinx works entirely in your browser — no download, no installation, no app required. On iPhone or Android, open your browser and upload your PDF directly from your files app. On Mac or Windows, drag and drop your PDF and download the text file in seconds. Whether you need to extract text from a PDF on mobile or desktop, PDFLinx works seamlessly across every platform and operating system.
+                  </>
+                ),
               },
               {
                 title: "Privacy and File Security",
-                text: "Your files are processed on secure servers and automatically deleted after 1 hour. We do not store, share, or access your documents at any point. PDFLinx is built with privacy-first principles — your data stays yours. All file transfers use encrypted HTTPS connections for complete security. This is especially important when extracting text from confidential legal, financial, or business documents.",
+                text: (
+                  <>
+                    Your files are processed on secure servers and automatically deleted after 1 hour. We do not store, share, or access your documents at any point. PDFLinx is built with privacy-first principles — your data stays yours. All file transfers use encrypted HTTPS connections for complete security. This is especially important when extracting text from confidential legal, financial, or business documents.
+                  </>
+                ),
               },
               {
-                title:
-                  "PDF to Text vs PDF to Word — Which Should You Use?",
-                text: "PDF to Text gives you raw, unformatted plain text — ideal when you need the content without any formatting, want to paste text into another tool or system, or need to process text programmatically. PDF to Word gives you an editable document with formatting, tables, images, and layout preserved — ideal when you want to edit the document visually and maintain its structure. If you need to copy and use the content elsewhere without caring about formatting, use PDF to Text. If you need to edit the document as a document, use PDF to Word.",
+                title: "PDF to Text vs PDF to Word — Which Should You Use?",
+                text: (
+                  <>
+                    PDF to Text gives you raw, unformatted plain text — ideal when you need the content without any formatting, want to paste text into another tool or system, or need to process text programmatically. <a href="/pdf-to-word" className="text-blue-600 hover:underline font-medium">PDF to Word</a> gives you an editable document with formatting, tables, images, and layout preserved — ideal when you want to edit the document visually and maintain its structure. If you need slides instead, <a href="/pdf-to-powerpoint" className="text-blue-600 hover:underline font-medium">PDF to PowerPoint</a> is the better fit. If you need to copy and use the content elsewhere without caring about formatting, use PDF to Text. If you need to edit the document as a document, use PDF to Word.
+                  </>
+                ),
               },
               {
                 title: "What Does the Plain Text Output Look Like?",
-                text: "The output is a .txt file containing all the text from your PDF, organized page by page. Paragraphs are separated by line breaks. Tables may lose their column alignment in plain text format since .txt has no grid structure — if preserving table layout matters to you, PDF to Excel or PDF to Word may be a better choice. For flowing text content like articles, reports, contracts, and books, the plain text output is clean, readable, and immediately usable.",
+                text: (
+                  <>
+                    The output is a .txt file containing all the text from your PDF, organized page by page. Paragraphs are separated by line breaks. Tables may lose their column alignment in plain text format since .txt has no grid structure — if preserving table layout matters to you, <a href="/pdf-to-excel" className="text-blue-600 hover:underline font-medium">PDF to Excel</a> or <a href="/pdf-to-word" className="text-blue-600 hover:underline font-medium">PDF to Word</a> may be a better choice. For flowing text content like articles, reports, contracts, and books, the plain text output is clean, readable, and immediately usable.
+                  </>
+                ),
+              },
+              {
+                title: "Want a Summary Instead of the Full Text?",
+                text: (
+                  <>
+                    If you only need the key points of a long document, you do not have to read the whole extracted text. Try our <a href="/ai-summarize" className="text-blue-600 hover:underline font-medium">AI Summarize tool</a> to get a short summary, or ask specific questions about the document using <a href="/chat-with-pdf" className="text-blue-600 hover:underline font-medium">Chat with PDF</a>. For very large files, you can also <a href="/compress-pdf" className="text-blue-600 hover:underline font-medium">compress the PDF</a> before uploading to speed things up.
+                  </>
+                ),
               },
             ],
+
 
             faqs: [
               {

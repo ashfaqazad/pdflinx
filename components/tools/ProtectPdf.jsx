@@ -685,47 +685,149 @@ export default function ProtectPdf() {
             seoDescription:
               "Everything you need to know about adding password protection and encryption to a PDF — free, online, AES-256 encryption. No watermark, no signup, no limits.",
 
-            seoSections: [
-              {
-                title:
-                  "Free PDF Password Protector — Encrypt Any PDF with a Password Online",
-                text: "Need to password protect a PDF? PDFLinx lets you add strong encryption and password protection to any PDF online for free — instantly and without any software installation. Whether it is a confidential business report, a legal contract, financial statements, personal identity documents, or any sensitive file, PDFLinx secures it with AES encryption in seconds. No signup, no watermark, no hidden limits. Works on Windows, Mac, iPhone, and Android.",
-              },
-              {
-                title: "Open Password vs Permissions Password — What is the Difference?",
-                text: "PDF password protection works on two levels. An open password — also called a user password — is required just to open and view the PDF. Anyone who tries to open the file without this password will be blocked completely. A permissions password — also called an owner password — allows the file to be opened and viewed but restricts what the recipient can do with it — preventing editing, copying text, printing, or extracting pages. PDFLinx lets you set either or both types of protection depending on how you want to control access to your document.",
-              },
-              {
-                title: "AES-128 vs AES-256 Encryption — Which Should You Choose?",
-                text: "Both AES-128 and AES-256 are industry-standard encryption algorithms used in banking, government, and enterprise security. AES-128 provides strong encryption that is more than sufficient for everyday document security — contracts, reports, and personal files. AES-256 provides the highest level of encryption available for PDF protection — recommended for highly sensitive documents such as legal filings, financial records, medical files, and confidential business data. For most users AES-256 is the right choice — it adds no meaningful processing time and gives you maximum security.",
-              },
-              {
-                title: "What Permissions Can You Restrict on a Protected PDF?",
-                text: "Beyond blocking access with an open password, PDF permissions let you control what an authorized recipient can do after opening the file. PDFLinx lets you restrict printing — so the PDF can be viewed on screen but not printed. You can restrict content copying — so text cannot be selected and copied out of the document. You can restrict editing — so the PDF cannot be modified, annotated, or filled in. You can restrict page extraction — so individual pages cannot be pulled out and saved separately. These permission controls are especially useful for distributing proprietary content, draft documents, or paid materials.",
-              },
-              {
-                title:
-                  "Why PDFLinx is the Best Free PDF Protection Tool — No Watermark, No Limits",
-                text: "Most free PDF password tools either add their own watermark, restrict encryption strength on free plans, or require account creation. PDFLinx does none of that — completely free, full AES-256 encryption, no signup, no watermark, and no daily limit. Unlike iLovePDF and Smallpdf which restrict encryption options on free tiers, PDFLinx gives you professional-grade PDF protection at zero cost.",
-              },
-              {
-                title: "Common Use Cases for Password Protecting a PDF",
-                text: "✓ Business & Legal: Encrypt contracts, NDAs, board reports, and legal documents before sharing with clients, partners, or external parties.\n✓ Finance & Accounting: Protect financial statements, payroll records, tax documents, and invoices containing sensitive numerical data.\n✓ HR & Administration: Secure employee records, offer letters, performance reviews, and salary information before distribution.\n✓ Healthcare: Protect patient records, medical reports, and health documents that must be kept confidential.\n✓ Education: Restrict access to exam papers, answer sheets, and course materials before scheduled release.\n✓ Personal: Protect identity documents, scanned passports, bank statements, and personal records shared over email.",
-              },
-              {
-                title:
-                  "Protect PDF on iPhone, Android, Mac & Windows — No App Needed",
-                text: "PDFLinx works entirely in your browser — no download, no installation, no app required. On iPhone or Android, open your browser and upload your PDF directly from your files app. On Mac or Windows, drag and drop your PDF and download the protected file in seconds. Whether you need to password protect a PDF on mobile or desktop, PDFLinx works seamlessly across every platform and operating system.",
-              },
-              {
-                title: "Privacy and File Security — How PDFLinx Handles Your Document",
-                text: "Your files are processed on secure servers over encrypted HTTPS connections and automatically deleted after 1 hour. We do not store, share, or access your documents at any point. The password you set is applied to the PDF file itself — PDFLinx does not record or store your password. After download, only someone with your password can open the protected file. Your data stays yours, completely.",
-              },
-              {
-                title: "How Strong Should Your PDF Password Be?",
-                text: "The strength of PDF encryption is only as good as the password protecting it. A short or common password like '1234' or 'password' can be guessed quickly regardless of encryption level. For meaningful protection, use a password of at least 10 characters combining uppercase and lowercase letters, numbers, and symbols. Avoid dictionary words, names, and dates. If you are protecting a highly sensitive document, consider using a randomly generated password and sharing it with the recipient through a separate secure channel — not in the same email as the PDF.",
-              },
-            ],
+seoSections: [
+  {
+    title:
+      "Free PDF Password Protector — Encrypt Any PDF with a Password Online",
+    text: (
+      <>
+        Need to password protect a PDF? PDFLinx lets you add strong encryption and password protection to any PDF online for free — instantly and without any software installation. Whether it is a confidential business report, a legal contract, financial statements, personal identity documents, or a newly{" "}
+        <a
+          href="/merge-pdf"
+          className="text-blue-600 hover:underline font-medium"
+        >
+          merged PDF
+        </a>
+        , PDFLinx secures it with AES encryption in seconds. If you ever need to remove security from an authorized file later, you can use our{" "}
+        <a
+          href="/unlock-pdf"
+          className="text-blue-600 hover:underline font-medium"
+        >
+          Unlock PDF tool
+        </a>
+        . No signup, no watermark, no hidden limits. Works on Windows, Mac, iPhone, and Android.
+      </>
+    ),
+  },
+  {
+    title: "Open Password vs Permissions Password — What is the Difference?",
+    text: (
+      <>
+        PDF password protection works on two levels. An open password — also called a user password — is required just to open and view the PDF. Anyone who tries to open the file without this password will be blocked completely. A permissions password — also called an owner password — allows the file to be opened and viewed but restricts what the recipient can do with it — preventing editing, copying text, printing, or extracting pages. To ensure complete confidentiality before locking permissions, you may also want to use our{" "}
+        <a
+          href="/redact-pdf"
+          className="text-blue-600 hover:underline font-medium"
+        >
+          Redact PDF tool
+        </a>{" "}
+        to permanently blackout sensitive text.
+      </>
+    ),
+  },
+  {
+    title: "AES-128 vs AES-256 Encryption — Which Should You Choose?",
+    text: (
+      <>
+        Both AES-128 and AES-256 are industry-standard encryption algorithms used in banking, government, and enterprise security. AES-128 provides strong encryption that is more than sufficient for everyday document security — contracts, reports, and personal files. AES-256 provides the highest level of encryption available for PDF protection — recommended for highly sensitive documents such as legal filings, financial records, medical files, and confidential business data.
+      </>
+    ),
+  },
+  {
+    title: "What Permissions Can You Restrict on a Protected PDF?",
+    text: (
+      <>
+        Beyond blocking access with an open password, PDF permissions let you control what an authorized recipient can do after opening the file. PDFLinx lets you restrict printing, content copying, editing, and page extraction. If you want to protect your intellectual property further without restricting access completely, consider using our{" "}
+        <a
+          href="/add-watermark"
+          className="text-blue-600 hover:underline font-medium"
+        >
+          Add Watermark tool
+        </a>{" "}
+        to stamp custom copyright text or logos across your pages.
+      </>
+    ),
+  },
+  {
+    title:
+      "Why PDFLinx is the Best Free PDF Protection Tool — No Watermark, No Limits",
+    text: (
+      <>
+        Most free PDF password tools either add their own watermark, restrict encryption strength on free plans, or require account creation. PDFLinx does none of that — completely free, full AES-256 encryption, no signup, no watermark, and no daily limit. Explore our entire directory of{" "}
+        <a
+          href="/free-pdf-tools"
+          className="text-blue-600 hover:underline font-medium"
+        >
+          free PDF tools
+        </a>{" "}
+        to handle all your document workflows with zero restrictions.
+      </>
+    ),
+  },
+  {
+    title: "Common Use Cases for Password Protecting a PDF",
+    text: (
+      <>
+        ✓ <strong>Business & Legal:</strong> Encrypt contracts, NDAs, and board reports, or add e-signatures using our{" "}
+        <a
+          href="/sign-pdf"
+          className="text-blue-600 hover:underline font-medium"
+        >
+          Sign PDF tool
+        </a>{" "}
+        before distribution.
+        <br />
+        ✓ <strong>Finance & Accounting:</strong> Protect financial statements and tax documents, then optimize them using our{" "}
+        <a
+          href="/compress-pdf"
+          className="text-blue-600 hover:underline font-medium"
+        >
+          Compress PDF tool
+        </a>{" "}
+        for secure email attachments.
+        <br />
+        ✓ <strong>HR & Administration:</strong> Secure employee records, offer letters, performance reviews, and salary information.
+        <br />
+        ✓ <strong>Healthcare:</strong> Protect patient records, medical reports, and health documents that must be kept strictly confidential.
+        <br />
+        ✓ <strong>Education:</strong> Restrict access to exam papers, answer sheets, and course materials before scheduled release.
+        <br />
+        ✓ <strong>Personal:</strong> Protect identity documents, scanned passports, and bank statements shared over email.
+      </>
+    ),
+  },
+  {
+    title:
+      "Protect PDF on iPhone, Android, Mac & Windows — No App Needed",
+    text: (
+      <>
+        PDFLinx works entirely in your browser — no download, no installation, no app required. On iPhone or Android, open your browser and upload your PDF directly from your files app. On Mac or Windows, drag and drop your PDF and download the protected file in seconds. Whether you need to password protect a PDF on mobile or desktop, PDFLinx works seamlessly across every platform and operating system.
+      </>
+    ),
+  },
+  {
+    title: "Privacy and File Security — How PDFLinx Handles Your Document",
+    text: (
+      <>
+        Your files are processed on secure servers over encrypted HTTPS connections and automatically deleted after 1 hour. We do not store, share, or access your documents at any point. The password you set is applied to the PDF file itself — PDFLinx does not record or store your password. After download, only someone with your password can open the protected file.
+      </>
+    ),
+  },
+  {
+    title: "How Strong Should Your PDF Password Be?",
+    text: (
+      <>
+        The strength of PDF encryption is only as good as the password protecting it. A short or common password like '1234' or 'password' can be guessed quickly regardless of encryption level. For meaningful protection, use a password of at least 10 characters combining uppercase and lowercase letters, numbers, and symbols. Avoid dictionary words, names, and dates. If you need to make quick content fixes before locking your file, use our{" "}
+        <a
+          href="/edit-pdf"
+          className="text-blue-600 hover:underline font-medium"
+        >
+          Edit PDF tool
+        </a>
+        .
+      </>
+    ),
+  },
+],
 
             faqs: [
               {

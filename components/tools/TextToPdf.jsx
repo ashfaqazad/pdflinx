@@ -633,27 +633,109 @@ export default function TextToPdf({ seo }) {
             ctaSubtext: "No limits. No hidden charges. Text never uploaded.",
             ctaButton: "Paste Text & Generate PDF",
 
-            seoSections: [
+            // seoSections: [
+            //   {
+            //     title:
+            //       "Free Text to PDF Converter — Turn Plain Text into a Clean PDF Instantly",
+            //     text: "Need a clean PDF from plain text? PDFLinx generates a properly formatted PDF from any text you paste — notes, resumes, letters, essays, articles, or assignments. The PDF is created instantly in your browser using jsPDF — nothing is uploaded, nothing is stored on any server. No software installation required, no watermarks added, no sign-up needed. It is the fastest and most private way to convert plain text to PDF online.",
+            //   },
+            //   {
+            //     title: "How Text to PDF Generation Works",
+            //     text: "Paste your text into the editor and click Generate PDF. PDFLinx formats your content automatically with proper A4 margins, 12pt Helvetica font, and consistent line spacing. Long text automatically flows across multiple pages. The PDF downloads immediately to your device — no processing delay, no server round-trip, no waiting.",
+            //   },
+            //   {
+            //     title: "Common Use Cases for Text to PDF",
+            //     text: "Students converting notes and assignments to PDF for submission. Job seekers turning plain-text resumes into professional PDFs to attach to applications. Office professionals creating quick letters and memos from text drafts. Writers exporting articles, stories, and long-form content as shareable PDF documents. Anyone who needs a clean, printable PDF from text without opening Word or Google Docs.",
+            //   },
+            //   {
+            //     title: "Privacy — Your Text Never Leaves Your Device",
+            //     text: "Unlike most online PDF tools that upload your file to a server for processing, PDFLinx Text to PDF generates the PDF entirely in your browser using the jsPDF library. Your text is never sent to any server, never stored, and never shared with any third party. This makes it the most private text to PDF converter available — complete privacy by design, no exceptions.",
+            //   },
+            //   {
+            //     title: "Text to PDF vs Word to PDF — Which Should You Use?",
+            //     text: "Use Text to PDF when you have raw plain text content — copied from an email, a note, a website, or typed directly — and need a clean PDF quickly without any formatting. Use Word to PDF when you have a fully formatted DOCX document with headings, bold text, tables, and images that need to be preserved in the PDF. For plain text, Text to PDF is faster, simpler, and completely private since nothing is uploaded.",
+            //   },
+            // ],
+
+
+                        seoSections: [
               {
                 title:
                   "Free Text to PDF Converter — Turn Plain Text into a Clean PDF Instantly",
-                text: "Need a clean PDF from plain text? PDFLinx generates a properly formatted PDF from any text you paste — notes, resumes, letters, essays, articles, or assignments. The PDF is created instantly in your browser using jsPDF — nothing is uploaded, nothing is stored on any server. No software installation required, no watermarks added, no sign-up needed. It is the fastest and most private way to convert plain text to PDF online.",
+                text: (
+                  <>
+                    Need a clean PDF from plain text? PDFLinx generates a properly formatted PDF from any text you paste — notes, resumes, letters, essays, articles, or assignments. The PDF is created instantly in your browser using jsPDF — nothing is uploaded, nothing is stored on any server. No software installation required, no watermarks added, no sign-up needed. It is the fastest and most private way to convert plain text to PDF online. Working with a formatted document instead? Try our <a href="/word-to-pdf" className="text-blue-600 hover:underline font-medium">Word to PDF converter</a>.
+                  </>
+                ),
               },
               {
                 title: "How Text to PDF Generation Works",
-                text: "Paste your text into the editor and click Generate PDF. PDFLinx formats your content automatically with proper A4 margins, 12pt Helvetica font, and consistent line spacing. Long text automatically flows across multiple pages. The PDF downloads immediately to your device — no processing delay, no server round-trip, no waiting.",
+                text: (
+                  <>
+                    Paste your text into the editor and click Generate PDF. PDFLinx formats your content automatically with proper A4 margins, 12pt Helvetica font, and consistent line spacing. Long text automatically flows across multiple pages. The PDF downloads immediately to your device — no processing delay, no server round-trip, no waiting. If your text runs across many pages, you can add numbering afterwards with our <a href="/add-page-numbers" className="text-blue-600 hover:underline font-medium">Add Page Numbers tool</a>.
+                  </>
+                ),
               },
               {
                 title: "Common Use Cases for Text to PDF",
-                text: "Students converting notes and assignments to PDF for submission. Job seekers turning plain-text resumes into professional PDFs to attach to applications. Office professionals creating quick letters and memos from text drafts. Writers exporting articles, stories, and long-form content as shareable PDF documents. Anyone who needs a clean, printable PDF from text without opening Word or Google Docs.",
+                text: (
+                  <>
+                    ✓ <strong>Students:</strong> Convert notes and assignments to PDF for submission. Have several files? <a href="/merge-pdf" className="text-blue-600 hover:underline font-medium">Merge PDF files</a> into one submission.<br />
+                    ✓ <strong>Job Seekers:</strong> Turn plain-text resumes and cover letters into professional PDFs to attach to applications.<br />
+                    ✓ <strong>Office Professionals:</strong> Create quick letters and memos from text drafts, then <a href="/sign-pdf" className="text-blue-600 hover:underline font-medium">sign the PDF online</a> before sending.<br />
+                    ✓ <strong>Writers:</strong> Export articles, stories, and long-form content as shareable PDF documents. Add a <a href="/add-watermark" className="text-blue-600 hover:underline font-medium">watermark to your PDF</a> to mark drafts or claim ownership.<br />
+                    ✓ <strong>Anyone:</strong> Get a clean, printable PDF from text without opening Word or Google Docs.
+                  </>
+                ),
               },
               {
                 title: "Privacy — Your Text Never Leaves Your Device",
-                text: "Unlike most online PDF tools that upload your file to a server for processing, PDFLinx Text to PDF generates the PDF entirely in your browser using the jsPDF library. Your text is never sent to any server, never stored, and never shared with any third party. This makes it the most private text to PDF converter available — complete privacy by design, no exceptions.",
+                text: (
+                  <>
+                    Unlike most online PDF tools that upload your file to a server for processing, PDFLinx Text to PDF generates the PDF entirely in your browser using the jsPDF library. Your text is never sent to any server, never stored, and never shared with any third party. This makes it the most private text to PDF converter available — complete privacy by design, no exceptions. Need to restrict access to the finished file? Lock it with a password using our <a href="/protect-pdf" className="text-blue-600 hover:underline font-medium">Protect PDF tool</a>.
+                  </>
+                ),
               },
               {
                 title: "Text to PDF vs Word to PDF — Which Should You Use?",
-                text: "Use Text to PDF when you have raw plain text content — copied from an email, a note, a website, or typed directly — and need a clean PDF quickly without any formatting. Use Word to PDF when you have a fully formatted DOCX document with headings, bold text, tables, and images that need to be preserved in the PDF. For plain text, Text to PDF is faster, simpler, and completely private since nothing is uploaded.",
+                text: (
+                  <>
+                    Use Text to PDF when you have raw plain text content — copied from an email, a note, a website, or typed directly — and need a clean PDF quickly without any formatting. Use <a href="/word-to-pdf" className="text-blue-600 hover:underline font-medium">Word to PDF</a> when you have a fully formatted DOCX document with headings, bold text, tables, and images that need to be preserved in the PDF. Converting slides instead? Use <a href="/ppt-to-pdf" className="text-blue-600 hover:underline font-medium">PowerPoint to PDF</a>, and for photos or scans use <a href="/image-to-pdf" className="text-blue-600 hover:underline font-medium">Image to PDF</a>. For plain text, Text to PDF is faster, simpler, and completely private since nothing is uploaded.
+                  </>
+                ),
+              },
+              {
+                title: "What to Do After Creating Your PDF",
+                text: (
+                  <>
+                    Once your PDF is generated, you can keep improving it with other free PDFLinx tools. Use <a href="/merge-pdf" className="text-blue-600 hover:underline font-medium">Merge PDF</a> to combine it with other documents, <a href="/organize-pdf" className="text-blue-600 hover:underline font-medium">Organize PDF</a> to reorder or delete pages, <a href="/compress-pdf" className="text-blue-600 hover:underline font-medium">Compress PDF</a> to shrink the file for email, and <a href="/rotate-pdf" className="text-blue-600 hover:underline font-medium">Rotate PDF</a> if you need a different page orientation. Note that these tools process files on our secure servers, which automatically delete them after 1 hour.
+                  </>
+                ),
+              },
+              {
+                title: "Need to Edit the Text Later? Convert PDF Back to Word",
+                text: (
+                  <>
+                    A PDF is great for sharing but harder to edit. If you need to change the content later, the easiest route is to keep your original text and generate a fresh PDF. If you only have the PDF, convert it back with our <a href="/pdf-to-word" className="text-blue-600 hover:underline font-medium">PDF to Word converter</a>, or make small changes directly using our <a href="/edit-pdf" className="text-blue-600 hover:underline font-medium">Edit PDF tool</a>.
+                  </>
+                ),
+              },
+              {
+                title: "Text to PDF vs OCR — Typed Text or Scanned Pages?",
+                text: (
+                  <>
+                    Text to PDF works when you already have the text in digital form. If your content is stuck inside a scanned page or photo, you first need to recognize the text. Use our <a href="/ocr-pdf" className="text-blue-600 hover:underline font-medium">OCR PDF tool</a> to make scanned documents searchable and selectable, then copy the text or convert it with <a href="/pdf-to-word" className="text-blue-600 hover:underline font-medium">PDF to Word</a>. If you just want to keep the scan as it is, use <a href="/image-to-pdf" className="text-blue-600 hover:underline font-medium">Image to PDF</a> instead.
+                  </>
+                ),
+              },
+              {
+                title:
+                  "Why PDFLinx is the Best Free Text to PDF Converter — No Watermark, No Limits",
+                text: (
+                  <>
+                    Many online text to PDF tools add watermarks, limit the length of your text, or require an account before you can download. PDFLinx does none of that — completely free, no signup, no watermark, and no daily usage limit. Unlike iLovePDF and Smallpdf, which restrict usage on free plans, PDFLinx lets you generate as many PDFs as you need at zero cost. Read our <a href="/compare/pdflinx-vs-ilovepdf" className="text-blue-600 hover:underline font-medium">PDFLinx vs iLovePDF</a> guide for a detailed comparison.
+                  </>
+                ),
               },
             ],
 

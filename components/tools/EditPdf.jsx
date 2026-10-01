@@ -1140,50 +1140,180 @@ export default function EditPdf({ seo }) {
               "Everything you need to know about editing PDFs online — add text, insert images, highlight, draw shapes, sign, and annotate any PDF for free. No watermark, no signup, no software needed.",
 
             seoSections: [
-              {
-                title:
-                  "Free PDF Editor — Add Text, Images & Annotations to Any PDF Online",
-                text: "Need to edit a PDF online? PDFLinx gives you a full-featured PDF editor in your browser — completely free and without any software installation. Add text boxes, insert images or photos, highlight content, draw shapes and arrows, and annotate any PDF directly on the page. Whether it is a form you need to fill, a photo you need to add to a document, a report you need to mark up, or content you need to update, PDFLinx handles it instantly. No signup, no watermark, no hidden limits. Works on Windows, Mac, iPhone, and Android.",
-              },
-              {
-                title: "What Can You Edit in a PDF with PDFLinx?",
-                text: "PDFLinx is an annotation and content-addition editor — the most practical kind of PDF editing for everyday needs. You can add text boxes anywhere on any page to insert new content, fill in form fields, or label sections. You can insert an image or photo and resize it to fit the page. You can highlight text to draw attention to important passages. You can draw rectangles to annotate or cover existing content. Everything you add becomes a permanent part of the PDF output.",
-              },
-              {
-                title: "Adding Text to a PDF — Without Converting to Word",
-                text: "One of the most common PDF editing needs is adding text — filling in a form field, inserting a note, labeling a diagram, or adding a missing line of content. PDFLinx lets you click anywhere on a PDF page and add a text box with your chosen font size and color — no need to convert the PDF to Word first, make changes, and convert back. For quick text additions, PDFLinx is far faster and simpler than a full roundtrip conversion. For more extensive editing of the original document text, converting to Word using our PDF to Word tool may be a better approach.",
-              },
-              {
-                title: "Inserting Images into a PDF Online",
-                text: "Need to add a photo, logo, or profile picture to a PDF — like a resume or a form? PDFLinx lets you upload a PNG or JPG image and place it anywhere on the page, then drag to reposition or resize it exactly how you want. This is especially useful for adding a profile photo to a resume template, a signature image, a company logo to a letterhead, or a scanned stamp to a document — all without needing Photoshop or a desktop PDF editor.",
-              },
-              {
-                title: "Highlight, Annotate & Mark Up PDFs for Review",
-                text: "PDFLinx is ideal for document review workflows. Highlight key sentences in yellow or another color to flag important content. Add text comment boxes explaining changes or raising questions. Draw rectangles around sections that need attention or cover outdated content with a clean white box. These annotation tools are exactly what legal teams, editors, educators, and business reviewers use when marking up documents — and PDFLinx delivers them without requiring Adobe Acrobat or any other paid software.",
-              },
-              {
-                title:
-                  "Why PDFLinx is the Best Free Online PDF Editor — No Watermark, No Limits",
-                text: "Most free online PDF editors add watermarks, restrict the number of edits per day, limit the tools available on free plans, or require account creation. PDFLinx does none of that — completely free, no signup, no watermark, and no daily usage limit. Unlike iLovePDF and Smallpdf which restrict annotation and editing tools on free tiers, and unlike Adobe Acrobat which requires a monthly subscription, PDFLinx gives you practical PDF editing at zero cost.",
-              },
-              {
-                title: "Common Use Cases for Editing a PDF Online",
-                text: "✓ Fill PDF Forms: Add text to form fields in PDFs that are not interactive — contracts, applications, questionnaires, and tax forms.\n✓ Add a Photo or Logo: Insert a profile picture, company logo, or scanned signature image anywhere on the page.\n✓ Review & Mark Up: Highlight, annotate, and comment on reports, drafts, manuscripts, and legal documents.\n✓ Label Diagrams: Add text labels to technical drawings, floor plans, and visual documents.\n✓ Update Content: Cover outdated text and replace it with new text or an image.\n✓ Add Missing Content: Insert text, images, or notes to a PDF where content is missing or needs clarification.",
-              },
-              {
-                title:
-                  "Edit PDF on iPhone, Android, Mac & Windows — No App Needed",
-                text: "PDFLinx works entirely in your browser — no download, no installation, no app required. On iPhone or Android, the PDF editor works on touchscreens — tap to add text boxes, upload photos from your camera roll, and highlight by touch. On Mac or Windows, use your mouse or trackpad to annotate with precision. Whether you need to edit a PDF on mobile or desktop, PDFLinx works seamlessly across every platform and operating system.",
-              },
-              {
-                title: "Privacy and File Security",
-                text: "Your files are processed on secure servers and automatically deleted after 1 hour. We do not store, share, or access your documents at any point. This is especially important when editing contracts, legal documents, financial records, or any confidential business file. All file transfers use encrypted HTTPS connections for complete security.",
-              },
-              {
-                title: "Edit PDF vs Convert to Word — When to Use Which Approach",
-                text: "PDF editing in PDFLinx is best for adding content on top of existing pages — text boxes, images, highlights, and annotations. If you need to change the original text of the document — rewrite paragraphs, update names and dates in the body text, restructure content — converting to Word using our PDF to Word tool gives you a fully editable document where the original text can be modified directly. For anything that requires overlaying new content without changing the underlying document structure, the PDF editor is the faster, simpler choice.",
-              },
-            ],
+            {
+              title:
+                "Free PDF Editor — Add Text, Images & Annotations to Any PDF Online",
+              text: (
+                <>
+                  Need to edit a PDF online? PDFLinx gives you a full-featured PDF editor in your browser — completely free and without any software installation. Add text boxes, insert images or photos, highlight content, draw shapes and arrows, and annotate any PDF directly on the page. Whether it is a form you need to fill, a report you need to mark up, or content you need to update, PDFLinx handles it instantly. If you need to make structural edits to the underlying text, try converting it using our{" "}
+                  <a
+                    href="/pdf-to-word"
+                    className="text-blue-600 hover:underline font-medium"
+                  >
+                    PDF to Word converter
+                  </a>
+                  . No signup, no watermark, no hidden limits. Works on Windows, Mac, iPhone, and Android.
+                </>
+              ),
+            },
+            {
+              title: "What Can You Edit in a PDF with PDFLinx?",
+              text: (
+                <>
+                  PDFLinx is an annotation and content-addition editor — the most practical kind of PDF editing for everyday needs. You can add text boxes anywhere on any page to insert new content, fill in form fields, or label sections. You can insert an image or photo and resize it to fit the page. You can highlight text to draw attention to important passages, or use our{" "}
+                  <a
+                    href="/add-watermark"
+                    className="text-blue-600 hover:underline font-medium"
+                  >
+                    Add Watermark tool
+                  </a>{" "}
+                  for formal document branding. Everything you add becomes a permanent part of the PDF output.
+                </>
+              ),
+            },
+            {
+              title: "Adding Text to a PDF — Without Converting to Word",
+              text: (
+                <>
+                  One of the most common PDF editing needs is adding text — filling in a form field, inserting a note, labeling a diagram, or adding a missing line of content. PDFLinx lets you click anywhere on a PDF page and add a text box with your chosen font size and color — no need to convert the PDF to Word first, make changes, and convert back. For quick text additions, PDFLinx is far faster and simpler. However, for complete document restructuring, our{" "}
+                  <a
+                    href="/pdf-to-word"
+                    className="text-blue-600 hover:underline font-medium"
+                  >
+                    PDF to Word
+                  </a>{" "}
+                  tool remains the recommended approach.
+                </>
+              ),
+            },
+            {
+              title: "Inserting Images into a PDF Online",
+              text: (
+                <>
+                  Need to add a photo, logo, or profile picture to a PDF — like a resume or a form? PDFLinx lets you upload a PNG or JPG image and place it anywhere on the page, then drag to reposition or resize it exactly how you want. If you need to append legal authorization to contracts or invoices alongside images, you can also seamlessly{" "}
+                  <a
+                    href="/sign-pdf"
+                    className="text-blue-600 hover:underline font-medium"
+                  >
+                    sign PDF online
+                  </a>{" "}
+                  with our e-signature tool.
+                </>
+              ),
+            },
+            {
+              title: "Highlight, Annotate & Mark Up PDFs for Review",
+              text: (
+                <>
+                  PDFLinx is ideal for document review workflows. Highlight key sentences in yellow or another color to flag important content. Add text comment boxes explaining changes or raising questions. For formal pagination during legal or academic review, easily{" "}
+                  <a
+                    href="/add-page-numbers"
+                    className="text-blue-600 hover:underline font-medium"
+                  >
+                    add page numbers
+                  </a>{" "}
+                  to your document. If you need to permanently remove sensitive confidential information rather than just covering it, use our dedicated{" "}
+                  <a
+                    href="/redact-pdf"
+                    className="text-blue-600 hover:underline font-medium"
+                  >
+                    Redact PDF tool
+                  </a>
+                  .
+                </>
+              ),
+            },
+            {
+              title:
+                "Why PDFLinx is the Best Free Online PDF Editor — No Watermark, No Limits",
+              text: (
+                <>
+                  Most free online PDF editors add watermarks, restrict the number of edits per day, limit the tools available on free plans, or require account creation. PDFLinx does none of that — completely free, no signup, no watermark, and no daily usage limit. Explore our detailed side-by-side breakdowns on{" "}
+                  <a
+                    href="/compare/pdflinx-vs-ilovepdf"
+                    className="text-blue-600 hover:underline font-medium"
+                  >
+                    PDFLinx vs iLovePDF
+                  </a>{" "}
+                  and{" "}
+                  <a
+                    href="/compare/pdflinx-vs-smallpdf"
+                    className="text-blue-600 hover:underline font-medium"
+                  >
+                    PDFLinx vs Smallpdf
+                  </a>{" "}
+                  to see how our free features compare to other platforms.
+                </>
+              ),
+            },
+            {
+              title: "Common Use Cases for Editing a PDF Online",
+              text: (
+                <>
+                  ✓ <strong>Fill PDF Forms:</strong> Add text to form fields in PDFs that are not interactive — contracts, applications, questionnaires, and tax forms.<br />
+                  ✓ <strong>Add a Photo or Logo:</strong> Insert a profile picture, company logo, or scanned signature image anywhere on the page.<br />
+                  ✓ <strong>Review & Mark Up:</strong> Highlight, annotate, and comment on reports, drafts, manuscripts, and legal documents.<br />
+                  ✓ <strong>Label Diagrams:</strong> Add text labels to technical drawings, floor plans, and visual documents.<br />
+                  ✓ <strong>Optimize Output:</strong> After editing, you can reduce file size for email sharing using our{" "}
+                  <a
+                    href="/compress-pdf"
+                    className="text-blue-600 hover:underline font-medium"
+                  >
+                    Compress PDF tool
+                  </a>
+                  .<br />
+                  ✓ <strong>Access More Utilities:</strong> Check our full directory of{" "}
+                  <a
+                    href="/free-pdf-tools"
+                    className="text-blue-600 hover:underline font-medium"
+                  >
+                    free PDF tools
+                  </a>{" "}
+                  for all document workflows.
+                </>
+              ),
+            },
+            {
+              title:
+                "Edit PDF on iPhone, Android, Mac & Windows — No App Needed",
+              text: (
+                <>
+                  PDFLinx works entirely in your browser — no download, no installation, no app required. On iPhone or Android, the PDF editor works on touchscreens — tap to add text boxes, upload photos from your camera roll, and highlight by touch. On Mac or Windows, use your mouse or trackpad to annotate with precision. Whether you need to edit a PDF on mobile or desktop, PDFLinx works seamlessly across every platform and operating system.
+                </>
+              ),
+            },
+            {
+              title: "Privacy and File Security",
+              text: (
+                <>
+                  Your files are processed on secure servers and automatically deleted after 1 hour. We do not store, share, or access your documents at any point. This is especially important when editing contracts, legal documents, financial records, or any confidential business file. To prevent unauthorized access after editing, consider using our{" "}
+                  <a
+                    href="/protect-pdf"
+                    className="text-blue-600 hover:underline font-medium"
+                  >
+                    Protect PDF tool
+                  </a>{" "}
+                  to apply strong password encryption.
+                </>
+              ),
+            },
+            {
+              title: "Edit PDF vs Convert to Word — When to Use Which Approach",
+              text: (
+                <>
+                  PDF editing in PDFLinx is best for adding content on top of existing pages — text boxes, images, highlights, and annotations. If you need to change the original text of the document — rewrite paragraphs, update names and dates in the body text, restructure content — converting to Word using our{" "}
+                  <a
+                    href="/pdf-to-word"
+                    className="text-blue-600 hover:underline font-medium"
+                  >
+                    PDF to Word
+                  </a>{" "}
+                  tool gives you a fully editable document where the original text can be modified directly. For overlaying new content without changing the underlying document structure, the PDF editor is the faster, simpler choice.
+                </>
+              ),
+            },
+          ],
+
 
             faqs: [
               {

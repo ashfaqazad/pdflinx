@@ -633,47 +633,206 @@ export default function RotatePdf({ seo }) {
             seoDescription:
               "Everything you need to know about rotating PDF pages — free, online, permanent fix. Rotate all pages or individual pages in any direction. No watermark, no signup, no limits.",
 
-            seoSections: [
-              {
-                title:
-                  "Free PDF Rotator — Fix Sideways and Upside-Down PDF Pages Online",
-                text: "Need to rotate a PDF? PDFLinx lets you rotate PDF pages online for free — instantly and without any software installation. Whether your entire document is sideways from a wrong scan orientation, a few pages are upside down in a merged PDF, or you need to flip a landscape page to portrait, PDFLinx fixes it permanently in seconds. No signup, no watermark, no hidden limits. Works on Windows, Mac, iPhone, and Android.",
-              },
-              {
-                title: "Why PDF Pages End Up in the Wrong Orientation",
-                text: "Incorrect page orientation is one of the most common PDF problems and it happens for several reasons. Scanning a physical document with pages placed sideways in the feeder is the most frequent cause. Merging PDFs from different sources that use different page orientations also results in mixed-direction pages. Some PDF export tools default to landscape when the content was intended as portrait. Mobile phone scans using certain apps can also produce rotated pages depending on how the phone was held. Whatever the cause, PDFLinx corrects the orientation permanently with just a few clicks.",
-              },
-              {
-                title: "Rotate All Pages vs Rotate Individual Pages",
-                text: "PDFLinx gives you full control over which pages get rotated. If your entire PDF is in the wrong orientation — for example a portrait document scanned in landscape — you can rotate all pages at once with a single click. If only some pages are sideways in an otherwise correctly oriented document, you can select those specific pages and rotate only them independently. You can even apply different rotations to different pages in the same session — for example rotating pages 3 and 7 clockwise while rotating page 12 counterclockwise.",
-              },
-              {
-                title: "Is the Rotation Permanent or Temporary?",
-                text: "The rotation is permanent. This is a critical distinction — some PDF viewers let you rotate a page for viewing only, but the rotation resets when you close and reopen the file. PDFLinx writes the rotation directly into the PDF file structure, so every page displays in the correct orientation in any PDF viewer on any device, always. You never have to rotate it again after downloading the fixed file.",
-              },
-              {
-                title:
-                  "Why PDFLinx is the Best Free PDF Rotator — No Watermark, No Limits",
-                text: "Most free PDF rotation tools add watermarks to the output, restrict the number of pages, or require account creation. PDFLinx does none of that — completely free, no signup, no watermark, and no daily usage limit. Unlike iLovePDF and Smallpdf which restrict batch page editing on free tiers, PDFLinx gives you full access to rotate as many pages as you need at zero cost.",
-              },
-              {
-                title: "Common Use Cases for Rotating PDF Pages",
-                text: "✓ Fix scanned documents where pages were fed into the scanner sideways or upside down.\n✓ Correct orientation in merged PDFs that combined files with different page directions.\n✓ Rotate a landscape-exported PDF back to portrait for standard document viewing.\n✓ Fix mobile phone scans that came out sideways depending on how the phone was held.\n✓ Rotate specific pages in a report that contain wide tables or charts in landscape within a portrait document.\n✓ Correct orientation in PDF forms received from clients or institutions before filling or forwarding.",
-              },
-              {
-                title:
-                  "Rotate PDF on iPhone, Android, Mac & Windows — No App Needed",
-                text: "PDFLinx works entirely in your browser — no download, no installation, no app required. On iPhone or Android, open your browser and upload your PDF directly from your files app — the rotation tool works perfectly on touchscreens. On Mac or Windows, drag and drop your PDF and download the corrected file in seconds. PDFLinx works seamlessly across every platform and operating system.",
-              },
-              {
-                title: "Privacy and File Security",
-                text: "Your files are processed on secure servers and automatically deleted after 1 hour. We do not store, share, or access your documents at any point. PDFLinx is built with privacy-first principles — your data stays yours. All file transfers use encrypted HTTPS connections for complete security.",
-              },
-              {
-                title: "Rotate PDF vs Organize PDF — What is the Difference?",
-                text: "The Rotate PDF tool is focused specifically on fixing page orientation — it is the fastest way to rotate all pages or specific pages in a PDF. The Organize PDF tool is a broader tool that also lets you rotate pages, but additionally allows you to reorder and delete pages in the same session. If rotation is all you need, use Rotate PDF for a simpler, faster experience. If you also need to reorder or delete pages at the same time, use our free Organize PDF tool.",
-              },
-            ],
+
+              seoSections: [
+                {
+                  title: "Free PDF Rotator — Fix Sideways and Upside-Down PDF Pages Online",
+                  text: (
+                    <>
+                      Need to rotate a PDF? PDFLinx lets you rotate PDF pages online for free
+                      — instantly and without any software installation. Whether your entire
+                      document is sideways from a wrong scan orientation, a few pages are
+                      upside down in a{" "}
+                      <a
+                        href="/merge-pdf"
+                        className="text-blue-600 hover:underline font-medium"
+                      >
+                        merged PDF
+                      </a>
+                      , or you need to flip a landscape page to portrait, PDFLinx fixes it
+                      permanently in seconds. If you need to perform full page reordering or management, check out our{" "}
+                      <a
+                        href="/organize-pdf"
+                        className="text-blue-600 hover:underline font-medium"
+                      >
+                        Organize PDF tool
+                      </a>. No signup, no watermark, no hidden limits.
+                    </>
+                  ),
+                },
+                {
+                  title: "Why PDF Pages End Up in the Wrong Orientation",
+                  text: (
+                    <>
+                      Incorrect page orientation is one of the most common PDF problems and
+                      it happens for several reasons. Scanning a physical document with pages
+                      placed sideways in the feeder is the most frequent cause. If your scanned document is also non-searchable, you can run it through our{" "}
+                      <a
+                        href="/ocr-pdf"
+                        className="text-blue-600 hover:underline font-medium"
+                      >
+                        OCR PDF tool
+                      </a>{" "}
+                      after fixing the orientation. Mobile phone scans or exporting files across formats can also produce rotated pages. Whatever the cause, PDFLinx corrects the orientation permanently with just a few clicks.
+                    </>
+                  ),
+                },
+                {
+                  title: "Rotate All Pages vs Rotate Individual Pages",
+                  text: (
+                    <>
+                      PDFLinx gives you full control over which pages get rotated. If your
+                      entire PDF is in the wrong orientation — for example a portrait
+                      document scanned in landscape — you can rotate all pages at once with a
+                      single click. If only some pages are sideways in an otherwise correctly
+                      oriented document, you can select those specific pages and rotate only
+                      them independently. If you only need to extract or isolate selected pages first, our{" "}
+                      <a
+                        href="/split-pdf"
+                        className="text-blue-600 hover:underline font-medium"
+                      >
+                        Split PDF tool
+                      </a>{" "}
+                      or{" "}
+                      <a
+                        href="/extract-pdf"
+                        className="text-blue-600 hover:underline font-medium"
+                      >
+                        Extract PDF tool
+                      </a>{" "}
+                      can help you pull out specific pages.
+                    </>
+                  ),
+                },
+                {
+                  title: "Is the Rotation Permanent or Temporary?",
+                  text: (
+                    <>
+                      The rotation is permanent. This is a critical distinction — some PDF
+                      viewers let you rotate a page for viewing only, but the rotation resets
+                      when you close and reopen the file. PDFLinx writes the rotation directly
+                      into the PDF file structure, so every page displays in the correct
+                      orientation in any PDF viewer on any device, always. You never have to
+                      rotate it again after downloading the fixed file.
+                    </>
+                  ),
+                },
+                {
+                  title:
+                    "Why PDFLinx is the Best Free PDF Rotator — No Watermark, No Limits",
+                  text: (
+                    <>
+                      Most free PDF rotation tools add watermarks to the output, restrict the
+                      number of pages, or require account creation. PDFLinx does none of that
+                      — completely free, no signup, no watermark, and no daily usage limit.
+                      Unlike iLovePDF and Smallpdf which restrict batch page editing on free
+                      tiers, PDFLinx gives you full access to rotate as many pages as you
+                      need at zero cost. Browse our complete suite of{" "}
+                      <a
+                        href="/free-pdf-tools"
+                        className="text-blue-600 hover:underline font-medium"
+                      >
+                        free PDF tools
+                      </a>{" "}
+                      to explore more utilities like our{" "}
+                      <a
+                        href="/add-watermark"
+                        className="text-blue-600 hover:underline font-medium"
+                      >
+                        Add Watermark tool
+                      </a>.
+                    </>
+                  ),
+                },
+                {
+                  title: "Common Use Cases for Rotating PDF Pages",
+                  text: (
+                    <>
+                      ✓ Fix scanned documents where pages were fed into the scanner sideways
+                      or upside down.
+                      <br />
+                      ✓ Correct orientation after using our{" "}
+                      <a
+                        href="/crop-pdf"
+                        className="text-blue-600 hover:underline font-medium"
+                      >
+                        Crop PDF tool
+                      </a>{" "}
+                      to adjust document margins.
+                      <br />
+                      ✓ Rotate a landscape-exported PDF back to portrait for standard
+                      document viewing.
+                      <br />
+                      ✓ Fix mobile phone scans that came out sideways depending on how the
+                      phone was held.
+                      <br />
+                      ✓ Rotate specific pages in a report that contain wide tables or charts
+                      in landscape within a portrait document.
+                      <br />
+                      ✓ Correct orientation in PDF forms received from clients before filling or forwarding.
+                      <br />
+                      ✓ If you need to permanently remove unwanted pages instead of just adjusting them, use our{" "}
+                      <a
+                        href="/remove-pages"
+                        className="text-blue-600 hover:underline font-medium"
+                      >
+                        Remove Pages tool
+                      </a>.
+                    </>
+                  ),
+                },
+                {
+                  title:
+                    "Rotate PDF on iPhone, Android, Mac & Windows — No App Needed",
+                  text: (
+                    <>
+                      PDFLinx works entirely in your browser — no download, no installation,
+                      no app required. On iPhone or Android, open your browser and upload
+                      your PDF directly from your files app — the rotation tool works
+                      perfectly on touchscreens. On Mac or Windows, drag and drop your PDF
+                      and download the corrected file in seconds. PDFLinx works seamlessly
+                      across every platform and operating system.
+                    </>
+                  ),
+                },
+                {
+                  title: "Privacy and File Security",
+                  text: (
+                    <>
+                      Your files are processed on secure servers and automatically deleted
+                      after 1 hour. We do not store, share, or access your documents at any
+                      point. If you are handling confidential documents, consider adding password protection using our{" "}
+                      <a
+                        href="/protect-pdf"
+                        className="text-blue-600 hover:underline font-medium"
+                      >
+                        Protect PDF tool
+                      </a>. All file transfers use encrypted HTTPS connections for complete security.
+                    </>
+                  ),
+                },
+                {
+                  title: "Rotate PDF vs Organize PDF — What is the Difference?",
+                  text: (
+                    <>
+                      The Rotate PDF tool is focused specifically on fixing page orientation
+                      — it is the fastest way to rotate all pages or specific pages in a
+                      PDF. The{" "}
+                      <a
+                        href="/organize-pdf"
+                        className="text-blue-600 hover:underline font-medium"
+                      >
+                        Organize PDF tool
+                      </a>{" "}
+                      is a broader tool that also lets you rotate pages, but additionally
+                      allows you to reorder and delete pages in the same session. If rotation
+                      is all you need, use Rotate PDF for a simpler, faster experience. If
+                      you also need to reorder or delete pages at the same time, use our free
+                      Organize PDF tool.
+                    </>
+                  ),
+                },
+              ],
 
             faqs: [
               {
