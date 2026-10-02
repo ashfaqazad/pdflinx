@@ -1357,91 +1357,7 @@ export default function SignPdf({ seo }) {
           ============================================================ */}
 
       {/* ── Schema 1: HowTo ── */}
-      <Script
-        id="schema-howto-sign-pdf"
-        type="application/ld+json"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "HowTo",
-            name: "How to Sign a PDF Online Free — Add Free Digital Signature",
-            description:
-              "Add a free digital signature to any PDF online. Draw your signature or upload an image, position with live preview, and download the signed PDF instantly. No signup, no watermark.",
-            url: "https://pdflinx.com/sign-pdf",
-            image: "https://pdflinx.com/og-sign-pdf.png",
-            totalTime: "PT1M",
-            estimatedCost: {
-              "@type": "MonetaryAmount",
-              value: "0",
-              currency: "USD",
-            },
-            step: [
-              {
-                "@type": "HowToStep",
-                position: 1,
-                name: "Upload Your PDF File",
-                text: "Upload the PDF document you need to sign using the upload area or drag and drop. Supports any PDF — contracts, agreements, forms, and letters.",
-                image: "https://pdflinx.com/og-sign-pdf.png",
-              },
-              {
-                "@type": "HowToStep",
-                position: 2,
-                name: "Create Your Free Digital Signature",
-                text: "Draw your digital signature using mouse or touchscreen, or upload a PNG/JPG image of your handwritten signature. Create a clean, natural digital signature in seconds.",
-                image: "https://pdflinx.com/og-sign-pdf.png",
-              },
-              {
-                "@type": "HowToStep",
-                position: 3,
-                name: "Position Signature on Live Preview",
-                text: "Drag the signature overlay to your preferred position on any page of your PDF using the live preview. Resize width and height to fit perfectly.",
-                image: "https://pdflinx.com/og-sign-pdf.png",
-              },
-              {
-                "@type": "HowToStep",
-                position: 4,
-                name: "Download Signed PDF Instantly",
-                text: "Click Sign PDF Now to apply your digital signature and download the signed document instantly. No watermark, no signup, no software required.",
-                image: "https://pdflinx.com/og-sign-pdf.png",
-              },
-            ],
-          }, null, 2),
-        }}
-      />
 
-      {/* ── Schema 2: BreadcrumbList ── */}
-      <Script
-        id="schema-breadcrumb-sign-pdf"
-        type="application/ld+json"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "BreadcrumbList",
-            itemListElement: [
-              {
-                "@type": "ListItem",
-                position: 1,
-                name: "Home",
-                item: "https://pdflinx.com",
-              },
-              {
-                "@type": "ListItem",
-                position: 2,
-                name: "PDF Tools",
-                item: "https://pdflinx.com/tools",
-              },
-              {
-                "@type": "ListItem",
-                position: 3,
-                name: "Sign PDF Online Free",
-                item: "https://pdflinx.com/sign-pdf",
-              },
-            ],
-          }, null, 2),
-        }}
-      />
 
       {/* ── Schema 3: FAQPage — uses FAQ_DATA (single source of truth) ── */}
       <Script
@@ -1464,46 +1380,7 @@ export default function SignPdf({ seo }) {
         }}
       />
 
-      {/* ── Schema 4: SoftwareApplication (WebApp) ── */}
-      <Script
-        id="software-schema-sign-pdf"
-        type="application/ld+json"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "SoftwareApplication",
-            name: "PDFLinx Sign PDF — Free Digital Signature Tool",
-            url: "https://pdflinx.com/sign-pdf",
-            applicationCategory: "UtilitiesApplication",
-            operatingSystem: "All",
-            browserRequirements: "Requires JavaScript. Works in Chrome, Firefox, Safari, Edge.",
-            offers: {
-              "@type": "Offer",
-              price: "0",
-              priceCurrency: "USD",
-            },
-
-            description:
-              "Free online tool to add digital signatures to PDF documents. Draw or upload your signature, position with live preview, download instantly. No signup required. Works on iPhone, Android, Mac, and Windows.",
-            featureList: [
-              "Free digital signature creation online",
-              "Draw signature with mouse or touchscreen",
-              "Upload signature image PNG or JPG",
-              "Type signature with custom fonts",
-              "Live PDF preview with drag-and-drop positioning",
-              "Multi-page PDF support with page selector",
-              "Resize signature width and height freely",
-              "No watermark on signed PDF output",
-              "256-bit SSL encryption",
-              "Files permanently deleted after signing",
-              "No signup or account required",
-              "Works on iPhone, Android, Mac, Windows",
-            ],
-            screenshot: "https://pdflinx.com/og-sign-pdf.png",
-          }, null, 2),
-        }}
-      />
+    
 
       {/* ── PDF.js CDN ── */}
       <Script

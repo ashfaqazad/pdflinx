@@ -227,40 +227,7 @@ export default function OCRPdf({ seo }) {
   return (
     <>
 {/* ── SEO Schemas ── */}
-<script
-  type="application/ld+json"
-  dangerouslySetInnerHTML={{
-    __html: JSON.stringify({
-      "@context": "https://schema.org",
-      "@type": "HowTo",
-      name: "How to OCR PDF Online for Free (Make Scanned PDFs Searchable)",
-      description: "Convert scanned PDFs to searchable PDFs using OCR. Extract text from images and make your documents searchable, text-selectable, and copyable. Single or multiple file upload supported.",
-      url: "https://pdflinx.com/ocr-pdf",
-      step: [
-        { "@type": "HowToStep", name: "Upload scanned PDF(s)", text: "Upload one scanned PDF or select multiple PDFs at once." },
-        { "@type": "HowToStep", name: "Select language", text: "Choose the language of your document (English, Spanish, French, etc.)." },
-        { "@type": "HowToStep", name: "OCR and download", text: "Click 'Make Searchable' and download your OCR-processed PDF. Multiple files download as ZIP." },
-      ],
-      totalTime: "PT2M",
-      estimatedCost: { "@type": "MonetaryAmount", value: "0", currency: "USD" },
-      image: "https://pdflinx.com/og-image.png",
-    }),
-  }}
-/>
 
-<script
-  type="application/ld+json"
-  dangerouslySetInnerHTML={{
-    __html: JSON.stringify({
-      "@context": "https://schema.org",
-      "@type": "BreadcrumbList",
-      itemListElement: [
-        { "@type": "ListItem", position: 1, name: "Home", item: "https://pdflinx.com" },
-        { "@type": "ListItem", position: 2, name: "OCR PDF", item: "https://pdflinx.com/ocr-pdf" },
-      ],
-    }),
-  }}
-/>
 
 <script
   type="application/ld+json"
@@ -273,33 +240,6 @@ export default function OCRPdf({ seo }) {
         name: item.q,
         acceptedAnswer: { "@type": "Answer", text: item.a },
       })),
-    }),
-  }}
-/>
-
-<script
-  type="application/ld+json"
-  dangerouslySetInnerHTML={{
-    __html: JSON.stringify({
-      "@context": "https://schema.org",
-      "@type": "SoftwareApplication",
-      name: "OCR PDF",
-      applicationCategory: "BusinessApplication",
-      operatingSystem: "Web Browser",
-      url: "https://pdflinx.com/ocr-pdf",
-      description: "Free online OCR PDF tool to convert scanned PDFs into searchable and selectable documents. Extract text from image-based PDFs while preserving layout. Supports multiple files and 100+ languages.",
-      image: "https://pdflinx.com/og-image.png",
-      offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
-      publisher: { "@type": "Organization", name: "PDFLinx", url: "https://pdflinx.com" },
-      featureList: [
-        "Convert scanned PDFs to searchable PDFs",
-        "Extract text from image-based documents",
-        "Supports multiple PDF files",
-        "100+ OCR languages supported",
-        "Preserves original document layout",
-        "Free online OCR processing",
-        "No software installation required",
-      ],
     }),
   }}
 />

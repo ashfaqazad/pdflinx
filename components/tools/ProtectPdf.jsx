@@ -272,70 +272,7 @@ export default function ProtectPdf() {
   return (
     <>
       {/* ==================== SEO SCHEMAS ==================== */}
-      <Script
-        id="howto-schema-protect-pdf"
-        type="application/ld+json"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(
-            {
-              "@context": "https://schema.org",
-              "@type": "HowTo",
-              name: "How to Password Protect a PDF Online for Free",
-              description:
-                "Add a password to your PDF online free — no signup, no watermark. Protect single or multiple PDFs instantly. Works on Windows, Mac, Android, iOS.",
-              url: "https://pdflinx.com/protect-pdf",
-              step: [
-                {
-                  "@type": "HowToStep",
-                  name: "Upload PDF file(s)",
-                  text: "Upload a single PDF or select multiple PDFs at the same time.",
-                },
-                {
-                  "@type": "HowToStep",
-                  name: "Set a password",
-                  text: "Enter a password that will be required to open the PDF.",
-                },
-                {
-                  "@type": "HowToStep",
-                  name: "Protect and download",
-                  text: "Click Protect PDF. Download the protected PDF or ZIP if multiple files.",
-                },
-              ],
-              totalTime: "PT20S",
-              estimatedCost: { "@type": "MonetaryAmount", value: "0", currency: "USD" },
-              image: "https://pdflinx.com/og-image.png",
-            },
-            null,
-            2
-          ),
-        }}
-      />
-
-      <Script
-        id="breadcrumb-schema-protect-pdf"
-        type="application/ld+json"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(
-            {
-              "@context": "https://schema.org",
-              "@type": "BreadcrumbList",
-              itemListElement: [
-                { "@type": "ListItem", position: 1, name: "Home", item: "https://pdflinx.com" },
-                {
-                  "@type": "ListItem",
-                  position: 2,
-                  name: "Protect PDF",
-                  item: "https://pdflinx.com/protect-pdf",
-                },
-              ],
-            },
-            null,
-            2
-          ),
-        }}
-      />
+      
 
       <Script
         id="faq-schema-protect-pdf"
@@ -400,45 +337,6 @@ export default function ProtectPdf() {
             null,
             2
           ),
-        }}
-      />
-
-      <Script
-        id="software-schema-protect-pdf"
-        type="application/ld+json"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "SoftwareApplication",
-            name: "Protect PDF",
-            applicationCategory: "BusinessApplication",
-            operatingSystem: "Web Browser",
-            url: "https://pdflinx.com/protect-pdf",
-            description:
-              "Free online PDF protection tool. Add password security to PDF files and prevent unauthorized access to sensitive documents. Encrypt PDFs quickly and securely in your browser.",
-            image: "https://pdflinx.com/og-image.png",
-            offers: {
-              "@type": "Offer",
-              price: "0",
-              priceCurrency: "USD"
-            },
-            publisher: {
-              "@type": "Organization",
-              name: "PDFLinx",
-              url: "https://pdflinx.com"
-            },
-            featureList: [
-              "Password protect PDF files",
-              "Encrypt PDF documents",
-              "Secure sensitive information",
-              "Prevent unauthorized access",
-              "Fast PDF protection",
-              "Works in any web browser",
-              "Free online PDF security tool",
-              "No software installation required"
-            ]
-          }, null, 2),
         }}
       />
 

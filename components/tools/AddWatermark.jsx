@@ -559,7 +559,7 @@ export default function AddWatermark({ seo }) {
         }}
       />
 
-      <Script
+      {/* <Script
         id="howto-schema-watermark"
         type="application/ld+json"
         strategy="afterInteractive"
@@ -580,9 +580,9 @@ export default function AddWatermark({ seo }) {
             image: "https://pdflinx.com/og-image.png",
           }, null, 2),
         }}
-      />
+      /> */}
 
-      <Script
+      {/* <Script
         id="breadcrumb-schema-watermark"
         type="application/ld+json"
         strategy="afterInteractive"
@@ -596,7 +596,7 @@ export default function AddWatermark({ seo }) {
             ],
           }, null, 2),
         }}
-      />
+      /> */}
 
       <Script
         id="faq-schema-watermark"
@@ -660,7 +660,7 @@ export default function AddWatermark({ seo }) {
         }}
       />
 
-      <Script
+      {/* <Script
         id="software-schema-watermark"
         type="application/ld+json"
         strategy="afterInteractive"
@@ -688,7 +688,7 @@ export default function AddWatermark({ seo }) {
             creator: { "@type": "Organization", name: "PDFLinx" }
           }, null, 2),
         }}
-      />
+      /> */}
 
       <ToolPageLayout
         title={seo?.h1 || "Add Watermark to PDF Online Free"}

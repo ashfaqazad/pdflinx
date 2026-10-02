@@ -321,72 +321,6 @@ export default function RepairPdf() {
         <>
 
             <Script
-                id="howto-schema-repair-pdf"
-                type="application/ld+json"
-                strategy="afterInteractive"
-                dangerouslySetInnerHTML={{
-                    __html: JSON.stringify({
-                        "@context": "https://schema.org",
-                        "@type": "HowTo",
-                        name: "How to Repair a PDF Online for Free",
-                        description:
-                            "Upload a damaged or corrupted PDF file and repair it online in a few simple steps.",
-                        url: "https://pdflinx.com/repair-pdf",
-                        step: [
-                            {
-                                "@type": "HowToStep",
-                                name: "Upload PDF",
-                                text: "Select and upload the damaged or corrupted PDF file."
-                            },
-                            {
-                                "@type": "HowToStep",
-                                name: "Repair PDF",
-                                text: "Start the repair process to analyze and fix PDF file issues."
-                            },
-                            {
-                                "@type": "HowToStep",
-                                name: "Download repaired PDF",
-                                text: "Download the repaired PDF document after processing is complete."
-                            }
-                        ],
-                        totalTime: "PT2M",
-                        estimatedCost: {
-                            "@type": "MonetaryAmount",
-                            value: "0",
-                            currency: "USD"
-                        },
-                        image: "https://pdflinx.com/og-image.png"
-                    }, null, 2),
-                }}
-            />
-
-            <Script
-                id="breadcrumb-schema-repair-pdf"
-                type="application/ld+json"
-                strategy="afterInteractive"
-                dangerouslySetInnerHTML={{
-                    __html: JSON.stringify({
-                        "@context": "https://schema.org",
-                        "@type": "BreadcrumbList",
-                        itemListElement: [
-                            {
-                                "@type": "ListItem",
-                                position: 1,
-                                name: "Home",
-                                item: "https://pdflinx.com"
-                            },
-                            {
-                                "@type": "ListItem",
-                                position: 2,
-                                name: "Repair PDF",
-                                item: "https://pdflinx.com/repair-pdf"
-                            }
-                        ]
-                    }, null, 2),
-                }}
-            />
-
-            <Script
                 id="faq-schema-repair-pdf"
                 type="application/ld+json"
                 strategy="afterInteractive"
@@ -435,45 +369,6 @@ export default function RepairPdf() {
                                     text: "Yes. Files are processed securely and automatically removed after processing."
                                 }
                             }
-                        ]
-                    }, null, 2),
-                }}
-            />
-
-            <Script
-                id="software-schema-repair-pdf"
-                type="application/ld+json"
-                strategy="afterInteractive"
-                dangerouslySetInnerHTML={{
-                    __html: JSON.stringify({
-                        "@context": "https://schema.org",
-                        "@type": "SoftwareApplication",
-                        name: "Repair PDF",
-                        applicationCategory: "BusinessApplication",
-                        operatingSystem: "Web Browser",
-                        url: "https://pdflinx.com/repair-pdf",
-                        description:
-                            "Free online PDF repair tool. Fix corrupted, damaged, or unreadable PDF files and restore access to your documents quickly and securely.",
-                        image: "https://pdflinx.com/og-image.png",
-                        offers: {
-                            "@type": "Offer",
-                            price: "0",
-                            priceCurrency: "USD"
-                        },
-                        publisher: {
-                            "@type": "Organization",
-                            name: "PDFLinx",
-                            url: "https://pdflinx.com"
-                        },
-                        featureList: [
-                            "Repair corrupted PDF files",
-                            "Fix damaged PDF documents",
-                            "Restore unreadable PDFs",
-                            "Recover accessible PDF content",
-                            "Fast PDF repair process",
-                            "Works in any web browser",
-                            "Free online PDF repair tool",
-                            "No software installation required"
                         ]
                     }, null, 2),
                 }}

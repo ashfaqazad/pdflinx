@@ -688,7 +688,7 @@ export default function SplitPdf({ seo }) {
       />
 
 
-      {/* ── SEO SCHEMAS ── */}
+      {/* ── SEO SCHEMAS ──
       <Script id="howto-schema-split-pdf" type="application/ld+json" strategy="afterInteractive"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify({
@@ -716,7 +716,8 @@ export default function SplitPdf({ seo }) {
             ],
           }, null, 2),
         }}
-      />
+      /> */}
+      
       <Script id="faq-schema-split-pdf" type="application/ld+json" strategy="afterInteractive"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify({

@@ -833,46 +833,7 @@ export default function EditPdf({ seo }) {
       />
 
       {/* ==================== SEO SCHEMAS ==================== */}
-      <Script
-        id="howto-schema-editpdf"
-        type="application/ld+json"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "HowTo",
-            name: "How to Edit PDF Online for Free",
-            description:
-              "Add text, insert images, cover existing text, change font, color and download an edited PDF with live preview.",
-            url: "https://pdflinx.com/edit-pdf",
-            step: [
-              { "@type": "HowToStep", name: "Upload PDF", text: "Upload the PDF you want to edit." },
-              { "@type": "HowToStep", name: "Add text, images or cover", text: "Add text anywhere, insert an image, or cover existing text with a white box." },
-              { "@type": "HowToStep", name: "Style and download", text: "Change font, size and color, then download the edited PDF." },
-            ],
-            totalTime: "PT30S",
-            estimatedCost: { "@type": "MonetaryAmount", value: "0", currency: "USD" },
-            image: "https://pdflinx.com/og-image.png",
-          }, null, 2),
-        }}
-      />
-
-      <Script
-        id="breadcrumb-schema-editpdf"
-        type="application/ld+json"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "BreadcrumbList",
-            itemListElement: [
-              { "@type": "ListItem", position: 1, name: "Home", item: "https://pdflinx.com" },
-              { "@type": "ListItem", position: 2, name: "Edit PDF", item: "https://pdflinx.com/edit-pdf" },
-            ],
-          }, null, 2),
-        }}
-      />
-
+      
       <Script
         id="faq-schema-editpdf"
         type="application/ld+json"
@@ -928,37 +889,6 @@ export default function EditPdf({ seo }) {
                 },
               },
             ],
-          }, null, 2),
-        }}
-      />
-
-      <Script
-        id="software-schema-editpdf"
-        type="application/ld+json"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "SoftwareApplication",
-            name: "Edit PDF Online - PDFLinx",
-            applicationCategory: "BusinessApplication",
-            operatingSystem: "Web Browser",
-            description: "Edit PDF online free — add or change text, insert images, highlight content, and annotate pages directly in your browser. No Adobe Acrobat, no account, no watermark.",
-            url: "https://pdflinx.com/edit-pdf",
-            screenshot: "https://pdflinx.com/og-image.png",
-            offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
-            featureList: [
-              "Add text to PDF online",
-              "Insert images into PDF",
-              "Cover existing text with white box",
-              "Change font, size, color, bold, italic",
-              "Live PDF preview while editing",
-              "Free online PDF editor",
-              "No signup required",
-              "Secure file processing",
-              "Works on mobile and desktop"
-            ],
-            creator: { "@type": "Organization", name: "PDFLinx" }
           }, null, 2),
         }}
       />

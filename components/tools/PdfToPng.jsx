@@ -179,43 +179,7 @@ export default function PdfToPng({ seo }) {
   return (
     <>
       {/* ── SEO Schemas ── */}
-      <Script
-        id="howto-schema-pdf-png"
-        type="application/ld+json"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "HowTo",
-            name: "How to Convert PDF to PNG Online for Free",
-            description: "Convert PDF pages to high-quality PNG images online free — no signup, no watermark. Lossless quality, transparent background support. Single-page PDF downloads as PNG, multi-page as ZIP. Works on Windows, Mac, Android, iOS.",
-            url: "https://pdflinx.com/pdf-to-png",
-            step: [
-              { "@type": "HowToStep", name: "Upload PDFs", text: "Select one or multiple PDF files from your device." },
-              { "@type": "HowToStep", name: "Click Convert", text: "Wait a few seconds — every page is extracted as a lossless PNG image." },
-              { "@type": "HowToStep", name: "Download", text: "Auto download starts — single PNG or ZIP with all images." },
-            ],
-            totalTime: "PT30S",
-            estimatedCost: { "@type": "MonetaryAmount", value: "0", currency: "USD" },
-            image: "https://pdflinx.com/og-image.png",
-          }, null, 2),
-        }}
-      />
-      <Script
-        id="breadcrumb-schema-pdf-png"
-        type="application/ld+json"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "BreadcrumbList",
-            itemListElement: [
-              { "@type": "ListItem", position: 1, name: "Home", item: "https://pdflinx.com" },
-              { "@type": "ListItem", position: 2, name: "PDF to PNG", item: "https://pdflinx.com/pdf-to-png" },
-            ],
-          }, null, 2),
-        }}
-      />
+      
       <Script
         id="faq-schema-pdf-png"
         type="application/ld+json"
@@ -251,45 +215,6 @@ export default function PdfToPng({ seo }) {
                 acceptedAnswer: { "@type": "Answer", text: "Yes. Files are processed securely and permanently deleted after conversion. Never stored or shared with third parties." },
               },
             ],
-          }, null, 2),
-        }}
-      />
-
-      <Script
-        id="software-schema-pdf-png"
-        type="application/ld+json"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "SoftwareApplication",
-            name: "PDF to PNG",
-            applicationCategory: "BusinessApplication",
-            operatingSystem: "Web Browser",
-            url: "https://pdflinx.com/pdf-png",
-            description:
-              "Free online PDF to PNG converter. Convert PDF pages into high-quality PNG images with lossless quality and transparent background support where applicable. Extract individual PDF pages as PNG files instantly.",
-            image: "https://pdflinx.com/og-image.png",
-            offers: {
-              "@type": "Offer",
-              price: "0",
-              priceCurrency: "USD"
-            },
-            publisher: {
-              "@type": "Organization",
-              name: "PDFLinx",
-              url: "https://pdflinx.com"
-            },
-            featureList: [
-              "Convert PDF pages to PNG images",
-              "Lossless image quality",
-              "High-resolution PNG output",
-              "Extract individual PDF pages",
-              "Download single or multiple PNG files",
-              "Batch PDF to PNG conversion",
-              "Works in any web browser",
-              "No software installation required"
-            ]
           }, null, 2),
         }}
       />

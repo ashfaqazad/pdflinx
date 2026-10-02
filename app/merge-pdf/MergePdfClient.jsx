@@ -159,7 +159,7 @@ export default function MergePdf({ seo }) {
   return (
     <>
       {/* ── SEO SCHEMAS ── */}
-      <Script
+      {/* <Script
         id="howto-schema-merge-pdf"
         type="application/ld+json"
         strategy="afterInteractive"
@@ -194,7 +194,9 @@ export default function MergePdf({ seo }) {
             ],
           }, null, 2),
         }}
-      />
+      /> */}
+
+      
       <Script
         id="faq-schema-merge-pdf"
         type="application/ld+json"
