@@ -170,43 +170,7 @@ export default function PdfToText({ seo }) {
   return (
     <>
       {/* ── SEO Schemas ── */}
-      <Script
-        id="howto-schema-pdf-text"
-        type="application/ld+json"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "HowTo",
-            name: "How to Extract Text from PDF Online for Free",
-            description: "Extract text from PDF files online free — no signup, no watermark. Copy or download plain text from any PDF in seconds. Works on Windows, Mac, Android, iOS.",
-            url: "https://pdflinx.com/pdf-to-text",
-            step: [
-              { "@type": "HowToStep", name: "Upload PDF", text: "Select one or multiple PDF files from your device." },
-              { "@type": "HowToStep", name: "Click Extract Text", text: "Wait a few seconds — all text is extracted from every page." },
-              { "@type": "HowToStep", name: "Download TXT", text: "Auto download starts — single TXT file or ZIP for batch." },
-            ],
-            totalTime: "PT20S",
-            estimatedCost: { "@type": "MonetaryAmount", value: "0", currency: "USD" },
-            image: "https://pdflinx.com/og-image.png",
-          }, null, 2),
-        }}
-      />
-      <Script
-        id="breadcrumb-schema-pdf-text"
-        type="application/ld+json"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "BreadcrumbList",
-            itemListElement: [
-              { "@type": "ListItem", position: 1, name: "Home", item: "https://pdflinx.com" },
-              { "@type": "ListItem", position: 2, name: "PDF to Text", item: "https://pdflinx.com/pdf-to-text" },
-            ],
-          }, null, 2),
-        }}
-      />
+      
       <Script
         id="faq-schema-pdf-text"
         type="application/ld+json"
@@ -222,45 +186,6 @@ export default function PdfToText({ seo }) {
               { "@type": "Question", name: "Will the extracted text keep formatting?", acceptedAnswer: { "@type": "Answer", text: "The output is plain text (.txt) — formatting like bold, tables, and columns is removed. Text content, paragraphs, and reading order are preserved as closely as possible." } },
               { "@type": "Question", name: "Are my uploaded PDF files safe?", acceptedAnswer: { "@type": "Answer", text: "Yes. Files are processed securely and permanently deleted after conversion. Never stored or shared with third parties." } },
             ],
-          }, null, 2),
-        }}
-      />
-
-      <Script
-        id="software-schema-pdf-text"
-        type="application/ld+json"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "SoftwareApplication",
-            name: "PDF to Text",
-            applicationCategory: "BusinessApplication",
-            operatingSystem: "Web Browser",
-            url: "https://pdflinx.com/pdf-text",
-            description:
-              "Free online PDF to Text converter. Extract plain text from PDF documents quickly and accurately. Convert PDF files into editable TXT format while preserving readable content.",
-            image: "https://pdflinx.com/og-image.png",
-            offers: {
-              "@type": "Offer",
-              price: "0",
-              priceCurrency: "USD"
-            },
-            publisher: {
-              "@type": "Organization",
-              name: "PDFLinx",
-              url: "https://pdflinx.com"
-            },
-            featureList: [
-              "Convert PDF to Text",
-              "Extract text from PDF documents",
-              "Export to TXT format",
-              "Editable text output",
-              "Support for multiple PDF files",
-              "Fast online conversion",
-              "Works in any web browser",
-              "No software installation required"
-            ]
           }, null, 2),
         }}
       />

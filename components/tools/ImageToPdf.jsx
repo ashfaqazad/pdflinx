@@ -341,74 +341,7 @@ export default function ImageToPdf({ seo }) {
 
       {/* ==================== PAGE-SPECIFIC SEO SCHEMAS (Safe for Next.js) ==================== */}
 
-      {/* HowTo Schema - Image to PDF */}
-      <Script
-        id="howto-schema-image-to-pdf"
-        type="application/ld+json"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "HowTo",
-            name: "How to Convert Images to PDF Online for Free",
-            description:
-              "Convert JPG, PNG, or WebP images to PDF online free — no signup, no watermark. Up to 50 images combined into one PDF. Works on Windows, Mac, Android, iOS.",
-            url: "https://pdflinx.com/image-to-pdf",
-            step: [
-              {
-                "@type": "HowToStep",
-                name: "Select Images",
-                text: "Click the upload area and select one or multiple images (JPG, PNG, GIF, WebP supported)."
-              },
-              {
-                "@type": "HowToStep",
-                name: "Convert to PDF",
-                text: "Click 'Convert to PDF' and wait a few seconds while we process your images."
-              },
-              {
-                "@type": "HowToStep",
-                name: "Download PDF",
-                text: "Your PDF file will be ready - click download to save it instantly."
-              }
-            ],
-            totalTime: "PT30S",
-            estimatedCost: {
-              "@type": "MonetaryAmount",
-              value: "0",
-              currency: "USD"
-            },
-            image: "https://pdflinx.com/og-image.png"
-          }, null, 2)
-        }}
-      />
-
-      {/* Breadcrumb Schema - Image to PDF */}
-      <Script
-        id="breadcrumb-schema-image-to-pdf"
-        type="application/ld+json"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "BreadcrumbList",
-            itemListElement: [
-              {
-                "@type": "ListItem",
-                position: 1,
-                name: "Home",
-                item: "https://pdflinx.com"
-              },
-              {
-                "@type": "ListItem",
-                position: 2,
-                name: "Image to PDF",
-                item: "https://pdflinx.com/image-to-pdf"
-              }
-            ]
-          }, null, 2)
-        }}
-      />
-
+      
       {/* FAQ Schema - Image to PDF */}
       <Script
         id="faq-schema-image-to-pdf"
@@ -486,41 +419,7 @@ export default function ImageToPdf({ seo }) {
             ]
           }, null, 2)
         }}
-      />
-
-      {/* SoftwareApplication Schema - Image to PDF */}
-      <Script
-        id="software-schema-image-to-pdf"
-        type="application/ld+json"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "SoftwareApplication",
-            name: "Image to PDF Converter",
-            applicationCategory: "UtilityApplication",
-            operatingSystem: "Windows, macOS, Linux, Android, iOS",
-            description:
-              "Convert JPG, PNG, and WebP images to PDF online for free. No signup, no watermark, and no software installation required.",
-            url: "https://pdflinx.com/image-to-pdf",
-            offers: {
-              "@type": "Offer",
-              price: "0",
-              priceCurrency: "USD"
-            },
-            featureList: [
-              "Convert JPG to PDF",
-              "Convert PNG to PDF",
-              "Convert WebP to PDF",
-              "Merge multiple images into one PDF",
-              "Works on mobile and desktop",
-              "No installation required",
-              "Secure file processing"
-            ],
-            image: "https://pdflinx.com/og-image.png"
-          }, null, 2)
-        }}
-      />
+      />     
 
       <ToolPageLayout
         title={seo?.h1 || "Image to PDF Converter (Free & Online)"}

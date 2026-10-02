@@ -470,72 +470,6 @@ export default function RedactPdf({ seo }) {
   return (
     <>
       <Script
-        id="howto-schema-redact-pdf"
-        type="application/ld+json"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "HowTo",
-            name: "How to Redact PDF Files Online for Free",
-            description:
-              "Remove sensitive information from PDF documents by applying permanent redactions before sharing.",
-            url: "https://pdflinx.com/redact-pdf",
-            step: [
-              {
-                "@type": "HowToStep",
-                name: "Upload PDF",
-                text: "Select and upload the PDF document you want to redact."
-              },
-              {
-                "@type": "HowToStep",
-                name: "Mark sensitive content",
-                text: "Choose the text, images, or areas that should be permanently removed."
-              },
-              {
-                "@type": "HowToStep",
-                name: "Apply redactions and download",
-                text: "Apply the redactions and download the secured PDF file."
-              }
-            ],
-            totalTime: "PT2M",
-            estimatedCost: {
-              "@type": "MonetaryAmount",
-              value: "0",
-              currency: "USD"
-            },
-            image: "https://pdflinx.com/og-image.png"
-          }, null, 2),
-        }}
-      />
-
-      <Script
-        id="breadcrumb-schema-redact-pdf"
-        type="application/ld+json"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "BreadcrumbList",
-            itemListElement: [
-              {
-                "@type": "ListItem",
-                position: 1,
-                name: "Home",
-                item: "https://pdflinx.com"
-              },
-              {
-                "@type": "ListItem",
-                position: 2,
-                name: "Redact PDF",
-                item: "https://pdflinx.com/redact-pdf"
-              }
-            ]
-          }, null, 2),
-        }}
-      />
-
-      <Script
         id="faq-schema-redact-pdf"
         type="application/ld+json"
         strategy="afterInteractive"
@@ -589,44 +523,6 @@ export default function RedactPdf({ seo }) {
         }}
       />
 
-      <Script
-        id="software-schema-redact-pdf"
-        type="application/ld+json"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "SoftwareApplication",
-            name: "Redact PDF",
-            applicationCategory: "BusinessApplication",
-            operatingSystem: "Web Browser",
-            url: "https://pdflinx.com/redact-pdf",
-            description:
-              "Free online PDF redaction tool. Permanently remove sensitive information from PDF documents by blacking out text, images, and confidential content before sharing.",
-            image: "https://pdflinx.com/og-image.png",
-            offers: {
-              "@type": "Offer",
-              price: "0",
-              priceCurrency: "USD"
-            },
-            publisher: {
-              "@type": "Organization",
-              name: "PDFLinx",
-              url: "https://pdflinx.com"
-            },
-            featureList: [
-              "Redact sensitive PDF content",
-              "Permanently remove confidential information",
-              "Black out text and images",
-              "Secure document sharing",
-              "Protect personal and business data",
-              "Free online PDF redaction",
-              "Works in any web browser",
-              "No software installation required"
-            ]
-          }, null, 2),
-        }}
-      />
 
       <ToolPageLayout
         title="Redact PDF Online"

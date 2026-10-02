@@ -171,42 +171,6 @@ export default function PdfToJpg({ seo }) {
     <>
       {/* ── SEO Schemas ── */}
       <Script
-        id="howto-schema-pdf-jpg"
-        type="application/ld+json"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "HowTo",
-            name: "How to Convert PDF to JPG Online for Free",
-            url: "https://pdflinx.com/pdf-to-jpg",
-            step: [
-              { "@type": "HowToStep", name: "Upload PDFs", text: "Select one or multiple PDF files." },
-              { "@type": "HowToStep", name: "Click Convert", text: "Wait a few seconds for processing." },
-              { "@type": "HowToStep", name: "Download", text: "Single JPG or ZIP with all images — auto downloaded." },
-            ],
-            totalTime: "PT30S",
-            estimatedCost: { "@type": "MonetaryAmount", value: "0", currency: "USD" },
-            image: "https://pdflinx.com/og-image.png",
-          }, null, 2),
-        }}
-      />
-      <Script
-        id="breadcrumb-schema-pdf-jpg"
-        type="application/ld+json"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "BreadcrumbList",
-            itemListElement: [
-              { "@type": "ListItem", position: 1, name: "Home", item: "https://pdflinx.com" },
-              { "@type": "ListItem", position: 2, name: "PDF to JPG", item: "https://pdflinx.com/pdf-to-jpg" },
-            ],
-          }, null, 2),
-        }}
-      />
-      <Script
         id="faq-schema-pdf-jpg"
         type="application/ld+json"
         strategy="afterInteractive"
@@ -225,44 +189,6 @@ export default function PdfToJpg({ seo }) {
         }}
       />
 
-      <Script
-        id="software-schema-pdf-jpg"
-        type="application/ld+json"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "SoftwareApplication",
-            name: "PDF to JPG",
-            applicationCategory: "BusinessApplication",
-            operatingSystem: "Web Browser",
-            url: "https://pdflinx.com/pdf-jpg",
-            description:
-              "Free online PDF to JPG converter. Convert PDF pages into high-quality JPG images instantly. Extract individual pages as JPG files while preserving image quality and clarity.",
-            image: "https://pdflinx.com/og-image.png",
-            offers: {
-              "@type": "Offer",
-              price: "0",
-              priceCurrency: "USD"
-            },
-            publisher: {
-              "@type": "Organization",
-              name: "PDFLinx",
-              url: "https://pdflinx.com"
-            },
-            featureList: [
-              "Convert PDF pages to JPG images",
-              "High-quality image output",
-              "Extract individual PDF pages",
-              "Download single or multiple JPG files",
-              "Batch PDF to JPG conversion",
-              "Fast online conversion",
-              "Works in any web browser",
-              "No software installation required"
-            ]
-          }, null, 2),
-        }}
-      />
 
       {/* ── Tool UI ── */}
       <ToolPageLayout

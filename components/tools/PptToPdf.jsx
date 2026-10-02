@@ -175,65 +175,6 @@ export default function PptToPdf({ seo }) {
 
 
       {/* ==================== SEO SCHEMAS ==================== */}
-      <Script
-        id="howto-schema-powerpoint-pdf"
-        type="application/ld+json"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(
-            {
-              "@context": "https://schema.org",
-              "@type": "HowTo",
-              name: "How to Convert PowerPoint to PDF Online for Free (Single or Multiple Files)",
-              description:
-                "Convert PowerPoint to PDF online free — no signup, no watermark. Every slide, font, and layout preserved. Batch convert multiple PPT or PPTX files at once. Works on Windows, Mac, Android, iOS.",
-              url: "https://pdflinx.com/ppt-to-pdf",
-              step: [
-                {
-                  "@type": "HowToStep",
-                  name: "Upload PowerPoint (single or multiple)",
-                  text: "Drop your .ppt or .pptx file here — you can also select multiple files at once.",
-                },
-                {
-                  "@type": "HowToStep",
-                  name: "Click Convert",
-                  text: "Wait a few seconds for processing. If you uploaded multiple files, we convert them together.",
-                },
-                {
-                  "@type": "HowToStep",
-                  name: "Download",
-                  text: "Download your converted PDF. For multiple files, you can download a ZIP containing all PDFs.",
-                },
-              ],
-              totalTime: "PT30S",
-              estimatedCost: { "@type": "MonetaryAmount", value: "0", currency: "USD" },
-              image: "https://pdflinx.com/og-image.png",
-            },
-            null,
-            2
-          ),
-        }}
-      />
-
-      <Script
-        id="breadcrumb-schema-powerpoint-pdf"
-        type="application/ld+json"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(
-            {
-              "@context": "https://schema.org",
-              "@type": "BreadcrumbList",
-              itemListElement: [
-                { "@type": "ListItem", position: 1, name: "Home", item: "https://pdflinx.com" },
-                { "@type": "ListItem", position: 2, name: "PowerPoint to PDF", item: "https://pdflinx.com/ppt-to-pdf" },
-              ],
-            },
-            null,
-            2
-          ),
-        }}
-      />
 
       <Script
         id="faq-schema-powerpoint-pdf"
@@ -296,46 +237,7 @@ export default function PptToPdf({ seo }) {
           }, null, 2)
         }}
       />
-
-      <Script
-        id="software-schema-powerpoint-pdf"
-        type="application/ld+json"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "SoftwareApplication",
-            name: "PowerPoint to PDF",
-            applicationCategory: "BusinessApplication",
-            operatingSystem: "Web Browser",
-            url: "https://pdflinx.com/powerpoint-pdf",
-            description:
-              "Free online PowerPoint to PDF converter. Convert PPT and PPTX presentations into high-quality PDF documents while preserving slide layouts, formatting, images, and text.",
-            image: "https://pdflinx.com/og-image.png",
-            offers: {
-              "@type": "Offer",
-              price: "0",
-              priceCurrency: "USD"
-            },
-            publisher: {
-              "@type": "Organization",
-              name: "PDFLinx",
-              url: "https://pdflinx.com"
-            },
-            featureList: [
-              "Convert PowerPoint to PDF",
-              "Support for PPT and PPTX files",
-              "Preserve slide layouts and formatting",
-              "High-quality PDF output",
-              "Batch presentation conversion",
-              "Works on desktop and mobile",
-              "Free online converter",
-              "No software installation required"
-            ]
-          }, null, 2),
-        }}
-      />
-
+      
       <ToolPageLayout
         title={seo?.h1 || "PowerPoint to PDF Converter (Free & Online)"}
         tagline="No Signup · No Watermark · Instant Download"

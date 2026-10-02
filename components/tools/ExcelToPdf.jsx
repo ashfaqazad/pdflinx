@@ -174,66 +174,6 @@ export default function ExcelToPdf({ seo }) {
 
       {/* ==================== SEO SCHEMAS ==================== */}
 
-      <Script
-        id="howto-schema-excel-pdf"
-        type="application/ld+json"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(
-            {
-              "@context": "https://schema.org",
-              "@type": "HowTo",
-              name: "How to Convert Excel to PDF Online for Free (Single or Multiple Files)",
-              description:
-                "Convert Excel to PDF online free — no signup, no watermark. Tables, charts, and formatting preserved. Batch convert multiple XLS or XLSX files at once. Works on Windows, Mac, Android, iOS.",
-              url: "https://pdflinx.com/excel-pdf",
-              step: [
-                {
-                  "@type": "HowToStep",
-                  name: "Upload Excel (single or multiple)",
-                  text: "Click the upload area and select one Excel file — or select multiple Excel files at once.",
-                },
-                {
-                  "@type": "HowToStep",
-                  name: "Convert to PDF",
-                  text: "Click 'Convert to PDF' and wait a few seconds. If you uploaded multiple files, we convert them together.",
-                },
-                {
-                  "@type": "HowToStep",
-                  name: "Download",
-                  text: "Download your converted PDF. For multiple files, you can download a ZIP containing all PDFs.",
-                },
-              ],
-              totalTime: "PT30S",
-              estimatedCost: { "@type": "MonetaryAmount", value: "0", currency: "USD" },
-              image: "https://pdflinx.com/og-image.png",
-            },
-            null,
-            2
-          ),
-        }}
-      />
-
-      {/* Breadcrumb Schema - Excel to PDF */}
-      <Script
-        id="breadcrumb-schema-excel-pdf"
-        type="application/ld+json"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(
-            {
-              "@context": "https://schema.org",
-              "@type": "BreadcrumbList",
-              itemListElement: [
-                { "@type": "ListItem", position: 1, name: "Home", item: "https://pdflinx.com" },
-                { "@type": "ListItem", position: 2, name: "Excel to PDF", item: "https://pdflinx.com/excel-pdf" },
-              ],
-            },
-            null,
-            2
-          ),
-        }}
-      />
 
       <Script
         id="faq-schema-excel-pdf"
@@ -286,36 +226,6 @@ export default function ExcelToPdf({ seo }) {
               }
             ]
           }, null, 2)
-        }}
-      />
-
-      <Script
-        id="software-schema-excel-pdf"
-        type="application/ld+json"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "SoftwareApplication",
-            name: "Excel to PDF Converter - PDFLinx",
-            applicationCategory: "BusinessApplication",
-            operatingSystem: "Web Browser",
-            description: "Convert Excel to PDF online free — XLS and XLSX spreadsheets converted with all data, charts, and cell formatting intact. No Excel installation needed, no signup, no watermark.",
-            url: "https://pdflinx.com/excel-pdf",
-            screenshot: "https://pdflinx.com/og-image.png",
-            offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
-            featureList: [
-              "Convert Excel to PDF online",
-              "XLS and XLSX supported",
-              "Charts and cell formatting preserved",
-              "No Excel installation needed",
-              "Free online Excel to PDF converter",
-              "No signup required",
-              "Secure file processing",
-              "Works on mobile and desktop"
-            ],
-            creator: { "@type": "Organization", name: "PDFLinx" }
-          }, null, 2),
         }}
       />
 

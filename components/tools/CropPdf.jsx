@@ -451,44 +451,6 @@ export default function CropPdf() {
 
   return (
     <>
-      <Script
-        id="howto-schema-crop-pdf"
-        type="application/ld+json"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "HowTo",
-            name: "How to Crop PDF Pages Online for Free",
-            description: "Crop and trim PDF pages in 3 quick steps. Upload your file, select the crop area, and download the cropped PDF instantly.",
-            url: "https://pdflinx.com/crop-pdf",
-            step: [
-              { "@type": "HowToStep", name: "Upload PDF", text: "Upload the PDF file whose pages you want to crop." },
-              { "@type": "HowToStep", name: "Select crop area", text: "Drag to select the area you want to keep on each page." },
-              { "@type": "HowToStep", name: "Download cropped PDF", text: "Click crop and download your trimmed PDF instantly." }
-            ],
-            totalTime: "PT30S",
-            estimatedCost: { "@type": "MonetaryAmount", value: "0", currency: "USD" },
-            image: "https://pdflinx.com/og-image.png"
-          }, null, 2),
-        }}
-      />
-
-      <Script
-        id="breadcrumb-schema-crop-pdf"
-        type="application/ld+json"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "BreadcrumbList",
-            itemListElement: [
-              { "@type": "ListItem", position: 1, name: "Home", item: "https://pdflinx.com" },
-              { "@type": "ListItem", position: 2, name: "Crop PDF", item: "https://pdflinx.com/crop-pdf" }
-            ]
-          }, null, 2),
-        }}
-      />
 
       <Script
         id="faq-schema-crop-pdf"
@@ -530,36 +492,6 @@ export default function CropPdf() {
                 acceptedAnswer: { "@type": "Answer", text: "Yes. PDFLinx works on desktop, tablet, and mobile browsers without any software installation." }
               }
             ]
-          }, null, 2),
-        }}
-      />
-
-      <Script
-        id="software-schema-crop-pdf"
-        type="application/ld+json"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "SoftwareApplication",
-            name: "Crop PDF - PDFLinx",
-            applicationCategory: "BusinessApplication",
-            operatingSystem: "Web Browser",
-            description: "Crop PDF pages online free — trim margins, remove white borders, or select a custom crop area on any PDF page. No signup, no watermark.",
-            url: "https://pdflinx.com/crop-pdf",
-            screenshot: "https://pdflinx.com/og-image.png",
-            offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
-            featureList: [
-              "Crop PDF pages online",
-              "Remove white margins from PDF",
-              "Custom crop area selection",
-              "Apply crop to all pages",
-              "Free online PDF crop tool",
-              "No signup required",
-              "Secure file processing",
-              "Works on mobile and desktop"
-            ],
-            creator: { "@type": "Organization", name: "PDFLinx" }
           }, null, 2),
         }}
       />

@@ -384,71 +384,6 @@ export default function PdfToPowerPoint() {
       />
 
       <Script
-        id="howto-schema-pdf-to-pptx"
-        type="application/ld+json"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "HowTo",
-            name: "How to Convert PDF to PowerPoint Online for Free",
-            description:
-              "Convert PDF files into editable PowerPoint presentations in a few simple steps.",
-            url: "https://pdflinx.com/pdf-powerpoint",
-            step: [
-              {
-                "@type": "HowToStep",
-                name: "Upload PDF",
-                text: "Select and upload your PDF file."
-              },
-              {
-                "@type": "HowToStep",
-                name: "Convert to PPTX",
-                text: "Click the convert button to transform your PDF into a PowerPoint presentation."
-              },
-              {
-                "@type": "HowToStep",
-                name: "Download PPTX",
-                text: "Download the generated PowerPoint file and edit it in Microsoft PowerPoint or compatible software."
-              }
-            ],
-            totalTime: "PT1M",
-            estimatedCost: {
-              "@type": "MonetaryAmount",
-              value: "0",
-              currency: "USD"
-            },
-            image: "https://pdflinx.com/og-image.png"
-          }, null, 2),
-        }}
-      />
-
-      <Script
-        id="breadcrumb-schema-pdf-to-pptx"
-        type="application/ld+json"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "BreadcrumbList",
-            itemListElement: [
-              {
-                "@type": "ListItem",
-                position: 1,
-                name: "Home",
-                item: "https://pdflinx.com"
-              },
-              {
-                "@type": "ListItem",
-                position: 2,
-                name: "PDF to PowerPoint",
-                item: "https://pdflinx.com/pdf-powerpoint"
-              }
-            ]
-          }, null, 2),
-        }}
-      />
-      <Script
         id="faq-schema-pdf-to-pptx"
         type="application/ld+json"
         strategy="afterInteractive"
@@ -462,45 +397,6 @@ export default function PdfToPowerPoint() {
               { "@type": "Question", name: "Does PDF to PPTX work on mobile?", acceptedAnswer: { "@type": "Answer", text: "Yes. PDF to PowerPoint works on Android, iPhone, tablets, and desktop browsers." } },
             ],
           }),
-        }}
-      />
-
-      <Script
-        id="software-schema-pdf-to-pptx"
-        type="application/ld+json"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "SoftwareApplication",
-            name: "PDF to PowerPoint",
-            applicationCategory: "BusinessApplication",
-            operatingSystem: "Web Browser",
-            url: "https://pdflinx.com/pdf-powerpoint",
-            description:
-              "Free online PDF to PowerPoint converter. Convert PDF documents into editable PPTX presentations while preserving page layout and content structure.",
-            image: "https://pdflinx.com/og-image.png",
-            offers: {
-              "@type": "Offer",
-              price: "0",
-              priceCurrency: "USD"
-            },
-            publisher: {
-              "@type": "Organization",
-              name: "PDFLinx",
-              url: "https://pdflinx.com"
-            },
-            featureList: [
-              "Convert PDF to PowerPoint presentations",
-              "Export to PPTX format",
-              "Editable PowerPoint slides",
-              "Each PDF page becomes a slide",
-              "Batch PDF conversion",
-              "Works on desktop and mobile",
-              "Free online converter",
-              "No software installation required"
-            ]
-          }, null, 2),
         }}
       />
 

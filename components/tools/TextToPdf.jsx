@@ -257,43 +257,6 @@ export default function TextToPdf({ seo }) {
   return (
     <>
       {/* ── SEO Schemas ── */}
-      <Script
-        id="howto-schema-text-pdf"
-        type="application/ld+json"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "HowTo",
-            name: "How to Convert Text to PDF Online for Free",
-            description: "Create PDF from plain text with custom formatting instantly.",
-            url: "https://pdflinx.com/text-to-pdf",
-            step: [
-              { "@type": "HowToStep", name: "Paste Text", text: "Type or paste your text." },
-              { "@type": "HowToStep", name: "Customize", text: "Choose font, size, alignment." },
-              { "@type": "HowToStep", name: "Download PDF", text: "Click convert and download PDF." },
-            ],
-            totalTime: "PT30S",
-            estimatedCost: { "@type": "MonetaryAmount", value: "0", currency: "USD" },
-            image: "https://pdflinx.com/og-image.png",
-          }, null, 2),
-        }}
-      />
-      <Script
-        id="breadcrumb-schema-text-pdf"
-        type="application/ld+json"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "BreadcrumbList",
-            itemListElement: [
-              { "@type": "ListItem", position: 1, name: "Home", item: "https://pdflinx.com" },
-              { "@type": "ListItem", position: 2, name: "Text to PDF", item: "https://pdflinx.com/text-to-pdf" },
-            ],
-          }, null, 2),
-        }}
-      />
 
       <Script
         id="faq-schema-text-pdf"
@@ -344,45 +307,6 @@ export default function TextToPdf({ seo }) {
                   text: "Yes. Files are processed securely and automatically removed after processing."
                 }
               }
-            ]
-          }, null, 2),
-        }}
-      />
-
-      <Script
-        id="software-schema-text-pdf"
-        type="application/ld+json"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "SoftwareApplication",
-            name: "Text to PDF",
-            applicationCategory: "BusinessApplication",
-            operatingSystem: "Web Browser",
-            url: "https://pdflinx.com/text-pdf",
-            description:
-              "Free online Text to PDF converter. Convert TXT and plain text files into professional PDF documents while preserving text formatting and readability.",
-            image: "https://pdflinx.com/og-image.png",
-            offers: {
-              "@type": "Offer",
-              price: "0",
-              priceCurrency: "USD"
-            },
-            publisher: {
-              "@type": "Organization",
-              name: "PDFLinx",
-              url: "https://pdflinx.com"
-            },
-            featureList: [
-              "Convert Text to PDF",
-              "Support for TXT files",
-              "Create professional PDF documents",
-              "Preserve text formatting",
-              "Fast online conversion",
-              "Works on desktop and mobile",
-              "Free online converter",
-              "No software installation required"
             ]
           }, null, 2),
         }}

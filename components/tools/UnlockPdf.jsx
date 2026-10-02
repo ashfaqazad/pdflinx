@@ -216,70 +216,7 @@ export default function UnlockPdf() {
   return (
     <>
       {/* ==================== SEO SCHEMAS ==================== */}
-      <Script
-        id="howto-schema-unlock"
-        type="application/ld+json"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(
-            {
-              "@context": "https://schema.org",
-              "@type": "HowTo",
-              name: "How to Unlock a PDF Online for Free",
-              description:
-                "Unlock PDF online free — remove printing, copying, and editing restrictions instantly. No signup, no watermark, no software needed. Works on Windows, Mac, Android, iOS.",
-              url: "https://pdflinx.com/unlock-pdf",
-              step: [
-                {
-                  "@type": "HowToStep",
-                  name: "Upload PDF file(s)",
-                  text: "Upload a single PDF or select multiple PDFs at the same time.",
-                },
-                {
-                  "@type": "HowToStep",
-                  name: "Enter password (only if required)",
-                  text: "If your PDF requires a password to open, enter it. Otherwise leave it blank.",
-                },
-                {
-                  "@type": "HowToStep",
-                  name: "Unlock and download",
-                  text: "Click Unlock PDF Now. Download the unlocked PDF or ZIP if multiple files.",
-                },
-              ],
-              totalTime: "PT20S",
-              estimatedCost: { "@type": "MonetaryAmount", value: "0", currency: "USD" },
-              image: "https://pdflinx.com/og-image.png",
-            },
-            null,
-            2
-          ),
-        }}
-      />
-
-      <Script
-        id="breadcrumb-schema-unlock"
-        type="application/ld+json"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(
-            {
-              "@context": "https://schema.org",
-              "@type": "BreadcrumbList",
-              itemListElement: [
-                { "@type": "ListItem", position: 1, name: "Home", item: "https://pdflinx.com" },
-                {
-                  "@type": "ListItem",
-                  position: 2,
-                  name: "Unlock PDF",
-                  item: "https://pdflinx.com/unlock-pdf",
-                },
-              ],
-            },
-            null,
-            2
-          ),
-        }}
-      />
+      
 
       <Script
         id="faq-schema-unlock"
@@ -360,45 +297,6 @@ export default function UnlockPdf() {
             null,
             2
           ),
-        }}
-      />
-
-      <Script
-        id="software-schema-unlock-pdf"
-        type="application/ld+json"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "SoftwareApplication",
-            name: "Unlock PDF",
-            applicationCategory: "BusinessApplication",
-            operatingSystem: "Web Browser",
-            url: "https://pdflinx.com/unlock-pdf",
-            description:
-              "Free online PDF unlock tool. Remove password protection and restrictions from PDF files when you have authorization to access the document. Quickly unlock PDFs for viewing, editing, printing, and copying.",
-            image: "https://pdflinx.com/og-image.png",
-            offers: {
-              "@type": "Offer",
-              price: "0",
-              priceCurrency: "USD"
-            },
-            publisher: {
-              "@type": "Organization",
-              name: "PDFLinx",
-              url: "https://pdflinx.com"
-            },
-            featureList: [
-              "Unlock protected PDF files",
-              "Remove PDF password restrictions",
-              "Enable PDF editing and printing",
-              "Allow text copying from PDFs",
-              "Fast PDF unlocking",
-              "Works in any web browser",
-              "Free online PDF unlock tool",
-              "No software installation required"
-            ]
-          }, null, 2),
         }}
       />
 

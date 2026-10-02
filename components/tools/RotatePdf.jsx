@@ -267,43 +267,7 @@ export default function RotatePdf({ seo }) {
         }}
       />
       {/* ── SEO Schemas ── */}
-      <Script
-        id="howto-schema-rotate-pdf"
-        type="application/ld+json"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "HowTo",
-            name: "How to Rotate PDF Pages Online for Free",
-            description: "Rotate PDF pages clockwise or counterclockwise by 90°, 180°, or 270°. Fix orientation of scanned documents, photos, and PDFs.",
-            url: "https://pdflinx.com/rotate-pdf",
-            step: [
-              { "@type": "HowToStep", name: "Upload PDF file(s)", text: "Upload a single PDF or select multiple PDFs at the same time." },
-              { "@type": "HowToStep", name: "Choose rotation angle", text: "Select 90°, 180°, or 270° rotation angle." },
-              { "@type": "HowToStep", name: "Rotate and download", text: "Click Rotate PDF. Download the rotated PDF (or ZIP if multiple files)." },
-            ],
-            totalTime: "PT15S",
-            estimatedCost: { "@type": "MonetaryAmount", value: "0", currency: "USD" },
-            image: "https://pdflinx.com/og-image.png",
-          }, null, 2),
-        }}
-      />
-      <Script
-        id="breadcrumb-schema-rotate-pdf"
-        type="application/ld+json"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "BreadcrumbList",
-            itemListElement: [
-              { "@type": "ListItem", position: 1, name: "Home", item: "https://pdflinx.com" },
-              { "@type": "ListItem", position: 2, name: "Rotate PDF", item: "https://pdflinx.com/rotate-pdf" },
-            ],
-          }, null, 2),
-        }}
-      />
+     
       <Script
         id="faq-schema-rotate-pdf"
         type="application/ld+json"
@@ -319,45 +283,6 @@ export default function RotatePdf({ seo }) {
               { "@type": "Question", name: "Will rotating a PDF reduce quality?", acceptedAnswer: { "@type": "Answer", text: "No. Rotating a PDF is a lossless operation. Your text, images, and layout remain exactly the same quality." } },
               { "@type": "Question", name: "Are my files safe?", acceptedAnswer: { "@type": "Answer", text: "Yes. Files are processed automatically and deleted after processing. No sign-up required." } },
             ],
-          }, null, 2),
-        }}
-      />
-
-      <Script
-        id="software-schema-rotate-pdf"
-        type="application/ld+json"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "SoftwareApplication",
-            name: "Rotate PDF",
-            applicationCategory: "BusinessApplication",
-            operatingSystem: "Web Browser",
-            url: "https://pdflinx.com/rotate-pdf",
-            description:
-              "Free online PDF rotation tool. Rotate PDF pages clockwise or counterclockwise and save the updated document. Fix scanned pages, landscape documents, and incorrectly oriented PDFs quickly and easily.",
-            image: "https://pdflinx.com/og-image.png",
-            offers: {
-              "@type": "Offer",
-              price: "0",
-              priceCurrency: "USD"
-            },
-            publisher: {
-              "@type": "Organization",
-              name: "PDFLinx",
-              url: "https://pdflinx.com"
-            },
-            featureList: [
-              "Rotate PDF pages",
-              "Rotate pages 90, 180, or 270 degrees",
-              "Fix page orientation",
-              "Rotate individual or all pages",
-              "Support for scanned PDF documents",
-              "Fast online PDF rotation",
-              "Works in any web browser",
-              "No software installation required"
-            ]
           }, null, 2),
         }}
       />

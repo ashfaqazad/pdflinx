@@ -717,37 +717,6 @@ export default function ExtractPdf({ seo }) {
 
 
       {/* ── SEO SCHEMAS ── */}
-      <Script id="howto-schema-extract-pdf" type="application/ld+json" strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org", "@type": "HowTo",
-            name: "How to Extract Pages from PDF Online for Free",
-            description: "Extract specific pages from any PDF in 3 quick steps. Upload your file, select the pages you want, and download the new PDF instantly.",
-            url: "https://pdflinx.com/extract-pdf",
-            step: [
-              { "@type": "HowToStep", name: "Upload PDF", text: "Click the upload area and select your PDF file." },
-              { "@type": "HowToStep", name: "Select pages", text: "Choose the specific pages you want to extract from the PDF." },
-              { "@type": "HowToStep", name: "Download", text: "Click Extract and download your new PDF with selected pages instantly." },
-            ],
-            totalTime: "PT30S",
-            estimatedCost: { "@type": "MonetaryAmount", value: "0", currency: "USD" },
-            image: "https://pdflinx.com/og-image.png",
-          }, null, 2),
-        }}
-      />
-
-      <Script id="breadcrumb-schema-extract-pdf" type="application/ld+json" strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org", "@type": "BreadcrumbList",
-            itemListElement: [
-              { "@type": "ListItem", position: 1, name: "Home", item: "https://pdflinx.com" },
-              { "@type": "ListItem", position: 2, name: "Extract PDF", item: "https://pdflinx.com/extract-pdf" },
-            ],
-          }, null, 2),
-        }}
-      />
-
       <Script id="faq-schema-extract-pdf" type="application/ld+json" strategy="afterInteractive"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify({
@@ -764,32 +733,6 @@ export default function ExtractPdf({ seo }) {
         }}
       />
 
-      <Script id="software-schema-extract-pdf" type="application/ld+json" strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "SoftwareApplication",
-            name: "Extract PDF Pages - PDFLinx",
-            applicationCategory: "BusinessApplication",
-            operatingSystem: "Web Browser",
-            description: "Extract pages from PDF online for free — select specific pages and save them as a new PDF file instantly. No signup, no watermark, works on any device.",
-            url: "https://pdflinx.com/extract-pdf",
-            screenshot: "https://pdflinx.com/og-image.png",
-            offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
-            featureList: [
-              "Extract specific pages from PDF",
-              "Save selected pages as new PDF",
-              "Multiple page selection",
-              "Original quality preserved",
-              "Free online PDF extract tool",
-              "No signup required",
-              "Secure file processing",
-              "Works on mobile and desktop"
-            ],
-            creator: { "@type": "Organization", name: "PDFLinx" }
-          }, null, 2),
-        }}
-      />
       {/* ── TOOL UI ── */}
       <ToolPageLayout
         title={seo?.h1 || "Split PDF Online Free"}

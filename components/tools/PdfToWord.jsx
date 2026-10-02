@@ -248,67 +248,6 @@ export default function PdfToWord({ seo }) {
 
       {/* HowTo Schema - PDF to Word */}
       <Script
-        id="howto-schema-pdf-to-word"
-        type="application/ld+json"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(
-            {
-              "@context": "https://schema.org",
-              "@type": "HowTo",
-              name: "How to Convert PDF to Word Online for Free",
-              description:
-                "Convert PDF to editable Word DOCX online free — no signup, no watermark. Supports scanned PDFs via OCR. Batch convert up to 10 files. Works on Windows, Mac, Android, iOS.",
-              url: "https://pdflinx.com/pdf-to-word",
-              step: [
-                {
-                  "@type": "HowToStep",
-                  name: "Upload PDF File(s)",
-                  text: "Upload a single PDF or select multiple PDFs at once.",
-                },
-                {
-                  "@type": "HowToStep",
-                  name: "Click Convert",
-                  text: "Press 'Convert to Word' and wait a few seconds while we process your file(s).",
-                },
-                {
-                  "@type": "HowToStep",
-                  name: "Download DOCX (or ZIP)",
-                  text: "Single file downloads as DOCX. Multiple files download as a ZIP containing all DOCX files.",
-                },
-              ],
-              totalTime: "PT30S",
-              estimatedCost: { "@type": "MonetaryAmount", value: "0", currency: "USD" },
-              tool: [{ "@type": "HowToTool", name: "PDFLinx PDF to Word Converter" }],
-              image: "https://pdflinx.com/og-image.png",
-            },
-            null,
-            2
-          ),
-        }}
-      />
-
-      {/* Breadcrumb Schema - PDF to Word */}
-      <Script
-        id="breadcrumb-schema-pdf-to-word"
-        type="application/ld+json"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(
-            {
-              "@context": "https://schema.org",
-              "@type": "BreadcrumbList",
-              itemListElement: [
-                { "@type": "ListItem", position: 1, name: "Home", item: "https://pdflinx.com" },
-                { "@type": "ListItem", position: 2, name: "PDF to Word", item: "https://pdflinx.com/pdf-to-word" },
-              ],
-            },
-            null,
-            2
-          ),
-        }}
-      />
-      <Script
         id="faq-schema-pdf-to-word"
         type="application/ld+json"
         strategy="afterInteractive"
@@ -371,58 +310,6 @@ export default function PdfToWord({ seo }) {
             null,
             2
           )
-        }}
-      />
-
-      <Script
-        id="software-schema-pdf-to-word"
-        type="application/ld+json"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(
-            {
-              "@context": "https://schema.org",
-              "@type": "WebApplication",
-
-              "name": "PDFLinx PDF to Word Converter",
-              "url": "https://pdflinx.com/pdf-to-word",
-
-              "applicationCategory": "BusinessApplication",
-
-              "operatingSystem": "Windows, macOS, Linux, Android, iOS",
-
-              "browserRequirements":
-                "Requires JavaScript. Works in Chrome, Firefox, Safari, Edge.",
-
-              "description":
-                "Free online PDF to Word converter. Convert PDF files into editable DOCX documents without signup or watermark. Supports OCR for scanned PDFs and batch conversion.",
-
-              "offers": {
-                "@type": "Offer",
-                "price": "0",
-                "priceCurrency": "USD"
-              },
-
-              "featureList": [
-                "PDF to DOCX conversion",
-                "OCR for scanned PDFs",
-                "Batch PDF conversion",
-                "No watermark",
-                "No signup required",
-                "Works on mobile and desktop"
-              ],
-
-              "image": "https://pdflinx.com/og-image.png",
-
-              "provider": {
-                "@type": "Organization",
-                "name": "PDFLinx",
-                "url": "https://pdflinx.com"
-              }
-            },
-            null,
-            2
-          ),
         }}
       />
 

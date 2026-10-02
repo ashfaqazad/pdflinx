@@ -165,42 +165,6 @@ export default function PdfToExcel({ seo }) {
     <>
       {/* ── SEO Schemas ── */}
       <Script
-        id="howto-schema-pdf-excel"
-        type="application/ld+json"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "HowTo",
-            name: "How to Convert PDF to Excel Online for Free",
-            url: "https://pdflinx.com/pdf-excel",
-            step: [
-              { "@type": "HowToStep", name: "Upload PDF", text: "Select one PDF or multiple PDFs for batch conversion." },
-              { "@type": "HowToStep", name: "Convert to Excel", text: "Click Convert to Excel — tables are extracted automatically." },
-              { "@type": "HowToStep", name: "Download XLSX or ZIP", text: "Single file downloads as XLSX. Multiple files download as ZIP." },
-            ],
-            totalTime: "PT30S",
-            estimatedCost: { "@type": "MonetaryAmount", value: "0", currency: "USD" },
-            image: "https://pdflinx.com/og-image.png",
-          }, null, 2),
-        }}
-      />
-      <Script
-        id="breadcrumb-schema-pdf-excel"
-        type="application/ld+json"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "BreadcrumbList",
-            itemListElement: [
-              { "@type": "ListItem", position: 1, name: "Home", item: "https://pdflinx.com" },
-              { "@type": "ListItem", position: 2, name: "PDF to Excel", item: "https://pdflinx.com/pdf-excel" },
-            ],
-          }, null, 2),
-        }}
-      />
-      <Script
         id="faq-schema-pdf-excel"
         type="application/ld+json"
         strategy="afterInteractive"
@@ -219,44 +183,6 @@ export default function PdfToExcel({ seo }) {
         }}
       />
 
-      <Script
-        id="software-schema-pdf-excel"
-        type="application/ld+json"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "SoftwareApplication",
-            name: "PDF to Excel",
-            applicationCategory: "BusinessApplication",
-            operatingSystem: "Web Browser",
-            url: "https://pdflinx.com/pdf-excel",
-            description:
-              "Free online PDF to Excel converter. Extract tables from PDF files and convert them into editable Excel spreadsheets (XLSX) while preserving rows, columns, and formatting.",
-            image: "https://pdflinx.com/og-image.png",
-            offers: {
-              "@type": "Offer",
-              price: "0",
-              priceCurrency: "USD"
-            },
-            publisher: {
-              "@type": "Organization",
-              name: "PDFLinx",
-              url: "https://pdflinx.com"
-            },
-            featureList: [
-              "Convert PDF to Excel spreadsheets",
-              "Extract tables from PDF documents",
-              "Export to XLSX format",
-              "Preserve rows and columns",
-              "Support for scanned and digital PDFs",
-              "Batch PDF to Excel conversion",
-              "Free online PDF converter",
-              "No software installation required"
-            ]
-          }, null, 2),
-        }}
-      />
 
       {/* ── Tool UI ── */}
       <ToolPageLayout
