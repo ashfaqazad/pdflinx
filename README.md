@@ -62,4 +62,4 @@ Next.js, Tailwind CSS, Framer Motion, Node.js, Python FastAPI
 
 ## Author
 
-Built by [Ashfaque](https://ashfaqdev.cloud)
+Built by [Ashfaque Ahmed](https://ashfaqdev.cloud)
