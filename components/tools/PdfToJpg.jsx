@@ -332,7 +332,7 @@ export default function PdfToJpg({ seo }) {
             seoDescription:
               "Everything you need to know about converting PDF pages to JPG images — free, online, high resolution. No watermark, no signup, no limits.",
 
-              seoSections: [
+seoSections: [
   {
     title:
       "Free PDF to JPG Converter — Convert Every PDF Page to a High Quality JPG Image",
