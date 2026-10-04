@@ -1,36 +1,65 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# PDFLinx – Free Online PDF Tools
 
-## Getting Started
+[PDFLinx](https://pdflinx.com) is a free online PDF toolkit. Convert, edit, and manage PDF files in your browser with no signup and no watermark.
 
-First, run the development server:
+🌐 **Website:** https://pdflinx.com
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Convert to PDF
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- [Word to PDF](https://pdflinx.com/word-to-pdf)
+- [Image to PDF](https://pdflinx.com/image-to-pdf)
+- [Excel to PDF](https://pdflinx.com/excel-pdf)
+- [PowerPoint to PDF](https://pdflinx.com/ppt-to-pdf)
+- [Text to PDF](https://pdflinx.com/text-to-pdf)
+- [HTML to PDF](https://pdflinx.com/html-to-pdf)
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+## Convert from PDF
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- [PDF to Word](https://pdflinx.com/pdf-to-word)
+- [PDF to Excel](https://pdflinx.com/pdf-to-excel)
+- [PDF to PowerPoint](https://pdflinx.com/pdf-to-powerpoint)
+- [PDF to JPG](https://pdflinx.com/pdf-to-jpg)
+- [PDF to PNG](https://pdflinx.com/pdf-to-png)
+- [PDF to Text](https://pdflinx.com/pdf-to-text)
 
-## Learn More
+## Edit & Organize PDF
 
-To learn more about Next.js, take a look at the following resources:
+- [Edit PDF](https://pdflinx.com/edit-pdf)
+- [Organize PDF](https://pdflinx.com/organize-pdf)
+- [Rotate PDF](https://pdflinx.com/rotate-pdf)
+- [Crop PDF](https://pdflinx.com/crop-pdf)
+- [Extract PDF Pages](https://pdflinx.com/extract-pdf)
+- [Remove PDF Pages](https://pdflinx.com/remove-pages)
+- [Add Page Numbers](https://pdflinx.com/add-page-numbers)
+- [Add Watermark to PDF](https://pdflinx.com/add-watermark)
+- [Repair PDF](https://pdflinx.com/repair-pdf)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Security & Signing
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- [Protect PDF](https://pdflinx.com/protect-pdf)
+- [Unlock PDF](https://pdflinx.com/unlock-pdf)
+- [Sign PDF](https://pdflinx.com/sign-pdf)
+- [Redact PDF](https://pdflinx.com/redact-pdf)
 
-## Deploy on Vercel
+## OCR & AI Tools
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- [OCR PDF](https://pdflinx.com/ocr-pdf)
+- [AI PDF Summarizer](https://pdflinx.com/ai-summarize)
+- [Chat with PDF](https://pdflinx.com/chat-with-pdf)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+👉 See all tools at [pdflinx.com](https://pdflinx.com)
+
+## Features
+
+- ✅ 100% free, no account needed
+- ✅ No watermark on output files
+- ✅ Fast, works on mobile and desktop
+- ✅ Simple flow: Upload → Options → Process → Download
+
+## Tech Stack
+
+Next.js, Tailwind CSS, Framer Motion, Node.js, Python FastAPI
+
+## Author
+
+Built by [Ashfaque](https://ashfaqdev.cloud)
