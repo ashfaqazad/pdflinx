@@ -602,68 +602,234 @@ seoSections: [
   },
 ],
 
+            // faqs: [
+            //   {
+            //     q: "Is PDFLinx PDF to Word converter free?",
+            //     a: "Yes, completely free. No hidden charges, no premium plans, and no limits on the number of conversions. Convert as many PDFs as you need at zero cost.",
+            //   },
+            //   {
+            //     q: "Do I need to sign up or create an account?",
+            //     a: "No account required. Upload your PDF and convert instantly — no email, no registration, no friction.",
+            //   },
+            //   {
+            //     q: "Can I convert scanned PDFs to editable Word?",
+            //     a: "Yes. Enable the OCR option before converting — our OCR engine extracts text from scanned or image-based PDFs and produces a fully editable DOCX file.",
+            //   },
+            //   {
+            //     q: "Will the original formatting be preserved after conversion?",
+            //     a: "Yes, for standard PDFs formatting is preserved very accurately — including text, tables, columns, and images. Scanned PDFs may have minor differences depending on scan quality, but overall structure is always maintained.",
+            //   },
+            //   {
+            //     q: "Can I convert multiple PDFs to Word at once?",
+            //     a: "Yes. Upload multiple PDF files and all converted Word documents will be automatically packed into a single ZIP file for easy download.",
+            //   },
+            //   {
+            //     q: "Does PDFLinx add any watermark?",
+            //     a: "No watermarks, ever. Your converted Word document is 100% clean and ready to use or share.",
+            //   },
+            //   {
+            //     q: "Is my file secure and private?",
+            //     a: "Yes. Files are processed on secure servers over encrypted HTTPS and automatically deleted after 1 hour. We never store, share, or view your documents.",
+            //   },
+            //   {
+            //     q: "Can I use PDFLinx on mobile — iPhone and Android?",
+            //     a: "Yes. PDFLinx works perfectly in the browser on iPhone, Android, iPad, Windows, and Mac — no app download or installation needed.",
+            //   },
+            //   {
+            //     q: "How do I convert PDF to Word without losing formatting?",
+            //     a: "Upload your PDF and click Convert — PDFLinx automatically preserves tables, fonts, images, and layout. For scanned PDFs, enable OCR first for best formatting accuracy.",
+            //   },
+            //   {
+            //     q: "What is the maximum file size limit?",
+            //     a: "Up to 10 MB per single file and up to 50 MB combined for batch uploads. For larger files, try splitting the PDF first using our free PDF Split tool.",
+            //   },
+            //   {
+            //     q: "Why does Microsoft Word ask to Enable Editing after download?",
+            //     a: "This is a standard Word security prompt for downloaded files — completely safe and normal. Just click Enable Editing to start making changes to your document.",
+            //   },
+            //   {
+            //     q: "Can I convert password-protected PDFs?",
+            //     a: "You need to unlock the PDF first before uploading. Use our free PDF Unlock tool to remove the password, then convert to Word.",
+            //   },
+            //   {
+            //     q: "What file format will I receive after conversion?",
+            //     a: "You will receive a .DOCX file — fully compatible with Microsoft Word, Google Docs, LibreOffice, and WPS Office.",
+            //   },
+            //   {
+            //     q: "How long does PDF to Word conversion take?",
+            //     a: "Most conversions complete within 10 to 30 seconds depending on file size and complexity. Scanned PDFs with OCR may take slightly longer.",
+            //   },
+            //   {
+            //     q: "Is PDFLinx better than iLovePDF or Smallpdf for free conversion?",
+            //     a: "Yes — PDFLinx offers unlimited free conversions with built-in OCR, no daily limits, no watermark, and no account required. iLovePDF and Smallpdf restrict OCR and batch conversion behind paid plans.",
+            //   },
+            // ],
+
+
             faqs: [
-              {
-                q: "Is PDFLinx PDF to Word converter free?",
-                a: "Yes, completely free. No hidden charges, no premium plans, and no limits on the number of conversions. Convert as many PDFs as you need at zero cost.",
-              },
-              {
-                q: "Do I need to sign up or create an account?",
-                a: "No account required. Upload your PDF and convert instantly — no email, no registration, no friction.",
-              },
-              {
-                q: "Can I convert scanned PDFs to editable Word?",
-                a: "Yes. Enable the OCR option before converting — our OCR engine extracts text from scanned or image-based PDFs and produces a fully editable DOCX file.",
-              },
-              {
-                q: "Will the original formatting be preserved after conversion?",
-                a: "Yes, for standard PDFs formatting is preserved very accurately — including text, tables, columns, and images. Scanned PDFs may have minor differences depending on scan quality, but overall structure is always maintained.",
-              },
-              {
-                q: "Can I convert multiple PDFs to Word at once?",
-                a: "Yes. Upload multiple PDF files and all converted Word documents will be automatically packed into a single ZIP file for easy download.",
-              },
-              {
-                q: "Does PDFLinx add any watermark?",
-                a: "No watermarks, ever. Your converted Word document is 100% clean and ready to use or share.",
-              },
-              {
-                q: "Is my file secure and private?",
-                a: "Yes. Files are processed on secure servers over encrypted HTTPS and automatically deleted after 1 hour. We never store, share, or view your documents.",
-              },
-              {
-                q: "Can I use PDFLinx on mobile — iPhone and Android?",
-                a: "Yes. PDFLinx works perfectly in the browser on iPhone, Android, iPad, Windows, and Mac — no app download or installation needed.",
-              },
-              {
-                q: "How do I convert PDF to Word without losing formatting?",
-                a: "Upload your PDF and click Convert — PDFLinx automatically preserves tables, fonts, images, and layout. For scanned PDFs, enable OCR first for best formatting accuracy.",
-              },
-              {
-                q: "What is the maximum file size limit?",
-                a: "Up to 10 MB per single file and up to 50 MB combined for batch uploads. For larger files, try splitting the PDF first using our free PDF Split tool.",
-              },
-              {
-                q: "Why does Microsoft Word ask to Enable Editing after download?",
-                a: "This is a standard Word security prompt for downloaded files — completely safe and normal. Just click Enable Editing to start making changes to your document.",
-              },
-              {
-                q: "Can I convert password-protected PDFs?",
-                a: "You need to unlock the PDF first before uploading. Use our free PDF Unlock tool to remove the password, then convert to Word.",
-              },
-              {
-                q: "What file format will I receive after conversion?",
-                a: "You will receive a .DOCX file — fully compatible with Microsoft Word, Google Docs, LibreOffice, and WPS Office.",
-              },
-              {
-                q: "How long does PDF to Word conversion take?",
-                a: "Most conversions complete within 10 to 30 seconds depending on file size and complexity. Scanned PDFs with OCR may take slightly longer.",
-              },
-              {
-                q: "Is PDFLinx better than iLovePDF or Smallpdf for free conversion?",
-                a: "Yes — PDFLinx offers unlimited free conversions with built-in OCR, no daily limits, no watermark, and no account required. iLovePDF and Smallpdf restrict OCR and batch conversion behind paid plans.",
-              },
-            ],
+  {
+    q: "Is PDFLinx PDF to Word converter free?",
+    a: "Yes, completely free. No hidden charges, no premium plans, and no limits on the number of conversions. Convert as many PDFs as you need at zero cost.",
+  },
+  {
+    q: "Do I need to sign up or create an account?",
+    a: "No account required. Upload your PDF and convert instantly — no email, no registration, no friction.",
+  },
+  {
+    q: "Can I convert scanned PDFs to editable Word?",
+    a: (
+      <>
+        Yes. Enable the OCR option before converting — our OCR engine extracts text from scanned or image-based PDFs and produces a fully editable DOCX file. If you only need a searchable PDF instead of Word, use our free{" "}
+        <a href="/ocr-pdf" className="text-blue-600 hover:underline font-medium">
+          OCR PDF tool
+        </a>
+        .
+      </>
+    ),
+  },
+  {
+    q: "Will the original formatting be preserved after conversion?",
+    a: (
+      <>
+        Yes, for standard PDFs formatting is preserved very accurately — including text, tables, columns, and images. Scanned PDFs may have minor differences depending on scan quality, but overall structure is always maintained. If you mainly need table data, try{" "}
+        <a href="/pdf-to-excel" className="text-blue-600 hover:underline font-medium">
+          PDF to Excel
+        </a>
+        .
+      </>
+    ),
+  },
+  {
+    q: "Can I convert multiple PDFs to Word at once?",
+    a: (
+      <>
+        Yes. Upload multiple PDF files and all converted Word documents will be automatically packed into a single ZIP file for easy download. Want one combined file instead?{" "}
+        <a href="/merge-pdf" className="text-blue-600 hover:underline font-medium">
+          Merge your PDFs
+        </a>{" "}
+        first.
+      </>
+    ),
+  },
+  {
+    q: "Does PDFLinx add any watermark?",
+    a: "No watermarks, ever. Your converted Word document is 100% clean and ready to use or share.",
+  },
+  {
+    q: "Is my file secure and private?",
+    a: (
+      <>
+        Yes. Files are processed on secure servers over encrypted HTTPS and automatically deleted after 1 hour. We never store, share, or view your documents. For extra protection on sensitive files, you can{" "}
+        <a href="/protect-pdf" className="text-blue-600 hover:underline font-medium">
+          add a password to your PDF
+        </a>
+        .
+      </>
+    ),
+  },
+  {
+    q: "Can I use PDFLinx on mobile — iPhone and Android?",
+    a: "Yes. PDFLinx works perfectly in the browser on iPhone, Android, iPad, Windows, and Mac — no app download or installation needed.",
+  },
+  {
+    q: "How do I convert PDF to Word without losing formatting?",
+    a: "Upload your PDF and click Convert — PDFLinx automatically preserves tables, fonts, images, and layout. For scanned PDFs, enable OCR first for best formatting accuracy.",
+  },
+  {
+    q: "What is the maximum file size limit?",
+    a: (
+      <>
+        Up to 10 MB per single file and up to 50 MB combined for batch uploads. For larger files, try{" "}
+        <a href="/compress-pdf" className="text-blue-600 hover:underline font-medium">
+          compressing the PDF
+        </a>{" "}
+        or splitting it first using our free{" "}
+        <a href="/split-pdf" className="text-blue-600 hover:underline font-medium">
+          PDF Split tool
+        </a>
+        .
+      </>
+    ),
+  },
+  {
+    q: "Why does Microsoft Word ask to Enable Editing after download?",
+    a: "This is a standard Word security prompt for downloaded files — completely safe and normal. Just click Enable Editing to start making changes to your document.",
+  },
+  {
+    q: "Can I convert password-protected PDFs?",
+    a: (
+      <>
+        You need to unlock the PDF first before uploading. Use our free{" "}
+        <a href="/unlock-pdf" className="text-blue-600 hover:underline font-medium">
+          PDF Unlock tool
+        </a>{" "}
+        to remove the password, then convert to Word.
+      </>
+    ),
+  },
+  {
+    q: "What file format will I receive after conversion?",
+    a: (
+      <>
+        You will receive a .DOCX file — fully compatible with Microsoft Word, Google Docs, LibreOffice, and WPS Office. When you finish editing, you can turn it back into a PDF with{" "}
+        <a href="/word-to-pdf" className="text-blue-600 hover:underline font-medium">
+          Word to PDF
+        </a>
+        .
+      </>
+    ),
+  },
+  {
+    q: "How long does PDF to Word conversion take?",
+    a: "Most conversions complete within 10 to 30 seconds depending on file size and complexity. Scanned PDFs with OCR may take slightly longer.",
+  },
+  {
+    q: "Is PDFLinx better than iLovePDF or Smallpdf for free conversion?",
+    a: "Yes — PDFLinx offers unlimited free conversions with built-in OCR, no daily limits, no watermark, and no account required. iLovePDF and Smallpdf restrict OCR and batch conversion behind paid plans.",
+  },
+
+  // ---- Roman Urdu / Hindi FAQs ----
+  {
+    q: "PDF ko Word mein convert kaise kare?",
+    a: (
+      <>
+        Bohat aasan hai: 1) PDFLinx ke PDF to Word tool par apni PDF file upload karein. 2) Convert ka button dabayen. 3) Chand second mein Word (.docx) file tayyar ho jayegi, usay download kar lein. Na account chahiye, na koi software install karna parta hai. Agar sirf text chahiye to{" "}
+        <a href="/pdf-to-text" className="text-blue-600 hover:underline font-medium">
+          PDF to Text
+        </a>{" "}
+        bhi use kar sakte hain.
+      </>
+    ),
+  },
+  {
+    q: "Mobile mein PDF ko Word mein kaise badlen?",
+    a: (
+      <>
+        Apne phone (Android ya iPhone) ke browser mein PDFLinx kholein, PDF file select karein aur Convert dabayen. Koi app download karne ki zarurat nahi. Convert hone ke baad .docx file seedha phone mein download ho jati hai, jise aap Word ya Google Docs mein khol sakte hain. File bari ho to pehle{" "}
+        <a href="/compress-pdf" className="text-blue-600 hover:underline font-medium">
+          PDF ki size kam karein
+        </a>
+        .
+      </>
+    ),
+  },
+  {
+    q: "Kya ye free hai, aur account banana parta hai?",
+    a: "Ji haan, bilkul free hai. Na account banana parta hai, na email dena parta hai, aur converted file par koi watermark bhi nahi lagta.",
+  },
+  {
+    q: "Scanned PDF ya Urdu PDF ko Word mein convert ho jati hai?",
+    a: (
+      <>
+        Scanned ya image wali PDF ke liye convert karne se pehle OCR ka option on karein. Urdu text wali PDF ke liye bhi OCR use karein. Natija scan ki quality par depend karta hai, aur Nastaliq jaisay font Word mein install na hon to text ki shakal badal sakti hai. Convert hone ke baad text ek baar zaroor check kar lein. Searchable PDF banane ke liye{" "}
+        <a href="/ocr-pdf" className="text-blue-600 hover:underline font-medium">
+          OCR PDF
+        </a>{" "}
+        tool bhi hai.
+      </>
+    ),
+  },
+],
 
             ctaTitle: (
               <>

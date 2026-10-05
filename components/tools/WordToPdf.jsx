@@ -78,6 +78,8 @@ const OPTIONS_SLOT = (
 // ✅ NEW — SINGLE SOURCE OF TRUTH FOR FAQs
 // Used by BOTH the FAQ schema (Script tag below) AND the visible FAQ section.
 // This fixes the earlier mismatch where the schema only had 4 Qs but the page showed 14.
+
+
 const wordToPdfFaqs = [
   {
     q: "Is PDFLinx Word to PDF converter free?",
@@ -101,7 +103,15 @@ const wordToPdfFaqs = [
   },
   {
     q: "Can I convert multiple Word files to PDF at once?",
-    a: "Yes. Upload multiple DOC or DOCX files together for batch conversion. All converted PDFs are automatically packaged into a single ZIP file for easy download.",
+    a: (
+      <>
+        Yes. Upload multiple DOC or DOCX files together for batch conversion. All converted PDFs are automatically packaged into a single ZIP file for easy download. Want everything in one PDF instead? Convert first, then{" "}
+        <a href="/merge-pdf" className="text-blue-600 hover:underline font-medium">
+          merge the PDFs
+        </a>
+        .
+      </>
+    ),
   },
   {
     q: "Can I use the Word to PDF converter on mobile — iPhone and Android?",
@@ -113,7 +123,15 @@ const wordToPdfFaqs = [
   },
   {
     q: "What is the maximum file size for Word to PDF conversion?",
-    a: "Up to 10 MB per single file and up to 50 MB combined for batch uploads. For larger files, try splitting the content across multiple Word files.",
+    a: (
+      <>
+        Up to 10 MB per single file and up to 50 MB combined for batch uploads. For larger files, try splitting the content across multiple Word files, or{" "}
+        <a href="/compress-pdf" className="text-blue-600 hover:underline font-medium">
+          compress the PDF
+        </a>{" "}
+        after converting.
+      </>
+    ),
   },
   {
     q: "What happens if I upload only one Word file?",
@@ -125,17 +143,145 @@ const wordToPdfFaqs = [
   },
   {
     q: "How can I reduce the size of the converted PDF?",
-    a: "After converting, use our free Compress PDF tool to reduce file size while maintaining good quality — no extra software needed.",
+    a: (
+      <>
+        After converting, use our free{" "}
+        <a href="/compress-pdf" className="text-blue-600 hover:underline font-medium">
+          Compress PDF tool
+        </a>{" "}
+        to reduce file size while maintaining good quality — no extra software needed.
+      </>
+    ),
   },
   {
     q: "Why should I use PDF format instead of sending a Word file?",
-    a: "PDF format ensures your document looks exactly the same on every device, OS, and screen size. Unlike Word files, PDFs cannot be accidentally edited and are universally accepted by employers, universities, government offices, and clients.",
+    a: (
+      <>
+        PDF format ensures your document looks exactly the same on every device, OS, and screen size. Unlike Word files, PDFs cannot be accidentally edited and are universally accepted by employers, universities, government offices, and clients. You can also{" "}
+        <a href="/protect-pdf" className="text-blue-600 hover:underline font-medium">
+          protect your PDF with a password
+        </a>{" "}
+        or{" "}
+        <a href="/sign-pdf" className="text-blue-600 hover:underline font-medium">
+          sign it digitally
+        </a>{" "}
+        before sharing.
+      </>
+    ),
   },
   {
     q: "What is the difference between DOC and DOCX for PDF conversion?",
-    a: "DOCX is the modern Word format (.docx) used in Word 2007 and later — it gives the best formatting accuracy when converting to PDF. DOC is the older Word format (.doc) used in Word 2003 and earlier — it is also fully supported and converts cleanly on PDFLinx.",
+    a: (
+      <>
+        DOCX is the modern Word format (.docx) used in Word 2007 and later — it gives the best formatting accuracy when converting to PDF. DOC is the older Word format (.doc) used in Word 2003 and earlier — it is also fully supported and converts cleanly on PDFLinx. Need to go the other way? Use{" "}
+        <a href="/pdf-to-word" className="text-blue-600 hover:underline font-medium">
+          PDF to Word
+        </a>
+        .
+      </>
+    ),
+  },
+
+  // ---- Roman Urdu / Hindi FAQs ----
+  {
+    q: "Word file ko PDF mein convert kaise kare?",
+    a: (
+      <>
+        Bohat aasan hai: 1) PDFLinx ke Word to PDF tool par apni .doc ya .docx file upload karein. 2) Convert ka button dabayen. 3) Chand second mein PDF tayyar ho jayegi, usay download kar lein. Na account chahiye, na Microsoft Word install karna parta hai. Agar PDF ko wapas edit karna ho to{" "}
+        <a href="/pdf-to-word" className="text-blue-600 hover:underline font-medium">
+          PDF to Word
+        </a>{" "}
+        use karein.
+      </>
+    ),
+  },
+  {
+    q: "Mobile mein Word file ko PDF mein kaise badlen?",
+    a: "Apne phone (Android ya iPhone) ke browser mein PDFLinx kholein, Word file select karein aur Convert dabayen. Koi app download karne ki zarurat nahi. Convert hone ke baad PDF seedha phone mein download ho jati hai, jise aap WhatsApp ya email se bhej sakte hain.",
+  },
+  {
+    q: "Kya ye free hai, aur account banana parta hai?",
+    a: "Ji haan, bilkul free hai. Na account banana parta hai, na email dena parta hai, aur PDF par koi watermark bhi nahi lagta.",
+  },
+  {
+    q: "Word se bani PDF ki size kam kaise karein?",
+    a: (
+      <>
+        Agar PDF email ya WhatsApp ke liye bari ho jaye to convert karne ke baad{" "}
+        <a href="/compress-pdf" className="text-blue-600 hover:underline font-medium">
+          Compress PDF
+        </a>{" "}
+        tool se size kam kar lein. Quality bhi theek rehti hai. Zarurat ho to PDF par{" "}
+        <a href="/protect-pdf" className="text-blue-600 hover:underline font-medium">
+          password bhi laga sakte hain
+        </a>
+        .
+      </>
+    ),
   },
 ];
+
+
+// const wordToPdfFaqs = [
+//   {
+//     q: "Is PDFLinx Word to PDF converter free?",
+//     a: "Yes, completely free. No hidden charges, no premium plans, and no limits on the number of Word files you can convert to PDF.",
+//   },
+//   {
+//     q: "Do I need to sign up to convert Word to PDF?",
+//     a: "No account or signup required. Upload your Word file and convert to PDF instantly — no email, no registration needed.",
+//   },
+//   {
+//     q: "Can I convert both DOC and DOCX files to PDF?",
+//     a: "Yes, both old .DOC and modern .DOCX Word formats are fully supported. Both convert into clean, professional PDF files.",
+//   },
+//   {
+//     q: "Will formatting be preserved when converting Word to PDF?",
+//     a: "Yes. PDFLinx preserves fonts, images, tables, headings, spacing, and overall page layout. DOCX files give the best formatting accuracy. For complex multi-column layouts, minor adjustments may be needed in your original Word file before re-converting.",
+//   },
+//   {
+//     q: "Does PDFLinx add any watermark to the converted PDF?",
+//     a: "No watermarks, ever. The final PDF is 100% clean, professional, and original — no PDFLinx branding added.",
+//   },
+//   {
+//     q: "Can I convert multiple Word files to PDF at once?",
+//     a: "Yes. Upload multiple DOC or DOCX files together for batch conversion. All converted PDFs are automatically packaged into a single ZIP file for easy download.",
+//   },
+//   {
+//     q: "Can I use the Word to PDF converter on mobile — iPhone and Android?",
+//     a: "Yes. PDFLinx works perfectly in the browser on iPhone, Android, iPad, Windows, and Mac — no app download or installation required.",
+//   },
+//   {
+//     q: "Do I need Microsoft Word installed to convert Word to PDF?",
+//     a: "No. The entire conversion process happens online in your browser. Microsoft Word, LibreOffice, or any other software is not required.",
+//   },
+//   {
+//     q: "What is the maximum file size for Word to PDF conversion?",
+//     a: "Up to 10 MB per single file and up to 50 MB combined for batch uploads. For larger files, try splitting the content across multiple Word files.",
+//   },
+//   {
+//     q: "What happens if I upload only one Word file?",
+//     a: "It converts and downloads directly as a single PDF file — no ZIP packaging needed.",
+//   },
+//   {
+//     q: "Is PDFLinx better than iLovePDF or Smallpdf for free Word to PDF conversion?",
+//     a: "Yes. PDFLinx offers unlimited free conversions with no daily limits, no watermark, and no account required. iLovePDF and Smallpdf restrict batch conversion and advanced features behind paid plans.",
+//   },
+//   {
+//     q: "How can I reduce the size of the converted PDF?",
+//     a: "After converting, use our free Compress PDF tool to reduce file size while maintaining good quality — no extra software needed.",
+//   },
+//   {
+//     q: "Why should I use PDF format instead of sending a Word file?",
+//     a: "PDF format ensures your document looks exactly the same on every device, OS, and screen size. Unlike Word files, PDFs cannot be accidentally edited and are universally accepted by employers, universities, government offices, and clients.",
+//   },
+//   {
+//     q: "What is the difference between DOC and DOCX for PDF conversion?",
+//     a: "DOCX is the modern Word format (.docx) used in Word 2007 and later — it gives the best formatting accuracy when converting to PDF. DOC is the older Word format (.doc) used in Word 2003 and earlier — it is also fully supported and converts cleanly on PDFLinx.",
+//   },
+// ];
+
+
 
 export default function WordToPdf({ seo }) {
   const flow = useToolFlow();
@@ -227,14 +373,40 @@ export default function WordToPdf({ seo }) {
     }
   };
 
+function extractText(node) {
+  if (node == null || typeof node === "boolean") return "";
+  if (typeof node === "string" || typeof node === "number") return String(node);
+  if (Array.isArray(node)) return node.map(extractText).join("");
+  if (node.props) return extractText(node.props.children);
+  return "";
+}
 
   // ── END API LOGIC ────────────────────────
 
   return (
     <>
+
+
+
+<script
+  id="faq-schema-word-to-pdf"
+  type="application/ld+json"
+  dangerouslySetInnerHTML={{
+    __html: JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      mainEntity: wordToPdfFaqs.map((f) => ({
+        "@type": "Question",
+        name: f.q,
+        acceptedAnswer: { "@type": "Answer", text: extractText(f.a) },
+      })),
+    }),
+  }}
+/>
+
+
       {/* ── SEO SCHEMAS ── */}
-      {/* ✅ FIXED — schema now built from wordToPdfFaqs, always matches visible content */}
-      <Script
+      {/* <Script
         id="faq-schema-word-to-pdf"
         type="application/ld+json"
         strategy="afterInteractive"
@@ -256,7 +428,7 @@ export default function WordToPdf({ seo }) {
             2
           ),
         }}
-      />
+      /> */}
 
       {/* ── TOOL UI ── */}
       <ToolPageLayout
