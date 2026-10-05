@@ -94,17 +94,6 @@ const dropdownCols = [
     ],
   },
 
-  // {
-  //   heading: "AI PDF",
-  //   items: [
-  //     {
-  //       heading: "AI PDF", items: [{ label: "AI Summarize", href: "/ai-summarize", Icon: FileSearch, color: "#e8420a" },
-  //       { label: "Chat with PDF", href: "/ai-chat", Icon: MessageSquare, color: "#e8420a" },],
-  //     },
-  //   ],
-
-  // },
-
   // ✅ CORRECT
   {
     heading: "AI PDF",

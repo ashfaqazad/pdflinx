@@ -21,7 +21,7 @@ const DONE_LINKS = [
   //   { label: "Translate PDF", href: "/translate-pdf", icon: <Languages className="h-4 w-4 text-blue-500" /> },
   { label: "Text to PDF", href: "/text-to-pdf", icon: <FileOutput className="h-4 w-4 text-yellow-500" /> },
 
-  { label: "Chat with PDF", href: "/ai-chat", icon: <MessageSquare className="h-4 w-4 text-purple-500" /> },
+  { label: "Chat with PDF", href: "/chat-with-pdf", icon: <MessageSquare className="h-4 w-4 text-purple-500" /> },
   { label: "PDF to Word", href: "/pdf-to-word", icon: <FileText className="h-4 w-4 text-orange-500" /> },
   { label: "Compress PDF", href: "/compress-pdf", icon: <Minimize2 className="h-4 w-4 text-green-500" /> },
   { label: "Merge PDF", href: "/merge-pdf", icon: <GitMerge className="h-4 w-4 text-indigo-500" /> },

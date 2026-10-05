@@ -4332,7 +4332,7 @@ const blogs = [
 
 <h2>AI PDF Summary vs Chat with PDF — Which Should You Use</h2>
 
-<p>PDF Linx offers two AI tools for document intelligence: AI Summarize and <a href="/ai-chat" class="text-indigo-600 hover:underline">Chat with PDF</a>. They serve different needs.</p>
+<p>PDF Linx offers two AI tools for document intelligence: AI Summarize and <a href="/chat-with-pdf" class="text-indigo-600 hover:underline">Chat with PDF</a>. They serve different needs.</p>
 
 <p><strong>Use AI Summarize when:</strong> You want a quick, comprehensive overview of what a document contains. You are triaging multiple documents. You need a brief you can share with others. You want to decide whether a document is worth reading in full.</p>
 
@@ -4367,7 +4367,7 @@ const blogs = [
 
 <p>The old way: open the PDF, use Ctrl+F to search for a keyword, scan through results, read surrounding paragraphs, hope you found the right section. Sometimes it works. Often it does not — especially when the information you need is spread across multiple sections or uses different terminology than what you searched for.</p>
 
-<p>The new way: upload your PDF, type your question in plain English, and get a direct, accurate answer in seconds. That is exactly what the <a href="/ai-chat"><strong>Chat with PDF tool</strong></a> on PDF Linx does.</p>
+<p>The new way: upload your PDF, type your question in plain English, and get a direct, accurate answer in seconds. That is exactly what the <a href="/chat-with-pdf"><strong>Chat with PDF tool</strong></a> on PDF Linx does.</p>
 
 <h2>What Does "Chat with PDF" Actually Mean</h2>
 
@@ -4422,7 +4422,7 @@ const blogs = [
 
 <h2>Chat with PDF vs AI Summarize — Choosing the Right Tool</h2>
 
-<p>PDF Linx offers both <a href="/ai-chat" class="text-indigo-600 hover:underline">Chat with PDF</a> and <a href="/ai-summarize" class="text-indigo-600 hover:underline">AI Summarize</a>. They solve different problems and work best when used together.</p>
+<p>PDF Linx offers both <a href="/chat-with-pdf" class="text-indigo-600 hover:underline">Chat with PDF</a> and <a href="/ai-summarize" class="text-indigo-600 hover:underline">AI Summarize</a>. They solve different problems and work best when used together.</p>
 
 <p><strong>AI Summarize</strong> is ideal when you want a comprehensive overview of an entire document — the main points, key findings, and overall structure. Use it when you need to quickly understand what a document is about, triage multiple documents, or create a brief for someone else.</p>
 
@@ -4460,7 +4460,7 @@ const blogs = [
 
 <p>This is not a marginal improvement in efficiency — it is a different relationship with information entirely. Documents that used to take hours to process can be interrogated in minutes. Knowledge that was locked in dense technical language becomes accessible to anyone who can ask a question.</p>
 
-<p>The <a href="/ai-chat" class="text-indigo-600 hover:underline">Chat with PDF tool</a> on PDF Linx makes this capability available to everyone — free, without signup, without software installation, directly in your browser.</p>
+<p>The <a href="/chat-with-pdf" class="text-indigo-600 hover:underline">Chat with PDF tool</a> on PDF Linx makes this capability available to everyone — free, without signup, without software installation, directly in your browser.</p>
 
 <div class="bg-indigo-50 border border-indigo-200 rounded-xl p-8 text-center my-12">
   <p class="text-xl font-semibold text-indigo-800 mb-4">
