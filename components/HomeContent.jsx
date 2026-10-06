@@ -333,6 +333,7 @@ const reasons = [
         emoji: "🛡️", bg: "#fff1ec",
         title: "Files Never Leave Your Device",
         text: "PDF conversion and processing happens locally in your browser. No server uploads, no third-party storage, no privacy risk.",
+        
     },
     {
         emoji: "⚡", bg: "#edfaf3",
@@ -362,7 +363,6 @@ const reasons = [
 ];
 
 const pills = [
-    "Files never stored on server",
     "Converts in seconds",
     "100% free forever",
     "No watermarks added",
@@ -372,7 +372,7 @@ const pills = [
 const stats = [
     { num: "31+", label: "Free PDF Tools" },
     { num: "Zero", label: "Ads or Popups" },
-    { num: "100%", label: "Browser-Based" },
+    { num: "Secure", label: "File Processing" },
     { num: "Free", label: "No Hidden Costs" },
 ];
 
@@ -412,13 +412,12 @@ export default function HomeContent() {
 
                     <h1 className={styles.heroTitle}>
                         Convert, Edit &amp; Manage PDFs<br />
-                        <em>Fast, Free &amp; Fully Private</em>
+                        <em>Fast, Free &amp; Secure</em>
                     </h1>
 
                     <p className={styles.heroSub}>
-                        Free online PDF tools to convert, merge, split, compress, and edit PDF files
-                        directly in your browser. Fast, secure, and completely private —
-                        no uploads to servers.
+                        Free online PDF tools to convert, merge, split, compress, and edit PDF files.
+                        Fast, secure, and easy to use — no signup required.
                     </p>
 
                     <div className={styles.heroPills}>
@@ -542,8 +541,8 @@ export default function HomeContent() {
                     <p className={styles.eyebrow}>Why PDF Linx</p>
                     <h2 className={styles.secTitle}>Built Different. On Purpose.</h2>
                     <p className={styles.secSub}>
-                        Most PDF tools are slow, ad-filled, or upload your files to unknown servers.
-                        PDF Linx was built to fix all of that.
+                        Most PDF tools are cluttered with ads, complicated workflows, or unnecessary signup requirements.
+                        PDF Linx keeps PDF tools simple, fast, and easy to use.
                     </p>
 
                     <div className={styles.whyGrid}>
@@ -578,7 +577,7 @@ export default function HomeContent() {
                             Start Converting PDFs for <span>Free</span>
                         </h2>
                         <p className={styles.ctaText}>
-                            No account, no watermarks, no file size tricks. Just fast, private PDF tools that work.
+                            No account, no watermarks, no file size tricks. Just fast, secure PDF tools that work.
                         </p>
                     </div>
                     <div className={styles.ctaBtns}>

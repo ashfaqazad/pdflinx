@@ -502,48 +502,6 @@ export default function AddWatermark({ seo }) {
     }
   };
 
-  // ── Custom file preview: split layout (preview left, options right)
-  // const customFilePreview = file ? (
-  //   <div className="w-full">
-  //     {/* pdf.js CDN for canvas preview */}
-  //     <Script
-  //       src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"
-  //       strategy="afterInteractive"
-  //       onLoad={() => {
-  //         if (window.pdfjsLib) {
-  //           window.pdfjsLib.GlobalWorkerOptions.workerSrc =
-  //             "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
-  //         }
-  //       }}
-  //     />
-
-  //     <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1fr_340px]">
-  //       {/* Left — Live PDF Preview */}
-  //       <div className="min-h-[480px] rounded-2xl border border-slate-200 bg-slate-50 p-3 shadow-sm">
-  //         <WatermarkPreview
-  //           file={file}
-  //           text={text}
-  //           opacity={opacity}
-  //           fontFamily={fontFamily}
-  //           fontSize={fontSize}
-  //           colorHex={colorHex}
-  //         />
-  //       </div>
-
-  //       {/* Right — Options */}
-  //       <div className="flex flex-col">
-  //         <WatermarkOptionsPanel
-  //           text={text} setText={setText}
-  //           opacity={opacity} setOpacity={setOpacity}
-  //           fontFamily={fontFamily} setFontFamily={setFontFamily}
-  //           fontSize={fontSize} setFontSize={setFontSize}
-  //           colorHex={colorHex} setColorHex={setColorHex}
-  //           error={error}
-  //         />
-  //       </div>
-  //     </div>
-  //   </div>
-  // ) : null;
 
   return (
     <>

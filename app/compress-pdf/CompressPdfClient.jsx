@@ -139,48 +139,6 @@ function PdfThumbnail({ file }) {
 }
 
 
-// function PdfThumbnail({ url }) {
-//   const canvasRef = useRef(null);
-
-//   useEffect(() => {
-//     if (!url || !window.pdfjsLib) return;
-//     let cancelled = false;
-
-//     const render = async () => {
-//       try {
-//         const pdf = await window.pdfjsLib.getDocument(url).promise;
-//         const page = await pdf.getPage(1);
-//         const viewport = page.getViewport({ scale: 0.6 });
-//         const canvas = canvasRef.current;
-//         if (!canvas || cancelled) return;
-//         canvas.width = viewport.width;
-//         canvas.height = viewport.height;
-//         await page.render({
-//           canvasContext: canvas.getContext("2d"),
-//           viewport,
-//         }).promise;
-//       } catch (e) {
-//         console.error("Thumbnail error:", e);
-//       }
-//     };
-
-//     const tryRender = () => {
-//       if (window.pdfjsLib) render();
-//       else setTimeout(tryRender, 100);
-//     };
-//     tryRender();
-
-//     return () => { cancelled = true; };
-//   }, [url]);
-
-//   return (
-//     <canvas
-//       ref={canvasRef}
-//       className="h-full w-full object-contain bg-white"
-//     />
-//   );
-// }
-
 export default function CompressPdfClient() {
   const flow = useToolFlow();
   const { progress, startProgress, completeProgress, cancelProgress } = useProgressBar();
