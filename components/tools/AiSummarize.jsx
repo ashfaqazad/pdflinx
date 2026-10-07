@@ -325,11 +325,120 @@ export default function AiSummarize({ seo }) {
             seoDescription:
               "Everything you need to know about summarizing PDFs with AI — free, online, instant bullet-point summaries, no signup required.",
 
+            // seoSections: [
+            //   {
+            //     title:
+            //       "Free AI PDF Summarizer — Summarize Any PDF Online, No Signup, No Watermark",
+            //     text: "Reading long PDFs takes hours. PDFLinx AI PDF Summarizer extracts the most important points from any PDF document in seconds — completely free, no account needed. Whether it is a 50-page research paper, a legal contract, a business report, or a textbook chapter, PDFLinx AI reads it and delivers a clean bullet-point summary instantly. The fastest and most accurate free alternative to ChatPDF, Scholarcy, TLDR This, and other AI PDF summarizer tools — with no daily limits and no login required.",
+            //   },
+            //   {
+            //     title: "Why Use an AI PDF Summarizer?",
+            //     text: "The average professional reads 4–5 hours of documents every day. AI PDF summarization cuts that time dramatically by extracting only the information that matters — key arguments, main findings, action items, and important conclusions. Instead of reading a 30-page report cover to cover, a summarizer gives you the core insights in 30 seconds. This is especially valuable for students reviewing academic papers, lawyers scanning legal documents, researchers doing literature reviews, and business professionals staying on top of reports and proposals.",
+            //   },
+            //   {
+            //     title: "How Does AI PDF Summarization Work?",
+            //     text: "PDFLinx uses a large language model (LLM) trained on millions of documents to understand the structure and meaning of your PDF. When you upload a PDF, the AI first extracts the raw text content from the document. It then identifies the most important sentences, key arguments, supporting evidence, and main conclusions. Finally, it organizes these into a structured bullet-point summary that captures the essence of the document. The entire process runs in 15–30 seconds depending on the length and complexity of the PDF.",
+            //   },
+            //   {
+            //     title:
+            //       "How to Summarize a PDF Without Losing Key Information",
+            //     text: "The most common concern with AI summarization is whether important details get lost. PDFLinx AI is designed to prioritize high-information sentences — topic sentences, key findings, defined terms, numerical data, and conclusions. The first 10 pages are processed for optimal speed and accuracy. For very long documents, focus the summary on the most important section by splitting the PDF first using our free Split PDF tool, then summarizing the relevant pages individually.",
+            //   },
+            //   {
+            //     title: "What Types of PDFs Work Best with the AI Summarizer?",
+            //     text: "Text-based PDFs give the best summarization results — these include research papers, journal articles, academic theses, business reports, white papers, legal contracts, meeting minutes, study guides, news articles, and e-books. Scanned PDFs that are image-only do not contain selectable text, so the AI cannot read them directly. For scanned documents, use our free OCR PDF tool first to convert them into searchable text-based PDFs, then summarize.",
+            //   },
+            //   {
+            //     title: "Best Use Cases for PDF Summarizer",
+            //     text: "✓ Students & Researchers: Quickly understand research papers, journal articles, and textbooks without reading every page.\n✓ Lawyers & Paralegals: Extract key clauses and important points from legal contracts and case documents.\n✓ Business Professionals: Summarize quarterly reports, business proposals, meeting transcripts, and strategic documents.\n✓ Journalists & Writers: Get the gist of press releases, policy papers, and government reports in seconds.\n✓ Educators & Teachers: Review curriculum documents, study guides, and academic papers efficiently.\n✓ Healthcare Workers: Summarize medical research, clinical guidelines, and patient case notes.\n✓ Freelancers & Consultants: Quickly review client briefs, project specifications, and industry reports.",
+            //   },
+            //   {
+            //     title:
+            //       "Summarize PDF on iPhone, Android, Mac & Windows — No App Needed",
+            //     text: "PDFLinx AI PDF Summarizer works perfectly in the browser on any device — iPhone, Android, iPad, Windows laptop, Mac, or Linux desktop. No app download, no software installation, no account creation required. Just open pdflinx.com on your mobile browser, upload your PDF, and get your summary in seconds. The fastest way to summarize a PDF on your phone for free.",
+            //   },
+            //   {
+            //     title:
+            //       "PDFLinx vs ChatPDF vs Scholarcy vs TLDR This — Best Free PDF Summarizer Comparison",
+            //     text: "ChatPDF limits free users to a small number of documents per day and requires an account. Scholarcy is primarily designed for academic papers and charges a monthly fee for full access. TLDR This focuses on web articles rather than uploaded PDF files. PDFLinx offers unlimited free PDF summarization with no daily limits, no watermark, no account, and no subscription — directly in your browser. For anyone looking for the best free ChatPDF alternative or Scholarcy alternative for summarizing PDFs, PDFLinx is the clear choice.",
+            //   },
+            //   {
+            //     title: "Privacy and File Security",
+            //     text: "Your uploaded PDF files are processed on secure servers over encrypted HTTPS and automatically deleted after 1 hour. We do not store, share, read, or access your documents at any point. PDFLinx is built with a privacy-first approach — your files and their contents are completely private from upload to download. No human ever views your documents. Perfect for summarizing confidential business reports, legal documents, and personal files.",
+            //   },
+            // ],
+
+            // faqs: [
+            //   {
+            //     q: "Is the PDFLinx AI PDF summarizer free?",
+            //     a: "Yes, completely free. No hidden charges, no premium plans, no daily limits, and no account required. Summarize as many PDFs as you need.",
+            //   },
+            //   {
+            //     q: "Do I need to sign up to summarize a PDF?",
+            //     a: "No account or signup required. Upload your PDF and get a summary instantly — no email, no registration, no password needed.",
+            //   },
+            //   {
+            //     q: "What types of PDFs work best?",
+            //     a: "Text-based PDFs give the best results — research papers, reports, contracts, books, articles, and study guides. Scanned image-only PDFs do not have selectable text; use our free OCR PDF tool first to convert them before summarizing.",
+            //   },
+            //   {
+            //     q: "How long does PDF summarization take?",
+            //     a: "Usually 15–30 seconds depending on the PDF length and current server load. Keep the tab open while the AI processes your document.",
+            //   },
+            //   {
+            //     q: "How many pages does the AI summarize?",
+            //     a: "The first 10 pages of your PDF are summarized. For longer documents, split the PDF using our Split PDF tool and summarize the most important section.",
+            //   },
+            //   {
+            //     q: "Does PDFLinx add any watermark to the summary?",
+            //     a: "No watermarks, ever. The summary is 100% clean text — no PDFLinx branding added to your downloaded summary file.",
+            //   },
+            //   {
+            //     q: "Can I use the PDF summarizer on iPhone and Android?",
+            //     a: "Yes. PDFLinx works perfectly in the browser on iPhone, Android, iPad, Windows, and Mac — no app download or installation required.",
+            //   },
+            //   {
+            //     q: "Can I summarize a scanned PDF?",
+            //     a: "Scanned PDFs that are image-only cannot be summarized directly because there is no selectable text. Use our free OCR PDF tool first to extract the text, then summarize the resulting text-based PDF.",
+            //   },
+            //   {
+            //     q: "Is my PDF kept private?",
+            //     a: "Yes. Your PDF is processed securely over HTTPS and automatically deleted from our servers after 1 hour. We do not store, share, or view your documents.",
+            //   },
+            //   {
+            //     q: "Can I download the AI summary?",
+            //     a: "Yes. After summarization, click Download Summary to save the bullet-point summary as a .txt file to your device.",
+            //   },
+            //   {
+            //     q: "Is PDFLinx better than ChatPDF or Scholarcy for free PDF summarization?",
+            //     a: "Yes. PDFLinx offers unlimited free PDF summarization with no daily limits, no account required, and no subscription. ChatPDF and Scholarcy restrict free usage and require login for full access.",
+            //   },
+            //   {
+            //     q: "What is the maximum file size for PDF summarization?",
+            //     a: "Up to 10 MB per PDF file for best performance. For larger files, try compressing the PDF first using our free Compress PDF tool.",
+            //   },
+            //   {
+            //     q: "Can I summarize multiple PDFs at once?",
+            //     a: "Currently one PDF is summarized at a time for best accuracy. Upload and summarize each PDF individually.",
+            //   },
+            //   {
+            //     q: "What language does the AI summarize in?",
+            //     a: "The AI summarizes in the language of the document. English PDFs get English summaries. Other languages may work depending on the AI model's language support.",
+            //   },
+            // ],
+
+
+
             seoSections: [
               {
                 title:
                   "Free AI PDF Summarizer — Summarize Any PDF Online, No Signup, No Watermark",
-                text: "Reading long PDFs takes hours. PDFLinx AI PDF Summarizer extracts the most important points from any PDF document in seconds — completely free, no account needed. Whether it is a 50-page research paper, a legal contract, a business report, or a textbook chapter, PDFLinx AI reads it and delivers a clean bullet-point summary instantly. The fastest and most accurate free alternative to ChatPDF, Scholarcy, TLDR This, and other AI PDF summarizer tools — with no daily limits and no login required.",
+                text: (
+                  <>
+                    Reading long PDFs takes hours. PDFLinx AI PDF Summarizer extracts the most important points from any PDF document in seconds — completely free, no account needed. Whether it is a 50-page research paper, a legal contract, a business report, or a textbook chapter, PDFLinx AI reads it and delivers a clean bullet-point summary instantly. Need to ask specific follow-up questions instead of just a summary? Try our{" "}
+                    <a href="/chat-with-pdf" className="text-blue-600 hover:underline font-medium">Chat with PDF tool</a>. The fastest and most accurate free alternative to ChatPDF, Scholarcy, TLDR This, and other AI PDF summarizer tools — with no daily limits and no login required.
+                  </>
+                ),
               },
               {
                 title: "Why Use an AI PDF Summarizer?",
@@ -342,15 +451,37 @@ export default function AiSummarize({ seo }) {
               {
                 title:
                   "How to Summarize a PDF Without Losing Key Information",
-                text: "The most common concern with AI summarization is whether important details get lost. PDFLinx AI is designed to prioritize high-information sentences — topic sentences, key findings, defined terms, numerical data, and conclusions. The first 10 pages are processed for optimal speed and accuracy. For very long documents, focus the summary on the most important section by splitting the PDF first using our free Split PDF tool, then summarizing the relevant pages individually.",
+                text: (
+                  <>
+                    The most common concern with AI summarization is whether important details get lost. PDFLinx AI is designed to prioritize high-information sentences — topic sentences, key findings, defined terms, numerical data, and conclusions. The first 10 pages are processed for optimal speed and accuracy. For very long documents, focus the summary on the most important section by splitting the PDF first using our free{" "}
+                    <a href="/split-pdf" className="text-blue-600 hover:underline font-medium">Split PDF tool</a>, then summarizing the relevant pages individually.
+                  </>
+                ),
               },
               {
                 title: "What Types of PDFs Work Best with the AI Summarizer?",
-                text: "Text-based PDFs give the best summarization results — these include research papers, journal articles, academic theses, business reports, white papers, legal contracts, meeting minutes, study guides, news articles, and e-books. Scanned PDFs that are image-only do not contain selectable text, so the AI cannot read them directly. For scanned documents, use our free OCR PDF tool first to convert them into searchable text-based PDFs, then summarize.",
+                text: (
+                  <>
+                    Text-based PDFs give the best summarization results — these include research papers, journal articles, academic theses, business reports, white papers, legal contracts, meeting minutes, study guides, news articles, and e-books. Scanned PDFs that are image-only do not contain selectable text, so the AI cannot read them directly. For scanned documents, use our free{" "}
+                    <a href="/ocr-pdf" className="text-blue-600 hover:underline font-medium">OCR PDF tool</a>{" "}
+                    first to convert them into searchable text-based PDFs, then summarize.
+                  </>
+                ),
               },
               {
                 title: "Best Use Cases for PDF Summarizer",
-                text: "✓ Students & Researchers: Quickly understand research papers, journal articles, and textbooks without reading every page.\n✓ Lawyers & Paralegals: Extract key clauses and important points from legal contracts and case documents.\n✓ Business Professionals: Summarize quarterly reports, business proposals, meeting transcripts, and strategic documents.\n✓ Journalists & Writers: Get the gist of press releases, policy papers, and government reports in seconds.\n✓ Educators & Teachers: Review curriculum documents, study guides, and academic papers efficiently.\n✓ Healthcare Workers: Summarize medical research, clinical guidelines, and patient case notes.\n✓ Freelancers & Consultants: Quickly review client briefs, project specifications, and industry reports.",
+                text: (
+                  <>
+                    ✓ <strong>Students & Researchers:</strong> Quickly understand research papers, journal articles, and textbooks without reading every page.<br />
+                    ✓ <strong>Lawyers & Paralegals:</strong> Extract key clauses and important points from legal contracts and case documents, then sign off using our{" "}
+                    <a href="/sign-pdf" className="text-blue-600 hover:underline font-medium">Sign PDF tool</a>.<br />
+                    ✓ <strong>Business Professionals:</strong> Summarize quarterly reports, business proposals, meeting transcripts, and strategic documents.<br />
+                    ✓ <strong>Journalists & Writers:</strong> Get the gist of press releases, policy papers, and government reports in seconds.<br />
+                    ✓ <strong>Educators & Teachers:</strong> Review curriculum documents, study guides, and academic papers efficiently.<br />
+                    ✓ <strong>Healthcare Workers:</strong> Summarize medical research, clinical guidelines, and patient case notes.<br />
+                    ✓ <strong>Freelancers & Consultants:</strong> Quickly review client briefs, project specifications, and industry reports.
+                  </>
+                ),
               },
               {
                 title:
@@ -364,7 +495,12 @@ export default function AiSummarize({ seo }) {
               },
               {
                 title: "Privacy and File Security",
-                text: "Your uploaded PDF files are processed on secure servers over encrypted HTTPS and automatically deleted after 1 hour. We do not store, share, read, or access your documents at any point. PDFLinx is built with a privacy-first approach — your files and their contents are completely private from upload to download. No human ever views your documents. Perfect for summarizing confidential business reports, legal documents, and personal files.",
+                text: (
+                  <>
+                    Your uploaded PDF files are processed on secure servers over encrypted HTTPS and automatically deleted after 1 hour. We do not store, share, read, or access your documents at any point. PDFLinx is built with a privacy-first approach — your files and their contents are completely private from upload to download. No human ever views your documents. Perfect for summarizing confidential business reports, legal documents, and personal files. Explore all our document management features on our{" "}
+                    <a href="/free-pdf-tools" className="text-blue-600 hover:underline font-medium">free PDF tools homepage</a>.
+                  </>
+                ),
               },
             ],
 
@@ -379,7 +515,13 @@ export default function AiSummarize({ seo }) {
               },
               {
                 q: "What types of PDFs work best?",
-                a: "Text-based PDFs give the best results — research papers, reports, contracts, books, articles, and study guides. Scanned image-only PDFs do not have selectable text; use our free OCR PDF tool first to convert them before summarizing.",
+                a: (
+                  <>
+                    Text-based PDFs give the best results — research papers, reports, contracts, books, articles, and study guides. Scanned image-only PDFs do not have selectable text; use our free{" "}
+                    <a href="/ocr-pdf" className="text-blue-600 hover:underline font-medium">OCR PDF tool</a>{" "}
+                    first to convert them before summarizing.
+                  </>
+                ),
               },
               {
                 q: "How long does PDF summarization take?",
@@ -387,7 +529,13 @@ export default function AiSummarize({ seo }) {
               },
               {
                 q: "How many pages does the AI summarize?",
-                a: "The first 10 pages of your PDF are summarized. For longer documents, split the PDF using our Split PDF tool and summarize the most important section.",
+                a: (
+                  <>
+                    The first 10 pages of your PDF are summarized. For longer documents, split the PDF using our{" "}
+                    <a href="/split-pdf" className="text-blue-600 hover:underline font-medium">Split PDF tool</a>{" "}
+                    and summarize the most important section.
+                  </>
+                ),
               },
               {
                 q: "Does PDFLinx add any watermark to the summary?",
@@ -399,7 +547,13 @@ export default function AiSummarize({ seo }) {
               },
               {
                 q: "Can I summarize a scanned PDF?",
-                a: "Scanned PDFs that are image-only cannot be summarized directly because there is no selectable text. Use our free OCR PDF tool first to extract the text, then summarize the resulting text-based PDF.",
+                a: (
+                  <>
+                    Scanned PDFs that are image-only cannot be summarized directly because there is no selectable text. Use our free{" "}
+                    <a href="/ocr-pdf" className="text-blue-600 hover:underline font-medium">OCR PDF tool</a>{" "}
+                    first to extract the text, then summarize the resulting text-based PDF.
+                  </>
+                ),
               },
               {
                 q: "Is my PDF kept private?",
@@ -415,7 +569,12 @@ export default function AiSummarize({ seo }) {
               },
               {
                 q: "What is the maximum file size for PDF summarization?",
-                a: "Up to 10 MB per PDF file for best performance. For larger files, try compressing the PDF first using our free Compress PDF tool.",
+                a: (
+                  <>
+                    Up to 10 MB per PDF file for best performance. For larger files, try compressing the PDF first using our free{" "}
+                    <a href="/compress-pdf" className="text-blue-600 hover:underline font-medium">Compress PDF tool</a>.
+                  </>
+                ),
               },
               {
                 q: "Can I summarize multiple PDFs at once?",
@@ -425,7 +584,18 @@ export default function AiSummarize({ seo }) {
                 q: "What language does the AI summarize in?",
                 a: "The AI summarizes in the language of the document. English PDFs get English summaries. Other languages may work depending on the AI model's language support.",
               },
+              {
+                q: "What is the difference between AI Summarize and Chat with PDF?",
+                a: (
+                  <>
+                    AI Summarize gives you a quick bullet-point overview of the whole document in one shot — ideal when you want the key points fast. Our{" "}
+                    <a href="/chat-with-pdf" className="text-blue-600 hover:underline font-medium">Chat with PDF tool</a>{" "}
+                    is for back-and-forth, specific questions where you need exact answers pulled from particular sections. Use AI Summarize first for an overview, then Chat with PDF to dig into details.
+                  </>
+                ),
+              },
             ],
+
 
             ctaTitle: (
               <>
