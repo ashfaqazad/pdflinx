@@ -15,6 +15,9 @@ import ToolPageLayout from "@/components/ToolFlow/ToolPageLayout";
 import { useToolFlow } from "@/hooks/useToolFlow";
 import { useProgressBar } from "@/hooks/useProgressBar";
 import { DEFAULT_DONE_LINKS, DEFAULT_SIDEBAR_FEATURES } from "@/lib/toolUiConfig";
+import JsonLd from "@/components/JsonLd";
+import { buildFaqSchema } from "@/lib/buildFaqSchema";
+
 
 
 
@@ -51,7 +54,123 @@ function PdfThumbnail({ url }) {
     tryRender();
   }, [url]);
   return <canvas ref={canvasRef} className="h-full w-full object-contain bg-white" />;
+  
 }
+
+
+const UNLOCK_PDF_FAQS = [
+
+
+  {
+    q: "Is PDFLinx PDF unlock tool free?",
+    a: "Yes, completely free. No hidden charges, no premium plans, and no limits on the number of PDFs you unlock or how many times you use it.",
+  },
+  {
+    q: "Do I need to sign up or create an account?",
+    a: "No account required. Upload your PDF and unlock it instantly — no email, no registration, no friction.",
+  },
+  {
+    q: "Do I need to know the PDF password to unlock it?",
+    a: "Yes. PDFLinx removes protection from PDFs for which you already have the correct password. Enter the password when prompted and PDFLinx strips it from the file.",
+  },
+  {
+    q: "Can PDFLinx crack or bypass an unknown PDF password?",
+    a: "No. PDFLinx is a legitimate unlock tool — it removes protection when you provide the correct password. It does not crack, guess, or brute-force unknown passwords.",
+  },
+  {
+    q: "Can I remove permission restrictions — like printing and copying blocks?",
+    a: "Yes. If a PDF has permission restrictions that block printing, copying, or editing, PDFLinx removes those restrictions so you can use the document freely.",
+  },
+  {
+    q: "What is the difference between an open password lock and a permissions lock?",
+    a: "An open password lock blocks anyone from viewing the PDF without the password. A permissions lock allows viewing but restricts actions like printing and editing. PDFLinx handles both.",
+  },
+  {
+    q: "Does PDFLinx add any watermark to the unlocked PDF?",
+    a: "No watermarks, ever. Your unlocked PDF is 100% clean — just the original content with the password and restrictions removed.",
+  },
+  {
+    q: "Is my file and password secure and private?",
+    a: "Yes. Files are processed on secure servers over encrypted HTTPS and deleted after 1 hour. The password you enter is used only during processing and is never stored or logged by PDFLinx.",
+  },
+  {
+    q: "Can I use PDFLinx on mobile — iPhone and Android?",
+    a: "Yes. PDFLinx works perfectly in the browser on iPhone, Android, iPad, Windows, and Mac — no app download or installation needed.",
+  },
+  {
+    q: "What is the maximum file size limit?",
+    a: "Up to 50 MB per file. For very large protected PDFs, contact us if you experience issues — we can advise on the best approach.",
+  },
+  {
+    q: "Why should I unlock a PDF before using other PDF tools?",
+    a: (
+      <>
+        Most PDF tools — including{" "}
+        <a
+          href="/merge-pdf"
+          className="text-blue-600 hover:underline font-medium"
+        >
+          Merge PDF
+        </a>
+        ,{" "}
+        <a
+          href="/split-pdf"
+          className="text-blue-600 hover:underline font-medium"
+        >
+          Split PDF
+        </a>
+        ,{" "}
+        <a
+          href="/compress-pdf"
+          className="text-blue-600 hover:underline font-medium"
+        >
+          Compress PDF
+        </a>
+        , and{" "}
+        <a
+          href="/edit-pdf"
+          className="text-blue-600 hover:underline font-medium"
+        >
+          Edit PDF
+        </a>{" "}
+        — require an unlocked PDF to function. Unlock your PDF first using PDFLinx, then use any other tool on it freely.
+      </>
+    ),
+  },
+  {
+    q: "Can I re-protect a PDF with a new password after unlocking?",
+    a: (
+      <>
+        Yes. After unlocking, use our free{" "}
+        <a
+          href="/protect-pdf"
+          className="text-blue-600 hover:underline font-medium"
+        >
+          Protect PDF tool
+        </a>{" "}
+        to add a new password and encryption settings to the document.
+      </>
+    ),
+  },
+  {
+    q: "Will the PDF content or quality change after unlocking?",
+    a: "No. Unlocking only removes the encryption and restriction layer — all content, formatting, images, and quality remain exactly as in the original.",
+  },
+  {
+    q: "How long does PDF unlocking take?",
+    a: "Most operations complete within 5 to 10 seconds depending on file size.",
+  },
+  {
+    q: "Is PDFLinx better than iLovePDF or Smallpdf for unlocking PDFs?",
+    a: "Yes — PDFLinx unlocks PDFs with no watermark on output, no daily limits, and no account required. iLovePDF and Smallpdf restrict PDF unlocking behind paid plans.",
+  },
+
+
+
+
+  // { q: "...", a: "..." },
+  // baaki sab
+];
 
 export default function UnlockPdf() {
   const flow = useToolFlow();
@@ -216,9 +335,13 @@ export default function UnlockPdf() {
   return (
     <>
       {/* ==================== SEO SCHEMAS ==================== */}
+
+
+      <JsonLd data={buildFaqSchema(UNLOCK_PDF_FAQS)} />
+      {/* <JsonLd data={buildFaqSchema(FAQ_DATA)} /> */}
       
 
-      <Script
+      {/* <Script
         id="faq-schema-unlock"
         type="application/ld+json"
         strategy="afterInteractive"
@@ -298,7 +421,7 @@ export default function UnlockPdf() {
             2
           ),
         }}
-      />
+      /> */}
 
       {/* ==================== TOOL UI ==================== */}
       <ToolPageLayout
@@ -659,111 +782,9 @@ seoSections: [
   },
 ],
 
-faqs: [
-  {
-    q: "Is PDFLinx PDF unlock tool free?",
-    a: "Yes, completely free. No hidden charges, no premium plans, and no limits on the number of PDFs you unlock or how many times you use it.",
-  },
-  {
-    q: "Do I need to sign up or create an account?",
-    a: "No account required. Upload your PDF and unlock it instantly — no email, no registration, no friction.",
-  },
-  {
-    q: "Do I need to know the PDF password to unlock it?",
-    a: "Yes. PDFLinx removes protection from PDFs for which you already have the correct password. Enter the password when prompted and PDFLinx strips it from the file.",
-  },
-  {
-    q: "Can PDFLinx crack or bypass an unknown PDF password?",
-    a: "No. PDFLinx is a legitimate unlock tool — it removes protection when you provide the correct password. It does not crack, guess, or brute-force unknown passwords.",
-  },
-  {
-    q: "Can I remove permission restrictions — like printing and copying blocks?",
-    a: "Yes. If a PDF has permission restrictions that block printing, copying, or editing, PDFLinx removes those restrictions so you can use the document freely.",
-  },
-  {
-    q: "What is the difference between an open password lock and a permissions lock?",
-    a: "An open password lock blocks anyone from viewing the PDF without the password. A permissions lock allows viewing but restricts actions like printing and editing. PDFLinx handles both.",
-  },
-  {
-    q: "Does PDFLinx add any watermark to the unlocked PDF?",
-    a: "No watermarks, ever. Your unlocked PDF is 100% clean — just the original content with the password and restrictions removed.",
-  },
-  {
-    q: "Is my file and password secure and private?",
-    a: "Yes. Files are processed on secure servers over encrypted HTTPS and deleted after 1 hour. The password you enter is used only during processing and is never stored or logged by PDFLinx.",
-  },
-  {
-    q: "Can I use PDFLinx on mobile — iPhone and Android?",
-    a: "Yes. PDFLinx works perfectly in the browser on iPhone, Android, iPad, Windows, and Mac — no app download or installation needed.",
-  },
-  {
-    q: "What is the maximum file size limit?",
-    a: "Up to 50 MB per file. For very large protected PDFs, contact us if you experience issues — we can advise on the best approach.",
-  },
-  {
-    q: "Why should I unlock a PDF before using other PDF tools?",
-    a: (
-      <>
-        Most PDF tools — including{" "}
-        <a
-          href="/merge-pdf"
-          className="text-blue-600 hover:underline font-medium"
-        >
-          Merge PDF
-        </a>
-        ,{" "}
-        <a
-          href="/split-pdf"
-          className="text-blue-600 hover:underline font-medium"
-        >
-          Split PDF
-        </a>
-        ,{" "}
-        <a
-          href="/compress-pdf"
-          className="text-blue-600 hover:underline font-medium"
-        >
-          Compress PDF
-        </a>
-        , and{" "}
-        <a
-          href="/edit-pdf"
-          className="text-blue-600 hover:underline font-medium"
-        >
-          Edit PDF
-        </a>{" "}
-        — require an unlocked PDF to function. Unlock your PDF first using PDFLinx, then use any other tool on it freely.
-      </>
-    ),
-  },
-  {
-    q: "Can I re-protect a PDF with a new password after unlocking?",
-    a: (
-      <>
-        Yes. After unlocking, use our free{" "}
-        <a
-          href="/protect-pdf"
-          className="text-blue-600 hover:underline font-medium"
-        >
-          Protect PDF tool
-        </a>{" "}
-        to add a new password and encryption settings to the document.
-      </>
-    ),
-  },
-  {
-    q: "Will the PDF content or quality change after unlocking?",
-    a: "No. Unlocking only removes the encryption and restriction layer — all content, formatting, images, and quality remain exactly as in the original.",
-  },
-  {
-    q: "How long does PDF unlocking take?",
-    a: "Most operations complete within 5 to 10 seconds depending on file size.",
-  },
-  {
-    q: "Is PDFLinx better than iLovePDF or Smallpdf for unlocking PDFs?",
-    a: "Yes — PDFLinx unlocks PDFs with no watermark on output, no daily limits, and no account required. iLovePDF and Smallpdf restrict PDF unlocking behind paid plans.",
-  },
-],
+
+faqs: UNLOCK_PDF_FAQS,
+
 
             ctaTitle: (
               <>
