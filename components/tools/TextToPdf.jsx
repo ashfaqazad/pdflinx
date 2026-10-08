@@ -23,35 +23,57 @@ import {
   // Minimize2,
   // GitMerge,
   Scissors,
-  FileImage
+  FileImage,
 } from "lucide-react";
-
-// ── Config ─────────────────────────────────────────────────────────────────
-// const DONE_LINKS = [
-//   { label: "Word to PDF", href: "/word-to-pdf", icon: <FileText className="h-4 w-4 text-blue-500" /> },
-//   { label: "PDF to Word", href: "/pdf-to-word", icon: <FileText className="h-4 w-4 text-indigo-500" /> },
-//   { label: "Compress PDF", href: "/compress-pdf", icon: <Minimize2 className="h-4 w-4 text-green-500" /> },
-//   { label: "Merge PDF", href: "/merge-pdf", icon: <GitMerge className="h-4 w-4 text-purple-500" /> },
-//   { label: "Split PDF", href: "/split-pdf", icon: <Scissors className="h-4 w-4 text-pink-500" /> },
-//   { label: "Image to PDF", href: "/image-to-pdf", icon: <FileImage className="h-4 w-4 text-amber-500" /> },
-// ];
+import JsonLd from "@/components/JsonLd";
+import { buildFaqSchema } from "@/lib/buildFaqSchema";
 
 const DONE_LINKS = [
-  { label: "HTML to PDF", href: "/html-to-pdf", icon: <Code className="h-4 w-4 text-indigo-500" /> },
-  { label: "Word to PDF", href: "/word-to-pdf", icon: <FileText className="h-4 w-4 text-blue-500" /> },
-  { label: "Image to PDF", href: "/image-to-pdf", icon: <ImageIcon className="h-4 w-4 text-pink-500" /> },
-  { label: "Compress PDF", href: "/compress-pdf", icon: <Minimize2 className="h-4 w-4 text-green-500" /> },
-  { label: "Edit PDF", href: "/edit-pdf", icon: <Pencil className="h-4 w-4 text-orange-500" /> },
-  { label: "Add Page Numbers", href: "/add-page-numbers", icon: <Hash className="h-4 w-4 text-slate-500" /> },
-  { label: "Protect PDF", href: "/protect-pdf", icon: <Shield className="h-4 w-4 text-red-500" /> },
-  { label: "Merge PDF", href: "/merge-pdf", icon: <GitMerge className="h-4 w-4 text-purple-500" /> },
+  {
+    label: "HTML to PDF",
+    href: "/html-to-pdf",
+    icon: <Code className="h-4 w-4 text-indigo-500" />,
+  },
+  {
+    label: "Word to PDF",
+    href: "/word-to-pdf",
+    icon: <FileText className="h-4 w-4 text-blue-500" />,
+  },
+  {
+    label: "Image to PDF",
+    href: "/image-to-pdf",
+    icon: <ImageIcon className="h-4 w-4 text-pink-500" />,
+  },
+  {
+    label: "Compress PDF",
+    href: "/compress-pdf",
+    icon: <Minimize2 className="h-4 w-4 text-green-500" />,
+  },
+  {
+    label: "Edit PDF",
+    href: "/edit-pdf",
+    icon: <Pencil className="h-4 w-4 text-orange-500" />,
+  },
+  {
+    label: "Add Page Numbers",
+    href: "/add-page-numbers",
+    icon: <Hash className="h-4 w-4 text-slate-500" />,
+  },
+  {
+    label: "Protect PDF",
+    href: "/protect-pdf",
+    icon: <Shield className="h-4 w-4 text-red-500" />,
+  },
+  {
+    label: "Merge PDF",
+    href: "/merge-pdf",
+    icon: <GitMerge className="h-4 w-4 text-purple-500" />,
+  },
 ];
 
 const SIDEBAR_NOTICE = (
   <>
-    <p className="text-sm font-semibold text-blue-800">
-      ℹ️ Text to PDF Info
-    </p>
+    <p className="text-sm font-semibold text-blue-800">ℹ️ Text to PDF Info</p>
     <ul className="mt-3 list-disc space-y-2 pl-4 text-xs text-slate-600">
       <li>PDF generated instantly in browser</li>
       <li>Your text is never uploaded</li>
@@ -107,26 +129,21 @@ function TextEditor({ text, onChange }) {
           {text.length} characters
         </p>
       </div>
-
     </div>
   );
 }
 
 // ───────────────────────────────────────────────────────────────────────────
 function TextPreviewCard({ text }) {
-
   const wordCount = text.trim().split(/\s+/).filter(Boolean).length;
 
   return (
     // <div className="group relative overflow-hidden rounded-[24px] border border-slate-200 bg-white shadow-sm transition hover:shadow-md">
     <div className="group relative overflow-hidden rounded-[28px] border border-slate-200 bg-[#f3f4f6] shadow-sm transition hover:shadow-md">
-
       {/* Preview Area */}
       <div className="relative h-[420px] overflow-hidden bg-[#f3f4f6] p-8">
-
         {/* White PDF Paper */}
         <div className="relative mx-auto h-full max-w-[720px] overflow-hidden rounded-2xl border border-slate-200 bg-white p-8 shadow-[0_8px_30px_rgba(0,0,0,0.06)]">
-
           {/* PDF Badge */}
           <div className="absolute right-4 top-4 rounded-full bg-red-50 px-3 py-1 text-xs font-semibold text-red-500">
             PDF Preview
@@ -141,9 +158,7 @@ function TextPreviewCard({ text }) {
                 <p
                   key={i}
                   className={
-                    i === 0
-                      ? "pr-24 text-lg font-semibold text-slate-900"
-                      : ""
+                    i === 0 ? "pr-24 text-lg font-semibold text-slate-900" : ""
                   }
                 >
                   {line || <span className="opacity-0">empty</span>}
@@ -155,7 +170,6 @@ function TextPreviewCard({ text }) {
           <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-white to-transparent" />
         </div>
       </div>
-
 
       {/* Footer */}
       <div className="border-t border-slate-100 px-5 py-4">
@@ -175,12 +189,55 @@ function TextPreviewCard({ text }) {
   );
 }
 
-// ───────────────────────────────────────────────────────────────────────────
+const TEXT_PDF_FAQS = [
+  {
+    q: "Is the Text to PDF converter free?",
+    a: "Yes, completely free. No hidden charges, no subscription, no limits on the number of PDFs you generate.",
+  },
+  {
+    q: "Is my text uploaded to a server?",
+    a: "No. The PDF is generated entirely in your browser using jsPDF. Your text never leaves your device — complete privacy by design.",
+  },
+  {
+    q: "Does it support long text with multiple pages?",
+    a: "Yes. Long text automatically flows across multiple PDF pages with consistent margins, line spacing, and clean formatting throughout.",
+  },
+  {
+    q: "Can I format the text before converting — bold, headings, etc.?",
+    a: "Currently the tool supports plain text with clean automatic formatting — Helvetica font, 12pt, 20mm margins. Rich text formatting like bold and headings is not supported in this version.",
+  },
+  {
+    q: "Will my PDF look professional?",
+    a: "Yes. The tool applies clean margins, proper line spacing, and consistent font automatically — the output is polished and print-ready without any manual adjustment.",
+  },
+  {
+    q: "Can I use this on my phone — iPhone and Android?",
+    a: "Yes. PDFLinx Text to PDF works on all Android and iOS devices, tablets, and desktop browsers — no app download or installation needed.",
+  },
+  {
+    q: "What types of text can I convert to PDF?",
+    a: "Any plain text — notes, letters, resumes, essays, assignments, articles, meeting minutes, code snippets, and more. Paste anything and get a clean PDF.",
+  },
+  {
+    q: "Is there a character or page limit?",
+    a: "No hard limit. The tool handles short snippets and very long documents equally well — new pages are added automatically as needed.",
+  },
+  {
+    q: "What font and page size does the PDF use?",
+    a: "The PDF uses Helvetica 12pt font with 20mm margins on A4 page size — a clean, universally professional layout.",
+  },
+  {
+    q: "Do I need to sign up or create an account?",
+    a: "No account required. Paste your text and generate your PDF instantly — no email, no registration, no friction.",
+  },
+];
 
+// ───────────────────────────────────────────────────────────────────────────
 
 export default function TextToPdf({ seo }) {
   const flow = useToolFlow();
-  const { progress, startProgress, completeProgress, cancelProgress } = useProgressBar();
+  const { progress, startProgress, completeProgress, cancelProgress } =
+    useProgressBar();
 
   const [text, setText] = useState("");
 
@@ -205,7 +262,11 @@ export default function TextToPdf({ seo }) {
       // Small delay so ProcessingStep renders visibly
       await new Promise((r) => setTimeout(r, 600));
 
-      const doc = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" });
+      const doc = new jsPDF({
+        orientation: "portrait",
+        unit: "mm",
+        format: "a4",
+      });
       doc.setFont("helvetica", "normal");
       doc.setFontSize(12);
       doc.setTextColor(40, 40, 40);
@@ -218,7 +279,10 @@ export default function TextToPdf({ seo }) {
       let y = 20;
       const lineHeight = 7;
       lines.forEach((line) => {
-        if (y > 270) { doc.addPage(); y = 20; }
+        if (y > 270) {
+          doc.addPage();
+          y = 20;
+        }
         doc.text(line, margin, y);
         y += lineHeight;
       });
@@ -250,7 +314,9 @@ export default function TextToPdf({ seo }) {
     if (!text.trim()) return alert("Please enter some text first!");
     // Inject a dummy blob as "file" so ToolFlow advances to OPTIONS
     const blob = new Blob([text], { type: "text/plain" });
-    const dummyFile = new File([blob], "text-input.txt", { type: "text/plain" });
+    const dummyFile = new File([blob], "text-input.txt", {
+      type: "text/plain",
+    });
     flow.selectFiles([dummyFile]);
   };
 
@@ -258,59 +324,66 @@ export default function TextToPdf({ seo }) {
     <>
       {/* ── SEO Schemas ── */}
 
-      <Script
+    <JsonLd data={buildFaqSchema(TEXT_PDF_FAQS)} />
+      
+
+      {/* <Script
         id="faq-schema-text-pdf"
         type="application/ld+json"
         strategy="afterInteractive"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "FAQPage",
-            mainEntity: [
-              {
-                "@type": "Question",
-                name: "Can I convert text files to PDF online?",
-                acceptedAnswer: {
-                  "@type": "Answer",
-                  text: "Yes. PDFLinx allows you to convert TXT and plain text files into PDF documents online for free."
-                }
-              },
-              {
-                "@type": "Question",
-                name: "What text formats are supported?",
-                acceptedAnswer: {
-                  "@type": "Answer",
-                  text: "The tool supports TXT and plain text content for conversion into PDF format."
-                }
-              },
-              {
-                "@type": "Question",
-                name: "Will the text formatting be preserved?",
-                acceptedAnswer: {
-                  "@type": "Answer",
-                  text: "Yes. The converter preserves text structure and readability in the generated PDF document."
-                }
-              },
-              {
-                "@type": "Question",
-                name: "Does Text to PDF work on mobile devices?",
-                acceptedAnswer: {
-                  "@type": "Answer",
-                  text: "Yes. The tool works on Android, iPhone, tablets, and desktop browsers."
-                }
-              },
-              {
-                "@type": "Question",
-                name: "Are my files secure?",
-                acceptedAnswer: {
-                  "@type": "Answer",
-                  text: "Yes. Files are processed securely and automatically removed after processing."
-                }
-              }
-            ]
-          }, null, 2),
+          __html: JSON.stringify(
+            {
+              "@context": "https://schema.org",
+              "@type": "FAQPage",
+              mainEntity: [
+                {
+                  "@type": "Question",
+                  name: "Can I convert text files to PDF online?",
+                  acceptedAnswer: {
+                    "@type": "Answer",
+                    text: "Yes. PDFLinx allows you to convert TXT and plain text files into PDF documents online for free.",
+                  },
+                },
+                {
+                  "@type": "Question",
+                  name: "What text formats are supported?",
+                  acceptedAnswer: {
+                    "@type": "Answer",
+                    text: "The tool supports TXT and plain text content for conversion into PDF format.",
+                  },
+                },
+                {
+                  "@type": "Question",
+                  name: "Will the text formatting be preserved?",
+                  acceptedAnswer: {
+                    "@type": "Answer",
+                    text: "Yes. The converter preserves text structure and readability in the generated PDF document.",
+                  },
+                },
+                {
+                  "@type": "Question",
+                  name: "Does Text to PDF work on mobile devices?",
+                  acceptedAnswer: {
+                    "@type": "Answer",
+                    text: "Yes. The tool works on Android, iPhone, tablets, and desktop browsers.",
+                  },
+                },
+                {
+                  "@type": "Question",
+                  name: "Are my files secure?",
+                  acceptedAnswer: {
+                    "@type": "Answer",
+                    text: "Yes. Files are processed securely and automatically removed after processing.",
+                  },
+                },
+              ],
+            },
+            null,
+            2,
+          ),
         }}
-      />
+      /> */}
 
       {/* ── Tool UI ── */}
       <ToolPageLayout
@@ -324,13 +397,10 @@ export default function TextToPdf({ seo }) {
         progress={progress}
         onRemoveFile={handleRemoveFile}
         onConvert={handleConvert}
-        onDownload={() => { }} // PDF auto-downloads via jsPDF
+        onDownload={() => {}} // PDF auto-downloads via jsPDF
         doneLinks={DONE_LINKS}
         sidebarLinks={DONE_LINKS}
-        customFilePreview={
-          <TextPreviewCard text={text} />
-        }
-
+        customFilePreview={<TextPreviewCard text={text} />}
         // ── Upload step override ──
         // We render a custom uploadLanding so the user sees the textarea
         // immediately; clicking the CTA button calls handleTextReady()
@@ -368,8 +438,12 @@ export default function TextToPdf({ seo }) {
             ),
             heroDescription:
               "Convert TXT files or paste any text directly to a clean, downloadable PDF online for free. Choose font, size, and margins — no account, no software, no watermark required.",
-            pills: ["Paste or upload text", "Custom font & margins", "Instant PDF output", "100% free"],
-
+            pills: [
+              "Paste or upload text",
+              "Custom font & margins",
+              "Instant PDF output",
+              "100% free",
+            ],
 
             // bullets: [
             //   "PDF generated instantly in your browser — nothing uploaded",
@@ -398,16 +472,18 @@ export default function TextToPdf({ seo }) {
                 <button
                   onClick={handleTextReady}
                   disabled={!text.trim()}
-                  className={`w-full flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm text-white transition-all duration-200 shadow-sm ${text.trim()
-                    ? "bg-gradient-to-r from-blue-600 to-indigo-500 hover:from-blue-700 hover:to-indigo-600 hover:shadow-md active:scale-[0.98]"
-                    : "bg-gray-200 text-gray-400 cursor-not-allowed"
-                    }`}
+                  className={`w-full flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm text-white transition-all duration-200 shadow-sm ${
+                    text.trim()
+                      ? "bg-gradient-to-r from-blue-600 to-indigo-500 hover:from-blue-700 hover:to-indigo-600 hover:shadow-md active:scale-[0.98]"
+                      : "bg-gray-200 text-gray-400 cursor-not-allowed"
+                  }`}
                 >
                   <Download className="w-4 h-4" />
                   Continue to Generate PDF
                 </button>
                 <p className="text-xs text-center text-slate-400">
-                  ⚡ PDF generated in your browser · 🔒 Text never uploaded to any server
+                  ⚡ PDF generated in your browser · 🔒 Text never uploaded to
+                  any server
                 </p>
               </div>
             ),
@@ -430,10 +506,7 @@ export default function TextToPdf({ seo }) {
             ],
             trustPills: ["100% Free", "No Sign Up", "No Upload"],
 
-            supports: [
-              "Plain text input",
-              "Multi-page PDF output",
-            ],
+            supports: ["Plain text input", "Multi-page PDF output"],
 
             howToTitle: "How to Convert Text to PDF — 3 Simple Steps",
 
@@ -507,48 +580,7 @@ export default function TextToPdf({ seo }) {
 
             faqTitle: "Frequently Asked Questions",
 
-            faqs: [
-              {
-                q: "Is the Text to PDF converter free?",
-                a: "Yes, completely free. No hidden charges, no subscription, no limits on the number of PDFs you generate.",
-              },
-              {
-                q: "Is my text uploaded to a server?",
-                a: "No. The PDF is generated entirely in your browser using jsPDF. Your text never leaves your device — complete privacy by design.",
-              },
-              {
-                q: "Does it support long text with multiple pages?",
-                a: "Yes. Long text automatically flows across multiple PDF pages with consistent margins, line spacing, and clean formatting throughout.",
-              },
-              {
-                q: "Can I format the text before converting — bold, headings, etc.?",
-                a: "Currently the tool supports plain text with clean automatic formatting — Helvetica font, 12pt, 20mm margins. Rich text formatting like bold and headings is not supported in this version.",
-              },
-              {
-                q: "Will my PDF look professional?",
-                a: "Yes. The tool applies clean margins, proper line spacing, and consistent font automatically — the output is polished and print-ready without any manual adjustment.",
-              },
-              {
-                q: "Can I use this on my phone — iPhone and Android?",
-                a: "Yes. PDFLinx Text to PDF works on all Android and iOS devices, tablets, and desktop browsers — no app download or installation needed.",
-              },
-              {
-                q: "What types of text can I convert to PDF?",
-                a: "Any plain text — notes, letters, resumes, essays, assignments, articles, meeting minutes, code snippets, and more. Paste anything and get a clean PDF.",
-              },
-              {
-                q: "Is there a character or page limit?",
-                a: "No hard limit. The tool handles short snippets and very long documents equally well — new pages are added automatically as needed.",
-              },
-              {
-                q: "What font and page size does the PDF use?",
-                a: "The PDF uses Helvetica 12pt font with 20mm margins on A4 page size — a clean, universally professional layout.",
-              },
-              {
-                q: "Do I need to sign up or create an account?",
-                a: "No account required. Paste your text and generate your PDF instantly — no email, no registration, no friction.",
-              },
-            ],
+            faqs: TEXT_PDF_FAQS,
 
             ctaBadge: "✦ 100% Free",
             ctaTitle: "Convert Your Text to PDF Now",
@@ -581,14 +613,28 @@ export default function TextToPdf({ seo }) {
             //   },
             // ],
 
-
-                        seoSections: [
+            seoSections: [
               {
                 title:
                   "Free Text to PDF Converter — Turn Plain Text into a Clean PDF Instantly",
                 text: (
                   <>
-                    Need a clean PDF from plain text? PDFLinx generates a properly formatted PDF from any text you paste — notes, resumes, letters, essays, articles, or assignments. The PDF is created instantly in your browser using jsPDF — nothing is uploaded, nothing is stored on any server. No software installation required, no watermarks added, no sign-up needed. It is the fastest and most private way to convert plain text to PDF online. Working with a formatted document instead? Try our <a href="/word-to-pdf" className="text-blue-600 hover:underline font-medium">Word to PDF converter</a>.
+                    Need a clean PDF from plain text? PDFLinx generates a
+                    properly formatted PDF from any text you paste — notes,
+                    resumes, letters, essays, articles, or assignments. The PDF
+                    is created instantly in your browser using jsPDF — nothing
+                    is uploaded, nothing is stored on any server. No software
+                    installation required, no watermarks added, no sign-up
+                    needed. It is the fastest and most private way to convert
+                    plain text to PDF online. Working with a formatted document
+                    instead? Try our{" "}
+                    <a
+                      href="/word-to-pdf"
+                      className="text-blue-600 hover:underline font-medium"
+                    >
+                      Word to PDF converter
+                    </a>
+                    .
                   </>
                 ),
               },
@@ -596,7 +642,20 @@ export default function TextToPdf({ seo }) {
                 title: "How Text to PDF Generation Works",
                 text: (
                   <>
-                    Paste your text into the editor and click Generate PDF. PDFLinx formats your content automatically with proper A4 margins, 12pt Helvetica font, and consistent line spacing. Long text automatically flows across multiple pages. The PDF downloads immediately to your device — no processing delay, no server round-trip, no waiting. If your text runs across many pages, you can add numbering afterwards with our <a href="/add-page-numbers" className="text-blue-600 hover:underline font-medium">Add Page Numbers tool</a>.
+                    Paste your text into the editor and click Generate PDF.
+                    PDFLinx formats your content automatically with proper A4
+                    margins, 12pt Helvetica font, and consistent line spacing.
+                    Long text automatically flows across multiple pages. The PDF
+                    downloads immediately to your device — no processing delay,
+                    no server round-trip, no waiting. If your text runs across
+                    many pages, you can add numbering afterwards with our{" "}
+                    <a
+                      href="/add-page-numbers"
+                      className="text-blue-600 hover:underline font-medium"
+                    >
+                      Add Page Numbers tool
+                    </a>
+                    .
                   </>
                 ),
               },
@@ -604,11 +663,38 @@ export default function TextToPdf({ seo }) {
                 title: "Common Use Cases for Text to PDF",
                 text: (
                   <>
-                    ✓ <strong>Students:</strong> Convert notes and assignments to PDF for submission. Have several files? <a href="/merge-pdf" className="text-blue-600 hover:underline font-medium">Merge PDF files</a> into one submission.<br />
-                    ✓ <strong>Job Seekers:</strong> Turn plain-text resumes and cover letters into professional PDFs to attach to applications.<br />
-                    ✓ <strong>Office Professionals:</strong> Create quick letters and memos from text drafts, then <a href="/sign-pdf" className="text-blue-600 hover:underline font-medium">sign the PDF online</a> before sending.<br />
-                    ✓ <strong>Writers:</strong> Export articles, stories, and long-form content as shareable PDF documents. Add a <a href="/add-watermark" className="text-blue-600 hover:underline font-medium">watermark to your PDF</a> to mark drafts or claim ownership.<br />
-                    ✓ <strong>Anyone:</strong> Get a clean, printable PDF from text without opening Word or Google Docs.
+                    ✓ <strong>Students:</strong> Convert notes and assignments
+                    to PDF for submission. Have several files?{" "}
+                    <a
+                      href="/merge-pdf"
+                      className="text-blue-600 hover:underline font-medium"
+                    >
+                      Merge PDF files
+                    </a>{" "}
+                    into one submission.
+                    <br />✓ <strong>Job Seekers:</strong> Turn plain-text
+                    resumes and cover letters into professional PDFs to attach
+                    to applications.
+                    <br />✓ <strong>Office Professionals:</strong> Create quick
+                    letters and memos from text drafts, then{" "}
+                    <a
+                      href="/sign-pdf"
+                      className="text-blue-600 hover:underline font-medium"
+                    >
+                      sign the PDF online
+                    </a>{" "}
+                    before sending.
+                    <br />✓ <strong>Writers:</strong> Export articles, stories,
+                    and long-form content as shareable PDF documents. Add a{" "}
+                    <a
+                      href="/add-watermark"
+                      className="text-blue-600 hover:underline font-medium"
+                    >
+                      watermark to your PDF
+                    </a>{" "}
+                    to mark drafts or claim ownership.
+                    <br />✓ <strong>Anyone:</strong> Get a clean, printable PDF
+                    from text without opening Word or Google Docs.
                   </>
                 ),
               },
@@ -616,7 +702,21 @@ export default function TextToPdf({ seo }) {
                 title: "Privacy — Your Text Never Leaves Your Device",
                 text: (
                   <>
-                    Unlike most online PDF tools that upload your file to a server for processing, PDFLinx Text to PDF generates the PDF entirely in your browser using the jsPDF library. Your text is never sent to any server, never stored, and never shared with any third party. This makes it the most private text to PDF converter available — complete privacy by design, no exceptions. Need to restrict access to the finished file? Lock it with a password using our <a href="/protect-pdf" className="text-blue-600 hover:underline font-medium">Protect PDF tool</a>.
+                    Unlike most online PDF tools that upload your file to a
+                    server for processing, PDFLinx Text to PDF generates the PDF
+                    entirely in your browser using the jsPDF library. Your text
+                    is never sent to any server, never stored, and never shared
+                    with any third party. This makes it the most private text to
+                    PDF converter available — complete privacy by design, no
+                    exceptions. Need to restrict access to the finished file?
+                    Lock it with a password using our{" "}
+                    <a
+                      href="/protect-pdf"
+                      className="text-blue-600 hover:underline font-medium"
+                    >
+                      Protect PDF tool
+                    </a>
+                    .
                   </>
                 ),
               },
@@ -624,7 +724,33 @@ export default function TextToPdf({ seo }) {
                 title: "Text to PDF vs Word to PDF — Which Should You Use?",
                 text: (
                   <>
-                    Use Text to PDF when you have raw plain text content — copied from an email, a note, a website, or typed directly — and need a clean PDF quickly without any formatting. Use <a href="/word-to-pdf" className="text-blue-600 hover:underline font-medium">Word to PDF</a> when you have a fully formatted DOCX document with headings, bold text, tables, and images that need to be preserved in the PDF. Converting slides instead? Use <a href="/ppt-to-pdf" className="text-blue-600 hover:underline font-medium">PowerPoint to PDF</a>, and for photos or scans use <a href="/image-to-pdf" className="text-blue-600 hover:underline font-medium">Image to PDF</a>. For plain text, Text to PDF is faster, simpler, and completely private since nothing is uploaded.
+                    Use Text to PDF when you have raw plain text content —
+                    copied from an email, a note, a website, or typed directly —
+                    and need a clean PDF quickly without any formatting. Use{" "}
+                    <a
+                      href="/word-to-pdf"
+                      className="text-blue-600 hover:underline font-medium"
+                    >
+                      Word to PDF
+                    </a>{" "}
+                    when you have a fully formatted DOCX document with headings,
+                    bold text, tables, and images that need to be preserved in
+                    the PDF. Converting slides instead? Use{" "}
+                    <a
+                      href="/ppt-to-pdf"
+                      className="text-blue-600 hover:underline font-medium"
+                    >
+                      PowerPoint to PDF
+                    </a>
+                    , and for photos or scans use{" "}
+                    <a
+                      href="/image-to-pdf"
+                      className="text-blue-600 hover:underline font-medium"
+                    >
+                      Image to PDF
+                    </a>
+                    . For plain text, Text to PDF is faster, simpler, and
+                    completely private since nothing is uploaded.
                   </>
                 ),
               },
@@ -632,7 +758,38 @@ export default function TextToPdf({ seo }) {
                 title: "What to Do After Creating Your PDF",
                 text: (
                   <>
-                    Once your PDF is generated, you can keep improving it with other free PDFLinx tools. Use <a href="/merge-pdf" className="text-blue-600 hover:underline font-medium">Merge PDF</a> to combine it with other documents, <a href="/organize-pdf" className="text-blue-600 hover:underline font-medium">Organize PDF</a> to reorder or delete pages, <a href="/compress-pdf" className="text-blue-600 hover:underline font-medium">Compress PDF</a> to shrink the file for email, and <a href="/rotate-pdf" className="text-blue-600 hover:underline font-medium">Rotate PDF</a> if you need a different page orientation. Note that these tools process files on our secure servers, which automatically delete them after 1 hour.
+                    Once your PDF is generated, you can keep improving it with
+                    other free PDFLinx tools. Use{" "}
+                    <a
+                      href="/merge-pdf"
+                      className="text-blue-600 hover:underline font-medium"
+                    >
+                      Merge PDF
+                    </a>{" "}
+                    to combine it with other documents,{" "}
+                    <a
+                      href="/organize-pdf"
+                      className="text-blue-600 hover:underline font-medium"
+                    >
+                      Organize PDF
+                    </a>{" "}
+                    to reorder or delete pages,{" "}
+                    <a
+                      href="/compress-pdf"
+                      className="text-blue-600 hover:underline font-medium"
+                    >
+                      Compress PDF
+                    </a>{" "}
+                    to shrink the file for email, and{" "}
+                    <a
+                      href="/rotate-pdf"
+                      className="text-blue-600 hover:underline font-medium"
+                    >
+                      Rotate PDF
+                    </a>{" "}
+                    if you need a different page orientation. Note that these
+                    tools process files on our secure servers, which
+                    automatically delete them after 1 hour.
                   </>
                 ),
               },
@@ -640,7 +797,24 @@ export default function TextToPdf({ seo }) {
                 title: "Need to Edit the Text Later? Convert PDF Back to Word",
                 text: (
                   <>
-                    A PDF is great for sharing but harder to edit. If you need to change the content later, the easiest route is to keep your original text and generate a fresh PDF. If you only have the PDF, convert it back with our <a href="/pdf-to-word" className="text-blue-600 hover:underline font-medium">PDF to Word converter</a>, or make small changes directly using our <a href="/edit-pdf" className="text-blue-600 hover:underline font-medium">Edit PDF tool</a>.
+                    A PDF is great for sharing but harder to edit. If you need
+                    to change the content later, the easiest route is to keep
+                    your original text and generate a fresh PDF. If you only
+                    have the PDF, convert it back with our{" "}
+                    <a
+                      href="/pdf-to-word"
+                      className="text-blue-600 hover:underline font-medium"
+                    >
+                      PDF to Word converter
+                    </a>
+                    , or make small changes directly using our{" "}
+                    <a
+                      href="/edit-pdf"
+                      className="text-blue-600 hover:underline font-medium"
+                    >
+                      Edit PDF tool
+                    </a>
+                    .
                   </>
                 ),
               },
@@ -648,7 +822,31 @@ export default function TextToPdf({ seo }) {
                 title: "Text to PDF vs OCR — Typed Text or Scanned Pages?",
                 text: (
                   <>
-                    Text to PDF works when you already have the text in digital form. If your content is stuck inside a scanned page or photo, you first need to recognize the text. Use our <a href="/ocr-pdf" className="text-blue-600 hover:underline font-medium">OCR PDF tool</a> to make scanned documents searchable and selectable, then copy the text or convert it with <a href="/pdf-to-word" className="text-blue-600 hover:underline font-medium">PDF to Word</a>. If you just want to keep the scan as it is, use <a href="/image-to-pdf" className="text-blue-600 hover:underline font-medium">Image to PDF</a> instead.
+                    Text to PDF works when you already have the text in digital
+                    form. If your content is stuck inside a scanned page or
+                    photo, you first need to recognize the text. Use our{" "}
+                    <a
+                      href="/ocr-pdf"
+                      className="text-blue-600 hover:underline font-medium"
+                    >
+                      OCR PDF tool
+                    </a>{" "}
+                    to make scanned documents searchable and selectable, then
+                    copy the text or convert it with{" "}
+                    <a
+                      href="/pdf-to-word"
+                      className="text-blue-600 hover:underline font-medium"
+                    >
+                      PDF to Word
+                    </a>
+                    . If you just want to keep the scan as it is, use{" "}
+                    <a
+                      href="/image-to-pdf"
+                      className="text-blue-600 hover:underline font-medium"
+                    >
+                      Image to PDF
+                    </a>{" "}
+                    instead.
                   </>
                 ),
               },
@@ -657,7 +855,20 @@ export default function TextToPdf({ seo }) {
                   "Why PDFLinx is the Best Free Text to PDF Converter — No Watermark, No Limits",
                 text: (
                   <>
-                    Many online text to PDF tools add watermarks, limit the length of your text, or require an account before you can download. PDFLinx does none of that — completely free, no signup, no watermark, and no daily usage limit. Unlike iLovePDF and Smallpdf, which restrict usage on free plans, PDFLinx lets you generate as many PDFs as you need at zero cost. Read our <a href="/compare/pdflinx-vs-ilovepdf" className="text-blue-600 hover:underline font-medium">PDFLinx vs iLovePDF</a> guide for a detailed comparison.
+                    Many online text to PDF tools add watermarks, limit the
+                    length of your text, or require an account before you can
+                    download. PDFLinx does none of that — completely free, no
+                    signup, no watermark, and no daily usage limit. Unlike
+                    iLovePDF and Smallpdf, which restrict usage on free plans,
+                    PDFLinx lets you generate as many PDFs as you need at zero
+                    cost. Read our{" "}
+                    <a
+                      href="/compare/pdflinx-vs-ilovepdf"
+                      className="text-blue-600 hover:underline font-medium"
+                    >
+                      PDFLinx vs iLovePDF
+                    </a>{" "}
+                    guide for a detailed comparison.
                   </>
                 ),
               },
@@ -670,20 +881,19 @@ export default function TextToPdf({ seo }) {
         showOutputFormat={false}
         showPreserveLayout={false}
         optionSectionLabel=""
-        optionsSlot={
-          <TextEditor text={text} onChange={setText} />
-        }
-
+        optionsSlot={<TextEditor text={text} onChange={setText} />}
         processingTitle="Generating Your PDF"
         processingDescription="Creating your PDF in the browser — this only takes a second."
-        processingStages={["Formatting text", "Building pages", "Generating PDF"]}
-
+        processingStages={[
+          "Formatting text",
+          "Building pages",
+          "Generating PDF",
+        ]}
         doneTitle="Your PDF is ready"
         doneDescription="Your text has been converted to a clean PDF and downloaded automatically."
         doneFileName="my-text-document.pdf"
         downloadLabel="Download PDF again"
         resetLabel="Convert another text"
-
         sidebarTitle="Text to PDF"
         sidebarIcon={<Type className="h-5 w-5 text-blue-500" />}
         sidebarDescription="Convert any plain text into a clean, properly formatted PDF — free, instant, and private."
@@ -693,5 +903,3 @@ export default function TextToPdf({ seo }) {
     </>
   );
 }
-
-

@@ -18,27 +18,67 @@ import {
   ChevronLeft,
   ChevronRight,
   Settings2,
-  Shield, LockOpen, Stamp, EyeOff,
-  Pencil, Hash, Minimize2, GitMerge
+  Shield,
+  LockOpen,
+  Stamp,
+  EyeOff,
+  Pencil,
+  Hash,
+  Minimize2,
+  GitMerge,
 } from "lucide-react";
 import ToolPageLayout from "@/components/ToolFlow/ToolPageLayout";
 import { useToolFlow } from "@/hooks/useToolFlow";
 import { useProgressBar } from "@/hooks/useProgressBar";
-import { DEFAULT_DONE_LINKS, DEFAULT_SIDEBAR_FEATURES } from "@/lib/toolUiConfig";
-
+import {
+  DEFAULT_DONE_LINKS,
+  DEFAULT_SIDEBAR_FEATURES,
+} from "@/lib/toolUiConfig";
+import JsonLd from "@/components/JsonLd";
+import { buildFaqSchema } from "@/lib/buildFaqSchema";
 
 const DONE_LINKS = [
-  { label: "Protect PDF", href: "/protect-pdf", icon: <Shield className="h-4 w-4 text-red-500" /> },
-  { label: "Unlock PDF", href: "/unlock-pdf", icon: <LockOpen className="h-4 w-4 text-green-500" /> },
-  { label: "Add Watermark", href: "/add-watermark", icon: <Stamp className="h-4 w-4 text-teal-500" /> },
-  { label: "Redact PDF", href: "/redact-pdf", icon: <EyeOff className="h-4 w-4 text-gray-500" /> },
-  { label: "Edit PDF", href: "/edit-pdf", icon: <Pencil className="h-4 w-4 text-orange-500" /> },
-  { label: "Add Page Numbers", href: "/add-page-numbers", icon: <Hash className="h-4 w-4 text-slate-500" /> },
-  { label: "Compress PDF", href: "/compress-pdf", icon: <Minimize2 className="h-4 w-4 text-green-500" /> },
-  { label: "Merge PDF", href: "/merge-pdf", icon: <GitMerge className="h-4 w-4 text-purple-500" /> },
+  {
+    label: "Protect PDF",
+    href: "/protect-pdf",
+    icon: <Shield className="h-4 w-4 text-red-500" />,
+  },
+  {
+    label: "Unlock PDF",
+    href: "/unlock-pdf",
+    icon: <LockOpen className="h-4 w-4 text-green-500" />,
+  },
+  {
+    label: "Add Watermark",
+    href: "/add-watermark",
+    icon: <Stamp className="h-4 w-4 text-teal-500" />,
+  },
+  {
+    label: "Redact PDF",
+    href: "/redact-pdf",
+    icon: <EyeOff className="h-4 w-4 text-gray-500" />,
+  },
+  {
+    label: "Edit PDF",
+    href: "/edit-pdf",
+    icon: <Pencil className="h-4 w-4 text-orange-500" />,
+  },
+  {
+    label: "Add Page Numbers",
+    href: "/add-page-numbers",
+    icon: <Hash className="h-4 w-4 text-slate-500" />,
+  },
+  {
+    label: "Compress PDF",
+    href: "/compress-pdf",
+    icon: <Minimize2 className="h-4 w-4 text-green-500" />,
+  },
+  {
+    label: "Merge PDF",
+    href: "/merge-pdf",
+    icon: <GitMerge className="h-4 w-4 text-purple-500" />,
+  },
 ];
-
-
 
 // ============================================================
 // ✅ SINGLE SOURCE OF TRUTH — FAQ_DATA
@@ -47,99 +87,6 @@ const DONE_LINKS = [
 //   2. <Script id="faq-schema-sign">    (JSON-LD FAQPage schema)
 // DO NOT duplicate inline in uploadLanding — always reference here.
 // ============================================================
-
-const FAQ_DATA = [
-  {
-    q: "Is the PDFLinx digital signature tool free?",
-    a: "Yes. PDFLinx is a completely free digital signature tool — no hidden costs, no subscriptions, and no limits on how many PDFs you can sign. Create a free digital signature and add it to unlimited PDFs.",
-  },
-  {
-    q: "How do I create a free digital signature online?",
-    a: "Upload your PDF to PDFLinx, then use the drawing canvas to draw your signature with your mouse, trackpad, or finger on touchscreen. Alternatively, upload a PNG or JPG image of your handwritten signature. Position it on the PDF using the live preview and download the signed document instantly — no account required.",
-  },
-  {
-    q: "Can I create a digital signature for free without software?",
-    a: "Yes. PDFLinx works entirely in your browser — no software, no app, and no browser extension required. Create a free digital signature online and sign any PDF instantly without installing anything.",
-  },
-  {
-    q: "How do I sign a PDF on iPhone for free?",
-    a: "Open PDFLinx in your iPhone browser (Safari or Chrome) — no app download needed. Tap the upload area, select your PDF from Files, draw or upload your signature using touch, position it on the live preview, and download the signed PDF to your iPhone instantly. The fastest free digital signature tool for iOS.",
-  },
-  {
-    q: "How do I sign a PDF on Android for free?",
-    a: "Open PDFLinx in your Android browser (Chrome or Firefox). Upload your PDF, draw your signature using your finger on the touchscreen or upload a signature image, position it, and download the signed PDF. No app installation required — works directly in any Android browser.",
-  },
-  {
-    q: "How do I sign a PDF on Mac for free?",
-    a: "Open PDFLinx in Safari, Chrome, or Firefox on your Mac. Upload your PDF, draw or upload your signature, position it on the live preview, and download the signed PDF. No software installation needed — completely free alternative to Adobe Acrobat Sign on Mac.",
-  },
-  {
-    q: "How do I sign a PDF on Windows 10 or Windows 11?",
-    a: "Open PDFLinx in any browser on Windows — Chrome, Edge, or Firefox. Upload your PDF, create your digital signature by drawing or uploading an image, position it, and download the signed PDF. No additional software needed. Works on Windows 10 and Windows 11.",
-  },
-  {
-    q: "Can I upload a signature image instead of drawing?",
-    a: "Yes. If you already have a scanned or photographed signature, upload any PNG or JPG image and it will be overlaid on your PDF exactly where you position it. Both drawing and image upload are supported.",
-  },
-  {
-    q: "Does PDFLinx add a watermark to signed PDFs?",
-    a: "No. PDFLinx never adds any watermark to your signed PDF. The output is 100% clean and professional — just your signature on the document, nothing else.",
-  },
-  {
-    q: "Is a digital signature the same as an e-signature?",
-    a: "Digital signature and e-signature (electronic signature) are often used interchangeably for online document signing. Both refer to adding a signature to a document electronically — without printing, signing by hand, and scanning. PDFLinx lets you create a free e-signature online in seconds.",
-  },
-  {
-    q: "Can I sign a multi-page PDF?",
-    a: (
-      <>
-        Yes. PDFLinx supports multi-page PDFs. You can select the specific page where your signature needs to appear and position it precisely using the live preview before downloading. If you need to rearrange or organize pages first, try our{" "}
-        <a
-          href="/reorder-pdf-pages"
-          className="text-blue-600 hover:underline font-medium"
-        >
-          Organize PDF tool
-        </a>
-        .
-      </>
-    ),
-  },
-  {
-    q: "Are my uploaded PDF files secure?",
-    a: "Yes. All files are transferred over 256-bit SSL encryption and permanently deleted from our servers immediately after signing. We do not store, share, or view your documents at any point. PDFLinx is GDPR-aware and privacy-first.",
-  },
-  {
-    q: "Do I need to sign up to sign a PDF?",
-    a: "No. No account, no registration, and no email required. Sign PDF files instantly for free — completely anonymous.",
-  },
-  {
-    q: "Can I download my digital signature as an image?",
-    a: "The signed PDF is available for direct download immediately after signing. If you need the signature as a standalone image file, you can draw your signature, take a screenshot, and save it — or use the upload option with a pre-saved signature image for future use.",
-  },
-  {
-    q: "What is the difference between a digital signature and a handwritten signature?",
-    a: (
-      <>
-        A handwritten signature is a physical mark made with pen on paper. A digital signature (or e-signature) is an electronic version added to a document online — drawn with a mouse, finger, or stylus, or uploaded as an image. PDFLinx lets you create a free digital signature that looks identical to your handwritten signature and can be added to any PDF instantly. After signing, you can also protect it using our{" "}
-        <a
-          href="/protect-pdf"
-          className="text-blue-600 hover:underline font-medium"
-        >
-          Protect PDF tool
-        </a>{" "}
-        or reduce file size with{" "}
-        <a
-          href="/compress-pdf"
-          className="text-blue-600 hover:underline font-medium"
-        >
-          Compress PDF
-        </a>
-        .
-      </>
-    ),
-  },
-];
-
 
 // ==================== SIGNATURE MODAL ====================
 function SignatureModal({ onSave, onClose }) {
@@ -172,25 +119,28 @@ function SignatureModal({ onSave, onClose }) {
     return { x: (cx - rect.left) * sx, y: (cy - rect.top) * sy };
   };
 
-  const redraw = useCallback((all, live = []) => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    const drawPath = (pts) => {
-      if (pts.length < 2) return;
-      ctx.beginPath();
-      ctx.strokeStyle = drawColor;
-      ctx.lineWidth = strokeWidth;
-      ctx.lineCap = "round";
-      ctx.lineJoin = "round";
-      ctx.moveTo(pts[0].x, pts[0].y);
-      for (let i = 1; i < pts.length; i++) ctx.lineTo(pts[i].x, pts[i].y);
-      ctx.stroke();
-    };
-    all.forEach(drawPath);
-    if (live.length) drawPath(live);
-  }, [drawColor, strokeWidth]);
+  const redraw = useCallback(
+    (all, live = []) => {
+      const canvas = canvasRef.current;
+      if (!canvas) return;
+      const ctx = canvas.getContext("2d");
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      const drawPath = (pts) => {
+        if (pts.length < 2) return;
+        ctx.beginPath();
+        ctx.strokeStyle = drawColor;
+        ctx.lineWidth = strokeWidth;
+        ctx.lineCap = "round";
+        ctx.lineJoin = "round";
+        ctx.moveTo(pts[0].x, pts[0].y);
+        for (let i = 1; i < pts.length; i++) ctx.lineTo(pts[i].x, pts[i].y);
+        ctx.stroke();
+      };
+      all.forEach(drawPath);
+      if (live.length) drawPath(live);
+    },
+    [drawColor, strokeWidth],
+  );
 
   const onMouseDown = (e) => {
     e.preventDefault();
@@ -225,7 +175,8 @@ function SignatureModal({ onSave, onClose }) {
     pathsRef.current = [];
     currentPathRef.current = [];
     const canvas = canvasRef.current;
-    if (canvas) canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
+    if (canvas)
+      canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
   };
 
   const handleDrawSave = () => {
@@ -233,12 +184,17 @@ function SignatureModal({ onSave, onClose }) {
     if (!canvas || pathsRef.current.length === 0) return;
     const ctx = canvas.getContext("2d");
     const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-    let minX = canvas.width, minY = canvas.height, maxX = 0, maxY = 0;
+    let minX = canvas.width,
+      minY = canvas.height,
+      maxX = 0,
+      maxY = 0;
     for (let y = 0; y < canvas.height; y++) {
       for (let x = 0; x < canvas.width; x++) {
         if (imgData.data[(y * canvas.width + x) * 4 + 3] > 0) {
-          minX = Math.min(minX, x); minY = Math.min(minY, y);
-          maxX = Math.max(maxX, x); maxY = Math.max(maxY, y);
+          minX = Math.min(minX, x);
+          minY = Math.min(minY, y);
+          maxX = Math.max(maxX, x);
+          maxY = Math.max(maxY, y);
         }
       }
     }
@@ -246,15 +202,19 @@ function SignatureModal({ onSave, onClose }) {
     const w = Math.max(1, maxX - minX + pad * 2);
     const h = Math.max(1, maxY - minY + pad * 2);
     const trimmed = document.createElement("canvas");
-    trimmed.width = w; trimmed.height = h;
-    trimmed.getContext("2d").drawImage(canvas, minX - pad, minY - pad, w, h, 0, 0, w, h);
+    trimmed.width = w;
+    trimmed.height = h;
+    trimmed
+      .getContext("2d")
+      .drawImage(canvas, minX - pad, minY - pad, w, h, 0, 0, w, h);
     onSave(trimmed.toDataURL("image/png"));
   };
 
   const handleTypeSave = () => {
     if (!typedText.trim()) return;
     const canvas = document.createElement("canvas");
-    canvas.width = 500; canvas.height = 130;
+    canvas.width = 500;
+    canvas.height = 130;
     const ctx = canvas.getContext("2d");
     ctx.font = `60px '${TYPE_FONTS[typeFontIdx].name}', cursive`;
     ctx.fillStyle = typeColor;
@@ -282,7 +242,9 @@ function SignatureModal({ onSave, onClose }) {
     <div className="fixed inset-0 z-[1000] flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
       <div
         className="bg-white rounded-3xl shadow-2xl w-full max-w-lg"
-        style={{ animation: "signModalIn 0.22s cubic-bezier(0.34,1.56,0.64,1)" }}
+        style={{
+          animation: "signModalIn 0.22s cubic-bezier(0.34,1.56,0.64,1)",
+        }}
       >
         <style>{`
           @keyframes signModalIn {
@@ -299,8 +261,12 @@ function SignatureModal({ onSave, onClose }) {
               <PenTool className="w-5 h-5" />
             </div>
             <div>
-              <h2 className="text-base font-bold text-slate-900">Add Signature</h2>
-              <p className="text-xs text-slate-400">Draw, type, or upload your signature</p>
+              <h2 className="text-base font-bold text-slate-900">
+                Add Signature
+              </h2>
+              <p className="text-xs text-slate-400">
+                Draw, type, or upload your signature
+              </p>
             </div>
           </div>
           <button
@@ -319,10 +285,11 @@ function SignatureModal({ onSave, onClose }) {
                 key={t.id}
                 type="button"
                 onClick={() => setActiveTab(t.id)}
-                className={`flex flex-1 items-center justify-center gap-2 rounded-xl py-2.5 text-sm font-semibold transition-all ${activeTab === t.id
-                  ? "bg-white text-[#f24d0d] shadow-sm"
-                  : "text-slate-500 hover:text-slate-700"
-                  }`}
+                className={`flex flex-1 items-center justify-center gap-2 rounded-xl py-2.5 text-sm font-semibold transition-all ${
+                  activeTab === t.id
+                    ? "bg-white text-[#f24d0d] shadow-sm"
+                    : "text-slate-500 hover:text-slate-700"
+                }`}
               >
                 {t.icon} {t.label}
               </button>
@@ -332,13 +299,14 @@ function SignatureModal({ onSave, onClose }) {
 
         {/* Tab Content */}
         <div className="px-6 pb-6 pt-4">
-
           {/* ── DRAW TAB ── */}
           {activeTab === "draw" && (
             <div className="space-y-3">
               <div className="space-y-2">
                 <div className="flex items-center gap-2 flex-wrap">
-                  <span className="text-xs text-slate-400 font-medium">Color</span>
+                  <span className="text-xs text-slate-400 font-medium">
+                    Color
+                  </span>
                   {COLORS.map((c) => (
                     <button
                       key={c}
@@ -354,18 +322,27 @@ function SignatureModal({ onSave, onClose }) {
                   ))}
                 </div>
                 <div className="flex items-center gap-2 flex-wrap">
-                  <span className="text-xs text-slate-400 font-medium">Size</span>
+                  <span className="text-xs text-slate-400 font-medium">
+                    Size
+                  </span>
                   {STROKES.map((s) => (
                     <button
                       key={s}
                       type="button"
                       onClick={() => setStrokeWidth(s)}
-                      className={`flex h-7 w-7 items-center justify-center rounded-lg border-2 transition-all ${strokeWidth === s ? "border-[#f24d0d] bg-orange-50" : "border-slate-200"
-                        }`}
+                      className={`flex h-7 w-7 items-center justify-center rounded-lg border-2 transition-all ${
+                        strokeWidth === s
+                          ? "border-[#f24d0d] bg-orange-50"
+                          : "border-slate-200"
+                      }`}
                     >
                       <div
                         className="rounded-full"
-                        style={{ width: Math.min(s * 3, 18), height: s, background: drawColor }}
+                        style={{
+                          width: Math.min(s * 3, 18),
+                          height: s,
+                          background: drawColor,
+                        }}
                       />
                     </button>
                   ))}
@@ -452,18 +429,24 @@ function SignatureModal({ onSave, onClose }) {
                     key={i}
                     type="button"
                     onClick={() => setTypeFontIdx(i)}
-                    className={`rounded-2xl border-2 py-4 text-2xl transition-all ${typeFontIdx === i
-                      ? "border-[#f24d0d] bg-orange-50"
-                      : "border-slate-200 bg-white hover:border-slate-300"
-                      }`}
-                    style={{ fontFamily: `'${f.name}', cursive`, color: typeColor }}
+                    className={`rounded-2xl border-2 py-4 text-2xl transition-all ${
+                      typeFontIdx === i
+                        ? "border-[#f24d0d] bg-orange-50"
+                        : "border-slate-200 bg-white hover:border-slate-300"
+                    }`}
+                    style={{
+                      fontFamily: `'${f.name}', cursive`,
+                      color: typeColor,
+                    }}
                   >
                     {typedText || f.label}
                   </button>
                 ))}
               </div>
               <div className="flex items-center gap-3 flex-wrap">
-                <span className="text-xs text-slate-400 font-medium">Color</span>
+                <span className="text-xs text-slate-400 font-medium">
+                  Color
+                </span>
                 {COLORS.map((c) => (
                   <button
                     key={c}
@@ -506,10 +489,19 @@ function SignatureModal({ onSave, onClose }) {
                   <ImageIcon className="w-7 h-7" />
                 </div>
                 <div className="text-center">
-                  <p className="text-sm font-semibold text-slate-700">Click to upload signature</p>
-                  <p className="text-xs text-slate-400 mt-1">PNG or JPG · Transparent background recommended</p>
+                  <p className="text-sm font-semibold text-slate-700">
+                    Click to upload signature
+                  </p>
+                  <p className="text-xs text-slate-400 mt-1">
+                    PNG or JPG · Transparent background recommended
+                  </p>
                 </div>
-                <input type="file" accept="image/*" className="hidden" onChange={handleUpload} />
+                <input
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  onChange={handleUpload}
+                />
               </label>
               <div className="flex justify-end">
                 <button
@@ -522,7 +514,6 @@ function SignatureModal({ onSave, onClose }) {
               </div>
             </div>
           )}
-
         </div>
       </div>
     </div>
@@ -530,9 +521,16 @@ function SignatureModal({ onSave, onClose }) {
 }
 
 // ==================== THUMBNAIL STRIP ====================
-function ThumbnailStrip({ pdfDoc, totalPages, pageNumber, canvasThumbRefs, onSelectPage }) {
+function ThumbnailStrip({
+  pdfDoc,
+  totalPages,
+  pageNumber,
+  canvasThumbRefs,
+  onSelectPage,
+}) {
   return (
-    <div className="hidden lg:flex flex-col gap-2 overflow-y-auto bg-[#2a2a2a] p-3"
+    <div
+      className="hidden lg:flex flex-col gap-2 overflow-y-auto bg-[#2a2a2a] p-3"
       style={{ width: 100, minHeight: 0 }}
     >
       {Array.from({ length: totalPages }).map((_, i) => {
@@ -541,18 +539,26 @@ function ThumbnailStrip({ pdfDoc, totalPages, pageNumber, canvasThumbRefs, onSel
           <div
             key={pg}
             onClick={() => onSelectPage(pg)}
-            className={`relative cursor-pointer rounded-md overflow-hidden border-2 transition-all flex-shrink-0 ${pageNumber === pg
-              ? "border-[#f24d0d] shadow-[0_0_0_2px_rgba(242,77,13,0.4)]"
-              : "border-transparent hover:border-slate-400"
-              }`}
+            className={`relative cursor-pointer rounded-md overflow-hidden border-2 transition-all flex-shrink-0 ${
+              pageNumber === pg
+                ? "border-[#f24d0d] shadow-[0_0_0_2px_rgba(242,77,13,0.4)]"
+                : "border-transparent hover:border-slate-400"
+            }`}
           >
             <canvas
-              ref={(el) => { if (el) canvasThumbRefs.current[i] = el; }}
+              ref={(el) => {
+                if (el) canvasThumbRefs.current[i] = el;
+              }}
               className="block w-full bg-white"
               style={{ display: "block" }}
             />
-            <div className={`absolute bottom-0 left-0 right-0 text-center text-[10px] font-bold py-0.5 ${pageNumber === pg ? "bg-[#f24d0d] text-white" : "bg-black/50 text-white"
-              }`}>
+            <div
+              className={`absolute bottom-0 left-0 right-0 text-center text-[10px] font-bold py-0.5 ${
+                pageNumber === pg
+                  ? "bg-[#f24d0d] text-white"
+                  : "bg-black/50 text-white"
+              }`}
+            >
               {pg}
             </div>
           </div>
@@ -562,11 +568,111 @@ function ThumbnailStrip({ pdfDoc, totalPages, pageNumber, canvasThumbRefs, onSel
   );
 }
 
+const SIGN_PDF_FAQS = [
+  {
+    q: "Is the PDFLinx digital signature tool free?",
+    a: "Yes. PDFLinx is a completely free digital signature tool — no hidden costs, no subscriptions, and no limits on how many PDFs you can sign. Create a free digital signature and add it to unlimited PDFs.",
+  },
+  {
+    q: "How do I create a free digital signature online?",
+    a: "Upload your PDF to PDFLinx, then use the drawing canvas to draw your signature with your mouse, trackpad, or finger on touchscreen. Alternatively, upload a PNG or JPG image of your handwritten signature. Position it on the PDF using the live preview and download the signed document instantly — no account required.",
+  },
+  {
+    q: "Can I create a digital signature for free without software?",
+    a: "Yes. PDFLinx works entirely in your browser — no software, no app, and no browser extension required. Create a free digital signature online and sign any PDF instantly without installing anything.",
+  },
+  {
+    q: "How do I sign a PDF on iPhone for free?",
+    a: "Open PDFLinx in your iPhone browser (Safari or Chrome) — no app download needed. Tap the upload area, select your PDF from Files, draw or upload your signature using touch, position it on the live preview, and download the signed PDF to your iPhone instantly. The fastest free digital signature tool for iOS.",
+  },
+  {
+    q: "How do I sign a PDF on Android for free?",
+    a: "Open PDFLinx in your Android browser (Chrome or Firefox). Upload your PDF, draw your signature using your finger on the touchscreen or upload a signature image, position it, and download the signed PDF. No app installation required — works directly in any Android browser.",
+  },
+  {
+    q: "How do I sign a PDF on Mac for free?",
+    a: "Open PDFLinx in Safari, Chrome, or Firefox on your Mac. Upload your PDF, draw or upload your signature, position it on the live preview, and download the signed PDF. No software installation needed — completely free alternative to Adobe Acrobat Sign on Mac.",
+  },
+  {
+    q: "How do I sign a PDF on Windows 10 or Windows 11?",
+    a: "Open PDFLinx in any browser on Windows — Chrome, Edge, or Firefox. Upload your PDF, create your digital signature by drawing or uploading an image, position it, and download the signed PDF. No additional software needed. Works on Windows 10 and Windows 11.",
+  },
+  {
+    q: "Can I upload a signature image instead of drawing?",
+    a: "Yes. If you already have a scanned or photographed signature, upload any PNG or JPG image and it will be overlaid on your PDF exactly where you position it. Both drawing and image upload are supported.",
+  },
+  {
+    q: "Does PDFLinx add a watermark to signed PDFs?",
+    a: "No. PDFLinx never adds any watermark to your signed PDF. The output is 100% clean and professional — just your signature on the document, nothing else.",
+  },
+  {
+    q: "Is a digital signature the same as an e-signature?",
+    a: "Digital signature and e-signature (electronic signature) are often used interchangeably for online document signing. Both refer to adding a signature to a document electronically — without printing, signing by hand, and scanning. PDFLinx lets you create a free e-signature online in seconds.",
+  },
+  {
+    q: "Can I sign a multi-page PDF?",
+    a: (
+      <>
+        Yes. PDFLinx supports multi-page PDFs. You can select the specific page
+        where your signature needs to appear and position it precisely using the
+        live preview before downloading. If you need to rearrange or organize
+        pages first, try our{" "}
+        <a
+          href="/reorder-pdf-pages"
+          className="text-blue-600 hover:underline font-medium"
+        >
+          Organize PDF tool
+        </a>
+        .
+      </>
+    ),
+  },
+  {
+    q: "Are my uploaded PDF files secure?",
+    a: "Yes. All files are transferred over 256-bit SSL encryption and permanently deleted from our servers immediately after signing. We do not store, share, or view your documents at any point. PDFLinx is GDPR-aware and privacy-first.",
+  },
+  {
+    q: "Do I need to sign up to sign a PDF?",
+    a: "No. No account, no registration, and no email required. Sign PDF files instantly for free — completely anonymous.",
+  },
+  {
+    q: "Can I download my digital signature as an image?",
+    a: "The signed PDF is available for direct download immediately after signing. If you need the signature as a standalone image file, you can draw your signature, take a screenshot, and save it — or use the upload option with a pre-saved signature image for future use.",
+  },
+  {
+    q: "What is the difference between a digital signature and a handwritten signature?",
+    a: (
+      <>
+        A handwritten signature is a physical mark made with pen on paper. A
+        digital signature (or e-signature) is an electronic version added to a
+        document online — drawn with a mouse, finger, or stylus, or uploaded as
+        an image. PDFLinx lets you create a free digital signature that looks
+        identical to your handwritten signature and can be added to any PDF
+        instantly. After signing, you can also protect it using our{" "}
+        <a
+          href="/protect-pdf"
+          className="text-blue-600 hover:underline font-medium"
+        >
+          Protect PDF tool
+        </a>{" "}
+        or reduce file size with{" "}
+        <a
+          href="/compress-pdf"
+          className="text-blue-600 hover:underline font-medium"
+        >
+          Compress PDF
+        </a>
+        .
+      </>
+    ),
+  },
+];
 
 // ==================== MAIN COMPONENT ====================
 export default function SignPdf({ seo }) {
   const flow = useToolFlow();
-  const { progress, startProgress, completeProgress, cancelProgress } = useProgressBar();
+  const { progress, startProgress, completeProgress, cancelProgress } =
+    useProgressBar();
 
   // ── PDF state ──
   const [pdfFile, setPdfFile] = useState(null);
@@ -659,7 +765,9 @@ export default function SignPdf({ seo }) {
       }
     };
     load();
-    return () => { cancelled = true; };
+    return () => {
+      cancelled = true;
+    };
   }, [pdfFile]);
 
   // ── Render main canvases ──
@@ -686,7 +794,9 @@ export default function SignPdf({ seo }) {
       }
     };
     renderAll();
-    return () => { cancelled = true; };
+    return () => {
+      cancelled = true;
+    };
   }, [pdfDoc, totalPages, scale, renderKey]);
 
   // ── Render thumbnails ──
@@ -711,7 +821,9 @@ export default function SignPdf({ seo }) {
       }
     };
     renderThumbs();
-    return () => { cancelled = true; };
+    return () => {
+      cancelled = true;
+    };
   }, [pdfDoc, totalPages]);
 
   useEffect(() => {
@@ -787,8 +899,14 @@ export default function SignPdf({ seo }) {
   };
 
   const handleConvert = async () => {
-    if (!pdfFile) { setError("Please upload a PDF file!"); return; }
-    if (!signatureImage) { setError("Please provide a signature first!"); return; }
+    if (!pdfFile) {
+      setError("Please upload a PDF file!");
+      return;
+    }
+    if (!signatureImage) {
+      setError("Please provide a signature first!");
+      return;
+    }
     const currentCanvas = canvasRefs.current[pageNumber - 1];
     if (!currentCanvas) {
       setError("Preview canvas not ready yet. Please wait and try again.");
@@ -815,14 +933,20 @@ export default function SignPdf({ seo }) {
       formData.append("previewHeight", String(displayRect.height));
 
       // const res = await fetch("/convert/sign-pdf", { method: "POST", body: formData });
-      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/convert/sign-pdf`, {
-        method: "POST",
-        body: formData,
-      });
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/convert/sign-pdf`,
+        {
+          method: "POST",
+          body: formData,
+        },
+      );
 
       if (!res.ok) {
         let msg = "Signing failed";
-        try { const j = await res.json(); msg = j?.error || msg; } catch { }
+        try {
+          const j = await res.json();
+          msg = j?.error || msg;
+        } catch {}
         throw new Error(msg);
       }
 
@@ -834,7 +958,9 @@ export default function SignPdf({ seo }) {
       flow.finishSuccess();
     } catch (err) {
       cancelProgress();
-      const msg = (err?.message || "Something went wrong. Please try again.").toString();
+      const msg = (
+        err?.message || "Something went wrong. Please try again."
+      ).toString();
       setError(msg);
       flow.handleError(msg);
       console.error(err);
@@ -879,9 +1005,15 @@ export default function SignPdf({ seo }) {
                 >
                   <div className="relative inline-block overflow-hidden max-w-full">
                     <canvas
-                      ref={(el) => { if (el) canvasRefs.current[index] = el; }}
+                      ref={(el) => {
+                        if (el) canvasRefs.current[index] = el;
+                      }}
                       className="bg-white block"
-                      style={{ display: "block", maxWidth: "100%", height: "auto" }}
+                      style={{
+                        display: "block",
+                        maxWidth: "100%",
+                        height: "auto",
+                      }}
                     />
                     {signaturePreview && pageNumber === pg && (
                       <div
@@ -942,7 +1074,9 @@ export default function SignPdf({ seo }) {
           <div className="h-5 w-px bg-white/20" />
           <button
             type="button"
-            onClick={() => setScale((s) => clamp(Number((s - 0.2).toFixed(2)), 0.3, 3))}
+            onClick={() =>
+              setScale((s) => clamp(Number((s - 0.2).toFixed(2)), 0.3, 3))
+            }
             className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/10 text-white hover:bg-white/20 transition"
           >
             <ZoomOut className="h-4 w-4" />
@@ -952,7 +1086,9 @@ export default function SignPdf({ seo }) {
           </div>
           <button
             type="button"
-            onClick={() => setScale((s) => clamp(Number((s + 0.2).toFixed(2)), 0.3, 3))}
+            onClick={() =>
+              setScale((s) => clamp(Number((s + 0.2).toFixed(2)), 0.3, 3))
+            }
             className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/10 text-white hover:bg-white/20 transition"
           >
             <ZoomIn className="h-4 w-4" />
@@ -961,12 +1097,17 @@ export default function SignPdf({ seo }) {
       </div>
 
       {/* ── 3. RIGHT SIDEBAR (desktop) ── */}
-      <div className="hidden md:flex flex-col border-l border-slate-200 bg-white overflow-y-auto"
+      <div
+        className="hidden md:flex flex-col border-l border-slate-200 bg-white overflow-y-auto"
         style={{ width: 300, flexShrink: 0 }}
       >
         <div className="border-b border-slate-100 px-5 py-5">
-          <h3 className="text-base font-bold text-slate-900">Signature Settings</h3>
-          <p className="mt-0.5 text-xs text-slate-400">Create, resize and position your signature</p>
+          <h3 className="text-base font-bold text-slate-900">
+            Signature Settings
+          </h3>
+          <p className="mt-0.5 text-xs text-slate-400">
+            Create, resize and position your signature
+          </p>
         </div>
 
         <div className="space-y-4 p-5 flex-1">
@@ -974,8 +1115,12 @@ export default function SignPdf({ seo }) {
           <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
             <div className="flex items-center justify-between mb-3">
               <div>
-                <h4 className="text-sm font-bold text-slate-800">Your Signature</h4>
-                <p className="text-xs text-slate-400 mt-0.5">Draw, type or upload</p>
+                <h4 className="text-sm font-bold text-slate-800">
+                  Your Signature
+                </h4>
+                <p className="text-xs text-slate-400 mt-0.5">
+                  Draw, type or upload
+                </p>
               </div>
               {signaturePreview && (
                 <button
@@ -992,9 +1137,15 @@ export default function SignPdf({ seo }) {
               <div className="rounded-xl border-2 border-dashed border-green-300 bg-white p-3">
                 <div className="flex items-center gap-2 mb-2">
                   <CheckCircle className="w-4 h-4 text-green-500 shrink-0" />
-                  <span className="text-xs font-semibold text-green-700">Signature ready</span>
+                  <span className="text-xs font-semibold text-green-700">
+                    Signature ready
+                  </span>
                 </div>
-                <img src={signaturePreview} alt="Signature" className="mx-auto max-h-14 object-contain" />
+                <img
+                  src={signaturePreview}
+                  alt="Signature"
+                  className="mx-auto max-h-14 object-contain"
+                />
               </div>
             ) : (
               <div className="grid grid-cols-3 gap-2">
@@ -1010,7 +1161,9 @@ export default function SignPdf({ seo }) {
                     className="flex flex-col items-center gap-2 rounded-xl border-2 border-dashed border-slate-200 bg-white py-4 text-slate-500 transition-all hover:border-[#f24d0d] hover:bg-orange-50 hover:text-[#f24d0d]"
                   >
                     {btn.icon}
-                    <span className="text-[11px] font-semibold">{btn.label}</span>
+                    <span className="text-[11px] font-semibold">
+                      {btn.label}
+                    </span>
                   </button>
                 ))}
               </div>
@@ -1030,43 +1183,81 @@ export default function SignPdf({ seo }) {
           {/* Position & Size */}
           {pdfFile && signaturePreview && (
             <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4 space-y-4">
-              <h4 className="text-sm font-bold text-slate-800">Position & Size</h4>
+              <h4 className="text-sm font-bold text-slate-800">
+                Position & Size
+              </h4>
               <div>
                 <div className="flex items-center justify-between mb-1.5">
-                  <label className="text-xs text-slate-500 font-medium">Page</label>
-                  <span className="text-xs font-bold text-slate-700">{pageNumber} / {totalPages}</span>
+                  <label className="text-xs text-slate-500 font-medium">
+                    Page
+                  </label>
+                  <span className="text-xs font-bold text-slate-700">
+                    {pageNumber} / {totalPages}
+                  </span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <button type="button" onClick={() => selectPage(Math.max(1, pageNumber - 1))} disabled={pageNumber <= 1}
+                  <button
+                    type="button"
+                    onClick={() => selectPage(Math.max(1, pageNumber - 1))}
+                    disabled={pageNumber <= 1}
                     className="flex h-8 w-8 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-600 hover:bg-slate-50 disabled:opacity-40 transition text-sm font-bold"
-                  >‹</button>
-                  <div className="flex-1 text-center rounded-xl border border-slate-200 bg-white py-1.5 text-sm font-bold text-slate-700">{pageNumber}</div>
-                  <button type="button" onClick={() => selectPage(Math.min(totalPages, pageNumber + 1))} disabled={pageNumber >= totalPages}
+                  >
+                    ‹
+                  </button>
+                  <div className="flex-1 text-center rounded-xl border border-slate-200 bg-white py-1.5 text-sm font-bold text-slate-700">
+                    {pageNumber}
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() =>
+                      selectPage(Math.min(totalPages, pageNumber + 1))
+                    }
+                    disabled={pageNumber >= totalPages}
                     className="flex h-8 w-8 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-600 hover:bg-slate-50 disabled:opacity-40 transition text-sm font-bold"
-                  >›</button>
+                  >
+                    ›
+                  </button>
                 </div>
               </div>
               <div>
                 <div className="flex items-center justify-between mb-1.5">
-                  <label className="text-xs text-slate-500 font-medium">Width</label>
-                  <span className="text-xs font-bold text-slate-700">{Math.round(signatureWidth)}px</span>
+                  <label className="text-xs text-slate-500 font-medium">
+                    Width
+                  </label>
+                  <span className="text-xs font-bold text-slate-700">
+                    {Math.round(signatureWidth)}px
+                  </span>
                 </div>
-                <input type="range" min="50" max="400" value={signatureWidth}
+                <input
+                  type="range"
+                  min="50"
+                  max="400"
+                  value={signatureWidth}
                   onChange={(e) => setSignatureWidth(parseInt(e.target.value))}
                   className="w-full accent-[#f24d0d]"
                 />
               </div>
               <div>
                 <div className="flex items-center justify-between mb-1.5">
-                  <label className="text-xs text-slate-500 font-medium">Height</label>
-                  <span className="text-xs font-bold text-slate-700">{Math.round(signatureHeight)}px</span>
+                  <label className="text-xs text-slate-500 font-medium">
+                    Height
+                  </label>
+                  <span className="text-xs font-bold text-slate-700">
+                    {Math.round(signatureHeight)}px
+                  </span>
                 </div>
-                <input type="range" min="30" max="220" value={signatureHeight}
+                <input
+                  type="range"
+                  min="30"
+                  max="220"
+                  value={signatureHeight}
                   onChange={(e) => setSignatureHeight(parseInt(e.target.value))}
                   className="w-full accent-[#f24d0d]"
                 />
               </div>
-              <p className="text-xs text-slate-400">💡 Drag the signature box on the preview to reposition</p>
+              <p className="text-xs text-slate-400">
+                💡 Drag the signature box on the preview to reposition
+              </p>
             </div>
           )}
 
@@ -1077,7 +1268,9 @@ export default function SignPdf({ seo }) {
                 <Shield className="h-4 w-4" />
               </div>
               <div>
-                <h4 className="text-xs font-bold text-slate-800">Secure & Private</h4>
+                <h4 className="text-xs font-bold text-slate-800">
+                  Secure & Private
+                </h4>
                 <p className="mt-0.5 text-xs leading-5 text-slate-500">
                   Files are encrypted and auto-deleted after signing.
                 </p>
@@ -1097,10 +1290,11 @@ export default function SignPdf({ seo }) {
             type="button"
             onClick={handleConvert}
             disabled={!pdfFile || !signatureImage}
-            className={`w-full rounded-2xl px-5 py-4 text-base font-bold text-white transition-all active:scale-[0.98] ${pdfFile && signatureImage
-              ? "bg-[#f24d0d] hover:bg-[#db4309] shadow-[0_12px_32px_rgba(242,77,13,0.38)]"
-              : "cursor-not-allowed bg-slate-200 text-slate-400"
-              }`}
+            className={`w-full rounded-2xl px-5 py-4 text-base font-bold text-white transition-all active:scale-[0.98] ${
+              pdfFile && signatureImage
+                ? "bg-[#f24d0d] hover:bg-[#db4309] shadow-[0_12px_32px_rgba(242,77,13,0.38)]"
+                : "cursor-not-allowed bg-slate-200 text-slate-400"
+            }`}
           >
             {pdfFile && signatureImage ? (
               <span className="flex items-center justify-center gap-2">
@@ -1130,10 +1324,16 @@ export default function SignPdf({ seo }) {
           />
         )}
 
-        <div className={`fixed inset-y-0 right-0 z-50 flex w-[min(320px,100vw)] flex-col bg-white shadow-2xl transition-transform duration-300 ease-in-out ${drawerOpen ? "translate-x-0" : "translate-x-full"}`}>
+        <div
+          className={`fixed inset-y-0 right-0 z-50 flex w-[min(320px,100vw)] flex-col bg-white shadow-2xl transition-transform duration-300 ease-in-out ${drawerOpen ? "translate-x-0" : "translate-x-full"}`}
+        >
           <div className="flex items-center justify-between px-5 pt-3 pb-2 border-b border-slate-100">
-            <p className="text-base font-bold text-slate-800">Signature Settings</p>
-            <button type="button" onClick={() => setDrawerOpen(false)}
+            <p className="text-base font-bold text-slate-800">
+              Signature Settings
+            </p>
+            <button
+              type="button"
+              onClick={() => setDrawerOpen(false)}
               className="flex h-8 w-8 items-center justify-center rounded-full text-slate-400 hover:bg-slate-100 transition"
             >
               <X className="h-5 w-5" />
@@ -1145,11 +1345,17 @@ export default function SignPdf({ seo }) {
             <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
               <div className="flex items-center justify-between mb-3">
                 <div>
-                  <h4 className="text-sm font-bold text-slate-800">Your Signature</h4>
-                  <p className="text-xs text-slate-400 mt-0.5">Draw, type or upload</p>
+                  <h4 className="text-sm font-bold text-slate-800">
+                    Your Signature
+                  </h4>
+                  <p className="text-xs text-slate-400 mt-0.5">
+                    Draw, type or upload
+                  </p>
                 </div>
                 {signaturePreview && (
-                  <button type="button" onClick={resetSignature}
+                  <button
+                    type="button"
+                    onClick={resetSignature}
                     className="flex h-7 w-7 items-center justify-center rounded-lg bg-red-100 text-red-500 hover:bg-red-200 transition"
                   >
                     <X className="w-3.5 h-3.5" />
@@ -1161,31 +1367,51 @@ export default function SignPdf({ seo }) {
                 <div className="rounded-xl border-2 border-dashed border-green-300 bg-white p-3">
                   <div className="flex items-center gap-2 mb-2">
                     <CheckCircle className="w-4 h-4 text-green-500 shrink-0" />
-                    <span className="text-xs font-semibold text-green-700">Signature ready</span>
+                    <span className="text-xs font-semibold text-green-700">
+                      Signature ready
+                    </span>
                   </div>
-                  <img src={signaturePreview} alt="Signature" className="mx-auto max-h-14 object-contain" />
+                  <img
+                    src={signaturePreview}
+                    alt="Signature"
+                    className="mx-auto max-h-14 object-contain"
+                  />
                 </div>
               ) : (
                 <div className="grid grid-cols-3 gap-2">
                   {[
                     { icon: <PenTool className="w-5 h-5" />, label: "Draw" },
                     { icon: <Type className="w-5 h-5" />, label: "Type" },
-                    { icon: <ImageIcon className="w-5 h-5" />, label: "Upload" },
+                    {
+                      icon: <ImageIcon className="w-5 h-5" />,
+                      label: "Upload",
+                    },
                   ].map((btn) => (
-                    <button key={btn.label} type="button"
-                      onClick={() => { setDrawerOpen(false); setShowSignModal(true); }}
+                    <button
+                      key={btn.label}
+                      type="button"
+                      onClick={() => {
+                        setDrawerOpen(false);
+                        setShowSignModal(true);
+                      }}
                       className="flex flex-col items-center gap-2 rounded-xl border-2 border-dashed border-slate-200 bg-white py-4 text-slate-500 transition-all hover:border-[#f24d0d] hover:bg-orange-50 hover:text-[#f24d0d]"
                     >
                       {btn.icon}
-                      <span className="text-[11px] font-semibold">{btn.label}</span>
+                      <span className="text-[11px] font-semibold">
+                        {btn.label}
+                      </span>
                     </button>
                   ))}
                 </div>
               )}
 
               {signaturePreview && (
-                <button type="button"
-                  onClick={() => { setDrawerOpen(false); setShowSignModal(true); }}
+                <button
+                  type="button"
+                  onClick={() => {
+                    setDrawerOpen(false);
+                    setShowSignModal(true);
+                  }}
                   className="mt-3 w-full rounded-xl border-2 border-dashed border-slate-200 py-2.5 text-xs font-semibold text-slate-500 hover:border-[#f24d0d] hover:text-[#f24d0d] transition-all"
                 >
                   Change Signature
@@ -1196,43 +1422,85 @@ export default function SignPdf({ seo }) {
             {/* Position & Size */}
             {pdfFile && signaturePreview && (
               <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4 space-y-4">
-                <h4 className="text-sm font-bold text-slate-800">Position & Size</h4>
+                <h4 className="text-sm font-bold text-slate-800">
+                  Position & Size
+                </h4>
                 <div>
                   <div className="flex items-center justify-between mb-1.5">
-                    <label className="text-xs text-slate-500 font-medium">Page</label>
-                    <span className="text-xs font-bold text-slate-700">{pageNumber} / {totalPages}</span>
+                    <label className="text-xs text-slate-500 font-medium">
+                      Page
+                    </label>
+                    <span className="text-xs font-bold text-slate-700">
+                      {pageNumber} / {totalPages}
+                    </span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <button type="button" onClick={() => selectPage(Math.max(1, pageNumber - 1))} disabled={pageNumber <= 1}
+                    <button
+                      type="button"
+                      onClick={() => selectPage(Math.max(1, pageNumber - 1))}
+                      disabled={pageNumber <= 1}
                       className="flex h-8 w-8 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-600 hover:bg-slate-50 disabled:opacity-40 transition text-sm font-bold"
-                    >‹</button>
-                    <div className="flex-1 text-center rounded-xl border border-slate-200 bg-white py-1.5 text-sm font-bold text-slate-700">{pageNumber}</div>
-                    <button type="button" onClick={() => selectPage(Math.min(totalPages, pageNumber + 1))} disabled={pageNumber >= totalPages}
+                    >
+                      ‹
+                    </button>
+                    <div className="flex-1 text-center rounded-xl border border-slate-200 bg-white py-1.5 text-sm font-bold text-slate-700">
+                      {pageNumber}
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() =>
+                        selectPage(Math.min(totalPages, pageNumber + 1))
+                      }
+                      disabled={pageNumber >= totalPages}
                       className="flex h-8 w-8 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-600 hover:bg-slate-50 disabled:opacity-40 transition text-sm font-bold"
-                    >›</button>
+                    >
+                      ›
+                    </button>
                   </div>
                 </div>
                 <div>
                   <div className="flex items-center justify-between mb-1.5">
-                    <label className="text-xs text-slate-500 font-medium">Width</label>
-                    <span className="text-xs font-bold text-slate-700">{Math.round(signatureWidth)}px</span>
+                    <label className="text-xs text-slate-500 font-medium">
+                      Width
+                    </label>
+                    <span className="text-xs font-bold text-slate-700">
+                      {Math.round(signatureWidth)}px
+                    </span>
                   </div>
-                  <input type="range" min="50" max="400" value={signatureWidth}
-                    onChange={(e) => setSignatureWidth(parseInt(e.target.value))}
+                  <input
+                    type="range"
+                    min="50"
+                    max="400"
+                    value={signatureWidth}
+                    onChange={(e) =>
+                      setSignatureWidth(parseInt(e.target.value))
+                    }
                     className="w-full accent-[#f24d0d]"
                   />
                 </div>
                 <div>
                   <div className="flex items-center justify-between mb-1.5">
-                    <label className="text-xs text-slate-500 font-medium">Height</label>
-                    <span className="text-xs font-bold text-slate-700">{Math.round(signatureHeight)}px</span>
+                    <label className="text-xs text-slate-500 font-medium">
+                      Height
+                    </label>
+                    <span className="text-xs font-bold text-slate-700">
+                      {Math.round(signatureHeight)}px
+                    </span>
                   </div>
-                  <input type="range" min="30" max="220" value={signatureHeight}
-                    onChange={(e) => setSignatureHeight(parseInt(e.target.value))}
+                  <input
+                    type="range"
+                    min="30"
+                    max="220"
+                    value={signatureHeight}
+                    onChange={(e) =>
+                      setSignatureHeight(parseInt(e.target.value))
+                    }
                     className="w-full accent-[#f24d0d]"
                   />
                 </div>
-                <p className="text-xs text-slate-400">💡 Drag the signature box on the preview to reposition</p>
+                <p className="text-xs text-slate-400">
+                  💡 Drag the signature box on the preview to reposition
+                </p>
               </div>
             )}
 
@@ -1243,8 +1511,12 @@ export default function SignPdf({ seo }) {
                   <Shield className="h-4 w-4" />
                 </div>
                 <div>
-                  <h4 className="text-xs font-bold text-slate-800">Secure & Private</h4>
-                  <p className="mt-0.5 text-xs leading-5 text-slate-500">Files are encrypted and auto-deleted after signing.</p>
+                  <h4 className="text-xs font-bold text-slate-800">
+                    Secure & Private
+                  </h4>
+                  <p className="mt-0.5 text-xs leading-5 text-slate-500">
+                    Files are encrypted and auto-deleted after signing.
+                  </p>
                 </div>
               </div>
             </div>
@@ -1259,12 +1531,16 @@ export default function SignPdf({ seo }) {
             {/* Sign Button */}
             <button
               type="button"
-              onClick={() => { setDrawerOpen(false); handleConvert(); }}
+              onClick={() => {
+                setDrawerOpen(false);
+                handleConvert();
+              }}
               disabled={!pdfFile || !signatureImage}
-              className={`w-full rounded-2xl px-5 py-4 text-base font-bold text-white transition-all active:scale-[0.98] ${pdfFile && signatureImage
-                ? "bg-[#f24d0d] hover:bg-[#db4309] shadow-[0_12px_32px_rgba(242,77,13,0.38)]"
-                : "cursor-not-allowed bg-slate-200 text-slate-400"
-                }`}
+              className={`w-full rounded-2xl px-5 py-4 text-base font-bold text-white transition-all active:scale-[0.98] ${
+                pdfFile && signatureImage
+                  ? "bg-[#f24d0d] hover:bg-[#db4309] shadow-[0_12px_32px_rgba(242,77,13,0.38)]"
+                  : "cursor-not-allowed bg-slate-200 text-slate-400"
+              }`}
             >
               {pdfFile && signatureImage ? (
                 <span className="flex items-center justify-center gap-2">
@@ -1283,7 +1559,6 @@ export default function SignPdf({ seo }) {
   // ==================== RENDER ====================
   return (
     <>
-
       {/* ============================================================
           SEO SCHEMAS — 4 types:
           1. HowTo       → Rich result: step-by-step process
@@ -1295,9 +1570,11 @@ export default function SignPdf({ seo }) {
 
       {/* ── Schema 1: HowTo ── */}
 
-
       {/* ── Schema 3: FAQPage — uses FAQ_DATA (single source of truth) ── */}
-      <Script
+
+      <JsonLd data={buildFaqSchema(SIGN_PDF_FAQS)} />
+
+      {/* <Script
         id="schema-faq-sign-pdf"
         type="application/ld+json"
         strategy="afterInteractive"
@@ -1315,9 +1592,7 @@ export default function SignPdf({ seo }) {
             })),
           }, null, 2),
         }}
-      />
-
-    
+      /> */}
 
       {/* ── PDF.js CDN ── */}
       <Script
@@ -1375,7 +1650,6 @@ export default function SignPdf({ seo }) {
         uploadTitle="Drop your PDF here"
         uploadSubtitle="or click to browse — PDF files only"
         customOptionsLayout={customOptionsLayout}
-
         uploadLanding={{
           content: {
             relatedTools: DONE_LINKS,
@@ -1478,7 +1752,7 @@ export default function SignPdf({ seo }) {
             faqTitle: "Digital Signature — Frequently Asked Questions",
 
             // ✅ Single source of truth — same array as FAQ schema above
-            faqs: FAQ_DATA,
+            faqs: SIGN_PDF_FAQS,
 
             seoBadge: "Digital Signature Guide",
 
@@ -1488,16 +1762,28 @@ export default function SignPdf({ seo }) {
             seoDescription:
               "Free digital signature tool — sign PDF online, draw your e-signature or upload an image, position with live preview, and download instantly. No signup, no watermark. Works on Android, iPhone, Mac, and Windows.",
 
-           seoSections: [
+            seoSections: [
               {
-                title: "Free Digital Signature Online — Sign PDF Free, No Signup",
+                title:
+                  "Free Digital Signature Online — Sign PDF Free, No Signup",
                 text: "Looking for a free digital signature you can use right now? PDFLinx lets you create a digital signature free of charge and add it to any PDF in seconds — no signup, no watermark, and no software to install. Draw your signature with a mouse or touchscreen, or upload a PNG/JPG image of your handwritten signature. Place it exactly where you need it using the live PDF preview, then download your signed document instantly. It is a fast, free alternative to Adobe Acrobat Sign, DocuSign, and Smallpdf, with no account and no hidden cost.",
               },
               {
-                title: "How to Create a Digital Signature Free — Draw or Upload in Under a Minute",
+                title:
+                  "How to Create a Digital Signature Free — Draw or Upload in Under a Minute",
                 text: (
                   <>
-                    Want to create a digital signature free of charge? With PDFLinx it takes less than a minute. Upload your PDF, then choose how to sign: draw your signature on the built-in canvas using a mouse, trackpad, or finger, or upload a PNG or JPG image of your existing handwritten signature. Either way you get a clean, professional result that you can drag to any position on any page. No stylus, no special hardware, and no installation needed. This is one of the quickest ways to create a free digital signature online and apply it straight to your document. If your document is password protected, you can use our{" "}
+                    Want to create a digital signature free of charge? With
+                    PDFLinx it takes less than a minute. Upload your PDF, then
+                    choose how to sign: draw your signature on the built-in
+                    canvas using a mouse, trackpad, or finger, or upload a PNG
+                    or JPG image of your existing handwritten signature. Either
+                    way you get a clean, professional result that you can drag
+                    to any position on any page. No stylus, no special hardware,
+                    and no installation needed. This is one of the quickest ways
+                    to create a free digital signature online and apply it
+                    straight to your document. If your document is password
+                    protected, you can use our{" "}
                     <a
                       href="/unlock-pdf"
                       className="text-blue-600 hover:underline font-medium"
@@ -1509,10 +1795,19 @@ export default function SignPdf({ seo }) {
                 ),
               },
               {
-                title: "Digital Signature Online Free — Works in Your Browser on Any Device",
+                title:
+                  "Digital Signature Online Free — Works in Your Browser on Any Device",
                 text: (
                   <>
-                    PDFLinx is a digital signature online free tool that runs entirely in your browser, so there is nothing to download or set up. Whether you are on Windows, Mac, Linux, Android, iPhone, iPad, or a tablet, you can sign a PDF online free without creating an account. Your document is processed securely and the signed file is ready for download as soon as you finish. Use it at the office, at home, or on the go whenever a document needs your signature quickly. You can also explore our complete suite of{" "}
+                    PDFLinx is a digital signature online free tool that runs
+                    entirely in your browser, so there is nothing to download or
+                    set up. Whether you are on Windows, Mac, Linux, Android,
+                    iPhone, iPad, or a tablet, you can sign a PDF online free
+                    without creating an account. Your document is processed
+                    securely and the signed file is ready for download as soon
+                    as you finish. Use it at the office, at home, or on the go
+                    whenever a document needs your signature quickly. You can
+                    also explore our complete suite of{" "}
                     <a
                       href="/free-pdf-tools"
                       className="text-blue-600 hover:underline font-medium"
@@ -1524,10 +1819,21 @@ export default function SignPdf({ seo }) {
                 ),
               },
               {
-                title: "Free E-Signature Download — Sign PDF and Save the Signed File Instantly",
+                title:
+                  "Free E-Signature Download — Sign PDF and Save the Signed File Instantly",
                 text: (
                   <>
-                    Need an e signature download free of cost? After you create your free digital signature and position it on the PDF, PDFLinx generates the signed document and makes it available for immediate download. There is no waiting, no email delivery, and no account required. The signed PDF is saved straight to your device in seconds, so the whole process of uploading, signing, positioning, and downloading takes about two minutes. There are no browser extensions or apps to install, which makes it a simple free e-signature option for anyone. If you need to make additional text changes, check out our{" "}
+                    Need an e signature download free of cost? After you create
+                    your free digital signature and position it on the PDF,
+                    PDFLinx generates the signed document and makes it available
+                    for immediate download. There is no waiting, no email
+                    delivery, and no account required. The signed PDF is saved
+                    straight to your device in seconds, so the whole process of
+                    uploading, signing, positioning, and downloading takes about
+                    two minutes. There are no browser extensions or apps to
+                    install, which makes it a simple free e-signature option for
+                    anyone. If you need to make additional text changes, check
+                    out our{" "}
                     <a
                       href="/edit-pdf"
                       className="text-blue-600 hover:underline font-medium"
@@ -1539,10 +1845,20 @@ export default function SignPdf({ seo }) {
                 ),
               },
               {
-                title: "Free Digital Signature for Contracts, Agreements, and Official Forms",
+                title:
+                  "Free Digital Signature for Contracts, Agreements, and Official Forms",
                 text: (
                   <>
-                    A free digital signature from PDFLinx works for all kinds of PDF documents: employment contracts and offer letters, rental agreements, business NDAs, client proposals, invoices, purchase orders, consent forms, insurance paperwork, and government applications. Upload the PDF, add your signature, and place it exactly where required. The signed output is a standard PDF that opens in Adobe Acrobat Reader, Google Chrome, Apple Preview, and any other PDF viewer, so the person receiving it does not need special software. Need to secure your signed agreement? Use our{" "}
+                    A free digital signature from PDFLinx works for all kinds of
+                    PDF documents: employment contracts and offer letters,
+                    rental agreements, business NDAs, client proposals,
+                    invoices, purchase orders, consent forms, insurance
+                    paperwork, and government applications. Upload the PDF, add
+                    your signature, and place it exactly where required. The
+                    signed output is a standard PDF that opens in Adobe Acrobat
+                    Reader, Google Chrome, Apple Preview, and any other PDF
+                    viewer, so the person receiving it does not need special
+                    software. Need to secure your signed agreement? Use our{" "}
                     <a
                       href="/protect-pdf"
                       className="text-blue-600 hover:underline font-medium"
@@ -1557,7 +1873,18 @@ export default function SignPdf({ seo }) {
                 title: "When Should You Use a Digital Signature on a PDF?",
                 text: (
                   <>
-                    Digital signatures are useful whenever a document needs an authorized signature but printing, signing by hand, and scanning is inconvenient. Typical examples include signing employment contracts remotely, approving agreements without meeting in person, signing property or rental documents, authorizing forms and applications, and approving invoices for clients. A free e-signature created with PDFLinx is generally suitable for everyday business and personal agreements. For high-stakes or regulated documents, always check the legal requirements that apply in your country or jurisdiction. If you need to combine multiple signed files, try our{" "}
+                    Digital signatures are useful whenever a document needs an
+                    authorized signature but printing, signing by hand, and
+                    scanning is inconvenient. Typical examples include signing
+                    employment contracts remotely, approving agreements without
+                    meeting in person, signing property or rental documents,
+                    authorizing forms and applications, and approving invoices
+                    for clients. A free e-signature created with PDFLinx is
+                    generally suitable for everyday business and personal
+                    agreements. For high-stakes or regulated documents, always
+                    check the legal requirements that apply in your country or
+                    jurisdiction. If you need to combine multiple signed files,
+                    try our{" "}
                     <a
                       href="/merge-pdf"
                       className="text-blue-600 hover:underline font-medium"
@@ -1569,10 +1896,23 @@ export default function SignPdf({ seo }) {
                 ),
               },
               {
-                title: "Digital Signature vs Electronic Signature vs E-Signature — What Is the Difference?",
+                title:
+                  "Digital Signature vs Electronic Signature vs E-Signature — What Is the Difference?",
                 text: (
                   <>
-                    The terms digital signature, electronic signature, and e-signature are often used interchangeably, and in everyday use they all mean adding a signature to a document electronically instead of printing it. Technically, a cryptographic digital signature uses encryption keys to verify identity and document integrity, while a visual e-signature is a drawn or uploaded signature image placed on the PDF. PDFLinx creates the visual kind, which is sufficient for most personal and business needs such as contracts, approvals, and forms. If your situation requires a certificate-based signature, confirm the requirements with the party requesting it. After signing, you can easily convert your document to editable text with our{" "}
+                    The terms digital signature, electronic signature, and
+                    e-signature are often used interchangeably, and in everyday
+                    use they all mean adding a signature to a document
+                    electronically instead of printing it. Technically, a
+                    cryptographic digital signature uses encryption keys to
+                    verify identity and document integrity, while a visual
+                    e-signature is a drawn or uploaded signature image placed on
+                    the PDF. PDFLinx creates the visual kind, which is
+                    sufficient for most personal and business needs such as
+                    contracts, approvals, and forms. If your situation requires
+                    a certificate-based signature, confirm the requirements with
+                    the party requesting it. After signing, you can easily
+                    convert your document to editable text with our{" "}
                     <a
                       href="/pdf-to-word"
                       className="text-blue-600 hover:underline font-medium"
@@ -1587,7 +1927,15 @@ export default function SignPdf({ seo }) {
                 title: "Privacy and File Security — 256-bit SSL Encryption",
                 text: (
                   <>
-                    Your uploaded PDF files and signature data are transferred over 256-bit SSL encryption and processed on secure servers. Files are permanently deleted right after signing, and we do not store, share, or access your documents or signature at any point. PDFLinx is built with privacy-first principles and is GDPR-aware. No account or email is required to use the free digital signature tool, so your documents stay private from upload to download. If you need to reduce your signed file size for emailing, use our{" "}
+                    Your uploaded PDF files and signature data are transferred
+                    over 256-bit SSL encryption and processed on secure servers.
+                    Files are permanently deleted right after signing, and we do
+                    not store, share, or access your documents or signature at
+                    any point. PDFLinx is built with privacy-first principles
+                    and is GDPR-aware. No account or email is required to use
+                    the free digital signature tool, so your documents stay
+                    private from upload to download. If you need to reduce your
+                    signed file size for emailing, use our{" "}
                     <a
                       href="/compress-pdf"
                       className="text-blue-600 hover:underline font-medium"
@@ -1599,7 +1947,7 @@ export default function SignPdf({ seo }) {
                 ),
               },
             ],
-                        
+
             relatedTitle: "More Free PDF Tools",
             showPdfTypes: false,
           },
@@ -1615,4 +1963,3 @@ export default function SignPdf({ seo }) {
     </>
   );
 }
-
