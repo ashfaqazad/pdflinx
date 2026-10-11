@@ -290,6 +290,17 @@ const articles = [
     excerpt: "HEIC files from iPhone that Windows cannot open, WebP images that older software rejects, PNG screenshots that need to be JPG for upload portals — image format conversion is a constant low-level friction point for anyone working with files across different platforms. This guide covers the best free browser-based image converter tools available right now, tested across the most common conversion types: HEIC to JPG, WebP to PNG, PNG to JPG, and batch conversions. No watermarks, no signup, no file size tricks — just the tools that actually work.",
     date: "Apr 2, 2026", read: "5 min", slug: "best-free-image-converter-tools",
   },
+  {
+  cat: "convert",
+  icon: "🖼️",
+  title: "5 Best Free Online Image Converter Tools in 2025",
+  excerpt:
+    "Need to convert HEIC, WebP, PNG or JPG without signup or watermarks? We tested over a dozen image converters and shortlisted the 5 best free ones. See which tool wins.",
+  date: "Apr 1, 2025",
+  read: "5 min",
+  slug: "best-free-image-converter-tools",
+},
+
 ];
 
 const featuredArticle = articles.find((a) => a.featured);
