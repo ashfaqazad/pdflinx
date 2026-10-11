@@ -1,11 +1,10 @@
 // import "@/app/styles/blog.css";
 
-
 const blogs = [
-
   {
     slug: "pdf-to-word-accuracy-tips",
-    title: "PDF to Word Conversion Accuracy Tips — Get Better Results Every Time",
+    title:
+      "PDF to Word Conversion Accuracy Tips — Get Better Results Every Time",
     date: "Aug 24, 2025",
     content: `
   <h2>Why PDF to Word Accuracy Matters</h2>
@@ -91,7 +90,6 @@ const blogs = [
   </p>
 `,
   },
-
 
   {
     slug: "word-to-pdf-best-practices",
@@ -262,10 +260,10 @@ const blogs = [
 `,
   },
 
-
   {
     slug: "when-to-merge-pdf-files",
-    title: "When to Merge PDF Files — Smart Situations Where Combining Makes Sense",
+    title:
+      "When to Merge PDF Files — Smart Situations Where Combining Makes Sense",
     date: "Aug 21, 2025",
     content: `
   <h2>Merging PDFs Is Not Always the Answer — But Often It Is</h2>
@@ -493,8 +491,6 @@ const blogs = [
 `,
   },
 
-
-
   {
     slug: "excel-to-pdf-print-layout",
     title: "Excel to PDF Print Layout — Fix Columns, Pages and Formatting",
@@ -720,7 +716,8 @@ const blogs = [
 
   {
     slug: "pdf-password-best-practices",
-    title: "PDF Password Best Practices — How to Protect Documents the Right Way",
+    title:
+      "PDF Password Best Practices — How to Protect Documents the Right Way",
     date: "Sep 11, 2025",
     content: `
   <h2>Why PDF Password Protection Is Worth Doing Properly</h2>
@@ -877,8 +874,6 @@ const blogs = [
 `,
   },
 
-
-
   {
     slug: "pdf-pages-upside-down-fix",
     title: "PDF Pages Upside Down or Sideways? Fix Orientation Instantly",
@@ -950,7 +945,6 @@ const blogs = [
   </p>
 `,
   },
-
 
   {
     slug: "digital-vs-electronic-signature-pdf",
@@ -1821,7 +1815,6 @@ const blogs = [
   </p>
 `,
   },
-
 
   {
     slug: "word-to-pdf-free-no-signup",
@@ -2777,7 +2770,6 @@ const blogs = [
 `,
   },
 
-
   {
     slug: "best-free-image-converter-tools",
     title: "5 Best Free Online Image Converter Tools in 2025",
@@ -3008,16 +3000,16 @@ const blogs = [
 
 </div>
 
-`
+`,
   },
-
 
   {
     slug: "how-to-convert-chatgpt-pdf-to-word",
     title: "ChatGPT Generated a PDF — How to Convert It to Word?",
     date: "Apr 14, 2026",
     coverImage: "/blog/images/chatgpt-pdf-word.png",
-    excerpt: "Can't edit a PDF created by ChatGPT? This free tool fixes it in 30 seconds.",
+    excerpt:
+      "Can't edit a PDF created by ChatGPT? This free tool fixes it in 30 seconds.",
     content: `
   <!-- Hero Image — SABSE UPAR -->
   <img 
@@ -3128,17 +3120,39 @@ const blogs = [
   <!-- Steps — Styled -->
   <div style="margin:1.5rem 0">
     ${[
-        ["1", "#2563eb", "Go to PDFLinx PDF to Word",
-          "Open pdflinx.com/pdf-to-word in your browser — works on mobile too."],
-        ["2", "#059669", "Upload Your ChatGPT PDF",
-          "Drag and drop the file or click to browse. You can upload up to 10 PDFs at once."],
-        ["3", "#7c3aed", "Enable the OCR Checkbox",
-          "This is the most important step. OCR tells the tool to read image text — without it, the conversion will not extract editable text."],
-        ["4", "#2563eb", "Click Convert",
-          "Processing takes 10-30 seconds depending on file size and number of pages."],
-        ["5", "#059669", "Download Your DOCX",
-          "The Word file downloads automatically. Open it in Microsoft Word or Google Docs and edit freely."],
-      ].map(([num, color, title, desc]) => `
+      [
+        "1",
+        "#2563eb",
+        "Go to PDFLinx PDF to Word",
+        "Open pdflinx.com/pdf-to-word in your browser — works on mobile too.",
+      ],
+      [
+        "2",
+        "#059669",
+        "Upload Your ChatGPT PDF",
+        "Drag and drop the file or click to browse. You can upload up to 10 PDFs at once.",
+      ],
+      [
+        "3",
+        "#7c3aed",
+        "Enable the OCR Checkbox",
+        "This is the most important step. OCR tells the tool to read image text — without it, the conversion will not extract editable text.",
+      ],
+      [
+        "4",
+        "#2563eb",
+        "Click Convert",
+        "Processing takes 10-30 seconds depending on file size and number of pages.",
+      ],
+      [
+        "5",
+        "#059669",
+        "Download Your DOCX",
+        "The Word file downloads automatically. Open it in Microsoft Word or Google Docs and edit freely.",
+      ],
+    ]
+      .map(
+        ([num, color, title, desc]) => `
       <div style="display:flex; gap:1rem; margin-bottom:1.25rem; 
         align-items:flex-start; background:#f9fafb; 
         border-radius:12px; padding:1rem">
@@ -3155,7 +3169,9 @@ const blogs = [
           <span style="color:#6b7280; font-size:0.95rem">${desc}</span>
         </div>
       </div>
-    `).join("")}
+    `,
+      )
+      .join("")}
   </div>
 
   <!-- Pro Tip -->
@@ -3251,16 +3267,16 @@ const blogs = [
       Convert Now →
     </a>
   </div>
-  `
+  `,
   },
-
 
   {
     slug: "pdf-not-editable-fix",
     title: "PDF File Opens but Not Editable — Fix It in 30 Seconds",
     date: "Apr 15, 2026",
     coverImage: "/blog/images/pdf-not-editable.jpg",
-    excerpt: "PDF opens but you can't edit anything? Here's the fastest free way to fix it in seconds.",
+    excerpt:
+      "PDF opens but you can't edit anything? Here's the fastest free way to fix it in seconds.",
     content: `
 
   <!-- Hero Image -->
@@ -3313,18 +3329,22 @@ const blogs = [
 
   <ul style="list-style:none; padding-left:0; margin-bottom:1.5rem">
     ${[
-        ["📄", "The file was scanned from a physical document"],
-        ["🤖", "It was exported from an AI tool like ChatGPT"],
-        ["🖨️", "It was printed to PDF from an image-heavy source"],
-        ["📸", "The original file was a photo or screenshot saved as PDF"],
-      ].map(([icon, text]) => `
+      ["📄", "The file was scanned from a physical document"],
+      ["🤖", "It was exported from an AI tool like ChatGPT"],
+      ["🖨️", "It was printed to PDF from an image-heavy source"],
+      ["📸", "The original file was a photo or screenshot saved as PDF"],
+    ]
+      .map(
+        ([icon, text]) => `
       <li style="display:flex; align-items:flex-start; gap:0.75rem; 
         margin-bottom:0.75rem; background:#f9fafb; 
         border-radius:10px; padding:0.875rem 1rem">
         <span style="font-size:1.2rem">${icon}</span>
         <span style="line-height:1.7; color:#374151">${text}</span>
       </li>
-    `).join("")}
+    `,
+      )
+      .join("")}
   </ul>
 
   <p style="line-height:1.8; margin-bottom:1rem">
@@ -3363,12 +3383,16 @@ const blogs = [
         ["Smaller file size usually", "Often larger file size"],
         ["Works with any editor", "Locked — cannot be changed directly"],
         ["Fast to search inside", "Search finds nothing"],
-      ].map(([left, right], i) => `
+      ]
+        .map(
+          ([left, right], i) => `
         <tr style="background:${i % 2 === 0 ? "#ffffff" : "#f9fafb"}">
           <td style="padding:12px 16px; border:1px solid #e5e7eb; color:#166534">${left}</td>
           <td style="padding:12px 16px; border:1px solid #e5e7eb; color:#991b1b">${right}</td>
         </tr>
-      `).join("")}
+      `,
+        )
+        .join("")}
     </tbody>
   </table>
 
@@ -3424,17 +3448,34 @@ const blogs = [
 
   <div style="margin:1.5rem 0">
     ${[
-        ["#2563eb", "Open PDFLinx PDF to Word",
-          "Go to pdflinx.com/pdf-to-word in your browser. It works on desktop, tablet, and mobile — no app or software installation needed."],
-        ["#059669", "Upload Your PDF",
-          "Drag and drop your non-editable PDF onto the page, or click the upload button to browse your files. You can upload multiple PDFs at once if needed."],
-        ["#7c3aed", "Enable the OCR Option",
-          "This is the most important step. Look for the OCR checkbox or toggle and make sure it is turned on. Without OCR, the tool will not extract real editable text from an image-based PDF."],
-        ["#dc2626", "Click Convert",
-          "Hit the Convert button and wait a few seconds. Processing time depends on the file size and number of pages — most documents are done in under 30 seconds."],
-        ["#059669", "Download and Edit Your File",
-          "Once conversion is complete, download your DOCX file. Open it in Microsoft Word, Google Docs, or any other editor — and edit freely without restrictions."],
-      ].map(([color, title, desc], i) => `
+      [
+        "#2563eb",
+        "Open PDFLinx PDF to Word",
+        "Go to pdflinx.com/pdf-to-word in your browser. It works on desktop, tablet, and mobile — no app or software installation needed.",
+      ],
+      [
+        "#059669",
+        "Upload Your PDF",
+        "Drag and drop your non-editable PDF onto the page, or click the upload button to browse your files. You can upload multiple PDFs at once if needed.",
+      ],
+      [
+        "#7c3aed",
+        "Enable the OCR Option",
+        "This is the most important step. Look for the OCR checkbox or toggle and make sure it is turned on. Without OCR, the tool will not extract real editable text from an image-based PDF.",
+      ],
+      [
+        "#dc2626",
+        "Click Convert",
+        "Hit the Convert button and wait a few seconds. Processing time depends on the file size and number of pages — most documents are done in under 30 seconds.",
+      ],
+      [
+        "#059669",
+        "Download and Edit Your File",
+        "Once conversion is complete, download your DOCX file. Open it in Microsoft Word, Google Docs, or any other editor — and edit freely without restrictions.",
+      ],
+    ]
+      .map(
+        ([color, title, desc], i) => `
       <div style="display:flex; gap:1rem; margin-bottom:1.25rem; 
         align-items:flex-start; background:#f9fafb; 
         border-radius:12px; padding:1.25rem">
@@ -3451,7 +3492,9 @@ const blogs = [
           <span style="color:#6b7280; font-size:0.95rem; line-height:1.7">${desc}</span>
         </div>
       </div>
-    `).join("")}
+    `,
+      )
+      .join("")}
   </div>
 
   <!-- Pro Tip -->
@@ -3474,17 +3517,34 @@ const blogs = [
 
   <div style="margin:1rem 0 1.5rem">
     ${[
-        ["🚫", "Not enabling OCR",
-          "This is the number one mistake. Converting a non-editable PDF without OCR gives you an image pasted inside Word — still completely useless."],
-        ["🚫", "Using basic free converters",
-          "Many tools advertise PDF to Word conversion but do not include OCR. If they don't mention OCR, they probably can't handle image-based PDFs properly."],
-        ["🚫", "Trying to copy-paste the text directly",
-          "This never works on image PDFs. No matter how many times you try, there is no selectable text to copy — it's just pixels."],
-        ["🚫", "Paying for Adobe Acrobat",
-          "You do not need an expensive subscription for this. Free tools with OCR — like PDFLinx — do exactly the same job at no cost."],
-        ["🚫", "Manually retyping the entire document",
-          "Some people waste hours doing this. With OCR, the same job takes 30 seconds and the accuracy is high for most clean documents."],
-      ].map(([icon, title, desc]) => `
+      [
+        "🚫",
+        "Not enabling OCR",
+        "This is the number one mistake. Converting a non-editable PDF without OCR gives you an image pasted inside Word — still completely useless.",
+      ],
+      [
+        "🚫",
+        "Using basic free converters",
+        "Many tools advertise PDF to Word conversion but do not include OCR. If they don't mention OCR, they probably can't handle image-based PDFs properly.",
+      ],
+      [
+        "🚫",
+        "Trying to copy-paste the text directly",
+        "This never works on image PDFs. No matter how many times you try, there is no selectable text to copy — it's just pixels.",
+      ],
+      [
+        "🚫",
+        "Paying for Adobe Acrobat",
+        "You do not need an expensive subscription for this. Free tools with OCR — like PDFLinx — do exactly the same job at no cost.",
+      ],
+      [
+        "🚫",
+        "Manually retyping the entire document",
+        "Some people waste hours doing this. With OCR, the same job takes 30 seconds and the accuracy is high for most clean documents.",
+      ],
+    ]
+      .map(
+        ([icon, title, desc]) => `
       <div style="display:flex; gap:0.875rem; margin-bottom:1rem; 
         align-items:flex-start; border-left:3px solid #fca5a5; 
         padding:0.875rem 1rem; background:#fff5f5; border-radius:0 10px 10px 0">
@@ -3494,7 +3554,9 @@ const blogs = [
           <span style="color:#6b7280; font-size:0.93rem; line-height:1.7">${desc}</span>
         </div>
       </div>
-    `).join("")}
+    `,
+      )
+      .join("")}
   </div>
 
   <!-- Who needs this -->
@@ -3504,17 +3566,37 @@ const blogs = [
 
   <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-bottom:1.5rem">
     ${[
-        ["🎓", "Students", "Receiving scanned lecture notes, assignments, or AI-generated study material in PDF format."],
-        ["💼", "Professionals", "Getting contracts, proposals, or reports from clients that need quick edits before sending back."],
-        ["🧑‍💻", "Freelancers", "Working on client documents that arrive as locked or image-based PDFs with no editing access."],
-        ["📋", "Office Workers", "Handling HR forms, invoices, or government documents that are scanned and non-editable."],
-      ].map(([icon, title, desc]) => `
+      [
+        "🎓",
+        "Students",
+        "Receiving scanned lecture notes, assignments, or AI-generated study material in PDF format.",
+      ],
+      [
+        "💼",
+        "Professionals",
+        "Getting contracts, proposals, or reports from clients that need quick edits before sending back.",
+      ],
+      [
+        "🧑‍💻",
+        "Freelancers",
+        "Working on client documents that arrive as locked or image-based PDFs with no editing access.",
+      ],
+      [
+        "📋",
+        "Office Workers",
+        "Handling HR forms, invoices, or government documents that are scanned and non-editable.",
+      ],
+    ]
+      .map(
+        ([icon, title, desc]) => `
       <div style="background:#f9fafb; border-radius:12px; padding:1rem; border:1px solid #e5e7eb">
         <div style="font-size:1.5rem; margin-bottom:0.4rem">${icon}</div>
         <strong style="display:block; color:#111827; margin-bottom:0.3rem">${title}</strong>
         <span style="color:#6b7280; font-size:0.9rem; line-height:1.6">${desc}</span>
       </div>
-    `).join("")}
+    `,
+      )
+      .join("")}
   </div>
 
   <!-- FAQ -->
@@ -3524,15 +3606,25 @@ const blogs = [
 
   <div style="margin-bottom:1.5rem">
     ${[
-        ["Is PDFLinx really free?",
-          "Yes — completely free. No signup, no watermark, no hidden charges."],
-        ["Will OCR work on any language?",
-          "PDFLinx OCR supports English and several other common languages. For best results, use it on clearly printed documents."],
-        ["Does it work on mobile?",
-          "Yes. Open pdflinx.com/pdf-to-word on any mobile browser — Chrome, Safari, or Firefox — and it works the same way."],
-        ["Is my file safe?",
-          "Files are processed securely and deleted automatically after conversion. Your documents are not stored or shared."],
-      ].map(([q, a]) => `
+      [
+        "Is PDFLinx really free?",
+        "Yes — completely free. No signup, no watermark, no hidden charges.",
+      ],
+      [
+        "Will OCR work on any language?",
+        "PDFLinx OCR supports English and several other common languages. For best results, use it on clearly printed documents.",
+      ],
+      [
+        "Does it work on mobile?",
+        "Yes. Open pdflinx.com/pdf-to-word on any mobile browser — Chrome, Safari, or Firefox — and it works the same way.",
+      ],
+      [
+        "Is my file safe?",
+        "Files are processed securely and deleted automatically after conversion. Your documents are not stored or shared.",
+      ],
+    ]
+      .map(
+        ([q, a]) => `
       <div style="margin-bottom:0.875rem; border:1px solid #e5e7eb; border-radius:12px; overflow:hidden">
         <div style="background:#f3f4f6; padding:0.875rem 1rem; font-weight:600; color:#111827">
           ❓ ${q}
@@ -3541,7 +3633,9 @@ const blogs = [
           ${a}
         </div>
       </div>
-    `).join("")}
+    `,
+      )
+      .join("")}
   </div>
 
   <!-- Conclusion -->
@@ -3581,16 +3675,16 @@ const blogs = [
       Convert Now →
     </a>
   </div>
-  `
+  `,
   },
-
 
   {
     slug: "freelancer-edit-pdf-free",
     title: "Client Sent a PDF? How Freelancers Edit It for Free",
     date: "Apr 16, 2026",
     coverImage: "/blog/images/freelancer-edit-pdf.jpg",
-    excerpt: "Got a PDF from a client that you can't edit? Here's how freelancers fix it in seconds — for free.",
+    excerpt:
+      "Got a PDF from a client that you can't edit? Here's how freelancers fix it in seconds — for free.",
     content: `
 
   <!-- Hero Image -->
@@ -3634,19 +3728,23 @@ const blogs = [
 
   <ul style="list-style:none; padding-left:0; margin-bottom:1.5rem">
     ${[
-        ["🖨️", "The document was physically scanned and saved as PDF"],
-        ["📸", "A photo or screenshot was converted into a PDF file"],
-        ["🤖", "The file was exported from an AI tool like ChatGPT"],
-        ["📋", "The client printed a webpage or form directly to PDF"],
-        ["🔒", "The original file had security settings that locked editing"],
-      ].map(([icon, text]) => `
+      ["🖨️", "The document was physically scanned and saved as PDF"],
+      ["📸", "A photo or screenshot was converted into a PDF file"],
+      ["🤖", "The file was exported from an AI tool like ChatGPT"],
+      ["📋", "The client printed a webpage or form directly to PDF"],
+      ["🔒", "The original file had security settings that locked editing"],
+    ]
+      .map(
+        ([icon, text]) => `
       <li style="display:flex; align-items:flex-start; gap:0.75rem; 
         margin-bottom:0.75rem; background:#f9fafb; 
         border-radius:10px; padding:0.875rem 1rem">
         <span style="font-size:1.2rem">${icon}</span>
         <span style="line-height:1.7; color:#374151">${text}</span>
       </li>
-    `).join("")}
+    `,
+      )
+      .join("")}
   </ul>
 
   <p style="line-height:1.8; margin-bottom:1rem">
@@ -3686,12 +3784,16 @@ const blogs = [
         ["Easy to update and edit", "Editing fails immediately"],
         ["Quick turnaround for clients", "Time wasted troubleshooting"],
         ["Works in any editor", "Locked — cannot be changed directly"],
-      ].map(([left, right], i) => `
+      ]
+        .map(
+          ([left, right], i) => `
         <tr style="background:${i % 2 === 0 ? "#ffffff" : "#f9fafb"}">
           <td style="padding:12px 16px; border:1px solid #e5e7eb; color:#166534">${left}</td>
           <td style="padding:12px 16px; border:1px solid #e5e7eb; color:#991b1b">${right}</td>
         </tr>
-      `).join("")}
+      `,
+        )
+        .join("")}
     </tbody>
   </table>
 
@@ -3747,17 +3849,34 @@ const blogs = [
 
   <div style="margin:1.5rem 0">
     ${[
-        ["#2563eb", "Open PDFLinx PDF to Word",
-          "Go to pdflinx.com/pdf-to-word in your browser. Works on desktop, tablet, and mobile — no software installation needed at all."],
-        ["#059669", "Upload the Client PDF",
-          "Drag and drop the file directly onto the page, or click the upload button to browse your files. You can upload multiple PDFs at once if you have a batch of client files to process."],
-        ["#7c3aed", "Enable OCR",
-          "This is the most critical step. Find the OCR checkbox or toggle and make sure it is turned on before converting. Without OCR, the tool will embed the image without reading it — and the result will still be non-editable."],
-        ["#dc2626", "Click Convert",
-          "Hit the Convert button and wait a few seconds. Processing time depends on file size and page count — most standard documents are done in under 30 seconds."],
-        ["#059669", "Download and Start Editing",
-          "Your DOCX file downloads automatically. Open it in Microsoft Word, Google Docs, or LibreOffice — and make all the edits your client needs without any restrictions."],
-      ].map(([color, title, desc], i) => `
+      [
+        "#2563eb",
+        "Open PDFLinx PDF to Word",
+        "Go to pdflinx.com/pdf-to-word in your browser. Works on desktop, tablet, and mobile — no software installation needed at all.",
+      ],
+      [
+        "#059669",
+        "Upload the Client PDF",
+        "Drag and drop the file directly onto the page, or click the upload button to browse your files. You can upload multiple PDFs at once if you have a batch of client files to process.",
+      ],
+      [
+        "#7c3aed",
+        "Enable OCR",
+        "This is the most critical step. Find the OCR checkbox or toggle and make sure it is turned on before converting. Without OCR, the tool will embed the image without reading it — and the result will still be non-editable.",
+      ],
+      [
+        "#dc2626",
+        "Click Convert",
+        "Hit the Convert button and wait a few seconds. Processing time depends on file size and page count — most standard documents are done in under 30 seconds.",
+      ],
+      [
+        "#059669",
+        "Download and Start Editing",
+        "Your DOCX file downloads automatically. Open it in Microsoft Word, Google Docs, or LibreOffice — and make all the edits your client needs without any restrictions.",
+      ],
+    ]
+      .map(
+        ([color, title, desc], i) => `
       <div style="display:flex; gap:1rem; margin-bottom:1.25rem; 
         align-items:flex-start; background:#f9fafb; 
         border-radius:12px; padding:1.25rem">
@@ -3774,7 +3893,9 @@ const blogs = [
           <span style="color:#6b7280; font-size:0.95rem; line-height:1.7">${desc}</span>
         </div>
       </div>
-    `).join("")}
+    `,
+      )
+      .join("")}
   </div>
 
   <!-- Pro Tip -->
@@ -3799,17 +3920,34 @@ const blogs = [
 
   <div style="margin:1rem 0 1.5rem">
     ${[
-        ["🚫", "Trying to edit the PDF directly",
-          "Image-based PDFs cannot be edited in any PDF viewer or editor. No matter how many times you try clicking into the text, it will not work — the content is just pixels, not characters."],
-        ["🚫", "Using basic converters without OCR",
-          "Most free online tools do not include OCR. They convert the PDF but simply embed the image inside the Word file — which gives you exactly the same non-editable result."],
-        ["🚫", "Paying for Adobe Acrobat",
-          "Many freelancers assume they need an expensive subscription. You don't. Free tools with proper OCR — like PDFLinx — handle this job just as well, completely free."],
-        ["🚫", "Manually retyping the entire document",
-          "This is the most painful mistake. Retyping a 5-page client document wastes hours of billable time. With OCR conversion, the same job takes under a minute."],
-        ["🚫", "Asking the client to resend in another format",
-          "This wastes everyone's time and makes you look less professional. Fix it yourself in 30 seconds instead of going back and forth over email."],
-      ].map(([icon, title, desc]) => `
+      [
+        "🚫",
+        "Trying to edit the PDF directly",
+        "Image-based PDFs cannot be edited in any PDF viewer or editor. No matter how many times you try clicking into the text, it will not work — the content is just pixels, not characters.",
+      ],
+      [
+        "🚫",
+        "Using basic converters without OCR",
+        "Most free online tools do not include OCR. They convert the PDF but simply embed the image inside the Word file — which gives you exactly the same non-editable result.",
+      ],
+      [
+        "🚫",
+        "Paying for Adobe Acrobat",
+        "Many freelancers assume they need an expensive subscription. You don't. Free tools with proper OCR — like PDFLinx — handle this job just as well, completely free.",
+      ],
+      [
+        "🚫",
+        "Manually retyping the entire document",
+        "This is the most painful mistake. Retyping a 5-page client document wastes hours of billable time. With OCR conversion, the same job takes under a minute.",
+      ],
+      [
+        "🚫",
+        "Asking the client to resend in another format",
+        "This wastes everyone's time and makes you look less professional. Fix it yourself in 30 seconds instead of going back and forth over email.",
+      ],
+    ]
+      .map(
+        ([icon, title, desc]) => `
       <div style="display:flex; gap:0.875rem; margin-bottom:1rem; 
         align-items:flex-start; border-left:3px solid #fca5a5; 
         padding:0.875rem 1rem; background:#fff5f5; border-radius:0 10px 10px 0">
@@ -3819,7 +3957,9 @@ const blogs = [
           <span style="color:#6b7280; font-size:0.93rem; line-height:1.7">${desc}</span>
         </div>
       </div>
-    `).join("")}
+    `,
+      )
+      .join("")}
   </div>
 
   <!-- Who Should Use This -->
@@ -3829,19 +3969,47 @@ const blogs = [
 
   <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-bottom:1.5rem">
     ${[
-        ["💻", "Freelancers", "Working on client proposals, contracts, reports, and documents that arrive locked or image-based."],
-        ["🤝", "Virtual Assistants", "Handling admin files, invoices, HR forms, and client documents that need fast editing."],
-        ["✍️", "Writers & Editors", "Editing drafts, manuscripts, or content pieces received as non-editable PDF files."],
-        ["🎨", "Designers", "Updating copy inside PDF proposals or pitch decks before presenting to clients."],
-        ["📊", "Consultants", "Modifying reports, data summaries, or strategy documents sent in locked PDF format."],
-        ["🧑‍💼", "Anyone", "Who regularly receives PDFs from clients and needs to make quick edits without paying for software."],
-      ].map(([icon, title, desc]) => `
+      [
+        "💻",
+        "Freelancers",
+        "Working on client proposals, contracts, reports, and documents that arrive locked or image-based.",
+      ],
+      [
+        "🤝",
+        "Virtual Assistants",
+        "Handling admin files, invoices, HR forms, and client documents that need fast editing.",
+      ],
+      [
+        "✍️",
+        "Writers & Editors",
+        "Editing drafts, manuscripts, or content pieces received as non-editable PDF files.",
+      ],
+      [
+        "🎨",
+        "Designers",
+        "Updating copy inside PDF proposals or pitch decks before presenting to clients.",
+      ],
+      [
+        "📊",
+        "Consultants",
+        "Modifying reports, data summaries, or strategy documents sent in locked PDF format.",
+      ],
+      [
+        "🧑‍💼",
+        "Anyone",
+        "Who regularly receives PDFs from clients and needs to make quick edits without paying for software.",
+      ],
+    ]
+      .map(
+        ([icon, title, desc]) => `
       <div style="background:#f9fafb; border-radius:12px; padding:1rem; border:1px solid #e5e7eb">
         <div style="font-size:1.5rem; margin-bottom:0.4rem">${icon}</div>
         <strong style="display:block; color:#111827; margin-bottom:0.3rem">${title}</strong>
         <span style="color:#6b7280; font-size:0.9rem; line-height:1.6">${desc}</span>
       </div>
-    `).join("")}
+    `,
+      )
+      .join("")}
   </div>
 
   <!-- FAQ -->
@@ -3851,17 +4019,29 @@ const blogs = [
 
   <div style="margin-bottom:1.5rem">
     ${[
-        ["Is PDFLinx really free for freelancers?",
-          "Yes — completely free. No signup required, no watermark added, and no limits on how many times you use it."],
-        ["Will the formatting stay intact after conversion?",
-          "For most standard documents, yes. Tables, paragraphs, and headings convert cleanly. Very complex layouts may need minor touch-ups."],
-        ["Does it work on mobile while working remotely?",
-          "Absolutely. Open pdflinx.com/pdf-to-word on any mobile browser and it works exactly the same as on desktop."],
-        ["Is my client's file kept confidential?",
-          "Yes. Files are processed securely and automatically deleted after conversion. Nothing is stored or shared."],
-        ["Can I convert multiple client files at once?",
-          "Yes. PDFLinx supports batch upload so you can process several PDFs in one go — great for busy freelancers."],
-      ].map(([q, a]) => `
+      [
+        "Is PDFLinx really free for freelancers?",
+        "Yes — completely free. No signup required, no watermark added, and no limits on how many times you use it.",
+      ],
+      [
+        "Will the formatting stay intact after conversion?",
+        "For most standard documents, yes. Tables, paragraphs, and headings convert cleanly. Very complex layouts may need minor touch-ups.",
+      ],
+      [
+        "Does it work on mobile while working remotely?",
+        "Absolutely. Open pdflinx.com/pdf-to-word on any mobile browser and it works exactly the same as on desktop.",
+      ],
+      [
+        "Is my client's file kept confidential?",
+        "Yes. Files are processed securely and automatically deleted after conversion. Nothing is stored or shared.",
+      ],
+      [
+        "Can I convert multiple client files at once?",
+        "Yes. PDFLinx supports batch upload so you can process several PDFs in one go — great for busy freelancers.",
+      ],
+    ]
+      .map(
+        ([q, a]) => `
       <div style="margin-bottom:0.875rem; border:1px solid #e5e7eb; border-radius:12px; overflow:hidden">
         <div style="background:#f3f4f6; padding:0.875rem 1rem; font-weight:600; color:#111827">
           ❓ ${q}
@@ -3870,7 +4050,9 @@ const blogs = [
           ${a}
         </div>
       </div>
-    `).join("")}
+    `,
+      )
+      .join("")}
   </div>
 
   <!-- Conclusion -->
@@ -3913,17 +4095,16 @@ const blogs = [
       Convert Now →
     </a>
   </div>
-  `
+  `,
   },
-
-
 
   {
     slug: "pdf-file-too-large-compress",
     title: "PDF File Too Large? Compress It Without Losing Quality",
     date: "Apr 17, 2026",
     coverImage: "/blog/images/pdf-compress.jpg",
-    excerpt: "PDF too large to upload or send? Compress it in seconds without losing quality — free and easy.",
+    excerpt:
+      "PDF too large to upload or send? Compress it in seconds without losing quality — free and easy.",
     content: `
 
   <!-- Hero Image -->
@@ -3965,19 +4146,23 @@ const blogs = [
 
   <ul style="list-style:none; padding-left:0; margin-bottom:1.5rem">
     ${[
-        ["🖼️", "High-resolution images embedded in the document"],
-        ["📠", "Scanned pages saved as full-size image layers"],
-        ["🎨", "PDFs exported from design tools without optimization"],
-        ["📊", "Charts, graphics, and visual-heavy pages increasing file weight"],
-        ["📄", "Multiple pages containing repeated large assets"],
-      ].map(([icon, text]) => `
+      ["🖼️", "High-resolution images embedded in the document"],
+      ["📠", "Scanned pages saved as full-size image layers"],
+      ["🎨", "PDFs exported from design tools without optimization"],
+      ["📊", "Charts, graphics, and visual-heavy pages increasing file weight"],
+      ["📄", "Multiple pages containing repeated large assets"],
+    ]
+      .map(
+        ([icon, text]) => `
       <li style="display:flex; align-items:flex-start; gap:0.75rem; 
         margin-bottom:0.75rem; background:#f9fafb; 
         border-radius:10px; padding:0.875rem 1rem">
         <span style="font-size:1.2rem">${icon}</span>
         <span style="line-height:1.7; color:#374151">${text}</span>
       </li>
-    `).join("")}
+    `,
+      )
+      .join("")}
   </ul>
 
   <p style="line-height:1.8; margin-bottom:1rem">
@@ -4010,12 +4195,16 @@ const blogs = [
         ["Saves storage space", "Consumes unnecessary storage"],
         ["Better user experience", "Creates friction and delays"],
         ["Simple to share anywhere", "Often blocked by size limits"],
-      ].map(([left, right], i) => `
+      ]
+        .map(
+          ([left, right], i) => `
         <tr style="background:${i % 2 === 0 ? "#ffffff" : "#f9fafb"}">
           <td style="padding:12px 16px; border:1px solid #e5e7eb; color:#166534">${left}</td>
           <td style="padding:12px 16px; border:1px solid #e5e7eb; color:#991b1b">${right}</td>
         </tr>
-      `).join("")}
+      `,
+        )
+        .join("")}
     </tbody>
   </table>
 
@@ -4062,17 +4251,34 @@ const blogs = [
 
   <div style="margin:1.5rem 0">
     ${[
-        ["#2563eb", "Open PDFLinx Compress PDF",
-          "Go to pdflinx.com/compress-pdf in your browser. It works on desktop, tablet, and mobile without installing any software."],
-        ["#059669", "Upload Your PDF",
-          "Drag and drop your file onto the page, or click the upload button to select it manually from your device."],
-        ["#7c3aed", "Choose the Compression Level",
-          "Select the option that fits your need — balanced compression for quality or stronger compression when the file must be as small as possible."],
-        ["#dc2626", "Click Compress",
-          "Start the process and wait a few seconds. Most standard PDFs are compressed very quickly."],
-        ["#059669", "Download the Smaller PDF",
-          "Get your optimized file instantly and upload, email, or share it without size-limit problems."],
-      ].map(([color, title, desc], i) => `
+      [
+        "#2563eb",
+        "Open PDFLinx Compress PDF",
+        "Go to pdflinx.com/compress-pdf in your browser. It works on desktop, tablet, and mobile without installing any software.",
+      ],
+      [
+        "#059669",
+        "Upload Your PDF",
+        "Drag and drop your file onto the page, or click the upload button to select it manually from your device.",
+      ],
+      [
+        "#7c3aed",
+        "Choose the Compression Level",
+        "Select the option that fits your need — balanced compression for quality or stronger compression when the file must be as small as possible.",
+      ],
+      [
+        "#dc2626",
+        "Click Compress",
+        "Start the process and wait a few seconds. Most standard PDFs are compressed very quickly.",
+      ],
+      [
+        "#059669",
+        "Download the Smaller PDF",
+        "Get your optimized file instantly and upload, email, or share it without size-limit problems.",
+      ],
+    ]
+      .map(
+        ([color, title, desc], i) => `
       <div style="display:flex; gap:1rem; margin-bottom:1.25rem; 
         align-items:flex-start; background:#f9fafb; 
         border-radius:12px; padding:1.25rem">
@@ -4089,7 +4295,9 @@ const blogs = [
           <span style="color:#6b7280; font-size:0.95rem; line-height:1.7">${desc}</span>
         </div>
       </div>
-    `).join("")}
+    `,
+      )
+      .join("")}
   </div>
 
   <!-- Pro Tip -->
@@ -4112,17 +4320,34 @@ const blogs = [
 
   <div style="margin:1rem 0 1.5rem">
     ${[
-        ["🚫", "Using poor-quality compression tools",
-          "Some tools shrink the file, but they destroy image quality and make text difficult to read. A smaller file is useless if it looks unprofessional."],
-        ["🚫", "Compressing the same PDF multiple times",
-          "Repeated compression degrades quality further and further. It's better to compress once properly than several times badly."],
-        ["🚫", "Ignoring image size before export",
-          "If the original file contains giant images, the PDF starts heavy from the beginning. Optimizing images at the source can help a lot."],
-        ["🚫", "Choosing the strongest compression every time",
-          "Over-compressing can make resumes, proposals, and reports look blurry. Not every PDF needs maximum shrinkage."],
-        ["🚫", "Assuming every large PDF needs to be rebuilt",
-          "Many people think they must recreate the document from scratch. In reality, a good compression tool solves the problem in seconds."],
-      ].map(([icon, title, desc]) => `
+      [
+        "🚫",
+        "Using poor-quality compression tools",
+        "Some tools shrink the file, but they destroy image quality and make text difficult to read. A smaller file is useless if it looks unprofessional.",
+      ],
+      [
+        "🚫",
+        "Compressing the same PDF multiple times",
+        "Repeated compression degrades quality further and further. It's better to compress once properly than several times badly.",
+      ],
+      [
+        "🚫",
+        "Ignoring image size before export",
+        "If the original file contains giant images, the PDF starts heavy from the beginning. Optimizing images at the source can help a lot.",
+      ],
+      [
+        "🚫",
+        "Choosing the strongest compression every time",
+        "Over-compressing can make resumes, proposals, and reports look blurry. Not every PDF needs maximum shrinkage.",
+      ],
+      [
+        "🚫",
+        "Assuming every large PDF needs to be rebuilt",
+        "Many people think they must recreate the document from scratch. In reality, a good compression tool solves the problem in seconds.",
+      ],
+    ]
+      .map(
+        ([icon, title, desc]) => `
       <div style="display:flex; gap:0.875rem; margin-bottom:1rem; 
         align-items:flex-start; border-left:3px solid #fca5a5; 
         padding:0.875rem 1rem; background:#fff5f5; border-radius:0 10px 10px 0">
@@ -4132,7 +4357,9 @@ const blogs = [
           <span style="color:#6b7280; font-size:0.93rem; line-height:1.7">${desc}</span>
         </div>
       </div>
-    `).join("")}
+    `,
+      )
+      .join("")}
   </div>
 
   <!-- Who Should Use This -->
@@ -4142,19 +4369,47 @@ const blogs = [
 
   <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-bottom:1.5rem">
     ${[
-        ["💼", "Freelancers", "Sending proposals, reports, contracts, and deliverables to clients without upload failures."],
-        ["🎓", "Students", "Submitting assignments, research files, and scanned documents to portals with tight file limits."],
-        ["🧑‍💼", "Job Seekers", "Uploading resumes, cover letters, and certificates where large PDFs often get rejected."],
-        ["🏢", "Office Teams", "Sharing internal documents, presentations, forms, and reports more efficiently."],
-        ["📧", "Anyone Sending Email Attachments", "Reducing PDF size to fit common email attachment limits."],
-        ["📱", "Mobile Users", "Compressing files quickly from a phone before sending or uploading them anywhere."],
-      ].map(([icon, title, desc]) => `
+      [
+        "💼",
+        "Freelancers",
+        "Sending proposals, reports, contracts, and deliverables to clients without upload failures.",
+      ],
+      [
+        "🎓",
+        "Students",
+        "Submitting assignments, research files, and scanned documents to portals with tight file limits.",
+      ],
+      [
+        "🧑‍💼",
+        "Job Seekers",
+        "Uploading resumes, cover letters, and certificates where large PDFs often get rejected.",
+      ],
+      [
+        "🏢",
+        "Office Teams",
+        "Sharing internal documents, presentations, forms, and reports more efficiently.",
+      ],
+      [
+        "📧",
+        "Anyone Sending Email Attachments",
+        "Reducing PDF size to fit common email attachment limits.",
+      ],
+      [
+        "📱",
+        "Mobile Users",
+        "Compressing files quickly from a phone before sending or uploading them anywhere.",
+      ],
+    ]
+      .map(
+        ([icon, title, desc]) => `
       <div style="background:#f9fafb; border-radius:12px; padding:1rem; border:1px solid #e5e7eb">
         <div style="font-size:1.5rem; margin-bottom:0.4rem">${icon}</div>
         <strong style="display:block; color:#111827; margin-bottom:0.3rem">${title}</strong>
         <span style="color:#6b7280; font-size:0.9rem; line-height:1.6">${desc}</span>
       </div>
-    `).join("")}
+    `,
+      )
+      .join("")}
   </div>
 
   <!-- FAQ -->
@@ -4164,17 +4419,29 @@ const blogs = [
 
   <div style="margin-bottom:1.5rem">
     ${[
-        ["Will compression reduce PDF quality?",
-          "A good tool reduces file size while keeping the document readable. Very strong compression may lower image quality slightly, but normal text documents usually stay clear."],
-        ["Can I compress a PDF for free?",
-          "Yes — PDFLinx lets you compress PDFs for free with no signup and no watermark."],
-        ["Why is my scanned PDF so large?",
-          "Scanned PDFs are often saved as full-size images on every page, which makes the file much heavier than a normal text-based PDF."],
-        ["What compression level should I choose?",
-          "Use balanced or medium compression for most documents. Use stronger compression only when you have a strict upload limit."],
-        ["Can I compress a PDF on mobile?",
-          "Yes. You can open the PDFLinx compress tool in your mobile browser and use it the same way as on desktop."],
-      ].map(([q, a]) => `
+      [
+        "Will compression reduce PDF quality?",
+        "A good tool reduces file size while keeping the document readable. Very strong compression may lower image quality slightly, but normal text documents usually stay clear.",
+      ],
+      [
+        "Can I compress a PDF for free?",
+        "Yes — PDFLinx lets you compress PDFs for free with no signup and no watermark.",
+      ],
+      [
+        "Why is my scanned PDF so large?",
+        "Scanned PDFs are often saved as full-size images on every page, which makes the file much heavier than a normal text-based PDF.",
+      ],
+      [
+        "What compression level should I choose?",
+        "Use balanced or medium compression for most documents. Use stronger compression only when you have a strict upload limit.",
+      ],
+      [
+        "Can I compress a PDF on mobile?",
+        "Yes. You can open the PDFLinx compress tool in your mobile browser and use it the same way as on desktop.",
+      ],
+    ]
+      .map(
+        ([q, a]) => `
       <div style="margin-bottom:0.875rem; border:1px solid #e5e7eb; border-radius:12px; overflow:hidden">
         <div style="background:#f3f4f6; padding:0.875rem 1rem; font-weight:600; color:#111827">
           ❓ ${q}
@@ -4183,7 +4450,9 @@ const blogs = [
           ${a}
         </div>
       </div>
-    `).join("")}
+    `,
+      )
+      .join("")}
   </div>
 
   <!-- Conclusion -->
@@ -4221,15 +4490,14 @@ const blogs = [
       Compress Now →
     </a>
   </div>
-  `
+  `,
   },
 
-
   {
-  slug: "how-to-summarize-a-pdf-with-ai-instantly",
-  title: "How to Summarize a PDF with AI Instantly — No Reading Required",
-  date: "Jun 11, 2025",
-  content: `
+    slug: "how-to-summarize-a-pdf-with-ai-instantly",
+    title: "How to Summarize a PDF with AI Instantly — No Reading Required",
+    date: "Jun 11, 2025",
+    content: `
 <h2>Why Manual PDF Reading Is Costing You Time</h2>
 
 <p>You have a 40-page research paper, a 60-page legal contract, or a dense government report sitting in your downloads folder. You need the key points — fast. Reading the entire document word by word is not always an option, especially when you have ten more files waiting after this one.</p>
@@ -4353,14 +4621,14 @@ const blogs = [
   <a href="/blog" class="text-indigo-600 hover:underline">← Back to all guides</a>
 </p>
 `,
-},
+  },
 
-
-{
-  slug: "chat-with-pdf-ai-questions-answers-any-document",
-  title: "Chat with PDF Using AI — Ask Any Question, Get Instant Answers from Your Document",
-  date: "Jun 11, 2025",
-  content: `
+  {
+    slug: "chat-with-pdf-ai-questions-answers-any-document",
+    title:
+      "Chat with PDF Using AI — Ask Any Question, Get Instant Answers from Your Document",
+    date: "Jun 11, 2025",
+    content: `
 <h2>The Problem with Reading Long PDFs to Find One Answer</h2>
 
 <p>You have a 90-page contract and you need to find the termination clause. You have a 120-page annual report and you need the revenue figure for Q3. You have a 200-page research thesis and you need to know what methodology was used in Chapter 4.</p>
@@ -4475,8 +4743,7 @@ const blogs = [
   <a href="/blog" class="text-indigo-600 hover:underline">← Back to all guides</a>
 </p>
 `,
-},
-
+  },
 ];
 
 import Link from "next/link";
@@ -4489,7 +4756,10 @@ export async function generateMetadata({ params }) {
 
   return {
     title: blog.title + " | PDF Linx Blog",
-    description: blog.content.replace(/<[^>]+>/g, "").trim().slice(0, 160),
+    description: blog.content
+      .replace(/<[^>]+>/g, "")
+      .trim()
+      .slice(0, 160),
     keywords: [
       "PDF tools",
       "convert PDF online",
@@ -4506,7 +4776,10 @@ export async function generateMetadata({ params }) {
     },
     openGraph: {
       title: blog.title,
-      description: blog.content.replace(/<[^>]+>/g, "").trim().slice(0, 160),
+      description: blog.content
+        .replace(/<[^>]+>/g, "")
+        .trim()
+        .slice(0, 160),
       url: `https://pdflinx.com/blog/${slug}`,
       type: "article",
       siteName: "PDF Linx",
@@ -4514,7 +4787,10 @@ export async function generateMetadata({ params }) {
     twitter: {
       card: "summary_large_image",
       title: blog.title,
-      description: blog.content.replace(/<[^>]+>/g, "").trim().slice(0, 160),
+      description: blog.content
+        .replace(/<[^>]+>/g, "")
+        .trim()
+        .slice(0, 160),
     },
   };
 }
@@ -4532,14 +4808,15 @@ export default async function BlogPost({ params }) {
       </h1>
       <p className="text-gray-500 text-sm mb-8">{blog.date}</p>
 
-      <article
+      {/* <article
         className="prose prose-base max-w-none text-gray-700 leading-relaxed space-y-5"
+        dangerouslySetInnerHTML={{ __html: blog.content }}
+      /> */}
+
+      <article
+        className="prose prose-base max-w-none text-gray-700 leading-relaxed space-y-5 prose-a:!text-blue-600 prose-a:!underline hover:prose-a:!text-blue-800"
         dangerouslySetInnerHTML={{ __html: blog.content }}
       />
     </main>
   );
 }
-
-
-
-

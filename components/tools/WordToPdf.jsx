@@ -82,10 +82,8 @@ const OPTIONS_SLOT = (
   </div>
 );
 
-// ✅ NEW — SINGLE SOURCE OF TRUTH FOR FAQs
-// Used by BOTH the FAQ schema (Script tag below) AND the visible FAQ section.
-// This fixes the earlier mismatch where the schema only had 4 Qs but the page showed 14.
-
+// ✅ SINGLE SOURCE OF TRUTH FOR FAQs
+// Used by BOTH the FAQ schema (JsonLd below) AND the visible FAQ section.
 
 const wordToPdfFaqs = [
   {
@@ -185,6 +183,32 @@ const wordToPdfFaqs = [
           PDF to Word
         </a>
         .
+      </>
+    ),
+  },
+
+  // ---- NEW: keyword-driven FAQs (Semrush research, Oct 2026) ----
+  {
+    q: "How do I save a Word document as a PDF?",
+    a: "There are two easy ways. In Microsoft Word on Windows, open your file, go to File → Save As, choose PDF from the file type list, and click Save (or use File → Export → Create PDF/XPS). On a Mac, use File → Save As and pick PDF as the file format, or File → Print → Save as PDF. If you do not have Word installed, or you are on a phone, upload your DOC or DOCX file to PDFLinx and download the PDF in seconds — free, with no sign up.",
+  },
+  {
+    q: "How do I convert Word to PDF on iPhone?",
+    a: "Open Safari or Chrome on your iPhone and go to PDFLinx Word to PDF. Tap the upload area, choose your DOC or DOCX file from Files, iCloud Drive, or another storage app, then tap Convert to PDF. When it is ready, download the PDF — it is saved in your Files app, and you can share it by WhatsApp, email, or AirDrop. No app and no sign up needed.",
+  },
+  {
+    q: "How do I convert Word to PDF on Mac or MacBook?",
+    a: "On a Mac or MacBook (Air or Pro) you can use Word's File → Save As → PDF option, or open PDFLinx in Safari or Chrome, upload your DOC or DOCX file, and click Convert to PDF. The online method works even if Microsoft Word is not installed on your Mac, and the PDF keeps your fonts, tables, and layout.",
+  },
+  {
+    q: "How do I combine multiple Word files into one PDF?",
+    a: (
+      <>
+        PDFLinx converts each Word file into its own PDF — when you upload several files, they download together in one ZIP. To end up with a single PDF, convert your Word files first, then use{" "}
+        <a href="/merge-pdf" className="text-blue-600 hover:underline font-medium">
+          Merge PDF
+        </a>{" "}
+        to combine all the converted PDFs into one document, in the order you choose.
       </>
     ),
   },
@@ -319,36 +343,12 @@ export default function WordToPdf({ seo }) {
     }
   };
 
-// function extractText(node) {
-//   if (node == null || typeof node === "boolean") return "";
-//   if (typeof node === "string" || typeof node === "number") return String(node);
-//   if (Array.isArray(node)) return node.map(extractText).join("");
-//   if (node.props) return extractText(node.props.children);
-//   return "";
-// }
-
   // ── END API LOGIC ────────────────────────
 
   return (
     <>
 
-<JsonLd data={buildFaqSchema(wordToPdfFaqs)} />
-
-{/* <script
-  id="faq-schema-word-to-pdf"
-  type="application/ld+json"
-  dangerouslySetInnerHTML={{
-    __html: JSON.stringify({
-      "@context": "https://schema.org",
-      "@type": "FAQPage",
-      mainEntity: wordToPdfFaqs.map((f) => ({
-        "@type": "Question",
-        name: f.q,
-        acceptedAnswer: { "@type": "Answer", text: extractText(f.a) },
-      })),
-    }),
-  }}
-/> */}
+      <JsonLd data={buildFaqSchema(wordToPdfFaqs)} />
 
 
       {/* ── TOOL UI ── */}
@@ -424,8 +424,9 @@ export default function WordToPdf({ seo }) {
                 </em>
               </>
             ),
+            // ✅ UPDATED — added "save Word as PDF", "without software", iPhone/Mac
             heroDescription:
-              "Convert Word documents (DOC and DOCX) to PDF online for free — fonts, tables, images, and layout perfectly preserved. No signup, no watermark, no software needed. Works on Windows, Mac, Android, and iPhone.",
+              "Convert Word documents (DOCX and DOC) to PDF online for free — save Word as PDF with fonts, tables, images, and layout perfectly preserved. No signup, no watermark, no software needed. Works on Windows, Mac, Android, and iPhone.",
             pills: ["No watermark", "DOC & DOCX supported", "Works on any device", "Batch conversion"],
 
 
@@ -453,7 +454,7 @@ export default function WordToPdf({ seo }) {
               {
                 n: "1",
                 title: "Upload Your Word File(s)",
-                desc: "Upload DOC or DOCX files from your device. Multiple Word documents can be added at once for batch PDF conversion. Drag and drop supported on all devices.",
+                desc: "Upload DOC or DOCX files from your phone, laptop, or desktop. Multiple Word documents can be added at once for batch PDF conversion. Drag and drop supported on all devices.",
                 color: "bg-blue-600",
               },
               {
@@ -477,162 +478,143 @@ export default function WordToPdf({ seo }) {
             seoDescription:
               "Everything you need to know about converting DOC and DOCX files to professional PDF documents — free, online, no watermark, no signup required.",
 
-            // seoSections: [
-            //   {
-            //     // ✅ TWEAKED — added "No Sign Up" to strengthen match with GSC query
-            //     // "word to pdf converter free no sign up" (currently position ~17)
-            //     title:
-            //       "Free Word to PDF Converter — Convert DOC & DOCX to PDF Online, No Sign Up, No Watermark",
-            //     text: "Need to share a Word document professionally? PDFLinx lets you convert Word to PDF online for free — instantly, without losing formatting, fonts, tables, or images. Whether it is a DOC or DOCX file, PDFLinx converts it into a clean, print-ready, universally compatible PDF. No signup, no watermark, and no software installation required. The fastest and most reliable free alternative to Adobe Acrobat, Smallpdf, and iLovePDF for everyday Word to PDF conversion.",
-            //   },
-            //   {
-            //     title: "Why Convert Word Documents to PDF?",
-            //     text: "Word documents can look different on different devices depending on fonts, software versions, and screen sizes. PDF format solves this by locking the layout so your document looks exactly the same on every device and operating system. PDFs are also non-editable by default, making them ideal for sharing official documents, contracts, resumes, and reports where you want to protect the content from accidental changes. Most universities, employers, government offices, and clients specifically require PDF format for document submissions.",
-            //   },
-            //   {
-            //     title:
-            //       "How to Convert Word to PDF Without Losing Formatting",
-            //     text: "The most common concern with Word to PDF conversion is whether the original formatting stays intact. PDFLinx uses professional-grade document rendering to preserve fonts, headings, tables, bullet points, images, margins, and page layout with high accuracy. DOCX files — the modern Word format — give the best conversion results. DOC files — the older Word format — are also fully supported and convert cleanly. If you notice any minor spacing differences, simply adjust them in your original Word file and re-convert instantly for free.",
-            //   },
-            //   {
-            //     title: "What is Word to PDF Conversion?",
-            //     text: "Word to PDF conversion transforms editable Microsoft Word documents (.doc, .docx) into fixed, secure, and universally compatible PDF files. Unlike Word documents, PDFs maintain consistent formatting across all devices, operating systems, and screen sizes. They are ideal for professional sharing, printing, archiving, and submitting official documents — because the layout never breaks regardless of which device or software opens the file.",
-            //   },
-            //   {
-            //     title: "Common Use Cases for Word to PDF Conversion",
-            //     text: "✓ Students & Researchers: Submit assignments, theses, and reports in PDF as required by universities and colleges.\n✓ Job Seekers: Convert resumes and CVs to PDF for job applications — formatting never breaks on the recruiter's device.\n✓ Professionals: Share reports, proposals, contracts, and presentations in a secure, read-only format.\n✓ Businesses: Generate invoices, agreements, quotations, and official documents in PDF.\n✓ Teachers & Educators: Create worksheets, exam papers, and study materials in a fixed, printable format.\n✓ Freelancers & Agencies: Deliver client work and project deliverables safely in professional PDF format.",
-            //   },
-            //   {
-            //     // ✅ TWEAKED — leads with "How to Convert Word to PDF on Mobile" to
-            //     // strengthen match with GSC query "how to convert word to pdf in mobile" (position ~19)
-            //     title:
-            //       "How to Convert Word to PDF on Mobile (Android & iPhone) — No App Needed",
-            //     text: "No software installation needed. PDFLinx Word to PDF converter works perfectly on Windows, Mac, Linux, Android, iPhone, iPad, and tablets — directly in your browser. Whether you are on a phone, laptop, or desktop, you can convert DOC and DOCX files to PDF in seconds without downloading any app. It is the easiest way to convert Word to PDF on mobile for free.",
-            //   },
-            //   {
-            //     title:
-            //       "PDFLinx vs Adobe Acrobat vs Smallpdf vs iLovePDF — Free Word to PDF Comparison",
-            //     text: "Adobe Acrobat charges a monthly subscription just to export Word to PDF. Smallpdf and iLovePDF limit free conversions per day and require account creation for batch features. PDFLinx offers unlimited free Word to PDF conversion with no daily limits, no watermark, and no signup — directly in your browser. For anyone looking for the best free Adobe Acrobat alternative or Smallpdf alternative for Word to PDF, PDFLinx is the clear choice for everyday document conversion.",
-            //   },
-            //   {
-            //     title: "Privacy and File Security",
-            //     text: "Your uploaded Word files are processed on secure servers over encrypted HTTPS and automatically deleted after 1 hour. We do not store, share, or access your documents at any point. PDFLinx is built with privacy-first principles — your files stay completely private from upload to download. No human ever views your documents.",
-            //   },
-            // ],
+
+            seoSections: [
+
+              {
+                title:
+                  "Free Word to PDF Converter — Convert DOC & DOCX Online, No Sign Up",
+                text: (
+                  <>
+                    Need to convert a Word document to PDF? PDFLinx is a free Word to PDF
+                    converter that lets you convert DOC and DOCX files online with no sign up,
+                    no watermark, and no software installation. Preserve fonts, tables,
+                    images, spacing, and page layout, then download your PDF instantly.
+                    Whether you need a Word to PDF converter free for personal, academic, or
+                    professional documents, PDFLinx works directly in your browser. You can
+                    also convert Word files to PDF for easy sharing, printing, and
+                    downloading. If you need to convert a PDF back into an editable Word
+                    document, use our{" "}
+                    <a
+                      href="/pdf-to-word"
+                      className="text-blue-600 hover:underline font-medium"
+                    >
+                      PDF to Word converter
+                    </a>
+                    .
+                  </>
+                ),
+              },
 
 
-seoSections: [
+              {
+                title: "Why Convert Word Documents to PDF?",
+                text: (
+                  <>
+                    Word documents can look different on different devices depending on fonts, software versions, and screen sizes. Read our analysis on <a href="/blog/word-to-pdf-windows-vs-mac" className="text-blue-600 hover:underline font-medium">Word to PDF differences on Windows vs Mac</a> to avoid layout bugs. PDF format solves this by locking the layout so your document looks exactly the same on every device. PDFs are also non-editable by default, making them ideal for official documents, contracts, and resumes. If you need to make quick final edits before converting, you can also use our <a href="/edit-pdf" className="text-blue-600 hover:underline font-medium">online PDF Editor</a>.
+                  </>
+                ),
+              },
+              {
+                title:
+                  "How to Convert Word to PDF Without Losing Formatting",
+                text: (
+                  <>
+                    The most common concern with Word to PDF conversion is whether the original formatting stays intact. PDFLinx uses professional-grade document rendering to preserve fonts, headings, tables, bullet points, images, margins, and page layout with high accuracy. Check out our guide on <a href="/blog/word-to-pdf-best-practices" className="text-blue-600 hover:underline font-medium">Word to PDF conversion best practices</a>, read <a href="/blog/convert-word-to-pdf-without-losing-formatting" className="text-blue-600 hover:underline font-medium">how to convert Word to PDF without losing formatting</a>, or troubleshoot using <a href="/blog/why-formatting-breaks-in-word-to-pdf" className="text-blue-600 hover:underline font-medium">why formatting breaks in Word to PDF</a> and <a href="/blog/word-to-pdf-not-working-fix" className="text-blue-600 hover:underline font-medium">how to fix Word to PDF not working</a>.
+                  </>
+                ),
+              },
+              {
+                title: "What is Word to PDF Conversion?",
+                text: (
+                  <>
+                    Word to PDF conversion transforms editable Microsoft Word documents (.doc, .docx) into fixed, secure, and universally compatible PDF files. Unlike Word documents, PDFs maintain consistent formatting across all devices, operating systems, and screen sizes. They are ideal for professional sharing, printing, archiving, and submitting official documents. Once converted, you can easily <a href="/compress-pdf" className="text-blue-600 hover:underline font-medium">compress the PDF file size</a> if it is too large for email attachments.
+                  </>
+                ),
+              },
 
-  // {
-  //   // ✅ TWEAKED — added "No Sign Up" to strengthen match with GSC query
-  //   // "word to pdf converter free no sign up" (currently position ~17)
-  //   title:
-  //     "Free Word to PDF Converter — Convert DOC & DOCX to PDF Online, No Sign Up, No Watermark",
-  //   text: (
-  //     <>
-  //       Need to share a Word document professionally? PDFLinx lets you convert Word to PDF online for free — instantly, without losing formatting, fonts, tables, or images. Whether it is a DOC or DOCX file, PDFLinx converts it into a clean, print-ready, universally compatible PDF. No signup, no watermark, and no software installation required. Learn more about <a href="/blog/word-to-pdf-free-no-signup" className="text-blue-600 hover:underline font-medium">free Word to PDF conversion without signup</a>. If you ever need to turn it back into an editable file, you can use our <a href="/pdf-to-word" className="text-blue-600 hover:underline font-medium">PDF to Word converter</a> or try <a href="/pdf-to-word-for-students" className="text-blue-600 hover:underline font-medium">PDF to Word for Students</a>.
-  //     </>
-  //   ),
-  // },
+              // ✅ NEW — targets "how to save word as pdf" cluster (US/India: save, export, mac)
+              {
+                title:
+                  "How to Save a Word Document as PDF (Windows, Mac, iPhone & Android)",
+                text: (
+                  <>
+                    There are two simple ways to save a Word document as PDF. <strong>Inside Microsoft Word on Windows:</strong> open your file, choose File → Save As, select PDF from the file type list, and click Save. You can also use File → Export → Create PDF/XPS to export a Word doc to PDF. <strong>On a Mac or MacBook:</strong> use File → Save As and pick PDF as the file format, or File → Print → Save as PDF. <strong>Without Word, or on a phone:</strong> upload your DOC or DOCX file to PDFLinx and download the PDF in seconds — it is the quickest way to save a Word file as PDF on iPhone, Android, or any computer, free and with no sign up. Need a smaller file for email? <a href="/compress-pdf" className="text-blue-600 hover:underline font-medium">Compress the PDF</a> after saving.
+                  </>
+                ),
+              },
 
-  {
-  title:
-    "Free Word to PDF Converter — Convert DOC & DOCX Online, No Sign Up",
-  text: (
-    <>
-      Need to convert a Word document to PDF? PDFLinx is a free Word to PDF
-      converter that lets you convert DOC and DOCX files online with no sign up,
-      no watermark, and no software installation. Preserve fonts, tables,
-      images, spacing, and page layout, then download your PDF instantly.
-      Whether you need a Word to PDF converter free for personal, academic, or
-      professional documents, PDFLinx works directly in your browser. You can
-      also convert Word files to PDF for easy sharing, printing, and
-      downloading. If you need to convert a PDF back into an editable Word
-      document, use our{" "}
-      <a
-        href="/pdf-to-word"
-        className="text-blue-600 hover:underline font-medium"
-      >
-        PDF to Word converter
-      </a>
-      .
-    </>
-  ),
-},
+              {
+                title: "Common Use Cases for Word to PDF Conversion",
+                text: (
+                  <>
+                    ✓ <strong>Students & Researchers:</strong> Submit assignments, theses, and reports in PDF — check out our guide on <a href="/blog/word-to-pdf-for-students" className="text-blue-600 hover:underline font-medium">Word to PDF for students</a>.<br />
+                    ✓ <strong>Job Seekers:</strong> Convert resumes and CVs to PDF for job applications — formatting never breaks on the recruiter's device.<br />
+                    ✓ <strong>Professionals:</strong> Share reports, proposals, contracts, and presentations in a secure, read-only format. You can also <a href="/merge-pdf" className="text-blue-600 hover:underline font-medium">merge multiple PDF files</a> into a single package.<br />
+                    ✓ <strong>Businesses:</strong> Generate invoices, agreements, quotations, and official documents in PDF.<br />
+                    ✓ <strong>Teachers & Educators:</strong> Create worksheets, exam papers, and study materials in a fixed, printable format.<br />
+                    ✓ <strong>Freelancers & Agencies:</strong> Deliver client work safely or digitally <a href="/sign-pdf" className="text-blue-600 hover:underline font-medium">sign PDF documents online</a>.
+                  </>
+                ),
+              },
 
+              // ✅ NEW — targets "combine/merge word files to pdf" cluster (honest: convert, then merge)
+              {
+                title: "How to Combine Multiple Word Files into One PDF",
+                text: (
+                  <>
+                    Want to merge Word files to PDF? PDFLinx converts each Word document into its own PDF — upload several DOC or DOCX files at once and they download together in a single ZIP. To combine Word docs into one PDF, first convert your files here, then open our{" "}
+                    <a href="/merge-pdf" className="text-blue-600 hover:underline font-medium">Merge PDF tool</a>{" "}
+                    and join the converted PDFs in the order you want. It takes about a minute, needs no sign up, and works on phone and desktop.
+                  </>
+                ),
+              },
 
-  {
-    title: "Why Convert Word Documents to PDF?",
-    text: (
-      <>
-        Word documents can look different on different devices depending on fonts, software versions, and screen sizes. Read our analysis on <a href="/blog/word-to-pdf-windows-vs-mac" className="text-blue-600 hover:underline font-medium">Word to PDF differences on Windows vs Mac</a> to avoid layout bugs. PDF format solves this by locking the layout so your document looks exactly the same on every device. PDFs are also non-editable by default, making them ideal for official documents, contracts, and resumes. If you need to make quick final edits before converting, you can also use our <a href="/edit-pdf" className="text-blue-600 hover:underline font-medium">online PDF Editor</a>.
-      </>
-    ),
-  },
-  {
-    title:
-      "How to Convert Word to PDF Without Losing Formatting",
-    text: (
-      <>
-        The most common concern with Word to PDF conversion is whether the original formatting stays intact. PDFLinx uses professional-grade document rendering to preserve fonts, headings, tables, bullet points, images, margins, and page layout with high accuracy. Check out our guide on <a href="/blog/word-to-pdf-best-practices" className="text-blue-600 hover:underline font-medium">Word to PDF conversion best practices</a>, read <a href="/blog/convert-word-to-pdf-without-losing-formatting" className="text-blue-600 hover:underline font-medium">how to convert Word to PDF without losing formatting</a>, or troubleshoot using <a href="/blog/why-formatting-breaks-in-word-to-pdf" className="text-blue-600 hover:underline font-medium">why formatting breaks in Word to PDF</a> and <a href="/blog/word-to-pdf-not-working-fix" className="text-blue-600 hover:underline font-medium">how to fix Word to PDF not working</a>.
-      </>
-    ),
-  },
-  {
-    title: "What is Word to PDF Conversion?",
-    text: (
-      <>
-        Word to PDF conversion transforms editable Microsoft Word documents (.doc, .docx) into fixed, secure, and universally compatible PDF files. Unlike Word documents, PDFs maintain consistent formatting across all devices, operating systems, and screen sizes. They are ideal for professional sharing, printing, archiving, and submitting official documents. Once converted, you can easily <a href="/compress-pdf" className="text-blue-600 hover:underline font-medium">compress the PDF file size</a> if it is too large for email attachments.
-      </>
-    ),
-  },
-  {
-    title: "Common Use Cases for Word to PDF Conversion",
-    text: (
-      <>
-        ✓ <strong>Students & Researchers:</strong> Submit assignments, theses, and reports in PDF — check out our guide on <a href="/blog/word-to-pdf-for-students" className="text-blue-600 hover:underline font-medium">Word to PDF for students</a>.<br />
-        ✓ <strong>Job Seekers:</strong> Convert resumes and CVs to PDF for job applications — formatting never breaks on the recruiter's device.<br />
-        ✓ <strong>Professionals:</strong> Share reports, proposals, contracts, and presentations in a secure, read-only format. You can also <a href="/merge-pdf" className="text-blue-600 hover:underline font-medium">merge multiple PDF files</a> into a single package.<br />
-        ✓ <strong>Businesses:</strong> Generate invoices, agreements, quotations, and official documents in PDF.<br />
-        ✓ <strong>Teachers & Educators:</strong> Create worksheets, exam papers, and study materials in a fixed, printable format.<br />
-        ✓ <strong>Freelancers & Agencies:</strong> Deliver client work safely or digitally <a href="/sign-pdf" className="text-blue-600 hover:underline font-medium">sign PDF documents online</a>.
-      </>
-    ),
-  },
-  {
-    // ✅ TWEAKED — leads with "How to Convert Word to PDF on Mobile" to
-    // strengthen match with GSC query "how to convert word to pdf in mobile" (position ~19)
-    title:
-      "How to Convert Word to PDF on Mobile (Android & iPhone) — No App Needed",
-    text: (
-      <>
-        No software installation needed. PDFLinx Word to PDF converter works perfectly on Windows, Mac, Linux, Android, iPhone, iPad, and tablets — directly in your browser. Whether you are on a phone, laptop, or desktop, you can convert DOC and DOCX files to PDF in seconds without downloading any app. Read our full guide on <a href="/blog/word-to-pdf-on-mobile" className="text-blue-600 hover:underline font-medium">how to convert Word to PDF on mobile</a>. It is the easiest way to convert Word to PDF on mobile for free.
-      </>
-    ),
-  },
-  {
-    title:
-      "PDFLinx vs Adobe Acrobat vs Smallpdf vs iLovePDF — Free Word to PDF Comparison",
-    text: (
-      <>
-        Adobe Acrobat charges a monthly subscription just to export Word to PDF. Smallpdf and iLovePDF limit free conversions per day and require account creation for batch features. Read our breakdown on <a href="/blog/free-vs-paid-word-to-pdf-tools" className="text-blue-600 hover:underline font-medium">free vs paid Word to PDF tools</a>. PDFLinx offers unlimited free Word to PDF conversion with no daily limits, no watermark, and no signup — directly in your browser. Check our detailed <a href="/compare/pdflinx-vs-ilovepdf" className="text-blue-600 hover:underline font-medium">PDFLinx vs iLovePDF</a> and <a href="/compare/pdflinx-vs-smallpdf" className="text-blue-600 hover:underline font-medium">PDFLinx vs Smallpdf</a> comparisons for a complete feature matrix.
-      </>
-    ),
-  },
-  {
-    title: "Privacy and File Security",
-    text: (
-      <>
-        Your uploaded Word files are processed on secure servers over encrypted HTTPS and automatically deleted after 1 hour. We do not store, share, or access your documents at any point. PDFLinx is built with privacy-first principles — your files stay completely private from upload to download. No human ever views your documents. Need extra security? Secure your final PDF with a password using our <a href="/protect-pdf" className="text-blue-600 hover:underline font-medium">Protect PDF tool</a> or explore all tools on our <a href="/free-pdf-tools" className="text-blue-600 hover:underline font-medium">free PDF tools directory</a>.
-      </>
-    ),
-  },
-],
+              {
+                // ✅ TWEAKED — leads with "How to Convert Word to PDF on Mobile" to
+                // strengthen match with GSC query "how to convert word to pdf in mobile" (position ~19)
+                // ✅ NEW TEXT — added iPhone / Android / Mac steps (iphone, macbook keywords)
+                title:
+                  "How to Convert Word to PDF on Mobile (Android & iPhone) — No App Needed",
+                text: (
+                  <>
+                    No software installation needed. PDFLinx Word to PDF converter works perfectly on Windows, Mac, Linux, Android, iPhone, iPad, and tablets — directly in your browser. Whether you are on a phone, laptop, or desktop, you can convert DOC and DOCX files to PDF in seconds without downloading any app. <strong>On iPhone:</strong> open Safari, tap the upload area, pick your Word file from the Files app or iCloud Drive, tap Convert to PDF, and download — the PDF is saved in Files. <strong>On Android:</strong> open Chrome, choose your document from your phone storage or Google Drive, convert, and the PDF lands in your Downloads folder. <strong>On a Mac or MacBook:</strong> the same steps work in Safari or Chrome, even without Microsoft Word installed. Read our full guide on <a href="/blog/word-to-pdf-on-mobile" className="text-blue-600 hover:underline font-medium">how to convert Word to PDF on mobile</a>. It is the easiest way to convert Word to PDF on mobile for free.
+                  </>
+                ),
+              },
+
+              // ✅ NEW — targets "convert word to pdf without software / without ms word"
+              {
+                title: "Convert Word to PDF Without Software or Microsoft Word",
+                text: (
+                  <>
+                    You do not need Microsoft Word, LibreOffice, or any app to convert a Word document to PDF. PDFLinx does the whole job online in your browser, so it works on a shared computer, a school or office laptop where you cannot install software, or a phone with little storage. There is no sign up and no watermark, and your files are deleted automatically after 1 hour.
+                  </>
+                ),
+              },
+
+              {
+                title:
+                  "PDFLinx vs Adobe Acrobat vs Smallpdf vs iLovePDF — Free Word to PDF Comparison",
+                text: (
+                  <>
+                    Adobe Acrobat charges a monthly subscription just to export Word to PDF. Smallpdf and iLovePDF limit free conversions per day and require account creation for batch features. Read our breakdown on <a href="/blog/free-vs-paid-word-to-pdf-tools" className="text-blue-600 hover:underline font-medium">free vs paid Word to PDF tools</a>. PDFLinx offers unlimited free Word to PDF conversion with no daily limits, no watermark, and no signup — directly in your browser. Check our detailed <a href="/compare/pdflinx-vs-ilovepdf" className="text-blue-600 hover:underline font-medium">PDFLinx vs iLovePDF</a> and <a href="/compare/pdflinx-vs-smallpdf" className="text-blue-600 hover:underline font-medium">PDFLinx vs Smallpdf</a> comparisons for a complete feature matrix.
+                  </>
+                ),
+              },
+              {
+                title: "Privacy and File Security",
+                text: (
+                  <>
+                    Your uploaded Word files are processed on secure servers over encrypted HTTPS and automatically deleted after 1 hour. We do not store, share, or access your documents at any point. PDFLinx is built with privacy-first principles — your files stay completely private from upload to download. No human ever views your documents. Need extra security? Secure your final PDF with a password using our <a href="/protect-pdf" className="text-blue-600 hover:underline font-medium">Protect PDF tool</a> or explore all tools on our <a href="/free-pdf-tools" className="text-blue-600 hover:underline font-medium">free PDF tools directory</a>.
+                  </>
+                ),
+              },
+            ],
 
 
-            
-            // ✅ FIXED — now points at the shared wordToPdfFaqs array (was a duplicated
-            // hardcoded list before; kept in sync with the schema above)
+
+            // ✅ Points at the shared wordToPdfFaqs array (kept in sync with the schema above)
             faqs: wordToPdfFaqs,
 
             ctaTitle: (
@@ -654,5 +636,707 @@ seoSections: [
     </>
   );
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// "use client";
+
+// import { useState } from "react";
+// // import { FileText } from "lucide-react";
+// import Script from "next/script";
+// import RelatedToolsSection from "@/components/RelatedTools";
+// import { useProgressBar } from "@/hooks/useProgressBar";
+// // import { useToolFlow } from "@/hooks/useToolFlow";
+// import { useToolFlow, STEPS } from "@/hooks/useToolFlow";
+// import ToolPageLayout from "@/components/ToolFlow/ToolPageLayout";
+
+// // import {
+// // FileText, FileSpreadsheet, Image as ImageIcon,
+// // FilePlus, Minimize2, Shield, Merge, FileType, Code
+// // } from "lucide-react";
+// import {
+//   FileText,
+//   FileSpreadsheet,
+//   FileImage,        // ← Presentation ki jagah
+//   Image as ImageIcon,
+//   Code,
+//   FileType,
+//   Minimize2,
+//   GitMerge,
+// } from "lucide-react";
+// import JsonLd from "@/components/JsonLd";
+// import { buildFaqSchema } from "@/lib/buildFaqSchema";
+
+
+
+
+
+// // ── Config ───────────────────────────────────────────
+// const DONE_LINKS = [
+//   { label: "PDF to Word", href: "/pdf-to-word", icon: <FileText className="h-4 w-4 text-blue-500" /> },
+//   { label: "Excel to PDF", href: "/excel-pdf", icon: <FileSpreadsheet className="h-4 w-4 text-emerald-500" /> },
+//   // { label: "PPT to PDF",     href: "/ppt-to-pdf",     icon: <Presentation    className="h-4 w-4 text-orange-500"  /> },
+//   { label: "PPT to PDF", href: "/ppt-to-pdf", icon: <FileImage className="h-4 w-4 text-orange-500" /> },
+//   { label: "Image to PDF", href: "/image-to-pdf", icon: <ImageIcon className="h-4 w-4 text-pink-500" /> },
+//   { label: "HTML to PDF", href: "/html-to-pdf", icon: <Code className="h-4 w-4 text-indigo-500" /> },
+//   { label: "Text to PDF", href: "/text-to-pdf", icon: <FileType className="h-4 w-4 text-yellow-500" /> },
+//   { label: "Compress PDF", href: "/compress-pdf", icon: <Minimize2 className="h-4 w-4 text-green-500" /> },
+//   { label: "Merge PDF", href: "/merge-pdf", icon: <GitMerge className="h-4 w-4 text-purple-500" /> },
+// ];
+
+
+
+// const SIDEBAR_NOTICE = (
+//   <>
+//     <p className="text-sm font-semibold text-blue-800">
+//       ℹ️ DOC & DOCX Supported
+//     </p>
+//     <ul className="mt-3 list-disc space-y-2 pl-4 text-xs text-slate-600">
+//       <li>Both old DOC and modern DOCX formats work</li>
+//       <li>Single file → PDF directly</li>
+//       <li>Multiple files → ZIP with all PDFs</li>
+//     </ul>
+//   </>
+// );
+
+// const SIDEBAR_FEATURES = [
+//   "✓ No account",
+//   "✓ No watermark",
+//   "✓ Auto-deleted after 1 hour",
+//   "✓ 100% free",
+//   "✓ Preserves formatting",
+//   "✓ Works on all devices",
+// ];
+// // ───────────────────────────────────────────
+
+// // ↓ YAHAN DAALO — SIDEBAR_FEATURES ke turant baad
+// const OPTIONS_SLOT = (
+//   <div className="rounded-lg border border-slate-200 bg-slate-50 p-4 text-sm text-slate-700 space-y-2">
+//     <p className="font-semibold text-slate-800">📄 About this conversion</p>
+//     <ul className="space-y-1.5 text-xs text-slate-600">
+//       <li>✓ DOC & DOCX both supported</li>
+//       <li>✓ Single file → PDF directly</li>
+//       <li>✓ Multiple files → ZIP with all PDFs</li>
+//       <li>✓ Fonts, tables & images preserved</li>
+//       <li>✓ No quality loss</li>
+//     </ul>
+//   </div>
+// );
+
+// // ✅ NEW — SINGLE SOURCE OF TRUTH FOR FAQs
+// // Used by BOTH the FAQ schema (Script tag below) AND the visible FAQ section.
+// // This fixes the earlier mismatch where the schema only had 4 Qs but the page showed 14.
+
+
+// const wordToPdfFaqs = [
+//   {
+//     q: "Is PDFLinx Word to PDF converter free?",
+//     a: "Yes, completely free. No hidden charges, no premium plans, and no limits on the number of Word files you can convert to PDF.",
+//   },
+//   {
+//     q: "Do I need to sign up to convert Word to PDF?",
+//     a: "No account or signup required. Upload your Word file and convert to PDF instantly — no email, no registration needed.",
+//   },
+//   {
+//     q: "Can I convert both DOC and DOCX files to PDF?",
+//     a: "Yes, both old .DOC and modern .DOCX Word formats are fully supported. Both convert into clean, professional PDF files.",
+//   },
+//   {
+//     q: "Will formatting be preserved when converting Word to PDF?",
+//     a: "Yes. PDFLinx preserves fonts, images, tables, headings, spacing, and overall page layout. DOCX files give the best formatting accuracy. For complex multi-column layouts, minor adjustments may be needed in your original Word file before re-converting.",
+//   },
+//   {
+//     q: "Does PDFLinx add any watermark to the converted PDF?",
+//     a: "No watermarks, ever. The final PDF is 100% clean, professional, and original — no PDFLinx branding added.",
+//   },
+//   {
+//     q: "Can I convert multiple Word files to PDF at once?",
+//     a: (
+//       <>
+//         Yes. Upload multiple DOC or DOCX files together for batch conversion. All converted PDFs are automatically packaged into a single ZIP file for easy download. Want everything in one PDF instead? Convert first, then{" "}
+//         <a href="/merge-pdf" className="text-blue-600 hover:underline font-medium">
+//           merge the PDFs
+//         </a>
+//         .
+//       </>
+//     ),
+//   },
+//   {
+//     q: "Can I use the Word to PDF converter on mobile — iPhone and Android?",
+//     a: "Yes. PDFLinx works perfectly in the browser on iPhone, Android, iPad, Windows, and Mac — no app download or installation required.",
+//   },
+//   {
+//     q: "Do I need Microsoft Word installed to convert Word to PDF?",
+//     a: "No. The entire conversion process happens online in your browser. Microsoft Word, LibreOffice, or any other software is not required.",
+//   },
+//   {
+//     q: "What is the maximum file size for Word to PDF conversion?",
+//     a: (
+//       <>
+//         Up to 10 MB per single file and up to 50 MB combined for batch uploads. For larger files, try splitting the content across multiple Word files, or{" "}
+//         <a href="/compress-pdf" className="text-blue-600 hover:underline font-medium">
+//           compress the PDF
+//         </a>{" "}
+//         after converting.
+//       </>
+//     ),
+//   },
+//   {
+//     q: "What happens if I upload only one Word file?",
+//     a: "It converts and downloads directly as a single PDF file — no ZIP packaging needed.",
+//   },
+//   {
+//     q: "Is PDFLinx better than iLovePDF or Smallpdf for free Word to PDF conversion?",
+//     a: "Yes. PDFLinx offers unlimited free conversions with no daily limits, no watermark, and no account required. iLovePDF and Smallpdf restrict batch conversion and advanced features behind paid plans.",
+//   },
+//   {
+//     q: "How can I reduce the size of the converted PDF?",
+//     a: (
+//       <>
+//         After converting, use our free{" "}
+//         <a href="/compress-pdf" className="text-blue-600 hover:underline font-medium">
+//           Compress PDF tool
+//         </a>{" "}
+//         to reduce file size while maintaining good quality — no extra software needed.
+//       </>
+//     ),
+//   },
+//   {
+//     q: "Why should I use PDF format instead of sending a Word file?",
+//     a: (
+//       <>
+//         PDF format ensures your document looks exactly the same on every device, OS, and screen size. Unlike Word files, PDFs cannot be accidentally edited and are universally accepted by employers, universities, government offices, and clients. You can also{" "}
+//         <a href="/protect-pdf" className="text-blue-600 hover:underline font-medium">
+//           protect your PDF with a password
+//         </a>{" "}
+//         or{" "}
+//         <a href="/sign-pdf" className="text-blue-600 hover:underline font-medium">
+//           sign it digitally
+//         </a>{" "}
+//         before sharing.
+//       </>
+//     ),
+//   },
+//   {
+//     q: "What is the difference between DOC and DOCX for PDF conversion?",
+//     a: (
+//       <>
+//         DOCX is the modern Word format (.docx) used in Word 2007 and later — it gives the best formatting accuracy when converting to PDF. DOC is the older Word format (.doc) used in Word 2003 and earlier — it is also fully supported and converts cleanly on PDFLinx. Need to go the other way? Use{" "}
+//         <a href="/pdf-to-word" className="text-blue-600 hover:underline font-medium">
+//           PDF to Word
+//         </a>
+//         .
+//       </>
+//     ),
+//   },
+
+//   // ---- Roman Urdu / Hindi FAQs ----
+//   {
+//     q: "Word file ko PDF mein convert kaise kare?",
+//     a: (
+//       <>
+//         Bohat aasan hai: 1) PDFLinx ke Word to PDF tool par apni .doc ya .docx file upload karein. 2) Convert ka button dabayen. 3) Chand second mein PDF tayyar ho jayegi, usay download kar lein. Na account chahiye, na Microsoft Word install karna parta hai. Agar PDF ko wapas edit karna ho to{" "}
+//         <a href="/pdf-to-word" className="text-blue-600 hover:underline font-medium">
+//           PDF to Word
+//         </a>{" "}
+//         use karein.
+//       </>
+//     ),
+//   },
+//   {
+//     q: "Mobile mein Word file ko PDF mein kaise badlen?",
+//     a: "Apne phone (Android ya iPhone) ke browser mein PDFLinx kholein, Word file select karein aur Convert dabayen. Koi app download karne ki zarurat nahi. Convert hone ke baad PDF seedha phone mein download ho jati hai, jise aap WhatsApp ya email se bhej sakte hain.",
+//   },
+//   {
+//     q: "Kya ye free hai, aur account banana parta hai?",
+//     a: "Ji haan, bilkul free hai. Na account banana parta hai, na email dena parta hai, aur PDF par koi watermark bhi nahi lagta.",
+//   },
+//   {
+//     q: "Word se bani PDF ki size kam kaise karein?",
+//     a: (
+//       <>
+//         Agar PDF email ya WhatsApp ke liye bari ho jaye to convert karne ke baad{" "}
+//         <a href="/compress-pdf" className="text-blue-600 hover:underline font-medium">
+//           Compress PDF
+//         </a>{" "}
+//         tool se size kam kar lein. Quality bhi theek rehti hai. Zarurat ho to PDF par{" "}
+//         <a href="/protect-pdf" className="text-blue-600 hover:underline font-medium">
+//           password bhi laga sakte hain
+//         </a>
+//         .
+//       </>
+//     ),
+//   },
+// ];
+
+
+// export default function WordToPdf({ seo }) {
+//   const flow = useToolFlow();
+//   const { progress, startProgress, completeProgress, cancelProgress } =
+//     useProgressBar();
+
+//   const [downloadUrl, setDownloadUrl] = useState(null);
+//   const [downloadFileName, setDownloadFileName] = useState("pdflinx-word-to-pdf.pdf");
+
+//   const handleRemoveFile = (index) => {
+//     const updated = flow.files.filter((_, i) => i !== index);
+//     if (updated.length === 0) flow.reset();
+//     else flow.selectFiles(updated);
+//   };
+
+//   const handleConvert = async () => {
+//     if (!flow.files.length) return alert("Please select a Word file first!");
+
+//     flow.startProcessing();
+//     startProgress();
+
+//     const formData = new FormData();
+//     for (const f of flow.files) formData.append("files", f);
+
+//     try {
+//       const res = await fetch(
+//         `${process.env.NEXT_PUBLIC_BACKEND_URL}/convert/word-to-pdf`,
+//         { method: "POST", body: formData }
+//       );
+
+//       if (!res.ok) {
+//         let msg = "Conversion failed";
+//         try {
+//           const maybeJson = await res.json();
+//           msg = maybeJson?.error || msg;
+//         } catch { }
+//         throw new Error(msg);
+//       }
+
+
+
+//       const data = await res.json();
+//       const directUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL}${data.download}`;
+
+//       setDownloadUrl(directUrl);
+//       setDownloadFileName(data.filename);
+
+
+//       const blobRes = await fetch(directUrl);
+//       // console.log(blobRes);
+
+//       const blob = await blobRes.blob();
+//       const blobUrl = URL.createObjectURL(blob);
+//       const a = document.createElement("a");
+//       a.href = blobUrl;
+//       a.download = data.filename;
+//       document.body.appendChild(a);
+//       a.click();
+//       document.body.removeChild(a);
+//       URL.revokeObjectURL(blobUrl);
+
+
+//       completeProgress();
+//       flow.finishSuccess();
+
+
+//     } catch (err) {
+//       cancelProgress();
+//       flow.handleError(err.message || "Something went wrong, please try again.");
+//     }
+//   };
+
+
+//   const handleDownload = async () => {
+//     if (!downloadUrl) return;
+//     try {
+//       const blobRes = await fetch(downloadUrl);
+//       const blob = await blobRes.blob();
+//       const blobUrl = URL.createObjectURL(blob);
+//       const a = document.createElement("a");
+//       a.href = blobUrl;
+//       a.download = downloadFileName;
+//       document.body.appendChild(a);
+//       a.click();
+//       document.body.removeChild(a);
+//       URL.revokeObjectURL(blobUrl);
+//     } catch {
+//       alert("Download failed. Please try again.");
+//     }
+//   };
+
+// // function extractText(node) {
+// //   if (node == null || typeof node === "boolean") return "";
+// //   if (typeof node === "string" || typeof node === "number") return String(node);
+// //   if (Array.isArray(node)) return node.map(extractText).join("");
+// //   if (node.props) return extractText(node.props.children);
+// //   return "";
+// // }
+
+//   // ── END API LOGIC ────────────────────────
+
+//   return (
+//     <>
+
+// <JsonLd data={buildFaqSchema(wordToPdfFaqs)} />
+
+// {/* <script
+//   id="faq-schema-word-to-pdf"
+//   type="application/ld+json"
+//   dangerouslySetInnerHTML={{
+//     __html: JSON.stringify({
+//       "@context": "https://schema.org",
+//       "@type": "FAQPage",
+//       mainEntity: wordToPdfFaqs.map((f) => ({
+//         "@type": "Question",
+//         name: f.q,
+//         acceptedAnswer: { "@type": "Answer", text: extractText(f.a) },
+//       })),
+//     }),
+//   }}
+// /> */}
+
+
+//       {/* ── TOOL UI ── */}
+//       <ToolPageLayout
+//         // Title + Tagline
+//         title={seo?.h1 || "Word to PDF Converter (Free & Online)"}
+//         tagline="No Signup · No Watermark · Instant Download"
+//         // uploadTitle="Drop your Word file here"
+//         // uploadSubtitle="or click to browse — DOC/DOCX supported"
+//         // File input
+//         accept=".doc,.docx"
+//         multiple={true}
+//         // Buttons
+//         convertLabel="Convert to PDF"
+//         // Flow state
+//         flow={flow}
+//         progress={progress}
+//         onRemoveFile={handleRemoveFile}
+//         onConvert={handleConvert}
+//         onDownload={handleDownload}
+//         doneLinks={DONE_LINKS}
+//         sidebarLinks={DONE_LINKS}
+//         // Options Step
+//         optionsTitle="Conversion options"
+//         showOutputFormat={false}
+//         showPreserveLayout={false}
+//         optionsSlot={OPTIONS_SLOT}
+//         optionSectionLabel=""
+//         // optionsSlot={null}
+//         // Processing Step
+//         processingTitle="Converting to PDF"
+//         processingDescription="Please wait while we prepare your PDF document."
+//         processingStages={["Uploading file", "Converting to PDF", "Finalising"]}
+//         // Done Step
+//         doneTitle="Your PDF is ready"
+//         doneDescription="Your Word document has been converted to PDF successfully."
+//         doneFileName="converted.pdf"
+//         downloadLabel="Download PDF"
+//         resetLabel="Convert another file"
+//         // Sidebar
+//         sidebarTitle="Word to PDF"
+//         sidebarIcon={<FileText className="h-5 w-5 text-blue-500" />}
+//         sidebarDescription="Convert Word documents to PDF instantly — formatting preserved."
+//         sidebarNotice={SIDEBAR_NOTICE}
+//         sidebarFeatures={SIDEBAR_FEATURES}
+
+//         // uploadLanding={true}
+//         uploadTitle="Drop your Word file here"
+//         uploadSubtitle="or click to browse — DOC/DOCX supported"
+//         uploadInfo={
+//           <>
+//             <p>⏱️ Multiple files may take up to 1 minute — don&apos;t close this tab</p>
+//             <p className="mt-1">
+//               🔢 Max 10 Word files at once · Single file → PDF · Multiple → ZIP
+//             </p>
+//           </>
+//         }
+
+//         uploadLanding={{
+//           content: {
+//             relatedTools: DONE_LINKS,
+//             eyebrow: "WORD TO PDF CONVERTER",
+
+//             breadcrumbCurrent: "Word to PDF Converter",
+
+//             heroBadge: "✦ 100% Free · No Signup · No Watermark",
+
+//             heroTitle: (
+//               <>
+//                 Word to PDF Converter —{" "}
+//                 <em className="font-bold text-[#e8420a] sm:italic">
+//                   Convert DOC & DOCX to PDF Free
+//                 </em>
+//               </>
+//             ),
+//             heroDescription:
+//               "Convert Word documents (DOC and DOCX) to PDF online for free — fonts, tables, images, and layout perfectly preserved. No signup, no watermark, no software needed. Works on Windows, Mac, Android, and iPhone.",
+//             pills: ["No watermark", "DOC & DOCX supported", "Works on any device", "Batch conversion"],
+
+
+//             trustPills: ["100% Free", "No Sign Up", "No Watermark"],
+
+//             uploadTitle: "Drop your Word file here",
+//             uploadSubtitle: "or click to browse — DOC & DOCX supported",
+
+//             noticeTitle: "DOC & DOCX Supported",
+//             noticeItems: [
+//               "Both DOC and DOCX files supported",
+//               "Single file → PDF",
+//               "Multiple files → ZIP",
+//             ],
+
+//             rating: "4.9/5",
+//             ratingText: "Trusted by 50,000+ users monthly",
+
+//             howToEyebrow: "How It Works",
+//             howToTitle: "How to Convert Word to PDF — 3 Simple Steps",
+//             howToSubtitle:
+//               "No learning curve. Upload, convert, download — done in under 30 seconds.",
+
+//             howToSteps: [
+//               {
+//                 n: "1",
+//                 title: "Upload Your Word File(s)",
+//                 desc: "Upload DOC or DOCX files from your device. Multiple Word documents can be added at once for batch PDF conversion. Drag and drop supported on all devices.",
+//                 color: "bg-blue-600",
+//               },
+//               {
+//                 n: "2",
+//                 title: "Start the Conversion",
+//                 desc: "Click Convert to PDF — PDFLinx processes your Word documents and preserves all formatting, fonts, tables, images, and page layout automatically.",
+//                 color: "bg-purple-600",
+//               },
+//               {
+//                 n: "3",
+//                 title: "Download Your PDF",
+//                 desc: "Single file downloads instantly as PDF. Multiple converted files are automatically packaged into a ZIP for easy download.",
+//                 color: "bg-emerald-600",
+//               },
+//             ],
+
+//             whyTitle: "Why PDFLinx is the Best Free Word to PDF Converter",
+
+//             seoBadge: "Word to PDF Guide",
+//             seoTitle: "Complete Guide to Word to PDF Conversion",
+//             seoDescription:
+//               "Everything you need to know about converting DOC and DOCX files to professional PDF documents — free, online, no watermark, no signup required.",
+
+//             // seoSections: [
+//             //   {
+//             //     // ✅ TWEAKED — added "No Sign Up" to strengthen match with GSC query
+//             //     // "word to pdf converter free no sign up" (currently position ~17)
+//             //     title:
+//             //       "Free Word to PDF Converter — Convert DOC & DOCX to PDF Online, No Sign Up, No Watermark",
+//             //     text: "Need to share a Word document professionally? PDFLinx lets you convert Word to PDF online for free — instantly, without losing formatting, fonts, tables, or images. Whether it is a DOC or DOCX file, PDFLinx converts it into a clean, print-ready, universally compatible PDF. No signup, no watermark, and no software installation required. The fastest and most reliable free alternative to Adobe Acrobat, Smallpdf, and iLovePDF for everyday Word to PDF conversion.",
+//             //   },
+//             //   {
+//             //     title: "Why Convert Word Documents to PDF?",
+//             //     text: "Word documents can look different on different devices depending on fonts, software versions, and screen sizes. PDF format solves this by locking the layout so your document looks exactly the same on every device and operating system. PDFs are also non-editable by default, making them ideal for sharing official documents, contracts, resumes, and reports where you want to protect the content from accidental changes. Most universities, employers, government offices, and clients specifically require PDF format for document submissions.",
+//             //   },
+//             //   {
+//             //     title:
+//             //       "How to Convert Word to PDF Without Losing Formatting",
+//             //     text: "The most common concern with Word to PDF conversion is whether the original formatting stays intact. PDFLinx uses professional-grade document rendering to preserve fonts, headings, tables, bullet points, images, margins, and page layout with high accuracy. DOCX files — the modern Word format — give the best conversion results. DOC files — the older Word format — are also fully supported and convert cleanly. If you notice any minor spacing differences, simply adjust them in your original Word file and re-convert instantly for free.",
+//             //   },
+//             //   {
+//             //     title: "What is Word to PDF Conversion?",
+//             //     text: "Word to PDF conversion transforms editable Microsoft Word documents (.doc, .docx) into fixed, secure, and universally compatible PDF files. Unlike Word documents, PDFs maintain consistent formatting across all devices, operating systems, and screen sizes. They are ideal for professional sharing, printing, archiving, and submitting official documents — because the layout never breaks regardless of which device or software opens the file.",
+//             //   },
+//             //   {
+//             //     title: "Common Use Cases for Word to PDF Conversion",
+//             //     text: "✓ Students & Researchers: Submit assignments, theses, and reports in PDF as required by universities and colleges.\n✓ Job Seekers: Convert resumes and CVs to PDF for job applications — formatting never breaks on the recruiter's device.\n✓ Professionals: Share reports, proposals, contracts, and presentations in a secure, read-only format.\n✓ Businesses: Generate invoices, agreements, quotations, and official documents in PDF.\n✓ Teachers & Educators: Create worksheets, exam papers, and study materials in a fixed, printable format.\n✓ Freelancers & Agencies: Deliver client work and project deliverables safely in professional PDF format.",
+//             //   },
+//             //   {
+//             //     // ✅ TWEAKED — leads with "How to Convert Word to PDF on Mobile" to
+//             //     // strengthen match with GSC query "how to convert word to pdf in mobile" (position ~19)
+//             //     title:
+//             //       "How to Convert Word to PDF on Mobile (Android & iPhone) — No App Needed",
+//             //     text: "No software installation needed. PDFLinx Word to PDF converter works perfectly on Windows, Mac, Linux, Android, iPhone, iPad, and tablets — directly in your browser. Whether you are on a phone, laptop, or desktop, you can convert DOC and DOCX files to PDF in seconds without downloading any app. It is the easiest way to convert Word to PDF on mobile for free.",
+//             //   },
+//             //   {
+//             //     title:
+//             //       "PDFLinx vs Adobe Acrobat vs Smallpdf vs iLovePDF — Free Word to PDF Comparison",
+//             //     text: "Adobe Acrobat charges a monthly subscription just to export Word to PDF. Smallpdf and iLovePDF limit free conversions per day and require account creation for batch features. PDFLinx offers unlimited free Word to PDF conversion with no daily limits, no watermark, and no signup — directly in your browser. For anyone looking for the best free Adobe Acrobat alternative or Smallpdf alternative for Word to PDF, PDFLinx is the clear choice for everyday document conversion.",
+//             //   },
+//             //   {
+//             //     title: "Privacy and File Security",
+//             //     text: "Your uploaded Word files are processed on secure servers over encrypted HTTPS and automatically deleted after 1 hour. We do not store, share, or access your documents at any point. PDFLinx is built with privacy-first principles — your files stay completely private from upload to download. No human ever views your documents.",
+//             //   },
+//             // ],
+
+
+// seoSections: [
+
+//   // {
+//   //   // ✅ TWEAKED — added "No Sign Up" to strengthen match with GSC query
+//   //   // "word to pdf converter free no sign up" (currently position ~17)
+//   //   title:
+//   //     "Free Word to PDF Converter — Convert DOC & DOCX to PDF Online, No Sign Up, No Watermark",
+//   //   text: (
+//   //     <>
+//   //       Need to share a Word document professionally? PDFLinx lets you convert Word to PDF online for free — instantly, without losing formatting, fonts, tables, or images. Whether it is a DOC or DOCX file, PDFLinx converts it into a clean, print-ready, universally compatible PDF. No signup, no watermark, and no software installation required. Learn more about <a href="/blog/word-to-pdf-free-no-signup" className="text-blue-600 hover:underline font-medium">free Word to PDF conversion without signup</a>. If you ever need to turn it back into an editable file, you can use our <a href="/pdf-to-word" className="text-blue-600 hover:underline font-medium">PDF to Word converter</a> or try <a href="/pdf-to-word-for-students" className="text-blue-600 hover:underline font-medium">PDF to Word for Students</a>.
+//   //     </>
+//   //   ),
+//   // },
+
+//   {
+//   title:
+//     "Free Word to PDF Converter — Convert DOC & DOCX Online, No Sign Up",
+//   text: (
+//     <>
+//       Need to convert a Word document to PDF? PDFLinx is a free Word to PDF
+//       converter that lets you convert DOC and DOCX files online with no sign up,
+//       no watermark, and no software installation. Preserve fonts, tables,
+//       images, spacing, and page layout, then download your PDF instantly.
+//       Whether you need a Word to PDF converter free for personal, academic, or
+//       professional documents, PDFLinx works directly in your browser. You can
+//       also convert Word files to PDF for easy sharing, printing, and
+//       downloading. If you need to convert a PDF back into an editable Word
+//       document, use our{" "}
+//       <a
+//         href="/pdf-to-word"
+//         className="text-blue-600 hover:underline font-medium"
+//       >
+//         PDF to Word converter
+//       </a>
+//       .
+//     </>
+//   ),
+// },
+
+
+//   {
+//     title: "Why Convert Word Documents to PDF?",
+//     text: (
+//       <>
+//         Word documents can look different on different devices depending on fonts, software versions, and screen sizes. Read our analysis on <a href="/blog/word-to-pdf-windows-vs-mac" className="text-blue-600 hover:underline font-medium">Word to PDF differences on Windows vs Mac</a> to avoid layout bugs. PDF format solves this by locking the layout so your document looks exactly the same on every device. PDFs are also non-editable by default, making them ideal for official documents, contracts, and resumes. If you need to make quick final edits before converting, you can also use our <a href="/edit-pdf" className="text-blue-600 hover:underline font-medium">online PDF Editor</a>.
+//       </>
+//     ),
+//   },
+//   {
+//     title:
+//       "How to Convert Word to PDF Without Losing Formatting",
+//     text: (
+//       <>
+//         The most common concern with Word to PDF conversion is whether the original formatting stays intact. PDFLinx uses professional-grade document rendering to preserve fonts, headings, tables, bullet points, images, margins, and page layout with high accuracy. Check out our guide on <a href="/blog/word-to-pdf-best-practices" className="text-blue-600 hover:underline font-medium">Word to PDF conversion best practices</a>, read <a href="/blog/convert-word-to-pdf-without-losing-formatting" className="text-blue-600 hover:underline font-medium">how to convert Word to PDF without losing formatting</a>, or troubleshoot using <a href="/blog/why-formatting-breaks-in-word-to-pdf" className="text-blue-600 hover:underline font-medium">why formatting breaks in Word to PDF</a> and <a href="/blog/word-to-pdf-not-working-fix" className="text-blue-600 hover:underline font-medium">how to fix Word to PDF not working</a>.
+//       </>
+//     ),
+//   },
+//   {
+//     title: "What is Word to PDF Conversion?",
+//     text: (
+//       <>
+//         Word to PDF conversion transforms editable Microsoft Word documents (.doc, .docx) into fixed, secure, and universally compatible PDF files. Unlike Word documents, PDFs maintain consistent formatting across all devices, operating systems, and screen sizes. They are ideal for professional sharing, printing, archiving, and submitting official documents. Once converted, you can easily <a href="/compress-pdf" className="text-blue-600 hover:underline font-medium">compress the PDF file size</a> if it is too large for email attachments.
+//       </>
+//     ),
+//   },
+//   {
+//     title: "Common Use Cases for Word to PDF Conversion",
+//     text: (
+//       <>
+//         ✓ <strong>Students & Researchers:</strong> Submit assignments, theses, and reports in PDF — check out our guide on <a href="/blog/word-to-pdf-for-students" className="text-blue-600 hover:underline font-medium">Word to PDF for students</a>.<br />
+//         ✓ <strong>Job Seekers:</strong> Convert resumes and CVs to PDF for job applications — formatting never breaks on the recruiter's device.<br />
+//         ✓ <strong>Professionals:</strong> Share reports, proposals, contracts, and presentations in a secure, read-only format. You can also <a href="/merge-pdf" className="text-blue-600 hover:underline font-medium">merge multiple PDF files</a> into a single package.<br />
+//         ✓ <strong>Businesses:</strong> Generate invoices, agreements, quotations, and official documents in PDF.<br />
+//         ✓ <strong>Teachers & Educators:</strong> Create worksheets, exam papers, and study materials in a fixed, printable format.<br />
+//         ✓ <strong>Freelancers & Agencies:</strong> Deliver client work safely or digitally <a href="/sign-pdf" className="text-blue-600 hover:underline font-medium">sign PDF documents online</a>.
+//       </>
+//     ),
+//   },
+//   {
+//     // ✅ TWEAKED — leads with "How to Convert Word to PDF on Mobile" to
+//     // strengthen match with GSC query "how to convert word to pdf in mobile" (position ~19)
+//     title:
+//       "How to Convert Word to PDF on Mobile (Android & iPhone) — No App Needed",
+//     text: (
+//       <>
+//         No software installation needed. PDFLinx Word to PDF converter works perfectly on Windows, Mac, Linux, Android, iPhone, iPad, and tablets — directly in your browser. Whether you are on a phone, laptop, or desktop, you can convert DOC and DOCX files to PDF in seconds without downloading any app. Read our full guide on <a href="/blog/word-to-pdf-on-mobile" className="text-blue-600 hover:underline font-medium">how to convert Word to PDF on mobile</a>. It is the easiest way to convert Word to PDF on mobile for free.
+//       </>
+//     ),
+//   },
+//   {
+//     title:
+//       "PDFLinx vs Adobe Acrobat vs Smallpdf vs iLovePDF — Free Word to PDF Comparison",
+//     text: (
+//       <>
+//         Adobe Acrobat charges a monthly subscription just to export Word to PDF. Smallpdf and iLovePDF limit free conversions per day and require account creation for batch features. Read our breakdown on <a href="/blog/free-vs-paid-word-to-pdf-tools" className="text-blue-600 hover:underline font-medium">free vs paid Word to PDF tools</a>. PDFLinx offers unlimited free Word to PDF conversion with no daily limits, no watermark, and no signup — directly in your browser. Check our detailed <a href="/compare/pdflinx-vs-ilovepdf" className="text-blue-600 hover:underline font-medium">PDFLinx vs iLovePDF</a> and <a href="/compare/pdflinx-vs-smallpdf" className="text-blue-600 hover:underline font-medium">PDFLinx vs Smallpdf</a> comparisons for a complete feature matrix.
+//       </>
+//     ),
+//   },
+//   {
+//     title: "Privacy and File Security",
+//     text: (
+//       <>
+//         Your uploaded Word files are processed on secure servers over encrypted HTTPS and automatically deleted after 1 hour. We do not store, share, or access your documents at any point. PDFLinx is built with privacy-first principles — your files stay completely private from upload to download. No human ever views your documents. Need extra security? Secure your final PDF with a password using our <a href="/protect-pdf" className="text-blue-600 hover:underline font-medium">Protect PDF tool</a> or explore all tools on our <a href="/free-pdf-tools" className="text-blue-600 hover:underline font-medium">free PDF tools directory</a>.
+//       </>
+//     ),
+//   },
+// ],
+
+
+            
+//             // ✅ FIXED — now points at the shared wordToPdfFaqs array (was a duplicated
+//             // hardcoded list before; kept in sync with the schema above)
+//             faqs: wordToPdfFaqs,
+
+//             ctaTitle: (
+//               <>
+//                 Convert Word to PDF now —<br />
+//                 free, private, no sign‑up.
+//               </>
+//             ),
+//             ctaDescription:
+//               "Join thousands who trust PDFLinx for fast, accurate Word to PDF conversion every day.",
+//             ctaButton: "Choose Word File",
+//           },
+//         }}
+
+//       />
+
+//       {/* ── SEO CONTENT ── */}
+//       {/* <RelatedToolsSection currentPage="word-to-pdf" /> */}
+//     </>
+//   );
+// }
 
 

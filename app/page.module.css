@@ -165,3 +165,16 @@ a.secondary {
     filter: invert();
   }
 }
+
+
+/* PDFLinx blog content links */
+.blog-wrap a {
+  color: #0563c1;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.blog-wrap a:hover {
+  color: #003f88;
+}
+
