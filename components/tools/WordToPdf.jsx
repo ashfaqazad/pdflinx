@@ -95,6 +95,10 @@ const wordToPdfFaqs = [
     a: "No account or signup required. Upload your Word file and convert to PDF instantly — no email, no registration needed.",
   },
   {
+    q: "How to save Word as PDF?",
+    a: "There are two easy ways. In Microsoft Word on Windows, open your file, go to File → Save As, choose PDF from the file type list, and click Save (or use File → Export → Create PDF/XPS). On a Mac, use File → Save As and pick PDF as the file format, or File → Print → Save as PDF. If you do not have Word installed, or you are on a phone, upload your DOC or DOCX file to PDFLinx and download the PDF in seconds — free, with no sign up.",
+  },
+  {
     q: "Can I convert both DOC and DOCX files to PDF?",
     a: "Yes, both old .DOC and modern .DOCX Word formats are fully supported. Both convert into clean, professional PDF files.",
   },
@@ -188,10 +192,7 @@ const wordToPdfFaqs = [
   },
 
   // ---- NEW: keyword-driven FAQs (Semrush research, Oct 2026) ----
-  {
-    q: "How do I save a Word document as a PDF?",
-    a: "There are two easy ways. In Microsoft Word on Windows, open your file, go to File → Save As, choose PDF from the file type list, and click Save (or use File → Export → Create PDF/XPS). On a Mac, use File → Save As and pick PDF as the file format, or File → Print → Save as PDF. If you do not have Word installed, or you are on a phone, upload your DOC or DOCX file to PDFLinx and download the PDF in seconds — free, with no sign up.",
-  },
+  
   {
     q: "How do I convert Word to PDF on iPhone?",
     a: "Open Safari or Chrome on your iPhone and go to PDFLinx Word to PDF. Tap the upload area, choose your DOC or DOCX file from Files, iCloud Drive, or another storage app, then tap Convert to PDF. When it is ready, download the PDF — it is saved in your Files app, and you can share it by WhatsApp, email, or AirDrop. No app and no sign up needed.",
@@ -536,7 +537,7 @@ export default function WordToPdf({ seo }) {
               // ✅ NEW — targets "how to save word as pdf" cluster (US/India: save, export, mac)
               {
                 title:
-                  "How to Save a Word Document as PDF (Windows, Mac, iPhone & Android)",
+                  "How to Save Word as PDF (Word Document to PDF on Windows, Mac, iPhone & Android)",
                 text: (
                   <>
                     There are two simple ways to save a Word document as PDF. <strong>Inside Microsoft Word on Windows:</strong> open your file, choose File → Save As, select PDF from the file type list, and click Save. You can also use File → Export → Create PDF/XPS to export a Word doc to PDF. <strong>On a Mac or MacBook:</strong> use File → Save As and pick PDF as the file format, or File → Print → Save as PDF. <strong>Without Word, or on a phone:</strong> upload your DOC or DOCX file to PDFLinx and download the PDF in seconds — it is the quickest way to save a Word file as PDF on iPhone, Android, or any computer, free and with no sign up. Need a smaller file for email? <a href="/compress-pdf" className="text-blue-600 hover:underline font-medium">Compress the PDF</a> after saving.
