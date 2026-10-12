@@ -284,12 +284,21 @@ const articles = [
     excerpt: "Clients send PDFs constantly — briefs, contracts, feedback forms, design specs — and most of them need to be edited, annotated, or converted before you can actually work with them. Paying for Adobe Acrobat or a subscription tool to handle this is unnecessary. Browser-based tools handle the most common freelancer PDF tasks completely free: converting to Word for editing, adding comments and annotations, filling and signing forms, and extracting specific pages. This guide covers the most common scenarios freelancers face and the fastest free solution for each.",
     date: "Apr 16, 2026", read: "5 min", slug: "freelancer-edit-pdf-free",
   },
+
   {
-    cat: "tips", icon: "🖨️",
-    title: "Best Free Image Converter Tools Online in 2025",
-    excerpt: "HEIC files from iPhone that Windows cannot open, WebP images that older software rejects, PNG screenshots that need to be JPG for upload portals — image format conversion is a constant low-level friction point for anyone working with files across different platforms. This guide covers the best free browser-based image converter tools available right now, tested across the most common conversion types: HEIC to JPG, WebP to PNG, PNG to JPG, and batch conversions. No watermarks, no signup, no file size tricks — just the tools that actually work.",
-    date: "Apr 2, 2026", read: "5 min", slug: "best-free-image-converter-tools",
-  },
+  cat: "tips", icon: "🖨️",
+  title: "5 Best Free Online Image Converter & Utility Tools in 2026",
+  excerpt: "HEIC files that Windows cannot open, WebP images that older software rejects, PNG screenshots that need to be JPG for upload portals — format conversion is a constant friction point. This guide covers the best free browser-based image converter and utility tools in 2026, including ConvertLinx and FreeConverto. No watermarks, no signup, just tools that actually work.",
+  date: "Oct 11, 2026", read: "6 min", slug: "best-free-image-converter-utility-tools",
+},
+
+  // {
+  //   cat: "tips", icon: "🖨️",
+  //   title: "5 Best Free Online Image Converter & Utility Tools in 2026",
+  //   excerpt: "HEIC files from iPhone that Windows cannot open, WebP images that older software rejects, PNG screenshots that need to be JPG for upload portals — image format conversion is a constant low-level friction point for anyone working with files across different platforms. This guide covers the best free browser-based image converter tools available right now, tested across the most common conversion types: HEIC to JPG, WebP to PNG, PNG to JPG, and batch conversions. No watermarks, no signup, no file size tricks — just the tools that actually work.",
+  //   date: "Apr 2, 2026", read: "5 min", slug: "best-free-image-converter-tools",
+  // },
+
   {
   cat: "convert",
   icon: "🖼️",
