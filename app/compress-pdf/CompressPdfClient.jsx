@@ -6,8 +6,14 @@ import { useState, useRef, useMemo, useEffect } from "react";
 
 import Script from "next/script";
 import {
-  GitMerge, Scissors, Wrench, Scan,
-  FileText, Shield, Pencil, Image as ImageIcon
+  GitMerge,
+  Scissors,
+  Wrench,
+  Scan,
+  FileText,
+  Shield,
+  Pencil,
+  Image as ImageIcon,
 } from "lucide-react";
 
 import RelatedToolsSection from "@/components/RelatedTools";
@@ -27,22 +33,51 @@ import ToolPageLayout from "@/components/ToolFlow/ToolPageLayout";
 // ];
 
 const DONE_LINKS = [
-  { label: "Merge PDF",      href: "/merge-pdf",      icon: <GitMerge        className="h-4 w-4 text-purple-500"  /> },
-  { label: "Split PDF",      href: "/split-pdf",      icon: <Scissors        className="h-4 w-4 text-orange-500"  /> },
-  { label: "Repair PDF",     href: "/repair-pdf",     icon: <Wrench          className="h-4 w-4 text-amber-500"   /> },
-  { label: "OCR PDF",        href: "/ocr-pdf",        icon: <Scan            className="h-4 w-4 text-violet-500"  /> },
-  { label: "PDF to Word",    href: "/pdf-to-word",    icon: <FileText        className="h-4 w-4 text-blue-500"    /> },
-  { label: "PDF to JPG",     href: "/pdf-to-jpg",     icon: <ImageIcon       className="h-4 w-4 text-pink-500"    /> },
-  { label: "Protect PDF",    href: "/protect-pdf",    icon: <Shield          className="h-4 w-4 text-red-500"     /> },
-  { label: "Edit PDF",       href: "/edit-pdf",       icon: <Pencil          className="h-4 w-4 text-orange-500"  /> },
+  {
+    label: "Merge PDF",
+    href: "/merge-pdf",
+    icon: <GitMerge className="h-4 w-4 text-purple-500" />,
+  },
+  {
+    label: "Split PDF",
+    href: "/split-pdf",
+    icon: <Scissors className="h-4 w-4 text-orange-500" />,
+  },
+  {
+    label: "Repair PDF",
+    href: "/repair-pdf",
+    icon: <Wrench className="h-4 w-4 text-amber-500" />,
+  },
+  {
+    label: "OCR PDF",
+    href: "/ocr-pdf",
+    icon: <Scan className="h-4 w-4 text-violet-500" />,
+  },
+  {
+    label: "PDF to Word",
+    href: "/pdf-to-word",
+    icon: <FileText className="h-4 w-4 text-blue-500" />,
+  },
+  {
+    label: "PDF to JPG",
+    href: "/pdf-to-jpg",
+    icon: <ImageIcon className="h-4 w-4 text-pink-500" />,
+  },
+  {
+    label: "Protect PDF",
+    href: "/protect-pdf",
+    icon: <Shield className="h-4 w-4 text-red-500" />,
+  },
+  {
+    label: "Edit PDF",
+    href: "/edit-pdf",
+    icon: <Pencil className="h-4 w-4 text-orange-500" />,
+  },
 ];
-
 
 const SIDEBAR_NOTICE = (
   <>
-    <p className="text-sm font-semibold text-blue-800">
-      ℹ️ Compression Info
-    </p>
+    <p className="text-sm font-semibold text-blue-800">ℹ️ Compression Info</p>
     <ul className="mt-3 list-disc space-y-2 pl-4 text-xs text-slate-600">
       <li>Reduce file size up to 90%</li>
       <li>Quality optimized automatically</li>
@@ -98,11 +133,17 @@ function PdfThumbnail({ file }) {
   const canvasRef = useRef(null);
 
   useEffect(() => {
-    if (!file || !window.pdfjsLib) return;
+    // ✅ NAYA
+    if (!file) return;
+    // if (!file || !window.pdfjsLib) return;
     let cancelled = false;
 
     const render = async () => {
       try {
+        // ✅ YAHAN ADD KARO
+        window.pdfjsLib.GlobalWorkerOptions.workerSrc =
+          "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+
         const buffer = await file.arrayBuffer();
         const pdf = await window.pdfjsLib.getDocument({ data: buffer }).promise;
         const page = await pdf.getPage(1);
@@ -127,21 +168,18 @@ function PdfThumbnail({ file }) {
     };
     tryRender();
 
-    return () => { cancelled = true; };
+    return () => {
+      cancelled = true;
+    };
   }, [file]);
 
-  return (
-    <canvas
-      ref={canvasRef}
-      className="w-full h-full object-contain"
-    />
-  );
+  return <canvas ref={canvasRef} className="w-full h-full object-contain" />;
 }
-
 
 export default function CompressPdfClient() {
   const flow = useToolFlow();
-  const { progress, startProgress, completeProgress, cancelProgress } = useProgressBar();
+  const { progress, startProgress, completeProgress, cancelProgress } =
+    useProgressBar();
 
   const [compressionLevel, setCompressionLevel] = useState("recommended");
   const [downloadUrl, setDownloadUrl] = useState("");
@@ -157,10 +195,15 @@ export default function CompressPdfClient() {
 
   // ── Estimated size display (before convert) ──
   const totalOriginalBytes = flow.files.reduce((sum, f) => sum + f.size, 0);
-  const selectedOption = COMPRESSION_OPTIONS.find((o) => o.value === compressionLevel);
-  const reductionFactor = compressionLevel === "high-quality" ? 0.20
-    : compressionLevel === "recommended" ? 0.50
-      : 0.75;
+  const selectedOption = COMPRESSION_OPTIONS.find(
+    (o) => o.value === compressionLevel,
+  );
+  const reductionFactor =
+    compressionLevel === "high-quality"
+      ? 0.2
+      : compressionLevel === "recommended"
+        ? 0.5
+        : 0.75;
   const estimatedBytes = Math.round(totalOriginalBytes * (1 - reductionFactor));
 
   function formatBytes(bytes) {
@@ -180,20 +223,36 @@ export default function CompressPdfClient() {
           key={opt.value}
           type="button"
           onClick={() => setCompressionLevel(opt.value)}
-          className={`flex items-center justify-between px-4 py-4 border-b border-slate-200 text-left transition hover:bg-slate-50 ${compressionLevel === opt.value ? "bg-slate-50" : ""
-            }`}
+          className={`flex items-center justify-between px-4 py-4 border-b border-slate-200 text-left transition hover:bg-slate-50 ${
+            compressionLevel === opt.value ? "bg-slate-50" : ""
+          }`}
         >
           <div>
-            <p className={`text-sm font-semibold ${compressionLevel === opt.value ? "text-[#e8420a]" : "text-slate-700"
-              }`}>
+            <p
+              className={`text-sm font-semibold ${
+                compressionLevel === opt.value
+                  ? "text-[#e8420a]"
+                  : "text-slate-700"
+              }`}
+            >
               {opt.label.replace(" ⭐", "").toUpperCase()}
             </p>
             <p className="text-xs text-slate-400 mt-0.5">{opt.sublabel}</p>
           </div>
           {compressionLevel === opt.value && (
             <div className="flex h-6 w-6 items-center justify-center rounded-full bg-green-500">
-              <svg className="h-3.5 w-3.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+              <svg
+                className="h-3.5 w-3.5 text-white"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={3}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M5 13l4 4L19 7"
+                />
               </svg>
             </div>
           )}
@@ -233,8 +292,6 @@ export default function CompressPdfClient() {
   //   </div>
   // );
 
-
-
   // ── API LOGIC ─────────────────────────────────
   const handleConvert = async () => {
     if (!flow.files.length) return alert("Please select PDF file(s) first");
@@ -250,10 +307,13 @@ export default function CompressPdfClient() {
     formData.append("compressionLevel", compressionLevel);
 
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/convert/compress-pdf`, {
-        method: "POST",
-        body: formData,
-      });
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/convert/compress-pdf`,
+        {
+          method: "POST",
+          body: formData,
+        },
+      );
 
       const text = await res.text();
       let data;
@@ -319,14 +379,11 @@ export default function CompressPdfClient() {
     }
   };
 
-
   const customOptionsLayout = (
     <div className="grid min-h-[calc(100vh-80px)] grid-cols-1 lg:grid-cols-[1fr_300px]">
-
       {/* LEFT — File Preview */}
       {/* <div className="relative bg-slate-100 p-8"> */}
       <div className="relative bg-slate-100 p-8 overflow-y-auto h-[calc(100vh-80px)]">
-
         {/* Add more — top right corner */}
         <div className="absolute right-4 top-4">
           <label className="flex cursor-pointer items-center gap-1.5 rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-sm font-medium text-slate-600 shadow-sm transition hover:border-slate-400 hover:bg-slate-50">
@@ -352,19 +409,14 @@ export default function CompressPdfClient() {
         {/* Thumbnails */}
         <div className="flex flex-wrap justify-center gap-6 pt-10">
           {flow.files.map((file, i) => (
+            // ✅ NAYA
+            // ✅ NAYA (plain, bina animation)
             <div
               key={i}
               className="group flex w-[140px] flex-col items-center gap-3"
-              style={{
-                animation: "previewPop 0.35s ease forwards",
-                animationDelay: `${i * 70}ms`,
-                opacity: 0,
-              }}
             >
-
               {/* Preview Card */}
               <div className="relative aspect-[3/4] w-full overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition-all duration-300 group-hover:-translate-y-1 group-hover:shadow-xl">
-
                 {/* PDF Preview */}
                 {/* <div className="absolute inset-0 overflow-hidden rounded-2xl">
                 <iframe
@@ -404,8 +456,6 @@ export default function CompressPdfClient() {
                 </button>
               </div>
 
-
-
               {/* File Name */}
               <p className="w-full truncate text-center text-xs text-slate-500">
                 {file.name}
@@ -417,23 +467,20 @@ export default function CompressPdfClient() {
 
       {/* RIGHT — Sidebar */}
       <div className="flex flex-col border-l border-slate-200 bg-white">
-
-        <div className="flex-1 overflow-y-auto">
-          {optionsSlot}
-        </div>
+        <div className="flex-1 overflow-y-auto">{optionsSlot}</div>
 
         <div className="border-t border-slate-200 p-4">
           <button
             type="button"
             onClick={handleConvert}
             disabled={!flow.files.length}
-            className={`flex w-full items-center justify-center gap-2 rounded-xl px-5 py-4 text-base font-bold text-white transition active:scale-[0.98] ${flow.files.length
-              ? "bg-[#f24d0d] shadow-[0_10px_30px_rgba(242,77,13,0.38)] hover:bg-[#dc4308]"
-              : "cursor-not-allowed bg-slate-300"
-              }`}
+            className={`flex w-full items-center justify-center gap-2 rounded-xl px-5 py-4 text-base font-bold text-white transition active:scale-[0.98] ${
+              flow.files.length
+                ? "bg-[#f24d0d] shadow-[0_10px_30px_rgba(242,77,13,0.38)] hover:bg-[#dc4308]"
+                : "cursor-not-allowed bg-slate-300"
+            }`}
           >
             Compress PDF
-
             <svg
               className="h-5 w-5"
               fill="none"
@@ -453,8 +500,6 @@ export default function CompressPdfClient() {
     </div>
   );
 
-
-
   const handleDownloadAgain = async () => {
     if (!downloadUrl) return;
     const res = await fetch(downloadUrl);
@@ -471,7 +516,6 @@ export default function CompressPdfClient() {
 
   return (
     <>
-
       {/* pdf.js CDN — thumbnail ke liye */}
       <Script
         src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"
@@ -491,7 +535,6 @@ export default function CompressPdfClient() {
         accept="application/pdf"
         multiple={true}
         convertLabel="Compress PDF"
-
         flow={flow}
         progress={progress}
         onRemoveFile={handleRemoveFile}
@@ -499,13 +542,11 @@ export default function CompressPdfClient() {
         onDownload={handleDownloadAgain}
         doneLinks={DONE_LINKS}
         sidebarLinks={DONE_LINKS}
-
         sidebarIcon={<FileDown className="h-5 w-5 text-green-500" />}
         sidebarTitle="Compress PDF"
         sidebarDescription="Reduce PDF file size quickly while keeping quality."
         sidebarNotice={SIDEBAR_NOTICE}
         sidebarFeatures={SIDEBAR_FEATURES}
-
         optionsTitle="Compression options"
         showOutputFormat={false}
         optionSectionLabel="Compression Level"
@@ -513,20 +554,20 @@ export default function CompressPdfClient() {
         // optionsSlot={optionsSlot}
         optionsSlot={optionsSlot}
         customOptionsLayout={customOptionsLayout}
-
         processingTitle="Compressing your PDF"
         processingDescription="Please wait while we reduce your PDF file size."
-        processingStages={["Uploading file", "Optimizing PDF", "Generating compressed PDF"]}
-
+        processingStages={[
+          "Uploading file",
+          "Optimizing PDF",
+          "Generating compressed PDF",
+        ]}
         doneTitle="Your compressed PDF is ready"
         doneDescription="Your PDF has been compressed successfully."
         doneFileName={outputFileName}
         downloadLabel="Download Compressed PDF"
         resetLabel="Compress another PDF"
-
         // ── compression stats for DoneStep ──
         compressionStats={compressionStats}
-
         // ============================================================
         // CompressPdf.jsx — uploadLanding prop (SEO-improved version)
         // Changes from audit:
@@ -795,101 +836,207 @@ export default function CompressPdfClient() {
             //   },
             // ],
 
-seoSections: [
-  {
-    // Primary — co-targets "compress pdf", "pdf compressor", "reduce pdf size online"
-    title:
-      "Free PDF Compressor — Compress PDF Online & Reduce PDF File Size Without Losing Quality",
-    text: (
-      <>
-        Need to shrink a PDF? PDFLinx is a free online PDF compressor that reduces PDF file size instantly while preserving text clarity, image quality, and layout. Compress PDF to 100KB, 200KB, 500KB, or under 1MB — directly in your browser. No signup, no watermark, and no software installation required. If you have multiple documents to combine before shrinking, try our <a href="/merge-pdf" className="text-blue-600 hover:underline font-medium">Merge PDF tool</a>. A fast and reliable free alternative to Adobe Acrobat, Smallpdf, and iLovePDF — without cost, daily limits, or file size restrictions.
-      </>
-    ),
-  },
-  {
-    // Long-tail: "compress pdf to 100kb 200kb 500kb 1mb"
-    title:
-      "Compress PDF to 100KB, 200KB, 500KB, or Under 1MB — Hit Any File Size Target",
-    text: (
-      <>
-        Many government portals, visa applications, and job submission systems require PDFs under a strict size limit — typically 100KB to 2MB. PDFLinx lets you compress a PDF to meet any specific file size target. Upload your PDF, compress it, and check the output size. If the file is still too large, simply re-upload and compress again in seconds — no account needed. Most scanned and image-heavy PDFs reduce to 100KB–500KB within one or two compressions, making PDFLinx the go-to free PDF compressor for form submissions and official uploads.
-      </>
-    ),
-  },
-  {
-    // Long-tail: "when should you compress a pdf"
-    title: "When Should You Compress a PDF File?",
-    text: (
-      <>
-        Compressing a PDF is useful whenever a file is too large to share, upload, or send. Common situations include sending documents via email where attachments are limited to 10–25MB, sharing files over WhatsApp or Telegram where large files slow down mobile networks, submitting documents to government portals and visa applications with strict size limits of 100KB to 2MB, uploading resumes and CVs to job portals that cap file size, and submitting assignments or theses to university portals. If you only need specific pages from a large file to reduce size further, you can also <a href="/split-pdf" className="text-blue-600 hover:underline font-medium">split your PDF</a> first. Compressing a PDF solves all of these problems in seconds.
-      </>
-    ),
-  },
-  {
-    // Semantic: "how to compress pdf without losing quality"
-    title: "How to Compress a PDF Without Losing Quality",
-    text: (
-      <>
-        The biggest concern with PDF compression is whether the document will still look professional after size reduction. PDFLinx uses intelligent compression that targets redundant image data, duplicate embedded fonts, and unused metadata — the parts of a PDF that take up space but are invisible to the reader. Text sharpness is never degraded. Images are optimized at a balanced quality level that remains clear on screen and in print. For most documents — resumes, reports, forms, and presentations — the compressed output is visually identical to the original. For scanned PDFs, PDFLinx smartly adjusts image DPI to reduce size while maintaining readability.
-      </>
-    ),
-  },
-  {
-    // Semantic: "compress vs reduce vs optimize vs shrink pdf"
-    title:
-      "Compress PDF vs Reduce PDF Size vs Shrink PDF vs Optimize PDF — All the Same?",
-    text: (
-      <>
-        Yes — compress PDF, reduce PDF size, shrink PDF, make PDF smaller, and optimize PDF all describe the same process: making a PDF file smaller without changing its visible content. Different platforms use different words for the same action. Adobe Acrobat calls it 'Optimize PDF', Smallpdf calls it 'Compress PDF', and some tools say 'Reduce file size' or 'Shrink PDF'. PDFLinx handles all of this in one step — removing redundant data, optimizing embedded images, and reducing overall file size while keeping the document fully readable and professional.
-      </>
-    ),
-  },
-  {
-    // Long-tail: "compress pdf for email whatsapp portals"
-    title:
-      "Reduce PDF File Size for Email, WhatsApp, Telegram, and Online Portals",
-    text: (
-      <>
-        Most email providers limit attachments to 10–25MB. Compress your PDF below the limit and send it instantly via Gmail, Outlook, or Yahoo Mail. Compressed PDFs also load faster on mobile networks — ideal for WhatsApp and Telegram sharing where large files delay delivery. For online portals requiring PDFs under 500KB, 200KB, or 100KB, PDFLinx reduces your file to meet the exact size requirement without reprinting, rescanning, or any software.
-      </>
-    ),
-  },
-  {
-    // Long-tail: "compress pdf for government portals visa applications"
-    title:
-      "Compress PDF for Government Portals, Visa Applications, and University Submissions",
-    text: (
-      <>
-        Government websites, visa portals, and university submission systems often enforce strict PDF size limits — typically between 100KB and 2MB. PDFLinx compresses your documents to meet these exact requirements. Whether you are submitting a visa application, a national ID document, a university thesis, or a job application form, PDFLinx reduces the PDF to the required size while keeping content fully clear, readable, and printable. If your document was converted from a Word file, converting directly with our <a href="/word-to-pdf" className="text-blue-600 hover:underline font-medium">Word to PDF tool</a> before compressing gives the best layout results.
-      </>
-    ),
-  },
-  {
-    // Semantic: lossy vs lossless + DPI — topical authority signal
-    title:
-      "How PDF Compression Works — Lossless, Lossy, and Image DPI Optimization",
-    text: (
-      <>
-        PDF compression uses two main techniques. Lossless compression removes redundant internal data — duplicate fonts, empty metadata, and unused objects — without any visible quality change. Lossy compression additionally reduces image resolution and DPI (dots per inch), resulting in smaller files with minor visual differences only visible at extreme zoom levels. PDFLinx uses a balanced approach: lossless data cleanup first, followed by smart image optimization at a quality level that keeps your PDF professional for both screen viewing and printing. Scanned documents benefit most — high-DPI scan images are the largest contributors to PDF file size. If your scanned document text is not searchable, run it through <a href="/ocr-pdf" className="text-blue-600 hover:underline font-medium">OCR PDF</a> first before compressing.
-      </>
-    ),
-  },
-  {
-    // Trust + privacy — 256-bit SSL + GDPR
-    title: "Privacy and File Security — 256-bit SSL Encryption",
-    text: (
-      <>
-        Your uploaded PDF files are transferred over 256-bit SSL encryption and processed on secure servers. Files are automatically deleted after 1 hour — we do not store, share, or access your documents at any point. PDFLinx is built with privacy-first principles and is GDPR-aware. No account or email is required to use the free PDF compressor. Your files stay completely private from upload to download.
-      </>
-    ),
-  },
-],
+            seoSections: [
+              {
+                // Primary — co-targets "compress pdf", "pdf compressor", "reduce pdf size online"
+                title:
+                  "Free PDF Compressor — Compress PDF Online & Reduce PDF File Size Without Losing Quality",
+                text: (
+                  <>
+                    Need to shrink a PDF? PDFLinx is a free online PDF
+                    compressor that reduces PDF file size instantly while
+                    preserving text clarity, image quality, and layout. Compress
+                    PDF to 100KB, 200KB, 500KB, or under 1MB — directly in your
+                    browser. No signup, no watermark, and no software
+                    installation required. If you have multiple documents to
+                    combine before shrinking, try our{" "}
+                    <a
+                      href="/merge-pdf"
+                      className="text-blue-600 hover:underline font-medium"
+                    >
+                      Merge PDF tool
+                    </a>
+                    . A fast and reliable free alternative to Adobe Acrobat,
+                    Smallpdf, and iLovePDF — without cost, daily limits, or file
+                    size restrictions.
+                  </>
+                ),
+              },
+              {
+                // Long-tail: "compress pdf to 100kb 200kb 500kb 1mb"
+                title:
+                  "Compress PDF to 100KB, 200KB, 500KB, or Under 1MB — Hit Any File Size Target",
+                text: (
+                  <>
+                    Many government portals, visa applications, and job
+                    submission systems require PDFs under a strict size limit —
+                    typically 100KB to 2MB. PDFLinx lets you compress a PDF to
+                    meet any specific file size target. Upload your PDF,
+                    compress it, and check the output size. If the file is still
+                    too large, simply re-upload and compress again in seconds —
+                    no account needed. Most scanned and image-heavy PDFs reduce
+                    to 100KB–500KB within one or two compressions, making
+                    PDFLinx the go-to free PDF compressor for form submissions
+                    and official uploads.
+                  </>
+                ),
+              },
+              {
+                // Long-tail: "when should you compress a pdf"
+                title: "When Should You Compress a PDF File?",
+                text: (
+                  <>
+                    Compressing a PDF is useful whenever a file is too large to
+                    share, upload, or send. Common situations include sending
+                    documents via email where attachments are limited to
+                    10–25MB, sharing files over WhatsApp or Telegram where large
+                    files slow down mobile networks, submitting documents to
+                    government portals and visa applications with strict size
+                    limits of 100KB to 2MB, uploading resumes and CVs to job
+                    portals that cap file size, and submitting assignments or
+                    theses to university portals. If you only need specific
+                    pages from a large file to reduce size further, you can also{" "}
+                    <a
+                      href="/split-pdf"
+                      className="text-blue-600 hover:underline font-medium"
+                    >
+                      split your PDF
+                    </a>{" "}
+                    first. Compressing a PDF solves all of these problems in
+                    seconds.
+                  </>
+                ),
+              },
+              {
+                // Semantic: "how to compress pdf without losing quality"
+                title: "How to Compress a PDF Without Losing Quality",
+                text: (
+                  <>
+                    The biggest concern with PDF compression is whether the
+                    document will still look professional after size reduction.
+                    PDFLinx uses intelligent compression that targets redundant
+                    image data, duplicate embedded fonts, and unused metadata —
+                    the parts of a PDF that take up space but are invisible to
+                    the reader. Text sharpness is never degraded. Images are
+                    optimized at a balanced quality level that remains clear on
+                    screen and in print. For most documents — resumes, reports,
+                    forms, and presentations — the compressed output is visually
+                    identical to the original. For scanned PDFs, PDFLinx smartly
+                    adjusts image DPI to reduce size while maintaining
+                    readability.
+                  </>
+                ),
+              },
+              {
+                // Semantic: "compress vs reduce vs optimize vs shrink pdf"
+                title:
+                  "Compress PDF vs Reduce PDF Size vs Shrink PDF vs Optimize PDF — All the Same?",
+                text: (
+                  <>
+                    Yes — compress PDF, reduce PDF size, shrink PDF, make PDF
+                    smaller, and optimize PDF all describe the same process:
+                    making a PDF file smaller without changing its visible
+                    content. Different platforms use different words for the
+                    same action. Adobe Acrobat calls it 'Optimize PDF', Smallpdf
+                    calls it 'Compress PDF', and some tools say 'Reduce file
+                    size' or 'Shrink PDF'. PDFLinx handles all of this in one
+                    step — removing redundant data, optimizing embedded images,
+                    and reducing overall file size while keeping the document
+                    fully readable and professional.
+                  </>
+                ),
+              },
+              {
+                // Long-tail: "compress pdf for email whatsapp portals"
+                title:
+                  "Reduce PDF File Size for Email, WhatsApp, Telegram, and Online Portals",
+                text: (
+                  <>
+                    Most email providers limit attachments to 10–25MB. Compress
+                    your PDF below the limit and send it instantly via Gmail,
+                    Outlook, or Yahoo Mail. Compressed PDFs also load faster on
+                    mobile networks — ideal for WhatsApp and Telegram sharing
+                    where large files delay delivery. For online portals
+                    requiring PDFs under 500KB, 200KB, or 100KB, PDFLinx reduces
+                    your file to meet the exact size requirement without
+                    reprinting, rescanning, or any software.
+                  </>
+                ),
+              },
+              {
+                // Long-tail: "compress pdf for government portals visa applications"
+                title:
+                  "Compress PDF for Government Portals, Visa Applications, and University Submissions",
+                text: (
+                  <>
+                    Government websites, visa portals, and university submission
+                    systems often enforce strict PDF size limits — typically
+                    between 100KB and 2MB. PDFLinx compresses your documents to
+                    meet these exact requirements. Whether you are submitting a
+                    visa application, a national ID document, a university
+                    thesis, or a job application form, PDFLinx reduces the PDF
+                    to the required size while keeping content fully clear,
+                    readable, and printable. If your document was converted from
+                    a Word file, converting directly with our{" "}
+                    <a
+                      href="/word-to-pdf"
+                      className="text-blue-600 hover:underline font-medium"
+                    >
+                      Word to PDF tool
+                    </a>{" "}
+                    before compressing gives the best layout results.
+                  </>
+                ),
+              },
+              {
+                // Semantic: lossy vs lossless + DPI — topical authority signal
+                title:
+                  "How PDF Compression Works — Lossless, Lossy, and Image DPI Optimization",
+                text: (
+                  <>
+                    PDF compression uses two main techniques. Lossless
+                    compression removes redundant internal data — duplicate
+                    fonts, empty metadata, and unused objects — without any
+                    visible quality change. Lossy compression additionally
+                    reduces image resolution and DPI (dots per inch), resulting
+                    in smaller files with minor visual differences only visible
+                    at extreme zoom levels. PDFLinx uses a balanced approach:
+                    lossless data cleanup first, followed by smart image
+                    optimization at a quality level that keeps your PDF
+                    professional for both screen viewing and printing. Scanned
+                    documents benefit most — high-DPI scan images are the
+                    largest contributors to PDF file size. If your scanned
+                    document text is not searchable, run it through{" "}
+                    <a
+                      href="/ocr-pdf"
+                      className="text-blue-600 hover:underline font-medium"
+                    >
+                      OCR PDF
+                    </a>{" "}
+                    first before compressing.
+                  </>
+                ),
+              },
+              {
+                // Trust + privacy — 256-bit SSL + GDPR
+                title: "Privacy and File Security — 256-bit SSL Encryption",
+                text: (
+                  <>
+                    Your uploaded PDF files are transferred over 256-bit SSL
+                    encryption and processed on secure servers. Files are
+                    automatically deleted after 1 hour — we do not store, share,
+                    or access your documents at any point. PDFLinx is built with
+                    privacy-first principles and is GDPR-aware. No account or
+                    email is required to use the free PDF compressor. Your files
+                    stay completely private from upload to download.
+                  </>
+                ),
+              },
+            ],
             relatedTitle: "More Free PDF Tools",
             showPdfTypes: false,
           },
         }}
-
-        
       />
 
       {/* <RelatedToolsSection currentPage="compress-pdf" /> */}
