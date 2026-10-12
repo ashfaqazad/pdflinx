@@ -901,9 +901,9 @@ export default function PdfToWord({ seo }) {
                 text: (
                   <>
                     Wondering how to convert PDF to Word on Mac? You do not need
-                    to install anything. Open Safari or Chrome, drop your PDF
-                    on this page, click Convert to Word, and your editable DOCX
-                    is ready in seconds. The same steps work on a MacBook Air,
+                    to install anything. Open Safari or Chrome, drop your PDF on
+                    this page, click Convert to Word, and your editable DOCX is
+                    ready in seconds. The same steps work on a MacBook Air,
                     MacBook Pro, iMac, or Mac mini, and the file opens in
                     Microsoft Word, Pages, or Google Docs. The built-in Preview
                     app on Mac cannot save a PDF as a Word file, and opening a
@@ -1002,6 +1002,34 @@ export default function PdfToWord({ seo }) {
                   </>
                 ),
               },
+
+              // {
+              //   title: "Best For Everyday Document Editing",
+              //   text: (
+              //     <>
+              //       Use the converted Word file for reports, assignments,
+              //       invoices, contracts, forms, and office documents. The DOCX
+              //       output is compatible with Microsoft Word, Google Docs,
+              //       LibreOffice, and WPS Office — easy to edit, share, and reuse
+              //       on any device. For image conversions, check out our{" "}
+              //       <a
+              //         href="/image-to-pdf"
+              //         className="text-blue-600 hover:underline font-medium"
+              //       >
+              //         Image to PDF converter
+              //       </a>{" "}
+              //       or explore our full suite of{" "}
+              //       <a
+              //         href="/free-pdf-tools"
+              //         className="text-blue-600 hover:underline font-medium"
+              //       >
+              //         free online PDF tools
+              //       </a>
+              //       .
+              //     </>
+              //   ),
+              // },
+
               {
                 title: "Best For Everyday Document Editing",
                 text: (
@@ -1009,8 +1037,9 @@ export default function PdfToWord({ seo }) {
                     Use the converted Word file for reports, assignments,
                     invoices, contracts, forms, and office documents. The DOCX
                     output is compatible with Microsoft Word, Google Docs,
-                    LibreOffice, and WPS Office — easy to edit, share, and reuse
-                    on any device. For image conversions, check out our{" "}
+                    LibreOffice, and WPS Office — making it easy to edit, share,
+                    and reuse on any device. For image conversions, check out
+                    our{" "}
                     <a
                       href="/image-to-pdf"
                       className="text-blue-600 hover:underline font-medium"
@@ -1024,7 +1053,20 @@ export default function PdfToWord({ seo }) {
                     >
                       free online PDF tools
                     </a>
-                    .
+                    . 
+                    <br />
+                    Need to convert your edited Word document back into a PDF?
+                    Try our{" "}
+                    <a
+                      href="https://freeconverto.com/word-to-pdf/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-600 hover:underline font-medium"
+                    >
+                      free Word to PDF converter
+                    </a>{" "}
+                    on FreeConverto for a convenient way to complete your
+                    document workflow.
                   </>
                 ),
               },
@@ -1276,71 +1318,6 @@ export default function PdfToWord({ seo }) {
     </>
   );
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // // components/tools/PdfToWord.jsx
 // "use client";

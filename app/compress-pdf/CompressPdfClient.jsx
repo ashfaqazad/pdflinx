@@ -417,24 +417,6 @@ export default function CompressPdfClient() {
             >
               {/* Preview Card */}
               <div className="relative aspect-[3/4] w-full overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition-all duration-300 group-hover:-translate-y-1 group-hover:shadow-xl">
-                {/* PDF Preview */}
-                {/* <div className="absolute inset-0 overflow-hidden rounded-2xl">
-                <iframe
-                  src={`${URL.createObjectURL(file)}#toolbar=0&navpanes=0&scrollbar=0&view=FitH`}
-                  title={file.name}
-                  className="absolute left-0 -top-2 h-[115%] w-full border-0 pointer-events-none"
-                />
-                </div> */}
-                {/* {(file.type === "application/pdf" || ext === "pdf") && (
-                  <div className="h-full w-full overflow-hidden">
-                    <iframe
-                      src={`${fileUrls[i]}#page=1&toolbar=0&navpanes=0&scrollbar=0&view=FitH`}
-                      title={file.name}
-                      scrolling="no"
-                      className="pointer-events-none h-[130%] w-[135%] -translate-x-[14%] -translate-y-[12%] border-0"
-                    />
-                  </div>
-                )} */}
 
                 {/* PDF Preview — canvas based, no scroll */}
                 <div className="absolute inset-0 flex items-center justify-center overflow-hidden rounded-2xl bg-white">
