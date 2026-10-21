@@ -11,6 +11,7 @@ import { useProgressBar } from "@/hooks/useProgressBar";
 import { useToolFlow } from "@/hooks/useToolFlow";
 import ToolPageLayout from "@/components/ToolFlow/ToolPageLayout";
 import { renderWithLinks } from "@/utils/renderWithLinks";
+import { PDFDocument } from "pdf-lib";
 
 
 // ── CONFIG ─────────────────────────────────
@@ -113,47 +114,103 @@ export default function MergePdf({ seo }) {
   };
 
   // ── API LOGIC ─────────────────────────────
+  
   const handleConvert = async () => {
-    if (flow.files.length < 2)
+    if (flow.files.length < 2) {
       return alert("Please select at least 2 PDF files to merge.");
+    }
 
     flow.startProcessing();
     startProgress();
-
-    const formData = new FormData();
-    flow.files.forEach((f) => formData.append("files", f));
+    setDownloadUrl(null);
 
     try {
-      const res = await fetch("/convert/merge-pdf", {
-        method: "POST",
-        body: formData,
+      // Create a new PDF directly in the browser
+      const mergedPdf = await PDFDocument.create();
+
+      // Process files in their selected order
+      for (const file of flow.files) {
+        const fileBytes = await file.arrayBuffer();
+        const sourcePdf = await PDFDocument.load(fileBytes);
+
+        const copiedPages = await mergedPdf.copyPages(
+          sourcePdf,
+          sourcePdf.getPageIndices()
+        );
+
+        for (const page of copiedPages) {
+          mergedPdf.addPage(page);
+        }
+      }
+
+      // Generate the merged PDF
+      const mergedBytes = await mergedPdf.save();
+
+      const blob = new Blob([mergedBytes], {
+        type: "application/pdf",
       });
 
-      if (!res.ok) {
-        const errorData = await res.json().catch(() => null);
-        cancelProgress();
-        flow.handleError(errorData?.error || "Merge failed");
-        return;
-      }
+      // Create a temporary browser download URL
+      const browserDownloadUrl = URL.createObjectURL(blob);
 
-      const data = await res.json();
+      setDownloadUrl(browserDownloadUrl);
 
-      if (data.success) {
-        // Direct VPS URL — same pattern as original
-        const directUrl = `https://pdflinx.com/api${data.download}`;
-        setDownloadUrl(directUrl);
-        completeProgress();
-        flow.finishSuccess();
-      } else {
-        cancelProgress();
-        flow.handleError(data.error || "Merge failed");
-      }
+      completeProgress();
+      flow.finishSuccess();
     } catch (err) {
-      console.error(err);
+      console.error("PDF merge failed:", err);
+
       cancelProgress();
-      flow.handleError("Something went wrong. Please try again.");
+
+      flow.handleError(
+        "Merge failed. Please check that all files are valid PDFs and try again."
+      );
     }
   };
+
+  // const handleConvert = async () => {
+  //   if (flow.files.length < 2)
+  //     return alert("Please select at least 2 PDF files to merge.");
+
+  //   flow.startProcessing();
+  //   startProgress();
+
+  //   const formData = new FormData();
+  //   flow.files.forEach((f) => formData.append("files", f));
+
+  //   try {
+  //     const res = await fetch("/convert/merge-pdf", {
+  //       method: "POST",
+  //       body: formData,
+  //     });
+
+  //     if (!res.ok) {
+  //       const errorData = await res.json().catch(() => null);
+  //       cancelProgress();
+  //       flow.handleError(errorData?.error || "Merge failed");
+  //       return;
+  //     }
+
+  //     const data = await res.json();
+
+  //     if (data.success) {
+        // Direct VPS URL — same pattern as original
+  //       const directUrl = `https://pdflinx.com/api${data.download}`;
+  //       setDownloadUrl(directUrl);
+  //       completeProgress();
+  //       flow.finishSuccess();
+  //     } else {
+  //       cancelProgress();
+  //       flow.handleError(data.error || "Merge failed");
+  //     }
+  //   } catch (err) {
+  //     console.error(err);
+  //     cancelProgress();
+  //     flow.handleError("Something went wrong. Please try again.");
+  //   }
+  // };
+
+
   // ── END API LOGIC ─────────────────────────
 
   return (

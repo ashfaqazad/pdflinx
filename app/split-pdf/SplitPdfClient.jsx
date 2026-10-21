@@ -568,11 +568,70 @@ function PagePreviewArea({ file, totalPages, selectedPages, extractMode, handleT
 }
 // ───────────────────────────────────────────
 
+
+function parsePageList(input, total) {
+  const result = [];
+  const seen = new Set();
+  for (const part of input.split(",")) {
+    const t = part.trim();
+    if (!t) continue;
+    const m = t.match(/^(\d+)(?:\s*-\s*(\d+))?$/);
+    if (!m) throw new Error(`Invalid page range: "${t}"`);
+    let a = parseInt(m[1], 10);
+    let b = m[2] ? parseInt(m[2], 10) : a;
+    if (a > b) [a, b] = [b, a];
+    if (a < 1 || b > total) throw new Error(`Pages must be between 1 and ${total}`);
+    for (let p = a; p <= b; p++) {
+      if (!seen.has(p)) { seen.add(p); result.push(p); }
+    }
+  }
+  if (!result.length) throw new Error("Please enter at least one page number");
+  return result;
+}
+
+async function splitPdfFile(file, { pages, merge }) {
+  const { PDFDocument } = await import("pdf-lib");
+  const src = await PDFDocument.load(await file.arrayBuffer());
+  const total = src.getPageCount();
+  const list = pages
+    ? parsePageList(pages, total)
+    : Array.from({ length: total }, (_, i) => i + 1);
+  const base = file.name.replace(/\.pdf$/i, "");
+
+  // merge ya sirf 1 page → ek single PDF
+  if (merge || list.length === 1) {
+    const out = await PDFDocument.create();
+    const copied = await out.copyPages(src, list.map((p) => p - 1));
+    copied.forEach((p) => out.addPage(p));
+    const bytes = await out.save();
+    return {
+      blob: new Blob([bytes], { type: "application/pdf" }),
+      name: list.length === 1 ? `${base}-page-${list[0]}.pdf` : `${base}-extracted.pdf`,
+    };
+  }
+
+  // warna har page alag PDF, sab ZIP mein
+  const JSZip = (await import("jszip")).default;
+  const zip = new JSZip();
+  for (const p of list) {
+    const out = await PDFDocument.create();
+    const [page] = await out.copyPages(src, [p - 1]);
+    out.addPage(page);
+    zip.file(`${base}-page-${p}.pdf`, await out.save());
+  }
+  return {
+    blob: await zip.generateAsync({ type: "blob" }),
+    name: `${base}-split-pages.zip`,
+  };
+}
+
+
 export default function SplitPdf({ seo }) {
   const flow = useToolFlow();
   const { progress, startProgress, completeProgress, cancelProgress } = useProgressBar();
 
   const [downloadUrl, setDownloadUrl] = useState(null);
+  const [outputFileName, setOutputFileName] = useState("split-pages.zip");
   const [activeTab, setActiveTab] = useState("pages");
   const [extractMode, setExtractMode] = useState("all");
   const [selectedPages, setSelectedPages] = useState([]);
@@ -581,6 +640,7 @@ export default function SplitPdf({ seo }) {
   const [ranges, setRanges] = useState([{ from: 1, to: 1 }]);
   const [pageRangeInput, setPageRangeInput] = useState("");
   const [mergeExtracted, setMergeExtracted] = useState(false);
+
 
   const handleRemoveFile = (index) => {
     const updated = flow.files.filter((_, i) => i !== index);
@@ -591,62 +651,106 @@ export default function SplitPdf({ seo }) {
     else flow.selectFiles(updated);
   };
 
-  const handleDownload = async () => {
-    if (!downloadUrl) return;
-    try {
-      const res = await fetch(downloadUrl);
-      const blob = await res.blob();
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = flow.files[0]
-        ? flow.files[0].name.replace(/\.pdf$/i, "-split-pages.zip")
-        : "split-pages.zip";
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      window.URL.revokeObjectURL(url);
-    } catch (err) {
-      console.error("Download failed:", err);
-      alert("Download failed. Please try again.");
-    }
-  };
+  const handleDownload = () => {
+  if (!downloadUrl) return;
+  const a = document.createElement("a");
+  a.href = downloadUrl;
+  a.download = outputFileName;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+};
+
+  // const handleDownload = async () => {
+  //   if (!downloadUrl) return;
+  //   try {
+  //     const res = await fetch(downloadUrl);
+  //     const blob = await res.blob();
+  //     const url = window.URL.createObjectURL(blob);
+  //     const a = document.createElement("a");
+  //     a.href = url;
+  //     a.download = flow.files[0]
+  //       ? flow.files[0].name.replace(/\.pdf$/i, "-split-pages.zip")
+  //       : "split-pages.zip";
+  //     document.body.appendChild(a);
+  //     a.click();
+  //     a.remove();
+  //     window.URL.revokeObjectURL(url);
+  //   } catch (err) {
+  //     console.error("Download failed:", err);
+  //     alert("Download failed. Please try again.");
+  //   }
+  // };
 
   // ── API LOGIC ─────────────────────────────
+
   const handleConvert = async () => {
-    if (!flow.files.length) return alert("Please select a PDF file");
-    flow.startProcessing();
-    startProgress();
+  if (!flow.files.length) return alert("Please select a PDF file");
+  flow.startProcessing();
+  startProgress();
 
-    const formData = new FormData();
-    formData.append("file", flow.files[0]);
-
+  try {
+    let pages = "";
     if (extractMode === "select") {
-      if (pageRangeInput) {
-        formData.append("pages", pageRangeInput);
-      } else if (selectedPages.length > 0) {
-        formData.append("pages", selectedPages.sort((a, b) => a - b).join(","));
-      }
-      if (mergeExtracted) formData.append("merge", "1");
+      pages =
+        pageRangeInput ||
+        [...selectedPages].sort((a, b) => a - b).join(",");
     }
 
-    try {
-      const res = await fetch("/convert/split-pdf", { method: "POST", body: formData });
-      const data = await res.json();
-      if (data.success) {
-        setDownloadUrl(`/api${data.download}`);
-        completeProgress();
-        flow.finishSuccess();
-      } else {
-        cancelProgress();
-        flow.handleError(data.error || "Split failed");
-      }
-    } catch (err) {
-      console.error(err);
-      cancelProgress();
-      flow.handleError("Something went wrong. Please try again.");
+    const { blob, name } = await splitPdfFile(flow.files[0], {
+      pages,
+      merge: extractMode === "select" && mergeExtracted,
+    });
+
+    setDownloadUrl(URL.createObjectURL(blob));
+    setOutputFileName(name);
+    completeProgress();
+    flow.finishSuccess();
+  } catch (err) {
+    console.error(err);
+    cancelProgress();
+    if (err?.name === "EncryptedPDFError" || /encrypted/i.test(err?.message || "")) {
+      flow.handleError("This PDF is password protected. Please unlock it first.");
+    } else {
+      flow.handleError(err?.message || "Something went wrong. Please try again.");
     }
-  };
+  }
+};
+
+  // const handleConvert = async () => {
+  //   if (!flow.files.length) return alert("Please select a PDF file");
+  //   flow.startProcessing();
+  //   startProgress();
+
+  //   const formData = new FormData();
+  //   formData.append("file", flow.files[0]);
+
+  //   if (extractMode === "select") {
+  //     if (pageRangeInput) {
+  //       formData.append("pages", pageRangeInput);
+  //     } else if (selectedPages.length > 0) {
+  //       formData.append("pages", selectedPages.sort((a, b) => a - b).join(","));
+  //     }
+  //     if (mergeExtracted) formData.append("merge", "1");
+  //   }
+
+  //   try {
+  //     const res = await fetch("/convert/split-pdf", { method: "POST", body: formData });
+  //     const data = await res.json();
+  //     if (data.success) {
+  //       setDownloadUrl(`/api${data.download}`);
+  //       completeProgress();
+  //       flow.finishSuccess();
+  //     } else {
+  //       cancelProgress();
+  //       flow.handleError(data.error || "Split failed");
+  //     }
+  //   } catch (err) {
+  //     console.error(err);
+  //     cancelProgress();
+  //     flow.handleError("Something went wrong. Please try again.");
+  //   }
+  // };
   // ── END API LOGIC ─────────────────────────
 
   const customOptionsLayout = flow.files.length > 0 ? (

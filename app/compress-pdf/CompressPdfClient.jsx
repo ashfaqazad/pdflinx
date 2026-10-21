@@ -176,6 +176,60 @@ function PdfThumbnail({ file }) {
   return <canvas ref={canvasRef} className="w-full h-full object-contain" />;
 }
 
+
+const LEVEL_SETTINGS = {
+  "high-quality": { dpi: 150, quality: 0.8 },
+  recommended: { dpi: 110, quality: 0.6 },
+  max: { dpi: 72, quality: 0.4 },
+};
+
+async function compressPdfFile(file, level) {
+  const pdfjsLib = window.pdfjsLib;
+  if (!pdfjsLib) throw new Error("PDF engine is still loading. Please try again.");
+  pdfjsLib.GlobalWorkerOptions.workerSrc =
+    "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+
+  const { PDFDocument } = await import("pdf-lib");
+  const { dpi, quality } = LEVEL_SETTINGS[level] || LEVEL_SETTINGS.recommended;
+
+  const buffer = await file.arrayBuffer();
+  const src = await pdfjsLib.getDocument({ data: new Uint8Array(buffer.slice(0)) }).promise;
+  const out = await PDFDocument.create();
+  const canvas = document.createElement("canvas");
+  const ctx = canvas.getContext("2d");
+
+  for (let i = 1; i <= src.numPages; i++) {
+    const page = await src.getPage(i);
+    const base = page.getViewport({ scale: 1 });
+
+    // bohat bare pages par canvas limit se bachne ke liye
+    let scale = dpi / 72;
+    const maxPixels = 16e6;
+    if (base.width * base.height * scale * scale > maxPixels) {
+      scale = Math.sqrt(maxPixels / (base.width * base.height));
+    }
+    const vp = page.getViewport({ scale });
+
+    canvas.width = Math.floor(vp.width);
+    canvas.height = Math.floor(vp.height);
+    ctx.fillStyle = "#ffffff";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    await page.render({ canvasContext: ctx, viewport: vp }).promise;
+
+    const jpgBlob = await new Promise((res) => canvas.toBlob(res, "image/jpeg", quality));
+    const jpg = await out.embedJpg(await jpgBlob.arrayBuffer());
+    const p = out.addPage([base.width, base.height]);
+    p.drawImage(jpg, { x: 0, y: 0, width: base.width, height: base.height });
+    page.cleanup();
+  }
+
+  const bytes = await out.save();
+  const compressed = new Blob([bytes], { type: "application/pdf" });
+  // agar nateeja bara ho gaya to original hi wapas do
+  return compressed.size < file.size ? compressed : file;
+}
+
+
 export default function CompressPdfClient() {
   const flow = useToolFlow();
   const { progress, startProgress, completeProgress, cancelProgress } =
@@ -293,91 +347,145 @@ export default function CompressPdfClient() {
   // );
 
   // ── API LOGIC ─────────────────────────────────
+
   const handleConvert = async () => {
-    if (!flow.files.length) return alert("Please select PDF file(s) first");
+  if (!flow.files.length) return alert("Please select PDF file(s) first");
 
-    // Save original size before processing
-    const originalSize = flow.files.reduce((sum, f) => sum + f.size, 0);
+  const originalSize = flow.files.reduce((sum, f) => sum + f.size, 0);
 
-    flow.startProcessing();
-    startProgress();
+  flow.startProcessing();
+  startProgress();
 
-    const formData = new FormData();
-    flow.files.forEach((f) => formData.append("files", f));
-    formData.append("compressionLevel", compressionLevel);
+  try {
+    let blob;
+    let finalFileName;
 
-    try {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/convert/compress-pdf`,
-        {
-          method: "POST",
-          body: formData,
-        },
-      );
-
-      const text = await res.text();
-      let data;
-      try {
-        data = JSON.parse(text);
-      } catch {
-        console.error("Non-JSON response from server:", text);
-        cancelProgress();
-        flow.handleError("Server returned invalid response");
-        return;
+    if (flow.files.length === 1) {
+      blob = await compressPdfFile(flow.files[0], compressionLevel);
+      finalFileName = flow.files[0].name.replace(/\.pdf$/i, "-compressed.pdf");
+    } else {
+      const JSZip = (await import("jszip")).default;
+      const zip = new JSZip();
+      for (const f of flow.files) {
+        const out = await compressPdfFile(f, compressionLevel);
+        zip.file(f.name.replace(/\.pdf$/i, "-compressed.pdf"), out);
       }
-
-      if (!res.ok || !data.success) {
-        cancelProgress();
-        flow.handleError(data.error || "Compression failed");
-        return;
-      }
-
-      const finalDownloadUrl = `/api${data.download}`;
-      const finalFileName =
-        flow.files.length > 1
-          ? "compressed-files.zip"
-          : flow.files[0].name.replace(/\.pdf$/i, "-compressed.pdf");
-
-      setDownloadUrl(finalDownloadUrl);
-      setOutputFileName(finalFileName);
-
-      const fileRes = await fetch(finalDownloadUrl);
-      if (!fileRes.ok) {
-        cancelProgress();
-        flow.handleError("Download failed from server");
-        return;
-      }
-
-      const blob = await fileRes.blob();
-      if (!blob.size) {
-        cancelProgress();
-        flow.handleError("Downloaded file is empty");
-        return;
-      }
-
-      // ── Save compression stats ──
-      setCompressionStats({
-        originalSize,
-        compressedSize: blob.size,
-      });
-
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = finalFileName;
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      window.URL.revokeObjectURL(url);
-
-      completeProgress();
-      flow.finishSuccess();
-    } catch (err) {
-      console.error(err);
-      cancelProgress();
-      flow.handleError("Something went wrong. Please try again.");
+      blob = await zip.generateAsync({ type: "blob" });
+      finalFileName = "compressed-files.zip";
     }
-  };
+
+    setCompressionStats({ originalSize, compressedSize: blob.size });
+
+    const url = window.URL.createObjectURL(blob);
+    setDownloadUrl(url);
+    setOutputFileName(finalFileName);
+
+    // auto download (URL revoke nahi karna, "download again" ko chahiye)
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = finalFileName;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+
+    completeProgress();
+    flow.finishSuccess();
+  } catch (err) {
+    console.error(err);
+    cancelProgress();
+    if (err?.name === "PasswordException") {
+      flow.handleError("This PDF is password protected. Please unlock it first.");
+    } else {
+      flow.handleError(err?.message || "Something went wrong. Please try again.");
+    }
+  }
+};
+
+  // const handleConvert = async () => {
+  //   if (!flow.files.length) return alert("Please select PDF file(s) first");
+
+  //   // Save original size before processing
+  //   const originalSize = flow.files.reduce((sum, f) => sum + f.size, 0);
+
+  //   flow.startProcessing();
+  //   startProgress();
+
+  //   const formData = new FormData();
+  //   flow.files.forEach((f) => formData.append("files", f));
+  //   formData.append("compressionLevel", compressionLevel);
+
+  //   try {
+  //     const res = await fetch(
+  //       `${process.env.NEXT_PUBLIC_BACKEND_URL}/convert/compress-pdf`,
+  //       {
+  //         method: "POST",
+  //         body: formData,
+  //       },
+  //     );
+
+  //     const text = await res.text();
+  //     let data;
+  //     try {
+  //       data = JSON.parse(text);
+  //     } catch {
+  //       console.error("Non-JSON response from server:", text);
+  //       cancelProgress();
+  //       flow.handleError("Server returned invalid response");
+  //       return;
+  //     }
+
+  //     if (!res.ok || !data.success) {
+  //       cancelProgress();
+  //       flow.handleError(data.error || "Compression failed");
+  //       return;
+  //     }
+
+  //     const finalDownloadUrl = `/api${data.download}`;
+  //     const finalFileName =
+  //       flow.files.length > 1
+  //         ? "compressed-files.zip"
+  //         : flow.files[0].name.replace(/\.pdf$/i, "-compressed.pdf");
+
+  //     setDownloadUrl(finalDownloadUrl);
+  //     setOutputFileName(finalFileName);
+
+  //     const fileRes = await fetch(finalDownloadUrl);
+  //     if (!fileRes.ok) {
+  //       cancelProgress();
+  //       flow.handleError("Download failed from server");
+  //       return;
+  //     }
+
+  //     const blob = await fileRes.blob();
+  //     if (!blob.size) {
+  //       cancelProgress();
+  //       flow.handleError("Downloaded file is empty");
+  //       return;
+  //     }
+
+  //     // ── Save compression stats ──
+  //     setCompressionStats({
+  //       originalSize,
+  //       compressedSize: blob.size,
+  //     });
+
+  //     const url = window.URL.createObjectURL(blob);
+  //     const a = document.createElement("a");
+  //     a.href = url;
+  //     a.download = finalFileName;
+  //     document.body.appendChild(a);
+  //     a.click();
+  //     a.remove();
+  //     window.URL.revokeObjectURL(url);
+
+  //     completeProgress();
+  //     flow.finishSuccess();
+  //   } catch (err) {
+  //     console.error(err);
+  //     cancelProgress();
+  //     flow.handleError("Something went wrong. Please try again.");
+  //   }
+  // };
 
   const customOptionsLayout = (
     <div className="grid min-h-[calc(100vh-80px)] grid-cols-1 lg:grid-cols-[1fr_300px]">
