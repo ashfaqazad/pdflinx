@@ -33,6 +33,27 @@ const PdfPreviewSelector = dynamic(
   { ssr: false }
 );
 
+
+async function removePagesFromPdf(file, pages) {
+  const { PDFDocument } = await import("pdf-lib");
+  const doc = await PDFDocument.load(await file.arrayBuffer());
+  const total = doc.getPageCount();
+
+  const toRemove = [...new Set(pages)].filter((p) => p >= 1 && p <= total);
+  if (!toRemove.length) {
+    throw new Error(`Please select pages between 1 and ${total}.`);
+  }
+  if (toRemove.length >= total) {
+    throw new Error("You can't remove all pages. Keep at least one page.");
+  }
+
+  // peeche se hatao taake page numbers na khisken
+  toRemove.sort((a, b) => b - a).forEach((p) => doc.removePage(p - 1));
+
+  return new Blob([await doc.save()], { type: "application/pdf" });
+}
+
+
 export default function RemovePdf() {
   const flow = useToolFlow();
   const { progress, startProgress, completeProgress, cancelProgress } =
@@ -73,65 +94,102 @@ export default function RemovePdf() {
     URL.revokeObjectURL(urlObj);
   };
 
+
   const handleConvert = async () => {
-    if (!file) return flow.handleError("Please select a PDF file first!");
-    if (!selectedPages.length)
-      return flow.handleError("Please select page(s) to remove.");
+  if (!file) return flow.handleError("Please select a PDF file first!");
+  if (!selectedPages.length)
+    return flow.handleError("Please select page(s) to remove.");
 
-    flow.startProcessing();
-    startProgress();
-    setDownloadFile(null);
+  flow.startProcessing();
+  startProgress();
+  setDownloadFile(null);
 
-    const formData = new FormData();
-    formData.append("file", file);
-    formData.append("pages", selectedPages.join(","));
+  try {
+    const blob = await removePagesFromPdf(file, selectedPages);
+    setDownloadFile({ blob, filename: outputFilename });
 
-    try {
-      // const res = await fetch("/convert/remove-pages", {
-      //   method: "POST",
-      //   body: formData,
-      // });
+    // Auto-download (pehle jaisa)
+    const urlObj = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = urlObj;
+    a.download = outputFilename;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(urlObj);
 
-      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/convert/remove-pages`, {
-        method: "POST",
-        body: formData,
-      });
-
-
-      if (!res.ok) {
-        let msg = "Failed to remove pages";
-        try {
-          const maybeJson = await res.json();
-          msg = maybeJson?.error || msg;
-        } catch { }
-        throw new Error(msg);
-      }
-
-      const contentType = (res.headers.get("content-type") || "").toLowerCase();
-      if (!contentType.includes("application/pdf")) {
-        throw new Error("Unexpected response from server.");
-      }
-
-      const blob = await res.blob();
-      setDownloadFile({ blob, filename: outputFilename });
-
-      const urlObj = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = urlObj;
-      a.download = outputFilename;
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      URL.revokeObjectURL(urlObj);
-
-      completeProgress();
-      flow.finishSuccess();
-    } catch (err) {
-      cancelProgress();
+    completeProgress();
+    flow.finishSuccess();
+  } catch (err) {
+    console.error(err);
+    cancelProgress();
+    if (err?.name === "EncryptedPDFError" || /encrypted/i.test(err?.message || "")) {
+      flow.handleError("This PDF is password protected. Please unlock it first.");
+    } else {
       flow.handleError(err?.message || "Something went wrong, please try again.");
-      console.error(err);
     }
-  };
+  }
+};
+
+  // const handleConvert = async () => {
+  //   if (!file) return flow.handleError("Please select a PDF file first!");
+  //   if (!selectedPages.length)
+  //     return flow.handleError("Please select page(s) to remove.");
+
+  //   flow.startProcessing();
+  //   startProgress();
+  //   setDownloadFile(null);
+
+  //   const formData = new FormData();
+  //   formData.append("file", file);
+  //   formData.append("pages", selectedPages.join(","));
+
+  //   try {
+  //     // const res = await fetch("/convert/remove-pages", {
+  //     //   method: "POST",
+  //     //   body: formData,
+  //     // });
+
+  //     const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/convert/remove-pages`, {
+  //       method: "POST",
+  //       body: formData,
+  //     });
+
+
+  //     if (!res.ok) {
+  //       let msg = "Failed to remove pages";
+  //       try {
+  //         const maybeJson = await res.json();
+  //         msg = maybeJson?.error || msg;
+  //       } catch { }
+  //       throw new Error(msg);
+  //     }
+
+  //     const contentType = (res.headers.get("content-type") || "").toLowerCase();
+  //     if (!contentType.includes("application/pdf")) {
+  //       throw new Error("Unexpected response from server.");
+  //     }
+
+  //     const blob = await res.blob();
+  //     setDownloadFile({ blob, filename: outputFilename });
+
+  //     const urlObj = URL.createObjectURL(blob);
+  //     const a = document.createElement("a");
+  //     a.href = urlObj;
+  //     a.download = outputFilename;
+  //     document.body.appendChild(a);
+  //     a.click();
+  //     a.remove();
+  //     URL.revokeObjectURL(urlObj);
+
+  //     completeProgress();
+  //     flow.finishSuccess();
+  //   } catch (err) {
+  //     cancelProgress();
+  //     flow.handleError(err?.message || "Something went wrong, please try again.");
+  //     console.error(err);
+  //   }
+  // };
 
   // ── Parse typed input like "1,3,5-8" ──
   const handlePageInputChange = (e) => {

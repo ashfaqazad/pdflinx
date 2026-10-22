@@ -275,6 +275,62 @@ function PageCard({
   );
 }
 
+
+async function buildOrganizedPdf({ files, pages, pageOrder, rotations }) {
+  const { PDFDocument, degrees } = await import("pdf-lib");
+
+  // har source PDF ek baar load karo
+  const srcDocs = [];
+  for (const f of files) {
+    srcDocs.push(await PDFDocument.load(await f.arrayBuffer()));
+  }
+
+  const out = await PDFDocument.create();
+
+  // jo pages chahiye, har file se ek hi call mein copy karo
+  // (isse fonts/images duplicate nahi hote aur file size chhota rehta hai)
+  const needed = new Map(); // fileIndex -> Set(pageIndex)
+  pageOrder.forEach((idx) => {
+    const p = pages[idx];
+    if (p.isBlank) return;
+    if (!needed.has(p.fileIndex)) needed.set(p.fileIndex, new Set());
+    needed.get(p.fileIndex).add(p.pageNumber - 1);
+  });
+
+  const copied = new Map(); // "fi:pn" -> copied page
+  for (const [fi, set] of needed) {
+    const indices = [...set].sort((a, b) => a - b);
+    const result = await out.copyPages(srcDocs[fi], indices);
+    indices.forEach((pn, k) => copied.set(`${fi}:${pn}`, result[k]));
+  }
+
+  // blank page ka size: pehle real page jaisa, warna A4
+  let blankSize = [595.28, 841.89];
+  const firstReal = pageOrder.map((i) => pages[i]).find((p) => !p.isBlank);
+  if (firstReal) {
+    const pg = copied.get(`${firstReal.fileIndex}:${firstReal.pageNumber - 1}`);
+    if (pg) blankSize = [pg.getWidth(), pg.getHeight()];
+  }
+
+  pageOrder.forEach((idx, slot) => {
+    const p = pages[idx];
+    const extra = rotations[slot] || 0;
+    let page;
+    if (p.isBlank) {
+      page = out.addPage(blankSize);
+    } else {
+      page = copied.get(`${p.fileIndex}:${p.pageNumber - 1}`);
+      out.addPage(page);
+    }
+    if (extra) {
+      page.setRotation(degrees((page.getRotation().angle + extra) % 360));
+    }
+  });
+
+  return new Blob([await out.save()], { type: "application/pdf" });
+}
+
+
 /* =============================================
    MAIN COMPONENT
 ============================================= */
@@ -477,50 +533,78 @@ export default function OrganizePdf({ seo }) {
     a.remove();
   };
 
+
   const handleConvert = async () => {
-    if (!pageOrder.length) return;
-    flow.startProcessing();
-    startProgress();
-    try {
-      const formData = new FormData();
-      allFiles.forEach((f) => formData.append(`files`, f));
+  if (!pageOrder.length) return;
+  flow.startProcessing();
+  startProgress();
+  try {
+    const blob = await buildOrganizedPdf({
+      files: allFiles,
+      pages,
+      pageOrder,
+      rotations,
+    });
 
-      const finalOrder = pageOrder.map((idx) => {
-        const p = pages[idx];
-        if (p.isBlank) return null;
-        return { fileIndex: p.fileIndex, pageNumber: p.pageNumber };
-      });
-      formData.append("pageOrder", JSON.stringify(finalOrder));
-
-      const finalRotations = {};
-      pageOrder.forEach((_, slotIndex) => {
-        const deg = rotations[slotIndex] || 0;
-        if (deg !== 0) finalRotations[slotIndex] = deg;
-      });
-      formData.append("rotations", JSON.stringify(finalRotations));
-
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/convert/organize-pdf`, {
-        method: "POST",
-        body: formData,
-      });
-
-      if (!res.ok) {
-        const errData = await res.json().catch(() => ({}));
-        throw new Error(errData.error || "Failed to organize PDF");
-      }
-
-      const blob = await res.blob();
-      const url = URL.createObjectURL(blob);
-      setDownloadUrl(url);
-      completeProgress();
-      flow.finishSuccess();
-    } catch (err) {
-      console.error(err);
-      cancelProgress();
-      flow.handleError(err.message || "Something went wrong");
+    const url = URL.createObjectURL(blob);
+    setDownloadUrl(url);
+    completeProgress();
+    flow.finishSuccess();
+  } catch (err) {
+    console.error(err);
+    cancelProgress();
+    if (err?.name === "EncryptedPDFError" || /encrypted/i.test(err?.message || "")) {
+      flow.handleError("One of the PDFs is password protected. Please unlock it first.");
+    } else {
+      flow.handleError(err?.message || "Something went wrong");
     }
-  };
+  }
+};
+
+  // const handleConvert = async () => {
+  //   if (!pageOrder.length) return;
+  //   flow.startProcessing();
+  //   startProgress();
+  //   try {
+  //     const formData = new FormData();
+  //     allFiles.forEach((f) => formData.append(`files`, f));
+
+  //     const finalOrder = pageOrder.map((idx) => {
+  //       const p = pages[idx];
+  //       if (p.isBlank) return null;
+  //       return { fileIndex: p.fileIndex, pageNumber: p.pageNumber };
+  //     });
+  //     formData.append("pageOrder", JSON.stringify(finalOrder));
+
+  //     const finalRotations = {};
+  //     pageOrder.forEach((_, slotIndex) => {
+  //       const deg = rotations[slotIndex] || 0;
+  //       if (deg !== 0) finalRotations[slotIndex] = deg;
+  //     });
+  //     formData.append("rotations", JSON.stringify(finalRotations));
+
+  //     const res = await fetch(
+  //       `${process.env.NEXT_PUBLIC_BACKEND_URL}/convert/organize-pdf`, {
+  //       method: "POST",
+  //       body: formData,
+  //     });
+
+  //     if (!res.ok) {
+  //       const errData = await res.json().catch(() => ({}));
+  //       throw new Error(errData.error || "Failed to organize PDF");
+  //     }
+
+  //     const blob = await res.blob();
+  //     const url = URL.createObjectURL(blob);
+  //     setDownloadUrl(url);
+  //     completeProgress();
+  //     flow.finishSuccess();
+  //   } catch (err) {
+  //     console.error(err);
+  //     cancelProgress();
+  //     flow.handleError(err.message || "Something went wrong");
+  //   }
+  // };
 
   /* -------------------------------------------
      Derived stats

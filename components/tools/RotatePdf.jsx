@@ -162,39 +162,88 @@ function RotationSelector({ angle, onChange }) {
 }
 // ───────────────────────────────────────────────────────────────────────────
 
-// import { useRef, useEffect } from "react";
 
-function PdfThumbnail({ url }) {
+function PdfThumbnail({ file }) {
   const canvasRef = useRef(null);
 
   useEffect(() => {
-    if (!url || !window.pdfjsLib) return;
+    if (!file) return;
     let cancelled = false;
+    let timer;
+
+    const render = async () => {
+      try {
+        window.pdfjsLib.GlobalWorkerOptions.workerSrc =
+          "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+        const buffer = await file.arrayBuffer();
+        const pdf = await window.pdfjsLib.getDocument({ data: buffer }).promise;
+        const page = await pdf.getPage(1);
+        const viewport = page.getViewport({ scale: 0.5 });
+        const canvas = canvasRef.current;
+        if (!canvas || cancelled) return;
+        canvas.width = viewport.width;
+        canvas.height = viewport.height;
+        await page.render({
+          canvasContext: canvas.getContext("2d"),
+          viewport,
+        }).promise;
+      } catch (e) {
+        console.error("Thumbnail error:", e);
+      }
+    };
+
     const tryRender = () => {
-      if (!window.pdfjsLib) return setTimeout(tryRender, 100);
-      window.pdfjsLib
-        .getDocument(url)
-        .promise.then((pdf) => pdf.getPage(1))
-        .then((page) => {
-          const viewport = page.getViewport({ scale: 0.6 });
-          const canvas = canvasRef.current;
-          if (!canvas || cancelled) return;
-          canvas.width = viewport.width;
-          canvas.height = viewport.height;
-          page.render({ canvasContext: canvas.getContext("2d"), viewport });
-        })
-        .catch(console.error);
+      if (cancelled) return;
+      if (window.pdfjsLib) render();
+      else timer = setTimeout(tryRender, 100);
     };
     tryRender();
+
     return () => {
       cancelled = true;
+      clearTimeout(timer);
     };
-  }, [url]);
+  }, [file]);
 
   return (
     <canvas ref={canvasRef} className="h-full w-full object-contain bg-white" />
   );
 }
+
+
+// import { useRef, useEffect } from "react";
+
+// function PdfThumbnail({ url }) {
+//   const canvasRef = useRef(null);
+
+//   useEffect(() => {
+//     if (!url || !window.pdfjsLib) return;
+//     let cancelled = false;
+//     const tryRender = () => {
+//       if (!window.pdfjsLib) return setTimeout(tryRender, 100);
+//       window.pdfjsLib
+//         .getDocument(url)
+//         .promise.then((pdf) => pdf.getPage(1))
+//         .then((page) => {
+//           const viewport = page.getViewport({ scale: 0.6 });
+//           const canvas = canvasRef.current;
+//           if (!canvas || cancelled) return;
+//           canvas.width = viewport.width;
+//           canvas.height = viewport.height;
+//           page.render({ canvasContext: canvas.getContext("2d"), viewport });
+//         })
+//         .catch(console.error);
+//     };
+//     tryRender();
+//     return () => {
+//       cancelled = true;
+//     };
+//   }, [url]);
+
+//   return (
+//     <canvas ref={canvasRef} className="h-full w-full object-contain bg-white" />
+//   );
+// }
 
 
 const ROTATE_PDF_FAQS = [
@@ -262,6 +311,17 @@ const ROTATE_PDF_FAQS = [
 
 ]
 
+async function rotatePdfFile(file, angle) {
+  const { PDFDocument, degrees } = await import("pdf-lib");
+  const doc = await PDFDocument.load(await file.arrayBuffer());
+  doc.getPages().forEach((page) => {
+    const current = page.getRotation().angle;
+    page.setRotation(degrees((current + angle) % 360));
+  });
+  return new Blob([await doc.save()], { type: "application/pdf" });
+}
+
+
 export default function RotatePdf({ seo }) {
   const flow = useToolFlow();
   const { progress, startProgress, completeProgress, cancelProgress } =
@@ -297,67 +357,119 @@ export default function RotatePdf({ seo }) {
   };
 
   // ── API LOGIC ──────────────────────────────────────────────────────────
+
   const handleConvert = async () => {
-    if (!flow.files.length)
-      return alert("Please select at least one PDF file!");
+  if (!flow.files.length)
+    return alert("Please select at least one PDF file!");
 
-    flow.startProcessing();
-    startProgress();
-    setDownloadUrl(null);
+  flow.startProcessing();
+  startProgress();
+  setDownloadUrl(null);
 
-    const formData = new FormData();
-    flow.files.forEach((f) => formData.append("files", f));
-    formData.append("angle", String(rotationAngle));
+  try {
+    let blob;
+    const filename = getDownloadName();
 
-    try {
-      // const res = await fetch("/convert/rotate-pdf", {
-      //   method: "POST",
-      //   body: formData,
-      // });
-
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/convert/rotate-pdf`,
-        {
-          method: "POST",
-          body: formData,
-        },
-      );
-
-      if (!res.ok) {
-        let msg = "Rotation failed";
-        try {
-          const j = await res.json();
-          msg = j?.error || msg;
-        } catch {}
-        throw new Error(msg);
+    if (flow.files.length === 1) {
+      blob = await rotatePdfFile(flow.files[0], rotationAngle);
+    } else {
+      const JSZip = (await import("jszip")).default;
+      const zip = new JSZip();
+      for (let i = 0; i < flow.files.length; i++) {
+        const f = flow.files[i];
+        const rotated = await rotatePdfFile(f, rotationAngle);
+        zip.file(`${i + 1}-${f.name.replace(/\.pdf$/i, "")}-rotated.pdf`, rotated);
       }
-
-      const contentType = res.headers.get("content-type") || "";
-      const filename = getDownloadName(contentType);
-      const blob = await res.blob();
-      const url = window.URL.createObjectURL(blob);
-
-      setDownloadUrl(url);
-      setDownloadName(filename);
-
-      // Auto-download
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = filename;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-
-      completeProgress();
-      flow.finishSuccess();
-    } catch (err) {
-      console.error(err);
-      cancelProgress();
-      flow.handleError(
-        err.message || "Something went wrong. Please try again.",
-      );
+      blob = await zip.generateAsync({ type: "blob" });
     }
-  };
+
+    const url = window.URL.createObjectURL(blob);
+    setDownloadUrl(url);
+    setDownloadName(filename);
+
+    // Auto-download (pehle jaisa)
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+
+    completeProgress();
+    flow.finishSuccess();
+  } catch (err) {
+    console.error(err);
+    cancelProgress();
+    if (err?.name === "EncryptedPDFError" || /encrypted/i.test(err?.message || "")) {
+      flow.handleError("This PDF is password protected. Please unlock it first.");
+    } else {
+      flow.handleError(err?.message || "Something went wrong. Please try again.");
+    }
+  }
+};
+
+
+  // const handleConvert = async () => {
+  //   if (!flow.files.length)
+  //     return alert("Please select at least one PDF file!");
+
+  //   flow.startProcessing();
+  //   startProgress();
+  //   setDownloadUrl(null);
+
+  //   const formData = new FormData();
+  //   flow.files.forEach((f) => formData.append("files", f));
+  //   formData.append("angle", String(rotationAngle));
+
+  //   try {
+  //     // const res = await fetch("/convert/rotate-pdf", {
+  //     //   method: "POST",
+  //     //   body: formData,
+  //     // });
+
+  //     const res = await fetch(
+  //       `${process.env.NEXT_PUBLIC_BACKEND_URL}/convert/rotate-pdf`,
+  //       {
+  //         method: "POST",
+  //         body: formData,
+  //       },
+  //     );
+
+  //     if (!res.ok) {
+  //       let msg = "Rotation failed";
+  //       try {
+  //         const j = await res.json();
+  //         msg = j?.error || msg;
+  //       } catch {}
+  //       throw new Error(msg);
+  //     }
+
+  //     const contentType = res.headers.get("content-type") || "";
+  //     const filename = getDownloadName(contentType);
+  //     const blob = await res.blob();
+  //     const url = window.URL.createObjectURL(blob);
+
+  //     setDownloadUrl(url);
+  //     setDownloadName(filename);
+
+  //     // Auto-download
+  //     const a = document.createElement("a");
+  //     a.href = url;
+  //     a.download = filename;
+  //     document.body.appendChild(a);
+  //     a.click();
+  //     document.body.removeChild(a);
+
+  //     completeProgress();
+  //     flow.finishSuccess();
+  //   } catch (err) {
+  //     console.error(err);
+  //     cancelProgress();
+  //     flow.handleError(
+  //       err.message || "Something went wrong. Please try again.",
+  //     );
+  //   }
+  // };
   // ── END API LOGIC ──────────────────────────────────────────────────────
 
   const angleLabel =
@@ -494,17 +606,20 @@ export default function RotatePdf({ seo }) {
               {/* Thumbnails */}
               <div className="flex flex-wrap justify-center gap-6 pt-10">
                 {flow.files.map((file, i) => (
+                  
                   <div
-                    key={i}
-                    className="group flex w-[140px] flex-col items-center gap-3"
-                    style={{
-                      animation: "previewPop 0.35s ease forwards",
-                      animationDelay: `${i * 70}ms`,
-                      opacity: 0,
-                    }}
+                  key={i} className="group flex w-[140px] flex-col items-center gap-3"
+                    // key={i}
+                    // className="group flex w-[140px] flex-col items-center gap-3"
+                    // style={{
+                    //   animation: "previewPop 0.35s ease forwards",
+                    //   animationDelay: `${i * 70}ms`,
+                    //   opacity: 0,
+                    // }}
                   >
                     <div className="relative aspect-[3/4] w-full overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition-all duration-300 group-hover:-translate-y-1 group-hover:shadow-xl">
-                      <PdfThumbnail url={URL.createObjectURL(file)} />
+                      {/* <PdfThumbnail url={URL.createObjectURL(file)} /> */}
+                      <PdfThumbnail file={file} />
                       <button
                         type="button"
                         onClick={() => handleRemoveFile(i)}

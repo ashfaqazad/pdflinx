@@ -168,6 +168,74 @@ const getOptionsSlot = (files, onRemoveFile, onClearAll, onMoveFile) => (
   </div>
 );
 
+const PAGE_SIZES = {
+  A4: [595.28, 841.89],
+  A3: [841.89, 1190.55],
+  Letter: [612, 792],
+  Legal: [612, 1008],
+};
+const MARGINS = { none: 0, small: 20, big: 40 };
+const MAX_SIDE = 4000;
+
+// Image ko canvas se guzaar kar rotation + WebP + phone EXIF orientation theek karta hai
+async function prepareImage(file, rotation) {
+  const bitmap = await createImageBitmap(file);
+  const k = Math.min(1, MAX_SIDE / Math.max(bitmap.width, bitmap.height));
+  const w = Math.round(bitmap.width * k);
+  const h = Math.round(bitmap.height * k);
+  const rot = (((rotation || 0) % 360) + 360) % 360;
+  const swap = rot === 90 || rot === 270;
+
+  const canvas = document.createElement("canvas");
+  canvas.width = swap ? h : w;
+  canvas.height = swap ? w : h;
+  const ctx = canvas.getContext("2d");
+
+  const isPng = file.type === "image/png";
+  if (!isPng) {
+    ctx.fillStyle = "#ffffff";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+  }
+  ctx.translate(canvas.width / 2, canvas.height / 2);
+  ctx.rotate((rot * Math.PI) / 180);
+  ctx.drawImage(bitmap, -w / 2, -h / 2, w, h);
+  bitmap.close?.();
+
+  const blob = await new Promise((res) =>
+    canvas.toBlob(res, isPng ? "image/png" : "image/jpeg", 0.92)
+  );
+  return {
+    bytes: await blob.arrayBuffer(),
+    isPng,
+    width: canvas.width,
+    height: canvas.height,
+  };
+}
+
+async function buildImagePdf(items, { orientation, pageSize, margin }) {
+  const { PDFDocument } = await import("pdf-lib");
+  const doc = await PDFDocument.create();
+
+  let [pw, ph] = PAGE_SIZES[pageSize] || PAGE_SIZES.A4;
+  if (orientation === "landscape") [pw, ph] = [ph, pw];
+  const m = MARGINS[margin] ?? 0;
+
+  for (const { file, rotation } of items) {
+    const img = await prepareImage(file, rotation);
+    const embedded = img.isPng
+      ? await doc.embedPng(img.bytes)
+      : await doc.embedJpg(img.bytes);
+
+    const page = doc.addPage([pw, ph]);
+    const scale = Math.min((pw - 2 * m) / img.width, (ph - 2 * m) / img.height);
+    const w = img.width * scale;
+    const h = img.height * scale;
+    page.drawImage(embedded, { x: (pw - w) / 2, y: (ph - h) / 2, width: w, height: h });
+  }
+
+  return new Blob([await doc.save()], { type: "application/pdf" });
+}
+
 
 export default function ImageToPdf({ seo }) {
   const flow = useToolFlow();
@@ -222,119 +290,182 @@ export default function ImageToPdf({ seo }) {
     return "images-converted.pdf";
   };
 
-  const handleDownload = async () => {
-    if (!downloadUrl) return;
+  // const handleDownload = async () => {
+  //   if (!downloadUrl) return;
 
-    try {
-      const res = await fetch(downloadUrl);
-      const blob = await res.blob();
-      const url = URL.createObjectURL(blob);
+  //   try {
+  //     const res = await fetch(downloadUrl);
+  //     const blob = await res.blob();
+  //     const url = URL.createObjectURL(blob);
 
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = downloadName || getDownloadName();
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
+  //     const a = document.createElement("a");
+  //     a.href = url;
+  //     a.download = downloadName || getDownloadName();
+  //     document.body.appendChild(a);
+  //     a.click();
+  //     a.remove();
 
-      URL.revokeObjectURL(url);
-    } catch (err) {
-      alert("Download failed. Please try again.");
-    }
-  };
+  //     URL.revokeObjectURL(url);
+  //   } catch (err) {
+  //     alert("Download failed. Please try again.");
+  //   }
+  // };
 
 
-  const compressImage = async (file) => {
-    if (file.size < 500 * 1024) return file; // 500KB se chota — skip
+  const handleDownload = () => {
+  if (!downloadUrl) return;
+  const a = document.createElement("a");
+  a.href = downloadUrl;
+  a.download = downloadName || getDownloadName();
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+};
 
-    const bitmap = await createImageBitmap(file);
-    const canvas = document.createElement("canvas");
 
-    const MAX = 1800;
-    let w = bitmap.width;
-    let h = bitmap.height;
+  // const compressImage = async (file) => {
+  //   if (file.size < 500 * 1024) return file; // 500KB se chota — skip
 
-    if (w > MAX || h > MAX) {
-      if (w > h) { h = Math.round(h * MAX / w); w = MAX; }
-      else { w = Math.round(w * MAX / h); h = MAX; }
-    }
+  //   const bitmap = await createImageBitmap(file);
+  //   const canvas = document.createElement("canvas");
 
-    canvas.width = w;
-    canvas.height = h;
-    canvas.getContext("2d").drawImage(bitmap, 0, 0, w, h);
+  //   const MAX = 1800;
+  //   let w = bitmap.width;
+  //   let h = bitmap.height;
 
-    return new Promise((resolve) => {
-      canvas.toBlob((blob) => {
-        resolve(new File([blob], file.name.replace(/\.[^/.]+$/, ".jpg"), { type: "image/jpeg" }));
-      }, "image/jpeg", 0.85);
-    });
-  };
+  //   if (w > MAX || h > MAX) {
+  //     if (w > h) { h = Math.round(h * MAX / w); w = MAX; }
+  //     else { w = Math.round(w * MAX / h); h = MAX; }
+  //   }
+
+  //   canvas.width = w;
+  //   canvas.height = h;
+  //   canvas.getContext("2d").drawImage(bitmap, 0, 0, w, h);
+
+  //   return new Promise((resolve) => {
+  //     canvas.toBlob((blob) => {
+  //       resolve(new File([blob], file.name.replace(/\.[^/.]+$/, ".jpg"), { type: "image/jpeg" }));
+  //     }, "image/jpeg", 0.85);
+  //   });
+  // };
+
+
+  // const handleConvert = async () => {
+  //   if (!flow.files.length) {
+  //     return alert("Please select at least one image");
+  //   }
+
+  //   const allowedTypes = ["image/jpeg", "image/png", "image/webp"];
+
+  //   const invalidFiles = flow.files.filter(
+  //     (file) => !allowedTypes.includes(file.type)
+  //   );
+
+  //   if (invalidFiles.length > 0) {
+  //     return alert(
+  //       `Only JPG, PNG, and WebP allowed.\nInvalid file: ${invalidFiles[0].name}`
+  //     );
+  //   }
+
+  //   flow.startProcessing();
+  //   startProgress();
+
+  //   setDownloadUrl(null);
+
+  //   const formData = new FormData();
+  //   // flow.files.forEach((file) => formData.append("images", file));
+  //   const compressed = await Promise.all(flow.files.map(compressImage));
+  //   compressed.forEach((file) => formData.append("images", file));
+
+  //   formData.append("orientation", pageOrientation);
+  //   formData.append("pageSize", pageSize);
+  //   formData.append("margin", margin);
+  //   formData.append("mergeAll", String(mergeAll));
+  //   formData.append("rotations", JSON.stringify(rotations));
+
+  //   try {
+  //     const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/convert/image-to-pdf`, {
+  //       method: "POST",
+  //       body: formData,
+  //     });
+
+  //     const text = await res.text();
+
+  //     let data;
+  //     try {
+  //       data = JSON.parse(text);
+  //     } catch {
+  //       data = { success: false, error: text || "Internal Server Error" };
+  //     }
+
+  //     if (!res.ok || !data?.success) {
+  //       throw new Error(data?.error || `HTTP ${res.status}`);
+  //     }
+
+  //     const finalName = getDownloadName();
+
+  //     setDownloadUrl(`${process.env.NEXT_PUBLIC_BACKEND_URL}${data.download}`);
+  //     setDownloadName(finalName);
+
+  //     completeProgress();
+  //     flow.finishSuccess();
+  //   } catch (err) {
+  //     cancelProgress();
+  //     flow.handleError(err.message || "Something went wrong. Please try again.");
+  //   }
+  // };
+
 
 
   const handleConvert = async () => {
-    if (!flow.files.length) {
-      return alert("Please select at least one image");
-    }
+  if (!flow.files.length) {
+    return alert("Please select at least one image");
+  }
 
-    const allowedTypes = ["image/jpeg", "image/png", "image/webp"];
+  const allowedTypes = ["image/jpeg", "image/png", "image/webp"];
+  const invalidFiles = flow.files.filter((file) => !allowedTypes.includes(file.type));
+  if (invalidFiles.length > 0) {
+    return alert(`Only JPG, PNG, and WebP allowed.\nInvalid file: ${invalidFiles[0].name}`);
+  }
 
-    const invalidFiles = flow.files.filter(
-      (file) => !allowedTypes.includes(file.type)
-    );
+  flow.startProcessing();
+  startProgress();
+  setDownloadUrl(null);
 
-    if (invalidFiles.length > 0) {
-      return alert(
-        `Only JPG, PNG, and WebP allowed.\nInvalid file: ${invalidFiles[0].name}`
-      );
-    }
+  try {
+    const opts = { orientation: pageOrientation, pageSize, margin };
+    const items = flow.files.map((file, i) => ({ file, rotation: rotations[i] || 0 }));
 
-    flow.startProcessing();
-    startProgress();
+    let blob;
+    let finalName;
 
-    setDownloadUrl(null);
-
-    const formData = new FormData();
-    // flow.files.forEach((file) => formData.append("images", file));
-    const compressed = await Promise.all(flow.files.map(compressImage));
-    compressed.forEach((file) => formData.append("images", file));
-
-    formData.append("orientation", pageOrientation);
-    formData.append("pageSize", pageSize);
-    formData.append("margin", margin);
-    formData.append("mergeAll", String(mergeAll));
-    formData.append("rotations", JSON.stringify(rotations));
-
-    try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/convert/image-to-pdf`, {
-        method: "POST",
-        body: formData,
-      });
-
-      const text = await res.text();
-
-      let data;
-      try {
-        data = JSON.parse(text);
-      } catch {
-        data = { success: false, error: text || "Internal Server Error" };
+    if (mergeAll || items.length === 1) {
+      blob = await buildImagePdf(items, opts);
+      finalName = getDownloadName();
+    } else {
+      const JSZip = (await import("jszip")).default;
+      const zip = new JSZip();
+      for (let i = 0; i < items.length; i++) {
+        const pdf = await buildImagePdf([items[i]], opts);
+        const base = items[i].file.name.replace(/\.[^/.]+$/, "");
+        zip.file(`${i + 1}-${base}.pdf`, pdf);
       }
-
-      if (!res.ok || !data?.success) {
-        throw new Error(data?.error || `HTTP ${res.status}`);
-      }
-
-      const finalName = getDownloadName();
-
-      setDownloadUrl(`${process.env.NEXT_PUBLIC_BACKEND_URL}${data.download}`);
-      setDownloadName(finalName);
-
-      completeProgress();
-      flow.finishSuccess();
-    } catch (err) {
-      cancelProgress();
-      flow.handleError(err.message || "Something went wrong. Please try again.");
+      blob = await zip.generateAsync({ type: "blob" });
+      finalName = "images-converted.zip";
     }
-  };
+
+    setDownloadUrl(URL.createObjectURL(blob));
+    setDownloadName(finalName);
+
+    completeProgress();
+    flow.finishSuccess();
+  } catch (err) {
+    console.error(err);
+    cancelProgress();
+    flow.handleError(err?.message || "Something went wrong. Please try again.");
+  }
+};
+
 
   return (
     <>
