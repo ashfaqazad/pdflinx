@@ -668,6 +668,69 @@ const SIGN_PDF_FAQS = [
   },
 ];
 
+async function embedSignature(doc, file) {
+  const buf = await file.arrayBuffer();
+  if (file.type === "image/png") return doc.embedPng(buf);
+  if (file.type === "image/jpeg") return doc.embedJpg(buf);
+  // webp waghera: canvas se PNG bana lo
+  const bmp = await createImageBitmap(file);
+  const c = document.createElement("canvas");
+  c.width = bmp.width;
+  c.height = bmp.height;
+  c.getContext("2d").drawImage(bmp, 0, 0);
+  const blob = await new Promise((r) => c.toBlob(r, "image/png"));
+  return doc.embedPng(await blob.arrayBuffer());
+}
+
+async function signPdfFile({
+  file, signature, pageNumber, x, y, w, h, previewW, previewH,
+}) {
+  const { PDFDocument, degrees } = await import("pdf-lib");
+  const doc = await PDFDocument.load(await file.arrayBuffer());
+  const img = await embedSignature(doc, signature);
+
+  const page = doc.getPage(pageNumber - 1);
+  const { width: W, height: H } = page.getSize();
+  const rot = (((page.getRotation().angle % 360) + 360) % 360);
+  const sideways = rot === 90 || rot === 270;
+
+  // jo page screen par dikh raha hai uski size (rotation ke baad)
+  const dispW = sideways ? H : W;
+  const dispH = sideways ? W : H;
+  const kx = dispW / previewW;
+  const ky = dispH / previewH;
+
+  // preview mein image "object-contain" hai, wahi hisaab yahan
+  const ar = img.width / img.height;
+  let fw = w;
+  let fh = h;
+  if (w / h > ar) fw = h * ar;
+  else fh = w / ar;
+  const fx = x + (w - fw) / 2;
+  const fy = y + (h - fh) / 2;
+
+  const px = fx * kx;
+  const py = fy * ky;
+  const pw = fw * kx;
+  const ph = fh * ky;
+
+  let dx, dy;
+  if (rot === 0) { dx = px; dy = H - py - ph; }
+  else if (rot === 90) { dx = py + ph; dy = px; }
+  else if (rot === 180) { dx = W - px; dy = py + ph; }
+  else { dx = W - py - ph; dy = H - px; }
+
+  page.drawImage(img, {
+    x: dx,
+    y: dy,
+    width: pw,
+    height: ph,
+    rotate: degrees(rot),
+  });
+
+  return new Blob([await doc.save()], { type: "application/pdf" });
+}
+
 // ==================== MAIN COMPONENT ====================
 export default function SignPdf({ seo }) {
   const flow = useToolFlow();
@@ -899,73 +962,124 @@ export default function SignPdf({ seo }) {
   };
 
   const handleConvert = async () => {
-    if (!pdfFile) {
-      setError("Please upload a PDF file!");
-      return;
-    }
-    if (!signatureImage) {
-      setError("Please provide a signature first!");
-      return;
-    }
-    const currentCanvas = canvasRefs.current[pageNumber - 1];
-    if (!currentCanvas) {
-      setError("Preview canvas not ready yet. Please wait and try again.");
-      return;
-    }
+  if (!pdfFile) {
+    setError("Please upload a PDF file!");
+    return;
+  }
+  if (!signatureImage) {
+    setError("Please provide a signature first!");
+    return;
+  }
+  const currentCanvas = canvasRefs.current[pageNumber - 1];
+  if (!currentCanvas) {
+    setError("Preview canvas not ready yet. Please wait and try again.");
+    return;
+  }
 
-    flow.startProcessing();
-    startProgress();
-    setError("");
+  flow.startProcessing();
+  startProgress();
+  setError("");
 
-    try {
-      const formData = new FormData();
-      formData.append("pdfFile", pdfFile);
-      formData.append("signatureImage", signatureImage);
-      formData.append("pageNumber", String(pageNumber));
-      formData.append("xPosition", String(Math.round(xPosition)));
-      formData.append("yPosition", String(Math.round(yPosition)));
-      formData.append("width", String(Math.round(signatureWidth)));
-      formData.append("height", String(Math.round(signatureHeight)));
-      formData.append("scale", String(scale));
+  try {
+    const displayRect = currentCanvas.getBoundingClientRect();
 
-      const displayRect = currentCanvas.getBoundingClientRect();
-      formData.append("previewWidth", String(displayRect.width));
-      formData.append("previewHeight", String(displayRect.height));
+    const blob = await signPdfFile({
+      file: pdfFile,
+      signature: signatureImage,
+      pageNumber,
+      x: xPosition,
+      y: yPosition,
+      w: signatureWidth,
+      h: signatureHeight,
+      previewW: displayRect.width,
+      previewH: displayRect.height,
+    });
 
-      // const res = await fetch("/convert/sign-pdf", { method: "POST", body: formData });
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/convert/sign-pdf`,
-        {
-          method: "POST",
-          body: formData,
-        },
-      );
+    const url = URL.createObjectURL(blob);
+    if (downloadUrl) URL.revokeObjectURL(downloadUrl);
+    setDownloadUrl(url);
+    completeProgress();
+    flow.finishSuccess();
+  } catch (err) {
+    console.error(err);
+    cancelProgress();
+    const msg =
+      err?.name === "EncryptedPDFError" || /encrypted/i.test(err?.message || "")
+        ? "This PDF is password protected. Please unlock it first."
+        : err?.message || "Something went wrong. Please try again.";
+    setError(msg);
+    flow.handleError(msg);
+  }
+};
 
-      if (!res.ok) {
-        let msg = "Signing failed";
-        try {
-          const j = await res.json();
-          msg = j?.error || msg;
-        } catch {}
-        throw new Error(msg);
-      }
+  // const handleConvert = async () => {
+  //   if (!pdfFile) {
+  //     setError("Please upload a PDF file!");
+  //     return;
+  //   }
+  //   if (!signatureImage) {
+  //     setError("Please provide a signature first!");
+  //     return;
+  //   }
+  //   const currentCanvas = canvasRefs.current[pageNumber - 1];
+  //   if (!currentCanvas) {
+  //     setError("Preview canvas not ready yet. Please wait and try again.");
+  //     return;
+  //   }
 
-      const blob = await res.blob();
-      const url = URL.createObjectURL(blob);
-      if (downloadUrl) URL.revokeObjectURL(downloadUrl);
-      setDownloadUrl(url);
-      completeProgress();
-      flow.finishSuccess();
-    } catch (err) {
-      cancelProgress();
-      const msg = (
-        err?.message || "Something went wrong. Please try again."
-      ).toString();
-      setError(msg);
-      flow.handleError(msg);
-      console.error(err);
-    }
-  };
+  //   flow.startProcessing();
+  //   startProgress();
+  //   setError("");
+
+  //   try {
+  //     const formData = new FormData();
+  //     formData.append("pdfFile", pdfFile);
+  //     formData.append("signatureImage", signatureImage);
+  //     formData.append("pageNumber", String(pageNumber));
+  //     formData.append("xPosition", String(Math.round(xPosition)));
+  //     formData.append("yPosition", String(Math.round(yPosition)));
+  //     formData.append("width", String(Math.round(signatureWidth)));
+  //     formData.append("height", String(Math.round(signatureHeight)));
+  //     formData.append("scale", String(scale));
+
+  //     const displayRect = currentCanvas.getBoundingClientRect();
+  //     formData.append("previewWidth", String(displayRect.width));
+  //     formData.append("previewHeight", String(displayRect.height));
+
+  //     // const res = await fetch("/convert/sign-pdf", { method: "POST", body: formData });
+  //     const res = await fetch(
+  //       `${process.env.NEXT_PUBLIC_BACKEND_URL}/convert/sign-pdf`,
+  //       {
+  //         method: "POST",
+  //         body: formData,
+  //       },
+  //     );
+
+  //     if (!res.ok) {
+  //       let msg = "Signing failed";
+  //       try {
+  //         const j = await res.json();
+  //         msg = j?.error || msg;
+  //       } catch {}
+  //       throw new Error(msg);
+  //     }
+
+  //     const blob = await res.blob();
+  //     const url = URL.createObjectURL(blob);
+  //     if (downloadUrl) URL.revokeObjectURL(downloadUrl);
+  //     setDownloadUrl(url);
+  //     completeProgress();
+  //     flow.finishSuccess();
+  //   } catch (err) {
+  //     cancelProgress();
+  //     const msg = (
+  //       err?.message || "Something went wrong. Please try again."
+  //     ).toString();
+  //     setError(msg);
+  //     flow.handleError(msg);
+  //     console.error(err);
+  //   }
+  // };
 
   // ==================== customOptionsLayout ====================
   const customOptionsLayout = (
