@@ -67,6 +67,23 @@ const FONT_COLORS = [
   { hex: "#8b5cf6", label: "Purple" },
 ];
 
+// ─── Browser-side helpers ─────────────────────────────────────────────────────
+const hexToRgb01 = (hex) => {
+  const h = hex.replace("#", "");
+  const full = h.length === 3 ? h.split("").map((c) => c + c).join("") : h;
+  const n = parseInt(full, 16);
+  return { r: ((n >> 16) & 255) / 255, g: ((n >> 8) & 255) / 255, b: (n & 255) / 255 };
+};
+
+const buildLabel = (fmt, n, total) => {
+  switch (fmt) {
+    case "page-n": return `Page ${n}`;
+    case "n-of-t": return `${n} / ${total}`;
+    case "dash-n": return `- ${n} -`;
+    default: return `${n}`;
+  }
+};
+
 // ─── 9-dot Position Picker ────────────────────────────────────────────────────
 function PositionPicker({ value, onChange }) {
   return (
@@ -289,68 +306,153 @@ export default function AddPageNumbers() {
     URL.revokeObjectURL(urlObj);
   };
 
-  const handleConvert = async () => {
+
+    const handleConvert = async () => {
     if (!file) return flow.handleError("Please select a PDF file first!");
     flow.startProcessing();
     startProgress();
     setError("");
     setDownloadFile(null);
 
-    const formData = new FormData();
-    formData.append("file", file);
-    formData.append("position", position);
-    formData.append("format", format);
-    formData.append("startNumber", String(startNumber));
-    formData.append("fontSize", String(fontSize));
-    formData.append("margin", String(margin));
-    formData.append("fontColor", fontColor);
-    formData.append("fontFamily", fontFamily);
-
     try {
+      const { PDFDocument, StandardFonts, rgb, degrees } = await import("pdf-lib");
 
-      // const res = await fetch("/convert/add-page-numbers", {
-      //   method: "POST",
-      //   body: formData,
-      // });
+      const fontMap = {
+        "Helvetica": StandardFonts.Helvetica,
+        "Arial": StandardFonts.Helvetica,
+        "Times New Roman": StandardFonts.TimesRoman,
+        "Georgia": StandardFonts.TimesRoman,
+        "Courier": StandardFonts.Courier,
+      };
 
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/convert/add-page-numbers`, {
-        method: "POST",
-        body: formData,
+      const bytes = await file.arrayBuffer();
+      const pdfDoc = await PDFDocument.load(bytes); // encrypted PDF pe error throw karega
+      const font = await pdfDoc.embedFont(fontMap[fontFamily] || StandardFonts.Helvetica);
+      const { r, g, b } = hexToRgb01(fontColor);
+      const pages = pdfDoc.getPages();
+      const total = pages.length;
+      const [vPos, hPos] = position.split("-"); // e.g. "bottom-center"
+
+      pages.forEach((page, i) => {
+        const box = page.getCropBox();
+        const rot = ((page.getRotation().angle % 360) + 360) % 360;
+        const w = box.width;
+        const h = box.height;
+        const sideways = rot === 90 || rot === 270;
+        const dispW = sideways ? h : w; // jo user ko dikhta hai
+        const dispH = sideways ? w : h;
+
+        const text = buildLabel(format, startNumber + i, total);
+        const textW = font.widthOfTextAtSize(text, fontSize);
+
+        // Displayed page pe position
+        const dx =
+          hPos === "left" ? margin
+          : hPos === "right" ? dispW - margin - textW
+          : (dispW - textW) / 2;
+        const dy =
+          vPos === "top" ? dispH - margin - fontSize
+          : vPos === "bottom" ? margin
+          : dispH / 2 - fontSize * 0.35;
+
+        // Displayed -> actual PDF coordinates (rotated pages ke liye)
+        let x, y;
+        switch (rot) {
+          case 90:  x = w - dy; y = dx;     break;
+          case 180: x = w - dx; y = h - dy; break;
+          case 270: x = dy;     y = h - dx; break;
+          default:  x = dx;     y = dy;
+        }
+
+        page.drawText(text, {
+          x: box.x + x,
+          y: box.y + y,
+          size: fontSize,
+          font,
+          color: rgb(r, g, b),
+          rotate: degrees(rot),
+        });
       });
 
-
-
-      if (!res.ok) {
-        let msg = "Failed to add page numbers";
-        try { const j = await res.json(); msg = j?.error || msg; } catch { }
-        throw new Error(msg);
-      }
-      const ct = (res.headers.get("content-type") || "").toLowerCase();
-      if (!ct.includes("application/pdf")) throw new Error("Unexpected response from server.");
-
-      const blob = await res.blob();
+      const out = await pdfDoc.save();
+      const blob = new Blob([out], { type: "application/pdf" });
       setDownloadFile({ blob, filename: outputFilename });
-
-      const urlObj = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = urlObj;
-      a.download = outputFilename;
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      URL.revokeObjectURL(urlObj);
 
       completeProgress();
       flow.finishSuccess();
     } catch (err) {
-      const msg = err?.message || "Something went wrong, please try again.";
-      setError(msg);
-      cancelProgress();
-      flow.handleError(msg);
       console.error(err);
+      cancelProgress();
+      const msg = /encrypt|password/i.test(err?.message || "")
+        ? "This PDF is password-protected. Please unlock it first."
+        : "Could not add page numbers. Please try another file.";
+      setError(msg);
+      flow.handleError(msg);
     }
   };
+
+  // const handleConvert = async () => {
+  //   if (!file) return flow.handleError("Please select a PDF file first!");
+  //   flow.startProcessing();
+  //   startProgress();
+  //   setError("");
+  //   setDownloadFile(null);
+
+  //   const formData = new FormData();
+  //   formData.append("file", file);
+  //   formData.append("position", position);
+  //   formData.append("format", format);
+  //   formData.append("startNumber", String(startNumber));
+  //   formData.append("fontSize", String(fontSize));
+  //   formData.append("margin", String(margin));
+  //   formData.append("fontColor", fontColor);
+  //   formData.append("fontFamily", fontFamily);
+
+  //   try {
+
+  //     // const res = await fetch("/convert/add-page-numbers", {
+  //     //   method: "POST",
+  //     //   body: formData,
+  //     // });
+
+  //     const res = await fetch(
+  //       `${process.env.NEXT_PUBLIC_BACKEND_URL}/convert/add-page-numbers`, {
+  //       method: "POST",
+  //       body: formData,
+  //     });
+
+
+
+  //     if (!res.ok) {
+  //       let msg = "Failed to add page numbers";
+  //       try { const j = await res.json(); msg = j?.error || msg; } catch { }
+  //       throw new Error(msg);
+  //     }
+  //     const ct = (res.headers.get("content-type") || "").toLowerCase();
+  //     if (!ct.includes("application/pdf")) throw new Error("Unexpected response from server.");
+
+  //     const blob = await res.blob();
+  //     setDownloadFile({ blob, filename: outputFilename });
+
+  //     const urlObj = URL.createObjectURL(blob);
+  //     const a = document.createElement("a");
+  //     a.href = urlObj;
+  //     a.download = outputFilename;
+  //     document.body.appendChild(a);
+  //     a.click();
+  //     a.remove();
+  //     URL.revokeObjectURL(urlObj);
+
+  //     completeProgress();
+  //     flow.finishSuccess();
+  //   } catch (err) {
+  //     const msg = err?.message || "Something went wrong, please try again.";
+  //     setError(msg);
+  //     cancelProgress();
+  //     flow.handleError(msg);
+  //     console.error(err);
+  //   }
+  // };
 
   // ── iLovePDF-style custom layout ─────────────────────────────────────────
   const customOptionsLayout = (
@@ -570,7 +672,7 @@ export default function AddPageNumbers() {
                   <div>
                     <h4 className="text-xs font-bold text-slate-800">Secure & Private</h4>
                     <p className="mt-0.5 text-xs leading-5 text-slate-500">
-                      Files are encrypted and auto-deleted after processing.
+                      Your file never leaves your device. Everything happens in your browser.
                     </p>
                   </div>
                 </div>

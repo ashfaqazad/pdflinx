@@ -38,7 +38,121 @@ const DONE_LINKS = [
 
 
 // ── Crop Selection Component ──────────────────────────────────────────────────
-function CropCanvas({ file, cropRect, setCropRect, applyToPages, scale, setScale }) {
+// function CropCanvas({ file, cropRect, setCropRect, applyToPages, scale, setScale }) {
+//   const canvasRef = useRef(null);
+//   const containerRef = useRef(null);
+//   const [pdfPage, setPdfPage] = useState(null);
+//   const [canvasSize, setCanvasSize] = useState({ w: 0, h: 0 });
+//   const [isDragging, setIsDragging] = useState(false);
+//   const [isResizing, setIsResizing] = useState(null);
+//   const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
+//   const [totalPages, setTotalPages] = useState(1);
+//   const [currentPage, setCurrentPage] = useState(1);
+//   const pdfDocRef = useRef(null);
+
+//   const clamp = (v, min, max) => Math.max(min, Math.min(max, v));
+
+//   // Load PDF
+//   useEffect(() => {
+//     if (!file) return;
+//     let cancelled = false;
+//     let tries = 0;
+
+//     const load = async () => {
+//       const lib = window?.pdfjsLib;
+//       if (!lib) {
+//         if (tries++ < 80) return setTimeout(load, 100);
+//         return;
+//       }
+//       try {
+//         const buf = await file.arrayBuffer();
+//         const doc = await lib.getDocument({ data: buf }).promise;
+//         if (cancelled) return;
+//         pdfDocRef.current = doc;
+//         setTotalPages(doc.numPages);
+//         const page = await doc.getPage(1);
+//         if (cancelled) return;
+//         setPdfPage(page);
+//       } catch (e) { console.error(e); }
+//     };
+
+//     load();
+//     return () => { cancelled = true; };
+//   }, [file]);
+
+//   useEffect(() => {
+//     if (!cropRect || cropRect.w !== 0) return;
+//     if (canvasSize.w === 0) return;
+//     const pad = 0.05;
+//     setCropRect({
+//       x: canvasSize.w * pad,
+//       y: canvasSize.h * pad,
+//       w: canvasSize.w * (1 - pad * 2),
+//       h: canvasSize.h * (1 - pad * 2),
+//     });
+//   }, [cropRect, canvasSize]);
+
+//   // Change page
+//   useEffect(() => {
+//     if (!pdfDocRef.current) return;
+//     pdfDocRef.current.getPage(currentPage).then(setPdfPage);
+//   }, [currentPage]);
+
+//   // Render PDF on canvas
+//   useEffect(() => {
+//     if (!pdfPage || !canvasRef.current) return;
+//     const viewport = pdfPage.getViewport({ scale });
+//     const canvas = canvasRef.current;
+//     canvas.width = viewport.width;
+//     canvas.height = viewport.height;
+//     setCanvasSize({ w: viewport.width, h: viewport.height });
+
+//     const ctx = canvas.getContext("2d");
+//     pdfPage.render({ canvasContext: ctx, viewport });
+
+//     const pad = 0.05;
+//     setCropRect({
+//       x: viewport.width * pad,
+//       y: viewport.height * pad,
+//       w: viewport.width * (1 - pad * 2),
+//       h: viewport.height * (1 - pad * 2),
+//     });
+//   }, [pdfPage, scale]);
+
+// ── pdf.js loader (CDN, ek hi baar load hoga) ─────────────────────────────
+const PDFJS_VERSION = "3.11.174";
+const PDFJS_BASE = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${PDFJS_VERSION}`;
+let pdfjsPromise = null;
+
+function loadPdfJs() {
+  if (typeof window === "undefined") {
+    return Promise.reject(new Error("No window"));
+  }
+  if (window.pdfjsLib) {
+    if (!window.pdfjsLib.GlobalWorkerOptions.workerSrc) {
+      window.pdfjsLib.GlobalWorkerOptions.workerSrc = `${PDFJS_BASE}/pdf.worker.min.js`;
+    }
+    return Promise.resolve(window.pdfjsLib);
+  }
+  if (pdfjsPromise) return pdfjsPromise;
+
+  pdfjsPromise = new Promise((resolve, reject) => {
+    const s = document.createElement("script");
+    s.src = `${PDFJS_BASE}/pdf.min.js`;
+    s.onload = () => {
+      window.pdfjsLib.GlobalWorkerOptions.workerSrc = `${PDFJS_BASE}/pdf.worker.min.js`;
+      resolve(window.pdfjsLib);
+    };
+    s.onerror = () => {
+      pdfjsPromise = null;
+      reject(new Error("Failed to load pdf.js"));
+    };
+    document.head.appendChild(s);
+  });
+  return pdfjsPromise;
+}
+
+function CropCanvas({ file, cropRect, setCropRect, scale, setScale, currentPage, setCurrentPage, canvasSizeRef }) {
   const canvasRef = useRef(null);
   const containerRef = useRef(null);
   const [pdfPage, setPdfPage] = useState(null);
@@ -47,41 +161,42 @@ function CropCanvas({ file, cropRect, setCropRect, applyToPages, scale, setScale
   const [isResizing, setIsResizing] = useState(null);
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
   const [totalPages, setTotalPages] = useState(1);
-  const [currentPage, setCurrentPage] = useState(1);
   const pdfDocRef = useRef(null);
+  const renderTaskRef = useRef(null);
+  const prevSizeRef = useRef(null);
 
   const clamp = (v, min, max) => Math.max(min, Math.min(max, v));
 
   // Load PDF
+    // Load PDF
   useEffect(() => {
     if (!file) return;
     let cancelled = false;
-    let tries = 0;
+    prevSizeRef.current = null;
 
-    const load = async () => {
-      const lib = window?.pdfjsLib;
-      if (!lib) {
-        if (tries++ < 80) return setTimeout(load, 100);
-        return;
-      }
+    (async () => {
       try {
+        const lib = await loadPdfJs();
         const buf = await file.arrayBuffer();
         const doc = await lib.getDocument({ data: buf }).promise;
         if (cancelled) return;
         pdfDocRef.current = doc;
         setTotalPages(doc.numPages);
+        setCurrentPage(1);
         const page = await doc.getPage(1);
         if (cancelled) return;
         setPdfPage(page);
-      } catch (e) { console.error(e); }
-    };
+      } catch (e) {
+        console.error("PDF preview error:", e);
+      }
+    })();
 
-    load();
     return () => { cancelled = true; };
   }, [file]);
 
+  // FIX 1: Reset ke baad / null hone pe default selection
   useEffect(() => {
-    if (!cropRect || cropRect.w !== 0) return;
+    if (cropRect && cropRect.w !== 0) return;
     if (canvasSize.w === 0) return;
     const pad = 0.05;
     setCropRect({
@@ -92,7 +207,7 @@ function CropCanvas({ file, cropRect, setCropRect, applyToPages, scale, setScale
     });
   }, [cropRect, canvasSize]);
 
-  // Change page
+  // Page change
   useEffect(() => {
     if (!pdfDocRef.current) return;
     pdfDocRef.current.getPage(currentPage).then(setPdfPage);
@@ -106,17 +221,32 @@ function CropCanvas({ file, cropRect, setCropRect, applyToPages, scale, setScale
     canvas.width = viewport.width;
     canvas.height = viewport.height;
     setCanvasSize({ w: viewport.width, h: viewport.height });
+    if (canvasSizeRef) canvasSizeRef.current = { w: viewport.width, h: viewport.height };
 
+    if (renderTaskRef.current) {
+      try { renderTaskRef.current.cancel(); } catch {}
+    }
     const ctx = canvas.getContext("2d");
-    pdfPage.render({ canvasContext: ctx, viewport });
+    const task = pdfPage.render({ canvasContext: ctx, viewport });
+    renderTaskRef.current = task;
+    task.promise.catch(() => {});
 
+    const prev = prevSizeRef.current;
     const pad = 0.05;
-    setCropRect({
-      x: viewport.width * pad,
-      y: viewport.height * pad,
-      w: viewport.width * (1 - pad * 2),
-      h: viewport.height * (1 - pad * 2),
+    setCropRect((r) => {
+      if (prev && prev.w > 0 && r && r.w > 0) {
+        const rx = viewport.width / prev.w;
+        const ry = viewport.height / prev.h;
+        return { x: r.x * rx, y: r.y * ry, w: r.w * rx, h: r.h * ry };
+      }
+      return {
+        x: viewport.width * pad,
+        y: viewport.height * pad,
+        w: viewport.width * (1 - pad * 2),
+        h: viewport.height * (1 - pad * 2),
+      };
     });
+    prevSizeRef.current = { w: viewport.width, h: viewport.height };
   }, [pdfPage, scale]);
 
   const getPos = (e) => {
@@ -131,6 +261,7 @@ function CropCanvas({ file, cropRect, setCropRect, applyToPages, scale, setScale
   };
 
   const getHandle = (pos, rect) => {
+    if (!rect) return null;
     const HIT = 18;
     const corners = {
       "nw": { x: rect.x, y: rect.y },
@@ -149,11 +280,14 @@ function CropCanvas({ file, cropRect, setCropRect, applyToPages, scale, setScale
   };
 
   const isInsideRect = (pos, rect) =>
+    !!rect &&
     pos.x > rect.x && pos.x < rect.x + rect.w &&
     pos.y > rect.y && pos.y < rect.y + rect.h;
 
+  // FIX 2: null guard
   const onMouseDown = (e) => {
     e.preventDefault();
+    if (!cropRect) return;
     const pos = getPos(e);
     const handle = getHandle(pos, cropRect);
     if (handle) {
@@ -171,12 +305,13 @@ function CropCanvas({ file, cropRect, setCropRect, applyToPages, scale, setScale
 
   const onMouseMove = (e) => {
     if (!isDragging && !isResizing) return;
+    if (!cropRect) return;
     e.preventDefault();
     const pos = getPos(e);
     const W = canvasSize.w, H = canvasSize.h;
 
     if (isDragging) {
-      setCropRect(prev => ({
+      setCropRect(prev => prev && ({
         ...prev,
         x: clamp(pos.x - dragStart.x, 0, W - prev.w),
         y: clamp(pos.y - dragStart.y, 0, H - prev.h),
@@ -189,6 +324,7 @@ function CropCanvas({ file, cropRect, setCropRect, applyToPages, scale, setScale
       setCropRect({ x: clamp(x, 0, W), y: clamp(y, 0, H), w: clamp(w, 10, W - x), h: clamp(h, 10, H - y) });
     } else {
       setCropRect(prev => {
+        if (!prev) return prev;
         let { x, y, w, h } = prev;
         if (isResizing.includes("e")) w = clamp(pos.x - x, 10, W - x);
         if (isResizing.includes("s")) h = clamp(pos.y - y, 10, H - y);
@@ -199,7 +335,7 @@ function CropCanvas({ file, cropRect, setCropRect, applyToPages, scale, setScale
     }
   };
 
-  const onMouseUp = () => { setIsDragging(false); setIsResizing(null); };
+  const onMouseUp = () => { setIsDragging(false); setIsResizing(null); };  
 
   const cursorMap = {
     nw: "nw-resize", ne: "ne-resize", sw: "sw-resize", se: "se-resize",
@@ -385,8 +521,18 @@ export default function CropPdf() {
   const [applyToPages, setApplyToPages] = useState("all");
   const [cropRect, setCropRect] = useState(null);
   const [scale, setScale] = useState(1);
+  const [currentPage, setCurrentPage] = useState(1);
+  const canvasSizeRef = useRef({ w: 0, h: 0 });
 
   const file = flow.files?.[0] || null;
+
+  // Nayi file aaye to state clean karo
+  useEffect(() => {
+    setCropRect(null);
+    setScale(1);
+    setCurrentPage(1);
+    setApplyToPages("all");
+  }, [file]);
 
   const handleRemoveFile = (index) => {
     const updated = flow.files.filter((_, i) => i !== index);
@@ -400,16 +546,17 @@ export default function CropPdf() {
 
   const handleDownload = () => {
     if (!downloadUrl) return;
+    const baseName = file?.name ? file.name.replace(/\.pdf$/i, "") : "document";
     const a = document.createElement("a");
     a.href = downloadUrl;
-    a.download = file?.name?.replace(/\.pdf$/i, "") + "-cropped.pdf" || "cropped.pdf";
+    a.download = `${baseName}-cropped.pdf`;
     document.body.appendChild(a);
     a.click();
     a.remove();
   };
 
   const handleConvert = async () => {
-    if (!flow.files?.length) return;
+    if (!file) return;
     if (!cropRect || cropRect.w < 10 || cropRect.h < 10) {
       flow.handleError("Please select a crop area first.");
       return;
@@ -419,35 +566,77 @@ export default function CropPdf() {
     startProgress();
 
     try {
-      const formData = new FormData();
-      flow.files.forEach(f => formData.append("files", f));
-      formData.append("applyToPages", applyToPages);
-      formData.append("cropX", String(cropRect.x));
-      formData.append("cropY", String(cropRect.y));
-      formData.append("cropW", String(cropRect.w));
-      formData.append("cropH", String(cropRect.h));
-      formData.append("scale", String(scale));
+      const { PDFDocument } = await import("pdf-lib");
 
-      // const res = await fetch("/convert/crop-pdf", { method: "POST", body: formData });
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/convert/crop-pdf`, {
-        method: "POST",
-        body: formData,
-      });
+      const bytes = await file.arrayBuffer();
+      const pdfDoc = await PDFDocument.load(bytes); // encrypted PDF pe error throw karega
+      const pages = pdfDoc.getPages();
 
-      if (!res.ok) throw new Error("Failed to crop PDF");
+      // Canvas pixels -> fractions (0..1). Har page ki apni size pe apply hoga.
+      const cw = canvasSizeRef.current.w;
+      const ch = canvasSizeRef.current.h;
+      if (!cw || !ch) throw new Error("Preview not ready");
 
-      const blob = await res.blob();
-      const url = URL.createObjectURL(blob);
-      setDownloadUrl(url);
+      const clamp01 = (v) => Math.max(0, Math.min(1, v));
+      const u1 = clamp01(cropRect.x / cw);
+      const v1 = clamp01(cropRect.y / ch);
+      const u2 = clamp01((cropRect.x + cropRect.w) / cw);
+      const v2 = clamp01((cropRect.y + cropRect.h) / ch);
+
+      const targets =
+        applyToPages === "all"
+          ? pages.map((_, i) => i)
+          : [Math.min(currentPage, pages.length) - 1];
+
+      for (const i of targets) {
+        const page = pages[i];
+        const box = page.getCropBox(); // pdf.js isi box ko render karta hai
+        const rot = (((page.getRotation().angle % 360) + 360) % 360);
+        const w = box.width;
+        const h = box.height;
+
+        // Displayed (rotated) fractions -> unrotated PDF user space
+        const toPdf = (u, v) => {
+          switch (rot) {
+            case 90:  return { x: v * w,       y: u * h };
+            case 180: return { x: (1 - u) * w, y: v * h };
+            case 270: return { x: (1 - v) * w, y: (1 - u) * h };
+            default:  return { x: u * w,       y: (1 - v) * h };
+          }
+        };
+
+        const p1 = toPdf(u1, v1);
+        const p2 = toPdf(u2, v2);
+
+        const x = box.x + Math.min(p1.x, p2.x);
+        const y = box.y + Math.min(p1.y, p2.y);
+        const bw = Math.abs(p2.x - p1.x);
+        const bh = Math.abs(p2.y - p1.y);
+
+        if (bw < 1 || bh < 1) continue;
+
+        page.setCropBox(x, y, bw, bh);
+        page.setMediaBox(x, y, bw, bh);
+      }
+
+      const out = await pdfDoc.save();
+      const blob = new Blob([out], { type: "application/pdf" });
+
+      if (downloadUrl) URL.revokeObjectURL(downloadUrl);
+      setDownloadUrl(URL.createObjectURL(blob));
+
       completeProgress();
       flow.finishSuccess();
     } catch (err) {
       console.error(err);
       cancelProgress();
-      flow.handleError("Something went wrong");
+      const msg = /encrypt|password/i.test(err?.message || "")
+        ? "This PDF is password-protected. Please unlock it first."
+        : "Could not crop this PDF. Please try another file.";
+      flow.handleError(msg);
     }
   };
+
 
   return (
     <>
@@ -564,14 +753,25 @@ export default function CropPdf() {
               {/* LEFT: PDF preview with crop overlay + bottom toolbar */}
               <div style={{ height: "calc(100vh - 140px)", display: "flex", flexDirection: "column" }}>
                 {file ? (
-                  <CropCanvas
-                    file={file}
-                    cropRect={cropRect}
-                    setCropRect={setCropRect}
-                    applyToPages={applyToPages}
-                    scale={scale}
-                    setScale={setScale}
-                  />
+
+                <CropCanvas
+                  file={file}
+                  cropRect={cropRect}
+                  setCropRect={setCropRect}
+                  scale={scale}
+                  setScale={setScale}
+                  currentPage={currentPage}
+                  setCurrentPage={setCurrentPage}
+                  canvasSizeRef={canvasSizeRef}
+                />
+                  // <CropCanvas
+                  //   file={file}
+                  //   cropRect={cropRect}
+                  //   setCropRect={setCropRect}
+                  //   applyToPages={applyToPages}
+                  //   scale={scale}
+                  //   setScale={setScale}
+                  // />
                 ) : (
                   <div className="flex flex-1 items-center justify-center bg-[#525659] p-8">
                     <div className="text-center">
