@@ -618,7 +618,7 @@ const SIGN_PDF_FAQS = [
         live preview before downloading. If you need to rearrange or organize
         pages first, try our{" "}
         <a
-          href="/reorder-pdf-pages"
+          href="/organize-pdf"
           className="text-blue-600 hover:underline font-medium"
         >
           Organize PDF tool
