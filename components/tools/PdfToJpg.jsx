@@ -69,6 +69,62 @@ const OPTIONS_SLOT = (
     </ul>
   </div>
 );
+
+
+const PDFJS_WORKER =
+  "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+const MAX_PIXELS = 16e6;
+
+async function waitForPdfJs() {
+  for (let i = 0; i < 100; i++) {
+    if (window.pdfjsLib) {
+      window.pdfjsLib.GlobalWorkerOptions.workerSrc = PDFJS_WORKER;
+      return window.pdfjsLib;
+    }
+    await new Promise((r) => setTimeout(r, 100));
+  }
+  throw new Error("PDF engine failed to load. Please refresh and try again.");
+}
+
+// har page ka JPG blob banata hai
+async function pdfToJpgBlobs(file) {
+  const pdfjsLib = await waitForPdfJs();
+  const pdf = await pdfjsLib.getDocument({
+    data: new Uint8Array(await file.arrayBuffer()),
+  }).promise;
+
+  const canvas = document.createElement("canvas");
+  const ctx = canvas.getContext("2d");
+  const blobs = [];
+
+  for (let i = 1; i <= pdf.numPages; i++) {
+    const page = await pdf.getPage(i);
+    const base = page.getViewport({ scale: 1 });
+
+    // scale 2 = lagbhag 144 DPI; bohat bare page par canvas limit se bachao
+    let scale = 2;
+    if (base.width * base.height * scale * scale > MAX_PIXELS) {
+      scale = Math.sqrt(MAX_PIXELS / (base.width * base.height));
+    }
+    const viewport = page.getViewport({ scale });
+
+    canvas.width = Math.floor(viewport.width);
+    canvas.height = Math.floor(viewport.height);
+    ctx.fillStyle = "#ffffff"; // JPG mein transparency nahi hoti
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    await page.render({ canvasContext: ctx, viewport }).promise;
+
+    blobs.push(
+      await new Promise((res) => canvas.toBlob(res, "image/jpeg", 0.92))
+    );
+    page.cleanup();
+  }
+
+  pdf.destroy();
+  return blobs;
+}
+
+
 // ───────────────────────────────────────────────────────────────────────────
 
 export default function PdfToJpg({ seo }) {
@@ -104,71 +160,91 @@ export default function PdfToJpg({ seo }) {
   };
 
   // ── API LOGIC ──────────────────────────────────────────────────────────
-  const handleConvert = async () => {
-    if (!flow.files.length)
-      return alert("Please select at least one PDF file!");
+const handleConvert = async () => {
+  if (!flow.files.length)
+    return alert("Please select at least one PDF file!");
 
-    flow.startProcessing();
-    startProgress();
-    setDownloadUrl(null);
+  flow.startProcessing();
+  startProgress();
+  setDownloadUrl(null);
 
-    const formData = new FormData();
-    flow.files.forEach((f) => formData.append("files", f));
+  try {
+    const pad = (n, total) => String(n).padStart(String(total).length, "0");
+    let blob;
+    let filename;
 
-    try {
-      // const res = await fetch("/convert/pdf-to-jpg", {
-      //   method: "POST",
-      //   body: formData,
-      // });
+    if (flow.files.length === 1) {
+      const f = flow.files[0];
+      const base = f.name.replace(/\.pdf$/i, "");
+      const jpgs = await pdfToJpgBlobs(f);
 
-      const res = await fetch(
-          `${process.env.NEXT_PUBLIC_BACKEND_URL}/convert/pdf-to-jpg`,
-          {
-            method: "POST",
-            body: formData,
-          }
+      if (jpgs.length === 1) {
+        blob = jpgs[0];
+        filename = `${base}.jpg`;
+      } else {
+        const JSZip = (await import("jszip")).default;
+        const zip = new JSZip();
+        jpgs.forEach((b, i) =>
+          zip.file(`${base}-page-${pad(i + 1, jpgs.length)}.jpg`, b)
         );
-
-
-      if (!res.ok) {
-        const errorText = await res.text();
-        throw new Error(errorText || "Conversion failed");
+        blob = await zip.generateAsync({ type: "blob" });
+        filename = `${base}_jpgs.zip`;
       }
-
-      const contentType = res.headers.get("content-type") || "";
-      const disposition = res.headers.get("content-disposition") || "";
-
-      let filename = getDownloadName(contentType);
-      if (disposition.includes("filename=")) {
-        filename = disposition.split("filename=")[1].replace(/"/g, "");
+    } else {
+      const JSZip = (await import("jszip")).default;
+      const zip = new JSZip();
+      for (let fi = 0; fi < flow.files.length; fi++) {
+        const f = flow.files[fi];
+        const base = f.name.replace(/\.pdf$/i, "");
+        const jpgs = await pdfToJpgBlobs(f);
+        const folder = zip.folder(`${fi + 1}-${base}`);
+        jpgs.forEach((b, i) =>
+          folder.file(`page-${pad(i + 1, jpgs.length)}.jpg`, b)
+        );
       }
-
-      const blob = await res.blob();
-      const url = window.URL.createObjectURL(blob);
-
-      setDownloadUrl(url);
-      setDownloadName(filename);
-
-      // Auto-download
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = filename;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-
-      completeProgress();
-      flow.finishSuccess();
-    } catch (err) {
-      console.error(err);
-      cancelProgress();
-      flow.handleError(err.message || "Something went wrong. Please try again.");
+      blob = await zip.generateAsync({ type: "blob" });
+      filename = "pdf_to_jpg_batch.zip";
     }
-  };
-  // ── END API LOGIC ──────────────────────────────────────────────────────
+
+    const url = window.URL.createObjectURL(blob);
+    setDownloadUrl(url);
+    setDownloadName(filename);
+
+    // Auto-download (pehle jaisa)
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+
+    completeProgress();
+    flow.finishSuccess();
+  } catch (err) {
+    console.error(err);
+    cancelProgress();
+    if (err?.name === "PasswordException") {
+      flow.handleError("This PDF is password protected. Please unlock it first.");
+    } else {
+      flow.handleError(err?.message || "Something went wrong. Please try again.");
+    }
+  }
+};
+
+// ── END API LOGIC ──────────────────────────────────────────────────────
 
   return (
     <>
+
+    <Script
+      src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"
+      strategy="afterInteractive"
+      onReady={() => {
+        if (window.pdfjsLib) {
+          window.pdfjsLib.GlobalWorkerOptions.workerSrc = PDFJS_WORKER;
+        }
+      }}
+    />
       {/* ── SEO Schemas ── */}
       <Script
         id="faq-schema-pdf-jpg"

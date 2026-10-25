@@ -23,8 +23,24 @@ const nextConfig = {
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
   },
 
-  compress: true,
+  // compress: true,
+  // poweredByHeader: false,
+
+    compress: true,
   poweredByHeader: false,
+
+  webpack: (config, { isServer }) => {
+    if (!isServer) {
+      config.resolve.fallback = {
+        ...config.resolve.fallback,
+        fs: false,
+        path: false,
+        crypto: false,
+      };
+    }
+    return config;
+  },
+
 
   async rewrites() {
     return [

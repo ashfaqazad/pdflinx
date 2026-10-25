@@ -208,6 +208,41 @@ const UNLOCK_PDF_FAQS = [
   // baaki sab
 ];
 
+
+// ── Browser-side unlock (qpdf wasm) ──────────────────────────────────────────
+async function unlockWithQpdf(file, password) {
+  const { default: createModule } = await import("@neslinesli93/qpdf-wasm");
+
+  let errText = "";
+  const qpdf = await createModule({
+    locateFile: () => "/qpdf.wasm",
+    print: () => {},
+    printErr: (t) => { errText += t + "\n"; },
+  });
+
+  qpdf.FS.writeFile("/in.pdf", new Uint8Array(await file.arrayBuffer()));
+
+  const args = ["--decrypt"];
+  if (password) args.push(`--password=${password}`);
+  args.push("/in.pdf", "/out.pdf");
+
+  try {
+    qpdf.callMain(args);
+  } catch (e) {
+    // qpdf non-zero exit pe throw karta hai; neeche output check se decide karenge
+  }
+
+  let out = null;
+  try { out = qpdf.FS.readFile("/out.pdf"); } catch {}
+
+  if (!out || !out.length) {
+    if (/invalid password|password/i.test(errText)) throw new Error("INVALID_PASSWORD");
+    throw new Error("Could not unlock this PDF.");
+  }
+  return out;
+}
+
+
 export default function UnlockPdf() {
   const flow = useToolFlow();
   const { progress, startProgress, completeProgress, cancelProgress } =
@@ -245,66 +280,48 @@ export default function UnlockPdf() {
     startProgress();
     setError("");
 
-    const formData = new FormData();
-    for (const f of files) formData.append("files", f);
-    if (password.trim()) formData.append("password", password.trim());
-
     try {
-      // const res = await fetch("/convert/unlock-pdf", {
-      //   method: "POST",
-      //   body: formData,
-      // });
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/convert/unlock-pdf`,
-        {
-          method: "POST",
-          body: formData,
-        },
-      );
+      const pw = password.trim();
+      const results = [];
 
-      if (!res.ok) {
-        let msg = "Unlock failed";
-        try {
-          const j = await res.json();
-          msg = j?.error || msg;
-        } catch {}
-        throw new Error(msg);
+      for (const f of files) {
+        const bytes = await unlockWithQpdf(f, pw);
+        const base = f.name.replace(/\.pdf$/i, "");
+        results.push({ name: `${base}-unlocked.pdf`, bytes });
       }
 
-      const contentType = res.headers.get("content-type") || "";
-      const blob = await res.blob();
-      const url = URL.createObjectURL(blob);
+      let blob, filename;
+      if (results.length === 1) {
+        blob = new Blob([results[0].bytes], { type: "application/pdf" });
+        filename = results[0].name;
+      } else {
+        const { default: JSZip } = await import("jszip");
+        const zip = new JSZip();
+        results.forEach((r, i) => zip.file(`${i + 1}-${r.name}`, r.bytes));
+        blob = await zip.generateAsync({ type: "blob" });
+        filename = "pdflinx-unlocked-pdfs.zip";
+      }
 
       if (downloadUrl) URL.revokeObjectURL(downloadUrl);
-      setDownloadUrl(url);
-
-      const isZip = contentType.includes("application/zip");
-      const firstName = files[0]?.name?.replace(/\.pdf$/i, "") || "unlocked";
-      setOutputFilename(
-        isZip ? "pdflinx-unlocked-pdfs.zip" : `${firstName}-unlocked.pdf`,
-      );
+      setDownloadUrl(URL.createObjectURL(blob));
+      setOutputFilename(filename);
 
       completeProgress();
       flow.finishSuccess();
     } catch (err) {
+      console.error(err);
       cancelProgress();
-      const msg = (
-        err?.message || "Something went wrong. Please try again."
-      ).toString();
-
-      if (msg.toLowerCase().includes("password")) {
-        setError(
-          "This PDF requires a password to open (user password). Please enter the correct password and try again.",
-        );
-        flow.handleError("Incorrect password. Please try again.");
+      if (err?.message === "INVALID_PASSWORD") {
+        setError("This PDF needs the correct password to open. Please check it and try again.");
+        flow.handleError("Incorrect or missing password. Please try again.");
       } else {
+        const msg = "Could not unlock this PDF. Please try another file.";
         setError(msg);
         flow.handleError(msg);
       }
-      console.error(err);
     }
   };
-
+  
   // ── Options slot: password field ──
   // const optionsSlot = (
   //   <div className="space-y-5">

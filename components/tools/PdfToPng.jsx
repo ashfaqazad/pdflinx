@@ -72,6 +72,63 @@ const OPTIONS_SLOT = (
     </ul>
   </div>
 );
+
+const PDFJS_WORKER =
+  "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+const MAX_PIXELS = 16e6;
+// true = safed background (pehle jaisa), false = transparent background
+const PNG_WHITE_BACKGROUND = true;
+
+async function waitForPdfJs() {
+  for (let i = 0; i < 100; i++) {
+    if (window.pdfjsLib) {
+      window.pdfjsLib.GlobalWorkerOptions.workerSrc = PDFJS_WORKER;
+      return window.pdfjsLib;
+    }
+    await new Promise((r) => setTimeout(r, 100));
+  }
+  throw new Error("PDF engine failed to load. Please refresh and try again.");
+}
+
+async function pdfToPngBlobs(file) {
+  const pdfjsLib = await waitForPdfJs();
+  const pdf = await pdfjsLib.getDocument({
+    data: new Uint8Array(await file.arrayBuffer()),
+  }).promise;
+
+  const canvas = document.createElement("canvas");
+  const ctx = canvas.getContext("2d");
+  const blobs = [];
+
+  for (let i = 1; i <= pdf.numPages; i++) {
+    const page = await pdf.getPage(i);
+    const base = page.getViewport({ scale: 1 });
+
+    // scale 2 = lagbhag 144 DPI; bohat bare page par canvas limit se bachao
+    let scale = 2;
+    if (base.width * base.height * scale * scale > MAX_PIXELS) {
+      scale = Math.sqrt(MAX_PIXELS / (base.width * base.height));
+    }
+    const viewport = page.getViewport({ scale });
+
+    canvas.width = Math.floor(viewport.width);
+    canvas.height = Math.floor(viewport.height);
+    if (PNG_WHITE_BACKGROUND) {
+      ctx.fillStyle = "#ffffff";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+    } else {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+    await page.render({ canvasContext: ctx, viewport }).promise;
+
+    blobs.push(await new Promise((res) => canvas.toBlob(res, "image/png")));
+    page.cleanup();
+  }
+
+  pdf.destroy();
+  return blobs;
+}
+
 // ───────────────────────────────────────────────────────────────────────────
 
 export default function PdfToPng({ seo }) {
@@ -107,77 +164,93 @@ export default function PdfToPng({ seo }) {
   };
 
   // ── API LOGIC ──────────────────────────────────────────────────────────
-  const handleConvert = async () => {
-    if (!flow.files.length)
-      return alert("Please select at least one PDF file!");
+const handleConvert = async () => {
+  if (!flow.files.length)
+    return alert("Please select at least one PDF file!");
 
-    flow.startProcessing();
-    startProgress();
-    setDownloadUrl(null);
+  flow.startProcessing();
+  startProgress();
+  setDownloadUrl(null);
 
-    const formData = new FormData();
-    flow.files.forEach((f) => formData.append("files", f));
+  try {
+    const pad = (n, total) => String(n).padStart(String(total).length, "0");
+    // PNG pehle se compressed hota hai, isliye ZIP mein STORE (tez)
+    const zipOpts = { type: "blob", compression: "STORE" };
+    let blob;
+    let filename;
 
-    try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/convert/pdf-to-png`, {
-        method: "POST",
-        body: formData,
-      });
+    if (flow.files.length === 1) {
+      const f = flow.files[0];
+      const base = f.name.replace(/\.pdf$/i, "");
+      const pngs = await pdfToPngBlobs(f);
 
-      if (!res.ok) {
-        const errorText = await res.text();
-        throw new Error(errorText || "Conversion failed");
+      if (pngs.length === 1) {
+        blob = pngs[0];
+        filename = `${base}.png`;
+      } else {
+        const JSZip = (await import("jszip")).default;
+        const zip = new JSZip();
+        pngs.forEach((b, i) =>
+          zip.file(`${base}-page-${pad(i + 1, pngs.length)}.png`, b)
+        );
+        blob = await zip.generateAsync(zipOpts);
+        filename = `${base}_pngs.zip`;
       }
-
-      const contentType = res.headers.get("content-type") || "";
-      const disposition = res.headers.get("content-disposition") || "";
-
-      let filename = getDownloadName(contentType);
-      if (disposition.includes("filename=")) {
-        filename = disposition.split("filename=")[1].replace(/"/g, "");
+    } else {
+      const JSZip = (await import("jszip")).default;
+      const zip = new JSZip();
+      for (let fi = 0; fi < flow.files.length; fi++) {
+        const f = flow.files[fi];
+        const base = f.name.replace(/\.pdf$/i, "");
+        const pngs = await pdfToPngBlobs(f);
+        const folder = zip.folder(`${fi + 1}-${base}`);
+        pngs.forEach((b, i) =>
+          folder.file(`page-${pad(i + 1, pngs.length)}.png`, b)
+        );
       }
-
-      // const blob = await res.blob();
-      // const url = window.URL.createObjectURL(blob);
-
-      // setDownloadUrl(url);
-      // setDownloadName(filename);
-
-      // // Auto-download
-      // const a = document.createElement("a");
-      // a.href = url;
-      // a.download = filename;
-      // document.body.appendChild(a);
-      // a.click();
-      // document.body.removeChild(a);
-
-      const data = await res.json();
-      const directUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL}${data.download}`;
-
-      setDownloadUrl(directUrl);
-      setDownloadName(data.filename);
-
-      // Auto-download direct from VPS
-      const a = document.createElement("a");
-      a.href = directUrl;
-      a.download = data.filename;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-
-
-      completeProgress();
-      flow.finishSuccess();
-    } catch (err) {
-      console.error(err);
-      cancelProgress();
-      flow.handleError(err.message || "Something went wrong. Please try again.");
+      blob = await zip.generateAsync(zipOpts);
+      filename = "pdf_to_png_batch.zip";
     }
-  };
-  // ── END API LOGIC ──────────────────────────────────────────────────────
+
+    const url = window.URL.createObjectURL(blob);
+    setDownloadUrl(url);
+    setDownloadName(filename);
+
+    // Auto-download (pehle jaisa)
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+
+    completeProgress();
+    flow.finishSuccess();
+  } catch (err) {
+    console.error(err);
+    cancelProgress();
+    if (err?.name === "PasswordException") {
+      flow.handleError("This PDF is password protected. Please unlock it first.");
+    } else {
+      flow.handleError(err?.message || "Something went wrong. Please try again.");
+    }
+  }
+};
+
+// ── END API LOGIC ──────────────────────────────────────────────────────
 
   return (
     <>
+
+      <Script
+        src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"
+        strategy="afterInteractive"
+        onReady={() => {
+          if (window.pdfjsLib) {
+            window.pdfjsLib.GlobalWorkerOptions.workerSrc = PDFJS_WORKER;
+          }
+        }}
+      />
       {/* ── SEO Schemas ── */}
       
       <Script

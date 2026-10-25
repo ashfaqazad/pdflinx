@@ -1,3 +1,5 @@
+
+
 "use client";
 
 // import { useState } from "react";
@@ -52,6 +54,34 @@ function PdfThumbnail({ url }) {
   return <canvas ref={canvasRef} className="h-full w-full object-contain bg-white" />;
 }
 
+
+// owner password har baar random banta hai taake permissions
+// (copy/edit block) user password se bypass na ho sakein
+function randomOwnerPassword() {
+  const bytes = new Uint8Array(24);
+  crypto.getRandomValues(bytes);
+  return Array.from(bytes, (b) => b.toString(16).padStart(2, "0")).join("");
+}
+
+async function protectPdfFile(file, { userPassword, allowPrint, allowCopy, allowEdit }) {
+  const { encryptPDF } = await import("@pdfsmaller/pdf-encrypt");
+  const bytes = new Uint8Array(await file.arrayBuffer());
+
+  const out = await encryptPDF(bytes, userPassword, {
+    ownerPassword: randomOwnerPassword(),
+    algorithm: "AES-256",
+    allowPrinting: allowPrint,
+    allowHighQualityPrint: allowPrint,
+    allowCopying: allowCopy,
+    allowModifying: allowEdit,
+    allowAnnotating: allowEdit,
+    allowFillingForms: allowEdit,
+    allowAssembly: allowEdit,
+  });
+
+  return new Blob([out], { type: "application/pdf" });
+}
+
 export default function ProtectPdf() {
   const flow = useToolFlow();
   const { progress, startProgress, completeProgress, cancelProgress } =
@@ -92,74 +122,71 @@ export default function ProtectPdf() {
   };
 
   const handleConvert = async () => {
-    const files = flow.files;
-    if (!files?.length) {
-      setError("Please select at least one PDF file first!");
-      return;
-    }
+  const files = flow.files;
+  if (!files?.length) {
+    setError("Please select at least one PDF file first!");
+    return;
+  }
 
-    const pwErr = validatePassword(userPassword);
-    if (pwErr) {
-      setError(pwErr);
-      return;
-    }
+  const pwErr = validatePassword(userPassword);
+  if (pwErr) {
+    setError(pwErr);
+    return;
+  }
 
-    flow.startProcessing();
-    startProgress();
-    setError("");
+  // visible layout mein "Repeat password" field ownerPassword state se bandha hai
+  if (userPassword.trim() !== ownerPassword.trim()) {
+    setError("Passwords do not match. Please repeat the same password.");
+    return;
+  }
 
-    const formData = new FormData();
-    for (const f of files) formData.append("files", f);
-    formData.append("userPassword", userPassword.trim());
-    if (ownerPassword.trim()) formData.append("ownerPassword", ownerPassword.trim());
-    formData.append("allowPrint", String(allowPrint));
-    formData.append("allowCopy", String(allowCopy));
-    formData.append("allowEdit", String(allowEdit));
+  flow.startProcessing();
+  startProgress();
+  setError("");
 
-    try {
-      // const res = await fetch("/convert/protect-pdf", {
-      //   method: "POST",
-      //   body: formData,
-      // });
+  try {
+    const opts = {
+      userPassword: userPassword.trim(),
+      allowPrint,
+      allowCopy,
+      allowEdit,
+    };
 
-      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/convert/protect-pdf`, {
-        method: "POST",
-        body: formData,
-      });
+    let blob;
+    let name;
 
-
-      if (!res.ok) {
-        let msg = "Protection failed";
-        try {
-          const j = await res.json();
-          msg = j?.error || msg;
-        } catch { }
-        throw new Error(msg);
+    if (files.length === 1) {
+      blob = await protectPdfFile(files[0], opts);
+      name = `${files[0].name.replace(/\.pdf$/i, "")}-protected.pdf`;
+    } else {
+      const JSZip = (await import("jszip")).default;
+      const zip = new JSZip();
+      for (let i = 0; i < files.length; i++) {
+        const f = files[i];
+        const out = await protectPdfFile(f, opts);
+        zip.file(`${i + 1}-${f.name.replace(/\.pdf$/i, "")}-protected.pdf`, out);
       }
-
-      const contentType = res.headers.get("content-type") || "";
-      const blob = await res.blob();
-      const url = URL.createObjectURL(blob);
-
-      if (downloadUrl) URL.revokeObjectURL(downloadUrl);
-      setDownloadUrl(url);
-
-      const isZip = contentType.includes("application/zip");
-      const firstName = files[0]?.name?.replace(/\.pdf$/i, "") || "protected";
-      setOutputFilename(
-        isZip ? "pdflinx-protected-pdfs.zip" : `${firstName}-protected.pdf`
-      );
-
-      completeProgress();
-      flow.finishSuccess();
-    } catch (err) {
-      cancelProgress();
-      const msg = (err?.message || "Something went wrong. Please try again.").toString();
-      setError(msg);
-      flow.handleError(msg);
-      console.error(err);
+      blob = await zip.generateAsync({ type: "blob" });
+      name = "pdflinx-protected-pdfs.zip";
     }
-  };
+
+    const url = URL.createObjectURL(blob);
+    if (downloadUrl) URL.revokeObjectURL(downloadUrl);
+    setDownloadUrl(url);
+    setOutputFilename(name);
+
+    completeProgress();
+    flow.finishSuccess();
+  } catch (err) {
+    console.error(err);
+    cancelProgress();
+    const msg = /encrypt|password/i.test(err?.message || "")
+      ? "This PDF is already password protected. Please unlock it first."
+      : err?.message || "Something went wrong. Please try again.";
+    setError(msg);
+    flow.handleError(msg);
+  }
+};
 
   // ── Options slot: password fields + advanced permissions ──
   const optionsSlot = (
