@@ -1773,9 +1773,10 @@ export default function SignPdf({ seo }) {
 
             heroTitle: (
               <>
-                Free Digital Signature —{" "}
+                Sign PDF Online —{" "} 
                 <em className="font-bold text-[#e8420a] sm:italic">
-                  Create & Sign PDF Online Free
+                  <br />
+                  Convert Signature to Digital — Free
                 </em>
               </>
             ),
