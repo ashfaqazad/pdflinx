@@ -3,6 +3,7 @@ import Script from "next/script";
 import { useState } from "react";
 import RelatedToolsSection from "@/components/RelatedTools";
 import { useProgressBar } from "@/hooks/useProgressBar";
+import { excelFilesToPdf } from "@/lib/clientPdfTools2";
 import { useToolFlow } from "@/hooks/useToolFlow";
 import ToolPageLayout from "@/components/ToolFlow/ToolPageLayout";
 
@@ -133,33 +134,11 @@ export default function ExcelToPdf({ seo }) {
 
     setDownloadUrl(null);
 
-    const formData = new FormData();
-    flow.files.forEach((f) => formData.append("files", f));
-    formData.append("mode", flow.files.length === 1 ? "single" : "multiple");
-
     try {
-      // const res = await fetch("/convert/excel-pdf", {
-      //   method: "POST",
-      //   body: formData,
-      // });
-
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/convert/excel-pdf`, {
-        method: "POST",
-        body: formData,
-      });
-
-
-      const data = await res.json();
-
-      if (!res.ok || !data.success) {
-        throw new Error(data?.error || "Conversion failed");
-      }
-
-      const finalName = getDownloadName();
-
-      setDownloadUrl(`/api${data.download}`);
-      setDownloadName(finalName);
+      // Runs fully in the browser — no server upload
+      const { blob, filename } = await excelFilesToPdf(flow.files);
+      setDownloadUrl(URL.createObjectURL(blob));
+      setDownloadName(filename);
 
       completeProgress();
       flow.finishSuccess();

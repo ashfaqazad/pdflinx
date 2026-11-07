@@ -15,6 +15,7 @@ import ToolPageLayout from "@/components/ToolFlow/ToolPageLayout";
 import RelatedToolsSection from "@/components/RelatedTools";
 import { useToolFlow } from "@/hooks/useToolFlow";
 import { useProgressBar } from "@/hooks/useProgressBar";
+import { pdfToPptxBlob } from "@/lib/clientPdfTools2";
 import { DEFAULT_DONE_LINKS, DEFAULT_SIDEBAR_FEATURES } from "@/lib/toolUiConfig";
 
 
@@ -162,65 +163,17 @@ export default function PdfToPowerPoint() {
     startProgress();
 
     try {
-      // Step 1: Upload & get jobId
-      const formData = new FormData();
-      formData.append("file", flow.files[0]);
-      formData.append("slide_size", slideSize); // FIXED: underscore wala naam
-      formData.append("quality", quality);
-
-      // const uploadRes = await fetch("/convert/pdf-to-pptx", {
-      //   method: "POST",
-      //   body: formData,
-      // });
-
-      const uploadRes = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/convert/pdf-to-pptx`, {
-        method: "POST",
-        body: formData,
-      });
-
-
-
-      if (!uploadRes.ok) throw new Error("Upload failed");
-
-      const { jobId } = await uploadRes.json();
-      if (!jobId) throw new Error("No jobId received");
-
-      // Step 2: Poll job status
-      let attempts = 0;
-      const maxAttempts = 60; // 60 * 3s = 3 min timeout
-
-      while (attempts < maxAttempts) {
-        await new Promise((r) => setTimeout(r, 3000));
-        attempts++;
-
-        const statusRes = await fetch(`/convert/pdf-to-pptx/job/${jobId}`);
-        if (!statusRes.ok) throw new Error("Job status check failed");
-
-        const status = await statusRes.json();
-
-        if (status.status === "done") {
-          // Step 3: Download file
-          const dlRes = await fetch(`/convert/pdf-to-pptx/download/${jobId}`);
-          if (!dlRes.ok) throw new Error("Download failed");
-
-          const blob = await dlRes.blob();
-          setDownloadUrl(URL.createObjectURL(blob));
-          completeProgress();
-          flow.finishSuccess();
-          return;
-        }
-
-        if (status.status === "failed") {
-          throw new Error(status.error || "Conversion failed");
-        }
-      }
-
-      throw new Error("Conversion timed out");
+      // Runs fully in the browser — each PDF page becomes one slide image
+      const blob = await pdfToPptxBlob(flow.files[0], { slideSize, quality });
+      if (downloadUrl) URL.revokeObjectURL(downloadUrl);
+      setDownloadUrl(URL.createObjectURL(blob));
+      completeProgress();
+      flow.finishSuccess();
 
     } catch (err) {
       console.error(err);
       cancelProgress();
-      flow.handleError("Something went wrong while converting PDF to PowerPoint.");
+      flow.handleError(err?.message || "Something went wrong while converting PDF to PowerPoint.");
     }
   };
 

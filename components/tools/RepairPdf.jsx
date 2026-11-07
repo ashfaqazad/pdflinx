@@ -18,6 +18,7 @@ import ToolPageLayout from "@/components/ToolFlow/ToolPageLayout";
 import RelatedToolsSection from "@/components/RelatedTools";
 import { useToolFlow } from "@/hooks/useToolFlow";
 import { useProgressBar } from "@/hooks/useProgressBar";
+import { repairPdfFiles } from "@/lib/clientPdfTools";
 import {
     DEFAULT_DONE_LINKS,
     DEFAULT_SIDEBAR_FEATURES,
@@ -195,6 +196,7 @@ export default function RepairPdf() {
     const { progress, startProgress, completeProgress, cancelProgress } = useProgressBar();
 
     const [downloadUrl, setDownloadUrl] = useState(null);
+    const [downloadName, setDownloadName] = useState("repaired-pdf.pdf");
     const [filesPreview, setFilesPreview] = useState([]);
 
     // Preload PDF.js on mount
@@ -278,7 +280,7 @@ export default function RepairPdf() {
         if (!downloadUrl) return;
         const a = document.createElement("a");
         a.href = downloadUrl;
-        a.download = "repaired-pdf.pdf";
+        a.download = downloadName;
         document.body.appendChild(a);
         a.click();
         a.remove();
@@ -290,29 +292,16 @@ export default function RepairPdf() {
         flow.startProcessing();
         startProgress();
         try {
-            const formData = new FormData();
-            filesPreview.forEach(({ file }) => formData.append("files", file));
-
-            // const res = await fetch("/convert/repair-pdf", {
-            //     method: "POST",
-            //     body: formData,
-            // });
-
-            const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/convert/repair-pdf`, {
-                method: "POST",
-                body: formData,
-            });
-
-
-            if (!res.ok) throw new Error("Failed to repair PDF");
-            const blob = await res.blob();
+            // Runs fully in the browser (qpdf-wasm) — no server upload
+            const { blob, filename } = await repairPdfFiles(filesPreview.map(({ file }) => file));
+            setDownloadName(filename);
             setDownloadUrl(URL.createObjectURL(blob));
             completeProgress();
             flow.finishSuccess();
         } catch (err) {
             console.error(err);
             cancelProgress();
-            flow.handleError("Something went wrong while repairing PDF.");
+            flow.handleError(err?.message || "Something went wrong while repairing PDF.");
         }
     };
 

@@ -4,6 +4,7 @@ import { useState } from "react";
 import Script from "next/script";
 import { useProgressBar } from "@/hooks/useProgressBar";
 import { useToolFlow } from "@/hooks/useToolFlow";
+import { pdfFilesToText } from "@/lib/clientPdfTools";
 import ToolPageLayout from "@/components/ToolFlow/ToolPageLayout";
 
 import {
@@ -115,35 +116,9 @@ export default function PdfToText({ seo }) {
     startProgress();
     setDownloadUrl(null);
 
-    const formData = new FormData();
-    flow.files.forEach((f) => formData.append("files", f));
-
     try {
-      // const res = await fetch("/convert/pdf-to-text", {
-      //   method: "POST",
-      //   body: formData,
-      // });
-
-      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/convert/pdf-to-text`, {
-        method: "POST",
-        body: formData,
-      });
-
-
-      if (!res.ok) {
-        const errorText = await res.text();
-        throw new Error(errorText || "Extraction failed");
-      }
-
-      const contentType = res.headers.get("content-type") || "";
-      const disposition = res.headers.get("content-disposition") || "";
-
-      let filename = getDownloadName(contentType);
-      if (disposition.includes("filename=")) {
-        filename = disposition.split("filename=")[1].replace(/"/g, "");
-      }
-
-      const blob = await res.blob();
+      // Runs fully in the browser (pdf.js) — no server upload
+      const { blob, filename } = await pdfFilesToText(flow.files);
       const url = window.URL.createObjectURL(blob);
 
       setDownloadUrl(url);

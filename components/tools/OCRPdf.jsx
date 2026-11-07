@@ -3,6 +3,7 @@
 import { useState } from "react";
 // import Script from "next/script";
 import { useProgressBar } from "@/hooks/useProgressBar";
+import { ocrPdfFiles } from "@/lib/clientPdfTools";
 import { useToolFlow } from "@/hooks/useToolFlow";
 import ToolPageLayout from "@/components/ToolFlow/ToolPageLayout";
 
@@ -178,30 +179,10 @@ export default function OCRPdf({ seo }) {
     startProgress();
     setDownloadUrl(null);
 
-    const formData = new FormData();
-    flow.files.forEach((f) => formData.append("files", f));
-    formData.append("language", language);
-
     try {
-      // const res = await fetch("/convert/ocr-pdf", {
-      //   method: "POST",
-      //   body: formData,
-      // });
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/convert/ocr-pdf`, {
-        method: "POST",
-        body: formData,
-      });
-
-
-      if (!res.ok) {
-        const data = await res.json().catch(() => ({}));
-        throw new Error(data.error || "OCR failed");
-      }
-
-      const blob = await res.blob();
+      // Runs fully in the browser (tesseract.js + pdf.js) — no server upload
+      const { blob, filename } = await ocrPdfFiles(flow.files, language);
       const url = window.URL.createObjectURL(blob);
-      const filename = getDownloadName();
 
       setDownloadUrl(url);
       setDownloadName(filename);

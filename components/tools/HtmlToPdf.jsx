@@ -3,6 +3,7 @@
 import { useState, useRef } from "react";
 import Script from "next/script";
 import { useProgressBar } from "@/hooks/useProgressBar";
+import { htmlToPdfBytes, fetchHtmlFromUrl } from "@/lib/clientPdfTools2";
 import { useToolFlow } from "@/hooks/useToolFlow";
 import ToolPageLayout from "@/components/ToolFlow/ToolPageLayout";
 
@@ -228,35 +229,23 @@ export default function HtmlToPdf({ seo }) {
     startProgress();
 
     try {
-      let bodyPayload;
-
+      // Runs fully in the browser — no server upload
+      let html;
       if (mode === "file") {
-        const htmlContent = await new Promise((resolve, reject) => {
+        html = await new Promise((resolve, reject) => {
           const reader = new FileReader();
           reader.onload = (e) => resolve(e.target.result);
           reader.onerror = () => reject(new Error("File read failed"));
           reader.readAsText(htmlFile, "UTF-8");
         });
-        bodyPayload = { mode: "code", html: htmlContent };
       } else if (mode === "code") {
-        bodyPayload = { mode: "code", html: htmlCode };
+        html = htmlCode;
       } else {
-        bodyPayload = { mode: "url", url: urlInput };
+        html = await fetchHtmlFromUrl(urlInput.trim());
       }
 
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/convert/html-pdf`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(bodyPayload),
-      });
-
-      if (!res.ok) {
-        const err = await res.json().catch(() => ({}));
-        throw new Error(err.error || "Conversion failed");
-      }
-
-      const blob = await res.blob();
+      const pdfBytes = await htmlToPdfBytes(html);
+      const blob = new Blob([pdfBytes], { type: "application/pdf" });
       const blobUrl = window.URL.createObjectURL(blob);
       const filename = getDownloadName();
 

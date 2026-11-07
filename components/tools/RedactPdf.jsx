@@ -24,6 +24,7 @@ import ToolPageLayout from "@/components/ToolFlow/ToolPageLayout";
 import RelatedToolsSection from "@/components/RelatedTools";
 import { useToolFlow } from "@/hooks/useToolFlow";
 import { useProgressBar } from "@/hooks/useProgressBar";
+import { redactPdfFile, findTextRects, loadPdfJs } from "@/lib/clientPdfTools";
 import { DEFAULT_DONE_LINKS, DEFAULT_SIDEBAR_FEATURES } from "@/lib/toolUiConfig";
 
 
@@ -72,14 +73,9 @@ function RedactCanvas({
   useEffect(() => {
     if (!file) return;
     let cancelled = false;
-    let tries = 0;
     const load = async () => {
-      const lib = window?.pdfjsLib;
-      if (!lib) {
-        if (tries++ < 80) return setTimeout(load, 100);
-        return;
-      }
       try {
+        const lib = await loadPdfJs();
         const buf = await file.arrayBuffer();
         const doc = await lib.getDocument({ data: buf }).promise;
         if (cancelled) return;
@@ -88,7 +84,7 @@ function RedactCanvas({
         const page = await doc.getPage(1);
         if (cancelled) return;
         setPdfPage(page);
-      } catch (e) { console.error(e); }
+      } catch (e) { console.error("Redact preview load failed", e); }
     };
     load();
     return () => { cancelled = true; };
@@ -101,6 +97,7 @@ function RedactCanvas({
   }, [currentPage]);
 
   // Render PDF
+  const renderTaskRef = useRef(null);
   useEffect(() => {
     if (!pdfPage || !canvasRef.current) return;
     const viewport = pdfPage.getViewport({ scale });
@@ -109,7 +106,15 @@ function RedactCanvas({
     canvas.height = viewport.height;
     setCanvasSize({ w: viewport.width, h: viewport.height });
     const ctx = canvas.getContext("2d");
-    pdfPage.render({ canvasContext: ctx, viewport });
+    ctx.fillStyle = "#fff";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    try { renderTaskRef.current?.cancel(); } catch (_) {}
+    const task = pdfPage.render({ canvasContext: ctx, viewport });
+    renderTaskRef.current = task;
+    task.promise.catch((e) => {
+      if (e?.name !== "RenderingCancelledException") console.error("Redact preview render failed", e);
+    });
+    return () => { try { task.cancel(); } catch (_) {} };
   }, [pdfPage, scale]);
 
   const getPos = (e) => {
@@ -397,19 +402,9 @@ export default function RedactPdf({ seo }) {
     if (!searchText.trim() || !file) return;
     setSearchLoading(true);
     try {
-      const formData = new FormData();
-      formData.append("file", file);
-      formData.append("searchText", searchText.trim());
-
-      // const res = await fetch("/convert/redact-pdf-search", { method: "POST", body: formData });
-      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/convert/redact-pdf`, {
-        method: "POST",
-        body: formData,
-      });
-
-      if (!res.ok) throw new Error("Search failed");
-      const data = await res.json();
-      // data.rects = [{ pageNum, x, y, w, h }]
+      // Browser-side search (pdf.js text layer) — no server upload
+      const rects = await findTextRects(file, searchText.trim(), scale);
+      const data = { rects };
       if (data.rects?.length) {
         const newRects = data.rects.map((r, i) => ({
           ...r,
@@ -437,15 +432,9 @@ export default function RedactPdf({ seo }) {
     startProgress();
 
     try {
-      const formData = new FormData();
-      flow.files.forEach(f => formData.append("files", f));
-      formData.append("redactRects", JSON.stringify(redactRects));
-      formData.append("scale", String(scale));
-
-      const res = await fetch("/convert/redact-pdf", { method: "POST", body: formData });
-      if (!res.ok) throw new Error("Failed to redact PDF");
-
-      const blob = await res.blob();
+      // Browser-side redaction: redacted pages are flattened so text is truly removed
+      const bytes = await redactPdfFile(flow.files[0], redactRects, scale);
+      const blob = new Blob([bytes], { type: "application/pdf" });
       const url = URL.createObjectURL(blob);
       setDownloadUrl(url);
       completeProgress();
@@ -453,7 +442,7 @@ export default function RedactPdf({ seo }) {
     } catch (err) {
       console.error(err);
       cancelProgress();
-      flow.handleError("Something went wrong while redacting.");
+      flow.handleError(err?.message || "Something went wrong while redacting.");
     }
   };
 

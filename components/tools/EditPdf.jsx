@@ -20,6 +20,8 @@ import RelatedToolsSection from "@/components/RelatedTools";
 import ToolPageLayout from "@/components/ToolFlow/ToolPageLayout";
 import { useToolFlow } from "@/hooks/useToolFlow";
 import { useProgressBar } from "@/hooks/useProgressBar";
+import { editPdfFile } from "@/lib/clientPdfTools2";
+import { loadPdfJs } from "@/lib/clientPdfTools";
 import { DEFAULT_DONE_LINKS, DEFAULT_SIDEBAR_FEATURES } from "@/lib/toolUiConfig";
 
 
@@ -350,8 +352,7 @@ export default function EditPdf({ seo }) {
     const load = async () => {
       try {
         setError("");
-        const pdfjsLib = window.pdfjsLib;
-        if (!pdfjsLib) return;
+        const pdfjsLib = await loadPdfJs();
 
         pdfjsLib.GlobalWorkerOptions.workerSrc =
           "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
@@ -587,45 +588,10 @@ export default function EditPdf({ seo }) {
     setError("");
 
     try {
-      const formData = new FormData();
-      formData.append("pdfFile", pdfFile);
-
-      // Strip non-serializable fields (File, blob preview URL) before
-      // JSON.stringify — images are sent as separate FormData entries below,
-      // matched to their edit by id.
-      const serializableObjects = objects.map((o) => {
-        if (o.type === "image") {
-          const { file, previewUrl, ...rest } = o;
-          return rest;
-        }
-        return o;
-      });
-      formData.append("edits", JSON.stringify(serializableObjects));
-
-      // Append each image's actual file, keyed by its object id so the
-      // backend can match position/size metadata to the right image.
-      objects
-        .filter((o) => o.type === "image" && o.file)
-        .forEach((o) => {
-          formData.append(`image_${o.id}`, o.file, o.file.name);
-        });
-
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/convert/edit-pdf`, {
-        method: "POST",
-        body: formData,
-      });
-
-      if (!res.ok) {
-        let msg = "Edit failed";
-        try {
-          const j = await res.json();
-          msg = j?.error || msg;
-        } catch { }
-        throw new Error(msg);
-      }
-
-      const blob = await res.blob();
+      // Runs fully in the browser — no server upload
+      const { bytes, unsupportedChars } = await editPdfFile(pdfFile, objects);
+      if (unsupportedChars) console.warn("Some characters are not supported by the built-in PDF fonts and were replaced with '?'.");
+      const blob = new Blob([bytes], { type: "application/pdf" });
       const url = URL.createObjectURL(blob);
       if (downloadUrl) URL.revokeObjectURL(downloadUrl);
       setDownloadUrl(url);
