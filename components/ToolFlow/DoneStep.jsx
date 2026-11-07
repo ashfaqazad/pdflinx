@@ -13,9 +13,10 @@ export default function DoneStep({
   relatedLinks = [],
   sidebarLinks = [],
   compressionStats = null,
+  wide = false,
 }) {
   return (
-    <div className="animate-done-in mx-auto -mt-6 w-full max-w-[760px] rounded-[20px] border border-black/10 bg-white px-8 py-14 text-center shadow-sm">
+    <div className={`animate-done-in mx-auto -mt-6 w-full ${wide ? "max-w-[900px]" : "max-w-[760px]"} rounded-[20px] border border-black/10 bg-white px-8 py-14 text-center shadow-sm`}>
 
       {/* ── CHECK ICON ── */}
       <div className="animate-success-pop mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-[#edfaf3]">
@@ -26,7 +27,7 @@ export default function DoneStep({
       <h3 className="animate-done-text mt-7 font-display text-[30px] font-normal leading-tight text-[#0f0e0d]">
         {title}
       </h3>
-      <p className="mt-2 text-sm text-[#7a7772]">{description}</p>
+      <div className="mt-2 text-sm text-[#7a7772]">{description}</div>
 
       {/* ── COMPRESSION STATS ── */}
       {compressionStats && (() => {
@@ -69,6 +70,7 @@ export default function DoneStep({
 
       {/* ── DOWNLOAD + RESET BUTTONS ── */}
       <div className="mx-auto mt-8 w-full max-w-[380px] overflow-hidden rounded-xl border border-black/10 bg-white">
+        {onDownload && (
         <button
           type="button"
           onClick={onDownload}
@@ -77,6 +79,7 @@ export default function DoneStep({
           <Download className="h-4 w-4" />
           {downloadLabel}
         </button>
+        )}
 
         <button
           type="button"

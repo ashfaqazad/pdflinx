@@ -30,6 +30,8 @@ export default function ToolPageLayout({
   flow,
   progress,
   hideSidebar = false,
+  hideDoneSidebar = false,
+  doneWide = false,
   onRemoveFile,
   onConvert,
   onDownload,
@@ -140,7 +142,7 @@ export default function ToolPageLayout({
           <div
             className={`grid ${isPremiumUpload
               ? "grid-cols-1"
-              : `min-h-[calc(100vh-80px)] lg:h-[calc(100vh-80px)] ${flow.step === STEPS.PROCESSING || hideSidebar || isCustomOptions
+              : `min-h-[calc(100vh-80px)] lg:h-[calc(100vh-80px)] ${flow.step === STEPS.PROCESSING || hideSidebar || (hideDoneSidebar && flow.step === STEPS.DONE) || isCustomOptions
                 ? "grid-cols-1"
                 : "lg:grid-cols-[minmax(0,1fr)_350px]"
               }`
@@ -244,12 +246,14 @@ export default function ToolPageLayout({
                   relatedLinks={doneLinks}
                   sidebarLinks={sidebarLinks}
                   compressionStats={compressionStats}
+                  wide={doneWide}
                 />
               )}
             </div>
 
             {/* SIDEBAR — customOptionsLayout hone par bilkul hide */}
             {!hideSidebar &&
+              !(hideDoneSidebar && flow.step === STEPS.DONE) &&
               !isPremiumUpload &&
               !isCustomOptions &&
               flow.step !== STEPS.PROCESSING && (

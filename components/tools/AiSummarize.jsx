@@ -4,6 +4,7 @@ import { useState } from "react";
 import Script from "next/script";
 import { useProgressBar } from "@/hooks/useProgressBar";
 import { useToolFlow } from "@/hooks/useToolFlow";
+import { summarizePdf } from "@/lib/clientAi";
 import ToolPageLayout from "@/components/ToolFlow/ToolPageLayout";
 import {
   FileText,
@@ -65,6 +66,69 @@ const OPTIONS_SLOT = (
 );
 // ───────────────────────────────────────────
 
+// **bold** → <strong>, rendered as React nodes (no innerHTML, so AI output can't inject markup)
+function Inline({ text }) {
+  return text.split(/(\*\*[^*]+\*\*)/g).map((part, i) =>
+    /^\*\*[^*]+\*\*$/.test(part) ? (
+      <strong key={i} className="font-semibold text-slate-900">{part.slice(2, -2)}</strong>
+    ) : (
+      <span key={i}>{part}</span>
+    )
+  );
+}
+
+function SummaryView({ text }) {
+  const [copied, setCopied] = useState(false);
+  const lines = text.split("\n").map((l) => l.trim()).filter(Boolean);
+
+  const copy = async () => {
+    try {
+      await navigator.clipboard.writeText(text.replace(/\*\*/g, ""));
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1800);
+    } catch (_) {}
+  };
+
+  return (
+    <div className="mx-auto mt-6 w-full max-w-[760px] overflow-hidden rounded-2xl border border-slate-200 bg-white text-left shadow-sm">
+      <div className="flex items-center justify-between border-b border-slate-200 bg-slate-50 px-5 py-3">
+        <span className="text-xs font-bold uppercase tracking-widest text-slate-500">Key points</span>
+        <button
+          type="button"
+          onClick={copy}
+          className="rounded-lg border border-slate-200 bg-white px-3 py-1 text-xs font-semibold text-slate-600 transition hover:border-[#e8420a] hover:text-[#e8420a]"
+        >
+          {copied ? "✓ Copied" : "Copy"}
+        </button>
+      </div>
+
+      <div className="max-h-[480px] space-y-3 overflow-y-auto px-5 py-5 text-[15px] leading-relaxed text-slate-700">
+        {lines.map((line, i) => {
+          const bullet = line.match(/^[•\-*]\s+(.*)$/);
+          if (bullet) {
+            return (
+              <div key={i} className="flex gap-3">
+                <span className="mt-[9px] h-1.5 w-1.5 shrink-0 rounded-full bg-[#e8420a]" />
+                <p className="min-w-0 flex-1"><Inline text={bullet[1]} /></p>
+              </div>
+            );
+          }
+          // a line that is only a bold phrase = section heading
+          const heading = line.match(/^\*\*([^*]+)\*\*:?$/);
+          if (heading) {
+            return (
+              <h4 key={i} className="pt-2 text-base font-bold text-slate-900 first:pt-0">
+                {heading[1]}
+              </h4>
+            );
+          }
+          return <p key={i}><Inline text={line} /></p>;
+        })}
+      </div>
+    </div>
+  );
+}
+
 export default function AiSummarize({ seo }) {
   const flow = useToolFlow();
   const { progress, startProgress, completeProgress, cancelProgress } =
@@ -85,26 +149,10 @@ export default function AiSummarize({ seo }) {
     flow.startProcessing();
     startProgress();
 
-    const formData = new FormData();
-    formData.append("pdf", flow.files[0]);
-
     try {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/ai/summarize`,
-        { method: "POST", body: formData }
-      );
-
-      if (!res.ok) {
-        let msg = "Summarization failed";
-        try {
-          const maybeJson = await res.json();
-          msg = maybeJson?.error || msg;
-        } catch { }
-        throw new Error(msg);
-      }
-
-      const data = await res.json();
-      setSummary(data.summary);
+      // The PDF is read in the browser; only its text is sent to our AI endpoint.
+      const summaryText = await summarizePdf(flow.files[0]);
+      setSummary(summaryText);
 
       completeProgress();
       flow.finishSuccess();
@@ -205,7 +253,7 @@ export default function AiSummarize({ seo }) {
         onConvert={handleConvert}
         onDownload={handleDownload}
         doneLinks={DONE_LINKS}
-        sidebarLinks={DONE_LINKS}
+        sidebarLinks={[]}
         // Options Step
         optionsTitle="Summarizer options"
         showOutputFormat={false}
@@ -227,15 +275,10 @@ export default function AiSummarize({ seo }) {
         //   ) : "Your PDF has been summarized successfully."
         // }
 
+        hideDoneSidebar
+        doneWide
         doneDescription={
-          summary ? (
-            <div className="mt-4 rounded-lg border border-slate-200 bg-slate-50 p-4 text-left text-sm text-slate-700 overflow-y-auto max-h-[500px]">
-              {summary.split('\n').map((line, i) => {
-                const formatted = line.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
-                return <p key={i} className="mb-1" dangerouslySetInnerHTML={{ __html: formatted }} />;
-              })}
-            </div>
-          ) : "Your PDF has been summarized successfully."
+          summary ? <SummaryView text={summary} /> : "Your PDF has been summarized successfully."
         }
 
         doneFileName="pdflinx-summary.txt"

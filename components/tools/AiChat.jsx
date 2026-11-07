@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import Script from "next/script";
 import { useProgressBar } from "@/hooks/useProgressBar";
 import { useToolFlow } from "@/hooks/useToolFlow";
+import { extractPdfPages, buildIndex, askPdf } from "@/lib/clientAi";
 import ToolPageLayout from "@/components/ToolFlow/ToolPageLayout";
 import {
   FileText,
@@ -15,6 +16,7 @@ import {
   Shield,
   FileOutput,
   Send,
+  Sparkles,
 } from "lucide-react";
 
 // ── Config ───────────────────────────────────────────
@@ -65,26 +67,96 @@ const OPTIONS_SLOT = (
 // ───────────────────────────────────────────
 
 // Chat bubble component
-function ChatBubble({ role, text }) {
-  const isUser = role === "user";
+// **bold** → <strong> as React nodes (no innerHTML)
+function Inline({ text }) {
+  return text.split(/(\*\*[^*]+\*\*)/g).map((part, i) =>
+    /^\*\*[^*]+\*\*$/.test(part) ? (
+      <strong key={i} className="font-semibold text-slate-900">{part.slice(2, -2)}</strong>
+    ) : (
+      <span key={i}>{part}</span>
+    )
+  );
+}
+
+// AI answer → paragraphs + bullet lists
+function AnswerText({ text }) {
+  const lines = text.split("\n").map((l) => l.trim()).filter(Boolean);
   return (
-    <div className={`flex ${isUser ? "justify-end" : "justify-start"} mb-3`}>
-      <div
-        className={`max-w-[80%] rounded-2xl px-4 py-2.5 text-sm whitespace-pre-wrap ${isUser
-            ? "bg-blue-600 text-white rounded-br-sm"
-            : "bg-slate-100 text-slate-800 rounded-bl-sm"
+    <div className="space-y-2">
+      {lines.map((line, i) => {
+        const b = line.match(/^[•\-*]\s+(.*)$/);
+        if (b) {
+          return (
+            <div key={i} className="flex gap-2.5">
+              <span className="mt-[9px] h-1.5 w-1.5 shrink-0 rounded-full bg-[#e8420a]" />
+              <p className="min-w-0 flex-1"><Inline text={b[1]} /></p>
+            </div>
+          );
+        }
+        return <p key={i}><Inline text={line} /></p>;
+      })}
+    </div>
+  );
+}
+
+function AiAvatar() {
+  return (
+    <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-[#f24d0d] to-[#ff8a4c] text-white shadow-sm">
+      <Sparkles className="h-4 w-4" />
+    </div>
+  );
+}
+
+// Chat bubble component
+function ChatBubble({ role, text }) {
+  const [copied, setCopied] = useState(false);
+
+  if (role === "user") {
+    return (
+      <div className="mb-4 flex justify-end">
+        <div className="max-w-[80%] whitespace-pre-wrap break-words rounded-2xl rounded-br-md bg-gradient-to-br from-[#f24d0d] to-[#e8420a] px-4 py-2.5 text-left text-[15px] leading-relaxed text-white shadow-sm">
+          {text}
+        </div>
+      </div>
+    );
+  }
+
+  const isError = text.startsWith("❌");
+  const clean = text.replace(/^[✅❌]\s*/, "");
+  const copy = async () => {
+    try {
+      await navigator.clipboard.writeText(clean.replace(/\*\*/g, ""));
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1500);
+    } catch (_) {}
+  };
+
+  return (
+    <div className="group mb-4 flex items-start gap-2.5">
+      <AiAvatar />
+      <div className="min-w-0 max-w-[85%]">
+        <div
+          className={`rounded-2xl rounded-tl-md border px-4 py-3 text-left text-[15px] leading-relaxed shadow-sm ${
+            isError ? "border-red-200 bg-red-50 text-red-700" : "border-slate-200 bg-white text-slate-700"
           }`}
-      >
-        {!isUser && (
-          <span className="text-xs font-semibold text-blue-600 block mb-1">
-            🤖 AI
-          </span>
+        >
+          <AnswerText text={clean} />
+        </div>
+        {!isError && (
+          <button
+            type="button"
+            onClick={copy}
+            className="mt-1 px-1 text-[11px] font-medium text-slate-400 opacity-0 transition hover:text-[#e8420a] group-hover:opacity-100 focus:opacity-100"
+          >
+            {copied ? "✓ Copied" : "Copy"}
+          </button>
         )}
-        {text}
       </div>
     </div>
   );
 }
+
+const SUGGESTIONS = ["Summarize this document", "What are the key points?", "List important names and dates"];
 
 export default function AiChat({ seo }) {
   const flow = useToolFlow();
@@ -97,10 +169,13 @@ export default function AiChat({ seo }) {
   const [question, setQuestion] = useState("");
   const [isAsking, setIsAsking] = useState(false);
   const chatEndRef = useRef(null);
+  const indexRef = useRef(null);
 
   useEffect(() => {
-    chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
+    // scroll only the chat box (not the whole page)
+    const box = chatEndRef.current;
+    if (box) box.scrollTo({ top: box.scrollHeight, behavior: "smooth" });
+  }, [messages, isAsking]);
 
   const handleRemoveFile = (index) => {
     const updated = flow.files.filter((_, i) => i !== index);
@@ -155,26 +230,11 @@ export default function AiChat({ seo }) {
     flow.startProcessing();
     startProgress();
 
-    const formData = new FormData();
-    formData.append("pdf", flow.files[0]);
-
     try {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/ai/chat/upload`,
-        { method: "POST", body: formData }
-      );
-
-      if (!res.ok) {
-        let msg = "Failed to process PDF";
-        try {
-          const maybeJson = await res.json();
-          msg = maybeJson?.error || msg;
-        } catch { }
-        throw new Error(msg);
-      }
-
-      const data = await res.json();
-      setDocumentId(data.documentId);
+      // The PDF is read and indexed in the browser; it is never uploaded.
+      const { pages } = await extractPdfPages(flow.files[0]);
+      indexRef.current = buildIndex(pages);
+      setDocumentId("local");
       setMessages([
         {
           role: "ai",
@@ -225,33 +285,25 @@ export default function AiChat({ seo }) {
   //   }
   // };
 
-  const handleAsk = async () => {
-    if (!question.trim() || isAsking) return;
+  const handleAsk = async (override) => {
+    const raw = typeof override === "string" ? override : question;
+    if (!raw.trim() || isAsking) return;
 
-    const userMsg = question.trim();
+    const userMsg = raw.trim();
     setQuestion("");
     setMessages((prev) => [...prev, { role: "user", text: userMsg }]);
     setIsAsking(true);
 
     try {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/ai/chat/ask`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ documentId, question: userMsg }),
-        }
-      );
-
-      const data = await res.json();
+      const history = messages
+        .filter((m) => m.role === "user" || (m.role === "ai" && !m.text.startsWith("✅") && !m.text.startsWith("❌")))
+        .map((m) => ({ role: m.role === "ai" ? "assistant" : "user", content: m.text }));
+      const answer = await askPdf(indexRef.current, userMsg, history);
+      setMessages((prev) => [...prev, { role: "ai", text: answer || "Sorry, I could not answer that." }]);
+    } catch (err) {
       setMessages((prev) => [
         ...prev,
-        { role: "ai", text: data.answer || "Sorry, I could not answer that." },
-      ]);
-    } catch {
-      setMessages((prev) => [
-        ...prev,
-        { role: "ai", text: "❌ Error getting answer. Please try again." },
+        { role: "ai", text: `❌ ${err?.message || "Error getting answer. Please try again."}` },
       ]);
     } finally {
       setIsAsking(false);
@@ -269,41 +321,78 @@ export default function AiChat({ seo }) {
   //   <div className="mt-4 flex flex-col gap-3">
   //     <div className="rounded-xl border border-slate-200 bg-white p-4 h-64 overflow-y-auto">
   const CHAT_UI = (
-    <div className="mt-4 flex flex-col gap-3">
-      <div className="rounded-xl border border-slate-200 bg-white p-4 h-[420px] overflow-y-auto">
+    <div className="mx-auto mt-6 flex w-full max-w-[760px] flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white text-left shadow-sm">
+      {/* header */}
+      <div className="flex items-center gap-2.5 border-b border-slate-200 bg-slate-50 px-4 py-3">
+        <AiAvatar />
+        <div className="min-w-0 flex-1">
+          <p className="truncate text-sm font-semibold text-slate-800">
+            {flow.files[0]?.name || "Your PDF"}
+          </p>
+          <p className="flex items-center gap-1.5 text-xs text-slate-500">
+            <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" /> Ready — answers come from your document
+          </p>
+        </div>
+      </div>
+
+      {/* messages */}
+      <div ref={chatEndRef} className="h-[440px] overflow-y-auto bg-slate-50/60 px-4 py-5">
         {messages.map((msg, i) => (
           <ChatBubble key={i} role={msg.role} text={msg.text} />
         ))}
+
+        {messages.length <= 1 && !isAsking && (
+          <div className="mt-2 flex flex-wrap gap-2 pl-[42px]">
+            {SUGGESTIONS.map((s) => (
+              <button
+                key={s}
+                type="button"
+                onClick={() => handleAsk(s)}
+                className="rounded-full border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-600 transition hover:border-[#e8420a] hover:text-[#e8420a]"
+              >
+                {s}
+              </button>
+            ))}
+          </div>
+        )}
+
         {isAsking && (
-          <div className="flex justify-start mb-3">
-            <div className="bg-slate-100 text-slate-500 rounded-2xl rounded-bl-sm px-4 py-2.5 text-sm">
-              🤖 Thinking...
+          <div className="mb-2 flex items-start gap-2.5">
+            <AiAvatar />
+            <div className="flex items-center gap-1 rounded-2xl rounded-tl-md border border-slate-200 bg-white px-4 py-3.5 shadow-sm">
+              <span className="h-2 w-2 animate-bounce rounded-full bg-slate-400" style={{ animationDelay: "0ms" }} />
+              <span className="h-2 w-2 animate-bounce rounded-full bg-slate-400" style={{ animationDelay: "150ms" }} />
+              <span className="h-2 w-2 animate-bounce rounded-full bg-slate-400" style={{ animationDelay: "300ms" }} />
             </div>
           </div>
         )}
-        <div ref={chatEndRef} />
       </div>
 
-      <div className="flex gap-2">
-        <textarea
-          value={question}
-          onChange={(e) => setQuestion(e.target.value)}
-          onKeyDown={handleKeyDown}
-          placeholder="Ask anything about your PDF..."
-          rows={2}
-          className="flex-1 rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-700 resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
-        <button
-          onClick={handleAsk}
-          disabled={isAsking || !question.trim()}
-          className="rounded-lg bg-blue-600 px-4 py-2 text-white hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-        >
-          <Send className="h-4 w-4" />
-        </button>
+      {/* input */}
+      <div className="border-t border-slate-200 bg-white p-3">
+        <div className="flex items-end gap-2 rounded-xl border border-slate-300 bg-white px-3 py-2 transition focus-within:border-[#e8420a] focus-within:ring-2 focus-within:ring-[#e8420a]/20">
+          <textarea
+            value={question}
+            onChange={(e) => setQuestion(e.target.value)}
+            onKeyDown={handleKeyDown}
+            placeholder="Ask anything about your PDF..."
+            rows={1}
+            className="max-h-32 min-h-[28px] flex-1 resize-none bg-transparent py-1 text-[15px] text-slate-800 placeholder:text-slate-400 focus:outline-none"
+          />
+          <button
+            type="button"
+            onClick={() => handleAsk()}
+            disabled={isAsking || !question.trim()}
+            aria-label="Send"
+            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[#f24d0d] text-white transition hover:bg-[#dc4308] disabled:cursor-not-allowed disabled:bg-slate-300"
+          >
+            <Send className="h-4 w-4" />
+          </button>
+        </div>
+        <p className="mt-2 text-center text-[11px] text-slate-400">
+          Enter to send · Shift+Enter for new line
+        </p>
       </div>
-      <p className="text-xs text-slate-400 text-center">
-        Press Enter to send · Shift+Enter for new line
-      </p>
     </div>
   );
 
@@ -385,7 +474,9 @@ export default function AiChat({ seo }) {
         onConvert={handleConvert}
         onDownload={null}
         doneLinks={DONE_LINKS}
-        sidebarLinks={DONE_LINKS}
+        sidebarLinks={[]}
+        hideDoneSidebar
+        doneWide
         // Options Step
         optionsTitle="Chat options"
         showOutputFormat={false}
