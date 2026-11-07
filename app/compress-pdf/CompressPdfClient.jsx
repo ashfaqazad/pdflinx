@@ -5,6 +5,7 @@ import { FileDown } from "lucide-react";
 import { useState, useRef, useMemo, useEffect } from "react";
 
 import Script from "next/script";
+import { compressPdf } from "@/lib/clientCompress";
 import {
   GitMerge,
   Scissors,
@@ -177,57 +178,9 @@ function PdfThumbnail({ file }) {
 }
 
 
-const LEVEL_SETTINGS = {
-  "high-quality": { dpi: 150, quality: 0.8 },
-  recommended: { dpi: 110, quality: 0.6 },
-  max: { dpi: 72, quality: 0.4 },
-};
-
-async function compressPdfFile(file, level) {
-  const pdfjsLib = window.pdfjsLib;
-  if (!pdfjsLib) throw new Error("PDF engine is still loading. Please try again.");
-  pdfjsLib.GlobalWorkerOptions.workerSrc =
-    "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
-
-  const { PDFDocument } = await import("pdf-lib");
-  const { dpi, quality } = LEVEL_SETTINGS[level] || LEVEL_SETTINGS.recommended;
-
-  const buffer = await file.arrayBuffer();
-  const src = await pdfjsLib.getDocument({ data: new Uint8Array(buffer.slice(0)) }).promise;
-  const out = await PDFDocument.create();
-  const canvas = document.createElement("canvas");
-  const ctx = canvas.getContext("2d");
-
-  for (let i = 1; i <= src.numPages; i++) {
-    const page = await src.getPage(i);
-    const base = page.getViewport({ scale: 1 });
-
-    // bohat bare pages par canvas limit se bachne ke liye
-    let scale = dpi / 72;
-    const maxPixels = 16e6;
-    if (base.width * base.height * scale * scale > maxPixels) {
-      scale = Math.sqrt(maxPixels / (base.width * base.height));
-    }
-    const vp = page.getViewport({ scale });
-
-    canvas.width = Math.floor(vp.width);
-    canvas.height = Math.floor(vp.height);
-    ctx.fillStyle = "#ffffff";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    await page.render({ canvasContext: ctx, viewport: vp }).promise;
-
-    const jpgBlob = await new Promise((res) => canvas.toBlob(res, "image/jpeg", quality));
-    const jpg = await out.embedJpg(await jpgBlob.arrayBuffer());
-    const p = out.addPage([base.width, base.height]);
-    p.drawImage(jpg, { x: 0, y: 0, width: base.width, height: base.height });
-    page.cleanup();
-  }
-
-  const bytes = await out.save();
-  const compressed = new Blob([bytes], { type: "application/pdf" });
-  // agar nateeja bara ho gaya to original hi wapas do
-  return compressed.size < file.size ? compressed : file;
-}
+// Compression runs fully in the browser (lib/clientCompress.js): only embedded images are
+// re-encoded, text and vector content stay sharp and selectable.
+const compressPdfFile = (file, level) => compressPdf(file, level);
 
 
 export default function CompressPdfClient() {
