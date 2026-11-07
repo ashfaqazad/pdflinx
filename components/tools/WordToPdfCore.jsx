@@ -2,6 +2,7 @@
 // Sirf tool ka core part - embed ke liye
 
 "use client";
+import { wordFilesToPdf } from "@/lib/clientPdfTools3";
 import { useState } from "react";
 import { Upload, FileText, CheckCircle } from "lucide-react";
 
@@ -19,51 +20,15 @@ export default function WordToPdfCore({ compact = false }) {
     setSuccess(false);
     setError("");
 
-    const formData = new FormData();
-    for (const f of files) formData.append("files", f);
-
     try {
-      // const res = await fetch("/convert/word-to-pdf", { method: "POST", body: formData });
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/convert/word-to-pdf`,
-        { method: "POST", body: formData }
-      );
-
-
-      if (!res.ok) {
-        let msg = "Conversion failed";
-        try { const j = await res.json(); msg = j?.error || msg; } catch { }
-        throw new Error(msg);
-      }
-
-      const contentType = (res.headers.get("content-type") || "").toLowerCase();
-
-      // Single → PDF
-      if (contentType.includes("application/pdf")) {
-        const blob = await res.blob();
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = files[0].name.replace(/\.(doc|docx)$/i, ".pdf");
-        document.body.appendChild(a); a.click(); a.remove();
-        window.URL.revokeObjectURL(url);
-        setSuccess(true); setFiles([]);
-        return;
-      }
-
-      // Multiple → ZIP
-      if (contentType.includes("zip") || contentType.includes("octet-stream")) {
-        const blob = await res.blob();
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        a.href = url; a.download = "pdflinx-word-to-pdf.zip";
-        document.body.appendChild(a); a.click(); a.remove();
-        window.URL.revokeObjectURL(url);
-        setSuccess(true); setFiles([]);
-        return;
-      }
-
-      throw new Error("Unexpected response from server.");
+      // Runs fully in the browser — no server upload
+      const { blob, filename } = await wordFilesToPdf(files);
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url; a.download = filename;
+      document.body.appendChild(a); a.click(); a.remove();
+      window.URL.revokeObjectURL(url);
+      setSuccess(true); setFiles([]);
     } catch (err) {
       setError(err.message || "Something went wrong, please try again.");
     } finally {

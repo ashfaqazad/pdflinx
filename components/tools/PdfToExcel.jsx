@@ -5,6 +5,7 @@ import Script from "next/script";
 import RelatedToolsSection from "@/components/RelatedTools";
 import { useProgressBar } from "@/hooks/useProgressBar";
 import { useToolFlow } from "@/hooks/useToolFlow";
+import { pdfFilesToExcel } from "@/lib/clientPdfTools3";
 import ToolPageLayout from "@/components/ToolFlow/ToolPageLayout";
 
 import {
@@ -120,37 +121,11 @@ export default function PdfToExcel({ seo }) {
     startProgress();
     setDownloadUrl(null);
 
-    const formData = new FormData();
-    flow.files.forEach((f) => formData.append("files", f));
-    formData.append("mode", flow.files.length === 1 ? "single" : "multiple");
-
     try {
-
-
-      // const res = await fetch("/convert/pdf-excel", {
-      //   method: "POST",
-      //   body: formData,
-      // });
-
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/convert/pdf-excel`,
-        {
-          method: "POST",
-          body: formData,
-        }
-      );
-
-
-
-      const data = await res.json();
-
-      if (!res.ok || !data.success) {
-        throw new Error(data?.error || "Conversion failed");
-      }
-
-      const finalName = getDownloadName();
-      setDownloadUrl(`/api${data.download}`);
-      setDownloadName(finalName);
+      // Runs fully in the browser — no server upload
+      const { blob, filename } = await pdfFilesToExcel(flow.files);
+      setDownloadUrl(URL.createObjectURL(blob));
+      setDownloadName(filename);
 
       completeProgress();
       flow.finishSuccess();

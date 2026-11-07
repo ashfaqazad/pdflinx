@@ -18,6 +18,7 @@ import Script from "next/script";
 import RelatedToolsSection from "@/components/RelatedTools";
 import { useProgressBar } from "@/hooks/useProgressBar";
 // import { useToolFlow } from "@/hooks/useToolFlow";
+import { pdfFilesToWord } from "@/lib/clientPdfTools3";
 import ToolPageLayout from "@/components/ToolFlow/ToolPageLayout";
 import { useToolFlow, STEPS } from "@/hooks/useToolFlow";
 
@@ -246,144 +247,22 @@ export default function PdfToWord({ seo }) {
     startProgress();
     setDownloadFile(null);
 
-    const formData = new FormData();
-    flow.files.forEach((f) => formData.append("files", f));
-    formData.append("enable_ocr", enableOcr ? "1" : "0");
-
-    const pollIntervalMs = 1500;
-    const maxWaitMs = 15 * 60 * 1000;
-    const startedAt = Date.now();
-
-    const fetchJson = async (url, options) => {
-      const r = await fetch(url, { cache: "no-store", ...options });
-      const ct = r.headers.get("content-type") || "";
-      let payload = null;
-      if (ct.includes("json")) {
-        try {
-          payload = await r.json();
-        } catch {}
-      }
-      if (!r.ok) {
-        const msg =
-          payload?.detail || payload?.error || `Request failed ${r.status}`;
-        const err = new Error(msg);
-        err.status = r.status;
-        throw err;
-      }
-      return payload ?? {};
-    };
-
-    const downloadViaBlob = async (url, filenameFallback) => {
-      const r = await fetch(url, { cache: "no-store" });
-      if (!r.ok) throw new Error(`Download failed ${r.status}`);
-      const blob = await r.blob();
-      const cd = r.headers.get("content-disposition") || "";
-      const match = cd.match(/filename\*?=(?:UTF-8''|")?([^;"\n]+)"?/i);
-      const filename = match ? decodeURIComponent(match[1]) : filenameFallback;
-      setDownloadFile({
-        blob,
-        filename: filename || filenameFallback || "pdflinx-pdf-to-word.docx",
-      });
+    try {
+      // Runs fully in the browser — no server upload
+      const { blob, filename } = await pdfFilesToWord(flow.files, { ocr: enableOcr });
+      setDownloadFile({ blob, filename });
       const urlObj = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = urlObj;
-      a.download = filename || filenameFallback || "pdflinx-pdf-to-word.docx";
+      a.download = filename;
       document.body.appendChild(a);
       a.click();
       a.remove();
       URL.revokeObjectURL(urlObj);
-    };
-
-    const getJobStatus = async (jobId) => {
-      try {
-        return await fetchJson(`/api/convert/job/${jobId}`);
-      } catch (err) {
-        if (err?.status === 404)
-          return await fetchJson(`/convert/job/${jobId}`);
-        throw err;
-      }
-    };
-
-    const downloadResult = async (jobId) => {
-      try {
-        await downloadViaBlob(
-          `/api/convert/download/${jobId}`,
-          "pdflinx-pdf-to-word.docx",
-        );
-      } catch {
-        await downloadViaBlob(
-          `/convert/download/${jobId}`,
-          "pdflinx-pdf-to-word.docx",
-        );
-      }
-    };
-
-    let stopped = false;
-
-    const poll = async (jobId) => {
-      if (stopped) return;
-      if (Date.now() - startedAt > maxWaitMs) {
-        cancelProgress();
-        flow.handleError("Conversion timeout. Please try again.");
-        return;
-      }
-      try {
-        const statusData = await getJobStatus(jobId);
-        if (statusData?.status === "done") {
-          await downloadResult(jobId);
-          completeProgress();
-          flow.finishSuccess();
-          return;
-        }
-        if (statusData?.status === "failed") {
-          cancelProgress();
-          flow.handleError(statusData?.error || "Conversion failed on server");
-          return;
-        }
-        setTimeout(() => poll(jobId), pollIntervalMs);
-      } catch (err) {
-        cancelProgress();
-        flow.handleError(err?.message || "Polling failed");
-      }
-    };
-
-    try {
-      const res = await fetch("/convert/pdf-to-word", {
-        method: "POST",
-        body: formData,
-      });
-      const ct = res.headers.get("content-type") || "";
-      if (!res.ok) {
-        let msg = `Server error ${res.status}`;
-        if (ct.includes("json")) {
-          try {
-            const e = await res.json();
-            msg = e.detail || e.error || msg;
-          } catch {}
-        }
-        throw new Error(msg);
-      }
-      if (ct.includes("zip")) {
-        const blob = await res.blob();
-        setDownloadFile({ blob, filename: "pdflinx-pdf-to-word.zip" });
-        const urlObj = URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        a.href = urlObj;
-        a.download = "pdflinx-pdf-to-word.zip";
-        document.body.appendChild(a);
-        a.click();
-        a.remove();
-        URL.revokeObjectURL(urlObj);
-        completeProgress();
-        flow.finishSuccess();
-        return;
-      }
-      if (!ct.includes("json")) throw new Error(`Unexpected response: ${ct}`);
-      const data = await res.json();
-      if (!data?.jobId) throw new Error("Job ID not received");
-      poll(data.jobId);
+      completeProgress();
+      flow.finishSuccess();
     } catch (err) {
-      stopped = true;
+      console.error(err);
       cancelProgress();
       flow.handleError(err?.message || "Something went wrong");
     }

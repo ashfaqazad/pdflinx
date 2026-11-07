@@ -2,6 +2,7 @@
 // Sirf tool ka core part - embed ke liye
 
 "use client";
+import { pdfFilesToWord } from "@/lib/clientPdfTools3";
 import { useState } from "react";
 import { Upload, FileText, Download, CheckCircle } from "lucide-react";
 
@@ -70,76 +71,16 @@ export default function PdfToWordCore({ compact = false }) {
     setError("");
     setProgress(0);
 
-    const formData = new FormData();
-    files.forEach((f) => formData.append("files", f));
-    formData.append("enable_ocr", enableOcr ? "1" : "0");
-
-    const startedAt = Date.now();
-    const maxWaitMs = 15 * 60 * 1000;
-    const pollIntervalMs = 1500;
-    let stopped = false;
-
-    const poll = async (jobId) => {
-      if (stopped) return;
-      if (Date.now() - startedAt > maxWaitMs) {
-        setLoading(false);
-        setError("Conversion timeout. Please try again.");
-        return;
-      }
-      try {
-        const statusData = await getJobStatus(jobId);
-        const status = statusData?.status;
-        if (status === "queued") { setProgress(0); }
-        else if (status === "processing") { setProgress(statusData?.progress ?? 10); }
-        else if (status === "done") {
-          setProgress(100);
-          setFiles([]);
-          await downloadResult(jobId);
-          setSuccess(true);
-          setLoading(false);
-          return;
-        } else if (status === "failed") {
-          setLoading(false);
-          setError(statusData?.error || "Conversion failed on server");
-          return;
-        } else { setProgress((p) => Math.max(p, 5)); }
-        setTimeout(() => poll(jobId), pollIntervalMs);
-      } catch (err) {
-        setLoading(false);
-        setError(err?.message || "Polling failed");
-      }
-    };
-
     try {
-      const res = await fetch("/convert/pdf-to-word", { method: "POST", body: formData });
-      const ct = res.headers.get("content-type") || "";
-
-      if (!res.ok) {
-        let msg = `Server error ${res.status}`;
-        if (ct.includes("json")) { try { const e = await res.json(); msg = e.detail || e.error || msg; } catch {} }
-        throw new Error(msg);
-      }
-
-      // ZIP directly
-      if (ct.includes("zip")) {
-        const blob = await res.blob();
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        a.href = url; a.download = "pdflinx-pdf-to-word.zip";
-        document.body.appendChild(a); a.click(); a.remove();
-        URL.revokeObjectURL(url);
-        setProgress(100); setSuccess(true); setFiles([]); setLoading(false);
-        return;
-      }
-
-      // JSON job
-      const data = await res.json();
-      const jobId = data?.jobId;
-      if (!jobId) throw new Error("Job ID not received from server");
-      poll(jobId);
-
+      // Runs fully in the browser — no server upload
+      const { blob, filename } = await pdfFilesToWord(files, { ocr: enableOcr }, (p) => setProgress(Math.round(p * 100)));
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url; a.download = filename;
+      document.body.appendChild(a); a.click(); a.remove();
+      URL.revokeObjectURL(url);
+      setProgress(100); setSuccess(true); setFiles([]); setLoading(false);
     } catch (err) {
-      stopped = true;
       setLoading(false);
       setError(err?.message || "Something went wrong");
     }

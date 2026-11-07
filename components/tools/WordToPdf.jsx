@@ -6,6 +6,7 @@ import Script from "next/script";
 import RelatedToolsSection from "@/components/RelatedTools";
 import { useProgressBar } from "@/hooks/useProgressBar";
 // import { useToolFlow } from "@/hooks/useToolFlow";
+import { wordFilesToPdf } from "@/lib/clientPdfTools3";
 import { useToolFlow, STEPS } from "@/hooks/useToolFlow";
 import ToolPageLayout from "@/components/ToolFlow/ToolPageLayout";
 
@@ -274,46 +275,19 @@ export default function WordToPdf({ seo }) {
     flow.startProcessing();
     startProgress();
 
-    const formData = new FormData();
-    for (const f of flow.files) formData.append("files", f);
-
     try {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/convert/word-to-pdf`,
-        { method: "POST", body: formData }
-      );
-
-      if (!res.ok) {
-        let msg = "Conversion failed";
-        try {
-          const maybeJson = await res.json();
-          msg = maybeJson?.error || msg;
-        } catch { }
-        throw new Error(msg);
-      }
-
-
-
-      const data = await res.json();
-      const directUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL}${data.download}`;
-
-      setDownloadUrl(directUrl);
-      setDownloadFileName(data.filename);
-
-
-      const blobRes = await fetch(directUrl);
-      // console.log(blobRes);
-
-      const blob = await blobRes.blob();
+      // Runs fully in the browser — no server upload
+      const { blob, filename } = await wordFilesToPdf(flow.files);
       const blobUrl = URL.createObjectURL(blob);
+      setDownloadUrl(blobUrl);
+      setDownloadFileName(filename);
+
       const a = document.createElement("a");
       a.href = blobUrl;
-      a.download = data.filename;
+      a.download = filename;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
-      URL.revokeObjectURL(blobUrl);
-
 
       completeProgress();
       flow.finishSuccess();
