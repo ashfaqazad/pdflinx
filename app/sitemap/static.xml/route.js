@@ -1,8 +1,9 @@
+import lastmod from "@/lib/lastmod.json";
+
 // app/sitemap/static.sxml/route.js
 
 export async function GET() {
   const baseUrl = "https://pdflinx.com";
-  const lastModDate = "2026-09-01T00:00:00.000Z";
 
   const staticRoutes = [
     { url: "/", priority: "1.0", freq: "weekly" },
@@ -22,7 +23,8 @@ export async function GET() {
       (item) => `
   <url>
     <loc>${baseUrl}${item.url}</loc>
-    <lastmod>${lastModDate}</lastmod>
+    ${lastmod[item.url] ? `
+    <lastmod>${lastmod[item.url]}</lastmod>` : ""}
     <changefreq>${item.freq}</changefreq>
     <priority>${item.priority}</priority>
   </url>`

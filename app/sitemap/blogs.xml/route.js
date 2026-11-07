@@ -1,8 +1,9 @@
+import lastmod from "@/lib/lastmod.json";
+
 // app/sitemap/blogs.xml/route.js
 
 export async function GET() {
   const baseUrl = "https://pdflinx.com";
-  const lastModDate = "2026-09-01T00:00:00.000Z";
 
   const blogRoutes = [
     "/blog/pdf-to-word-accuracy-tips", "/blog/word-to-pdf-best-practices",
@@ -34,7 +35,8 @@ export async function GET() {
       (route) => `
   <url>
     <loc>${baseUrl}${route}</loc>
-    <lastmod>${lastModDate}</lastmod>
+    ${lastmod[route] ? `
+    <lastmod>${lastmod[route]}</lastmod>` : ""}
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>`

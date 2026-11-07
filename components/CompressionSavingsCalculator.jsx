@@ -1,5 +1,6 @@
 "use client";
 
+import { CALC_FAQS } from "@/lib/calcFaqs";
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 
@@ -372,6 +373,117 @@ export default function CompressionSavingsCalculator() {
               <span className="ml-1 opacity-75">→</span>
             </Link>
           </div>
+        </div>
+
+        {/* ── Guide content (SEO + helpful context) ── */}
+        <div className="mt-14 space-y-12 text-gray-700">
+
+          <section>
+            <h2 className="text-2xl font-bold text-gray-900">How the PDF compression savings calculator works</h2>
+            <p className="mt-3 leading-relaxed">
+              Enter the size of a PDF before compression, the size you expect after compression, and how many files you handle each month.
+              The calculator then works out the percentage saved per file, the total storage you free up every month and every year, and
+              what that means in practical terms: storage cost, outbound bandwidth cost, upload time, extra emails you can send under a
+              25 MB attachment limit, and a rough CO₂ estimate.
+            </p>
+            <p className="mt-3 leading-relaxed">
+              The formulas are intentionally simple so you can check them yourself. Savings per file is the original size minus the
+              compressed size. Monthly savings is that number multiplied by your files per month, and yearly savings is the monthly figure
+              times twelve. Storage cost uses an object-storage rate of about $0.023 per GB per month, bandwidth uses about $0.09 per GB
+              transferred, and upload time assumes a typical 10 Mbps connection. If your provider charges differently, treat the output as
+              a guide and scale it accordingly.
+            </p>
+          </section>
+
+          <section>
+            <h2 className="text-2xl font-bold text-gray-900">How to use the calculator in 3 steps</h2>
+            <ol className="mt-3 list-decimal space-y-2 pl-6 leading-relaxed">
+              <li><strong>Set the original size.</strong> Use the size of a typical PDF you work with — a scanned contract, a report with photos, or an exported presentation.</li>
+              <li><strong>Set the compressed size.</strong> Not sure what to enter? Start with half of the original and adjust. The table below shows realistic ranges.</li>
+              <li><strong>Set files per month.</strong> The more PDFs you store, send, or upload, the faster the savings add up.</li>
+            </ol>
+            <p className="mt-3 leading-relaxed">
+              Ready to see your real numbers? Run a file through our free{" "}
+              <Link href="/compress-pdf" className="font-medium text-blue-600 hover:underline">Compress PDF tool</Link>{" "}
+              and plug the before and after sizes in here.
+            </p>
+          </section>
+
+          <section>
+            <h2 className="text-2xl font-bold text-gray-900">How much can a PDF be compressed? Typical results</h2>
+            <p className="mt-3 leading-relaxed">
+              How much a PDF shrinks depends almost entirely on what is inside it. Compression works mainly on embedded images, so
+              image-heavy files shrink a lot while text-only files are already small.
+            </p>
+            <div className="mt-4 overflow-x-auto rounded-2xl border border-gray-200 bg-white">
+              <table className="w-full text-left text-sm">
+                <thead className="bg-gray-50 text-xs uppercase tracking-wider text-gray-500">
+                  <tr>
+                    <th className="px-4 py-3">Type of PDF</th>
+                    <th className="px-4 py-3">Typical reduction</th>
+                    <th className="px-4 py-3">Why</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-100">
+                  <tr><td className="px-4 py-3 font-medium">Scanned documents</td><td className="px-4 py-3">50–90%</td><td className="px-4 py-3">Each page is a large photo that can be resized and re-encoded.</td></tr>
+                  <tr><td className="px-4 py-3 font-medium">Presentations with photos</td><td className="px-4 py-3">40–80%</td><td className="px-4 py-3">Full-resolution pictures are embedded at far more detail than a screen needs.</td></tr>
+                  <tr><td className="px-4 py-3 font-medium">Reports with charts and images</td><td className="px-4 py-3">20–60%</td><td className="px-4 py-3">A mix of images and text; only the images shrink noticeably.</td></tr>
+                  <tr><td className="px-4 py-3 font-medium">Text-only documents</td><td className="px-4 py-3">0–15%</td><td className="px-4 py-3">Text and fonts are already compact, so there is little to remove.</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <p className="mt-3 text-sm leading-relaxed text-gray-500">
+              These ranges are general estimates, not guarantees. Your own files may land above or below them.
+            </p>
+          </section>
+
+          <section>
+            <h2 className="text-2xl font-bold text-gray-900">Why compressing PDFs is worth it</h2>
+            <ul className="mt-3 list-disc space-y-2 pl-6 leading-relaxed">
+              <li><strong>Email attachments.</strong> Gmail limits attachments to 25 MB in total, and many company mail servers are stricter. A compressed file is far less likely to bounce.</li>
+              <li><strong>Upload portals.</strong> Visa, university, tender and job portals often cap each upload at a few megabytes. Getting a PDF under the limit can be the difference between submitting today and not at all.</li>
+              <li><strong>Storage and backups.</strong> Teams that archive thousands of scanned invoices or contracts can free up gigabytes, which lowers storage and backup costs.</li>
+              <li><strong>Speed on mobile.</strong> Smaller PDFs open faster and use less mobile data, which matters for readers on slow connections.</li>
+              <li><strong>Bandwidth.</strong> If you serve PDFs from a website, every megabyte you remove is multiplied by every download.</li>
+            </ul>
+            <p className="mt-3 leading-relaxed">
+              Curious about what makes a PDF heavy in the first place? Read{" "}
+              <Link href="/blog/why-are-pdf-files-so-large" className="font-medium text-blue-600 hover:underline">why PDF files are so large</Link>, or see{" "}
+              <Link href="/blog/how-small-should-i-compress-my-pdf" className="font-medium text-blue-600 hover:underline">how small you should compress a PDF</Link>{" "}
+              for different uses, and{" "}
+              <Link href="/blog/compress-pdf-email-limit" className="font-medium text-blue-600 hover:underline">how to get a PDF under an email size limit</Link>.
+            </p>
+          </section>
+
+          <section>
+            <h2 className="text-2xl font-bold text-gray-900">Tips to get a smaller PDF without hurting quality</h2>
+            <ul className="mt-3 list-disc space-y-2 pl-6 leading-relaxed">
+              <li>Pick a balanced setting first. A recommended level usually keeps text sharp and photos clear while cutting most of the weight.</li>
+              <li>Only keep the pages you need. Use{" "}
+                <Link href="/split-pdf" className="font-medium text-blue-600 hover:underline">Split PDF</Link> or{" "}
+                <Link href="/remove-pages" className="font-medium text-blue-600 hover:underline">Remove Pages</Link> before compressing.
+              </li>
+              <li>Compress after merging, not before. Combining already-compressed files with{" "}
+                <Link href="/merge-pdf" className="font-medium text-blue-600 hover:underline">Merge PDF</Link> and then compressing once avoids repeated quality loss.
+              </li>
+              <li>For scans you plan to search, run{" "}
+                <Link href="/ocr-pdf" className="font-medium text-blue-600 hover:underline">OCR PDF</Link> so the text stays selectable.
+              </li>
+              <li>Always compare the result. Zoom into a page of the compressed file to confirm it is still readable before you send it.</li>
+            </ul>
+          </section>
+
+          <section>
+            <h2 className="text-2xl font-bold text-gray-900">Frequently asked questions</h2>
+            <div className="mt-4 space-y-3">
+              {CALC_FAQS.map((f) => (
+                <details key={f.q} className="group rounded-2xl border border-gray-200 bg-white p-4">
+                  <summary className="cursor-pointer list-none font-semibold text-gray-900">{f.q}</summary>
+                  <p className="mt-2 leading-relaxed text-gray-600">{f.a}</p>
+                </details>
+              ))}
+            </div>
+          </section>
         </div>
 
         {/* ── Disclaimer ── */}

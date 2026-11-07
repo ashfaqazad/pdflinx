@@ -1,9 +1,9 @@
+import lastmod from "@/lib/lastmod.json";
+
 // app/sitemap/tools.xml/route.js
 
 export async function GET() {
   const baseUrl = "https://pdflinx.com";
-  // Fixed deployment date (Update this only when you release tool updates)
-  const lastModDate = "2026-09-01T00:00:00.000Z";
 
   const toolRoutes = [
     "/pdf-to-word", "/pdf-to-word-for-students", "/word-to-pdf", "/image-to-pdf",
@@ -21,7 +21,8 @@ export async function GET() {
       (route) => `
   <url>
     <loc>${baseUrl}${route}</loc>
-    <lastmod>${lastModDate}</lastmod>
+    ${lastmod[route] ? `
+    <lastmod>${lastmod[route]}</lastmod>` : ""}
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>`

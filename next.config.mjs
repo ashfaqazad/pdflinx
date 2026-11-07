@@ -68,6 +68,8 @@ const nextConfig = {
       // Internal redirects only
       { source: "/tools/:slug*", destination: "/:slug*", permanent: true },
       { source: "/excel-to-pdf", destination: "/excel-pdf", permanent: true },
+      { source: "/jpg-to-pdf", destination: "/image-to-pdf", permanent: true },
+      { source: "/blog/best-free-image-converter-utility-tools", destination: "/blog/best-free-image-converter-tools", permanent: true },
       { source: "/blog/excel-to-pdf", destination: "/blog/excel-pdf", permanent: true },
 
       // ===== Tool Pages migrated to convertlinx.com (same slug) =====

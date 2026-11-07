@@ -391,7 +391,7 @@ seoSections: [
         </a>{" "}
         and{" "}
         <a
-          href="/excel-to-pdf"
+          href="/excel-pdf"
           className="text-blue-600 hover:underline font-medium"
         >
           Excel to PDF
