@@ -19,6 +19,12 @@ export function useProgressBar() {
     }, 300);
   };
 
+  // Switch from the simulated bar to real progress (0..1) reported by the tool.
+  const reportProgress = (fraction) => {
+    clearInterval(intervalRef.current);
+    setProgress(Math.max(5, Math.min(99, Math.round(fraction * 100))));
+  };
+
   const completeProgress = () => {
     clearInterval(intervalRef.current);
     setProgress(100);
@@ -34,5 +40,5 @@ export function useProgressBar() {
     setProgress(0);
   };
 
-  return { progress, isLoading, startProgress, completeProgress, cancelProgress };
+  return { progress, isLoading, startProgress, reportProgress, completeProgress, cancelProgress };
 }

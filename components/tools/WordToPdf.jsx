@@ -257,7 +257,7 @@ const wordToPdfFaqs = [
 
 export default function WordToPdf({ seo }) {
   const flow = useToolFlow();
-  const { progress, startProgress, completeProgress, cancelProgress } =
+  const { progress, startProgress, reportProgress, completeProgress, cancelProgress } =
     useProgressBar();
 
   const [downloadUrl, setDownloadUrl] = useState(null);
@@ -277,7 +277,7 @@ export default function WordToPdf({ seo }) {
 
     try {
       // Runs fully in the browser — no server upload
-      const { blob, filename } = await wordFilesToPdf(flow.files);
+      const { blob, filename } = await wordFilesToPdf(flow.files, reportProgress);
       const blobUrl = URL.createObjectURL(blob);
       setDownloadUrl(blobUrl);
       setDownloadFileName(filename);
