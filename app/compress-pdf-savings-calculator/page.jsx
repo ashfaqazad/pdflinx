@@ -8,10 +8,12 @@ export const metadata = {
     canonical: "https://pdflinx.com/compress-pdf-savings-calculator",
   },
   openGraph: {
-    title: "PDF Compression Savings Calculator | PDFLinx",
+    title: "PDF Compression Savings Calculator | PDF Linx",
     description: "Calculate how much storage, bandwidth & money you save by compressing PDFs.",
     url: "https://pdflinx.com/compress-pdf-savings-calculator",
+    siteName: "PDF Linx",
     type: "website",
+    images: [{ url: "/og/pdflinx-og.png", width: 1200, height: 630, alt: "PDF Linx — Free Online PDF Tools" }],
   },
 };
 

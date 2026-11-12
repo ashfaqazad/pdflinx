@@ -11,6 +11,14 @@ export async function generateMetadata({ params }) {
     title: { absolute: data.title },
     description: data.description,
     alternates: { canonical: data.canonical },
+    openGraph: {
+      title: data.title,
+      description: data.description,
+      url: `https://pdflinx.com${data.canonical}`,
+      siteName: "PDF Linx",
+      type: "website",
+      images: [{ url: "/og/pdflinx-og.png", width: 1200, height: 630, alt: "PDF Linx — Free Online PDF Tools" }],
+    },
   };
 }
 

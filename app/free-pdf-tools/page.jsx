@@ -14,7 +14,9 @@ export const metadata = {
     description:
       "30+ free online PDF tools: convert, merge, split, compress, protect, unlock, rotate, sign, OCR and edit PDFs. No signup required.",
     url: "https://pdflinx.com/free-pdf-tools",
+    siteName: "PDF Linx",
     type: "website",
+    images: [{ url: "/og/pdflinx-og.png", width: 1200, height: 630, alt: "PDF Linx — Free Online PDF Tools" }],
   },
 };
 

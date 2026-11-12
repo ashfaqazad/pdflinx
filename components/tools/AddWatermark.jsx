@@ -535,7 +535,7 @@ export default function AddWatermark({ seo }) {
             ],
             totalTime: "PT30S",
             estimatedCost: { "@type": "MonetaryAmount", value: "0", currency: "USD" },
-            image: "https://pdflinx.com/og-image.png",
+            image: "https://pdflinx.com/og/pdflinx-og.png",
           }, null, 2),
         }}
       /> */}
@@ -570,7 +570,7 @@ export default function AddWatermark({ seo }) {
             operatingSystem: "Web Browser",
             description: "Add watermark to PDF online free. Stamp custom text watermark on your PDF pages instantly with no signup and no watermark on output.",
             url: "https://pdflinx.com/add-watermark",
-            screenshot: "https://pdflinx.com/og-image.png",
+            screenshot: "https://pdflinx.com/og/pdflinx-og.png",
             offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
             featureList: [
               "Add text watermark to PDF",

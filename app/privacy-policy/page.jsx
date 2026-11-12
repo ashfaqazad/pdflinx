@@ -6,6 +6,14 @@ export const metadata = {
   alternates: {
     canonical: 'https://pdflinx.com/privacy-policy',
   },
+  openGraph: {
+    title: 'Privacy Policy | PDF Linx',
+    description: 'Learn how PDF Linx protects your privacy and handles your data.',
+    url: 'https://pdflinx.com/privacy-policy',
+    siteName: 'PDF Linx',
+    type: 'website',
+    images: [{ url: '/og/pdflinx-og.png', width: 1200, height: 630, alt: 'PDF Linx — Free Online PDF Tools' }],
+  },
 };
 
 export default function PrivacyPolicy() {

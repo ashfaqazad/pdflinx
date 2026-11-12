@@ -9,9 +9,12 @@ export const metadata = {
     canonical: "https://pdflinx.com/embed-code",
   },
   openGraph: {
-    title: "Embed Free PDF Tools | PDFLinx",
+    title: "Embed Free PDF Tools | PDF Linx",
     description: "Add PDF tools to your site for free. Works on HTML, WordPress, React, Next.js.",
     url: "https://pdflinx.com/embed-code",
+    siteName: "PDF Linx",
+    type: "website",
+    images: [{ url: "/og/pdflinx-og.png", width: 1200, height: 630, alt: "PDF Linx — Free Online PDF Tools" }],
   },
 };
 

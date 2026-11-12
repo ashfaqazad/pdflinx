@@ -13,7 +13,7 @@ export const metadata = {
     siteName: "PDF Linx",
     images: [
       {
-        url: "/og-image.png",
+        url: "/og/pdflinx-og.png",
         width: 1200,
         height: 630,
       },

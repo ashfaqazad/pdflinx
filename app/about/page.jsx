@@ -13,7 +13,7 @@ export const metadata = {
     siteName: "PDF Linx",
     images: [
       {
-        url: "/og-image-about.png",  // Agar OG image bana hai to rakh, warna ye line hata dena ya blank chhod
+        url: "/og/pdflinx-og.png",  // Agar OG image bana hai to rakh, warna ye line hata dena ya blank chhod
         width: 1200,
         height: 630,
       },

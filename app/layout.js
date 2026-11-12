@@ -91,7 +91,7 @@ export const metadata = {
     siteName: "PDF Linx",
     images: [
       {
-        url: "/og-image.png",
+        url: "/og/pdflinx-og.png",
         width: 1200,
         height: 630,
         alt: "PDF Linx — Free Online PDF Tools",
@@ -106,7 +106,7 @@ export const metadata = {
     title: "PDF Linx — Free Online PDF Tools",
     description:
       "Convert PDF to Word, merge, split, compress, protect, unlock, rotate, sign, watermark, and edit PDFs — fast, private, and free.",
-    images: ["/og-image.png"],
+    images: ["/og/pdflinx-og.png"],
   },
 
   robots: {

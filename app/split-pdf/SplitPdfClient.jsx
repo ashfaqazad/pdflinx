@@ -806,7 +806,7 @@ export default function SplitPdf({ seo }) {
             ],
             totalTime: "PT40S",
             estimatedCost: { "@type": "MonetaryAmount", value: "0", currency: "USD" },
-            image: "https://pdflinx.com/og-image.png",
+            image: "https://pdflinx.com/og/pdflinx-og.png",
           }, null, 2),
         }}
       />

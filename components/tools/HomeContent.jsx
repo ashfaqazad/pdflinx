@@ -19,7 +19,7 @@ export const metadata = {
     url: "/",
     siteName: "PDF Linx",
     images: [{
-      url: "https://pdflinx.com/og-image.png",  // ✅ Full URL (better for sharing)
+      url: "https://pdflinx.com/og/pdflinx-og.png",  // ✅ Full URL (better for sharing)
       width: 1200,
       height: 630,
       alt: "PDF Linx - Free PDF Tools"
@@ -32,7 +32,7 @@ export const metadata = {
     card: "summary_large_image",
     title: "PDF Linx - Free PDF & Utility Tools",
     description: "Convert, merge, compress PDFs + many free online tools. No signup needed.",
-    images: ["https://pdflinx.com/og-image.png"],  // ✅ Full URL + string array
+    images: ["https://pdflinx.com/og/pdflinx-og.png"],  // ✅ Full URL + string array
   },
 };
 

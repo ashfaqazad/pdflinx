@@ -8,7 +8,11 @@ export const metadata = {
   },
   openGraph: {
     title: 'Terms and Conditions | PDF Linx',
+    description: 'Read the terms and conditions for using PDF Linx tools and services.',
     url: 'https://pdflinx.com/terms-and-conditions',
+    siteName: 'PDF Linx',
+    type: 'website',
+    images: [{ url: '/og/pdflinx-og.png', width: 1200, height: 630, alt: 'PDF Linx — Free Online PDF Tools' }],
   },
 };
 
