@@ -246,6 +246,74 @@ export default function EmbedCodePage() {
 
       </div>
 
+      {/* How it works */}
+      <section className={styles.info} aria-labelledby="embed-info-title">
+        <h2 id="embed-info-title" className={styles.infoTitle}>
+          How embedding PDF Linx tools works
+        </h2>
+        <p>
+          Each tool above runs on its own page at pdflinx.com/embed/ and is
+          shown on your site inside an iframe. You pick a tool and a size,
+          copy the code and paste it into your page. There is nothing to
+          install, no account to create and no API key to manage.
+        </p>
+
+        <h3 className={styles.infoSub}>Tools you can embed</h3>
+        <p>
+          Seven tools are available: Compress PDF, Merge PDF, Split PDF, PDF to
+          Word, Word to PDF, JPG to PDF and PDF to JPG. They are the same tools
+          visitors get on pdflinx.com, so the options and results match what
+          you see on the main site.
+        </p>
+
+        <h3 className={styles.infoSub}>Choosing a size</h3>
+        <p>
+          <strong>Normal (680px)</strong> suits article pages and blog posts,
+          where the tool can sit between paragraphs. <strong>Sidebar
+          (340px)</strong> is a compact layout for widget areas and narrow
+          columns. Both sizes are responsive, so they also work on phones.
+        </p>
+
+        <h3 className={styles.infoSub}>HTML, WordPress or React</h3>
+        <ul className={styles.infoList}>
+          <li>
+            <strong>HTML / iframe:</strong> paste the generated snippet into any
+            page, CMS or site builder that accepts custom HTML.
+          </li>
+          <li>
+            <strong>WordPress:</strong> install the plugin, then use the
+            shortcode, for example <code>[pdflinx tool=&quot;compress-pdf&quot;]</code>,
+            or add the PDFLinx Tool block in the Gutenberg editor.
+          </li>
+          <li>
+            <strong>React / Next.js:</strong> download the wrapper component and
+            render it with the tool name and the compact option.
+          </li>
+        </ul>
+
+        <h3 className={styles.infoSub}>Files and privacy</h3>
+        <p>
+          An embedded tool runs the same code as the PDF Linx website. Depending
+          on the tool, a visitor&apos;s file is processed in their browser or sent to
+          PDF Linx servers for conversion. Read our{" "}
+          <a href="/privacy-policy">privacy policy</a> before embedding a tool
+          on a page where visitors handle sensitive documents, and mention it
+          to your visitors if that applies to your site.
+        </p>
+
+        <h3 className={styles.infoSub}>Tips for placing a tool</h3>
+        <ul className={styles.infoList}>
+          <li>Put a tool next to content that explains it, such as a compress tool inside a guide about reducing PDF size.</li>
+          <li>Keep the iframe height from the snippet so the upload area is not cut off.</li>
+          <li>Test the page on a phone after you publish it.</li>
+        </ul>
+        <p>
+          Looking for a tool that is not on the list? Every tool is also
+          available as a normal page in our{" "}
+          <a href="/free-pdf-tools">free PDF tools</a> collection.
+        </p>
+      </section>
+
       {/* Footer note */}
       <p className={styles.footerNote}>
         Free forever · No API key needed · Works on any website

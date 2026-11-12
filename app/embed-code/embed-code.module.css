@@ -815,3 +815,53 @@
   .reactNote { margin: 0 18px 20px; }
   .codeHeader { padding: 14px 14px 0; }
 } */
+
+/* ── Info section (how embedding works) ── */
+.info {
+  max-width: 720px;
+  margin: 48px auto 0;
+  padding: 0 4px;
+  color: #334155;
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+.infoTitle {
+  font-size: 24px;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 12px;
+}
+
+.infoSub {
+  font-size: 17px;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 24px 0 6px;
+}
+
+.info p {
+  margin: 0 0 10px;
+}
+
+.infoList {
+  margin: 0 0 10px 20px;
+  padding: 0;
+  list-style: disc;
+}
+
+.infoList li {
+  margin-bottom: 6px;
+}
+
+.info a {
+  color: #3b5bdb;
+  text-decoration: underline;
+}
+
+.info code {
+  background: #e0e9ff;
+  padding: 1px 6px;
+  border-radius: 4px;
+  font-size: 13px;
+}

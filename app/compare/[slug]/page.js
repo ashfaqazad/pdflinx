@@ -60,11 +60,62 @@ export default function ComparePage({ params }) {
       </a>
 
       {/* SEO Content */}
-      <div className="space-y-4 text-gray-700">
+      <div className="space-y-4 text-gray-700 mb-12">
         {data.content.map((p, i) => (
           <p key={i}>{p}</p>
         ))}
       </div>
+
+      {/* More detail */}
+      <h2 className="text-2xl font-bold mb-4">{data.h1}: more detail</h2>
+      <div className="border rounded-xl overflow-hidden mb-12">
+        <div className="grid grid-cols-3 bg-gray-100 font-semibold p-4">
+          <div>Feature</div>
+          <div>PDF Linx</div>
+          <div>{data.competitor}</div>
+        </div>
+        {data.moreTable.map((row, i) => (
+          <div key={i} className="grid grid-cols-3 gap-4 border-t p-4 text-sm">
+            <div className="font-medium">{row[0]}</div>
+            <div>{row[1]}</div>
+            <div>{row[2]}</div>
+          </div>
+        ))}
+      </div>
+
+      {/* Pros and cons */}
+      <h2 className="text-2xl font-bold mb-4">Pros and cons</h2>
+      <div className="grid gap-6 md:grid-cols-2 mb-12">
+        {[
+          { name: "PDF Linx", pros: data.pros.pdflinx, cons: data.cons.pdflinx },
+          { name: data.competitor, pros: data.pros.competitor, cons: data.cons.competitor },
+        ].map((col) => (
+          <div key={col.name} className="border rounded-xl p-5">
+            <h3 className="text-lg font-semibold mb-3">{col.name}</h3>
+            <p className="font-medium text-green-700 mb-1">Pros</p>
+            <ul className="list-disc ml-5 mb-4 space-y-1 text-gray-700 text-sm">
+              {col.pros.map((t) => (
+                <li key={t}>{t}</li>
+              ))}
+            </ul>
+            <p className="font-medium text-red-700 mb-1">Cons</p>
+            <ul className="list-disc ml-5 space-y-1 text-gray-700 text-sm">
+              {col.cons.map((t) => (
+                <li key={t}>{t}</li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+
+      {/* Which to choose */}
+      <h2 className="text-2xl font-bold mb-4">Which one should you choose?</h2>
+      <div className="space-y-4 text-gray-700 mb-6">
+        {data.choose.map((t) => (
+          <p key={t}>{t}</p>
+        ))}
+      </div>
+      <p className="text-sm text-gray-500">{data.note}</p>
     </main>
   );
 }
