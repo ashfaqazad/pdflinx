@@ -296,8 +296,8 @@ const reasons = [
     },
     {
         emoji: "👁️", bg: "#eff6ff",
-        title: "Zero Ads, Zero Distractions",
-        text: "No popups, no banners, no upgrade prompts. Just a clean PDF toolkit that works — free, always.",
+        title: "Clean, Distraction-Free Pages",
+        text: "No popups, no upgrade prompts, no account needed. Just a clean PDF toolkit that is free to use.",
     },
     {
         emoji: "👤", bg: "#fff8f0",
@@ -325,7 +325,7 @@ const pills = [
 
 const stats = [
     { num: "31+", label: "Free PDF Tools" },
-    { num: "Zero", label: "Ads or Popups" },
+    { num: "No", label: "Popups or Upgrade Prompts" },
     { num: "Secure", label: "File Processing" },
     { num: "Free", label: "No Hidden Costs" },
 ];
