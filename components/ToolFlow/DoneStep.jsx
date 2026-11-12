@@ -3,6 +3,17 @@
 
 import { Check, Download } from "lucide-react";
 
+// Sizes under 1 MB are shown in KB so small files never read "0.00 MB".
+function formatFileSize(bytes) {
+  if (!bytes || bytes < 0) return "0 KB";
+  if (bytes < 1024 * 1024) {
+    const kb = bytes / 1024;
+    return `${kb < 100 ? kb.toFixed(1) : Math.round(kb)} KB`;
+  }
+  return `${(bytes / (1024 * 1024)).toFixed(2)} MB`;
+}
+
+
 export default function DoneStep({
   title = "Conversion complete!",
   description = "Your file is ready to download.",
@@ -34,8 +45,8 @@ export default function DoneStep({
         const savedPct = Math.round(
           (1 - compressionStats.compressedSize / compressionStats.originalSize) * 100
         );
-        const origMB = (compressionStats.originalSize / (1024 * 1024)).toFixed(2);
-        const compMB = (compressionStats.compressedSize / (1024 * 1024)).toFixed(2);
+        const origSize = formatFileSize(compressionStats.originalSize);
+        const compSize = formatFileSize(compressionStats.compressedSize);
 
         return (
           <div className="mx-auto mt-6 w-full max-w-[380px] flex items-center gap-4 rounded-2xl border border-slate-200 bg-white px-5 py-4 shadow-sm">
@@ -61,7 +72,7 @@ export default function DoneStep({
                 Your PDF is now {savedPct}% smaller!
               </p>
               <p className="mt-1 text-xs text-slate-400">
-                {origMB} MB → {compMB} MB
+                {origSize} → {compSize}
               </p>
             </div>
           </div>
@@ -226,7 +237,7 @@ export default function DoneStep({
 //                 Your PDF is now {savedPct}% smaller!
 //               </p>
 //               <p className="mt-1 text-xs text-slate-400">
-//                 {origMB} MB → {compMB} MB
+//                 {origSize} → {compSize}
 //               </p>
 //             </div>
 //           </div>
