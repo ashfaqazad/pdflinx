@@ -1,5 +1,7 @@
 import { notFound } from "next/navigation";
 import { compareData } from "@/lib/compareData";
+import JsonLd from "@/components/JsonLd";
+import { breadcrumbSchema } from "@/lib/breadcrumbSchema";
 
 export async function generateMetadata({ params }) {
   const data = compareData[params.slug];
@@ -18,6 +20,9 @@ export default function ComparePage({ params }) {
 
   return (
     <main className="max-w-4xl mx-auto px-4 py-12">
+      <JsonLd
+        data={breadcrumbSchema([{ name: data.h1, path: data.canonical }])}
+      />
       <h1 className="text-4xl font-bold mb-4">{data.h1}</h1>
       <p className="text-gray-600 mb-8">{data.description}</p>
 

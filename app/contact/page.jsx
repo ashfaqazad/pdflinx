@@ -1,4 +1,6 @@
-import ContactClient from "./ContactClient";  // Ya ContactClient.jsx jo bhi naam rakha tune
+import ContactClient from "./ContactClient";
+import JsonLd from "@/components/JsonLd";
+import { breadcrumbSchema } from "@/lib/breadcrumbSchema";  // Ya ContactClient.jsx jo bhi naam rakha tune
 
 export const metadata = {
   title: { absolute: "Contact PDF Linx — Support and Feedback" },
@@ -26,5 +28,10 @@ export const metadata = {
 };
 
 export default function ContactPage() {
-  return <ContactClient />;
+  return (
+    <>
+      <JsonLd data={breadcrumbSchema([{ name: "Contact", path: "/contact" }])} />
+      <ContactClient />
+    </>
+  );
 }

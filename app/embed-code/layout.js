@@ -1,4 +1,7 @@
 
+import JsonLd from "@/components/JsonLd";
+import { breadcrumbSchema } from "@/lib/breadcrumbSchema";
+
 export const metadata = {
   title: { absolute: "Embed Free PDF Tools on Your Website | PDF Linx" },
   description: "Add free PDF tools to your website, blog, or WordPress site. Copy the embed code or download our WordPress plugin — no API key needed.",
@@ -13,5 +16,10 @@ export const metadata = {
 };
 
 export default function EmbedCodeLayout({ children }) {
-  return children;
+  return (
+    <>
+      <JsonLd data={breadcrumbSchema([{ name: "Embed Code", path: "/embed-code" }])} />
+      {children}
+    </>
+  );
 }

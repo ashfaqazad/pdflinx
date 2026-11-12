@@ -1,4 +1,6 @@
 import AboutClient from "./AboutClient";
+import JsonLd from "@/components/JsonLd";
+import { breadcrumbSchema } from "@/lib/breadcrumbSchema";
 
 export const metadata = {
   title: { absolute: "About PDF Linx — Free, Privacy-First PDF Tools" },
@@ -26,7 +28,12 @@ export const metadata = {
 };
 
 export default function AboutPage() {
-  return <AboutClient />;
+  return (
+    <>
+      <JsonLd data={breadcrumbSchema([{ name: "About", path: "/about" }])} />
+      <AboutClient />
+    </>
+  );
 }
 
 
