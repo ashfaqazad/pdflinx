@@ -294,6 +294,16 @@ const articles = [
     read: "4 min",
     slug: "how-small-should-i-compress-my-pdf",
   },
+  {
+    cat: "compress",
+    icon: "📉",
+    title: "How to Compress a PDF to 100KB",
+    excerpt:
+      "Need a PDF under 100KB for a form or upload? Follow these steps to choose the right compression level, check the result, and shrink a file that is still too large.",
+    date: "Nov 12, 2026",
+    read: "6 min",
+    slug: "compress-pdf-to-100kb",
+  },
 
   // ── STUDENTS ──
   {

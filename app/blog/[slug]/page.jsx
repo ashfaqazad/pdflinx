@@ -4796,6 +4796,124 @@ const blogs = [
 </p>
 `,
   },
+  {
+    slug: "compress-pdf-to-100kb",
+    title: "How to Compress a PDF to 100KB",
+    seoTitle: "How to Compress PDF to 100KB Free | PDF Linx",
+    description:
+      "Need a PDF under 100KB for a form or upload? Follow these steps to compress a PDF to 100KB for free, and see what to do when the file is still too large.",
+    date: "Nov 12, 2026",
+    content: `
+  <h2>Why So Many Forms Ask for a PDF Under 100KB</h2>
+
+  <p>Government portals, university application systems, job boards and visa forms often cap uploads at 100KB. The limit is small on purpose: it keeps servers fast and storage cheap. For you, it means a normal PDF, which is often several hundred kilobytes or a few megabytes, has to shrink before the form will accept it.</p>
+
+  <p>The <a href="/compress-pdf"><strong>Compress PDF tool</strong></a> on PDF Linx can help with that. One thing to know up front: it does not aim for an exact size. You cannot type "100KB" and get a file of exactly that size. You choose a compression level, the tool re-encodes the images inside your PDF, and you check the result. Whether you land under 100KB depends mostly on what is inside your file. This guide shows you how to get there and what to do when the file is still too big.</p>
+
+  <h2>What Decides Whether 100KB Is Realistic</h2>
+
+  <p>Before you start, it helps to know what makes a PDF large. The answer is almost always images.</p>
+
+  <ul class="list-disc list-inside space-y-2 ml-4 text-lg">
+    <li><strong>Text-only PDFs</strong> exported from Word or Google Docs are usually small already, often under 200KB. They have little to gain from compression, but they are close to the limit.</li>
+    <li><strong>PDFs with a few photos or logos</strong> can often drop below 100KB if the images are downsized.</li>
+    <li><strong>Scanned documents</strong> store every page as a picture. A single scanned page can be 500KB to 2MB, so a multi-page scan will rarely fit in 100KB without removing pages or scanning again at a lower resolution.</li>
+  </ul>
+
+  <p>If your file is a long scan, read the "Still Too Large" section below first. It will save you time.</p>
+
+  <h2>Step 1: Check the Current File Size</h2>
+
+  <p>Find out where you are starting from. On Windows, right-click the file and choose Properties. On Mac, select the file and press Command + I. On a phone, open the file in your Files app and look at the details. Write the number down so you can see how much each step helps.</p>
+
+  <p>Also check how the portal counts size. Some use 1KB = 1,024 bytes and others use 1,000 bytes. If your file shows 99KB on your computer, a strict portal might still reject it, so aim for about 90KB to leave a safe margin.</p>
+
+  <h2>Step 2: Open the Compress PDF Tool and Add Your File</h2>
+
+  <p>Go to <a href="/compress-pdf">PDF Linx Compress PDF</a> and add your PDF by dragging it onto the page or by clicking to browse. You do not need an account, and no watermark is added to the result.</p>
+
+  <h2>Step 3: Choose the Right Compression Level</h2>
+
+  <p>The tool gives you three levels. Each one reduces the size of the images inside your PDF by a different amount. Text and vector graphics stay sharp at every level, because only embedded images are re-encoded.</p>
+
+  <ul class="list-disc list-inside space-y-2 ml-4 text-lg">
+    <li><strong>High Quality</strong> keeps images at a higher resolution. It saves the least space, so it is rarely the right choice for a 100KB target.</li>
+    <li><strong>Recommended</strong> is the balanced option. Start here for most documents.</li>
+    <li><strong>Max Compression</strong> shrinks images the most and gives the smallest file. Images will look softer, so check that signatures, stamps and small print are still readable.</li>
+  </ul>
+
+  <p>For a 100KB goal, run the file once with <strong>Recommended</strong> and look at the size. If it is still above the limit, run the original file again with <strong>Max Compression</strong>. Always start again from the original, not from an already compressed copy, so you do not stack quality loss for no reason.</p>
+
+  <h2>Step 4: Download and Check the Result</h2>
+
+  <p>When the tool finishes, it shows the size before and after. Sizes below 1MB are shown in KB, so you can see right away whether you are under 100KB. Download the file and open it. Zoom in on the parts that matter, such as names, dates, ID numbers and signatures. If they are readable, you are done.</p>
+
+  <h2>Still Too Large? What to Do Next</h2>
+
+  <p>If Max Compression leaves you above 100KB, the file has more content than the limit allows. These steps work, roughly in order of how much they help.</p>
+
+  <h3>Remove pages you do not need</h3>
+
+  <p>Many uploads include a cover page, blank pages or pages the form does not ask for. Use <a href="/remove-pages">Remove Pages</a> to delete them, then compress the shorter file. Fewer pages is the most reliable way to lose size, especially for scans.</p>
+
+  <h3>Keep only the pages the portal asks for</h3>
+
+  <p>If the form wants just one or two pages from a long document, use <a href="/extract-pdf">Extract Pages</a> to save only those. Then compress the result.</p>
+
+  <h3>Split a large file when the portal allows several uploads</h3>
+
+  <p>Some systems accept more than one file for the same document. In that case, <a href="/split-pdf">Split PDF</a> lets you divide the file into parts that each fit under the limit. Check the portal rules first, because many require a single file.</p>
+
+  <h3>Reduce image quality at the source</h3>
+
+  <p>Compression works better when the starting file is not huge. If you still have the original, make it lighter before you create the PDF:</p>
+
+  <ul class="list-disc list-inside space-y-2 ml-4 text-lg">
+    <li>Scan at 150 DPI instead of 300 or 600. Text stays readable and the file is far smaller.</li>
+    <li>Scan in black and white or grayscale if you do not need color.</li>
+    <li>In Word, use the Compress Pictures option before exporting, or insert smaller images.</li>
+    <li>Crop photos to the part you need before adding them to the document.</li>
+  </ul>
+
+  <h3>Compress a second time, with limits</h3>
+
+  <p>Running an already compressed file through the tool again can remove a little more, but the gains shrink each time while images get blurrier. Treat it as a last step, and stop as soon as small text becomes hard to read.</p>
+
+  <h2>Common Mistakes to Avoid</h2>
+
+  <ul class="list-disc list-inside space-y-2 ml-4 text-lg">
+    <li><strong>Taking a photo of each page with a phone.</strong> Phone photos are large. Use a scanning app set to a low resolution instead.</li>
+    <li><strong>Renaming a JPG or Word file to .pdf.</strong> This does not work, and portals will reject it. Convert it properly with a tool like <a href="/image-to-pdf">Image to PDF</a>.</li>
+    <li><strong>Compressing until the text is unreadable.</strong> A file that fits but cannot be read may be rejected by a human reviewer, which is worse than a larger file.</li>
+    <li><strong>Aiming for exactly 100KB.</strong> Leave a margin. A file around 85 to 95KB is safe.</li>
+  </ul>
+
+  <h2>Quick Summary</h2>
+
+  <ol class="list-decimal list-inside space-y-2 ml-4 text-lg">
+    <li>Check your starting file size.</li>
+    <li>Open Compress PDF and add the file.</li>
+    <li>Try Recommended first, then Max Compression on the original.</li>
+    <li>Download and check the size and readability.</li>
+    <li>If it is still too big, remove or extract pages, or rebuild the PDF from lighter images.</li>
+  </ol>
+
+  <p>Most documents with a few images will fit with these steps. Long scans need fewer pages or a lower scan resolution as well.</p>
+
+  <div class="bg-indigo-50 border border-indigo-200 rounded-xl p-8 text-center my-12">
+    <p class="text-xl font-semibold text-indigo-800 mb-4">
+      Reduce your PDF size for free, with no signup and no watermark.
+    </p>
+    <a href="/compress-pdf" class="inline-block bg-indigo-600 text-white font-bold px-8 py-4 rounded-xl hover:bg-indigo-700 transition shadow-lg">
+      Open Compress PDF →
+    </a>
+  </div>
+
+  <p class="text-center text-gray-600">
+    <a href="/blog" class="text-indigo-600 hover:underline">← Back to all guides</a>
+  </p>
+`,
+  },
 ];
 
 import Link from "next/link";
@@ -4807,11 +4925,15 @@ export async function generateMetadata({ params }) {
   if (!blog) return notFound();
 
   return {
-    title: blog.title + " | PDF Linx Blog",
-    description: blog.content
-      .replace(/<[^>]+>/g, "")
-      .trim()
-      .slice(0, 160),
+    title: blog.seoTitle
+      ? { absolute: blog.seoTitle }
+      : blog.title + " | PDF Linx Blog",
+    description:
+      blog.description ||
+      blog.content
+        .replace(/<[^>]+>/g, "")
+        .trim()
+        .slice(0, 160),
     keywords: [
       "PDF tools",
       "convert PDF online",
@@ -4828,10 +4950,12 @@ export async function generateMetadata({ params }) {
     },
     openGraph: {
       title: blog.title,
-      description: blog.content
-        .replace(/<[^>]+>/g, "")
-        .trim()
-        .slice(0, 160),
+      description:
+        blog.description ||
+        blog.content
+          .replace(/<[^>]+>/g, "")
+          .trim()
+          .slice(0, 160),
       url: `https://pdflinx.com/blog/${slug}`,
       type: "article",
       siteName: "PDF Linx",

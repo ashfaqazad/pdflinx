@@ -27,7 +27,8 @@ export async function GET() {
     "/blog/word-to-pdf-for-students", "/blog/word-to-pdf-free-no-signup",
     "/blog/compress-pdf-without-losing-quality", "/blog/compress-pdf-on-mobile",
     "/blog/pdf-still-too-large-after-compression", "/blog/why-are-pdf-files-so-large",
-    "/blog/how-small-should-i-compress-my-pdf"
+    "/blog/how-small-should-i-compress-my-pdf",
+    "/blog/compress-pdf-to-100kb"
   ];
 
   const urlsXml = blogRoutes

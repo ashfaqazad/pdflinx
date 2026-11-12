@@ -920,7 +920,15 @@ export default function CompressPdfClient() {
                     no account needed. Most scanned and image-heavy PDFs reduce
                     to 100KB–500KB within one or two compressions, making
                     PDFLinx the go-to free PDF compressor for form submissions
-                    and official uploads.
+                    and official uploads. Need a step-by-step walkthrough?
+                    Read our guide on{" "}
+                    <a
+                      href="/blog/compress-pdf-to-100kb"
+                      className="text-blue-600 hover:underline font-medium"
+                    >
+                      how to compress a PDF to 100KB
+                    </a>
+                    .
                   </>
                 ),
               },
