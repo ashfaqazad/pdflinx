@@ -1,15 +1,12 @@
-"use client";
-
-import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { useState, useEffect, useRef } from "react";
+import { HomeTabs, BrowseToolsButton, HomeEnhancements } from "./HomeClient";
 import styles from "./HomeContent.module.css";
 import { PdfIntroSection, PdfFaqSection } from "./HomePageSeoContent"; // apni file ke exact naam ke mutabiq
 
 import {
   ShieldCheck, RotateCw, PenTool, FileText, FileType,
   FileArchive, FileImage, FileSpreadsheet, Split, Stamp,
-  ArrowUp, Lock, Zap, Eye, Smartphone, Trash2, Hash, Code,
+  Lock, Zap, Eye, Smartphone, Trash2, Hash, Code,
   Image, CheckCircle2, Presentation, LayoutGrid, Download,
   Wrench, EyeOff, Crop, Sparkles, MessageSquare,
 } from "lucide-react";
@@ -21,49 +18,6 @@ import {
 //     Image, CheckCircle2,
 // } from "lucide-react";
 
-/* ─────────────────────────────────────────────────────────────
-   SCROLL REVEAL HOOK
-───────────────────────────────────────────────────────────── */
-
-function useScrollReveal(dep) {
-    useEffect(() => {
-        // Thoda wait karo taake React naye cards render kar sake
-        const timer = setTimeout(() => {
-            const els = document.querySelectorAll(`.${styles.revealItem}`);
-
-            const observer = new IntersectionObserver(
-                (entries) => {
-                    entries.forEach((entry) => {
-                        if (entry.isIntersecting) {
-                            const delay = entry.target.dataset.delay || 0;
-                            setTimeout(() => {
-                                entry.target.classList.add(styles.visible);
-                            }, delay);
-                            observer.unobserve(entry.target);
-                        }
-                    });
-                },
-                { threshold: 0.05 }
-            );
-
-            els.forEach((el) => {
-                const rect = el.getBoundingClientRect();
-                if (rect.top < window.innerHeight) {
-                    const delay = el.dataset.delay || 0;
-                    setTimeout(() => {
-                        el.classList.add(styles.visible);
-                    }, delay);
-                } else {
-                    observer.observe(el);
-                }
-            });
-
-            return () => observer.disconnect();
-        }, 50); // ← 50ms wait — React render complete hone do
-
-        return () => clearTimeout(timer);
-    }, [dep]); // ← dep change hone par dobara run karo
-}
 /* ─────────────────────────────────────────────────────────────
    DATA
 ───────────────────────────────────────────────────────────── */
@@ -380,24 +334,6 @@ const stats = [
    COMPONENT
 ───────────────────────────────────────────────────────────── */
 export default function HomeContent() {
-    const [activeCategory, setActiveCategory] = useState("all");
-    const [showBackToTop, setShowBackToTop] = useState(false);
-
-    // useScrollReveal();
-    useScrollReveal(activeCategory); // ← activeCategory pass karo
-
-
-    useEffect(() => {
-        const onScroll = () => setShowBackToTop(window.scrollY > 600);
-        window.addEventListener("scroll", onScroll);
-        return () => window.removeEventListener("scroll", onScroll);
-    }, []);
-
-    const filtered =
-        activeCategory === "all"
-            ? tools
-            : tools.filter((t) => t.category === activeCategory);
-
     return (
         <div className={styles.homeRoot}>
 
@@ -430,14 +366,7 @@ export default function HomeContent() {
                     </div>
 
                     <div className={styles.heroCtas}>
-                        <button
-                            className={styles.btnPrimary}
-                            onClick={() =>
-                                document.getElementById("tools")?.scrollIntoView({ behavior: "smooth" })
-                            }
-                        >
-                            Browse All PDF Tools
-                        </button>
+                        <BrowseToolsButton>Browse All PDF Tools</BrowseToolsButton>
                         <a href="/pdf-to-word" className={styles.btnSecondary}>
                             Try PDF to Word Free →
                         </a>
@@ -478,27 +407,19 @@ export default function HomeContent() {
                     </p>
                 </div>
 
-                {/* tabs */}
-                <div className={styles.tabBar}>
-                    {categories.map((cat) => (
-                        <button
-                            key={cat.key}
-                            className={`${styles.tabBtn} ${activeCategory === cat.key ? styles.tabActive : ""}`}
-                            onClick={() => setActiveCategory(cat.key)}
-                        >
-                            {cat.label}
-                        </button>
-                    ))}
-                </div>
+                {/* tabs (client): show/hide the cards below by category */}
+                <HomeTabs categories={categories} />
 
                 {/* grid */}
                 <div className={styles.toolsGrid}>
-                    {filtered.map((tool, i) => (
+                    {tools.map((tool, i) => (
                         <Link
                             key={tool.link}
                             href={tool.link}
                             className={`${styles.toolCard} ${styles.revealItem}`}
                             data-delay={Math.min((i % 4) * 80, 240)}
+                            data-tool-card=""
+                            data-category={tool.category}
                         >
                             {tool.badge && (
                                 <span
@@ -591,16 +512,8 @@ export default function HomeContent() {
                 </div>
             </section>
 
-            {/* ── BACK TO TOP ── */}
-            {showBackToTop && (
-                <button
-                    className={styles.backTop}
-                    onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-                    aria-label="Back to top"
-                >
-                    <ArrowUp className="w-5 h-5" />
-                </button>
-            )}
+            {/* scroll reveal + back-to-top (client) */}
+            <HomeEnhancements />
         </div>
     );
 }
