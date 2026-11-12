@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import { seoData } from "@/lib/seoData";
 import { generateSchemas } from "@/lib/generateSchemas";
 import ToolLoader from "@/components/ToolLoader";
+import { pageTitle } from "@/lib/metaTitle";
 
 const SITE_URL = "https://pdflinx.com";
 
@@ -52,7 +53,7 @@ export async function generateMetadata({ params }) {
   return {
     metadataBase: new URL(SITE_URL),
 
-    title: pageData.title,
+    title: pageTitle(pageData.title),
     description: pageData.description,
     keywords: pageData.keywords,
 

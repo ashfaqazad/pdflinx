@@ -1,5 +1,6 @@
 // app/merge-pdf/page.jsx
 import { seoData } from "@/lib/seoData";
+import { pageTitle } from "@/lib/metaTitle";
 import { generateSchemas } from "@/lib/generateSchemas";   // 👈 naya import
 import MergePDFClient from "./MergePdfClient";
 
@@ -30,7 +31,7 @@ export function generateMetadata() {
 
   return {
     metadataBase: new URL(SITE_URL),
-    title: data.title,
+    title: pageTitle(data.title),
     description: data.description,
     keywords: data.keywords,
     alternates: { canonical: url },
