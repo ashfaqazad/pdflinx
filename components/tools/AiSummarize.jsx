@@ -540,7 +540,7 @@ export default function AiSummarize({ seo }) {
                 title: "Privacy and File Security",
                 text: (
                   <>
-                    Your uploaded PDF files are processed on secure servers over encrypted HTTPS and automatically deleted after 1 hour. We do not store, share, read, or access your documents at any point. PDFLinx is built with a privacy-first approach — your files and their contents are completely private from upload to download. No human ever views your documents. Perfect for summarizing confidential business reports, legal documents, and personal files. Explore all our document management features on our{" "}
+                    Your PDF is opened in your browser and its text is extracted on your device. To write the summary, that extracted text (not the PDF file itself) is sent over encrypted HTTPS to our server and then to a third-party AI model for processing. PDFLinx does not save your document or its text. Because the text leaves your device, avoid using this tool for documents that must stay strictly confidential. Explore all our document management features on our{" "}
                     <a href="/free-pdf-tools" className="text-blue-600 hover:underline font-medium">free PDF tools homepage</a>.
                   </>
                 ),
@@ -600,7 +600,7 @@ export default function AiSummarize({ seo }) {
               },
               {
                 q: "Is my PDF kept private?",
-                a: "Yes. Your PDF is processed securely over HTTPS and automatically deleted from our servers after 1 hour. We do not store, share, or view your documents.",
+                a: "The PDF file stays in your browser, but its text is sent over HTTPS to our server and a third-party AI model to generate the summary. PDFLinx does not store the document or the text. Do not summarize documents that must stay strictly confidential.",
               },
               {
                 q: "Can I download the AI summary?",

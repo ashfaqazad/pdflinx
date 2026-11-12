@@ -749,7 +749,7 @@ export default function AiChat({ seo }) {
               title: "Privacy and File Security",
               text: (
                 <>
-                  Your uploaded PDF files are processed on secure servers over encrypted HTTPS and automatically deleted after 1 hour. We do not store, share, read, or access your documents at any point beyond the AI processing step. PDFLinx is built with privacy-first principles — your files and their contents are completely private from upload to the end of your chat session. No human ever views your documents. Perfect for chatting with confidential legal contracts, business reports, and personal documents. Explore all our document management features on our{" "}
+                  Your PDF is read and indexed in your browser. When you ask a question, your question and the passages of the document that match it are sent over encrypted HTTPS to our server and then to a third-party AI model to produce the answer. The full PDF file is never uploaded, and PDFLinx does not store your document, passages or chat. Because parts of the document text leave your device, avoid using this tool for documents that must stay strictly confidential. Explore all our document management features on our{" "}
                   <a href="/free-pdf-tools" className="text-blue-600 hover:underline font-medium">free PDF tools homepage</a>.
                 </>
               ),
@@ -802,7 +802,7 @@ export default function AiChat({ seo }) {
             },
             {
               q: "Is my PDF kept private?",
-              a: "Yes. Your PDF is processed securely over HTTPS and automatically deleted from our servers after 1 hour. We do not store, share, or view your documents.",
+              a: "The PDF file stays in your browser, but your question and the matching passages of the document are sent over HTTPS to our server and a third-party AI model to generate each answer. PDFLinx does not store them. Do not use it for documents that must stay strictly confidential.",
             },
             {
               q: "What languages does the AI chat support?",

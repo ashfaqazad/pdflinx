@@ -331,8 +331,8 @@ const categories = [
 const reasons = [
     {
         emoji: "🛡️", bg: "#fff1ec",
-        title: "Files Never Leave Your Device",
-        text: "PDF conversion and processing happens locally in your browser. No server uploads, no third-party storage, no privacy risk.",
+        title: "Private by Design",
+        text: "Most tools run entirely in your browser, so your files never leave your device. The AI tools (AI Summarize and Chat with PDF) send the text of your document to a server for AI processing.",
         
     },
     {
