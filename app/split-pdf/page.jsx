@@ -1,6 +1,7 @@
 // app/split-pdf/page.jsx
 import { seoData } from "@/lib/seoData";
 import { pageTitle } from "@/lib/metaTitle";
+import RelatedGuides from "@/components/RelatedGuides";
 import { generateSchemas } from "@/lib/generateSchemas";   // 👈 naya import
 import SplitPdfClient from "./SplitPdfClient";
 
@@ -63,6 +64,7 @@ export default function Page() {
         />
       ))}
       <SplitPdfClient />
+      <RelatedGuides tool="split-pdf" />
     </>
   );
 }

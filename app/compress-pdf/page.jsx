@@ -1,6 +1,7 @@
 // app/compress-pdf/page.jsx
 import { seoData } from "@/lib/seoData";
 import { pageTitle } from "@/lib/metaTitle";
+import RelatedGuides from "@/components/RelatedGuides";
 import { generateSchemas } from "@/lib/generateSchemas";   // 👈 naya import
 import CompressPdfClient from "./CompressPdfClient";
 
@@ -63,6 +64,7 @@ export default function Page() {
         />
       ))}
       <CompressPdfClient />
+      <RelatedGuides tool="compress-pdf" />
     </>
   );
 }

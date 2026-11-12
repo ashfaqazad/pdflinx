@@ -1,6 +1,7 @@
 // app/merge-pdf/page.jsx
 import { seoData } from "@/lib/seoData";
 import { pageTitle } from "@/lib/metaTitle";
+import RelatedGuides from "@/components/RelatedGuides";
 import { generateSchemas } from "@/lib/generateSchemas";   // 👈 naya import
 import MergePDFClient from "./MergePdfClient";
 
@@ -63,6 +64,7 @@ export default function Page() {
         />
       ))}
       <MergePDFClient />
+      <RelatedGuides tool="merge-pdf" />
     </>
   );
 }

@@ -1,6 +1,7 @@
 'use client'
 
 import dynamic from 'next/dynamic'
+import RelatedGuides from '@/components/RelatedGuides'
 
 function ToolLoading() {
   return (
@@ -52,6 +53,11 @@ const toolMap = {
 export default function ToolLoader({ tool, seo }) {
   const Component = toolMap[tool]
   if (!Component) return null
-  return <Component seo={seo} />
+  return (
+    <>
+      <Component seo={seo} />
+      <RelatedGuides tool={tool} />
+    </>
+  )
 }
 
