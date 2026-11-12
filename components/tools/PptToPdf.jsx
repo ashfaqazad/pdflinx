@@ -140,7 +140,13 @@ export default function PptToPdf({ seo }) {
       //   body: formData,
       // });
 
-      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/convert/ppt-to-pdf`, {
+      const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
+      if (!backendUrl) {
+        // never send a request to "undefined/..." when the env variable is missing
+        throw new Error("PPT to PDF is temporarily unavailable. Please try again later.");
+      }
+
+      const res = await fetch(`${backendUrl}/convert/ppt-to-pdf`, {
         method: "POST",
         body: formData,
       });

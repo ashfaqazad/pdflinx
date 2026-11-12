@@ -64,6 +64,8 @@ const nextConfig = {
 
 
   async rewrites() {
+    // Without the backend URL these rewrites would point at "undefined/..." - skip them.
+    if (!process.env.NEXT_PUBLIC_BACKEND_URL) return [];
     return [
       {
         source: "/api/converted/:path*",
