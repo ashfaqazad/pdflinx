@@ -251,7 +251,12 @@ export default function AiSummarize({ seo }) {
 
             heroBadge: "✦ 100% Free · No Signup · AI-Powered",
 
-            heroTitle: "Summarize PDF with AI",
+            heroTitle: (
+              <>
+                Summarize PDF{" "}
+                <em className="font-bold text-[#e8420a] sm:italic">with AI</em>
+              </>
+            ),
             heroDescription:
               "Upload a PDF and AI writes a short summary with the key points, main ideas and takeaways. The document text is sent to a server for AI processing.",
             pills: ["AI-powered", "Bullet point summary", "No signup", "Free forever"],

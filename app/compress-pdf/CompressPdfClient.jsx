@@ -707,8 +707,8 @@ export default function CompressPdfClient() {
                 desc: "No subscription, no hidden fees. Compress unlimited PDFs at zero cost — forever free for everyone. No daily limits.",
               },
               {
-                title: "Compress to Exact Size Targets",
-                desc: "Need to hit 100KB, 200KB, 500KB, or under 1MB? PDFLinx reduces PDF size to meet strict upload limits for visa portals, government forms, and job applications.",
+                title: "Built for Upload Size Limits",
+                desc: "Need to get under 100KB, 200KB, 500KB, or 1MB? Pick a compression level and check the result. Results depend on what is inside your PDF, so you may need a stronger level for strict visa, government, or job portal limits.",
               },
               {
                 title: "Compress Without Losing Quality",
@@ -1008,9 +1008,10 @@ export default function CompressPdfClient() {
                     Outlook, or Yahoo Mail. Compressed PDFs also load faster on
                     mobile networks — ideal for WhatsApp and Telegram sharing
                     where large files delay delivery. For online portals
-                    requiring PDFs under 500KB, 200KB, or 100KB, PDFLinx reduces
-                    your file to meet the exact size requirement without
-                    reprinting, rescanning, or any software.
+                    requiring PDFs under 500KB, 200KB, or 100KB, PDFLinx can
+                    often get you there without reprinting or rescanning. It
+                    does not target an exact size, so choose a compression
+                    level and check the result.
                   </>
                 ),
               },
