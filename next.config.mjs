@@ -4,6 +4,27 @@ const withBundleAnalyzer = bundleAnalyzer({
   enabled: process.env.ANALYZE === "true",
 });
 
+// Content-Security-Policy. The tools run in the browser, so this has to allow:
+//  - pdf.js (cdnjs) and tesseract.js (jsDelivr) scripts, plus blob: workers and wasm (qpdf, tesseract core)
+//  - Google Analytics / Tag Manager
+//  - https: for connect/img/style/font because HTML to PDF loads a user-supplied URL and its assets
+const isDev = process.env.NODE_ENV !== "production";
+const contentSecurityPolicy = [
+  "default-src 'self'",
+  `script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval' blob: https://www.googletagmanager.com https://www.google-analytics.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net${isDev ? " 'unsafe-eval'" : ""}`,
+  "style-src 'self' 'unsafe-inline' https:",
+  "img-src 'self' data: blob: https:",
+  "font-src 'self' data: https:",
+  `connect-src 'self' blob: data: https:${isDev ? " ws: wss:" : ""}`,
+  "worker-src 'self' blob:",
+  "frame-src 'self' blob: data:",
+  "media-src 'self' blob: data:",
+  "object-src 'none'",
+  "base-uri 'self'",
+  "form-action 'self' https://formsubmit.co",
+  "frame-ancestors 'self'",
+].join("; ");
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
 
@@ -146,6 +167,18 @@ const nextConfig = {
           {
             key: "Cache-Control",
             value: "public, max-age=2592000, stale-while-revalidate=86400",
+          },
+        ],
+      },
+      {
+        // Everything except /embed/* (those pages are meant to be iframed on other sites)
+        source: "/((?!embed/).*)",
+        headers: [
+          { key: "Content-Security-Policy", value: contentSecurityPolicy },
+          { key: "X-Frame-Options", value: "SAMEORIGIN" },
+          {
+            key: "Permissions-Policy",
+            value: "camera=(), microphone=(), geolocation=(), payment=(), usb=()",
           },
         ],
       },
