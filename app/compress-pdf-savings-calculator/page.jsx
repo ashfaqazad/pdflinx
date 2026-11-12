@@ -3,13 +3,13 @@ import { CALC_FAQS } from "@/lib/calcFaqs";
 
 export const metadata = {
   title: { absolute: "PDF Compression Savings Calculator | PDF Linx" },
-  description: "Calculate how much storage, bandwidth & money you save by compressing PDFs.",
+  description: "Estimate how much storage, bandwidth and money you save by compressing PDFs. Enter your file size and volume to see savings per file and per month.",
   alternates: {
     canonical: "https://pdflinx.com/compress-pdf-savings-calculator",
   },
   openGraph: {
     title: "PDF Compression Savings Calculator | PDF Linx",
-    description: "Calculate how much storage, bandwidth & money you save by compressing PDFs.",
+    description: "Estimate how much storage, bandwidth and money you save by compressing PDFs. Enter your file size and volume to see savings per file and per month.",
     url: "https://pdflinx.com/compress-pdf-savings-calculator",
     siteName: "PDF Linx",
     type: "website",

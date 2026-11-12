@@ -7,7 +7,7 @@ export const metadata = {
   title: { absolute: "PDF Tools Blog — Guides, Tips & Tutorials | PDF Linx" },
 
   description:
-    "Read practical guides, tips, and tutorials on PDF tools: how to convert, merge, split, compress PDFs, fix common errors, and get the most out of free online PDF Linx tools. New articles every week.",
+    "Practical guides and tutorials on converting, merging, splitting and compressing PDFs, fixing common errors and getting more from free PDF Linx tools.",
 
   openGraph: {
     title: "PDF Linx Blog",

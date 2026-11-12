@@ -4,7 +4,7 @@ import { breadcrumbSchema } from "@/lib/breadcrumbSchema";
 
 export const metadata = {
   title: { absolute: "About PDF Linx — Free, Privacy-First PDF Tools" },
-  description: "Learn about PDF Linx — a simple, fast, ad-free collection of free PDF tools (Convert, Merge, Split, Compress) built in browser for maximum privacy. Started as a weekend project in 2023.",
+  description: "PDF Linx is a simple, fast set of free PDF tools to convert, merge, split and compress files. Most tools run in your browser. Started in 2023.",
   // Optional extras for better SEO / social sharing (Open Graph)
   openGraph: {
     title: "About PDF Linx",

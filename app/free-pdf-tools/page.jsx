@@ -7,7 +7,7 @@ import { pdfToolsMeta } from "@/lib/pdfToolsMeta";
 export const metadata = {
   title: { absolute: "Free PDF Tools — Convert, Merge, Compress & Sign | PDF Linx" },
   description:
-    "30+ free online PDF tools: convert PDF to Word, Excel, JPG, PNG, merge PDF, compress PDF, split, protect, unlock, rotate, sign, OCR, edit, watermark, repair, crop, redact and more. No signup, no watermark, works on all devices.",
+    "Free online PDF tools to convert, merge, split, compress, protect, unlock, sign, OCR and edit PDFs. No signup, no watermark, and works on any device.",
   alternates: { canonical: "https://pdflinx.com/free-pdf-tools" },
   openGraph: {
     title: "Free PDF Tools — Convert, Merge, Compress & Sign | PDF Linx",

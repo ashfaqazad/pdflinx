@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 
 export const metadata = {
   title: { absolute: 'Privacy Policy | PDF Linx' },
-  description: 'Learn how PDF Linx protects your privacy and handles your data.',
+  description: 'Read how PDF Linx handles your data and files when you use our free PDF tools, including analytics, cookies, advertising and how to contact us.',
   alternates: {
     canonical: 'https://pdflinx.com/privacy-policy',
   },
