@@ -66,11 +66,19 @@ const nextConfig = {
   async redirects() {
     return [
       // Internal redirects only
+      // Specific /tools/* rules come first so these never become two-step redirect chains
+      { source: "/tools/excel-to-pdf", destination: "/excel-pdf", permanent: true },
+      { source: "/tools/jpg-to-pdf", destination: "/image-to-pdf", permanent: true },
+      {
+        source: "/tools/:slug(image-converter|heic-to-jpg|signature-maker|image-to-text|image-compressor|youtube-thumbnail|unit-converter|password-gen|qr-generator|image-resizer)",
+        destination: "https://convertlinx.com/:slug",
+        permanent: true,
+      },
       { source: "/tools/:slug*", destination: "/:slug*", permanent: true },
       { source: "/excel-to-pdf", destination: "/excel-pdf", permanent: true },
       { source: "/jpg-to-pdf", destination: "/image-to-pdf", permanent: true },
       { source: "/blog/best-free-image-converter-utility-tools", destination: "/blog/best-free-image-converter-tools", permanent: true },
-      { source: "/blog/excel-to-pdf", destination: "/blog/excel-pdf", permanent: true },
+      { source: "/blog/excel-to-pdf", destination: "/blog/excel-to-pdf-print-layout", permanent: true },
 
       // ===== Tool Pages migrated to convertlinx.com (same slug) =====
       { source: "/image-converter", destination: "https://convertlinx.com/image-converter", permanent: true },
