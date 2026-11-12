@@ -1,6 +1,6 @@
 
 export const metadata = {
-  title: "Embed Free PDF Tools on Your Website | PDFLinx",
+  title: { absolute: "Embed Free PDF Tools on Your Website | PDF Linx" },
   description: "Add free PDF tools to your website, blog, or WordPress site. Copy the embed code or download our WordPress plugin — no API key needed.",
   alternates: {
     canonical: "https://pdflinx.com/embed-code",

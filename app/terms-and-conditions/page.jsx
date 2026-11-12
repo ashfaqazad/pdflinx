@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 
 export const metadata = {
-  title: 'Terms and Conditions | PDF Linx',
+  title: { absolute: 'Terms and Conditions | PDF Linx' },
   description: 'Read the terms and conditions for using PDF Linx tools and services. Free online PDF tools for everyone.',
   alternates: {
     canonical: 'https://pdflinx.com/terms-and-conditions',

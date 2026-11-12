@@ -4918,6 +4918,7 @@ const blogs = [
 
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { blogSeoTitle } from "@/lib/blogMeta";
 
 export async function generateMetadata({ params }) {
   const { slug } = await params;
@@ -4925,9 +4926,7 @@ export async function generateMetadata({ params }) {
   if (!blog) return notFound();
 
   return {
-    title: blog.seoTitle
-      ? { absolute: blog.seoTitle }
-      : blog.title + " | PDF Linx Blog",
+    title: { absolute: blogSeoTitle(blog) },
     description:
       blog.description ||
       blog.content

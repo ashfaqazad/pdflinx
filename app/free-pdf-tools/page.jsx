@@ -5,12 +5,12 @@ import {
 import { pdfToolsMeta } from "@/lib/pdfToolsMeta";
 
 export const metadata = {
-  title: "Free PDF Tools – Convert, Merge, Compress, Sign & Edit PDFs Online | PDFLinx",
+  title: { absolute: "Free PDF Tools — Convert, Merge, Compress & Sign | PDF Linx" },
   description:
     "30+ free online PDF tools: convert PDF to Word, Excel, JPG, PNG, merge PDF, compress PDF, split, protect, unlock, rotate, sign, OCR, edit, watermark, repair, crop, redact and more. No signup, no watermark, works on all devices.",
   alternates: { canonical: "https://pdflinx.com/free-pdf-tools" },
   openGraph: {
-    title: "Free PDF Tools – Convert, Merge, Compress, Sign & Edit PDFs Online | PDFLinx",
+    title: "Free PDF Tools — Convert, Merge, Compress & Sign | PDF Linx",
     description:
       "30+ free online PDF tools: convert, merge, split, compress, protect, unlock, rotate, sign, OCR and edit PDFs. No signup required.",
     url: "https://pdflinx.com/free-pdf-tools",

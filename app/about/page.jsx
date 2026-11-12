@@ -1,7 +1,7 @@
 import AboutClient from "./AboutClient";
 
 export const metadata = {
-  title: "About PDF Linx - Privacy-First Free Online PDF Tools",
+  title: { absolute: "About PDF Linx — Free, Privacy-First PDF Tools" },
   description: "Learn about PDF Linx — a simple, fast, ad-free collection of free PDF tools (Convert, Merge, Split, Compress) built in browser for maximum privacy. Started as a weekend project in 2023.",
   // Optional extras for better SEO / social sharing (Open Graph)
   openGraph: {

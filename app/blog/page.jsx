@@ -3,7 +3,7 @@ import BlogClient from "./BlogClient";
 export const metadata = {
   metadataBase: new URL("https://pdflinx.com"),
 
-  title: "PDF Tools Blog and Guides - Tips, Tutorials and How-Tos",
+  title: { absolute: "PDF Tools Blog — Guides, Tips & Tutorials | PDF Linx" },
 
   description:
     "Read practical guides, tips, and tutorials on PDF tools: how to convert, merge, split, compress PDFs, fix common errors, and get the most out of free online PDF Linx tools. New articles every week.",

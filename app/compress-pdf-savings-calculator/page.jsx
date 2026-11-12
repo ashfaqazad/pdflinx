@@ -2,7 +2,7 @@ import CompressionSavingsCalculator from "@/components/CompressionSavingsCalcula
 import { CALC_FAQS } from "@/lib/calcFaqs";
 
 export const metadata = {
-  title: "PDF Compression Savings Calculator | PDFLinx",
+  title: { absolute: "PDF Compression Savings Calculator | PDF Linx" },
   description: "Calculate how much storage, bandwidth & money you save by compressing PDFs.",
   alternates: {
     canonical: "https://pdflinx.com/compress-pdf-savings-calculator",

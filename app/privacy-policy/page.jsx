@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 
 export const metadata = {
-  title: 'Privacy Policy - PDF Linx',
+  title: { absolute: 'Privacy Policy | PDF Linx' },
   description: 'Learn how PDF Linx protects your privacy and handles your data.',
   alternates: {
     canonical: 'https://pdflinx.com/privacy-policy',

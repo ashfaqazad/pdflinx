@@ -6,7 +6,7 @@ export async function generateMetadata({ params }) {
   if (!data) return {};
 
   return {
-    title: data.title,
+    title: { absolute: data.title },
     description: data.description,
     alternates: { canonical: data.canonical },
   };

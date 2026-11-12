@@ -1,7 +1,7 @@
 import ContactClient from "./ContactClient";  // Ya ContactClient.jsx jo bhi naam rakha tune
 
 export const metadata = {
-  title: "Contact PDF Linx - Support and Feedback for Free PDF Tools",
+  title: { absolute: "Contact PDF Linx — Support and Feedback" },
   description: "Questions, suggestions, bug reports or just saying hi? Use the form or email support@pdflinx.com. Fast replies from the solo dev behind PDF Linx.",
 
   openGraph: {
