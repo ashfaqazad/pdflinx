@@ -4918,7 +4918,13 @@ const blogs = [
 
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { blogSeoTitle } from "@/lib/blogMeta";
+import lastmod from "@/lib/lastmod.json";
+import {
+  blogSeoTitle,
+  blogIsoDate,
+  blogImageUrl,
+  SITE_URL,
+} from "@/lib/blogMeta";
 
 export async function generateMetadata({ params }) {
   const { slug } = await params;
@@ -4948,7 +4954,7 @@ export async function generateMetadata({ params }) {
       canonical: `https://pdflinx.com/blog/${slug}`,
     },
     openGraph: {
-      title: blog.title,
+      title: blogSeoTitle(blog).replace(/ \| PDF Linx$/, ""),
       description:
         blog.description ||
         blog.content
@@ -4958,9 +4964,14 @@ export async function generateMetadata({ params }) {
       url: `https://pdflinx.com/blog/${slug}`,
       type: "article",
       siteName: "PDF Linx",
+      publishedTime: blogIsoDate(blog.date),
+      images: [
+        { url: blogImageUrl(blog), width: 1200, height: 630, alt: blog.title },
+      ],
     },
     twitter: {
       card: "summary_large_image",
+      images: [blogImageUrl(blog)],
       title: blog.title,
       description: blog.content
         .replace(/<[^>]+>/g, "")
@@ -4970,23 +4981,70 @@ export async function generateMetadata({ params }) {
   };
 }
 
+function buildBlogSchemas(blog, slug) {
+  const url = `${SITE_URL}/blog/${slug}`;
+  const published = blogIsoDate(blog.date);
+  const lm = lastmod[`/blog/${slug}`];
+  const modified = lm && published && lm > published ? lm : published;
+  const description =
+    blog.description ||
+    blog.content.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim().slice(0, 160);
+
+  return [
+    {
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      mainEntityOfPage: { "@type": "WebPage", "@id": url },
+      headline: blog.title,
+      description,
+      image: [blogImageUrl(blog)],
+      datePublished: published,
+      dateModified: modified,
+      author: { "@type": "Organization", name: "PDF Linx", url: SITE_URL },
+      publisher: {
+        "@type": "Organization",
+        name: "PDF Linx",
+        logo: { "@type": "ImageObject", url: `${SITE_URL}/Pdflinx.png` },
+      },
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Home", item: `${SITE_URL}/` },
+        { "@type": "ListItem", position: 2, name: "Blog", item: `${SITE_URL}/blog` },
+        { "@type": "ListItem", position: 3, name: blog.title, item: url },
+      ],
+    },
+  ];
+}
+
 export default async function BlogPost({ params }) {
   const { slug } = await params;
   const blog = blogs.find((b) => b.slug === slug);
 
   if (!blog) return notFound();
 
+  const schemas = buildBlogSchemas(blog, slug);
+  const isoDate = blogIsoDate(blog.date);
+
   return (
     <main className="max-w-4xl mx-auto py-8 px-4">
+      {schemas.map((schema, i) => (
+        <script
+          key={i}
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(schema).replace(/</g, "\\u003c"),
+          }}
+        />
+      ))}
       <h1 className="text-3xl md:text-4xl font-bold text-gray-800 mb-3 leading-tight">
         {blog.title}
       </h1>
-      <p className="text-gray-500 text-sm mb-8">{blog.date}</p>
-
-      {/* <article
-        className="prose prose-base max-w-none text-gray-700 leading-relaxed space-y-5"
-        dangerouslySetInnerHTML={{ __html: blog.content }}
-      /> */}
+      <p className="text-gray-500 text-sm mb-8">
+        <time dateTime={isoDate}>{blog.date}</time>
+      </p>
 
       <article
         className="prose prose-base max-w-none text-gray-700 leading-relaxed space-y-5 prose-a:!text-blue-600 prose-a:!underline hover:prose-a:!text-blue-800"

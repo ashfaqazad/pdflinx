@@ -1,4 +1,5 @@
 import BlogClient from "./BlogClient";
+import JsonLd from "@/components/JsonLd";
 
 export const metadata = {
   metadataBase: new URL("https://pdflinx.com"),
@@ -16,7 +17,7 @@ export const metadata = {
     siteName: "PDF Linx",
     images: [
       {
-        url: "/og-image.png",
+        url: "/og/pdflinx-og.png",
         width: 1200,
         height: 630,
       },
@@ -30,8 +31,40 @@ export const metadata = {
   },
 };
 
+const blogSchemas = [
+  {
+    "@context": "https://schema.org",
+    "@type": "Blog",
+    name: "PDF Linx Blog",
+    url: "https://pdflinx.com/blog",
+    description:
+      "Practical guides and tutorials on converting, merging, splitting and compressing PDFs with free online PDF Linx tools.",
+    publisher: {
+      "@type": "Organization",
+      name: "PDF Linx",
+      url: "https://pdflinx.com",
+      logo: { "@type": "ImageObject", url: "https://pdflinx.com/Pdflinx.png" },
+    },
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: "https://pdflinx.com/" },
+      { "@type": "ListItem", position: 2, name: "Blog", item: "https://pdflinx.com/blog" },
+    ],
+  },
+];
+
 export default function BlogPage() {
-  return <BlogClient />;
+  return (
+    <>
+      {blogSchemas.map((schema, i) => (
+        <JsonLd key={i} data={schema} />
+      ))}
+      <BlogClient />
+    </>
+  );
 }
 
 
