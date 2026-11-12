@@ -641,49 +641,6 @@ export default function CropPdf() {
   return (
     <>
 
-      <Script
-        id="faq-schema-crop-pdf"
-        type="application/ld+json"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "FAQPage",
-            mainEntity: [
-              {
-                "@type": "Question",
-                name: "Is the Crop PDF tool free?",
-                acceptedAnswer: { "@type": "Answer", text: "Yes. PDFLinx lets you crop PDF pages online for free with no signup required." }
-              },
-              {
-                "@type": "Question",
-                name: "What does Crop PDF do?",
-                acceptedAnswer: { "@type": "Answer", text: "Crop PDF removes unwanted outer areas, white margins, and extra space from PDF pages — you select the area to keep and the rest is trimmed." }
-              },
-              {
-                "@type": "Question",
-                name: "Can I crop all pages at once?",
-                acceptedAnswer: { "@type": "Answer", text: "Yes. You can apply the same crop area to all pages of your PDF in one click." }
-              },
-              {
-                "@type": "Question",
-                name: "Will cropping reduce PDF quality?",
-                acceptedAnswer: { "@type": "Answer", text: "No. Cropping only trims the visible page area and does not reduce PDF resolution or quality." }
-              },
-              {
-                "@type": "Question",
-                name: "Are my files safe?",
-                acceptedAnswer: { "@type": "Answer", text: "Yes. All uploaded files are processed securely and deleted automatically after a short time." }
-              },
-              {
-                "@type": "Question",
-                name: "Can I crop PDF on mobile?",
-                acceptedAnswer: { "@type": "Answer", text: "Yes. PDFLinx works on desktop, tablet, and mobile browsers without any software installation." }
-              }
-            ]
-          }, null, 2),
-        }}
-      />
 
       <ToolPageLayout
         title="Crop PDF Online"

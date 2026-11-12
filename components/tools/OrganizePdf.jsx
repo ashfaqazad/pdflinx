@@ -878,35 +878,6 @@ export default function OrganizePdf({ seo }) {
         }}
       />
 
-      <Script
-        id="faq-schema-organize"
-        type="application/ld+json"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "FAQPage",
-            mainEntity: [
-              {
-                "@type": "Question",
-                name: "What is Organize PDF?",
-                acceptedAnswer: {
-                  "@type": "Answer",
-                  text: "Organize PDF allows you to rearrange, rotate, and remove PDF pages online before downloading a newly organized PDF file.",
-                },
-              },
-              {
-                "@type": "Question",
-                name: "Can I rearrange PDF pages online?",
-                acceptedAnswer: {
-                  "@type": "Answer",
-                  text: "Yes. Reorder, rotate, and delete PDF pages directly in your browser with no software installation required.",
-                },
-              },
-            ],
-          }),
-        }}
-      />
 
       <ToolPageLayout
         title={seo?.h1 || "Organize PDF Online"}

@@ -823,21 +823,6 @@ export default function ExtractPdf({ seo }) {
 
 
       {/* ── SEO SCHEMAS ── */}
-      <Script id="faq-schema-extract-pdf" type="application/ld+json" strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org", "@type": "FAQPage",
-            mainEntity: [
-              { "@type": "Question", name: "How do I extract pages from a PDF?", acceptedAnswer: { "@type": "Answer", text: "Upload your PDF, select the specific pages you want to keep, click Extract, and download the new PDF instantly." } },
-              { "@type": "Question", name: "Is the Extract PDF tool free?", acceptedAnswer: { "@type": "Answer", text: "Yes. PDFLinx Extract PDF is completely free with no signup and no watermark." } },
-              { "@type": "Question", name: "Can I extract multiple pages at once?", acceptedAnswer: { "@type": "Answer", text: "Yes. You can select multiple pages and extract them all into a single new PDF file." } },
-              { "@type": "Question", name: "Will extracting pages affect PDF quality?", acceptedAnswer: { "@type": "Answer", text: "No. Extracted pages keep their original quality, text, images, and formatting." } },
-              { "@type": "Question", name: "Are my files safe?", acceptedAnswer: { "@type": "Answer", text: "Yes. All uploaded files are processed securely and deleted automatically after a short time." } },
-              { "@type": "Question", name: "Can I extract PDF pages on mobile?", acceptedAnswer: { "@type": "Answer", text: "Yes. Works on Android, iPhone, tablets, and desktop browsers without any software." } },
-            ],
-          }, null, 2),
-        }}
-      />
 
       {/* ── TOOL UI ── */}
       <ToolPageLayout

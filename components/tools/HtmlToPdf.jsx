@@ -272,24 +272,6 @@ export default function HtmlToPdf({ seo }) {
     <>
       {/* ── SEO Schemas ── */}
       
-      <Script
-        id="faq-schema-html-pdf"
-        type="application/ld+json"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "FAQPage",
-            mainEntity: [
-              { "@type": "Question", name: "Is the HTML to PDF converter free?", acceptedAnswer: { "@type": "Answer", text: "Yes. PDFLinx HTML to PDF converter is completely free — no hidden charges, no subscription, no account required." } },
-              { "@type": "Question", name: "Can I convert a webpage URL to PDF?", acceptedAnswer: { "@type": "Answer", text: "Yes. Switch to URL mode and paste any public webpage address. The tool renders the full page including CSS, images, and layout and converts it to PDF." } },
-              { "@type": "Question", name: "Will CSS styles and fonts be preserved?", acceptedAnswer: { "@type": "Answer", text: "Yes. CSS styling, custom fonts, colors, images, and layout are all preserved accurately in the converted PDF." } },
-              { "@type": "Question", name: "Can I convert HTML with inline CSS to PDF?", acceptedAnswer: { "@type": "Answer", text: "Yes. Both inline CSS and internal style blocks are fully supported. External stylesheets work when converting from a URL." } },
-              { "@type": "Question", name: "Are my HTML files and URLs safe and private?", acceptedAnswer: { "@type": "Answer", text: "Yes. HTML code and URLs are processed securely and permanently deleted after conversion. Never stored or shared." } },
-            ],
-          }, null, 2),
-        }}
-      />
 
     
       {/* ── Tool UI ── */}

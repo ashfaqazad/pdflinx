@@ -309,59 +309,6 @@ export default function RepairPdf() {
     return (
         <>
 
-            <Script
-                id="faq-schema-repair-pdf"
-                type="application/ld+json"
-                strategy="afterInteractive"
-                dangerouslySetInnerHTML={{
-                    __html: JSON.stringify({
-                        "@context": "https://schema.org",
-                        "@type": "FAQPage",
-                        mainEntity: [
-                            {
-                                "@type": "Question",
-                                name: "What does Repair PDF do?",
-                                acceptedAnswer: {
-                                    "@type": "Answer",
-                                    text: "Repair PDF helps fix corrupted, damaged, or unreadable PDF files so they can be opened and used again."
-                                }
-                            },
-                            {
-                                "@type": "Question",
-                                name: "Can all damaged PDF files be repaired?",
-                                acceptedAnswer: {
-                                    "@type": "Answer",
-                                    text: "Many PDF issues can be repaired, but the success depends on the extent of the file corruption."
-                                }
-                            },
-                            {
-                                "@type": "Question",
-                                name: "Will my PDF content remain unchanged?",
-                                acceptedAnswer: {
-                                    "@type": "Answer",
-                                    text: "The repair process focuses on restoring accessibility while preserving as much original content and formatting as possible."
-                                }
-                            },
-                            {
-                                "@type": "Question",
-                                name: "Does Repair PDF work on mobile devices?",
-                                acceptedAnswer: {
-                                    "@type": "Answer",
-                                    text: "Yes. The tool works on Android, iPhone, tablets, and desktop browsers."
-                                }
-                            },
-                            {
-                                "@type": "Question",
-                                name: "Are my files secure?",
-                                acceptedAnswer: {
-                                    "@type": "Answer",
-                                    text: "Yes. Files are processed securely and automatically removed after processing."
-                                }
-                            }
-                        ]
-                    }, null, 2),
-                }}
-            />
 
 
             <ToolPageLayout

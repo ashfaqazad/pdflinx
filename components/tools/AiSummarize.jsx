@@ -178,63 +178,6 @@ export default function AiSummarize({ seo }) {
   return (
     <>
       {/* ── SEO SCHEMAS ── */}
-      <Script
-        id="faq-schema-summarize"
-        type="application/ld+json"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(
-            {
-              "@context": "https://schema.org",
-              "@type": "FAQPage",
-              mainEntity: [
-                {
-                  "@type": "Question",
-                  name: "Is the AI PDF summarizer free?",
-                  acceptedAnswer: {
-                    "@type": "Answer",
-                    text: "Yes, completely free with no hidden charges, no daily limits, and no account required.",
-                  },
-                },
-                {
-                  "@type": "Question",
-                  name: "How does AI PDF summarization work?",
-                  acceptedAnswer: {
-                    "@type": "Answer",
-                    text: "Our AI reads your PDF text and uses a language model to extract the key points, main arguments, and important conclusions — presented as clear bullet points.",
-                  },
-                },
-                {
-                  "@type": "Question",
-                  name: "Does the PDF summarizer work on scanned PDFs?",
-                  acceptedAnswer: {
-                    "@type": "Answer",
-                    text: "Scanned PDFs without selectable text may not summarize well. Use our OCR PDF tool first to make them text-based, then summarize.",
-                  },
-                },
-                {
-                  "@type": "Question",
-                  name: "How long does PDF summarization take?",
-                  acceptedAnswer: {
-                    "@type": "Answer",
-                    text: "Usually 15–30 seconds depending on PDF length and current server load.",
-                  },
-                },
-                {
-                  "@type": "Question",
-                  name: "How many pages does the summarizer process?",
-                  acceptedAnswer: {
-                    "@type": "Answer",
-                    text: "The first 10 pages of your PDF are summarized for optimal speed and accuracy.",
-                  },
-                },
-              ],
-            },
-            null,
-            2
-          ),
-        }}
-      />
 
       {/* ── TOOL UI ── */}
       <ToolPageLayout

@@ -822,19 +822,6 @@ export default function SplitPdf({ seo }) {
         }}
       /> */}
       
-      <Script id="faq-schema-split-pdf" type="application/ld+json" strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org", "@type": "FAQPage",
-            mainEntity: [
-              { "@type": "Question", name: "How do I split a PDF into individual pages?", acceptedAnswer: { "@type": "Answer", text: "Upload your PDF, click Split PDF, and download the ZIP containing individual pages." } },
-              { "@type": "Question", name: "Is the PDF splitter free to use?", acceptedAnswer: { "@type": "Answer", text: "Yes. PDFLinx Split PDF is completely free and works directly in your browser." } },
-              { "@type": "Question", name: "Does splitting a PDF affect quality?", acceptedAnswer: { "@type": "Answer", text: "No. All pages keep their original quality, text, and formatting." } },
-              { "@type": "Question", name: "Can I split PDF on mobile?", acceptedAnswer: { "@type": "Answer", text: "Yes. Works on Android, iPhone, tablets, and desktop browsers." } },
-            ],
-          }, null, 2),
-        }}
-      />
 
       {/* ── TOOL UI ── */}
       <ToolPageLayout

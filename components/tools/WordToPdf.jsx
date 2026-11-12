@@ -323,7 +323,6 @@ export default function WordToPdf({ seo }) {
   return (
     <>
 
-      <JsonLd data={buildFaqSchema(wordToPdfFaqs)} />
 
 
       {/* ── TOOL UI ── */}

@@ -139,24 +139,6 @@ export default function PdfToExcel({ seo }) {
   return (
     <>
       {/* ── SEO Schemas ── */}
-      <Script
-        id="faq-schema-pdf-excel"
-        type="application/ld+json"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "FAQPage",
-            mainEntity: [
-              { "@type": "Question", name: "Is the PDF to Excel converter free?", acceptedAnswer: { "@type": "Answer", text: "Yes. Completely free with no hidden charges or subscription." } },
-              { "@type": "Question", name: "Will tables be extracted accurately?", acceptedAnswer: { "@type": "Answer", text: "Yes. Rows, columns, and data are extracted accurately. Best with text-based PDFs." } },
-              { "@type": "Question", name: "Can I convert multiple PDFs to Excel at once?", acceptedAnswer: { "@type": "Answer", text: "Yes. Upload multiple PDFs — all XLSX files delivered as a single ZIP." } },
-              { "@type": "Question", name: "Are my files safe and private?", acceptedAnswer: { "@type": "Answer", text: "Yes. Files are permanently deleted after conversion. Never stored or shared." } },
-              { "@type": "Question", name: "Can I convert PDF to Excel on mobile?", acceptedAnswer: { "@type": "Answer", text: "Yes. Works on Android and iOS mobile browsers — no app required." } },
-            ],
-          }, null, 2),
-        }}
-      />
 
 
       {/* ── Tool UI ── */}

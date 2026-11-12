@@ -399,63 +399,6 @@ export default function AiChat({ seo }) {
   return (
     <>
       {/* ── SEO SCHEMAS ── */}
-      <Script
-        id="faq-schema-chat"
-        type="application/ld+json"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(
-            {
-              "@context": "https://schema.org",
-              "@type": "FAQPage",
-              mainEntity: [
-                {
-                  "@type": "Question",
-                  name: "Is Chat with PDF free?",
-                  acceptedAnswer: {
-                    "@type": "Answer",
-                    text: "Yes, completely free with no hidden charges, no daily limits, and no account required.",
-                  },
-                },
-                {
-                  "@type": "Question",
-                  name: "How many questions can I ask per session?",
-                  acceptedAnswer: {
-                    "@type": "Answer",
-                    text: "Unlimited questions per session. Upload your PDF once and ask as many questions as you need.",
-                  },
-                },
-                {
-                  "@type": "Question",
-                  name: "Does Chat with PDF work on scanned PDFs?",
-                  acceptedAnswer: {
-                    "@type": "Answer",
-                    text: "Text-based PDFs work best. For scanned image-only PDFs, use our free OCR PDF tool first to extract the text, then chat with the result.",
-                  },
-                },
-                {
-                  "@type": "Question",
-                  name: "How long does each answer take?",
-                  acceptedAnswer: {
-                    "@type": "Answer",
-                    text: "Usually 10–20 seconds per answer depending on the complexity of the question and server load.",
-                  },
-                },
-                {
-                  "@type": "Question",
-                  name: "How many pages of the PDF does the AI read?",
-                  acceptedAnswer: {
-                    "@type": "Answer",
-                    text: "The first 3 pages are used as context for answering questions. For best results, ensure your key content is in the first 3 pages.",
-                  },
-                },
-              ],
-            },
-            null,
-            2
-          ),
-        }}
-      />
 
       {/* ── TOOL UI ── */}
       <ToolPageLayout

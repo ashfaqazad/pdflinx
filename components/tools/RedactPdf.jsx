@@ -458,59 +458,6 @@ export default function RedactPdf({ seo }) {
 
   return (
     <>
-      <Script
-        id="faq-schema-redact-pdf"
-        type="application/ld+json"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "FAQPage",
-            mainEntity: [
-              {
-                "@type": "Question",
-                name: "What does Redact PDF do?",
-                acceptedAnswer: {
-                  "@type": "Answer",
-                  text: "Redact PDF permanently removes sensitive information from PDF documents by blacking out selected content."
-                }
-              },
-              {
-                "@type": "Question",
-                name: "Is the redacted information permanently removed?",
-                acceptedAnswer: {
-                  "@type": "Answer",
-                  text: "Yes. Proper redaction permanently removes the selected content from the final PDF document."
-                }
-              },
-              {
-                "@type": "Question",
-                name: "Can I redact text and images?",
-                acceptedAnswer: {
-                  "@type": "Answer",
-                  text: "Yes. You can redact text, images, and other sensitive areas within a PDF file."
-                }
-              },
-              {
-                "@type": "Question",
-                name: "Does Redact PDF work on mobile devices?",
-                acceptedAnswer: {
-                  "@type": "Answer",
-                  text: "Yes. The tool works on Android, iPhone, tablets, and desktop browsers."
-                }
-              },
-              {
-                "@type": "Question",
-                name: "Are my files secure?",
-                acceptedAnswer: {
-                  "@type": "Answer",
-                  text: "Yes. Files are processed securely and automatically removed after processing."
-                }
-              }
-            ]
-          }, null, 2),
-        }}
-      />
 
 
       <ToolPageLayout

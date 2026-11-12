@@ -210,20 +210,6 @@ export default function OCRPdf({ seo }) {
 {/* ── SEO Schemas ── */}
 
 
-<script
-  type="application/ld+json"
-  dangerouslySetInnerHTML={{
-    __html: JSON.stringify({
-      "@context": "https://schema.org",
-      "@type": "FAQPage",
-      mainEntity: OCR_FAQS.map((item) => ({
-        "@type": "Question",
-        name: item.q,
-        acceptedAnswer: { "@type": "Answer", text: item.a },
-      })),
-    }),
-  }}
-/>
 
       {/* ── Tool UI ── */}
       <ToolPageLayout

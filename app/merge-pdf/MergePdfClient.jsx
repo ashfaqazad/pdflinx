@@ -254,25 +254,6 @@ export default function MergePdf({ seo }) {
       /> */}
 
       
-      <Script
-        id="faq-schema-merge-pdf"
-        type="application/ld+json"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "FAQPage",
-            mainEntity: [
-              { "@type": "Question", name: "Is the PDF merger free to use?", acceptedAnswer: { "@type": "Answer", text: "Yes — completely free with no signup, no watermark, and no hidden charges." } },
-              { "@type": "Question", name: "Do I need to install any software to merge PDFs?", acceptedAnswer: { "@type": "Answer", text: "No. Everything works directly in your browser." } },
-              { "@type": "Question", name: "Can I rearrange the order before merging?", acceptedAnswer: { "@type": "Answer", text: "Files merge in upload order. Remove and re-add files to change the sequence." } },
-              { "@type": "Question", name: "Will the quality of my PDFs be affected?", acceptedAnswer: { "@type": "Answer", text: "No — merging keeps the original text and image quality without compression." } },
-              { "@type": "Question", name: "Are my files safe and private?", acceptedAnswer: { "@type": "Answer", text: "Yes. Files are processed securely and deleted automatically after merging." } },
-              { "@type": "Question", name: "Can I merge PDFs on my phone?", acceptedAnswer: { "@type": "Answer", text: "Yes. PDFLinx works on Android and iPhone, as well as Windows and macOS." } },
-            ],
-          }, null, 2),
-        }}
-      />
 
       {/* ── TOOL UI ── */}
       <ToolPageLayout

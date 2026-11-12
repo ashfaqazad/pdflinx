@@ -800,64 +800,6 @@ export default function EditPdf({ seo }) {
 
       {/* ==================== SEO SCHEMAS ==================== */}
       
-      <Script
-        id="faq-schema-editpdf"
-        type="application/ld+json"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "FAQPage",
-            mainEntity: [
-              {
-                "@type": "Question",
-                name: "Is PDFLinx Edit PDF free to use?",
-                acceptedAnswer: { "@type": "Answer", text: "Yes. PDFLinx Edit PDF is free — no sign-up, no watermarks." },
-              },
-              {
-                "@type": "Question",
-                name: "Can I edit existing text inside the PDF?",
-                acceptedAnswer: {
-                  "@type": "Answer",
-                  text: "You can cover existing text with a white box and place new text on top. True editing depends on the PDF structure.",
-                },
-              },
-              {
-                "@type": "Question",
-                name: "Can I insert an image into my PDF?",
-                acceptedAnswer: {
-                  "@type": "Answer",
-                  text: "Yes. Use the Add Image tool to upload a PNG or JPG, then drag to position and resize it anywhere on the page.",
-                },
-              },
-              {
-                "@type": "Question",
-                name: "Can I change font size, font family, color, bold and italic?",
-                acceptedAnswer: {
-                  "@type": "Answer",
-                  text: "Yes. Select a text box, then change its font, size, color, bold/italic/underline from the toolbar.",
-                },
-              },
-              {
-                "@type": "Question",
-                name: "Is my PDF secure?",
-                acceptedAnswer: {
-                  "@type": "Answer",
-                  text: "Yes. Files are processed automatically and deleted after processing. No accounts required.",
-                },
-              },
-              {
-                "@type": "Question",
-                name: "Does it work on mobile?",
-                acceptedAnswer: {
-                  "@type": "Answer",
-                  text: "Yes. The editor is mobile-friendly with scrolling and zoom support.",
-                },
-              },
-            ],
-          }, null, 2),
-        }}
-      />
 
       {/* ==================== TOOL UI ==================== */}
       <ToolPageLayout

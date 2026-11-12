@@ -556,67 +556,6 @@ export default function AddWatermark({ seo }) {
         }}
       /> */}
 
-      <Script
-        id="faq-schema-watermark"
-        type="application/ld+json"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "FAQPage",
-            mainEntity: [
-              {
-                "@type": "Question",
-                name: "Is the Add Watermark to PDF tool free?",
-                acceptedAnswer: {
-                  "@type": "Answer",
-                  text: "Yes, PDFLinx lets you add watermark to PDF online for free with no signup required."
-                }
-              },
-              {
-                "@type": "Question",
-                name: "Can I add a text watermark to my PDF?",
-                acceptedAnswer: {
-                  "@type": "Answer",
-                  text: "Yes. You can type any custom text as a watermark and apply it to all pages of your PDF."
-                }
-              },
-              {
-                "@type": "Question",
-                name: "Can I control the watermark position and opacity?",
-                acceptedAnswer: {
-                  "@type": "Answer",
-                  text: "Yes. You can choose the position, opacity, font size, and rotation of the watermark."
-                }
-              },
-              {
-                "@type": "Question",
-                name: "Will the watermark be permanent?",
-                acceptedAnswer: {
-                  "@type": "Answer",
-                  text: "Yes. The watermark is permanently embedded into the PDF pages after processing."
-                }
-              },
-              {
-                "@type": "Question",
-                name: "Are my files safe?",
-                acceptedAnswer: {
-                  "@type": "Answer",
-                  text: "Yes. All uploaded files are processed securely and deleted automatically after a short time."
-                }
-              },
-              {
-                "@type": "Question",
-                name: "Can I add watermark to PDF on mobile?",
-                acceptedAnswer: {
-                  "@type": "Answer",
-                  text: "Yes. PDFLinx works on desktop, tablet, and mobile browsers without any software installation."
-                }
-              }
-            ]
-          }, null, 2),
-        }}
-      />
 
       {/* <Script
         id="software-schema-watermark"

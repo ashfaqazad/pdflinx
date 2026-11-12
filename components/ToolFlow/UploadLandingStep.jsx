@@ -3,6 +3,8 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import { renderWithLinks } from "@/utils/renderWithLinks";
+import JsonLd from "@/components/JsonLd";
+import { buildFaqSchema } from "@/lib/buildFaqSchema";
 
 import Link from "next/link";
 import {
@@ -832,6 +834,8 @@ function SeoSection({
 function FaqSection({ faqs, title, subtitle }) {
   return (
     <div className="bg-white py-20">
+      {/* FAQPage schema is generated from the exact FAQs rendered below, so they always match */}
+      {faqs?.length > 0 && <JsonLd data={buildFaqSchema(faqs)} />}
       <div className="mx-auto max-w-6xl px-6">
         <Eyebrow color="text-violet-600">Help Center</Eyebrow>
         <SectionTitle>{title || "Frequently asked questions"}</SectionTitle>

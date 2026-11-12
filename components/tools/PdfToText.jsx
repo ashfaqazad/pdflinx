@@ -146,24 +146,6 @@ export default function PdfToText({ seo }) {
     <>
       {/* ── SEO Schemas ── */}
       
-      <Script
-        id="faq-schema-pdf-text"
-        type="application/ld+json"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "FAQPage",
-            mainEntity: [
-              { "@type": "Question", name: "Is the PDF to Text converter free?", acceptedAnswer: { "@type": "Answer", text: "Yes. PDFLinx PDF to Text extractor is completely free — no hidden charges, no subscription, no account required." } },
-              { "@type": "Question", name: "What kind of PDFs can I extract text from?", acceptedAnswer: { "@type": "Answer", text: "Any text-based PDF — reports, articles, research papers, invoices, contracts, ebooks. Scanned PDFs (image-only) require OCR and may not extract cleanly." } },
-              { "@type": "Question", name: "Can I extract text from multiple PDFs at once?", acceptedAnswer: { "@type": "Answer", text: "Yes. Upload multiple PDFs simultaneously — each is processed separately and delivered as individual TXT files or a single ZIP download." } },
-              { "@type": "Question", name: "Will the extracted text keep formatting?", acceptedAnswer: { "@type": "Answer", text: "The output is plain text (.txt) — formatting like bold, tables, and columns is removed. Text content, paragraphs, and reading order are preserved as closely as possible." } },
-              { "@type": "Question", name: "Are my uploaded PDF files safe?", acceptedAnswer: { "@type": "Answer", text: "Yes. Files are processed securely and permanently deleted after conversion. Never stored or shared with third parties." } },
-            ],
-          }, null, 2),
-        }}
-      />
 
       {/* ── Tool UI ── */}
       <ToolPageLayout

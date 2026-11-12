@@ -246,24 +246,6 @@ const handleConvert = async () => {
       }}
     />
       {/* ── SEO Schemas ── */}
-      <Script
-        id="faq-schema-pdf-jpg"
-        type="application/ld+json"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "FAQPage",
-            mainEntity: [
-              { "@type": "Question", name: "Is the PDF to JPG converter free?", acceptedAnswer: { "@type": "Answer", text: "Yes. Completely free with no hidden charges or subscription." } },
-              { "@type": "Question", name: "What quality are the converted JPG images?", acceptedAnswer: { "@type": "Answer", text: "High resolution — text stays sharp, colors vibrant, layout preserved." } },
-              { "@type": "Question", name: "How does download work for multi-page PDFs?", acceptedAnswer: { "@type": "Answer", text: "Single-page PDF downloads as one JPG. Multi-page PDF downloads as ZIP with one JPG per page." } },
-              { "@type": "Question", name: "Can I convert multiple PDFs at once?", acceptedAnswer: { "@type": "Answer", text: "Yes. Upload multiple PDFs — each processed separately and delivered as JPG or ZIP." } },
-              { "@type": "Question", name: "Are my files safe and private?", acceptedAnswer: { "@type": "Answer", text: "Yes. Files are permanently deleted after conversion. Never stored or shared." } },
-            ],
-          }, null, 2),
-        }}
-      />
 
 
       {/* ── Tool UI ── */}

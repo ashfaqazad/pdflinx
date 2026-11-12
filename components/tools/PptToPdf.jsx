@@ -176,67 +176,6 @@ export default function PptToPdf({ seo }) {
 
       {/* ==================== SEO SCHEMAS ==================== */}
 
-      <Script
-        id="faq-schema-powerpoint-pdf"
-        type="application/ld+json"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "FAQPage",
-            "mainEntity": [
-              {
-                "@type": "Question",
-                "name": "Is the PowerPoint to PDF converter free?",
-                "acceptedAnswer": {
-                  "@type": "Answer",
-                  "text": "Yes. PDFLinx PowerPoint to PDF converter is completely free — no hidden charges, no subscription required."
-                }
-              },
-              {
-                "@type": "Question",
-                "name": "Will slide layouts and fonts be preserved?",
-                "acceptedAnswer": {
-                  "@type": "Answer",
-                  "text": "Yes. Slide layouts, fonts, images, backgrounds, and design elements are all preserved accurately in the converted PDF."
-                }
-              },
-              {
-                "@type": "Question",
-                "name": "What happens to animations when converting to PDF?",
-                "acceptedAnswer": {
-                  "@type": "Answer",
-                  "text": "PDF is a static format — animations cannot be preserved. Each slide appears as a static frame showing the final state. All text and images remain fully visible."
-                }
-              },
-              {
-                "@type": "Question",
-                "name": "Can I convert multiple PowerPoint files at once?",
-                "acceptedAnswer": {
-                  "@type": "Answer",
-                  "text": "Yes. Upload multiple PPT or PPTX files simultaneously. All converted PDFs are delivered as a single ZIP download."
-                }
-              },
-              {
-                "@type": "Question",
-                "name": "Are my files safe and private?",
-                "acceptedAnswer": {
-                  "@type": "Answer",
-                  "text": "Yes. Files are processed securely and permanently deleted after conversion. Never stored or shared."
-                }
-              },
-              {
-                "@type": "Question",
-                "name": "Can I convert PowerPoint to PDF on mobile?",
-                "acceptedAnswer": {
-                  "@type": "Answer",
-                  "text": "Yes. PDFLinx works on Android and iOS mobile browsers — no app required."
-                }
-              }
-            ]
-          }, null, 2)
-        }}
-      />
       
       <ToolPageLayout
         title={seo?.h1 || "PowerPoint to PDF Converter (Free & Online)"}

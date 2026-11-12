@@ -1686,7 +1686,6 @@ export default function SignPdf({ seo }) {
 
       {/* ── Schema 3: FAQPage — uses FAQ_DATA (single source of truth) ── */}
 
-      <JsonLd data={buildFaqSchema(SIGN_PDF_FAQS)} />
 
       {/* <Script
         id="schema-faq-sign-pdf"

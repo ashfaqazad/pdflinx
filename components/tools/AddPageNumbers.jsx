@@ -705,25 +705,6 @@ export default function AddPageNumbers() {
     <>
       {/* ── SEO Schemas (unchanged) ── */}
       
-      <Script
-        id="faq-schema-add-page-numbers"
-        type="application/ld+json"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "FAQPage",
-            mainEntity: [
-              { "@type": "Question", name: "Is the Add Page Numbers to PDF tool free?", acceptedAnswer: { "@type": "Answer", text: "Yes, PDFLinx lets you add page numbers to PDF online for free with no signup required." } },
-              { "@type": "Question", name: "Can I choose where page numbers appear?", acceptedAnswer: { "@type": "Answer", text: "Yes. You can place page numbers at the top or bottom, and align them left, center, or right." } },
-              { "@type": "Question", name: "Can I start numbering from any number?", acceptedAnswer: { "@type": "Answer", text: "Yes. You can begin numbering from 1, 5, 10, or any number you need." } },
-              { "@type": "Question", name: "Will adding page numbers change my original PDF layout?", acceptedAnswer: { "@type": "Answer", text: "No. The original PDF layout stays the same. Only page numbers are added to the pages." } },
-              { "@type": "Question", name: "Are my PDF files safe?", acceptedAnswer: { "@type": "Answer", text: "Yes. Files are processed securely and deleted automatically after a short time." } },
-              { "@type": "Question", name: "Can I add page numbers to PDF on mobile?", acceptedAnswer: { "@type": "Answer", text: "Yes. PDFLinx works on desktop, tablet, and mobile browsers." } },
-            ],
-          }, null, 2),
-        }}
-      />
     
       <Script
         src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"

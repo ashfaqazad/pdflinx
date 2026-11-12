@@ -396,7 +396,6 @@ export default function UnlockPdf() {
     <>
       {/* ==================== SEO SCHEMAS ==================== */}
 
-      <JsonLd data={buildFaqSchema(UNLOCK_PDF_FAQS)} />
       {/* <JsonLd data={buildFaqSchema(FAQ_DATA)} /> */}
 
       {/* <Script

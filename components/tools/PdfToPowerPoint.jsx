@@ -336,22 +336,6 @@ export default function PdfToPowerPoint() {
         }}
       />
 
-      <Script
-        id="faq-schema-pdf-to-pptx"
-        type="application/ld+json"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "FAQPage",
-            mainEntity: [
-              { "@type": "Question", name: "Can I convert PDF to PowerPoint online?", acceptedAnswer: { "@type": "Answer", text: "Yes. PDFLinx lets you convert PDF files to editable PowerPoint presentations online for free." } },
-              { "@type": "Question", name: "Will each PDF page become a slide?", acceptedAnswer: { "@type": "Answer", text: "Yes. Each page of your PDF becomes a separate PowerPoint slide." } },
-              { "@type": "Question", name: "Does PDF to PPTX work on mobile?", acceptedAnswer: { "@type": "Answer", text: "Yes. PDF to PowerPoint works on Android, iPhone, tablets, and desktop browsers." } },
-            ],
-          }),
-        }}
-      />
 
       <ToolPageLayout
         title="PDF to PowerPoint"

@@ -493,7 +493,6 @@ export default function RotatePdf({ seo }) {
       />
       {/* ── SEO Schemas ── */}
 
-      <JsonLd data={buildFaqSchema(ROTATE_PDF_FAQS)} />
 
       {/* <Script
         id="faq-schema-rotate-pdf"

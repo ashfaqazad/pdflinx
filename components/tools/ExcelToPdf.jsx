@@ -154,59 +154,6 @@ export default function ExcelToPdf({ seo }) {
       {/* ==================== SEO SCHEMAS ==================== */}
 
 
-      <Script
-        id="faq-schema-excel-pdf"
-        type="application/ld+json"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "FAQPage",
-            "mainEntity": [
-              {
-                "@type": "Question",
-                "name": "Is the Excel to PDF converter free?",
-                "acceptedAnswer": {
-                  "@type": "Answer",
-                  "text": "Yes. PDFLinx Excel to PDF converter is completely free — no hidden charges, no subscription required."
-                }
-              },
-              {
-                "@type": "Question",
-                "name": "Will charts and formatting be preserved?",
-                "acceptedAnswer": {
-                  "@type": "Answer",
-                  "text": "Yes. Tables, charts, formulas, colors, and grid lines are all preserved accurately in the converted PDF."
-                }
-              },
-              {
-                "@type": "Question",
-                "name": "Can I convert multiple Excel files at once?",
-                "acceptedAnswer": {
-                  "@type": "Answer",
-                  "text": "Yes. Upload multiple XLS or XLSX files simultaneously. All converted PDFs are delivered as a single ZIP download."
-                }
-              },
-              {
-                "@type": "Question",
-                "name": "Are my files safe and private?",
-                "acceptedAnswer": {
-                  "@type": "Answer",
-                  "text": "Yes. Files are processed securely and permanently deleted after conversion. Never stored or shared."
-                }
-              },
-              {
-                "@type": "Question",
-                "name": "Can I convert Excel to PDF on mobile?",
-                "acceptedAnswer": {
-                  "@type": "Answer",
-                  "text": "Yes. PDFLinx works on Android and iOS mobile browsers — no app required."
-                }
-              }
-            ]
-          }, null, 2)
-        }}
-      />
 
       <ToolPageLayout
         title={seo?.h1 || "Excel to PDF Converter (Free & Online)"}

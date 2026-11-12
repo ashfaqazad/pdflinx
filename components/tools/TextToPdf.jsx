@@ -324,7 +324,6 @@ export default function TextToPdf({ seo }) {
     <>
       {/* ── SEO Schemas ── */}
 
-    <JsonLd data={buildFaqSchema(TEXT_PDF_FAQS)} />
       
 
       {/* <Script

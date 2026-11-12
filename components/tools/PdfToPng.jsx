@@ -253,44 +253,6 @@ const handleConvert = async () => {
       />
       {/* ── SEO Schemas ── */}
       
-      <Script
-        id="faq-schema-pdf-png"
-        type="application/ld+json"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "FAQPage",
-            mainEntity: [
-              {
-                "@type": "Question",
-                name: "Is the PDF to PNG converter free?",
-                acceptedAnswer: { "@type": "Answer", text: "Yes. PDFLinx PDF to PNG converter is completely free — no hidden charges, no subscription, no account required." },
-              },
-              {
-                "@type": "Question",
-                name: "What is the quality of converted PNG images?",
-                acceptedAnswer: { "@type": "Answer", text: "PNG images are exported at full lossless quality — text stays sharp, colors are accurate, and transparent backgrounds are supported." },
-              },
-              {
-                "@type": "Question",
-                name: "Can I convert multiple PDF files to PNG at once?",
-                acceptedAnswer: { "@type": "Answer", text: "Yes. Upload multiple PDFs simultaneously — each is processed separately and delivered as individual PNG or ZIP downloads." },
-              },
-              {
-                "@type": "Question",
-                name: "What is the difference between PDF to PNG and PDF to JPG?",
-                acceptedAnswer: { "@type": "Answer", text: "PNG is lossless — better for text, graphics, logos, and transparent backgrounds. JPG is smaller in file size — better for photos and social media sharing." },
-              },
-              {
-                "@type": "Question",
-                name: "Are my uploaded PDF files safe?",
-                acceptedAnswer: { "@type": "Answer", text: "Yes. Files are processed securely and permanently deleted after conversion. Never stored or shared with third parties." },
-              },
-            ],
-          }, null, 2),
-        }}
-      />
 
       {/* ── Tool UI ── */}
       <ToolPageLayout

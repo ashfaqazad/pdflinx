@@ -214,25 +214,6 @@ export default function RemovePdf() {
     <>
       {/* ── JSON-LD SCHEMAS ── */}
       <Script
-        id="faq-schema-remove-pages"
-        type="application/ld+json"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "FAQPage",
-            mainEntity: [
-              { "@type": "Question", name: "Is the Remove Pages from PDF tool free?", acceptedAnswer: { "@type": "Answer", text: "Yes, PDFLinx lets you remove pages from PDF online for free with no signup required." } },
-              { "@type": "Question", name: "How do I specify which pages to delete?", acceptedAnswer: { "@type": "Answer", text: "Preview the document and click the pages you want to remove." } },
-              { "@type": "Question", name: "Can I remove multiple pages at once?", acceptedAnswer: { "@type": "Answer", text: "Yes. You can remove multiple individual pages or page ranges in one go." } },
-              { "@type": "Question", name: "Will the remaining PDF pages stay in the same order?", acceptedAnswer: { "@type": "Answer", text: "Yes. Only the selected pages are removed. The rest of the document stays in its original order." } },
-              { "@type": "Question", name: "Are my PDF files safe?", acceptedAnswer: { "@type": "Answer", text: "Yes. Files are processed securely and deleted automatically after a short time." } },
-              { "@type": "Question", name: "Can I remove pages from PDF on mobile?", acceptedAnswer: { "@type": "Answer", text: "Yes. PDFLinx works on desktop, tablet, and mobile browsers." } },
-            ],
-          }, null, 2),
-        }}
-      />
-      <Script
         src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"
         strategy="afterInteractive"
         onReady={() => {
