@@ -139,8 +139,10 @@ const NEW_FAQS = [
 // ─────────────────────────────────────────────────────
 
 export default function PdfToWord({ seo }) {
-  // "/pdf-to-word-for-students" shares this component but needs its own H1 + intro
+  // the /pdf-to-word-* variant pages share this component but each needs its own H1 + intro
   const isStudentsPage = seo?.canonical?.endsWith("/pdf-to-word-for-students");
+  const isNoSignupPage = seo?.canonical?.endsWith("/pdf-to-word-no-signup");
+  const isMultiplePage = seo?.canonical?.endsWith("/pdf-to-word-multiple-files");
   const flow = useToolFlow();
   const { progress, startProgress, completeProgress, cancelProgress } =
     useProgressBar();
@@ -348,6 +350,10 @@ export default function PdfToWord({ seo }) {
                   Edit Notes &amp; Assignments Free
                 </em>
               </>
+            ) : isNoSignupPage ? (
+              "PDF to Word Converter — No Signup"
+            ) : isMultiplePage ? (
+              "Convert Multiple PDFs to Word"
             ) : (
               <>
                 PDF to Word Converter —{" "}
@@ -360,6 +366,10 @@ export default function PdfToWord({ seo }) {
             // ✅ UPDATED — added Mac / iPhone / Android mention
             heroDescription: isStudentsPage
               ? "Turn lecture notes, assignments and textbook PDFs into editable Word documents. Free for students, with no signup, so you can start editing right away."
+              : isNoSignupPage
+              ? "Convert a PDF to an editable Word document without creating an account or entering an email. Add your file, convert it and download the DOCX straight away."
+              : isMultiplePage
+              ? "Add several PDFs at once and convert them all to Word in one go. Download the finished DOCX files together instead of converting them one by one."
               : "Convert PDF to Word online for free. Get fully editable DOCX files with text, tables, images, and layout preserved — including scanned PDFs via OCR. No signup, no watermark, no software needed. Works on Mac, Windows, iPhone, and Android.",
 
             pills: [
