@@ -25,7 +25,7 @@ const Footer = () => {
 
             {/* ConvertLinx */}
             <div className="mt-4 pt-4 border-t border-gray-800">
-              <p className="text-gray-600 text-xs uppercase tracking-wide font-semibold mb-2">
+              <p className="text-gray-400 text-xs uppercase tracking-wide font-semibold mb-2">
                 More free tools
               </p>
 
@@ -33,11 +33,11 @@ const Footer = () => {
                 href="https://convertlinx.com"
                 rel="nofollow noopener noreferrer"
                 target="_blank"
-                className="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-orange-500 transition group"
+                className="inline-flex items-center gap-2 text-sm text-gray-400 hover:text-orange-500 transition group"
               >
                 <span>🖼️ Image & utility tools</span>
 
-                <span className="text-gray-600 group-hover:text-orange-400 transition">
+                <span className="text-gray-400 group-hover:text-orange-400 transition">
                   → convertlinx.com
                 </span>
               </Link>
@@ -108,7 +108,7 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
-                <span className="text-gray-600 text-xs">See how much you save by compressing</span>
+                <span className="text-gray-400 text-xs">See how much you save by compressing</span>
               </li>
             </ul>
 
@@ -124,7 +124,7 @@ const Footer = () => {
               </li>
             </ul> */}
 
-            {/* <p className="text-xs text-gray-600 mt-3 leading-6">
+            {/* <p className="text-xs text-gray-400 mt-3 leading-6">
               See how much you save by compressing PDFs.
             </p> */}
           </div>
@@ -142,7 +142,7 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
-                <span className="text-gray-600 text-xs">Add our tools to your site — free</span>
+                <span className="text-gray-400 text-xs">Add our tools to your site — free</span>
               </li>
             </ul>
 
@@ -171,11 +171,11 @@ const Footer = () => {
         {/* Divider */}
         <div className="border-t border-gray-800 pt-6 flex flex-col md:flex-row items-center justify-between gap-4">
 
-          <p className="text-gray-500 text-sm">
+          <p className="text-gray-400 text-sm">
             © {year} PDF Linx • All Rights Reserved • Made with ❤️ for people who hate bad PDF tools
           </p>
 
-          <p className="text-gray-600 text-xs">
+          <p className="text-gray-400 text-xs">
             Free tools • No data stored • No tracking • Processed in your browser
           </p>
 
