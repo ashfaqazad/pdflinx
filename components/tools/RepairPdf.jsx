@@ -531,17 +531,10 @@ export default function RepairPdf() {
 
                         heroBadge: "✦ 100% Free · No Signup · No Watermark",
 
-                        heroTitle: (
-                            <>
-                                Repair PDF Files —{" "}
-                                <em className="font-bold text-[#e8420a] sm:italic">
-                                    Free, Online, Fix Corrupted PDFs
-                                </em>
-                            </>
-                        ),
+                        heroTitle: "Repair PDF Online Free",
 
                         heroDescription:
-                            "Repair corrupted, damaged, or unreadable PDF files online for free. Recover content from broken PDFs that won't open — no signup, no watermark, no software needed. Works on any device.",
+                            "Add a corrupted or damaged PDF and PDFLinx rebuilds it, recovering the pages and content it can, so you can download a PDF that opens again.",
 
                         pills: [
                             "No watermark",

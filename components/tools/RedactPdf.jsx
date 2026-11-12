@@ -807,16 +807,9 @@ export default function RedactPdf({ seo }) {
             //   "Instant download",
             // ],
 
-            heroTitle: (
-              <>
-                Redact PDF Online —{" "}
-                <em className="font-bold text-[#e8420a] sm:italic">
-                  Permanently Remove Text & Images Free
-                </em>
-              </>
-            ),
+            heroTitle: "Redact PDF Free Online",
             heroDescription:
-              "Redact PDF online for free — permanently black out sensitive text, images, or personal information from any PDF. Redaction is irreversible and secure. No signup, no watermark.",
+              "Select sensitive text or images on any page and redact them permanently. Redacted pages are flattened, so the hidden content cannot be recovered.",
             pills: ["Permanent redaction", "Black out text & images", "Secure & irreversible", "No signup"],
 
 

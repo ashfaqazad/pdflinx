@@ -808,16 +808,9 @@ export default function AddPageNumbers() {
             //   "Instant download",
             // ],
 
-            heroTitle: (
-              <>
-                Add Page Numbers to PDF —{" "}
-                <em className="font-bold text-[#e8420a] sm:italic">
-                  Custom Position & Style, Free
-                </em>
-              </>
-            ),
+            heroTitle: "Add Page Numbers to PDF",
             heroDescription:
-              "Add page numbers to PDF online free — insert page numbers in header, footer, left, center, or right position. Choose font, size, and starting number. Free, no signup needed.",
+              "Add page numbers to any PDF right in your browser. Choose where the numbers go, pick a format and style, and download the numbered file.",
             pills: ["Header & footer placement", "Custom font & size", "Choose starting number", "No signup"],
 
 

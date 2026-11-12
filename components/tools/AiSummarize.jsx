@@ -308,16 +308,9 @@ export default function AiSummarize({ seo }) {
 
             heroBadge: "✦ 100% Free · No Signup · AI-Powered",
 
-            heroTitle: (
-              <>
-                AI PDF Summarizer —{" "}
-                <em className="font-bold text-[#e8420a] sm:italic">
-                  Summarize Any PDF Free Online
-                </em>
-              </>
-            ),
+            heroTitle: "Summarize PDF with AI",
             heroDescription:
-              "Upload any PDF and get an instant AI-generated summary in clear bullet points. Perfect for research papers, reports, books, legal documents, and long PDFs. No signup, no watermark, 100% free. Works on Windows, Mac, Android, and iPhone.",
+              "Upload a PDF and AI writes a short summary with the key points, main ideas and takeaways. The document text is sent to a server for AI processing.",
             pills: ["AI-powered", "Bullet point summary", "No signup", "Free forever"],
 
             trustPills: ["100% Free", "No Sign Up", "AI Powered"],

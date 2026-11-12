@@ -409,16 +409,9 @@ export default function RemovePdf() {
             //   "Instant download",
             // ],
 
-            heroTitle: (
-              <>
-                Remove Pages from PDF —{" "}
-                <em className="font-bold text-[#e8420a] sm:italic">
-                  Delete Any Page Free Online
-                </em>
-              </>
-            ),
+            heroTitle: "Remove Pages from PDF Free",
             heroDescription:
-              "Remove pages from PDF online free — select and permanently delete one or more pages from any PDF. Preview all pages before removing. No signup, no watermark, instant download.",
+              "Upload a PDF, preview every page, select the pages you don't need and download a clean file without them.",
             pills: ["Visual page preview", "Delete any page(s)", "Permanent removal", "No watermark"],
 
 

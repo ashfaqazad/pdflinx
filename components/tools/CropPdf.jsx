@@ -900,17 +900,10 @@ export default function CropPdf() {
 
             heroBadge: "✦ 100% Free · No Signup · No Watermark",
 
-            heroTitle: (
-              <>
-                Crop PDF Pages —{" "}
-                <em className="font-bold text-[#e8420a] sm:italic">
-                  Free, Online, Precise Margins
-                </em>
-              </>
-            ),
+            heroTitle: "Crop PDF Online Free",
 
             heroDescription:
-              "Crop any PDF page online for free. Remove unwanted margins, whitespace, or borders — crop all pages uniformly or each page individually. No signup, no watermark, no software needed. Works on any device.",
+              "Trim unwanted margins from your PDF pages or keep only the area you need. Crop all pages at once or one page at a time, then download the result.",
 
             pills: [
               "No watermark",
