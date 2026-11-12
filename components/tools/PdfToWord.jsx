@@ -139,6 +139,8 @@ const NEW_FAQS = [
 // ─────────────────────────────────────────────────────
 
 export default function PdfToWord({ seo }) {
+  // "/pdf-to-word-for-students" shares this component but needs its own H1 + intro
+  const isStudentsPage = seo?.canonical?.endsWith("/pdf-to-word-for-students");
   const flow = useToolFlow();
   const { progress, startProgress, completeProgress, cancelProgress } =
     useProgressBar();
@@ -410,7 +412,14 @@ export default function PdfToWord({ seo }) {
 
             heroBadge: "✦ 100% Free · No Signup · No Watermark",
 
-            heroTitle: (
+            heroTitle: isStudentsPage ? (
+              <>
+                PDF to Word for Students —{" "}
+                <em className="font-bold text-[#e8420a] sm:italic">
+                  Edit Notes &amp; Assignments Free
+                </em>
+              </>
+            ) : (
               <>
                 PDF to Word Converter —{" "}
                 <em className="font-bold text-[#e8420a] sm:italic">
@@ -420,8 +429,9 @@ export default function PdfToWord({ seo }) {
             ),
 
             // ✅ UPDATED — added Mac / iPhone / Android mention
-            heroDescription:
-              "Convert PDF to Word online for free. Get fully editable DOCX files with text, tables, images, and layout preserved — including scanned PDFs via OCR. No signup, no watermark, no software needed. Works on Mac, Windows, iPhone, and Android.",
+            heroDescription: isStudentsPage
+              ? "Turn lecture notes, assignments and textbook PDFs into editable Word documents. Free for students, with no signup, so you can start editing right away."
+              : "Convert PDF to Word online for free. Get fully editable DOCX files with text, tables, images, and layout preserved — including scanned PDFs via OCR. No signup, no watermark, no software needed. Works on Mac, Windows, iPhone, and Android.",
 
             pills: [
               "No watermark",
