@@ -1,4 +1,6 @@
 import HomeContent from "@/components/HomeContent";
+import JsonLd from "@/components/JsonLd";
+import { organizationSchema, websiteSchema } from "@/lib/siteSchema";
 
 export const metadata = {
   alternates: {
@@ -7,7 +9,13 @@ export const metadata = {
 };
 
 export default function HomePage() {
-  return <HomeContent />;
+  return (
+    <>
+      <JsonLd data={organizationSchema} />
+      <JsonLd data={websiteSchema} />
+      <HomeContent />
+    </>
+  );
 }
 
 

@@ -183,29 +183,6 @@ export default function RootLayout({ children }) {
               "@context": "https://schema.org",
               "@graph": [
                 {
-                  "@type": "Organization",
-                  name: "PDF Linx",
-                  url: "https://pdflinx.com",
-                  logo: {
-                    "@type": "ImageObject",
-                    url: "https://pdflinx.com/logo.png",
-                    width: 512,
-                    height: 512,
-                  },
-                  sameAs: [],
-                },
-                {
-                  "@type": "WebSite",
-                  name: "PDF Linx",
-                  url: "https://pdflinx.com",
-                  description:
-                    "Free online PDF tools to convert, merge, split, compress, protect, unlock, rotate, sign, watermark, and edit PDFs instantly.",
-                  publisher: {
-                    "@type": "Organization",
-                    name: "PDF Linx",
-                  },
-                },
-                {
                   "@type": "WebApplication",
                   name: "PDF Linx — Free PDF Tools",
                   url: "https://pdflinx.com",
