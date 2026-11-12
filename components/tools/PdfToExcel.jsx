@@ -280,7 +280,7 @@ seoSections: [
     title: "What is PDF to Excel Conversion?",
     text: (
       <>
-        PDF to Excel conversion extracts tables, numbers, and structured data from a static PDF document and places them into editable spreadsheet cells. This means you can filter, sort, calculate, chart, and analyze the data immediately — without manually retyping a single number. If you ever need to turn spreadsheets back into documents, you can use our <a href="/excel-to-pdf" className="text-blue-600 hover:underline font-medium">Excel to PDF tool</a>. It is especially valuable for financial reports, invoices, bank statements, and research data where the original editable source file is unavailable.
+        PDF to Excel conversion extracts tables, numbers, and structured data from a static PDF document and places them into editable spreadsheet cells. This means you can filter, sort, calculate, chart, and analyze the data immediately — without manually retyping a single number. If you ever need to turn spreadsheets back into documents, you can use our <a href="/excel-pdf" className="text-blue-600 hover:underline font-medium">Excel to PDF tool</a>. It is especially valuable for financial reports, invoices, bank statements, and research data where the original editable source file is unavailable.
       </>
     ),
   },
